@@ -18,3 +18,7 @@ button {
   border: none;
   padding: 0.25rem 0.5rem;
 }
+
+header {
+  margin-bottom: 1.5rem;
+}

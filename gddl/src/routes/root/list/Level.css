@@ -1,0 +1,8 @@
+.level {
+    border: 1px black solid;
+    border-radius: 5px;
+}
+
+.level h3 {
+    font-weight: 350;
+}

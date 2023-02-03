@@ -1,0 +1,17 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Creator from '../../level/Creator';
+import './Level.css';
+
+export default function Level({ info }) {
+    return (
+        <div className='row level'>
+            <h3 className={(info.isHeader ? 'h1 ' : '') + 'col-7'}>
+                <Link to={'/level/' + info.id}>{info.name}</Link>
+            </h3>
+            <div className='col-3 align-self-center'><Creator name={info.creator} /></div>
+            <div className='col-1 align-self-center'><p className='m-0'>{info.id}</p></div>
+            <div className='col-1 align-self-center'><p className='m-0'>{info.rating == -1 ? 'Unrated' : info.rating}</p></div>
+        </div>
+    );
+}

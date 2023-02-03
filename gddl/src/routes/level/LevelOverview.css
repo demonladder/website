@@ -1,0 +1,14 @@
+table {
+    width: 100%;
+}
+
+.table-container {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: rgb(20, 20, 20);
+}
+
+td {
+    padding: 0.5rem;
+}

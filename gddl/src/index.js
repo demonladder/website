@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-  createBrowserRouter,
-  RouterProvider
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
-import Root from './routes/Root';
-import Index from './routes/Index';
-import Ladder, { ladderLoader } from './Ladder';
-import References from './References';
+import Root from './routes/root/Root';
+import Index from './routes/root/RootIndex';
+import Ladder, { ladderLoader } from './routes/root/list/Ladder';
+import References from './routes/root/references/References';
+import LevelOverview, { levelLoader } from './routes/level/LevelOverview';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +25,11 @@ const router = createBrowserRouter([
       {
         path: 'references',
         element: <References />
+      },
+      {
+        path: 'level/:level_id',
+        element: <LevelOverview />,
+        loader: levelLoader
       }
     ]
   }
