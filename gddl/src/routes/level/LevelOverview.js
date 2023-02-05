@@ -3,6 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 import Creator from './Creator';
 import parseDiff from '../../parseDiff';
 import './LevelOverview.css';
+import DemonLogo from '../../DemonLogo';
 
 export async function levelLoader({ params }) {
     return fetch('http://localhost:8080/level?id=' + params.level_id)
@@ -10,32 +11,52 @@ export async function levelLoader({ params }) {
 }
 
 export default function LevelOverview() {
-    const level = useLoaderData();
+    const levelInfo = useLoaderData();
+
+    const level = levelInfo.levelData;
+
+    let enjoyment = 'Unrated';
+    if (levelInfo.enjoyments.length !== 0) {
+        enjoyment = 0;
+        levelInfo.enjoyments.forEach((e) => {
+            enjoyment += e.enjoyment;
+        });
+        enjoyment /= levelInfo.enjoyments.length;
+    }
 
     return (
-        <div>
+        <>
             <h1>Level information for {level.name}</h1>
             by <Creator name={level.creator} />
-            <div className='table-container'>
-                <table>
-                    <thead>
-                        <tr>
-                            <td>ID</td>
-                            <td>Tier</td>
-                            <td>Official Difficulty</td>
-                            <td>Song name</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{level.id}</td>
-                            <td>{level.rating}</td>
-                            <td>{parseDiff(level.officialDifficulty)}</td>
-                            <td>{level.song}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div className='row table-container'>
+                <div className='col-3'>
+                    <DemonLogo diff={level.officialDifficulty} />
+                </div>
+                <div className='row col-9'>
+                    <div className='row'>
+                        <div className='col-4'>
+                            <b>ID</b>
+                            <p>{level.id}</p>
+                        </div>
+                        <div className='col-4'>
+                            <b>Song name</b>
+                            <p>{level.song}</p>
+                        </div>
+                        <div className='col-4'>
+                            <b>Difficulty</b>
+                            <p>{parseDiff(level.officialDifficulty)}</p>
+                        </div>
+                        <div className='col-4'>
+                            <b>Tier</b>
+                            <p>{level.rating === -1 ? 'Unrated' : level.rating} [{levelInfo.ratings.length}]</p>
+                        </div>
+                        <div className='col-4'>
+                            <b>Enjoyment</b>
+                            <p>{enjoyment}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

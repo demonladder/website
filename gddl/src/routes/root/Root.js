@@ -5,12 +5,12 @@ import { Outlet } from 'react-router-dom';
 
 function Root() {
   return (
-    <div>
+    <>
       <Header />
       <div className='container'>
         <Outlet />
       </div>
-    </div>
+    </>
   );
 }
 

@@ -11,6 +11,7 @@ export default function Level({ info }) {
             </h3>
             <div className='col-3 align-self-center'><Creator name={info.creator} /></div>
             <div className='col-1 align-self-center'><p className='m-0'>{info.id}</p></div>
+            {/* eslint-disable-next-line*/}
             <div className='col-1 align-self-center'><p className='m-0'>{info.rating == -1 ? 'Unrated' : info.rating}</p></div>
         </div>
     );
