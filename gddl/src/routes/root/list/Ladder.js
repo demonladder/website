@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLoaderData, Form } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../filter-empty.svg';
@@ -20,6 +20,7 @@ export async function ladderLoader() {
 export default function Ladder() {
     const [levels] = useState(useLoaderData());
     const [filteredLevels, setFilteredLevels] = useState(levels);
+    const [sortedLevels, setSortedLevels] = useState(levels);
 
     const [pageIndex, setPageIndex] = useState(0);
 
@@ -55,70 +56,77 @@ export default function Ladder() {
 
     function handleSortMenu(e) {
         setSorter(e.target.id);
-        sortLevels(e.target.id, sortAscending);
     }
 
-    function sortLevels(s, a) {
+    function sortLevels() {
         let levelsCopy = [...filteredLevels];
-        let dir = a ? 1 : -1;
-        switch (s) {
+        switch (sorter) {
             case 'name':
                 levelsCopy.sort((a, b) => {
-                    if (a.Name < b.Name) return -dir
-                    if (a.Name > b.Name) return dir
+                    if (a.Name < b.Name) return -1
+                    if (a.Name > b.Name) return 1
                     return 0;
                 });
                 break;
             case 'tier':
                 levelsCopy.sort((a, b) => {
-                    if (a.Rating < b.Rating) return -dir
-                    if (a.Rating > b.Rating) return dir
+                    if (a.Rating < b.Rating) return -1
+                    if (a.Rating > b.Rating) return 1
                     return 0;
                 });
                 break;
             default:  // Also used if id is 'level-id'
                 levelsCopy.sort((a, b) => {
-                    if (a.ID < b.ID) return -dir
-                    if (a.ID > b.ID) return dir
+                    if (a.ID < b.ID) return -1
+                    if (a.ID > b.ID) return 1
                     return 0;
                 });
                 break;
         }
-        setFilteredLevels(levelsCopy);
-        setPages(sliceLevels(levelsCopy));
+        if (!sortAscending) levelsCopy.reverse();
+        setSortedLevels(levelsCopy);
     }
 
     function handleSortDiretion(e) {
         setSortAscending(e.target.id === 'asc');
-
-        // Re-sort
-        sortLevels(sorter, e.target.id === 'asc');
     }
 
-    // Filters levels depending on the search term
-    function searchChange(e) {
-        let search = e.target.value.toLowerCase();
-        if (!search) {
-            setFilteredLevels(levels);
-            setPages(sliceLevels(levels));
-            return;
-        }
-
+    // Filter levels
+    const [filters, setFilters] = useState({ lowTier: '', highTier: '', difficulty: 0, creator: '', song: '' });
+    const [search, setSearch] = useState('');
+    useEffect(() => {
         let levelsCopy = [...levels];
-        let res = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search)) 
+        if (search) levelsCopy = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search.toLowerCase())) 
                                                     || (parseInt(el.ID) === search)
-                                                    || ((el.ID+'').includes(search))
-                                                    || el.Creator.toLowerCase().includes(search) });
+                                                    || ((el.ID+'').includes(search)) });
+        
+        let hTier = !filters.highTier ? filters.lowTier + 1 : filters.highTier;  // If high tier is empty, it will default to low tier + 1
+        if (filters.creator != '') levelsCopy = levelsCopy.filter(el => el.Creator.toLowerCase().includes(filters.creator.toLowerCase()));
+        if (filters.lowTier != '') levelsCopy = levelsCopy.filter(el => el.Rating >= filters.lowTier && el.Rating < hTier);
+        if (filters.difficulty != '0') levelsCopy = levelsCopy.filter(el => el.Difficulty == filters.difficulty);
+        if (filters.song != '') levelsCopy = levelsCopy.filter(el => el.Song.toLowerCase().includes(filters.song.toLowerCase()));
+        levelsCopy = levelsCopy.filter(el => (el.Rating == -1 && filters.removeUnrated) ? false : true);
 
-        setFilteredLevels(res);
-        let sliced = sliceLevels(res);
-        setPages(sliced);
-        if (sliced.length-1 <= pageIndex) setPageIndex(0);
-    }
+        setFilteredLevels(levelsCopy);
+    }, [search, filters]);
 
-    const [showFilter, setShowFilter] = useState(true);
+    const [showFilter, setShowFilter] = useState(false);
     function toggleShowFilter() {
         setShowFilter(prev => !prev);
+    }
+
+    useEffect(() => {
+        sortLevels();
+    }, [sorter, sortAscending, filteredLevels]);
+
+    useEffect(() => {  // Updates pages so it matches filteredLevels
+        let sliced = sliceLevels(sortedLevels);
+        setPages(sliced);
+        if (sliced.length-1 <= pageIndex) setPageIndex(0);
+    }, [sortedLevels]);
+
+    function onSearchChange(event) {
+        setSearch(event.target.value);
     }
 
     return (
@@ -128,7 +136,7 @@ export default function Ladder() {
                 The Ladder
             </h1>
             <Form className='col m-2' id='search-form' role='search' action='/level'>
-                <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' onChange={searchChange} />
+                <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' onChange={onSearchChange} />
             </Form>
             <button className='col-1 btn btn-light m-2' onClick={toggleShowFilter}>
                 <img src={filterEmpty} alt='' />
@@ -170,9 +178,9 @@ export default function Ladder() {
                 </div>
             </div>
         </div>
-        <FilterMenu show={showFilter} />
+        <FilterMenu show={showFilter} filter={setFilters} />
         <div id='levelList' className='my-3'>
-            <Level info={{ Name: 'Level Name', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
+            <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
             {!levels.error ? (pages.length > 0 ? pages[pageIndex].map(l => (
                 <Level info={l} key={l.ID} />
             )) : '') : <h1 className='m-5'>{levels.message}</h1>}

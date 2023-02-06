@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Creator from './Creator';
-import parseDiff from '../../parseDiff';
 import './LevelOverview.css';
 import DemonLogo from '../../DemonLogo';
 
