@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useLoaderData, Form } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../filter-empty.svg';
+import FilterMenu from './FilterMenu';
 import sort from '../../../sort.svg';
 import sortUp from '../../../sort-up.svg';
 import caretR from '../../../caret-r.svg';
 import caretL from '../../../caret-l.svg';
 
 export async function ladderLoader() {
-    return fetch('http://localhost:8080/search?tier=15&range=30')
+    return fetch('http://localhost:8080/getLevels')
     .then((res) => res.json())
     .catch((e) => {
         if (e.message == 'Failed to fetch') return { error: true, message: 'It looks like the servers are down :( Try again later!'};
@@ -104,12 +105,20 @@ export default function Ladder() {
         }
 
         let levelsCopy = [...levels];
-        let res = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search)) || (parseInt(el.ID) == search) || ((el.ID+'').includes(search)) });
+        let res = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search)) 
+                                                    || (parseInt(el.ID) === search)
+                                                    || ((el.ID+'').includes(search))
+                                                    || el.Creator.toLowerCase().includes(search) });
 
         setFilteredLevels(res);
         let sliced = sliceLevels(res);
         setPages(sliced);
         if (sliced.length-1 <= pageIndex) setPageIndex(0);
+    }
+
+    const [showFilter, setShowFilter] = useState(true);
+    function toggleShowFilter() {
+        setShowFilter(prev => !prev);
     }
 
     return (
@@ -121,7 +130,7 @@ export default function Ladder() {
             <Form className='col m-2' id='search-form' role='search' action='/level'>
                 <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' onChange={searchChange} />
             </Form>
-            <button className='col-1 btn btn-light m-2'>
+            <button className='col-1 btn btn-light m-2' onClick={toggleShowFilter}>
                 <img src={filterEmpty} alt='' />
             </button>
             <div className='col-1 '>
@@ -161,6 +170,7 @@ export default function Ladder() {
                 </div>
             </div>
         </div>
+        <FilterMenu show={showFilter} />
         <div id='levelList' className='my-3'>
             <Level info={{ Name: 'Level Name', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
             {!levels.error ? (pages.length > 0 ? pages[pageIndex].map(l => (

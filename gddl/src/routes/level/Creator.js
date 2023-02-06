@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Creator({ name }) {
+export default function Creator({ name, disableLink }) {
     return (
-        <Link to='/'>{name}</Link>
+        <>
+            {disableLink ? <p className='m-0'>{name}</p>
+                                 : <Link to='/'>{name}</Link>}
+        </>
     )
 }

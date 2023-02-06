@@ -1,0 +1,22 @@
+.menu {
+    background-color: gray;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.menu.hidden {
+    transform: scaleY(0);
+    position: absolute;
+    transition-duration: 0s;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+}
+
+input.number {
+    width: 50px;
+}
