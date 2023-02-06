@@ -8,18 +8,23 @@ import exdemon from './demon_logos/exdemon.png';
 export default function DemonLogo({ diff }) {
     let imgSrc = '';
     switch (diff) {
+        case 'Easy':
         case 1:
             imgSrc = edemon;
             break;
+        case 'Medium':
         case 2:
             imgSrc = mdemon;
             break;
+        case 'Hard':
         case 3:
             imgSrc = hdemon;
             break;
+        case 'Insane':
         case 4:
             imgSrc = idemon;
             break;
+        case 'Extreme':
         case 5:
             imgSrc = exdemon;
             break;

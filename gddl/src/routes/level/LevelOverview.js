@@ -13,42 +13,43 @@ export async function levelLoader({ params }) {
 export default function LevelOverview() {
     const levelInfo = useLoaderData();
 
-    const level = levelInfo.levelData;
+    const level = levelInfo.levelData[0];
+    let enjoyments = levelInfo.submissions.filter(e => e.enjoyment != null);
 
     let enjoyment = 'Unrated';
-    if (levelInfo.enjoyments.length !== 0) {
+    if (enjoyments.length !== 0) {
         enjoyment = 0;
-        levelInfo.enjoyments.forEach((e) => {
+        enjoyments.forEach((e) => {
             enjoyment += e.enjoyment;
         });
-        enjoyment /= levelInfo.enjoyments.length;
+        enjoyment /= enjoyments.length;
     }
 
     return (
         <>
-            <h1>Level information for {level.name}</h1>
-            by <Creator name={level.creator} />
+            <h1>Level information for {level.Name}</h1>
+            by <Creator name={level.Creator} />
             <div className='row table-container'>
                 <div className='col-3'>
-                    <DemonLogo diff={level.officialDifficulty} />
+                    <DemonLogo diff={level.Difficulty} />
                 </div>
                 <div className='row col-9'>
                     <div className='row'>
                         <div className='col-4'>
                             <b>ID</b>
-                            <p>{level.id}</p>
+                            <p>{level.ID}</p>
                         </div>
                         <div className='col-4'>
                             <b>Song name</b>
-                            <p>{level.song}</p>
+                            <p>{level.Song}</p>
                         </div>
                         <div className='col-4'>
                             <b>Difficulty</b>
-                            <p>{parseDiff(level.officialDifficulty)}</p>
+                            <p>{level.Difficulty + ' Demon'}</p>
                         </div>
                         <div className='col-4'>
                             <b>Tier</b>
-                            <p>{level.rating === -1 ? 'Unrated' : level.rating} [{levelInfo.ratings.length}]</p>
+                            <p>{level.Rating === -1 ? 'Unrated' : level.Rating} [{levelInfo.submissions.length}]</p>
                         </div>
                         <div className='col-4'>
                             <b>Enjoyment</b>

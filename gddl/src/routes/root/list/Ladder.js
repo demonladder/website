@@ -17,7 +17,8 @@ export async function ladderLoader() {
 }
 
 export default function Ladder() {
-    const [levels, setLevels] = useState(useLoaderData());
+    const [levels] = useState(useLoaderData());
+    const [filteredLevels, setFilteredLevels] = useState(levels);
 
     const [pageIndex, setPageIndex] = useState(0);
 
@@ -57,32 +58,32 @@ export default function Ladder() {
     }
 
     function sortLevels(s, a) {
-        let levelsCopy = [...levels];
+        let levelsCopy = [...filteredLevels];
         let dir = a ? 1 : -1;
         switch (s) {
             case 'name':
                 levelsCopy.sort((a, b) => {
-                    if (a.name < b.name) return -dir
-                    if (a.name > b.name) return dir
+                    if (a.Name < b.Name) return -dir
+                    if (a.Name > b.Name) return dir
                     return 0;
                 });
                 break;
             case 'tier':
                 levelsCopy.sort((a, b) => {
-                    if (a.rating < b.rating) return -dir
-                    if (a.rating > b.rating) return dir
+                    if (a.Rating < b.Rating) return -dir
+                    if (a.Rating > b.Rating) return dir
                     return 0;
                 });
                 break;
             default:  // Also used if id is 'level-id'
                 levelsCopy.sort((a, b) => {
-                    if (a.id < b.id) return -dir
-                    if (a.id > b.id) return dir
+                    if (a.ID < b.ID) return -dir
+                    if (a.ID > b.ID) return dir
                     return 0;
                 });
                 break;
         }
-        setLevels(levelsCopy);
+        setFilteredLevels(levelsCopy);
         setPages(sliceLevels(levelsCopy));
     }
 
@@ -93,11 +94,32 @@ export default function Ladder() {
         sortLevels(sorter, e.target.id === 'asc');
     }
 
+    // Filters levels depending on the search term
+    function searchChange(e) {
+        let search = e.target.value.toLowerCase();
+        if (!search) {
+            setFilteredLevels(levels);
+            setPages(sliceLevels(levels));
+            return;
+        }
+
+        let levelsCopy = [...levels];
+        let res = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search)) || (parseInt(el.ID) == search) || ((el.ID+'').includes(search)) });
+
+        setFilteredLevels(res);
+        let sliced = sliceLevels(res);
+        setPages(sliced);
+        if (sliced.length-1 <= pageIndex) setPageIndex(0);
+    }
+
     return (
         <>
         <div className='my-5 row'>
+            <h1>
+                The Ladder
+            </h1>
             <Form className='col m-2' id='search-form' role='search' action='/level'>
-                <input type='text' placeholder='Search level...' className='form-control' name='query' />
+                <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' onChange={searchChange} />
             </Form>
             <button className='col-1 btn btn-light m-2'>
                 <img src={filterEmpty} alt='' />
@@ -126,7 +148,7 @@ export default function Ladder() {
                     </div>
                     <div className='option'>
                         <label>
-                            <input type='radio' id='level-id' name='sort' onChange={handleSortMenu} />
+                            <input type='radio' id='level-id' name='sort' checked={sorter == 'level-id'} onChange={handleSortMenu} />
                             <span className='mx-1'>Level ID</span>
                         </label>
                     </div>
@@ -140,10 +162,10 @@ export default function Ladder() {
             </div>
         </div>
         <div id='levelList' className='my-3'>
-            <Level info={{ name: 'Level Name', creator: 'Creator', id: 'Level ID', rating: 'Tier', isHeader: true}} key={-1} />
-            {!levels.error ? pages[pageIndex].map(l => (
-                <Level info={l} key={l.id} />
-            )) : <h1 className='m-5'>{levels.message}</h1>}
+            <Level info={{ Name: 'Level Name', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
+            {!levels.error ? (pages.length > 0 ? pages[pageIndex].map(l => (
+                <Level info={l} key={l.ID} />
+            )) : '') : <h1 className='m-5'>{levels.message}</h1>}
         </div>
         <div className='row align-items-center my-4 mx-5'>
             <button className='pageScroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
