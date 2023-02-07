@@ -5,7 +5,7 @@ import './index.css';
 import Root from './routes/root/Root';
 import Index from './routes/root/RootIndex';
 import Ladder, { ladderLoader } from './routes/root/list/Ladder';
-import References from './routes/root/references/References';
+import References, { referencesLoader } from './routes/root/references/References';
 import LevelOverview, { levelLoader } from './routes/level/LevelOverview';
 
 const router = createBrowserRouter([
@@ -24,7 +24,8 @@ const router = createBrowserRouter([
       },
       {
         path: 'references',
-        element: <References />
+        element: <References />,
+        loader: referencesLoader
       },
       {
         path: 'level/:level_id',
