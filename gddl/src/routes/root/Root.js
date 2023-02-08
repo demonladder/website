@@ -5,12 +5,11 @@ import { Outlet } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 function Root() {
-  const [userID] = useState(Cookies.get('userID') || null);
-  console.log(userID);
+  const [userID, setUserID] = useState(Cookies.get('userID') || null);
 
   return (
     <>
-      <Header userID={userID} />
+      <Header userID={userID} setUserID={setUserID} />
       <Outlet context={[userID]} sessionID={userID} />
     </>
   );
