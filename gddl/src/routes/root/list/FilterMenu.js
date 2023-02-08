@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './FilterMenu.css';
 
-export default function FilterMenu({ show, filter }) {
+export default function FilterMenu({ show, filter, sessionID }) {
     const [lowTier, setLowTier] = useState('');
     const [highTier, setHighTier] = useState('');
 
@@ -18,6 +18,11 @@ export default function FilterMenu({ show, filter }) {
     const [removeUnrated, setRemoveUnrated] = useState(false);
     function onUnratedChange(event) {
         setRemoveUnrated(event.target.checked);
+    }
+
+    const [removeCompleted, setRemoveCompleted] = useState(false);
+    function onCompletedChange(event) {
+        setRemoveCompleted(event.target.checked);
     }
 
     const [difficulty, setDifficulty] = useState(0);
@@ -81,12 +86,16 @@ export default function FilterMenu({ show, filter }) {
                 </div>
                 <div className='col'>
                     <div className='form-check'>
+                        <input type='checkbox' className='form-check-input' />
                         <label className='form-check-label'>Exclude NC</label>
-                        <input type='checkbox' className='form-check-input'></input>
                     </div>
                     <div className='form-check'>
+                        <input type='checkbox' className='form-check-input' checked={removeUnrated} onChange={onUnratedChange} />
                         <label className='form-check-label'>Remove unrated</label>
-                        <input type='checkbox' className='form-check-input' checked={removeUnrated} onChange={onUnratedChange}></input>
+                    </div>
+                    <div className='form-check'>
+                        <input type='checkbox' className='form-check-input' checked={removeCompleted} onChange={onCompletedChange} disabled />
+                        <label className='form-check-label'>Remove completed</label>
                     </div>
                 </div>
             </div>

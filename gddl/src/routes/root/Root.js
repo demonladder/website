@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Root.css';
 import Header from '../../Header';
 import { Outlet } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function Root() {
+  const [userID] = useState(Cookies.get('userID') || null);
+
   return (
     <>
-      <Header />
-      <div className='container'>
-        <Outlet />
-      </div>
+      <Header userID={userID} />
+      <Outlet context={[userID]} sessionID={userID} />
     </>
   );
 }

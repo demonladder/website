@@ -25,7 +25,7 @@ export default function LevelOverview() {
     }
 
     return (
-        <>
+        <div className='container'>
             <h1>Level information for {level.Name}</h1>
             by <Creator name={level.Creator} />
             <div className='row table-container'>
@@ -57,6 +57,6 @@ export default function LevelOverview() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

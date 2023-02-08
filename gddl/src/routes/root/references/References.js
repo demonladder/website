@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Difficulty from './Difficulty';
-import Level from './Level';
 
 export async function referencesLoader() {
     return fetch('http://localhost:8080/getReferences')
@@ -38,7 +37,7 @@ export default function References () {
     for (let level of referenceDemons) {
         for (let tier of difficulties) {
             if (level.Tier >= tier.minRange && level.Tier <= tier.maxRange) {
-                tier.tiers.find(t => t.tier == level.Tier).levels.push(level);
+                tier.tiers.find(t => t.tier === level.Tier).levels.push(level);
             }
         }
     }
@@ -46,8 +45,10 @@ export default function References () {
     console.log(difficulties);
 
     return (
-        <div className='d-flex'>
-            {difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)}
+        <div className='container'>
+            <div className='d-flex'>
+                {difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)}
+            </div>
         </div>
     );
 }

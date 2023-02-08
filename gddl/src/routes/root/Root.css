@@ -18,3 +18,7 @@ a:hover {
     box-shadow: 0 0 10px rgb(0, 0, 0, 0.5);*/
     text-decoration: underline;
 }
+
+#root {
+    min-height: 100vh;
+}

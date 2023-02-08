@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLoaderData, Form } from 'react-router-dom';
+import { useLoaderData, Form, useOutletContext } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../filter-empty.svg';
 import FilterMenu from './FilterMenu';
@@ -12,12 +12,14 @@ export async function ladderLoader() {
     return fetch('http://localhost:8080/getLevels')
     .then((res) => res.json())
     .catch((e) => {
-        if (e.message == 'Failed to fetch') return { error: true, message: 'It looks like the servers are down :( Try again later!'};
+        if (e.message === 'Failed to fetch') return { error: true, message: 'It looks like the servers are down :( Try again later!'};
         throw e;
     });
 }
 
 export default function Ladder() {
+    const [sessionID] = useOutletContext();
+
     const [levels] = useState(useLoaderData());
     const [filteredLevels, setFilteredLevels] = useState(levels);
     const [sortedLevels, setSortedLevels] = useState(levels);
@@ -59,32 +61,36 @@ export default function Ladder() {
     }
 
     function sortLevels() {
-        let levelsCopy = [...filteredLevels];
-        switch (sorter) {
-            case 'name':
-                levelsCopy.sort((a, b) => {
-                    if (a.Name < b.Name) return -1
-                    if (a.Name > b.Name) return 1
-                    return 0;
-                });
-                break;
-            case 'tier':
-                levelsCopy.sort((a, b) => {
-                    if (a.Rating < b.Rating) return -1
-                    if (a.Rating > b.Rating) return 1
-                    return 0;
-                });
-                break;
-            default:  // Also used if id is 'level-id'
-                levelsCopy.sort((a, b) => {
-                    if (a.ID < b.ID) return -1
-                    if (a.ID > b.ID) return 1
-                    return 0;
-                });
-                break;
+        if (!levels.error) {
+            let levelsCopy = [...filteredLevels];
+            switch (sorter) {
+                case 'name':
+                    levelsCopy.sort((a, b) => {
+                        if (a.Name < b.Name) return -1
+                        if (a.Name > b.Name) return 1
+                        return 0;
+                    });
+                    break;
+                case 'tier':
+                    levelsCopy.sort((a, b) => {
+                        if (a.Rating < b.Rating) return -1
+                        if (a.Rating > b.Rating) return 1
+                        return 0;
+                    });
+                    break;
+                default:  // Also used if id is 'level-id'
+                    levelsCopy.sort((a, b) => {
+                        if (a.ID < b.ID) return -1
+                        if (a.ID > b.ID) return 1
+                        return 0;
+                    });
+                    break;
+            }
+            if (!sortAscending) levelsCopy.reverse();
+            setSortedLevels(levelsCopy);
+        } else {
+            setSortedLevels([]);
         }
-        if (!sortAscending) levelsCopy.reverse();
-        setSortedLevels(levelsCopy);
     }
 
     function handleSortDiretion(e) {
@@ -95,19 +101,23 @@ export default function Ladder() {
     const [filters, setFilters] = useState({ lowTier: '', highTier: '', difficulty: 0, creator: '', song: '' });
     const [search, setSearch] = useState('');
     useEffect(() => {
-        let levelsCopy = [...levels];
-        if (search) levelsCopy = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search.toLowerCase())) 
-                                                    || (parseInt(el.ID) === search)
-                                                    || ((el.ID+'').includes(search)) });
-        
-        let hTier = !filters.highTier ? filters.lowTier + 1 : filters.highTier;  // If high tier is empty, it will default to low tier + 1
-        if (filters.creator != '') levelsCopy = levelsCopy.filter(el => el.Creator.toLowerCase().includes(filters.creator.toLowerCase()));
-        if (filters.lowTier != '') levelsCopy = levelsCopy.filter(el => el.Rating >= filters.lowTier && el.Rating < hTier);
-        if (filters.difficulty != '0') levelsCopy = levelsCopy.filter(el => el.Difficulty == filters.difficulty);
-        if (filters.song != '') levelsCopy = levelsCopy.filter(el => el.Song.toLowerCase().includes(filters.song.toLowerCase()));
-        levelsCopy = levelsCopy.filter(el => (el.Rating == -1 && filters.removeUnrated) ? false : true);
+        if (!levels.error) {
+            let levelsCopy = [...levels];
+            if (search) levelsCopy = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search.toLowerCase())) 
+                                                        || (parseInt(el.ID) === search)
+                                                        || ((el.ID+'').includes(search)) });
+            
+            let hTier = !filters.highTier ? filters.lowTier + 1 : filters.highTier;  // If high tier is empty, it will default to low tier + 1
+            if (filters.creator !== '') levelsCopy = levelsCopy.filter(el => el.Creator.toLowerCase().includes(filters.creator.toLowerCase()));
+            if (filters.lowTier !== '') levelsCopy = levelsCopy.filter(el => el.Rating >= filters.lowTier && el.Rating < hTier);
+            if (filters.difficulty !== 0) levelsCopy = levelsCopy.filter(el => el.Difficulty === filters.difficulty);
+            if (filters.song !== '') levelsCopy = levelsCopy.filter(el => el.Song.toLowerCase().includes(filters.song.toLowerCase()));
+            levelsCopy = levelsCopy.filter(el => (el.Rating === -1 && filters.removeUnrated) ? false : true);
 
-        setFilteredLevels(levelsCopy);
+            setFilteredLevels(levelsCopy);
+        } else {
+            setFilteredLevels([]);
+        }
     }, [search, filters]);
 
     const [showFilter, setShowFilter] = useState(false);
@@ -130,66 +140,66 @@ export default function Ladder() {
     }
 
     return (
-        <>
-        <div className='my-5 row'>
-            <h1>
-                The Ladder
-            </h1>
-            <Form className='col m-2' id='search-form' role='search' action='/level'>
-                <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' onChange={onSearchChange} />
-            </Form>
-            <button className='col-1 btn btn-light m-2' onClick={toggleShowFilter}>
-                <img src={filterEmpty} alt='' />
-            </button>
-            <div className='col-1 '>
-                <button className='btn btn-light m-2' onClick={sortVisHandler}>
-                    <img src={sortAscending ? sortUp : sort} alt='' />
+        <div className='container'>
+            <div className='my-5 row'>
+                <h1>
+                    The Ladder
+                </h1>
+                <Form className='col m-2' id='search-form' role='search' action='/level'>
+                    <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' onChange={onSearchChange} />
+                </Form>
+                <button className='col-1 btn btn-light m-2' onClick={toggleShowFilter}>
+                    <img src={filterEmpty} alt='' />
                 </button>
-                <div className={(sortVisible ? 'fadeIn' : 'invisible') + ' sortMenu'}>
-                    <div className='option'>
-                        <label>
-                            <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
-                            <span> Asc</span>
-                        </label>
-                        <label>
-                            <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
-                            <span> Desc</span>
-                        </label>
-                    </div>
-                    <div className='divider'></div>
-                    <div className='option'>
-                        <label>
-                            <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
-                            <span className='mx-1'>Name</span>
-                        </label>
-                    </div>
-                    <div className='option'>
-                        <label>
-                            <input type='radio' id='level-id' name='sort' checked={sorter == 'level-id'} onChange={handleSortMenu} />
-                            <span className='mx-1'>Level ID</span>
-                        </label>
-                    </div>
-                    <div className='option'>
-                        <label>
-                            <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
-                            <span className='mx-1'>Tier</span>
-                        </label>
+                <div className='col-1 '>
+                    <button className='btn btn-light m-2' onClick={sortVisHandler}>
+                        <img src={sortAscending ? sortUp : sort} alt='' />
+                    </button>
+                    <div className={(sortVisible ? 'fadeIn' : 'invisible') + ' sortMenu'}>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
+                                <span> Asc</span>
+                            </label>
+                            <label>
+                                <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
+                                <span> Desc</span>
+                            </label>
+                        </div>
+                        <div className='divider'></div>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
+                                <span className='mx-1'>Name</span>
+                            </label>
+                        </div>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
+                                <span className='mx-1'>Level ID</span>
+                            </label>
+                        </div>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
+                                <span className='mx-1'>Tier</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
+            <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} />
+            <div id='levelList' className='my-3'>
+                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
+                {!levels.error ? (pages.length > 0 ? pages[pageIndex].map(l => (
+                    <Level info={l} key={l.ID} />
+                )) : '') : <h1 className='m-5'>{levels.message}</h1>}
+            </div>
+            <div className='row align-items-center my-4 mx-5'>
+                <button className='pageScroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
+                <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {pages.length}</p>
+                <button className='pageScroller col' onClick={pageUp}><img src={caretR} alt='' /></button>
+            </div>
         </div>
-        <FilterMenu show={showFilter} filter={setFilters} />
-        <div id='levelList' className='my-3'>
-            <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
-            {!levels.error ? (pages.length > 0 ? pages[pageIndex].map(l => (
-                <Level info={l} key={l.ID} />
-            )) : '') : <h1 className='m-5'>{levels.message}</h1>}
-        </div>
-        <div className='row align-items-center my-4 mx-5'>
-            <button className='pageScroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
-            <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {pages.length}</p>
-            <button className='pageScroller col' onClick={pageUp}><img src={caretR} alt='' /></button>
-        </div>
-        </>
     );
 }
