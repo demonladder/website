@@ -1,6 +1,13 @@
 .level {
     border: 1px #998888 solid;
-    
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+}
+
+.level.head {
+    border-top: none;
+    border-bottom: solid;
 }
 
 .level h3 {

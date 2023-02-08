@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLoaderData, Form, useOutletContext } from 'react-router-dom';
+import { useLoaderData, Form, useOutletContext, useParams } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../filter-empty.svg';
 import FilterMenu from './FilterMenu';
@@ -11,7 +11,7 @@ import listSVG from '../../../list.svg';
 import gridSVG from '../../../grid.svg';
 import './Ladder.css';
 
-export async function ladderLoader() {
+export async function ladderLoader({ params }) {
     return fetch('http://localhost:8080/getLevels')
     .then((res) => res.json())
     .catch((e) => {
@@ -22,6 +22,8 @@ export async function ladderLoader() {
 
 export default function Ladder() {
     const [sessionID] = useOutletContext();
+
+    const { creator } = useParams();
 
     const [levels] = useState(useLoaderData());
     const [filteredLevels, setFilteredLevels] = useState(levels);
@@ -142,12 +144,7 @@ export default function Ladder() {
         setSearch(event.target.value);
     }
 
-    const [creator, setCreator] = useState('');
-    function onCreatorClick(name) {
-        console.log(name + ' clicked');
-        setCreator(name);
-        setSearch('');
-    }
+    const [creatorState, setCreator] = useState(creator || '');
 
     const [listView, setListView] = useState(true);
     function onViewList() {
@@ -168,14 +165,14 @@ export default function Ladder() {
                     <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' value={search} onChange={onSearchChange} />
                 </Form>
                 <div className='d-flex'>
-                    <button className='btn btn-light m-2 p-0' onClick={toggleShowFilter}>
+                    <button className='btn btn-light btn-sm m-1' onClick={toggleShowFilter}>
                         <img src={filterEmpty} alt='' />
                     </button>
                     <div className='m-1'>
-                        <button className='btn btn-light m-2' onClick={sortVisHandler}>
+                        <button className='btn btn-light btn-sm' onClick={sortVisHandler}>
                             <img src={sortAscending ? sortUp : sort} alt='' />
                         </button>
-                        <div className={(sortVisible ? 'fadeIn' : 'invisible') + ' sortMenu'}>
+                        <div className={(sortVisible ? 'fadeIn' : 'd-none') + ' sortMenu'}>
                             <div className='option'>
                                 <label>
                                     <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
@@ -207,7 +204,7 @@ export default function Ladder() {
                             </div>
                         </div>
                     </div>
-                    <div className='d-flex align-items-center m-1'>
+                    <div className='d-flex align-items-center'>
                         <button className={'list view-left ' + (listView ? 'active' : '')} onClick={onViewList}>
                             <img src={listSVG} alt='' />
                         </button>
@@ -217,11 +214,11 @@ export default function Ladder() {
                     </div>
                 </div>
             </div>
-            <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} creator={creator} setCreator={setCreator} />
+            <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} creator={creatorState} setCreator={setCreator} />
             <div id='levelList' className='my-3'>
-                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
+                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} classes='head' />
                 {!levels.error ? (pages.length > 0 ? pages[pageIndex].map(l => (
-                    <Level info={l} key={l.ID} creatorLink={onCreatorClick} />
+                    <Level info={l} key={l.ID} />
                 )) : '') : <h1 className='m-5'>{levels.message}</h1>}
             </div>
             <div className='row align-items-center my-4 mx-5'>

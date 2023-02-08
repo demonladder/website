@@ -1,3 +1,109 @@
+.ref-container {
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+
+    --head-radius: 15px;
+}
+
 .tier-container {
-    border: 1px white solid;
+    border-style: solid none none none;
+    border-color: black;
+    border-width: 1px;
+    border-left: 0;
+}
+
+.references {
+    --gddl-tier-1-color: #DDDFEE;
+    --gddl-tier-2-color: #D5D3E9;
+    --gddl-tier-3-color: #D3CBE7;
+    --gddl-tier-4-color: #D3C3E4;
+    --gddl-tier-5-color: #D4BBE2;
+    --gddl-tier-6-color: #D5B0DE;
+    --gddl-tier-7-color: #DBA7DC;
+    --gddl-tier-8-color: #DB9FD1;
+    --gddl-tier-9-color: #D991C1;
+    --gddl-tier-10-color: #DA86B0;
+    --gddl-tier-11-color: #DB7698;
+    --gddl-tier-12-color: #DC6A7D;
+    --gddl-tier-13-color: #DD5A5A;
+    --gddl-tier-14-color: #DC514C;
+    --gddl-tier-15-color: #DA493E;
+    --gddl-tier-16-color: #DA4534;
+    --gddl-tier-17-color: #D93E26;
+    --gddl-tier-18-color: #DC3F23;
+    --gddl-tier-19-color: #C03A1B;
+    --gddl-tier-20-color: #B23415;
+    --gddl-tier-21-color: #A23010;
+    --gddl-tier-22-color: #9B2B0C;
+    --gddl-tier-23-color: #932B0B;
+    --gddl-tier-24-color: #892608;
+    --gddl-tier-25-color: #832607;
+    --gddl-tier-26-color: #752105;
+    --gddl-tier-27-color: #6C1E04;
+    --gddl-tier-28-color: #601A02;
+    --gddl-tier-29-color: #5A1802;
+    --gddl-tier-30-color: #511700;
+    --gddl-tier-31-color: #491900;
+    --gddl-tier-32-color: #3F1A00;
+    --gddl-tier-33-color: #331700;
+    --gddl-tier-34-color: #231300;
+    --gddl-tier-35-color: #110A00;
+}
+
+.tier-1 { background-color: var(--gddl-tier-1-color); }
+.tier-2 { background-color: var(--gddl-tier-2-color); }
+.tier-3 { background-color: var(--gddl-tier-3-color); }
+.tier-3.head { border-top-left-radius: var(--head-radius); }
+.tier-4 { background-color: var(--gddl-tier-4-color); }
+.tier-5 { background-color: var(--gddl-tier-5-color); }
+.tier-6 { background-color: var(--gddl-tier-6-color); }
+.tier-7 { background-color: var(--gddl-tier-7-color); }
+.tier-8 { background-color: var(--gddl-tier-8-color); }
+.tier-9 { background-color: var(--gddl-tier-8-color); }
+.tier-10 { background-color: var(--gddl-tier-10-color); }
+.tier-11 { background-color: var(--gddl-tier-11-color); }
+.tier-12 { background-color: var(--gddl-tier-12-color); }
+.tier-13 { background-color: var(--gddl-tier-13-color); }
+.tier-14 { background-color: var(--gddl-tier-14-color); }
+.tier-15 { background-color: var(--gddl-tier-15-color); }
+
+.tier-1, .tier-2, .tier-3, .tier-4, .tier-5,
+.tier-6, .tier-7, .tier-8, .tier-9, .tier-10,
+.tier-11, .tier-12, .tier-13, .tier-14, .tier-15 {
+    color: black;
+}
+
+.tier-16 { background-color: var(--gddl-tier-16-color); }
+.tier-17 { background-color: var(--gddl-tier-17-color); }
+.tier-18 { background-color: var(--gddl-tier-18-color); }
+.tier-19 { background-color: var(--gddl-tier-19-color); }
+.tier-20 { background-color: var(--gddl-tier-20-color); }
+.tier-21 { background-color: var(--gddl-tier-21-color); }
+.tier-22 { background-color: var(--gddl-tier-22-color); }
+.tier-23 { background-color: var(--gddl-tier-23-color); }
+.tier-24 { background-color: var(--gddl-tier-24-color); }
+.tier-25 { background-color: var(--gddl-tier-25-color); }
+.tier-26 { background-color: var(--gddl-tier-26-color); }
+.tier-27 { background-color: var(--gddl-tier-27-color); }
+.tier-28 { background-color: var(--gddl-tier-28-color); }
+.tier-28.head { border-top-right-radius: var(--head-radius);}
+.tier-29 { background-color: var(--gddl-tier-29-color); }
+.tier-30 { background-color: var(--gddl-tier-30-color); }
+.tier-31 { background-color: var(--gddl-tier-31-color); }
+.tier-32 { background-color: var(--gddl-tier-32-color); }
+.tier-33 { background-color: var(--gddl-tier-33-color); }
+.tier-34 { background-color: var(--gddl-tier-34-color); }
+.tier-35 { background-color: var(--gddl-tier-35-color); }
+
+.tier-label p {
+    min-width: 80px;
+}
+
+.levels {
+    color: white;
+}
+
+.levels .level-label {
+    height: 1.5rem;
 }

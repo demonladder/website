@@ -1,6 +1,7 @@
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useOutletContext } from 'react-router-dom';
 import Difficulty from './Difficulty';
+import Edit from './Edit';
 
 export async function referencesLoader() {
     return fetch('http://localhost:8080/getReferences')
@@ -9,17 +10,38 @@ export async function referencesLoader() {
 
 export default function References () {
     const referenceDemons = useLoaderData();
+    const [userID] = useOutletContext();
 
     let difficulties = [
         {
             name: 'Easy Demons',
             minRange: 1,
-            maxRange: 5
+            maxRange: 5,
+            css: 1
         },
         {
             name: 'Medium Demons',
             minRange: 6,
-            maxRange: 10
+            maxRange: 10,
+            css: 2
+        },
+        {
+            name: 'Hard Demons',
+            minRange: 11,
+            maxRange: 15,
+            css: 3
+        },
+        {
+            name: 'Insane Demons',
+            minRange: 16,
+            maxRange: 20,
+            css: 4
+        },
+        {
+            name: 'Extreme Demons',
+            minRange: 21,
+            maxRange: 35,
+            css: 5
         }
     ];
 
@@ -29,6 +51,7 @@ export default function References () {
         for (let i = diff.minRange; i <= diff.maxRange; i++) {
             diff.tiers.push({
                 tier: i,
+                relativeTier: i - diff.minRange + 1,
                 levels: []
             });
         }
@@ -42,13 +65,12 @@ export default function References () {
         }
     }
 
-    console.log(difficulties);
-
     return (
-        <div className='container'>
-            <div className='d-flex'>
+        <div className='ref-container'>
+            <div className='d-flex references mb-5'>
                 {difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)}
             </div>
+            {userID ? <Edit /> : ''}
         </div>
     );
 }

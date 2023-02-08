@@ -5,8 +5,10 @@ import './References.css';
 export default function({ tier }) {
     return (
         <div className='d-flex flex-fill tier-container'>
-            <p className='m-0 my-auto mx-3'>Tier {tier.tier}</p>
-            <div className='py-2'>
+            <div className={`tier-label tier-${tier.tier} d-flex align-items-center`}>
+                <p className='m-0 text-center'>Tier {tier.tier}</p>
+            </div>
+            <div className='py-2 flex-fill levels'>
                 {tier.levels.map(l => <Level level={l} key={l.ID} />)}
             </div>
         </div>
