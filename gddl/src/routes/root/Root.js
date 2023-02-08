@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 
 function Root() {
   const [userID] = useState(Cookies.get('userID') || null);
+  console.log(userID);
 
   return (
     <>

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, redirect, useActionData } from 'react-router-dom';
+import { Form, redirect, useActionData, useNavigate } from 'react-router-dom';
 
-export async function loginAction({ request }) {
+export async function loginAction({ request, params }) {
     let data = await request.formData();
+    console.log(params);
 
     let response = await fetch('http://localhost:8080/login', {
         method: 'POST',
@@ -27,10 +28,12 @@ export async function loginAction({ request }) {
 export default function Login() {
     let actionError = useActionData();
 
+    const navigate = useNavigate();
+
     return (
         <div className='container'>
             <div className='d-flex justify-content-center'>
-                <Form method='POST' action='/login' className='w-25'>
+                <Form method='POST' action='/login' className='w-25' params={navigate}>
                     <h1 className='mb-3 fw-normal text-white'>Login</h1>
                     <div className='mb-3'>
                         <label className='form-label'>Username</label>

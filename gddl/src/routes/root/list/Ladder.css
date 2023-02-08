@@ -1,0 +1,21 @@
+button.list {
+    --list-button-radius: 6px;
+    border: 1px solid buttonface;
+    padding: 0.4rem 0.6rem;
+}
+
+button.list.active {
+    --active-color: rgb(197, 197, 197);
+    background-color: var(--active-color);
+    border-color: var(--active-color);
+}
+
+.view-left {
+    border-top-left-radius: var(--list-button-radius);
+    border-bottom-left-radius: var(--list-button-radius);
+}
+
+.view-right {
+    border-top-right-radius: var(--list-button-radius);
+    border-bottom-right-radius: var(--list-button-radius);
+}

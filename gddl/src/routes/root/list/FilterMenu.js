@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './FilterMenu.css';
 
-export default function FilterMenu({ show, filter, sessionID }) {
+export default function FilterMenu({ show, filter, sessionID, creator, setCreator }) {
     const [lowTier, setLowTier] = useState('');
     const [highTier, setHighTier] = useState('');
 
@@ -30,7 +30,6 @@ export default function FilterMenu({ show, filter, sessionID }) {
         setDifficulty(event.target.value);
     }
 
-    const [creator, setCreator] = useState('');
     function onCreatorChange(event) {
         setCreator(event.target.value);
     }
@@ -54,7 +53,7 @@ export default function FilterMenu({ show, filter, sessionID }) {
     function reset() {
         setLowTier('');
         setHighTier('');
-        setDifficulty('0');
+        setDifficulty(0);
         setRemoveUnrated(false);
         setCreator('');
         setSong('');

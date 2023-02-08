@@ -1,11 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import './Creator.css';
 
-export default function Creator({ name, disableLink }) {
+export default function Creator({ name, callback, disableLink }) {
+    function namePressed() {
+        callback(name);
+    }
+
     return (
         <>
             {disableLink ? <p className='m-0'>{name}</p>
-                                 : <Link to='/'>{name}</Link>}
+                         : <button className='style-link' onClick={namePressed}>{name}</button>}
         </>
     )
 }
