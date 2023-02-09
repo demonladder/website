@@ -6,9 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --gddl-background-color: #0B3011;
-  --gddl-primary-color: #5ADE4D;
-  --gddl-middle-color: #82A3A1;
+  --gddl-background-color: #00100d;
+  --gddl-primary-color: #3ab695;
+  --gddl-middle-color: #3f6e52;
   background-color: var(--gddl-background-color);
 }
 

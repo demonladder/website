@@ -90,11 +90,11 @@ export default function FilterMenu({ show, filter, sessionID, creator, setCreato
                     </div>
                     <div className='form-check'>
                         <input type='checkbox' className='form-check-input' checked={removeUnrated} onChange={onUnratedChange} />
-                        <label className='form-check-label'>Remove unrated</label>
+                        <label className='form-check-label'>Exclude unrated</label>
                     </div>
                     <div className='form-check'>
                         <input type='checkbox' className='form-check-input' checked={removeCompleted} onChange={onCompletedChange} disabled />
-                        <label className='form-check-label'>Remove completed</label>
+                        <label className='form-check-label'>Exclude completed</label>
                     </div>
                 </div>
             </div>

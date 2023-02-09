@@ -164,47 +164,45 @@ export default function Ladder() {
                 <Form className='flex-fill m-2' id='search-form' role='search' action='/level'>
                     <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' value={search} onChange={onSearchChange} />
                 </Form>
-                <div className='d-flex'>
-                    <button className='btn btn-light btn-sm m-1' onClick={toggleShowFilter}>
+                <div className='d-flex list-options'>
+                    <button className='btn btn-light btn-sm m-1 px-3' onClick={toggleShowFilter}>
                         <img src={filterEmpty} alt='' />
                     </button>
-                    <div className='m-1'>
-                        <button className='btn btn-light btn-sm' onClick={sortVisHandler}>
-                            <img src={sortAscending ? sortUp : sort} alt='' />
-                        </button>
-                        <div className={(sortVisible ? 'fadeIn' : 'd-none') + ' sortMenu'}>
-                            <div className='option'>
-                                <label>
-                                    <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
-                                    <span> Asc</span>
-                                </label>
-                                <label>
-                                    <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
-                                    <span> Desc</span>
-                                </label>
-                            </div>
-                            <div className='divider'></div>
-                            <div className='option'>
-                                <label>
-                                    <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
-                                    <span className='mx-1'>Name</span>
-                                </label>
-                            </div>
-                            <div className='option'>
-                                <label>
-                                    <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
-                                    <span className='mx-1'>Level ID</span>
-                                </label>
-                            </div>
-                            <div className='option'>
-                                <label>
-                                    <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
-                                    <span className='mx-1'>Tier</span>
-                                </label>
-                            </div>
+                    <button className='btn btn-light btn-sm m-1 px-3' onClick={sortVisHandler}>
+                        <img src={sortAscending ? sortUp : sort} alt='' />
+                    </button>
+                    <div className={(sortVisible ? 'fadeIn' : 'd-none') + ' sortMenu'}>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
+                                <span> Asc</span>
+                            </label>
+                            <label>
+                                <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
+                                <span> Desc</span>
+                            </label>
+                        </div>
+                        <div className='divider'></div>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
+                                <span className='mx-1'>Name</span>
+                            </label>
+                        </div>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
+                                <span className='mx-1'>Level ID</span>
+                            </label>
+                        </div>
+                        <div className='option'>
+                            <label>
+                                <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
+                                <span className='mx-1'>Tier</span>
+                            </label>
                         </div>
                     </div>
-                    <div className='d-flex align-items-center'>
+                    <div className='d-flex align-items-center m-1'>
                         <button className={'list view-left ' + (listView ? 'active' : '')} onClick={onViewList}>
                             <img src={listSVG} alt='' />
                         </button>
@@ -222,9 +220,9 @@ export default function Ladder() {
                 )) : '') : <h1 className='m-5'>{levels.message}</h1>}
             </div>
             <div className='row align-items-center my-4 mx-5'>
-                <button className='pageScroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
+                <button className='page-scroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
                 <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {pages.length}</p>
-                <button className='pageScroller col' onClick={pageUp}><img src={caretR} alt='' /></button>
+                <button className='page-scroller col' onClick={pageUp}><img src={caretR} alt='' /></button>
             </div>
         </div>
     );

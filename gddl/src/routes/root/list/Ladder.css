@@ -19,3 +19,27 @@ button.list.active {
     border-top-right-radius: var(--list-button-radius);
     border-bottom-right-radius: var(--list-button-radius);
 }
+
+.list-options .btn {
+    border-radius: 10px;
+}
+
+.page-scroller {
+    background: none;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    transition-duration: 0.1s;
+}
+
+.page-scroller:hover {
+    transform: scale(1.1);
+}
+.page-scroller:active {
+    transform: scale(1.15);
+}
+
+.page-scroller img {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(65deg) brightness(104%) contrast(104%);  /* Makes the arrows white */
+}

@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Root.css';
 import Header from '../../Header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { getUser } from './profile/Profile';
+
+export async function rootLoader() {
+  let userID = Cookies.get('userID') || null;
+  return getUser(userID);
+}
 
 function Root() {
-  const [userID, setUserID] = useState(Cookies.get('userID') || null);
+  let user = useLoaderData();
+  let sessionID = Cookies.get('sessionToken');
 
   return (
     <>
-      <Header userID={userID} setUserID={setUserID} />
-      <Outlet context={[userID]} sessionID={userID} />
+      <Header user={user} />
+      <Outlet context={[sessionID]}/>
     </>
   );
 }
