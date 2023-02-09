@@ -2,6 +2,7 @@
     max-width: 95%;
     margin-left: auto;
     margin-right: auto;
+    overflow-x: auto;
 
     --head-radius: 15px;
 }
@@ -102,6 +103,7 @@
 
 .levels {
     color: white;
+    min-width: 230px;
 }
 
 .levels .level-label {

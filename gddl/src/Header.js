@@ -8,28 +8,28 @@ import ProfileButton from './routes/root/login/ProfileButton';
 export default function Header({ userID }) {
     return (
         <header className='bg-gddl text-dark'>
-            <div className='container py-4 d-flex justify-content-between'>
-                <div className='d-flex'>
-                    <a href='/' className='h1 me-4 text-decoration-none'>
-                        GDDLadder
-                    </a>
-                    <div className='d-flex align-items-end'>
-                        <Link to='list' className='my-2 nav text-dark'>
-                            The Ladder
-                        </Link>
-                        <Link to='references' className='my-2 nav text-dark'>
-                            Reference Demons
-                        </Link>
-                        <Link to='packs' className='my-2 nav text-dark'>
-                            Packs
-                        </Link>
-                    </div>
-                </div>
-                <div className='align-self-center d-flex'>
-                    {userID ? <ProfileButton userID={userID} />
-                    : <LoginButton />}
-                </div>
+            <div className='d-flex align-items-center'>
+                <a href='/' className='h1 me-4 mb-0 text-decoration-none'>
+                    GDDLadder
+                </a>
             </div>
+            <ul className='topnav'>
+                <li>
+                    <Link to='list' className='m-0 py-3 px-3 fs-5 fw-semibold gddl-bg-secondary btn-hover'>
+                        The Ladder
+                    </Link>
+                </li>
+                <li>
+                    <Link to='references' className='m-0 py-3 px-3 fs-5 fw-semibold gddl-bg-secondary btn-hover'>
+                        Reference Demons
+                    </Link>
+                </li>
+                <li>
+                    <Link to='packs' className='m-0 py-3 px-3 fs-5 fw-semibold gddl-bg-secondary btn-hover'>
+                        Packs
+                    </Link>
+                </li>
+            </ul>
         </header>
     );
 }

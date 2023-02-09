@@ -1,0 +1,9 @@
+.pfp {
+    width: 64px;
+    border-radius: 50%;
+}
+
+.style-none {
+    background-color: none;
+    border: none;
+}

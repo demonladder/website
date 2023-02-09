@@ -8,7 +8,7 @@ export default function({ tier }) {
             <div className={`tier-label tier-${tier.tier} d-flex align-items-center`}>
                 <p className='m-0 text-center'>Tier {tier.tier}</p>
             </div>
-            <div className='py-2 flex-fill levels'>
+            <div className='py-2 levels'>
                 {tier.levels.map(l => <Level level={l} key={l.ID} />)}
             </div>
         </div>

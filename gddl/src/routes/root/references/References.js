@@ -66,11 +66,15 @@ export default function References () {
     }
 
     return (
-        <div className='ref-container'>
-            <div className='d-flex references mb-5'>
-                {difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)}
+        <>
+            <div className='ref-container mb-5'>
+                <div className='d-flex references'>
+                    {difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)}
+                </div>
             </div>
-            {userID ? <Edit /> : ''}
-        </div>
+            <div className='container'>
+                {userID ? <Edit /> : ''}
+            </div>
+        </>
     );
 }

@@ -1,3 +1,25 @@
 .bg-gddl {
-    background-color: #EFA51C;
+    background-color: var(--gddl-primary-color);
+}
+
+a, p {
+    color: white;
+    border: none;
+    border-radius: 0;
+}
+
+a.btn-hover {
+    background-color: var(--gddl-primary-color);
+    color: black;
+    text-decoration: none;
+}
+
+.btn-hover:hover {
+    background-color: var(--gddl-middle-color);
+    color: white;
+}
+
+.topnav a {
+    float: left;
+    display: block;
 }

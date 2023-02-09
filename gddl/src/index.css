@@ -6,8 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --gddl-background-color: #191716;
-  --gddl-primary-color: #EFA51C;
+  --gddl-background-color: #0B3011;
+  --gddl-primary-color: #5ADE4D;
+  --gddl-middle-color: #82A3A1;
   background-color: var(--gddl-background-color);
 }
 
@@ -31,4 +32,21 @@ header {
 
 .tg-primary {
   color: var(--gddl-primary-color);
+}
+
+.gddl-bg-secondary {
+  background-color: #82A3A1;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #202020;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--gddl-primary-color);
 }
