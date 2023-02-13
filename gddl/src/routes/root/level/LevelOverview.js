@@ -1,11 +1,10 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Creator from './Creator';
-import './LevelOverview.css';
 import DemonLogo from '../../../DemonLogo';
 
 export async function levelLoader({ params }) {
-    return fetch('http://localhost:8080/level?id=' + params.level_id)
+    return fetch('http://localhost:8080/getLevel?id=' + params.level_id)
     .then((res) => res.json());
 }
 

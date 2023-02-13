@@ -1,5 +1,4 @@
 import React from 'react';
-import './Creator.css';
 
 export default function Creator({ name, disableLink }) {
     return (

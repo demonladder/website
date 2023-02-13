@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './FilterMenu.css';
 
 export default function FilterMenu({ show, filter, sessionID, creator, setCreator }) {
     const [lowTier, setLowTier] = useState('');

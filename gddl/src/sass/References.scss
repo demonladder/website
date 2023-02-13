@@ -1,0 +1,75 @@
+@use 'Colors.scss';
+
+.ref-container {
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: auto;
+
+    --head-radius: 15px;
+}
+
+.tier-container {
+    border-style: solid none none none;
+    border-color: black;
+    border-width: 1px;
+    border-left: 0;
+}
+
+.tier-1 { background-color: Colors.$tier-1; }
+.tier-2 { background-color: Colors.$tier-2; }
+.tier-3 { background-color: Colors.$tier-3; }
+.tier-3.head { border-top-left-radius: var(--head-radius); }
+.tier-4 { background-color: Colors.$tier-4; }
+.tier-5 { background-color: Colors.$tier-5; }
+.tier-6 { background-color: Colors.$tier-6; }
+.tier-7 { background-color: Colors.$tier-7; }
+.tier-8 { background-color: Colors.$tier-8; }
+.tier-9 { background-color: Colors.$tier-8; }
+.tier-10 { background-color: Colors.$tier-10; }
+.tier-11 { background-color: Colors.$tier-11; }
+.tier-12 { background-color: Colors.$tier-12; }
+.tier-13 { background-color: Colors.$tier-13; }
+.tier-14 { background-color: Colors.$tier-14; }
+.tier-15 { background-color: Colors.$tier-15; }
+
+.tier-1, .tier-2, .tier-3, .tier-4, .tier-5,
+.tier-6, .tier-7, .tier-8, .tier-9, .tier-10,
+.tier-11, .tier-12, .tier-13, .tier-14, .tier-15 {
+    color: black;
+}
+
+.tier-16 { background-color: Colors.$tier-16; }
+.tier-17 { background-color: Colors.$tier-17; }
+.tier-18 { background-color: Colors.$tier-18; }
+.tier-19 { background-color: Colors.$tier-19; }
+.tier-20 { background-color: Colors.$tier-20; }
+.tier-21 { background-color: Colors.$tier-21; }
+.tier-22 { background-color: Colors.$tier-22; }
+.tier-23 { background-color: Colors.$tier-23; }
+.tier-24 { background-color: Colors.$tier-24; }
+.tier-25 { background-color: Colors.$tier-25; }
+.tier-26 { background-color: Colors.$tier-26; }
+.tier-27 { background-color: Colors.$tier-27; }
+.tier-28 { background-color: Colors.$tier-28; }
+.tier-28.head { border-top-right-radius: var(--head-radius);}
+.tier-29 { background-color: Colors.$tier-29; }
+.tier-30 { background-color: Colors.$tier-30; }
+.tier-31 { background-color: Colors.$tier-31; }
+.tier-32 { background-color: Colors.$tier-32; }
+.tier-33 { background-color: Colors.$tier-33; }
+.tier-34 { background-color: Colors.$tier-34; }
+.tier-35 { background-color: Colors.$tier-35; }
+
+.tier-label p {
+    min-width: 80px;
+}
+
+.levels {
+    color: white;
+    min-width: 230px;
+
+    .level-label {
+        height: 1.5rem;
+    }
+}

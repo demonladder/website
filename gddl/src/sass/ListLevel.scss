@@ -1,0 +1,26 @@
+.level {
+    border: 1px #998888 solid;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+
+    h3 {
+        font-weight: 350;
+    }
+}
+
+.level.head {
+    border-top: none;
+    border-bottom: solid;
+}
+
+.style-link {
+    background: none;
+    border: none;
+    color: white;
+}
+
+.style-link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}

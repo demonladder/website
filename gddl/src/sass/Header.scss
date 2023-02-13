@@ -1,0 +1,67 @@
+@use 'Colors';
+
+.bg-gddl {
+    background-color: Colors.$background;
+}
+
+.topnav {
+    overflow: hidden;
+    list-style-type: none;
+    display: flex;
+
+    a {
+        float: left;
+        display: block;
+        border: none;
+        border-radius: 0;
+    }
+    
+    .icon {
+        display: none;
+        color: white;
+    }
+}
+
+$header-size: 850px;
+@media (max-width: $header-size) {
+    .topnav {
+        display: block;
+        a:not(:first-child) { display: none; }
+
+        a.icon {
+            float: right;
+            display: block;
+        }
+    }
+}
+@media (max-width: $header-size) {
+    .topnav.responsive {
+        position: relative;
+
+        .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        a {
+            float: none;
+            display: block;
+        }
+    }
+}
+
+.title {
+    font-weight: bolder;
+    font-size: 1.75rem;
+}
+
+header {
+    background: linear-gradient(Colors.$header, Colors.$transparent);
+}
+
+.icon {
+    .white {
+        filter: invert(100%);
+    }
+}

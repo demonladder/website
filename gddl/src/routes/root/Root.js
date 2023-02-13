@@ -1,5 +1,4 @@
 import React from 'react';
-import './Root.css';
 import Header from '../../Header';
 import { Outlet, useLoaderData } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -7,12 +6,13 @@ import { getUser } from './profile/Profile';
 
 export async function rootLoader() {
   let userID = Cookies.get('userID') || null;
-  return getUser(userID);
+  return await getUser(userID);
 }
 
 function Root() {
-  let user = useLoaderData();
+  const user = useLoaderData();
   let sessionID = Cookies.get('sessionToken');
+
 
   return (
     <>

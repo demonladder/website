@@ -1,0 +1,101 @@
+@use 'Colors.scss';
+
+$button-radius: 6px;
+
+button.list {
+    border: 1px solid buttonface;
+    padding: 0.4rem 0.6rem;
+}
+
+button.list.active {
+    --active-color: rgb(197, 197, 197);
+    background-color: Colors.$active;
+    border-color: Colors.$active;
+}
+
+.view-left {
+    border-top-left-radius: $button-radius;
+    border-bottom-left-radius: $button-radius;
+}
+
+.view-right {
+    border-top-right-radius: $button-radius;
+    border-bottom-right-radius: $button-radius;
+}
+
+.list-options .btn {
+    border-radius: 10px;
+}
+
+.page-scroller {
+    background: none;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    transition-duration: 0.1s;
+
+    img {
+        filter: invert(100%) brightness(100%);  // Makes the arrows white
+    }
+}
+
+.page-scroller:hover {
+    transform: scale(1.1);
+}
+.page-scroller:active {
+    transform: scale(1.15);
+}
+
+.sortMenu {
+    position: absolute;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 0.25rem 0;
+    top: 3.5rem;
+    left: -50%;
+    width: 170px;
+    overflow: hidden;
+
+    .divider {
+        height: 0;
+        margin: 0.5rem 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.175);
+        opacity: 1;
+    }
+
+    .option {
+        padding: 0 1rem;
+
+        * {
+            cursor: pointer;
+        }
+
+        label {
+            margin: 0;
+            padding: 0.5rem;
+        }
+    }
+
+    .option:hover {
+        background-color: rgb(244, 244, 244);
+        border-radius: 5px;
+    }
+}
+
+.collapsable {
+    transition: 0.2s;
+}
+.collapse-close {
+    height: 0;
+    padding: 0;
+}
+.collapse-open {
+    height: 177px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}

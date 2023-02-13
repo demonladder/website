@@ -72,9 +72,6 @@ export default function References () {
                     {difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)}
                 </div>
             </div>
-            <div className='container'>
-                {userID ? <Edit /> : ''}
-            </div>
         </>
     );
 }

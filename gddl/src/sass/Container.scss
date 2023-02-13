@@ -1,0 +1,26 @@
+@use 'Colors';
+
+.container {
+    width: 100%;
+    background-color: Colors.$background-light;
+    padding: 30px 40px;
+    border-radius: 10px;
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+}

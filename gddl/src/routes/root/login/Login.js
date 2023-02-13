@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, redirect, useActionData, useNavigate } from 'react-router-dom';
-import './Profile.css';
 
 export async function loginAction({ request, params }) {
     let data = await request.formData();

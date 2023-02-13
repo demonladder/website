@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLoaderData, Form, useOutletContext, useParams } from 'react-router-dom';
 import Level from './Level';
-import filterEmpty from '../../../filter-empty.svg';
+import filterEmpty from '../../../icons/filter-empty.svg';
 import FilterMenu from './FilterMenu';
-import sort from '../../../sort.svg';
-import sortUp from '../../../sort-up.svg';
-import caretR from '../../../caret-r.svg';
-import caretL from '../../../caret-l.svg';
-import listSVG from '../../../list.svg';
-import gridSVG from '../../../grid.svg';
-import './Ladder.css';
+import sort from '../../../icons/sort.svg';
+import sortUp from '../../../icons/sort-up.svg';
+import caretR from '../../../icons/caret-r.svg';
+import caretL from '../../../icons/caret-l.svg';
+import listSVG from '../../../icons/list.svg';
+import gridSVG from '../../../icons/grid.svg';
 
 export async function ladderLoader({ params }) {
     return fetch('http://localhost:8080/getLevels')
@@ -157,60 +156,62 @@ export default function Ladder() {
 
     return (
         <div className='container'>
-            <h1 className='mt-5'>
+            <h1>
                 The Ladder
             </h1>
             <div className='d-flex'>
                 <Form className='flex-fill m-2' id='search-form' role='search' action='/level'>
                     <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' value={search} onChange={onSearchChange} />
                 </Form>
-                <div className='d-flex list-options'>
-                    <button className='btn btn-light btn-sm m-1 px-3' onClick={toggleShowFilter}>
-                        <img src={filterEmpty} alt='' />
-                    </button>
-                    <button className='btn btn-light btn-sm m-1 px-3' onClick={sortVisHandler}>
-                        <img src={sortAscending ? sortUp : sort} alt='' />
-                    </button>
-                    <div className={(sortVisible ? 'fadeIn' : 'd-none') + ' sortMenu'}>
-                        <div className='option'>
-                            <label>
-                                <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
-                                <span> Asc</span>
-                            </label>
-                            <label>
-                                <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
-                                <span> Desc</span>
-                            </label>
-                        </div>
-                        <div className='divider'></div>
-                        <div className='option'>
-                            <label>
-                                <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
-                                <span className='mx-1'>Name</span>
-                            </label>
-                        </div>
-                        <div className='option'>
-                            <label>
-                                <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
-                                <span className='mx-1'>Level ID</span>
-                            </label>
-                        </div>
-                        <div className='option'>
-                            <label>
-                                <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
-                                <span className='mx-1'>Tier</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div className='d-flex align-items-center m-1'>
-                        <button className={'list view-left ' + (listView ? 'active' : '')} onClick={onViewList}>
-                            <img src={listSVG} alt='' />
+                <ul className='d-flex list-options'>
+                    <li>
+                        <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={toggleShowFilter}>
+                            <img src={filterEmpty} alt='' />
                         </button>
-                        <button className={'list view-right ' + (!listView ? 'active' : '')} onClick={onViewGrid}>
-                            <img src={gridSVG} alt='' />
-                        </button>
-                    </div>
-                </div>
+                    </li>
+                    <li>
+                        <div className='position-relative h-100'>
+                            <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={sortVisHandler}>
+                                <img src={sortAscending ? sortUp : sort} alt='' />
+                            </button>
+                            <div className={(sortVisible ? 'collapse-open' : 'collapse-close') + ' collapsable sortMenu'}>
+                                <div className='option d-flex'>
+                                    <div>
+                                        <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
+                                        <label htmlFor='asc'>Asc</label>
+                                    </div>
+                                    <div>
+                                        <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
+                                        <label htmlFor='desc'>Desc</label>
+                                    </div>
+                                </div>
+                                <div className='divider'></div>
+                                <div className='option'>
+                                    <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
+                                    <label htmlFor='name'>Name</label>
+                                </div>
+                                <div className='option'>
+                                    <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
+                                    <label htmlFor='level-id'>Level ID</label>
+                                </div>
+                                <div className='option'>
+                                    <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
+                                    <label htmlFor='tier'>Tier</label>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div className='d-flex align-items-center m-1 h-100'>
+                            <button className={'list view-left ' + (listView ? 'active' : '')} onClick={onViewList}>
+                                <img src={listSVG} alt='' />
+                            </button>
+                            <button className={'list view-right ' + (!listView ? 'active' : '')} onClick={onViewGrid}>
+                                <img src={gridSVG} alt='' />
+                            </button>
+                        </div>
+                    </li>
+                </ul>
             </div>
             <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} creator={creatorState} setCreator={setCreator} />
             <div id='levelList' className='my-3'>

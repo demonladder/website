@@ -1,6 +1,5 @@
 import React from 'react';
 import Level from './Level';
-import './References.css';
 
 export default function({ tier }) {
     return (
