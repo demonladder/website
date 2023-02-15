@@ -4,14 +4,14 @@ import Creator from './Creator';
 import DemonLogo from '../../../DemonLogo';
 
 export async function levelLoader({ params }) {
-    return fetch('http://localhost:8080/getLevel?id=' + params.level_id)
+    return fetch('http://localhost:8080/getLevel?levelID=' + params.level_id)
     .then((res) => res.json());
 }
 
 export default function LevelOverview() {
     const levelInfo = useLoaderData();
 
-    const level = levelInfo.levelData[0];
+    const level = levelInfo.info;
     let enjoyments = levelInfo.submissions.filter(e => e.enjoyment != null);
 
     let enjoyment = 'Unrated';

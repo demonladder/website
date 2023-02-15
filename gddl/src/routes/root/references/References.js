@@ -1,7 +1,6 @@
 import React from 'react';
-import { useLoaderData, useOutletContext } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import Difficulty from './Difficulty';
-import Edit from './Edit';
 
 export async function referencesLoader() {
     return fetch('http://localhost:8080/getReferences')
@@ -10,7 +9,6 @@ export async function referencesLoader() {
 
 export default function References () {
     const referenceDemons = useLoaderData();
-    const [userID] = useOutletContext();
 
     let difficulties = [
         {

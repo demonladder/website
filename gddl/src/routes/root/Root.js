@@ -6,18 +6,17 @@ import { getUser } from './profile/Profile';
 
 export async function rootLoader() {
   let userID = Cookies.get('userID') || null;
+  if (!userID) return null;
   return await getUser(userID);
 }
 
 function Root() {
   const user = useLoaderData();
-  let sessionID = Cookies.get('sessionToken');
-
 
   return (
     <>
       <Header user={user} />
-      <Outlet context={[sessionID]}/>
+      <Outlet context={[user]}/>
     </>
   );
 }

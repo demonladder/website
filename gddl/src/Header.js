@@ -7,6 +7,7 @@ export default function Header({ user }) {
     const [nav, setNav] = useState(false);
     function onMenuClick() {
         setNav(prev => !prev);
+        return false;
     }
 
     return (
@@ -25,7 +26,7 @@ export default function Header({ user }) {
                     Packs
                 </Link>
                 <ProfileButtons user={user} />
-                <a href='javascript:void(0)' onClick={onMenuClick} className='icon m-0 py-3 px-4 fs-5'>
+                <a href='#' onClick={onMenuClick} className='icon m-0 py-3 px-4 fs-5'>
                     <img src={menu} alt='' className='h-100 white' width='32px' />
                 </a>
             </div>

@@ -26,7 +26,7 @@ export async function loginAction({ request }) {
 }
 
 export default function Login() {
-    let actionError = useActionData();
+    const actionError = useActionData();
 
     return (
         <div className='container'>

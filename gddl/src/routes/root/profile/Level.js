@@ -5,7 +5,7 @@ import Creator from '../level/Creator'
 export default function Level({ info }) {
     function onIDClick() {
         if (info.isHeader) return;
-        navigator.clipboard.writeText(info.ID);
+        navigator.clipboard.writeText(info.LevelID);
     }
 
     return (
@@ -15,10 +15,10 @@ export default function Level({ info }) {
                                : <Link to={'/level/' + info.LevelID} className='link-disable'>{info.Name}</Link>}
             </h3>
             <div className='col-2 align-self-center'><Creator name={info.Creator} disableLink={info.isHeader} /></div>
-            <div className='col-2 align-self-center'><button className='m-0 style-link' onClick={onIDClick}>{info.ID}</button></div>
+            <div className='col-2 align-self-center'><button className='m-0 style-link' onClick={onIDClick}>{info.LevelID}</button></div>
             {/* eslint-disable-next-line*/}
             <div className={`col-1 d-flex justify-content-center tier-${Math.floor(info.Rating)}`}><p className='m-0 align-self-center'>{info.Rating == -1 ? 'Unrated' : info.Rating}</p></div>
-            <div className='col-1 align-self-center'><p className='m-0'>{info.Progress == -1 ? 'NaN' : info.Progress}</p></div>
+            <div className='col-1 align-self-center'><p className='m-0'>{info.Progress === -1 ? 'NaN' : info.Progress}</p></div>
         </div>
     );
 }

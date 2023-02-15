@@ -9,14 +9,18 @@ export async function packsLoader({ params }) {
 }
 
 export default function Packs() {
-    let packs = useLoaderData();
+    let packs = useLoaderData().sort((a, b) => {
+        if (a.Name < b.Name) return -1
+        if (a.Name > b.Name) return 1
+        return 0;
+    });
     console.log(packs);
 
     return (
         <div className='container'>
             <h1 className='mb-4'>Packs</h1>
             <div className='row'>
-                {packs.map(p => <Link to={`/pack/${p.ID}`} className='col-4 mb-2' key={p.ID}>{p.Name}</Link>)}
+                {packs.map(p => <div className='mb-2 col-4 text-center'><Link to={`/pack/${p.ID}`} key={p.ID}>{p.Name}</Link></div>)}
             </div>
         </div>
     )
