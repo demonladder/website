@@ -18,7 +18,8 @@
     
     .icon {
         display: none;
-        color: white;
+        background: none;
+        border: none;
     }
 }
 
@@ -28,13 +29,12 @@ $header-size: 850px;
         display: block;
         a:not(:first-child) { display: none; }
 
-        a.icon {
+        .icon {
             float: right;
             display: block;
         }
     }
-}
-@media (max-width: $header-size) {
+
     .topnav.responsive {
         position: relative;
 

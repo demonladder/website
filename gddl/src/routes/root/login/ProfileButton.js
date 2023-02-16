@@ -1,12 +1,12 @@
 import React from 'react';
-import eDemon from '../../../demon_logos/edemon.png';
+import { Link } from 'react-router-dom';
+import { tierToIcon } from '../../../DemonLogo.js';
 
-export default function ProfileButton({ userID }) {
+export default function ProfileButton({ user }) {
     return (
-        <div className='style-none'>
-            <button className='style-none'>
-                <img className='pfp' src={eDemon} alt='' />
-            </button>
-        </div>
+        <Link to={`/profile/${user.info.ID}`} className='profile pt-2 px-3 me-5 ms-auto'>
+            <span>{user.info.Name }</span>
+            <img className='ms-3 pfp' src={tierToIcon(user.info.Hardest)} alt='' />
+        </Link>
     );
 }

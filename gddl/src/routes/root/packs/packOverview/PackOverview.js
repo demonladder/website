@@ -1,9 +1,10 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Level from '../../list/Level.js';
+import serverIP from '../../../../serverIP.js';
 
 export async function packLoader({ params }) {
-    return fetch(`http://localhost:8080/getPack?packID=${params.pack_id}`, {
+    return fetch(`${serverIP}/getPack?packID=${params.pack_id}`, {
         credentials: 'include'
     })
     .then(res => res.json());

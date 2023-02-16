@@ -9,13 +9,19 @@ import caretR from '../../../icons/caret-r.svg';
 import caretL from '../../../icons/caret-l.svg';
 import listSVG from '../../../icons/list.svg';
 import gridSVG from '../../../icons/grid.svg';
+import serverIP from '../../../serverIP';
 
 export async function ladderLoader({ params }) {
-    return fetch('http://localhost:8080/getLevels')
-    .then((res) => res.json())
+    return fetch(`${serverIP}/getLevels?creator=${params.creator}`)
+    .then(res => res.json())
+    .then(data => {
+        return {
+            error: false,
+            data
+        };
+    })
     .catch((e) => {
-        if (e.message === 'Failed to fetch') return { error: true, message: 'It looks like the servers are down :( Try again later!'};
-        throw e;
+        return { error: true, message: 'Couldn\'t connect to the sever!'};
     });
 }
 
@@ -24,25 +30,12 @@ export default function Ladder() {
 
     const { creator } = useParams();
 
-    const [levels] = useState(useLoaderData());
-    const [filteredLevels, setFilteredLevels] = useState(levels);
-    const [sortedLevels, setSortedLevels] = useState(levels);
+    const [levels, setLevels] = useState(useLoaderData());
 
     const [pageIndex, setPageIndex] = useState(0);
-
-    let maxPerPage = 15;
-    function sliceLevels(lvls) {
-        let pagesCopy = [];
-        for (let i = 0; i < lvls.length / maxPerPage; i++) {
-            pagesCopy.push(lvls.slice(i*maxPerPage, (i+1)*maxPerPage));
-        }
-        return pagesCopy;
-    }
-    const [pages, setPages] = useState((levels && !levels.error) ? sliceLevels(levels) : []);
-
-
     const pageUp = () => {
-        if (pageIndex + 1 < pages.length) {
+        if (levels.error) return;
+        if (pageIndex + 1 < levels.data.count / 15) {
             setPageIndex(prev => prev + 1);
         }
     }
@@ -59,85 +52,51 @@ export default function Ladder() {
 
     const [sortAscending, setSortAscending] = useState(true);
     const [sorter, setSorter] = useState('level-id');
-
     function handleSortMenu(e) {
         setSorter(e.target.id);
     }
-
-    function sortLevels() {
-        if (!levels.error) {
-            let levelsCopy = [...filteredLevels];
-            switch (sorter) {
-                case 'name':
-                    levelsCopy.sort((a, b) => {
-                        if (a.Name < b.Name) return -1
-                        if (a.Name > b.Name) return 1
-                        return 0;
-                    });
-                    break;
-                case 'tier':
-                    levelsCopy.sort((a, b) => {
-                        if (a.Rating < b.Rating) return -1
-                        if (a.Rating > b.Rating) return 1
-                        return 0;
-                    });
-                    break;
-                default:  // Also used if id is 'level-id'
-                    levelsCopy.sort((a, b) => {
-                        if (a.ID < b.ID) return -1
-                        if (a.ID > b.ID) return 1
-                        return 0;
-                    });
-                    break;
-            }
-            if (!sortAscending) levelsCopy.reverse();
-            setSortedLevels(levelsCopy);
-        } else {
-            setSortedLevels([]);
-        }
-    }
-
     function handleSortDiretion(e) {
         setSortAscending(e.target.id === 'asc');
     }
 
-    // Filter levels
-    const [filters, setFilters] = useState({ lowTier: '', highTier: '', difficulty: 0, creator: '', song: '' });
-    const [search, setSearch] = useState('');
-    useEffect(() => {
-        if (!levels.error) {
-            let levelsCopy = [...levels];
-            if (search) levelsCopy = levelsCopy.filter(el => { return (el.Name.toLowerCase().includes(search.toLowerCase())) 
-                                                        || (parseInt(el.ID) === search)
-                                                        || ((el.ID+'').includes(search)) });
-            
-            let hTier = !filters.highTier ? filters.lowTier + 1 : filters.highTier;  // If high tier is empty, it will default to low tier + 1
-            if (filters.creator !== '') levelsCopy = levelsCopy.filter(el => el.Creator.toLowerCase().includes(filters.creator.toLowerCase()));
-            if (filters.lowTier !== '') levelsCopy = levelsCopy.filter(el => el.Rating >= filters.lowTier && el.Rating < hTier);
-            if (filters.difficulty !== 0) levelsCopy = levelsCopy.filter(el => el.Difficulty === filters.difficulty);
-            if (filters.song !== '') levelsCopy = levelsCopy.filter(el => el.Song.toLowerCase().includes(filters.song.toLowerCase()));
-            levelsCopy = levelsCopy.filter(el => (el.Rating === -1 && filters.removeUnrated) ? false : true);
 
-            setFilteredLevels(levelsCopy);
-        } else {
-            setFilteredLevels([]);
-        }
+
+    //
+    // Filter levels
+    //
+    const [filters, setFilters] = useState({ lowTier: '', highTier: '', difficulty: 0, removeUnrated: false, creator: '', song: '' });
+    const [search, setSearch] = useState('');
+    const [timer, setTimer] = useState();
+    useEffect(() => {
+        clearTimeout(timer);
+        setTimer(setTimeout(() => {
+            // Runs a little after user input stops
+            let q = `${serverIP}/getLevels?page=${pageIndex}&name=${search}&sort=${sorter}_${sortAscending ? 'asc' : 'desc'}&`;
+            for (let p of Object.keys(filters)) {
+                q += p + '=' + filters[p] + '&';
+            }
+            q = encodeURI(q);
+
+            fetch(q, {
+                credentials: 'include'
+            }).then(res => res.json()).then(data => {
+                setLevels({ error: false, data })
+            }).catch(e => {
+                return { error: true, message: 'Couldn\'t connect to the sever!' };
+            });
+        }, 200));
+    }, [search, filters, pageIndex, sorter, sortAscending]);
+
+    useEffect(() => {
+        setPageIndex(0);
     }, [search, filters]);
+
+
 
     const [showFilter, setShowFilter] = useState(false);
     function toggleShowFilter() {
         setShowFilter(prev => !prev);
     }
-
-    useEffect(() => {
-        sortLevels();
-    }, [sorter, sortAscending, filteredLevels]);
-
-    useEffect(() => {  // Updates pages so it matches filteredLevels
-        let sliced = sliceLevels(sortedLevels);
-        setPages(sliced);
-        if (sliced.length-1 <= pageIndex) setPageIndex(0);
-    }, [sortedLevels]);
 
     function onSearchChange(event) {
         setSearch(event.target.value);
@@ -216,13 +175,13 @@ export default function Ladder() {
             <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} creator={creatorState} setCreator={setCreator} />
             <div id='levelList' className='my-3'>
                 <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} classes='head' />
-                {!levels.error ? (pages.length > 0 ? pages[pageIndex].map(l => (
+                {!levels.error ? (levels.data.data.length > 0 ? levels.data.data.map(l => (
                     <Level info={l} key={l.ID} />
                 )) : '') : <h1 className='m-5'>{levels.message}</h1>}
             </div>
             <div className='row align-items-center my-4 mx-5'>
                 <button className='page-scroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
-                <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {pages.length}</p>
+                <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.data.count/15) || 0}</p>
                 <button className='page-scroller col' onClick={pageUp}><img src={caretR} alt='' /></button>
             </div>
         </div>

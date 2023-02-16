@@ -1,9 +1,10 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Difficulty from './Difficulty';
+import serverIP from '../../../serverIP';
 
 export async function referencesLoader() {
-    return fetch('http://localhost:8080/getReferences')
+    return fetch(serverIP + '/getReferences')
            .then(res => res.json());
 }
 

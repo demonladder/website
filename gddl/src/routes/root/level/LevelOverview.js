@@ -2,9 +2,10 @@ import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Creator from './Creator';
 import DemonLogo from '../../../DemonLogo';
+import serverIP from '../../../serverIP';
 
 export async function levelLoader({ params }) {
-    return fetch('http://localhost:8080/getLevel?levelID=' + params.level_id)
+    return fetch(serverIP + '/getLevel?levelID=' + params.level_id)
     .then((res) => res.json());
 }
 

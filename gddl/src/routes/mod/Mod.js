@@ -1,20 +1,17 @@
 import React from 'react';
-import { redirect, useLoaderData } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
+import serverIP from '../../serverIP';
 
 export async function modLoader() {
-    return fetch('http://localhost:8080/isMod', {
+    const mod = await fetch(serverIP + '/isMod', {
         credentials: 'include'
     }).then(res => res.json());
+
+    if (!mod.isMod) return redirect('/');
+    return true;
 }
 
 export default function Mod() {
-    const isMod = useLoaderData();
-
-    if (!isMod.isMod) {
-        redirect('/');
-        return;
-    }
-
     return (
         <div className='container'>
             <h1>Mod page</h1>

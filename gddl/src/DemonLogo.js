@@ -1,11 +1,10 @@
-import React from 'react';
 import edemon from './demon_logos/edemon.png';
 import mdemon from './demon_logos/mdemon.png';
 import hdemon from './demon_logos/hdemon.png';
 import idemon from './demon_logos/idemon.png';
 import exdemon from './demon_logos/exdemon.png';
 
-export default function DemonLogo({ diff }) {
+export default function DemonLogo(diff) {
     let imgSrc = '';
     switch (diff) {
         case 'Easy':
@@ -33,7 +32,11 @@ export default function DemonLogo({ diff }) {
             break;
     }
 
-    return (
-        <img src={imgSrc} alt='' width='100%'></img>
-    );
+    return imgSrc;
+}
+
+export function tierToIcon(tier) {
+    if (!tier) return DemonLogo(1);
+
+    return DemonLogo(Math.min(Math.floor(tier / 5), 4) + 1);
 }

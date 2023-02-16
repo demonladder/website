@@ -74,12 +74,12 @@ export default function FilterMenu({ show, filter, sessionID, creator, setCreato
                     <label className='form-label'>Difficulty:</label>
                     <select className='form-select form-control' value={difficulty} onChange={onDifficultyChange}>
                         <option value='0'></option>
-                        <option value='Official'>Official</option>
-                        <option value='Easy'>Easy</option>
-                        <option value='Medium'>Medium</option>
-                        <option value='Hard'>Hard</option>
-                        <option value='Insane'>Insane</option>
-                        <option value='Extreme'>Extreme</option>
+                        <option value='1'>Official</option>
+                        <option value='2'>Easy</option>
+                        <option value='3'>Medium</option>
+                        <option value='4'>Hard</option>
+                        <option value='5'>Insane</option>
+                        <option value='6'>Extreme</option>
                     </select>
                 </div>
                 <div className='col'>

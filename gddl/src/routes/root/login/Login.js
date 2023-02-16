@@ -1,10 +1,11 @@
 import React from 'react';
 import { Form, redirect, useActionData } from 'react-router-dom';
+import serverIP from '../../../serverIP';
 
 export async function loginAction({ request }) {
     let data = await request.formData();
 
-    let response = await fetch('http://localhost:8080/login', {
+    let response = await fetch(serverIP + '/login', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -18,9 +19,8 @@ export async function loginAction({ request }) {
     .then(res => res.json());
 
     if (response.error) {
-        //return response;
+        return response;
     }
-    console.log(response);
     
     return redirect('/');
 }

@@ -37,7 +37,8 @@
 }
 .topnav .icon {
   display: none;
-  color: white;
+  background: none;
+  border: none;
 }
 
 @media (max-width: 850px) {
@@ -47,12 +48,10 @@
   .topnav a:not(:first-child) {
     display: none;
   }
-  .topnav a.icon {
+  .topnav .icon {
     float: right;
     display: block;
   }
-}
-@media (max-width: 850px) {
   .topnav.responsive {
     position: relative;
   }
@@ -402,7 +401,7 @@ h2 {
 }
 
 .pfp {
-  width: 64px;
+  width: 48px;
   border-radius: 50%;
 }
 
@@ -442,6 +441,15 @@ a:hover {
   border-radius: 15px;
   background-color: rgba(0, 0, 0, 0.3);
   font-size: 1.5rem;
+}
+
+.log-in {
+  background-color: white;
+  color: black;
+  align-self: center;
+  border-radius: 10px !important;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
 }
 
 body {

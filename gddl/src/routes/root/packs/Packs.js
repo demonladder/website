@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
+import serverIP from '../../../serverIP';
 
 export async function packsLoader({ params }) {
-    return fetch('http://localhost:8080/getPacks', {
+    return fetch(serverIP + '/getPacks', {
         credentials: 'include'
     })
     .then(res => res.json());

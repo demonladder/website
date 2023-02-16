@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import Level from './Level';
+import serverIP from '../../../serverIP.js';
 
 export async function profileLoader({ params }) {
     return await getUser(params.userID);
@@ -30,8 +31,9 @@ export default function Profile() {
 }
 
 export async function getUser(id) {
-    let res = await fetch(`http://localhost:8080/getUser?userID=${id}`, {
+    let res = await fetch(`${serverIP}/getUser?userID=${id}`, {
         credentials: 'include'
-    }).then(res => res.json());
+    }).then(res => res.json())
+    .catch(e => e);
     return res;
 }

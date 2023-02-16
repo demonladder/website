@@ -12,6 +12,7 @@ import Packs, { packsLoader } from './routes/root/packs/Packs';
 import Profile, { profileLoader } from './routes/root/profile/Profile';
 import PackOverview, { packLoader } from './routes/root/packs/packOverview/PackOverview';
 import Mod, { modLoader } from './routes/mod/Mod';
+import { Logout } from './routes/root/login/Logout';
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
         loader: modLoader
       }
     ]
+  },
+  {
+    path: '/logout',
+    loader: Logout
   }
 ]);
 

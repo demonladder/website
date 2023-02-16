@@ -26,9 +26,9 @@ export default function Header({ user }) {
                     Packs
                 </Link>
                 <ProfileButtons user={user} />
-                <a href='#' onClick={onMenuClick} className='icon m-0 py-3 px-4 fs-5'>
+                <button onClick={onMenuClick} className='icon m-0 py-3 px-4 fs-5'>
                     <img src={menu} alt='' className='h-100 white' width='32px' />
-                </a>
+                </button>
             </div>
         </header>
     );
