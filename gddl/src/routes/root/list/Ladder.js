@@ -119,7 +119,9 @@ export default function Ladder() {
                 The Ladder
             </h1>
             <div className='d-flex'>
-                <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' value={search} onChange={onSearchChange} />
+                <div className='flex-fill m-2'>
+                    <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' value={search} onChange={onSearchChange} />
+                </div>
                 <ul className='d-flex list-options'>
                     <li>
                         <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={toggleShowFilter}>
