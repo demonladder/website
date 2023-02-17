@@ -7,3 +7,20 @@
     background-color: none;
     border: none;
 }
+
+.search-result {
+    position: absolute;
+    z-index: 100;
+    background-color: white;
+    color: black;
+    padding: 0.5rem 0;
+    border-radius: 12px;
+
+    .result {
+        padding: 0.25rem 1rem;
+    }
+    .result:hover {
+        background-color: rgb(221, 221, 221);
+        cursor: pointer;
+    }
+}

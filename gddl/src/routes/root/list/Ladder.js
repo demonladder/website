@@ -119,9 +119,7 @@ export default function Ladder() {
                 The Ladder
             </h1>
             <div className='d-flex'>
-                <Form className='flex-fill m-2' id='search-form' role='search' action='/level'>
-                    <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' value={search} onChange={onSearchChange} />
-                </Form>
+                <input type='text' placeholder='Search level name or ID...' className='form-control' name='query' value={search} onChange={onSearchChange} />
                 <ul className='d-flex list-options'>
                     <li>
                         <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={toggleShowFilter}>
@@ -175,7 +173,7 @@ export default function Ladder() {
             <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} creator={creatorState} setCreator={setCreator} />
             <div id='levelList' className='my-3'>
                 <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} classes='head' />
-                {!levels.error ? (levels.data.data.length > 0 ? levels.data.data.map(l => (
+                {!levels.error ? (levels.data.levels.length > 0 ? levels.data.levels.map(l => (
                     <Level info={l} key={l.ID} />
                 )) : '') : <h1 className='m-5'>{levels.message}</h1>}
             </div>

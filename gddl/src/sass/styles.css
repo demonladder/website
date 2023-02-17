@@ -3,6 +3,7 @@
   background-color: #280808;
   padding: 30px 40px;
   border-radius: 10px;
+  margin-bottom: 5rem;
 }
 
 @media (min-width: 768px) {
@@ -200,7 +201,7 @@ ul {
 }
 
 .menu {
-  background-color: gray;
+  background-color: #40121A;
   overflow: hidden;
   padding: 1rem;
   border-radius: 10px;
@@ -410,6 +411,22 @@ h2 {
   border: none;
 }
 
+.search-result {
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  color: black;
+  padding: 0.5rem 0;
+  border-radius: 12px;
+}
+.search-result .result {
+  padding: 0.25rem 1rem;
+}
+.search-result .result:hover {
+  background-color: rgb(221, 221, 221);
+  cursor: pointer;
+}
+
 a {
   color: white;
   background-color: rgba(0, 0, 0, 0);
@@ -486,8 +503,8 @@ header {
 }
 
 ::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
+  height: 10px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {

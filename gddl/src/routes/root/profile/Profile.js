@@ -1,17 +1,18 @@
-import React from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
 import Level from './Level';
 import serverIP from '../../../serverIP.js';
+import AddLevel from './AddLevel';
 
 export async function profileLoader({ params }) {
-    return await getUser(params.userID);
+    return await getUser(params.userID, true);
 }
 
 export default function Profile() {
-    let [userData] = useOutletContext();
+    const [userData] = useState(useLoaderData());
     let user = userData.info;
     let submissions = userData.submissions;
-    let progress = userData.progress;
+    const [progress, setProgress] = useState(userData.progress);
 
     return (
         <div className='container'>
@@ -22,16 +23,22 @@ export default function Profile() {
             <p>Least favorite level: <Link to={'/level/' + user.LeastFavorite} className='link-disable'>{user.LeastFavorite || 'None'}</Link></p>
             <p>Minimum tier preference: {user.MinPref}</p>
             <p>Maximum tier preference: {user.MaxPref}</p>
-            <p>Demons completed: {progress.filter(e => e.Progress === 100).length}</p>
             <p>Submissions: {submissions.length}</p>
-            <Level info={{ isHeader: true, Name: 'Level name', Creator: 'Creator', Rating: 'Tier', Progress: 'Progress'}} />
-            {progress.map(p => <Level info={p} key={p.LevelID}/>)}
+            <p>Demons completed: {progress.filter(e => e.Progress === 100).length}</p>
+            <div className='mt-3'>
+                <h1>Demon progress</h1>
+                <AddLevel setProgress={setProgress} />
+                <Level info={{ isHeader: true, Name: 'Level name', Creator: 'Creator', LevelID: 'Level ID', Rating: 'Tier', Progress: 'Progress'}} />
+                <div>
+                    {progress.map(p => <Level info={p} key={p.LevelID}/>)}
+                </div>
+            </div>
         </div>
     );
 }
 
-export async function getUser(id) {
-    let res = await fetch(`${serverIP}/getUser?userID=${id}`, {
+export async function getUser(id, all) {
+    let res = await fetch(`${serverIP}/getUser?userID=${id}&all=${all === true}`, {
         credentials: 'include'
     }).then(res => res.json())
     .catch(e => e);

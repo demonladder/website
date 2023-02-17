@@ -1,4 +1,7 @@
 *.pem
+*.crt
+*.key
+sslcert
 
 # Logs
 logs

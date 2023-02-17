@@ -1,2 +1,4 @@
-const serverIP = 'http://192.168.0.51:8080';
+const isTest = true;
+
+const serverIP = isTest ? 'http://localhost:8080' : 'https://gdladder.com/api';
 export default serverIP;

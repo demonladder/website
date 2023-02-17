@@ -1,5 +1,7 @@
+@use 'Colors';
+
 .menu {
-    background-color: gray;
+    background-color: Colors.$filter-bg;
     overflow: hidden;
     padding: 1rem;
     border-radius: 10px;

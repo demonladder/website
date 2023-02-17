@@ -15,7 +15,6 @@ export default function Packs() {
         if (a.Name > b.Name) return 1
         return 0;
     });
-    console.log(packs);
 
     return (
         <div className='container'>
