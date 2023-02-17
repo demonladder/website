@@ -5,11 +5,19 @@ import serverIP from '../../../serverIP';
 
 export async function referencesLoader() {
     return fetch(serverIP + '/getReferences')
-           .then(res => res.json());
+           .then(res => res.json())
+           .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
 }
 
 export default function References () {
     const referenceDemons = useLoaderData();
+    if (referenceDemons.error) {
+        return (
+            <div className='container'>
+                <h1>{referenceDemons.message}</h1>
+            </div>
+        );
+    }
 
     let difficulties = [
         {

@@ -27,13 +27,7 @@ const router = createBrowserRouter([
       {
         path: 'list',
         element: <Ladder />,
-        loader: ladderLoader,
-        children: [
-          {
-            path: ':creator',
-            element: <Ladder />
-          }
-        ]
+        loader: ladderLoader
       },
       {
         path: 'references',

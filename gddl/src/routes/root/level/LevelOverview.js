@@ -7,11 +7,20 @@ import Submission from './Submission';
 
 export async function levelLoader({ params }) {
     return fetch(serverIP + '/getLevel?levelID=' + params.level_id)
-    .then((res) => res.json());
+    .then((res) => res.json())
+    .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
 }
 
 export default function LevelOverview() {
     const levelInfo = useLoaderData();
+
+    if (levelInfo.error) {
+        return (
+            <div className='container'>
+                <h1>{levelInfo.message}</h1>
+            </div>
+        )
+    }
 
     const level = levelInfo.info;
     let enjoyments = levelInfo.submissions.filter(e => e.enjoyment != null);

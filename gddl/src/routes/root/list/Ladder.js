@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLoaderData, Form, useOutletContext, useParams } from 'react-router-dom';
+import { useLoaderData, useOutletContext } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../icons/filter-empty.svg';
 import FilterMenu from './FilterMenu';
@@ -11,8 +11,8 @@ import listSVG from '../../../icons/list.svg';
 import gridSVG from '../../../icons/grid.svg';
 import serverIP from '../../../serverIP';
 
-export async function ladderLoader({ params }) {
-    return fetch(`${serverIP}/getLevels?creator=${params.creator}`)
+export async function ladderLoader() {
+    return fetch(`${serverIP}/getLevels`)
     .then(res => res.json())
     .then(data => {
         return {
@@ -21,21 +21,23 @@ export async function ladderLoader({ params }) {
         };
     })
     .catch((e) => {
-        return { error: true, message: 'Couldn\'t connect to the sever!'};
+        return { error: true, message: 'Couldn\'t connect to the sever!' };
     });
 }
 
 export default function Ladder() {
     const [sessionID] = useOutletContext();
 
-    const { creator } = useParams();
-
-    const [levels, setLevels] = useState(useLoaderData());
+    const [loaderResponse, setLoaderResponse] = useState(useLoaderData());
+    const [levels, setLevels] = useState(!loaderResponse.error ? loaderResponse.data : { count: 0, levels: [] });
+    useEffect(() => {
+        setLevels(!loaderResponse.error ? loaderResponse.data : { count: 0, levels: [] });
+    }, [loaderResponse]);
 
     const [pageIndex, setPageIndex] = useState(0);
     const pageUp = () => {
         if (levels.error) return;
-        if (pageIndex + 1 < levels.data.count / 15) {
+        if (pageIndex + 1 < levels.count / 15) {
             setPageIndex(prev => prev + 1);
         }
     }
@@ -80,9 +82,9 @@ export default function Ladder() {
             fetch(q, {
                 credentials: 'include'
             }).then(res => res.json()).then(data => {
-                setLevels({ error: false, data })
+                setLoaderResponse({ error: false, data })
             }).catch(e => {
-                return { error: true, message: 'Couldn\'t connect to the sever!' };
+                setLoaderResponse({ error: true, message: 'Couldn\'t connect to the sever!' });
             });
         }, 200));
     }, [search, filters, pageIndex, sorter, sortAscending]);
@@ -101,8 +103,6 @@ export default function Ladder() {
     function onSearchChange(event) {
         setSearch(event.target.value);
     }
-
-    const [creatorState, setCreator] = useState(creator || '');
 
     const [listView, setListView] = useState(true);
     function onViewList() {
@@ -172,16 +172,15 @@ export default function Ladder() {
                     </li>
                 </ul>
             </div>
-            <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} creator={creatorState} setCreator={setCreator} />
+            <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} />
             <div id='levelList' className='my-3'>
                 <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} classes='head' />
-                {!levels.error ? (levels.data.levels.length > 0 ? levels.data.levels.map(l => (
-                    <Level info={l} key={l.ID} />
-                )) : '') : <h1 className='m-5'>{levels.message}</h1>}
+                {!loaderResponse.error ? levels.levels.map(l => <Level info={l} key={l.ID} />)
+                : <h1 className='m-5'>{loaderResponse.message}</h1>}
             </div>
             <div className='row align-items-center my-4 mx-5'>
                 <button className='page-scroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
-                <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.data.count/15) || 0}</p>
+                <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/15) || 0}</p>
                 <button className='page-scroller col' onClick={pageUp}><img src={caretR} alt='' /></button>
             </div>
         </div>

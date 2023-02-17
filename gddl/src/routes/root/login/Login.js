@@ -16,7 +16,8 @@ export async function loginAction({ request }) {
             password: data.get('password')
         })
     })
-    .then(res => res.json());
+    .then(res => res.json())
+    .catch(e => { return { error: 'Couldn\'t connect to the server!' }});
 
     if (response.error) {
         return response;

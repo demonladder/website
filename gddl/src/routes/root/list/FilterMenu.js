@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function FilterMenu({ show, filter, sessionID, creator, setCreator }) {
+export default function FilterMenu({ show, filter, sessionID }) {
     const [lowTier, setLowTier] = useState('');
     const [highTier, setHighTier] = useState('');
 
@@ -29,6 +29,7 @@ export default function FilterMenu({ show, filter, sessionID, creator, setCreato
         setDifficulty(event.target.value);
     }
 
+    const [creator, setCreator] = useState('');
     function onCreatorChange(event) {
         setCreator(event.target.value);
     }
@@ -92,7 +93,7 @@ export default function FilterMenu({ show, filter, sessionID, creator, setCreato
                         <label className='form-check-label'>Exclude unrated</label>
                     </div>
                     <div className='form-check'>
-                        <input type='checkbox' className='form-check-input' checked={removeCompleted} onChange={onCompletedChange} disabled />
+                        <input type='checkbox' className='form-check-input' checked={removeCompleted} onChange={onCompletedChange} disabled={!sessionID} />
                         <label className='form-check-label'>Exclude completed</label>
                     </div>
                 </div>

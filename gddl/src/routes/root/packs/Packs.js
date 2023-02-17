@@ -6,11 +6,22 @@ export async function packsLoader({ params }) {
     return fetch(serverIP + '/getPacks', {
         credentials: 'include'
     })
-    .then(res => res.json());
+    .then(res => res.json())
+    .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
 }
 
 export default function Packs() {
-    let packs = useLoaderData().sort((a, b) => {
+    let packs = useLoaderData();
+
+    if (packs.error) {
+        return (
+            <div className='container'>
+                <h1>{packs.message}</h1>
+            </div>
+        )
+    }
+
+    packs.sort((a, b) => {
         if (a.Name < b.Name) return -1
         if (a.Name > b.Name) return 1
         return 0;
