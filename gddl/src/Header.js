@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import Cookies from 'js-cookie';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import menu from './icons/menu.svg';
 import ProfileButtons from './routes/root/login/ProfileButtons';
+import serverIP from './serverIP';
 
-export default function Header({ user }) {
+export default function Header() {
     const [nav, setNav] = useState(false);
+    const [user, setUser] = useState({});
+    useEffect(() => {
+        if (!user.info) {
+            const userID = Cookies.get('userID');
+            if (!userID) return;
+            fetch(`${serverIP}/getUser?userID=${userID}`).then(res => res.json())
+            .then(data => {
+                setUser(data);
+            });
+        }
+    });
+
+
     function onMenuClick() {
         setNav(prev => !prev);
         return false;
