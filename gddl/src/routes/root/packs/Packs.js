@@ -31,7 +31,7 @@ export default function Packs() {
         <div className='container'>
             <h1 className='mb-4'>Packs</h1>
             <div className='row'>
-                {packs.map(p => <div className='mb-2 col-4 text-center'><Link to={`/pack/${p.ID}`} key={p.ID}>{p.Name}</Link></div>)}
+                {packs.map(p => <div className='mb-2 col-4 text-center' key={p.ID}><Link to={`/pack/${p.ID}`}>{p.Name}</Link></div>)}
             </div>
         </div>
     )

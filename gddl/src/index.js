@@ -13,12 +13,14 @@ import Profile, { profileLoader } from './routes/root/profile/Profile';
 import PackOverview, { packLoader } from './routes/root/packs/packOverview/PackOverview';
 import Mod, { modLoader } from './routes/mod/Mod';
 import { Logout } from './routes/root/login/Logout';
+import ErrorElement from './ErrorElement';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
     loader: rootLoader,
+    errorElement: <ErrorElement />,
     children: [
       {
         index: true,
