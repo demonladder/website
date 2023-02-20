@@ -15,6 +15,7 @@ import Mod, { modLoader } from './routes/mod/Mod';
 import { Logout } from './routes/root/login/Logout';
 import ErrorElement from './ErrorElement';
 import Queue from './routes/mod/queue/Queue';
+import ModIndex from './routes/mod/ModIndex';
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
     element: <Mod />,
     loader: modLoader,
     children: [
+      {
+        index: true,
+        element: <ModIndex />
+      },
       {
         path: 'queue',
         element: <Queue />

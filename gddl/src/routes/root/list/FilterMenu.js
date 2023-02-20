@@ -55,12 +55,13 @@ export default function FilterMenu({ show, filter, sessionID }) {
         setHighTier('');
         setDifficulty(0);
         setRemoveUnrated(false);
+        setRemoveCompleted(false);
         setCreator('');
         setSong('');
     }
 
     return (
-        <div className={'menu ' + (show ? '' : 'hidden')}>
+        <div className={'menu' + (show ? '' : ' hidden')}>
             <h2>Filters</h2>
             <div className='row my-4'>
                 <div className='col'>
