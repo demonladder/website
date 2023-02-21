@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { Form, Link } from 'react-router-dom';
 import menu from './icons/menu.svg';
@@ -36,8 +36,23 @@ export default function Header() {
     function closeSubmit() { setShowModal(false); }
     function openSubmit() { setShowModal(true); }
 
-    function submitForm() {
+    let levelName = useRef();
+    let rating = useRef();
+    let enjoyment = useRef();
+    let refreshRate = useRef();
+    let device = useRef();
+    let proof = useRef();
+    async function submitForm() {
+        const data = {
+            name: levelName.current.value,
+            rating: parseInt(rating.current.value) || 0,
+            enjoyment: parseInt(enjoyment.current.value),
+            refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
+            device: parseInt(device.current.value),
+            proof: proof.current.value
+        };
 
+        console.log(data);
     }
 
     return (
@@ -70,13 +85,75 @@ export default function Header() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <label className='text-dark'>Level name: </label>
-                        <input type='text' className='form-control' />
+                        <div className='row align-items-center mb-2'>
+                            <div className='col-3'>
+                                <label className='text-dark'>Level name: </label>
+                            </div>
+                            <div className='col-auto'>
+                                <input type='text' className='form-control' ref={levelName} />
+                            </div>
+                        </div>
+                        <div className='row align-items-center mb-2'>
+                            <div className='col-3'>
+                                <label className='text-dark'>Rating: </label>
+                            </div>
+                            <div className='col-auto'>
+                                <input type='text' className='form-control' ref={rating} />
+                            </div>
+                        </div>
+                        <div className='row align-items-center mb-2'>
+                            <div className='col-3'>
+                                <label className='text-dark'>Enjoyment: </label>
+                            </div>
+                            <div className='col-auto'>
+                                <select className='form-select' ref={enjoyment}>
+                                    <option value="0"></option>
+                                    <option value="10">10 Masterpiece</option>
+                                    <option value="9">9 Great</option>
+                                    <option value="8">8 Very good</option>
+                                    <option value="7">7 Good</option>
+                                    <option value="6">6 Fine</option>
+                                    <option value="5">5 Average</option>
+                                    <option value="4">4 Bad</option>
+                                    <option value="3">3 Very bad</option>
+                                    <option value="2">2 Horrible</option>
+                                    <option value="1">1 Appalling</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className='row align-items-center mb-2'>
+                            <div className='col-3'>
+                                <label className='text-dark'>Refresh rate: </label>
+                            </div>
+                            <div className='col-auto'>
+                                <input type='text' className='form-control' ref={refreshRate} />
+                            </div>
+                        </div>
+                        <div className='row align-items-center mb-2'>
+                            <div className='col-3'>
+                                <label className='text-dark'>Device: </label>
+                            </div>
+                            <div className='col-auto'>
+                                <select className='form-select' ref={device}>
+                                    <option value="0"></option>
+                                    <option value="1">PC</option>
+                                    <option value="2">Mobile</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className='row align-items-center'>
+                            <div className='col-3'>
+                                <label className='text-dark'>Proof: </label>
+                            </div>
+                            <div className='col-9'>
+                                <input type='text' className='form-control' ref={proof} />
+                            </div>
+                        </div>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant='secondary' onClick={closeSubmit}>Close</Button>
-                    <Button variant='primary' onClick={submitForm}>Submit</Button>
+                    <Button variant='primary' type="submit" onClick={submitForm}>Submit</Button>
                 </Modal.Footer>
             </Modal>
         </>
