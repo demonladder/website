@@ -16,11 +16,13 @@
 
 .style-link {
     background: none;
+    text-decoration: none;
+    font-size: 1rem!important;
     border: none;
     color: white;
 }
 
 .style-link:hover {
     text-decoration: underline;
-    text-decoration-thickness: 2px;
+    color: white;
 }

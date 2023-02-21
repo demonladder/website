@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import { Form, Link } from 'react-router-dom';
-import menu from './icons/menu.svg';
+import { Button, Container, Form, Modal, Nav, Navbar, Spinner, Toast } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import ProfileButtons from './routes/root/login/ProfileButtons';
+import SearchResult from './routes/root/profile/SearchResult';
 import serverIP from './serverIP';
 
 export default function Header() {
@@ -36,65 +36,128 @@ export default function Header() {
     function closeSubmit() { setShowModal(false); }
     function openSubmit() { setShowModal(true); }
 
-    let levelName = useRef();
+    const [levelName, setLevelName] = useState('');
+    const [results, setResults] = useState([]);
+
+    const [timer, setTimer] = useState();
+    useEffect(() => {
+        clearTimeout(timer);
+        setTimer(setTimeout(() => {
+            fetch(`${serverIP}/getLevels?page=0&chunk=5&name=${levelName}`, {
+                credentials: 'include'
+            }).then(res => res.json())
+            .then(data => {
+                setResults(data.levels);
+            }).catch(e => {
+                console.error(e);
+            });
+        }, 300));
+    }, [levelName]);
+
+    const [resultVisible, setResultVisible] = useState(false);
+    function handleBlur() {
+        setTimeout(() => {
+            setResultVisible(false);
+        }, 100);
+    }
+
+    const [clickedID, setClickedID] = useState(null);
     let rating = useRef();
     let enjoyment = useRef();
     let refreshRate = useRef();
     let device = useRef();
     let proof = useRef();
-    async function submitForm() {
-        const data = {
-            name: levelName.current.value,
-            rating: parseInt(rating.current.value) || 0,
-            enjoyment: parseInt(enjoyment.current.value),
-            refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
-            device: parseInt(device.current.value),
-            proof: proof.current.value
-        };
 
-        console.log(data);
+    const [validated, setValidated] = useState(false);
+    const [sending, setSending] = useState(false);
+    async function submitForm(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (levelName !== '') {
+            let ID = null;
+            if (results.length > 0) {
+                ID = results[0].ID;
+            }
+    
+            const data = {
+                levelID: ID || clickedID,
+                rating: parseInt(rating.current.value) || 0,
+                enjoyment: parseInt(enjoyment.current.value),
+                refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
+                device: parseInt(device.current.value),
+                proof: proof.current.value
+            };
+    
+            console.log(data);
+            setSending(true);
+            
+            fetch(`${serverIP}/submit`, {
+                credentials: 'include',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(res => {
+                setSending(false);
+
+                res.json().then(data => setResponse(data.message));
+            })
+            .catch(e => {
+                console.log('Error occurred');
+                setSending(false);
+            });
+        }
+
+        setValidated(true);
+    }
+
+    const [responseMessage, setResponseMessage] = useState('');
+    function setResponse(msg) {
+        setResponseMessage(msg);
+        setTimeout(() => {
+            setResponseMessage('');
+        }, 5000);
     }
 
     return (
         <>
-            <header className='d-flex justify-content-between mb-4 py-4 px-5'>
-                <div className={`text-dark topnav w-100 ${nav ? 'responsive' : ''}`} id='topnav'>
-                    <a href='/' className='title me-4 mb-0 py-2 ps-3 text-decoration-none text-light'>
-                        GDDLadder
-                    </a>
-                    <Link to='/list' className='m-0 py-3 px-3 fs-5'>
-                        The Ladder
-                    </Link>
-                    <Link to='/references' className='m-0 py-3 px-3 fs-5'>
-                        Reference Demons
-                    </Link>
-                    <Link to='/packs' className='m-0 py-3 px-3 fs-5'>
-                        Packs
-                    </Link>
-                    <button className='style-link px-3 fs-5' type='button' onClick={openSubmit}>Submit</button>
-                    <ProfileButtons user={user} />
-                    <button onClick={onMenuClick} className='icon m-0 py-3 px-4 fs-5'>
-                        <img src={menu} alt='' className='h-100 white' width='32px' />
-                    </button>
-                </div>
-            </header>
+            <Navbar expand='lg' className='py-4 px-5 mb-4'>
+                <Container fluid>
+                    <Navbar.Brand href='/' className='text-light title'>GDDLadder</Navbar.Brand>
+                    <Navbar.Toggle aria-controls='navbar' />
+                    <Navbar.Collapse id='navbar'>
+                        <Nav className='me-auto' navbar>
+                            <LinkContainer to='/list'><Nav.Link className='text-light'>The Ladder</Nav.Link></LinkContainer>
+                            <LinkContainer to='/references'><Nav.Link className='text-light'>Reference Demons</Nav.Link></LinkContainer>
+                            <LinkContainer to='/packs'><Nav.Link className='text-light'>Packs</Nav.Link></LinkContainer>
+                            <Button variant='link' className='style-link px-3 fs-5' type='button' onClick={openSubmit}>Submit</Button>
+                        </Nav>
+                        <ProfileButtons user={user} />
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
             <Modal show={showModal} onHide={closeSubmit}>
                 <Modal.Header>
                     <h1 className='moda-title fs-3 text-dark' id='modalTitle'>Submit rating</h1>
                     <button type='button' className='btn-close' onClick={closeSubmit}></button>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form noValidate validated={validated} onSubmit={submitForm} className='position-relative'>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-3'>
+                            <div className='col-12 col-sm-3'>
                                 <label className='text-dark'>Level name: </label>
                             </div>
                             <div className='col-auto'>
-                                <input type='text' className='form-control' ref={levelName} />
+                                <input type='text' className='form-control' value={levelName} onChange={(e) => setLevelName(e.target.value)} onFocus={() => setResultVisible(true)} onBlur={handleBlur} required />
                             </div>
                         </div>
+                        <div className={(resultVisible ? 'd-block' : 'd-none') + ' search-result border'} style={{ left: '25%' }}>
+                            {results.map(r => <SearchResult level={r} setSearch={setLevelName} setID={setClickedID} key={r.ID} />)}
+                        </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-3'>
+                            <div className='col-12 col-sm-3'>
                                 <label className='text-dark'>Rating: </label>
                             </div>
                             <div className='col-auto'>
@@ -102,7 +165,7 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-3'>
+                            <div className='col-12 col-sm-3'>
                                 <label className='text-dark'>Enjoyment: </label>
                             </div>
                             <div className='col-auto'>
@@ -122,7 +185,7 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-3'>
+                            <div className='col-12 col-sm-3'>
                                 <label className='text-dark'>Refresh rate: </label>
                             </div>
                             <div className='col-auto'>
@@ -130,19 +193,18 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-3'>
+                            <div className='col-12 col-sm-3'>
                                 <label className='text-dark'>Device: </label>
                             </div>
                             <div className='col-auto'>
                                 <select className='form-select' ref={device}>
-                                    <option value="0"></option>
                                     <option value="1">PC</option>
                                     <option value="2">Mobile</option>
                                 </select>
                             </div>
                         </div>
                         <div className='row align-items-center'>
-                            <div className='col-3'>
+                            <div className='col-12 col-sm-3'>
                                 <label className='text-dark'>Proof: </label>
                             </div>
                             <div className='col-9'>
@@ -152,8 +214,12 @@ export default function Header() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
+                    <span className='text-dark'>{responseMessage}</span>
                     <Button variant='secondary' onClick={closeSubmit}>Close</Button>
-                    <Button variant='primary' type="submit" onClick={submitForm}>Submit</Button>
+                    <Button variant='primary' type="submit" onClick={submitForm}>
+                        {sending ? <Spinner as='span' animation='border' size='sm'  /> : ''}
+                        Submit
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>

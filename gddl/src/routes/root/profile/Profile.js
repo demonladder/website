@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 import Level from './Level';
 import serverIP from '../../../serverIP.js';
-import AddLevel from './AddLevel';
 
 export async function profileLoader({ params }) {
     return await getUser(params.userID, true);
@@ -12,7 +11,6 @@ export default function Profile() {
     const [userData] = useState(useLoaderData());
     let user = userData.info;
     let submissions = userData.submissions;
-    const [progress, setProgress] = useState(userData.progress);
 
     return (
         <div className='container'>
@@ -23,14 +21,11 @@ export default function Profile() {
             <p>Least favorite level: <Link to={'/level/' + user.LeastFavorite} className='link-disable'>{user.LeastFavorite || 'None'}</Link></p>
             <p>Minimum tier preference: {user.MinPref}</p>
             <p>Maximum tier preference: {user.MaxPref}</p>
-            <p>Submissions: {submissions.length}</p>
-            <p>Demons completed: {progress.filter(e => e.Progress === 100).length}</p>
             <div className='mt-3'>
-                <h1>Demon progress</h1>
-                <AddLevel setProgress={setProgress} />
-                <Level info={{ isHeader: true, Name: 'Level name', Creator: 'Creator', LevelID: 'Level ID', Rating: 'Tier', Progress: 'Progress'}} />
+                <h1>Submissions [{submissions.length}]</h1>
+                <Level info={{ isHeader: true, Name: 'Level name', Creator: 'Creator', LevelID: 'Level ID', Rating: 'Tier', Enjoyment: 'Enjoyment', UserRating: 'Rating'}} />
                 <div>
-                    {progress.map(p => <Level info={p} key={p.LevelID}/>)}
+                    {submissions.map(p => <Level info={p} key={p.LevelID}/>)}
                 </div>
             </div>
         </div>

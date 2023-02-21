@@ -1,8 +1,9 @@
 import React from 'react';
 
-export default function SearchResult({ level, setSearch }) {
+export default function SearchResult({ level, setSearch, setID }) {
     function clickHandler() {
         setSearch(level.Name)
+        setID(level.ID);
     }
 
     return (

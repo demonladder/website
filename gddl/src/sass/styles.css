@@ -46,36 +46,12 @@
   border: none;
 }
 
-@media (max-width: 850px) {
-  .topnav {
-    display: block;
-  }
-  .topnav a:not(:first-child) {
-    display: none;
-  }
-  .topnav .icon {
-    float: right;
-    display: block;
-  }
-  .topnav.responsive {
-    position: relative;
-  }
-  .topnav.responsive .icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  .topnav.responsive a {
-    float: none;
-    display: block;
-  }
-}
 .title {
   font-weight: bolder;
   font-size: 1.75rem;
 }
 
-header {
+.navbar {
   background: linear-gradient(rgba(103, 60, 60, 0.2666666667), rgba(255, 255, 255, 0));
 }
 
@@ -100,13 +76,15 @@ header {
 
 .style-link {
   background: none;
+  text-decoration: none;
+  font-size: 1rem !important;
   border: none;
   color: white;
 }
 
 .style-link:hover {
   text-decoration: underline;
-  text-decoration-thickness: 2px;
+  color: white;
 }
 
 button.list {

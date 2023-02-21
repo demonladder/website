@@ -23,40 +23,12 @@
     }
 }
 
-$header-size: 850px;
-@media (max-width: $header-size) {
-    .topnav {
-        display: block;
-        a:not(:first-child) { display: none; }
-
-        .icon {
-            float: right;
-            display: block;
-        }
-    }
-
-    .topnav.responsive {
-        position: relative;
-
-        .icon {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-
-        a {
-            float: none;
-            display: block;
-        }
-    }
-}
-
 .title {
     font-weight: bolder;
     font-size: 1.75rem;
 }
 
-header {
+.navbar {
     background: linear-gradient(Colors.$header, Colors.$transparent);
 }
 
