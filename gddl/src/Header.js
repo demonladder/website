@@ -1,13 +1,12 @@
 import Cookies from 'js-cookie';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Container, Form, Modal, Nav, Navbar, Spinner, Toast } from 'react-bootstrap';
+import { Button, Container, Form, Modal, Nav, Navbar, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ProfileButtons from './routes/root/login/ProfileButtons';
 import SearchResult from './routes/root/profile/SearchResult';
 import serverIP from './serverIP';
 
 export default function Header() {
-    const [nav, setNav] = useState(false);
     const [user, setUser] = useState({});
     useEffect(() => {
         if (!user.info) {
@@ -25,12 +24,6 @@ export default function Header() {
             });
         }
     });
-
-
-    function onMenuClick() {
-        setNav(prev => !prev);
-        return false;
-    }
 
     const [showModal, setShowModal] = useState(false);
     function closeSubmit() { setShowModal(false); }
@@ -68,49 +61,62 @@ export default function Header() {
     let device = useRef();
     let proof = useRef();
 
-    const [validated, setValidated] = useState(false);
     const [sending, setSending] = useState(false);
     async function submitForm(e) {
         e.preventDefault();
         e.stopPropagation();
 
-        if (levelName !== '') {
-            let ID = null;
-            if (results.length > 0) {
-                ID = results[0].ID;
-            }
-    
-            const data = {
-                levelID: ID || clickedID,
-                rating: parseInt(rating.current.value) || 0,
-                enjoyment: parseInt(enjoyment.current.value),
-                refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
-                device: parseInt(device.current.value),
-                proof: proof.current.value
-            };
-    
-            console.log(data);
-            setSending(true);
-            
-            fetch(`${serverIP}/submit`, {
-                credentials: 'include',
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then(res => {
-                setSending(false);
-
-                res.json().then(data => setResponse(data.message));
-            })
-            .catch(e => {
-                console.log('Error occurred');
-                setSending(false);
-            });
+        if (levelName === '') {
+            setResponse('Level name required!');
+            return;
         }
 
-        setValidated(true);
+        if (rating.current.value && (rating.current.value < 1 || rating.current.value > 35)) {
+            setResponse('Rating must be between 1 and 35!');
+            return;
+        }
+
+        if (proof.current.value && !proof.current.value.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
+            setResponse('Proof link is invalid!');
+            return;
+        }
+
+
+
+        // On validation
+        let ID = null;
+        if (results.length > 0) {
+            ID = results[0].ID;
+        }
+
+        const data = {
+            levelID: ID || clickedID,
+            rating: parseInt(rating.current.value) || 0,
+            enjoyment: parseInt(enjoyment.current.value),
+            refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
+            device: parseInt(device.current.value),
+            proof: proof.current.value
+        };
+
+        console.log(data);
+        setSending(true);
+        
+        fetch(`${serverIP}/submit`, {
+            credentials: 'include',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(res => {
+            setSending(false);
+
+            res.json().then(data => setResponse(data.message));
+        })
+        .catch(e => {
+            console.log('Error occurred');
+            setSending(false);
+        });
     }
 
     const [responseMessage, setResponseMessage] = useState('');
@@ -132,6 +138,7 @@ export default function Header() {
                             <LinkContainer to='/list'><Nav.Link className='text-light'>The Ladder</Nav.Link></LinkContainer>
                             <LinkContainer to='/references'><Nav.Link className='text-light'>Reference Demons</Nav.Link></LinkContainer>
                             <LinkContainer to='/packs'><Nav.Link className='text-light'>Packs</Nav.Link></LinkContainer>
+                            <LinkContainer to='/utils'><Nav.Link className='text-light'>Utils</Nav.Link></LinkContainer>
                             <Button variant='link' className='style-link px-3 fs-5' type='button' onClick={openSubmit}>Submit</Button>
                         </Nav>
                         <ProfileButtons user={user} />
@@ -144,7 +151,7 @@ export default function Header() {
                     <button type='button' className='btn-close' onClick={closeSubmit}></button>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form noValidate validated={validated} onSubmit={submitForm} className='position-relative'>
+                    <Form noValidate onSubmit={submitForm} className='position-relative'>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>
                                 <label className='text-dark'>Level name: </label>
@@ -161,7 +168,7 @@ export default function Header() {
                                 <label className='text-dark'>Rating: </label>
                             </div>
                             <div className='col-auto'>
-                                <input type='text' className='form-control' ref={rating} />
+                                <input type='number' className='form-control' ref={rating} />
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>

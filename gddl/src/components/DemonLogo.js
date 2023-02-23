@@ -1,8 +1,8 @@
-import edemon from './demon_logos/edemon.png';
-import mdemon from './demon_logos/mdemon.png';
-import hdemon from './demon_logos/hdemon.png';
-import idemon from './demon_logos/idemon.png';
-import exdemon from './demon_logos/exdemon.png';
+import edemon from '../demon_logos/edemon.png';
+import mdemon from '../demon_logos/mdemon.png';
+import hdemon from '../demon_logos/hdemon.png';
+import idemon from '../demon_logos/idemon.png';
+import exdemon from '../demon_logos/exdemon.png';
 
 export default function DemonLogo(diff) {
     let imgSrc = '';

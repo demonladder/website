@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import LoadingSpinner from '../../../LoadingSpinner';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import serverIP from '../../../serverIP';
 import Submission from './Submissions';
 
@@ -38,7 +38,7 @@ export default function Queue() {
         .then(res => {
             setLoading(false);
             const newQueue = queue.filter(s => !(s.UserID === info.UserID && s.LevelID === info.LevelID));
-            if (res.status === 200) setQueue(newQueue);
+            if (res.status === 200 || res.status === 404) setQueue(newQueue);
         })
         .catch(e => {
             setLoading(false);

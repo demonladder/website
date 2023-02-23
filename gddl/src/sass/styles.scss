@@ -10,6 +10,7 @@
 @use 'Root';
 @use 'LevelOverview';
 @use 'Login';
+@use 'Scrollbar';
 
 body {
     margin: 0;
@@ -45,17 +46,4 @@ header {
 
 .gddl-bg-secondary {
     background-color: #82A3A1;
-}
-
-::-webkit-scrollbar {
-    height: 10px;
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #202020;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: Colors.$primary;
 }

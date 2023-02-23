@@ -1,5 +1,5 @@
 import React from 'react';
-import { tierToIcon } from '../../../DemonLogo.js';
+import { tierToIcon } from '../../../components/DemonLogo.js';
 
 export default function ProfileButton({ user }) {
     return (

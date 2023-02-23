@@ -16,6 +16,7 @@ import { Logout } from './routes/root/login/Logout';
 import ErrorElement from './ErrorElement';
 import Queue from './routes/mod/queue/Queue';
 import ModIndex from './routes/mod/ModIndex';
+import Utils from './routes/utils/Utils'
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
         path: 'profile/:userID',
         element: <Profile />,
         loader: profileLoader
+      },
+      {
+        path: 'utils',
+        element: <Utils />
       }
     ]
   },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 import Creator from './Creator';
-import DemonLogo from '../../../DemonLogo';
+import DemonLogo from '../../../components/DemonLogo';
 import serverIP from '../../../serverIP';
 import Submission from './Submission';
 import { Helmet } from 'react-helmet';
