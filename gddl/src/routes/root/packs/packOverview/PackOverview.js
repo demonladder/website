@@ -1,13 +1,10 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import FetchPacks from '../../../../fetches/Packs.js';
 import Level from '../../list/Level.js';
-import serverIP from '../../../../serverIP.js';
 
 export async function packLoader({ params }) {
-    return fetch(`${serverIP}/getPack?packID=${params.pack_id}`, {
-        credentials: 'include'
-    })
-    .then(res => res.json())
+    return FetchPacks.byID(params.pack_id)
     .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
 }
 

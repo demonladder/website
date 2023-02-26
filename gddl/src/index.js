@@ -17,6 +17,7 @@ import ErrorElement from './ErrorElement';
 import Queue from './routes/mod/queue/Queue';
 import ModIndex from './routes/mod/ModIndex';
 import Utils from './routes/utils/Utils'
+import EditPacks from './routes/mod/packs/EditPacks';
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: 'queue',
         element: <Queue />
+      },
+      {
+        path: 'packs',
+        element: <EditPacks />
       }
     ]
   },

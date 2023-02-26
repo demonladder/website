@@ -30,9 +30,13 @@ export default function Mod() {
                             <li className='nav-item'>
                                 <Link className={`nav-link ${path === '/mod/queue' ? 'active' : 'link-light'}`} to='/mod/queue'>Submissions queue</Link>
                             </li>
+                            <li className='nav-item'>
+                                <Link className={`nav-link ${path === '/mod/packs' ? 'active' : 'link-light'}`} to='/mod/packs'>Edit packs</Link>
+                            </li>
                         </ul>
                     </div>
-                    <div className='col-12 col-md-7 col-lg-8'>
+                    <div className='spacer col-1 d-none d-sm-block'></div>
+                    <div className='col-12 col-md-6 col-lg-7'>
                         <Outlet />
                     </div>
                 </div>
