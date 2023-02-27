@@ -14,13 +14,15 @@ export default function Profile() {
 
     return (
         <div className='container'>
-            <h1>{user.Name}</h1>
-            <p>Introduction: {user.Introduction}</p>
-            <p>Hardest: <Link to={'/level/' + user.Hardest} className='link-disable'>{user.Hardest || 'None'}</Link></p>
-            <p>Favorite level: <Link to={'/level/' + user.Favorite} className='link-disable'>{user.Favorite || 'None'}</Link></p>
-            <p>Least favorite level: <Link to={'/level/' + user.LeastFavorite} className='link-disable'>{user.LeastFavorite || 'None'}</Link></p>
-            <p>Minimum tier preference: {user.MinPref}</p>
-            <p>Maximum tier preference: {user.MaxPref}</p>
+            <div className='mb-5'>
+                <h1>{user.Name}</h1>
+                <p><b>Introduction:</b> {user.Introduction || '-'}</p>
+                <p>Hardest: <Link to={'/level/' + user.Hardest} className='link-disable'>{user.Hardest || 'None'}</Link></p>
+                <p>Favorite level: <Link to={'/level/' + user.Favorite} className='link-disable'>{user.Favorite || 'None'}</Link></p>
+                <p>Least favorite level: <Link to={'/level/' + user.LeastFavorite} className='link-disable'>{user.LeastFavorite || 'None'}</Link></p>
+                <p>Minimum tier preference: {user.MinPref}</p>
+                <p>Maximum tier preference: {user.MaxPref}</p>
+            </div>
             <div className='mt-3'>
                 <h1>Submissions [{submissions.length}]</h1>
                 <Level info={{ isHeader: true, Name: 'Level name', Creator: 'Creator', LevelID: 'Level ID', Rating: 'Tier', Enjoyment: 'Enjoyment', UserRating: 'Rating'}} />

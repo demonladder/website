@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import Creator from './Creator';
 import DemonLogo from '../../../components/DemonLogo';
 import serverIP from '../../../serverIP';
 import Submission from './Submission';
 import { Helmet } from 'react-helmet';
+import PackRef from '../../../components/PackRef';
+import { Accordion } from 'react-bootstrap';
 
 export async function levelLoader({ params }) {
     return fetch(`${serverIP}/getLevel?levelID=${params.level_id}&returnPacks=true`)
@@ -27,10 +29,23 @@ export default function LevelOverview() {
     const enjoyments = levelInfo.submissions.filter(e => e.Enjoyment != null).map(s => s.Enjoyment);
     const ratings = levelInfo.submissions.filter(e => e.Rating != null).map(s => s.Rating);
 
-    const avgEnjoyment = (enjoyments.reduce((a, c) => a + c, 0) / enjoyments.length).toFixed(2);
-    const avgRating = ratings.reduce((a, c) => a + c, 0) / ratings.length;  // reduce() calculates the sum
-    const standardDeviation = Math.sqrt(ratings.reduce((a, c) => a + Math.pow(c-avgRating, 2), 0) / ratings.length).toFixed(2);
+    let avgRating = '-';
+    let roundedRating = 'Unrated';
+    let avgEnjoyment = '-';
+    let roundedEnjoyment = 'Unrated';
+    let standardDeviation = '-';
+    if (ratings.length > 0) {
+        avgRating = ratings.reduce((a, c) => a + c, 0) / ratings.length;  // reduce() calculates the sum
+        standardDeviation = ratings.length > 1 ? Math.sqrt(ratings.reduce((a, c) => a + Math.pow(c-avgRating, 2), 0) / (ratings.length - 1)).toFixed(2) : 0;
+        roundedRating = Math.round(avgRating);
+        avgRating = avgRating.toFixed(2);
+    }
 
+    if (enjoyments.length > 0) {
+        avgEnjoyment = (enjoyments.reduce((a, c) => a + c, 0) / enjoyments.length).toFixed(2);
+        roundedEnjoyment = Math.round(avgEnjoyment);
+    }
+    
     const logo = DemonLogo(level.Difficulty);
     
     function onIDClick() {
@@ -44,27 +59,27 @@ export default function LevelOverview() {
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content="https://gdladder.com/" />
                 <meta property="og:title" content={level.Name} />
-                <meta property="og:description" content={`Tier ${avgRating.toFixed(2) || '-'}, enjoyment ${avgEnjoyment || '-'}\nby ${level.Creator}`} />
+                <meta property="og:description" content={`Tier ${avgRating || '-'}, enjoyment ${avgEnjoyment || '-'}\nby ${level.Creator}`} />
                 <meta property="og:image" content={logo} />
             </Helmet>
             <h1>Level information for {level.Name}</h1>
             by <Creator name={level.Creator} />
-            <div className='row table-container'>
+            <div className='row table-container mb-5'>
                 <div className='col-lg-3 col-md-4 col-12'>
                     <img src={logo} width='100%' alt='' />
                 </div>
                 <div className='row col-lg-9 col-md-8 col-12'>
                     <div className='col-lg-4 col-md-6 col-6'>
                         <b className='d-block'>ID</b>
-                        <button className='style-link p-0' onClick={onIDClick}>{level.ID}</button>
+                        <button className='style-link p-0 fs-2' onClick={onIDClick}>{level.ID}</button>
                     </div>
                     <div className='col-lg-4 col-md-6 col-6'>
                         <b>Tier</b>
-                        <p>{avgRating ? avgRating.toFixed(2) : 'Unrated'} [{ratings.length}]</p>
+                        <p>{roundedRating} [{avgRating}]</p>
                     </div>
                     <div className='col-lg-4 col-md-6 col-6'>
                         <b>Enjoyment</b>
-                        <p>{avgEnjoyment || 'Unrated'} [{enjoyments.length}]</p>
+                        <p>{roundedEnjoyment} [{avgEnjoyment}]</p>
                     </div>
                     <div className='col-lg-4 col-md-12 col-6'>
                         <b>Difficulty</b>
@@ -80,16 +95,22 @@ export default function LevelOverview() {
                     </div>
                 </div>
             </div>
-            <div className='row mt-4'>
-                <div className='col-6'>
-                    <h1>Submissions</h1>
-                    {levelInfo.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
-                </div>
-                <div className='col-6'>
-                    <h1>Packs</h1>
-                    {levelInfo.packs.map(p => <Link to={`/pack/${p.ID}`} className='d-block' key={p.ID}>{p.Name}</Link>)}
-                </div>
-            </div>
+            <Accordion>
+                <Accordion.Item eventKey='0'>
+                    <Accordion.Header><h1>Submissions [{levelInfo.submissions.length}]</h1></Accordion.Header>
+                    <Accordion.Body>
+                        {levelInfo.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
+                        {levelInfo.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey='1'>
+                    <Accordion.Header><h1>Packs [{levelInfo.packs.length}]</h1></Accordion.Header>
+                    <Accordion.Body>
+                        {levelInfo.packs.map(p => <PackRef pack={p} key={p.ID} />)}
+                        {levelInfo.packs.length === 0 ? <p className='mb-0'>This level is not part of any packs</p> : null}
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
         </div>
     );
 }

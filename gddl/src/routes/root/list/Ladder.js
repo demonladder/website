@@ -73,10 +73,18 @@ export default function Ladder() {
         clearTimeout(timer);
         setTimer(setTimeout(() => {
             // Runs a little after user input stops
-            let q = `${serverIP}/getLevels?page=${pageIndex}&name=${search}&sort=${sorter}_${sortAscending ? 'asc' : 'desc'}&`;
-            for (let p of Object.keys(filters)) {
-                q += p + '=' + filters[p] + '&';
+            const query = {
+                page: pageIndex,
+                name: search,
+                sort: sorter + '_' + sortAscending ? 'asc' : 'desc'
             }
+            let q = `${serverIP}/getLevels`;
+            const extra = [];
+            for (let p of Object.keys({...filters, ...query})) {
+                if (!filters[p]) continue;
+                extra.push(p + '=' + filters[p]);
+            }
+            if (extra.length > 0) q += '?' + extra.join('&');
             q = encodeURI(q);
 
             fetch(q, {
