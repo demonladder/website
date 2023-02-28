@@ -409,7 +409,10 @@ h2 {
   cursor: pointer;
 }
 
-a {
+.navbar-nav a,
+.navbar-collapse a,
+.level * a,
+div.level-overview a {
   color: white;
   background-color: rgba(0, 0, 0, 0);
   border: 0;
@@ -553,18 +556,6 @@ code {
   padding: 0.25rem 0.5rem;
   background-color: white;
   color: black;
-}
-
-header {
-  margin-bottom: 1.5rem;
-}
-
-.tg-primary {
-  color: #b63a3a;
-}
-
-.gddl-bg-secondary {
-  background-color: #82A3A1;
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -1,4 +1,7 @@
-a {
+.navbar-nav a,
+.navbar-collapse a,
+.level * a,
+div.level-overview a {
     color: white;
     background-color: rgb(0, 0, 0, 0);
     border: 0;

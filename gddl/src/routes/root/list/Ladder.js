@@ -73,16 +73,17 @@ export default function Ladder() {
         clearTimeout(timer);
         setTimer(setTimeout(() => {
             // Runs a little after user input stops
-            const query = {
+            const joined = {
+                ...filters,
                 page: pageIndex,
                 name: search,
-                sort: sorter + '_' + sortAscending ? 'asc' : 'desc'
+                sort: sorter + '_' + (sortAscending ? 'asc' : 'desc')
             }
             let q = `${serverIP}/getLevels`;
             const extra = [];
-            for (let p of Object.keys({...filters, ...query})) {
-                if (!filters[p]) continue;
-                extra.push(p + '=' + filters[p]);
+            for (let p of Object.keys(joined)) {
+                if (!joined[p]) continue;
+                extra.push(p + '=' + joined[p]);
             }
             if (extra.length > 0) q += '?' + extra.join('&');
             q = encodeURI(q);
@@ -97,8 +98,8 @@ export default function Ladder() {
         }, 200));
     }, [search, filters, pageIndex, sorter, sortAscending]);
 
-    useEffect(() => {
-        setPageIndex(0);
+    useEffect(() => {  // Watch for changes in search and filters
+        setPageIndex(0);  // Reset index to page 1
     }, [search, filters]);
 
 

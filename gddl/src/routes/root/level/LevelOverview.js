@@ -53,7 +53,7 @@ export default function LevelOverview() {
     }
 
     return (
-        <div className='container'>
+        <div className='container level-overview'>
             <Helmet>
                 <title>{`GDDL - ${level.Name}`}</title>
                 <meta property="og:type" content="website" />
