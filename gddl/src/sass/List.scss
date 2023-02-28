@@ -1,4 +1,4 @@
-@use 'Colors.scss';
+@use 'Colors';
 
 $button-radius: 6px;
 
@@ -8,7 +8,6 @@ button.list {
 }
 
 button.list.active {
-    --active-color: rgb(197, 197, 197);
     background-color: Colors.$active;
     border-color: Colors.$active;
 }
@@ -32,8 +31,9 @@ button.list.active {
     color: white;
     border: 2px solid white;
     border-radius: 10px;
-    font-size: 1.5rem;
     transition-duration: 0.1s;
+    align-items: center;
+    padding: 0.6rem 2rem;
 
     img {
         filter: invert(100%) brightness(100%);  // Makes the arrows white

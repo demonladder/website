@@ -3,13 +3,13 @@ import { Link, Outlet, redirect, useResolvedPath } from 'react-router-dom';
 import Header from '../../Header';
 import serverIP from '../../serverIP';
 
-export async function modLoader() {
-    const mod = await fetch(serverIP + '/isMod', {
+export function modLoader() {
+    return fetch(serverIP + '/isMod', {
         credentials: 'include'
-    }).then(res => res.json());
-
-    if (!mod.isMod) return redirect('/');
-    return null;
+    }).then(res => {
+        if (res.status !== 200) return redirect('/');
+        return null;
+    });
 }
 
 export default function Mod() {

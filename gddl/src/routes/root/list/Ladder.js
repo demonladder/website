@@ -77,7 +77,8 @@ export default function Ladder() {
                 ...filters,
                 page: pageIndex,
                 name: search,
-                sort: sorter + '_' + (sortAscending ? 'asc' : 'desc')
+                sort: sorter,
+                sortDirection: sortAscending ? 'asc' : 'desc'
             }
             let q = `${serverIP}/getLevels`;
             const extra = [];
@@ -100,6 +101,7 @@ export default function Ladder() {
 
     useEffect(() => {  // Watch for changes in search and filters
         setPageIndex(0);  // Reset index to page 1
+        console.log('Filters changed');
     }, [search, filters]);
 
 
@@ -183,14 +185,14 @@ export default function Ladder() {
             </div>
             <FilterMenu show={showFilter} filter={setFilters} sessionID={sessionID} />
             <div id='levelList' className='my-3'>
-                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} classes='head' />
+                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
                 {!loaderResponse.error ? levels.levels.map(l => <Level info={l} key={l.ID} />)
                 : <h1 className='m-5'>{loaderResponse.message}</h1>}
             </div>
-            <div className='row align-items-center my-4 mx-5'>
-                <button className='page-scroller col' onClick={pageDown}><img src={caretL} alt='' /></button>
-                <p className='col text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/15) || 0}</p>
-                <button className='page-scroller col' onClick={pageUp}><img src={caretR} alt='' /></button>
+            <div className='d-flex align-items-center justify-content-evenly'>
+                <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='' /></button>
+                <p className='text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/15) || 0}</p>
+                <button className='page-scroller' onClick={pageUp}><img src={caretR} alt='' /></button>
             </div>
         </div>
     );

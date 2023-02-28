@@ -89,8 +89,9 @@ export default function Header() {
             ID = results[0].ID;
         }
 
+        console.log(clickedID);
         const data = {
-            levelID: ID || clickedID,
+            levelID: clickedID || ID,
             rating: parseInt(rating.current.value) || 0,
             enjoyment: parseInt(enjoyment.current.value),
             refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
@@ -139,7 +140,7 @@ export default function Header() {
                             <LinkContainer to='/references'><Nav.Link className='text-light'>Reference Demons</Nav.Link></LinkContainer>
                             <LinkContainer to='/packs'><Nav.Link className='text-light'>Packs</Nav.Link></LinkContainer>
                             <LinkContainer to='/utils'><Nav.Link className='text-light'>Utils</Nav.Link></LinkContainer>
-                            <Button variant='link' className='style-link px-3 fs-5' type='button' onClick={openSubmit}>Submit</Button>
+                            <Button variant='link' className='text-start style-link px-0 fs-5' type='button' onClick={openSubmit}>Submit</Button>
                         </Nav>
                         <ProfileButtons user={user} />
                     </Navbar.Collapse>
@@ -177,7 +178,7 @@ export default function Header() {
                             </div>
                             <div className='col-auto'>
                                 <select className='form-select' ref={enjoyment}>
-                                    <option value="0"></option>
+                                    <option value="-1"></option>
                                     <option value="10">10 Masterpiece</option>
                                     <option value="9">9 Great</option>
                                     <option value="8">8 Very good</option>
@@ -188,6 +189,7 @@ export default function Header() {
                                     <option value="3">3 Very bad</option>
                                     <option value="2">2 Horrible</option>
                                     <option value="1">1 Appalling</option>
+                                    <option value="0">0 Abysmal</option>
                                 </select>
                             </div>
                         </div>

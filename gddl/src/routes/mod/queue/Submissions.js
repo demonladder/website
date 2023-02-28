@@ -13,7 +13,7 @@ export default function Submission({ info, approve, remove }) {
                 <p>{'Device: ' + info.Device}</p>
                 <p>{'Refresh Rate: ' + info.RefreshRate}</p>
                 <p>{'Rating: ' + (info.Rating === 0 ? 'None' : info.Rating)}</p>
-                <p>{'Enjoyment: ' + (info.Enjoyment === 0 ? 'None' : info.Enjoyment)}</p>
+                <p>{'Enjoyment: ' + (info.Enjoyment === -1 ? 'None' : info.Enjoyment)}</p>
                 <p>{'Proof: ' + (info.Proof || 'None')}</p>
             </div>
             <div className='d-flex justify-content-evenly'>

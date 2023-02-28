@@ -27,8 +27,8 @@ export default function Queue() {
             }
         })
         .catch(e => {
-            console.log('Error ocurred');
             setError(true);
+            setLoading(false);
         });
     }, []);
 
