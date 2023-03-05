@@ -1,21 +1,12 @@
 @use 'Colors';
 
-.menu {
+#filter-menu {
     background-color: Colors.$filter-bg;
+    margin-bottom: 1.5rem;
+    transition: height 0.4s cubic-bezier(0.56, 0.06, 0.04, 0.98);
     overflow: hidden;
-    padding: 1rem;
-    border-radius: 10px;
-    margin-bottom: 1.5rem;
-    transition-duration: 0.3s;
-    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
-}
 
-.menu.hidden {
-    transform: scaleY(0);
-    position: absolute;
-    transition-duration: 0s;
-}
-
-h2 {
-    margin-bottom: 1.5rem;
+    .content {
+        padding: 1rem;
+    }
 }

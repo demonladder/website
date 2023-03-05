@@ -32,8 +32,12 @@
     background: linear-gradient(Colors.$header, Colors.$transparent);
 }
 
-.icon {
-    .white {
-        filter: invert(100%);
+button.navbar-toggler {
+    &:focus {
+        box-shadow: none;
     }
+}
+.navbar-toggler-icon {
+    filter: invert(100%);
+    color: white;
 }

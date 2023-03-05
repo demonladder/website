@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import FetchPacks from '../../../fetches/Packs';
 import PackRef from '../../../components/PackRef';
 
