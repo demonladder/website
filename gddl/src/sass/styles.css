@@ -64,17 +64,38 @@ button.navbar-toggler:focus {
   color: white;
 }
 
-.level {
+#level-list .level.list {
   border: 1px #998888 solid;
   border-bottom: none;
   border-right: none;
   border-left: none;
+  padding: 0;
 }
-.level h3 {
+#level-list .level.list h3 {
   font-weight: 350;
 }
-
-.level.head {
+#level-list .level.grid {
+  margin: 0.5rem;
+  padding: 0.25rem 1rem;
+  border-radius: 10px;
+  transition-duration: 200ms;
+}
+#level-list .level.grid img {
+  width: 128px;
+  height: 128px;
+  align-self: center;
+}
+#level-list .level.grid .info {
+  width: fit-content;
+}
+#level-list .level.grid.tier-0 {
+  background: #313131;
+}
+#level-list .level.grid:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+#level-list .level.head {
   border-top: none;
   border-bottom: solid;
 }
@@ -218,23 +239,53 @@ input[type=text]:focus {
   padding-right: 10px !important;
   border-radius: 0;
 }
-.search .view-left {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-.search .view-right {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
 
 #filter-menu {
   background-color: #3b1118;
   margin-bottom: 1.5rem;
-  transition: height 0.4s cubic-bezier(0.56, 0.06, 0.04, 0.98);
+  max-height: 0;
   overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.56, 0.06, 0.04, 0.98);
 }
-#filter-menu .content {
+#filter-menu > .content {
   padding: 1rem;
+}
+
+button.open-extended {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  background: none;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: white;
+  transition: border 0.2s ease-in-out;
+}
+button.open-extended:hover {
+  border-bottom: 1px solid white;
+}
+
+input.num-sm {
+  max-width: 50px;
+}
+
+input.num-lg {
+  min-width: 50px;
+}
+
+#extended-filters-menu .content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.56, 0.06, 0.04, 0.98);
+}
+#extended-filters-menu .open-spinner {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  margin-left: 0.4rem;
+}
+#extended-filters-menu .open-spinner.spin {
+  transform: rotate(180deg);
 }
 
 .ref-container {
@@ -250,6 +301,10 @@ input[type=text]:focus {
   border-color: black;
   border-width: 1px;
   border-left: 0;
+}
+
+.tier-0 {
+  background-color: #360432;
 }
 
 .tier-1 {
@@ -570,6 +625,19 @@ a:hover {
 .submission-ref:active {
   transform: translate(0, -1px);
   box-shadow: none;
+}
+
+button {
+  transition: all 0.2s ease-in-out;
+}
+button.danger {
+  background: none;
+  color: white;
+  border: 3px solid #870000;
+}
+button.danger:hover:not(:active) {
+  background-color: #540000;
+  transform: scale(1.1);
 }
 
 body {

@@ -96,16 +96,6 @@ const router = createBrowserRouter([
   }
 ]);
 
-window.addEventListener('resize', () => {
-    const growDiv = document.getElementById('filter-menu');
-    if (growDiv.style.height === '0px') {  // Close menu
-        return;
-    } else {  // Open menu
-        const wrapper = document.querySelector('#filter-menu .wrapper');
-        growDiv.style.height = wrapper.clientHeight + 'px';
-    }
-});
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

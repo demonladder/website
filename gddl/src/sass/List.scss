@@ -134,14 +134,4 @@ input[type=text] {
         padding-right: 10px!important;
         border-radius: 0;
     }
-
-    .view-left {
-        border-top-left-radius: $button-radius;
-        border-bottom-left-radius: $button-radius;
-    }
-
-    .view-right {
-        border-top-right-radius: $button-radius;
-        border-bottom-right-radius: $button-radius;
-    }
 }

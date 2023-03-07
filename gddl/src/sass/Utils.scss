@@ -1,0 +1,15 @@
+button {
+    transition: all 0.2s ease-in-out;
+
+    &.danger {
+        background: none;
+        color: white;
+        border: 3px solid #870000;
+        //border-radius: 3px;
+
+        &:hover:not(:active) {
+            background-color: #540000;
+            transform: scale(1.1);
+        }
+    }
+}

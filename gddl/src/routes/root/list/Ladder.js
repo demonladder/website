@@ -106,16 +106,12 @@ export default function Ladder() {
 
 
     function toggleShowFilter() {
-        const growDiv = document.getElementById('filter-menu');
-        if (growDiv.clientHeight) {  // Close menu
-            growDiv.style.height = 0;
-            growDiv.style.overflow = 'hidden';
-        } else {  // Open menu
-            const wrapper = document.querySelector('#filter-menu .wrapper');
-            growDiv.style.height = wrapper.clientHeight + 'px';
-            setTimeout(() => {
-                growDiv.style.overflow = 'visible';
-            }, 400);
+        const content = document.getElementById('filter-menu');
+
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
         }
     }
 
@@ -134,9 +130,7 @@ export default function Ladder() {
 
     return (
         <div className='container'>
-            <h1>
-                The Ladder
-            </h1>
+            <h1>The Ladder</h1>
             <div className='d-flex align-items-center search'>
                 <div className='flex-fill m-2'>
                     <input type='text' placeholder='  Search level name or ID...' name='query' value={search} onChange={onSearchChange} />
@@ -184,10 +178,12 @@ export default function Ladder() {
                 </div>
             </div>
             <FilterMenu filter={setFilters} sessionID={sessionID} />
-            <div id='levelList' className='my-3'>
-                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} />
-                {!loaderResponse.error ? levels.levels.map(l => <Level info={l} key={l.ID} />)
-                : <h1 className='m-5'>{loaderResponse.message}</h1>}
+            <div id='level-list' className='my-3'>
+                <div className='row p-0 m-0'>
+                    <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
+                    {!loaderResponse.error ? levels.levels.map(l => <Level info={l} isListView={listView} key={l.ID} />)
+                    : <h1 className='m-5'>{loaderResponse.message}</h1>}
+                </div>
             </div>
             <div className='d-flex align-items-center justify-content-evenly'>
                 <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='' /></button>
