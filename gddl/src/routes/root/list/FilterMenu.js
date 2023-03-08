@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Select from '../../../components/Select';
 import FiltersExtended from './FiltersExtended';
+import { toggleShowFilter } from './Ladder';
 
 export default function FilterMenu({ filter, sessionID }) {
     const [lowTier, setLowTier] = useState('');
@@ -63,7 +64,7 @@ export default function FilterMenu({ filter, sessionID }) {
     }
 
     return (
-        <div id='filter-menu'>
+        <div id='filter-menu' onMouseLeave={toggleShowFilter}>
             <div className='content'>
                 <div className='d-flex justify-content-between mb-3'>
                     <h2 className='m-0'>Filters</h2>

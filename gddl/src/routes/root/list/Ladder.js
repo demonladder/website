@@ -25,6 +25,16 @@ export async function ladderLoader() {
     });
 }
 
+export function toggleShowFilter() {
+    const content = document.getElementById('filter-menu');
+
+    if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+    } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
+    }
+}
+
 export default function Ladder() {
     const [sessionID] = useOutletContext();
 
@@ -104,16 +114,6 @@ export default function Ladder() {
     }, [search, filters]);
 
 
-
-    function toggleShowFilter() {
-        const content = document.getElementById('filter-menu');
-
-        if (content.style.maxHeight) {
-            content.style.maxHeight = null;
-        } else {
-            content.style.maxHeight = content.scrollHeight + 'px';
-        }
-    }
 
     function onSearchChange(event) {
         setSearch(event.target.value);
