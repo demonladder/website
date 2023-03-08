@@ -24,3 +24,54 @@
         cursor: pointer;
     }
 }
+
+.profile {
+    .information {
+        display: flex;
+
+        .introduction {
+            background: rgb(32, 32, 32);
+            padding: 1rem;
+            min-width: 25%;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .trackers {
+            background: rgb(46, 46, 46);
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 2rem;
+            flex-grow: 1;
+            border-radius: 0 8px 8px 0;
+
+            .tracker {
+                display: flex;
+                justify-content: space-between;
+
+                * {
+                    margin: 0;
+                }
+
+                a {
+                    color: white;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    @media(max-width: 550px) {
+        .information {
+            flex-direction: column;
+
+            .introduction {
+                border-radius: 8px 8px 0 0;
+            }
+
+            .trackers {
+                border-radius: 0 0 8px 8px;
+            }
+        }
+    }
+}

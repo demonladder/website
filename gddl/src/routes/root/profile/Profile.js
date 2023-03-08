@@ -13,15 +13,34 @@ export default function Profile() {
     let submissions = userData.submissions;
 
     return (
-        <div className='container'>
-            <div className='mb-5'>
-                <h1>{user.Name}</h1>
-                <p><b>Introduction:</b> {user.Introduction || '-'}</p>
-                <p>Hardest: <Link to={'/level/' + user.Hardest} className='link-disable'>{user.Hardest || 'None'}</Link></p>
-                <p>Favorite level: <Link to={'/level/' + user.Favorite} className='link-disable'>{user.Favorite || 'None'}</Link></p>
-                <p>Least favorite level: <Link to={'/level/' + user.LeastFavorite} className='link-disable'>{user.LeastFavorite || 'None'}</Link></p>
-                <p>Minimum tier preference: {user.MinPref}</p>
-                <p>Maximum tier preference: {user.MaxPref}</p>
+        <div className='container profile'>
+            <h1>{user.Name}</h1>
+            <div className='information'>
+                <div className='introduction'>
+                    <p><b>Introduction:</b> {user.Introduction || '-'}</p>
+                </div>
+                <div className='trackers'>
+                    <div className='tracker'>
+                        <p>Hardest:</p>
+                        <Link to={'/level/' + user.Hardest} className='link-disable'>{user.Hardest || '-'}</Link>
+                    </div>
+                    <div className='tracker'>
+                        <p>Favorite level:</p>
+                        <Link to={'/level/' + user.Favorite} className='link-disable'>{user.Favorite || '-'}</Link>
+                    </div>
+                    <div className='tracker'>
+                        <p>Least favorite level:</p>
+                        <Link to={'/level/' + user.LeastFavorite} className='link-disable'>{user.LeastFavorite || '-'}</Link>
+                    </div>
+                    <div className='tracker'>
+                        <p>Minimum tier preference:</p>
+                        <p>{user.MinPref || '-'}</p>
+                    </div>
+                    <div className='tracker'>
+                        <p>Maximum tier preference:</p>
+                        <p>{user.MaxPref || '-'}</p>
+                    </div>
+                </div>
             </div>
             <div className='mt-3'>
                 <h1>Submissions [{submissions.length}]</h1>
