@@ -38,7 +38,7 @@ code {
     color: black;
 }
 
-input,
+input:not([type="radio"]),
 .style-input,
 select {
     outline: none;

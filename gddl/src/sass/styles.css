@@ -6,7 +6,6 @@
   width: 100%;
   background-color: #280808;
   padding: 30px 40px;
-  border-radius: 10px;
   margin-bottom: 5rem;
 }
 
@@ -87,9 +86,6 @@ button.navbar-toggler:focus {
 }
 #level-list .level.grid .info {
   width: fit-content;
-}
-#level-list .level.grid.tier-0 {
-  background: #313131;
 }
 #level-list .level.grid:hover {
   cursor: pointer;
@@ -190,7 +186,7 @@ button.list.active {
 }
 
 .collapse-open {
-  height: 177px;
+  height: 150px;
 }
 
 ul {
@@ -571,7 +567,6 @@ a:hover {
 .table-container {
   margin-top: 1.5rem;
   padding: 1rem;
-  border-radius: 15px;
   background-color: rgba(0, 0, 0, 0.3);
   font-size: 1.5rem;
 }
@@ -681,6 +676,18 @@ button.danger:hover:not(:active) {
   transform: scale(1.1);
 }
 
+.underline {
+  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
+  padding: 0;
+  text-decoration: none !important;
+}
+.underline:hover {
+  background-size: 100% 2px;
+}
+
 body {
   margin: 0;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
@@ -702,7 +709,7 @@ code {
   color: black;
 }
 
-input,
+input:not([type=radio]),
 .style-input,
 select {
   outline: none;

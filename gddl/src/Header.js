@@ -136,11 +136,11 @@ export default function Header() {
                     <Navbar.Toggle aria-controls='navbar' />
                     <Navbar.Collapse id='navbar'>
                         <Nav className='me-auto' navbar>
-                            <LinkContainer to='/list'><Nav.Link className='text-light'>The Ladder</Nav.Link></LinkContainer>
-                            <LinkContainer to='/references'><Nav.Link className='text-light'>Reference Demons</Nav.Link></LinkContainer>
-                            <LinkContainer to='/packs'><Nav.Link className='text-light'>Packs</Nav.Link></LinkContainer>
-                            <LinkContainer to='/utils'><Nav.Link className='text-light'>Utils</Nav.Link></LinkContainer>
-                            <Button variant='link' className='text-start style-link px-0 fs-5' type='button' onClick={openSubmit}>Submit</Button>
+                            <div className='d-flex align-items-center'><LinkContainer to='/list'><Nav.Link className='text-light underline'>The Ladder</Nav.Link></LinkContainer></div>
+                            <div className='d-flex align-items-center'><LinkContainer to='/references'><Nav.Link className='text-light underline'>Reference Demons</Nav.Link></LinkContainer></div>
+                            <div className='d-flex align-items-center'><LinkContainer to='/packs'><Nav.Link className='text-light underline'>Packs</Nav.Link></LinkContainer></div>
+                            <div className='d-flex align-items-center'><LinkContainer to='/utils'><Nav.Link className='text-light underline'>Utils</Nav.Link></LinkContainer></div>
+                            <div><Button variant='link' className='text-start style-link fs-5 underline' type='button' onClick={openSubmit}>Submit</Button></div>
                         </Nav>
                         <ProfileButtons user={user} />
                     </Navbar.Collapse>

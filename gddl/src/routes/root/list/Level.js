@@ -46,17 +46,17 @@ export default function Level({ info, isListView }) {
 
     const roundedTier = Math.round(info.Rating);
     return (
-        <div className='col-6' onClick={handleClick}>
-            <div className={`level grid tier-${roundedTier}`}>
-                <div className='d-flex justify-content-between'>
-                    <div className='info'>
-                        <h1>{info.Name}</h1>
-                        <h3>by {info.Creator}</h3>
-                        { roundedTier !== 0 ?
-                            <h3>Tier <b>{roundedTier}</b></h3> :
-                            <h3>Unrated</h3>
-                        }
-                    </div>
+        <div className={`level grid tier-${roundedTier}`} onClick={handleClick}>
+            <div className='d-flex justify-content-between'>
+                <div className='info flex-shrink-1'>
+                    <h1 className='text-break'>{info.Name}</h1>
+                    <h3>by {info.Creator}</h3>
+                    { roundedTier !== 0 ?
+                        <h3>Tier <b>{roundedTier}</b></h3> :
+                        <h3>Unrated</h3>
+                    }
+                </div>
+                <div>
                     <img src={DemonLogo(info.Difficulty)} alt='' />
                 </div>
             </div>

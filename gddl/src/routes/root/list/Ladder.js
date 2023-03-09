@@ -128,6 +128,28 @@ export default function Ladder() {
         if (listView) setListView(false);
     }
 
+    const list = (
+        <div className='row p-0 m-0'>
+            <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
+            {!loaderResponse.error ? levels.levels.map(l => <Level info={l} isListView={listView} key={l.ID} />)
+            : <h1 className='m-5'>{loaderResponse.message}</h1>}
+        </div>
+    );
+
+    const grid = (
+        <>
+            <div className='d-flex flex-column col-6 p-0 m-0'>
+                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
+                {!loaderResponse.error ? levels.levels.slice(0, levels.levels.length/2+1).map(l => <Level info={l} isListView={listView} key={l.ID} />)
+                : <h1 className='m-5'>{loaderResponse.message}</h1>}
+            </div>
+            <div className='d-flex flex-column col-6 p-0 m-0'>
+                {!loaderResponse.error ? levels.levels.slice(levels.levels.length/2+1).map(l => <Level info={l} isListView={listView} key={l.ID} />)
+                : <h1 className='m-5'>{loaderResponse.message}</h1>}
+            </div>
+        </>
+    );
+
     return (
         <div className='container'>
             <h1>The Ladder</h1>
@@ -143,28 +165,30 @@ export default function Ladder() {
                         <img src={sortAscending ? sortUp : sort} alt='' />
                     </button>
                     <div className={(sortVisible ? 'collapse-open' : 'collapse-close') + ' collapsable sortMenu'}>
-                        <div className='option d-flex'>
-                            <div>
+                        <div className='option d-flex py-2 px-4'>
+                            <div className='col-6'>
                                 <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
-                                <label htmlFor='asc'>Asc</label>
+                                <label htmlFor='asc' className='p-0'>Asc</label>
                             </div>
-                            <div>
+                            <div className='col-6'>
                                 <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
-                                <label htmlFor='desc'>Desc</label>
+                                <label htmlFor='desc' className='p-0'>Desc</label>
                             </div>
                         </div>
                         <div className='divider'></div>
-                        <div className='option'>
-                            <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
-                            <label htmlFor='name'>Name</label>
-                        </div>
-                        <div className='option'>
-                            <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
-                            <label htmlFor='level-id'>Level ID</label>
-                        </div>
-                        <div className='option'>
-                            <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
-                            <label htmlFor='tier'>Tier</label>
+                        <div className='d-flex flex-column py-2 px-4 gap-2'>
+                            <div>
+                                <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
+                                <label htmlFor='name' className='p-0'>Name</label>
+                            </div>
+                            <div>
+                                <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
+                                <label htmlFor='level-id' className='p-0'>Level ID</label>
+                            </div>
+                            <div>
+                                <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
+                                <label htmlFor='tier' className='p-0'>Tier</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -178,16 +202,12 @@ export default function Ladder() {
                 </div>
             </div>
             <FilterMenu filter={setFilters} sessionID={sessionID} />
-            <div id='level-list' className='my-3'>
-                <div className='row p-0 m-0'>
-                    <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
-                    {!loaderResponse.error ? levels.levels.map(l => <Level info={l} isListView={listView} key={l.ID} />)
-                    : <h1 className='m-5'>{loaderResponse.message}</h1>}
-                </div>
+            <div id='level-list' className={'my-3' + (listView ? '' : ' d-flex')}>
+                {listView ? list : grid}
             </div>
             <div className='d-flex align-items-center justify-content-evenly'>
                 <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='' /></button>
-                <p className='text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/15) || 0}</p>
+                <p className='text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/16) || 0}</p>
                 <button className='page-scroller' onClick={pageUp}><img src={caretR} alt='' /></button>
             </div>
         </div>
