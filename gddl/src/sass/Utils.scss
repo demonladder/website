@@ -14,7 +14,7 @@ button {
     }
 }
 
-.underline {
+@mixin underline {
     background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
     background-size: 0 2px;
     background-position: 50% 100%;
@@ -25,4 +25,8 @@ button {
     &:hover {
         background-size: 100% 2px;
     }
+}
+
+.underline {
+    @include underline;
 }

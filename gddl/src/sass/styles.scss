@@ -13,6 +13,7 @@
 @use 'Scrollbar';
 @use 'PackRef';
 @use 'Utils';
+@use 'Input';
 
 body {
     margin: 0;
@@ -36,54 +37,4 @@ code {
     padding: 0.25rem 0.5rem;
     background-color: white;
     color: black;
-}
-
-input:not([type="radio"]),
-.style-input,
-select {
-    outline: none;
-    background: Colors.$input-bg;
-    color: white;
-    border: none;
-    caret-color: white;
-    transition: ease-in-out;
-    transition-duration: 200ms;
-    border-bottom: 2px solid white;
-    height: 28px;
-}
-
-.custom-select {
-    cursor: pointer;
-    text-indent: 0.5rem;
-    position: relative;
-
-    .select-options {
-        top: 28px;
-        overflow: hidden;
-        position: absolute;
-        text-indent: 0;
-
-        & > p {
-            margin: 0;
-            padding: 0.125rem 0.5rem;
-            background: Colors.$select-bg;
-            transition: filter 200ms;
-
-            &:hover {
-                filter: brightness(90%);
-                cursor: pointer;
-            }
-        }
-
-        transition: max-height 200ms ease-in-out;
-        max-height: 0;
-        &.open,
-        &.opening {
-            max-height: 200px;
-        }
-
-        &.open {
-            overflow: auto;
-        }
-    }
 }

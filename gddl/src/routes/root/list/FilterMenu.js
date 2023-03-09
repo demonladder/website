@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Select from '../../../components/Select';
 import FiltersExtended from './FiltersExtended';
 import { toggleShowFilter } from './Ladder';
 
-export default function FilterMenu({ filter, sessionID }) {
+export default function FilterMenu({ filter, sessionID, setExtended }) {
+    const resetExtended = useRef();
     const [lowTier, setLowTier] = useState('');
     const [highTier, setHighTier] = useState('');
 
@@ -61,10 +62,11 @@ export default function FilterMenu({ filter, sessionID }) {
         setRemoveCompleted(false);
         setCreator('');
         setSong('');
+        resetExtended.current.reset();
     }
 
     return (
-        <div id='filter-menu' onMouseLeave={toggleShowFilter}>
+        <div id='filter-menu'>
             <div className='content'>
                 <div className='d-flex justify-content-between mb-3'>
                     <h2 className='m-0'>Filters</h2>
@@ -97,20 +99,20 @@ export default function FilterMenu({ filter, sessionID }) {
                     </div>
                     <div className='col-md-7 col-lg-6 col-xl-3'>
                         <p className='form-label m-0'>Song:</p>
-                        <input value={song} onChange={onSongChange} />
+                        <input type="text" value={song} onChange={onSongChange} />
                     </div>
                     <div className='col-md-5 col-lg-4'>
-                        <div className='form-check'>
-                            <input type='checkbox' className='form-check-input' checked={removeUnrated} onChange={onUnratedChange} />
-                            <label className='form-check-label'>Exclude unrated</label>
-                        </div>
-                        <div className='form-check'>
-                            <input type='checkbox' className='form-check-input' checked={removeCompleted} onChange={onCompletedChange} disabled={!sessionID} />
-                            <label className='form-check-label'>Exclude completed</label>
-                        </div>
+                        <label className='d-flex gap-2'>
+                            <input type='checkbox' checked={removeUnrated} onChange={onUnratedChange} />
+                            Exclude unrated
+                        </label>
+                        <label className='d-flex gap-2'>
+                            <input type='checkbox' checked={removeCompleted} onChange={onCompletedChange} disabled={!sessionID} />
+                            Exclude completed
+                        </label>
                     </div>
                 </div>
-                <FiltersExtended />
+                <FiltersExtended set={setExtended} resetRef={resetExtended} />
             </div>
         </div>
     );

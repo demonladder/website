@@ -90,23 +90,6 @@ ul {
     padding: 0;
 }
 
-input[type=text] {
-    background: rgba(0, 0, 0, 0.132);
-    border: none;
-    border-radius: 0;
-    padding: 0.4rem 1rem;
-    display: block;
-    width: 100%;
-    color: white;
-
-    &:focus {
-        border-bottom: 2px solid white;
-        background: rgba(0, 0, 0, 0.295);
-        caret-color: white;
-        box-shadow: 0 0 30px 5px adjust-color($color: Colors.$primary, $alpha: -0.8);
-    }
-}
-
 ::placeholder,
 ::-ms-input-placeholder {
     color: green;

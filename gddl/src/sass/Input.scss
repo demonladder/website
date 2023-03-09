@@ -1,0 +1,95 @@
+@use 'Colors';
+
+input:not([type="radio"]):not([type="checkbox"]),
+.style-input,
+select {
+    outline: none;
+    background: Colors.$input-bg;
+    color: white;
+    border: none;
+    caret-color: white;
+    transition: ease-in-out;
+    transition-duration: 200ms;
+    border-bottom: 2px solid white;
+    height: 28px;
+}
+
+input[type=text] {
+    background: rgba(0, 0, 0, 0.132);
+    border: none;
+    border-radius: 0;
+    padding: 0.4rem 1rem;
+    display: block;
+    width: 100%;
+    color: white;
+
+    &:focus {
+        border-bottom: 2px solid white;
+        background: rgba(0, 0, 0, 0.295);
+        caret-color: white;
+        box-shadow: 0 0 30px 5px adjust-color($color: Colors.$primary, $alpha: -0.8);
+    }
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    margin: 0;
+
+    color: currentColor;
+    width: 16px;
+    height: 16px;
+    border: 1px solid currentColor;
+
+    display: grid;
+    place-content: center;
+
+    &:checked::before {
+        transform: scale(1);
+    }
+
+    &::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        transform: scale(0);
+
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1rem 1rem currentColor;
+    }
+}
+
+.custom-select {
+    cursor: pointer;
+    text-indent: 0.5rem;
+    position: relative;
+
+    .select-options {
+        top: 28px;
+        overflow: hidden;
+        position: absolute;
+        text-indent: 0;
+
+        & > p {
+            margin: 0;
+            padding: 0.125rem 0.5rem;
+            background: Colors.$select-bg;
+            transition: filter 200ms;
+
+            &:hover {
+                filter: brightness(90%);
+                cursor: pointer;
+            }
+        }
+
+        transition: max-height 200ms ease-in-out;
+        max-height: 0;
+        &.open,
+        &.opening {
+            max-height: 200px;
+        }
+
+        &.open {
+            overflow: auto;
+        }
+    }
+}

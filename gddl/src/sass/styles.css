@@ -194,22 +194,6 @@ ul {
   padding: 0;
 }
 
-input[type=text] {
-  background: rgba(0, 0, 0, 0.132);
-  border: none;
-  border-radius: 0;
-  padding: 0.4rem 1rem;
-  display: block;
-  width: 100%;
-  color: white;
-}
-input[type=text]:focus {
-  border-bottom: 2px solid white;
-  background: rgba(0, 0, 0, 0.295);
-  caret-color: white;
-  box-shadow: 0 0 30px 5px rgba(182, 58, 58, 0.2);
-}
-
 ::placeholder,
 ::-ms-input-placeholder {
   color: green;
@@ -688,28 +672,7 @@ button.danger:hover:not(:active) {
   background-size: 100% 2px;
 }
 
-body {
-  margin: 0;
-  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #1a0505;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-}
-
-.a {
-  border-radius: 13px;
-  font-weight: 500;
-  border: none;
-  padding: 0.25rem 0.5rem;
-  background-color: white;
-  color: black;
-}
-
-input:not([type=radio]),
+input:not([type=radio]):not([type=checkbox]),
 .style-input,
 select {
   outline: none;
@@ -721,6 +684,44 @@ select {
   transition-duration: 200ms;
   border-bottom: 2px solid white;
   height: 28px;
+}
+
+input[type=text] {
+  background: rgba(0, 0, 0, 0.132);
+  border: none;
+  border-radius: 0;
+  padding: 0.4rem 1rem;
+  display: block;
+  width: 100%;
+  color: white;
+}
+input[type=text]:focus {
+  border-bottom: 2px solid white;
+  background: rgba(0, 0, 0, 0.295);
+  caret-color: white;
+  box-shadow: 0 0 30px 5px rgba(182, 58, 58, 0.2);
+}
+
+input[type=checkbox] {
+  appearance: none;
+  margin: 0;
+  color: currentColor;
+  width: 16px;
+  height: 16px;
+  border: 1px solid currentColor;
+  display: grid;
+  place-content: center;
+}
+input[type=checkbox]:checked::before {
+  transform: scale(1);
+}
+input[type=checkbox]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1rem 1rem currentColor;
 }
 
 .custom-select {
@@ -751,6 +752,27 @@ select {
 }
 .custom-select .select-options.open {
   overflow: auto;
+}
+
+body {
+  margin: 0;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #1a0505;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.a {
+  border-radius: 13px;
+  font-weight: 500;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  background-color: white;
+  color: black;
 }
 
 /*# sourceMappingURL=styles.css.map */

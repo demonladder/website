@@ -27,11 +27,14 @@ export async function ladderLoader() {
 
 export function toggleShowFilter() {
     const content = document.getElementById('filter-menu');
+    content.getBoundingClientRect()
 
     if (content.style.maxHeight) {
         content.style.maxHeight = null;
+        content.style.overflow = 'hidden';
     } else {
         content.style.maxHeight = content.scrollHeight + 'px';
+        setTimeout(() => {content.style.overflow = 'visible';}, 500);
     }
 }
 
@@ -77,6 +80,7 @@ export default function Ladder() {
     // Filter levels
     //
     const [filters, setFilters] = useState({ lowTier: '', highTier: '', difficulty: 0, removeUnrated: false, creator: '', song: '' });
+    const [extendedFilters, setExtendedFilters] = useState({ subLowCount: '', subHighCount: '', enjLowCount: '', enjHighCount: '', enjLow:'', enjHigh: '', devLow: '', devHigh: '' });
     const [search, setSearch] = useState('');
     const [timer, setTimer] = useState();
     useEffect(() => {
@@ -85,6 +89,7 @@ export default function Ladder() {
             // Runs a little after user input stops
             const joined = {
                 ...filters,
+                ...extendedFilters,
                 page: pageIndex,
                 name: search,
                 sort: sorter,
@@ -107,7 +112,7 @@ export default function Ladder() {
                 setLoaderResponse({ error: true, message: 'Couldn\'t connect to the sever!' });
             });
         }, 200));
-    }, [search, filters, pageIndex, sorter, sortAscending]);
+    }, [search, filters, extendedFilters, pageIndex, sorter, sortAscending]);
 
     useEffect(() => {  // Watch for changes in search and filters
         setPageIndex(0);  // Reset index to page 1
@@ -140,11 +145,11 @@ export default function Ladder() {
         <>
             <div className='d-flex flex-column col-6 p-0 m-0'>
                 <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
-                {!loaderResponse.error ? levels.levels.slice(0, levels.levels.length/2+1).map(l => <Level info={l} isListView={listView} key={l.ID} />)
+                {!loaderResponse.error ? levels.levels.slice(0, (levels.levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)
                 : <h1 className='m-5'>{loaderResponse.message}</h1>}
             </div>
             <div className='d-flex flex-column col-6 p-0 m-0'>
-                {!loaderResponse.error ? levels.levels.slice(levels.levels.length/2+1).map(l => <Level info={l} isListView={listView} key={l.ID} />)
+                {!loaderResponse.error ? levels.levels.slice((levels.levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)
                 : <h1 className='m-5'>{loaderResponse.message}</h1>}
             </div>
         </>
@@ -155,7 +160,7 @@ export default function Ladder() {
             <h1>The Ladder</h1>
             <div className='d-flex align-items-center search'>
                 <div className='flex-fill m-2'>
-                    <input type='text' placeholder='  Search level name or ID...' name='query' value={search} onChange={onSearchChange} />
+                    <input type='text' placeholder='  Search level name...' name='query' value={search} onChange={onSearchChange} />
                 </div>
                 <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={toggleShowFilter}>
                     <img src={filterEmpty} alt='' />
@@ -201,7 +206,7 @@ export default function Ladder() {
                     </button>
                 </div>
             </div>
-            <FilterMenu filter={setFilters} sessionID={sessionID} />
+            <FilterMenu filter={setFilters} setExtended={setExtendedFilters} sessionID={sessionID} />
             <div id='level-list' className={'my-3' + (listView ? '' : ' d-flex')}>
                 {listView ? list : grid}
             </div>

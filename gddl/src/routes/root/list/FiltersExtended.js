@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 
-export default function FiltersExtended() {
+export default function FiltersExtended({ set, resetRef }) {
     function toggleShow() {
         const content = document.querySelector('#extended-filters-menu .content');
         const bigContent = document.getElementById('filter-menu');
@@ -16,17 +16,43 @@ export default function FiltersExtended() {
         document.querySelector('#extended-filters-menu button.open-extended .open-spinner').classList.toggle('spin');
     }
 
-    const [subLowCount, setSubLowCount] = useState();
-    const [subHighCount, setSubHighCount] = useState();
+    const [subLowCount, setSubLowCount] = useState('');
+    const [subHighCount, setSubHighCount] = useState('');
     
-    const [enjLowCount, setEnjLowCount] = useState();
-    const [enjHighCount, setEnjHighCount] = useState();
+    const [enjLowCount, setEnjLowCount] = useState('');
+    const [enjHighCount, setEnjHighCount] = useState('');
     
-    const [enjLow, setEnjLow] = useState();
-    const [enjHigh, setEnjHigh] = useState();
+    const [enjLow, setEnjLow] = useState('');
+    const [enjHigh, setEnjHigh] = useState('');
     
-    const [devLow, setDevLow] = useState();
-    const [devHigh, setDevHigh] = useState();
+    const [devLow, setDevLow] = useState('');
+    const [devHigh, setDevHigh] = useState('');
+
+    useEffect(() => {
+        set({
+            subLowCount,
+            subHighCount,
+            enjLowCount,
+            enjHighCount,
+            enjLow,
+            enjHigh,
+            devLow,
+            devHigh
+        });
+    }, [subLowCount, subHighCount, enjLowCount, enjHighCount, enjLow, enjHigh, devLow, devHigh]);
+
+    useImperativeHandle(resetRef, () => ({
+        reset() {        
+            setSubLowCount('');
+            setSubHighCount('');
+            setEnjLowCount('');
+            setEnjHighCount('');
+            setEnjLow('');
+            setEnjHigh('');
+            setDevLow('');
+            setDevHigh('');
+        }
+    }))
 
     return (
         <div id='extended-filters-menu'>
