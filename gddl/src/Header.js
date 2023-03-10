@@ -162,7 +162,9 @@ export default function Header() {
                             </div>
                         </div>
                         <div className={(resultVisible ? 'd-block' : 'd-none') + ' search-result border'} style={{ left: '25%' }}>
-                            {results.map(r => <SearchResult level={r} setSearch={setLevelName} setID={setClickedID} key={r.ID} />)}
+                            {results &&
+                                results.map(r => <SearchResult level={r} setSearch={setLevelName} setID={setClickedID} key={r.ID} />)
+                            }
                         </div>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>

@@ -109,6 +109,51 @@ button.navbar-toggler:focus {
   color: white;
 }
 
+#sort-menu {
+  position: absolute;
+  background-color: rgb(95, 28, 28);
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 0;
+  transition: max-height 200ms cubic-bezier(0.56, 0.06, 0.04, 0.98);
+  overflow: hidden;
+}
+#sort-menu > .content {
+  padding: 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  gap: 0.5rem;
+}
+#sort-menu > .content .direction {
+  display: flex;
+}
+#sort-menu > .content .direction > div {
+  max-width: 50%;
+  flex-grow: 1;
+}
+#sort-menu > .content .divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.175);
+  opacity: 1;
+}
+#sort-menu > .content label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  user-select: none;
+}
+#sort-menu > .content label:hover,
+#sort-menu > .content label * {
+  cursor: pointer;
+}
+#sort-menu > .content .sort-by-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 button.list {
   border: 1px solid buttonface;
   padding: 0.4rem 0.6rem;
@@ -144,51 +189,6 @@ button.list.active {
   transform: scale(1.15);
 }
 
-.sortMenu {
-  position: absolute;
-  background-color: white;
-  color: black;
-  border-radius: 5px;
-  padding: 0.25rem 0;
-  top: 2.6rem;
-  left: -50%;
-  width: 170px;
-  overflow: hidden;
-}
-.sortMenu .divider {
-  height: 0;
-  margin: 0.5rem 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.175);
-  opacity: 1;
-}
-.sortMenu .option {
-  padding: 0 1rem;
-}
-.sortMenu .option * {
-  cursor: pointer;
-}
-.sortMenu .option label {
-  margin: 0;
-  padding: 0.5rem;
-}
-.sortMenu .option:hover {
-  background-color: rgb(244, 244, 244);
-  border-radius: 5px;
-}
-
-.collapsable {
-  transition: 0.2s;
-}
-
-.collapse-close {
-  height: 0;
-  padding: 0;
-}
-
-.collapse-open {
-  height: 150px;
-}
-
 ul {
   list-style-type: none;
   padding: 0;
@@ -203,7 +203,7 @@ ul {
 .search {
   gap: 0.5rem;
 }
-.search * {
+.search > * {
   margin: 0 !important;
 }
 .search button {
@@ -212,7 +212,7 @@ ul {
   height: 40px !important;
   padding-left: 10px !important;
   padding-right: 10px !important;
-  border-radius: 10px;
+  border-radius: 0;
 }
 .search .list {
   padding-left: 10px !important;
@@ -702,7 +702,8 @@ input[type=text]:focus {
   box-shadow: 0 0 30px 5px rgba(182, 58, 58, 0.2);
 }
 
-input[type=checkbox] {
+input[type=checkbox],
+input[type=radio] {
   appearance: none;
   margin: 0;
   color: currentColor;
@@ -712,10 +713,12 @@ input[type=checkbox] {
   display: grid;
   place-content: center;
 }
-input[type=checkbox]:checked::before {
+input[type=checkbox]:checked::before,
+input[type=radio]:checked::before {
   transform: scale(1);
 }
-input[type=checkbox]::before {
+input[type=checkbox]::before,
+input[type=radio]::before {
   content: "";
   width: 10px;
   height: 10px;
@@ -752,6 +755,10 @@ input[type=checkbox]::before {
 }
 .custom-select .select-options.open {
   overflow: auto;
+}
+
+button {
+  outline: none;
 }
 
 body {

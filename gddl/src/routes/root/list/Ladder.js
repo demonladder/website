@@ -3,13 +3,12 @@ import { useLoaderData, useOutletContext } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../icons/filter-empty.svg';
 import FilterMenu from './FilterMenu';
-import sort from '../../../icons/sort.svg';
-import sortUp from '../../../icons/sort-up.svg';
 import caretR from '../../../icons/caret-r.svg';
 import caretL from '../../../icons/caret-l.svg';
 import listSVG from '../../../icons/list.svg';
 import gridSVG from '../../../icons/grid.svg';
 import serverIP from '../../../serverIP';
+import SortMenu, { closeSortMenu } from './SortMenu';
 
 export async function ladderLoader() {
     return fetch(`${serverIP}/getLevels`)
@@ -35,6 +34,7 @@ export function toggleShowFilter() {
     } else {
         content.style.maxHeight = content.scrollHeight + 'px';
         setTimeout(() => {content.style.overflow = 'visible';}, 500);
+        closeSortMenu();
     }
 }
 
@@ -60,21 +60,7 @@ export default function Ladder() {
         }
     }
 
-    const [sortVisible, setSortVisible] = useState(false);
-    function sortVisHandler() {
-        setSortVisible(prev => !prev);
-    }
-
-    const [sortAscending, setSortAscending] = useState(true);
-    const [sorter, setSorter] = useState('level-id');
-    function handleSortMenu(e) {
-        setSorter(e.target.id);
-    }
-    function handleSortDiretion(e) {
-        setSortAscending(e.target.id === 'asc');
-    }
-
-
+    const [sorter, setSorter] = useState({});
 
     //
     // Filter levels
@@ -90,10 +76,9 @@ export default function Ladder() {
             const joined = {
                 ...filters,
                 ...extendedFilters,
+                ...sorter,
                 page: pageIndex,
-                name: search,
-                sort: sorter,
-                sortDirection: sortAscending ? 'asc' : 'desc'
+                name: search
             }
             let q = `${serverIP}/getLevels`;
             const extra = [];
@@ -112,7 +97,7 @@ export default function Ladder() {
                 setLoaderResponse({ error: true, message: 'Couldn\'t connect to the sever!' });
             });
         }, 200));
-    }, [search, filters, extendedFilters, pageIndex, sorter, sortAscending]);
+    }, [search, filters, extendedFilters, pageIndex, sorter]);
 
     useEffect(() => {  // Watch for changes in search and filters
         setPageIndex(0);  // Reset index to page 1
@@ -165,38 +150,7 @@ export default function Ladder() {
                 <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={toggleShowFilter}>
                     <img src={filterEmpty} alt='' />
                 </button>
-                <div className='position-relative h-100'>
-                    <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={sortVisHandler}>
-                        <img src={sortAscending ? sortUp : sort} alt='' />
-                    </button>
-                    <div className={(sortVisible ? 'collapse-open' : 'collapse-close') + ' collapsable sortMenu'}>
-                        <div className='option d-flex py-2 px-4'>
-                            <div className='col-6'>
-                                <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={handleSortDiretion} />
-                                <label htmlFor='asc' className='p-0'>Asc</label>
-                            </div>
-                            <div className='col-6'>
-                                <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={handleSortDiretion} />
-                                <label htmlFor='desc' className='p-0'>Desc</label>
-                            </div>
-                        </div>
-                        <div className='divider'></div>
-                        <div className='d-flex flex-column py-2 px-4 gap-2'>
-                            <div>
-                                <input type='radio' id='name' name='sort' onChange={handleSortMenu} />
-                                <label htmlFor='name' className='p-0'>Name</label>
-                            </div>
-                            <div>
-                                <input type='radio' id='level-id' name='sort' checked={sorter === 'level-id'} onChange={handleSortMenu} />
-                                <label htmlFor='level-id' className='p-0'>Level ID</label>
-                            </div>
-                            <div>
-                                <input type='radio' id='tier' name='sort' onChange={handleSortMenu} />
-                                <label htmlFor='tier' className='p-0'>Tier</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <SortMenu set={setSorter} />
                 <div className='d-flex align-items-center m-1 h-100'>
                     <button className={'list view-left ' + (listView ? 'active' : '')} onClick={onViewList}>
                         <img src={listSVG} alt='' />

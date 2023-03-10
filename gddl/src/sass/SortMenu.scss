@@ -1,0 +1,54 @@
+@use 'Colors';
+
+#sort-menu {
+    position: absolute;
+    background-color: Colors.$select-bg;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 0;
+    transition: max-height 200ms cubic-bezier(0.56, 0.06, 0.04, 0.98);
+
+    overflow: hidden;
+
+    > .content {
+        padding: 0.75rem 0.75rem;
+        display: flex;
+        flex-direction: column;
+        width: max-content;
+        gap: 0.5rem;
+
+        .direction {
+            display: flex;
+
+            > div {
+                max-width: 50%;
+                flex-grow: 1;
+            }
+        }
+
+        .divider {
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.175);
+            opacity: 1;
+        }
+
+        label {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            user-select: none;
+
+            &:hover,
+            * {
+                cursor: pointer;
+            }
+        }
+
+        .sort-by-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+}

@@ -31,7 +31,8 @@ input[type=text] {
     }
 }
 
-input[type="checkbox"] {
+input[type=checkbox],
+input[type=radio] {
     appearance: none;
     margin: 0;
 
@@ -92,4 +93,8 @@ input[type="checkbox"] {
             overflow: auto;
         }
     }
+}
+
+button {
+    outline: none;
 }
