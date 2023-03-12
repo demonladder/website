@@ -149,46 +149,57 @@
 }
 
 .enj-0 {
+  color: black;
   background-color: #E67C73;
 }
 
 .enj-1 {
+  color: black;
   background-color: #EA8B71;
 }
 
 .enj-2 {
+  color: black;
   background-color: #EE9A6D;
 }
 
 .enj-3 {
+  color: black;
   background-color: #F2A96D;
 }
 
 .enj-4 {
+  color: black;
   background-color: #F6B86B;
 }
 
 .enj-5 {
+  color: black;
   background-color: #FAC769;
 }
 
 .enj-6 {
+  color: black;
   background-color: #FFD666;
 }
 
 .enj-7 {
+  color: black;
   background-color: #D5D06F;
 }
 
 .enj-8 {
+  color: black;
   background-color: #ABC978;
 }
 
 .enj-9 {
+  color: black;
   background-color: #81C281;
 }
 
 .enj-10 {
+  color: black;
   background-color: #57BB8A;
 }
 
@@ -223,11 +234,6 @@
   margin-bottom: 5rem;
 }
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 540px;
-  }
-}
 @media (min-width: 992px) {
   .container {
     max-width: 720px;
@@ -302,6 +308,20 @@ button.danger:hover:not(:active) {
   background-size: 100% 2px;
 }
 
+.underline-p {
+  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
+  padding: 0;
+  text-decoration: none !important;
+  border: none;
+  color: white;
+}
+.underline-p:hover {
+  background-size: 100% 2px;
+}
+
 .divider-sm {
   border-bottom: 1px solid white;
   margin-top: 0.5rem;
@@ -322,6 +342,9 @@ button.danger:hover:not(:active) {
 
 #level-list p, #level-list h4 {
   margin: 0;
+}
+#level-list .level:not(.grid) {
+  display: flex;
 }
 #level-list .level.list {
   border-bottom: 1px #998888 solid;
@@ -637,7 +660,6 @@ button.open-extended:hover {
   background: rgb(32, 32, 32);
   padding: 1rem;
   min-width: 25%;
-  border-radius: 8px 0 0 8px;
 }
 .profile .information .trackers {
   background: rgb(46, 46, 46);
@@ -646,7 +668,6 @@ button.open-extended:hover {
   grid-template-columns: 1fr 1fr;
   column-gap: 2rem;
   flex-grow: 1;
-  border-radius: 0 8px 8px 0;
 }
 .profile .information .trackers .tracker {
   display: flex;
@@ -659,15 +680,27 @@ button.open-extended:hover {
   color: white;
   text-decoration: none;
 }
+.profile .ratings .row {
+  border-bottom: 1px solid #998888;
+}
+.profile .ratings .row h3, .profile .ratings .row p {
+  margin: 0;
+  justify-self: center;
+}
+.profile .ratings .row p {
+  margin: 0;
+}
+.profile .ratings .row .level-name {
+  justify-self: start;
+}
+.profile .ratings .row .enjoyment, .profile .ratings .row .rating, .profile .ratings .row .user-rating, .profile .ratings .row .creator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 @media (max-width: 550px) {
   .profile .information {
     flex-direction: column;
-  }
-  .profile .information .introduction {
-    border-radius: 8px 8px 0 0;
-  }
-  .profile .information .trackers {
-    border-radius: 0 0 8px 8px;
   }
 }
 
@@ -681,7 +714,18 @@ a.nav {
   min-height: 100vh;
 }
 
-.table-container {
+.level-overview .creator {
+  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
+  padding: 0;
+  text-decoration: none !important;
+}
+.level-overview .creator:hover {
+  background-size: 100% 2px;
+}
+.level-overview .table-container {
   margin-top: 1.5rem;
   padding: 1rem;
   background-color: rgba(0, 0, 0, 0.3);

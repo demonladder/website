@@ -7,12 +7,12 @@ import './sass/styles.css';
 import Root from './routes/root/Root';
 import Index from './routes/root/RootIndex';
 import Ladder, { ladderLoader } from './routes/root/list/Ladder';
-import References, { referencesLoader } from './routes/root/references/References';
+import References from './routes/root/references/References';
 import LevelOverview, { levelLoader } from './routes/root/level/LevelOverview';
 import Login, { loginAction } from './routes/root/login/Login';
-import Packs, { packsLoader } from './routes/root/packs/Packs';
-import Profile, { profileLoader } from './routes/root/profile/Profile';
-import PackOverview, { packLoader } from './routes/root/packs/packOverview/PackOverview';
+import Packs from './routes/root/packs/Packs';
+import Profile from './routes/root/profile/Profile';
+import PackOverview from './routes/root/packs/packOverview/PackOverview';
 import Mod, { modLoader } from './routes/mod/Mod';
 import { Logout } from './routes/root/login/Logout';
 import ErrorElement from './ErrorElement';
@@ -39,8 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'references',
-        element: <References />,
-        loader: referencesLoader
+        element: <References />
       },
       {
         path: 'level/:level_id',
@@ -49,13 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'packs',
-        element: <Packs />,
-        loader: packsLoader
+        element: <Packs />
       },
       {
-        path: 'pack/:pack_id',
-        element: <PackOverview />,
-        loader: packLoader
+        path: 'pack/:packID',
+        element: <PackOverview />
       },
       {
         path: 'login',
@@ -64,8 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'profile/:userID',
-        element: <Profile />,
-        loader: profileLoader
+        element: <Profile />
       },
       {
         path: 'utils',

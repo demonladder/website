@@ -1,15 +1,8 @@
 import React from 'react';
 import Difficulty from './Difficulty';
-import serverIP from '../../../serverIP';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { GetReferences } from '../../../api/references';
-
-export async function referencesLoader() {
-    return fetch(serverIP + '/getReferences')
-           .then(res => res.json())
-           .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
-}
 
 export default function References () {
     const { status, data: referenceDemons } = useQuery({

@@ -1,20 +1,25 @@
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
-import FetchPacks from '../../../fetches/Packs';
 import PackRef from '../../../components/PackRef';
-
-export async function packsLoader({ params }) {
-    return FetchPacks.all()
-    .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
-}
+import { useQuery } from '@tanstack/react-query';
+import { GetPacks } from '../../../api/packs';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export default function Packs() {
-    let packs = useLoaderData();
+    const { status, data: packs } = useQuery({
+        queryKey: ['packs'],
+        queryFn: GetPacks
+    });
 
-    if (packs.error) {
+    if (status === 'loading') {
         return (
             <div className='container'>
-                <h1>{packs.message}</h1>
+                <LoadingSpinner />
+            </div>
+        );
+    } else if (status === 'error') {
+        return (
+            <div className='container'>
+                <h1>An error ocurred</h1>
             </div>
         )
     }

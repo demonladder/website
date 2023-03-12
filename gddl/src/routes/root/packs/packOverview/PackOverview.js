@@ -1,17 +1,20 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
-import FetchPacks from '../../../../fetches/Packs.js';
+import { useParams } from 'react-router-dom';
+import { GetPack } from '../../../../api/packs.js';
+import LoadingSpinner from '../../../../components/LoadingSpinner.js';
 import Level from '../../list/Level.js';
 
-export async function packLoader({ params }) {
-    return FetchPacks.byID(params.pack_id)
-    .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
-}
-
 export default function PackOverview() {
-    let pack = useLoaderData();
+    const packID = useParams().packID;
+    const { status, data: pack } = useQuery({
+        queryKey: ['packs', packID],
+        queryFn: () => GetPack(packID)
+    });
 
-    if (pack.error) {
+    if (status === 'loading') {
+        return <LoadingSpinner />;
+    } else if (status === 'error') {
         return (
             <div className='container'>
                 <h1>{pack.message}</h1>
@@ -22,7 +25,7 @@ export default function PackOverview() {
     return (
         <div className='container'>
             <h1>{pack.Name}</h1>
-            <div id='levelList' className='my-3'>
+            <div id='level-list' className='my-3'>
                 <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={true} key={-1} classes='head' />
                 {pack.Levels.map(l => (
                     <Level info={l} isListView={true} key={l.ID} />

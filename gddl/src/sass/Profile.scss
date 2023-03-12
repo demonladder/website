@@ -44,7 +44,6 @@
             background: rgb(32, 32, 32);
             padding: 1rem;
             min-width: 25%;
-            border-radius: 8px 0 0 8px;
         }
 
         .trackers {
@@ -54,7 +53,6 @@
             grid-template-columns: 1fr 1fr;
             column-gap: 2rem;
             flex-grow: 1;
-            border-radius: 0 8px 8px 0;
 
             .tracker {
                 display: flex;
@@ -72,17 +70,34 @@
         }
     }
 
+    .ratings {
+        .row {
+            border-bottom: 1px solid #998888;
+
+            h3, p {
+                margin: 0;
+                justify-self: center;
+            }
+    
+            p {
+                margin: 0;
+            }
+    
+            .level-name {
+                justify-self: start;
+            }
+    
+            .enjoyment, .rating, .user-rating, .creator {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+
     @media(max-width: 550px) {
         .information {
             flex-direction: column;
-
-            .introduction {
-                border-radius: 8px 8px 0 0;
-            }
-
-            .trackers {
-                border-radius: 0 0 8px 8px;
-            }
         }
     }
 }

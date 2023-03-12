@@ -6,6 +6,10 @@
         margin: 0;
     }
 
+    .level:not(.grid) {
+        display: flex;
+    }
+
     .level.list {
         border-bottom: 1px #998888 solid;
         padding: 0;

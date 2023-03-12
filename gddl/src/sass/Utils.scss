@@ -30,6 +30,11 @@ button {
 .underline {
     @include underline;
 }
+.underline-p {
+    @include underline();
+    border: none;
+    color: white;
+}
 
 $divider-sizes: (
     "sm": 0.5rem,

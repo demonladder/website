@@ -10,7 +10,7 @@ export default function Level({ info, isListView }) {
     if (isListView) {
         if (info.isHeader) {
             return (
-                <div className='row level head'>
+                <div className='level head'>
                     <h4 className='col-10 col-sm-7 col-md-7 col-lg-6 col-xl-4'>Level Name</h4>
                     <h4 className='col-sm-3 col-md-3 col-lg-3 col-xl-2 d-none d-sm-inline-block'>Creator</h4>
                     <h4 className='col-xl-3 d-none d-xl-block'>Song</h4>
@@ -21,14 +21,14 @@ export default function Level({ info, isListView }) {
         }
 
         return (
-            <div className='row level list'>
+            <div className='level list'>
                 <h3 className='col-xl-4 col-lg-6 col-md-7 col-sm-7 col-10 m-0'>
-                    <a href={'/level/' + info.ID} target='_blank' rel='noopener noreferrer' className='link-disable'>{info.Name}</a>
+                    <a href={'/level/' + info.ID} target='_blank' rel='noopener noreferrer' className='underline-p'>{info.Name}</a>
                 </h3>
 
                 <div className='col-xl-2 col-lg-3 col-md-3 d-none d-sm-inline-block col-sm-3 align-self-center'><p>{info.Creator}</p></div>
                 <div className='col-xl-3 d-none d-xl-block align-self-center'><p>{info.Song}</p></div>
-                <div className='col-xl-2 col-lg-2 d-none d-lg-block align-self-center'><button className='id-button' onClick={onIDClick}>{info.ID}</button></div>
+                <div className='col-xl-2 col-lg-2 d-none d-lg-block align-self-center'><button className='id-button underline-p' onClick={onIDClick}>{info.ID}</button></div>
                 <div className={`col-lg-1 col-md-2 col-2 d-flex justify-content-center tier-${Math.floor(info.Rating)}`}><p className='align-self-center'>{info.Rating === 0 ? 'Unrated' : `${info.Rating.toFixed(2)}`}</p></div>
             </div>
         );

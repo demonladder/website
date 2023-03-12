@@ -2,22 +2,29 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Level({ info }) {
-    function onIDClick() {
-        if (info.isHeader) return;
-        navigator.clipboard.writeText(info.LevelID);
+    if (info.isHeader) {
+        return (
+            <div className='row'>
+                <h3 className='col-7 col-lg-6 col-xl-4 level-name'>Level Name</h3>
+                <h3 className='col-xl-2 d-none d-xl-block text-center'>Creator</h3>
+                <h3 className='col-2 text-center'>Enj</h3>
+                <h3 className='col-3 col-lg-2 text-center'>Rating</h3>
+                <h3 className='col-lg-2 d-none d-lg-block text-center'>Tier</h3>
+            </div>
+        );
     }
 
+    const userRating = info.UserRating ? info.UserRating : '-';
+    const userEnjoyment = info.Enjoyment ? info.Enjoyment : '-';
+    const rating = info.Rating === 0 ? 'Unrated' : (parseFloat(info.Rating).toFixed(2));
+
     return (
-        <div className='row level'>
-            <h3 className={(info.isHeader ? 'h1 ' : '') + 'col-xl-5 col-lg-5 col-sm-8 col-8'}>
-                {info.isHeader ? <p className='m-0'>{info.Name}</p>
-                               : <Link to={'/level/' + info.LevelID} className='underline text-light'>{info.Name}</Link>}
-            </h3>
-            <div className='col-xl-2 d-none d-xl-block align-self-center'><p className='m-0'>{info.Creator}</p></div>
-            <div className='col-2 d-none d-lg-block align-self-center'><button className='m-0 style-link' onClick={onIDClick}>{info.LevelID}</button></div>
-            <div className='col-xl-1 col-sm-2 col-2 align-self-center text-end'><p className='m-0'>{info.UserRating === -1 ? 'NaN' : info.UserRating}</p></div>
-            <div className='col-xl-1 col-sm-2 col-2 d-flex'><p className={'m-0 enj-' + info.Enjoyment}>{info.Enjoyment === -1 ? 'NaN' : info.Enjoyment}</p></div>
-            <div className={`col-1 col-sm-2 col-lg-1 d-none d-lg-flex justify-content-center text-center tier-${Math.floor(info.Rating)}`}><p className='m-0 align-self-center'>{info.Rating === 0 ? 'Unrated' : (parseFloat(info.Rating).toFixed(2))}</p></div>
+        <div className='row'>
+            <h3 className='col-7 col-lg-6 col-xl-4 level-name'><Link to={'/level/' + info.LevelID} className='underline text-light'>{info.Name}</Link></h3>
+            <div className='col-xl-2 d-none d-xl-flex creator'><p>{info.Creator}</p></div>
+            <div className={'col-2 enjoyment enj-' + userEnjoyment}><p>{userEnjoyment}</p></div>
+            <div className={'col-3 col-lg-2 user-rating tier-' + userRating}><p>{userRating}</p></div>
+            <div className={`col-lg-2 d-none d-lg-flex rating tier-${Math.floor(info.Rating)}`}><p>{rating}</p></div>
         </div>
     );
 }

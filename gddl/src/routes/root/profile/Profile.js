@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
 import Level from './Level';
 import serverIP from '../../../serverIP.js';
-
-export async function profileLoader({ params }) {
-    return await getUser(params.userID, true);
-}
+import { useQuery } from '@tanstack/react-query';
+import { GetUser } from '../../../api/users';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export default function Profile() {
-    const [userData] = useState(useLoaderData());
-    let user = userData.info;
-    let submissions = userData.submissions;
+    const userID = useParams().userID;
+    const { status, error, data: userData } = useQuery({
+        queryKey: ['user', userID],
+        queryFn:  () => GetUser(userID)
+    });
+
+    if (status === 'loading') {
+        return (
+            <div className='container profile'>
+                <LoadingSpinner />
+            </div>
+        );
+    } else if (status === 'error') {
+        return (
+            <div className='container profile'>
+                <h1>Uh oh, an error ocurred</h1>
+            </div>
+        );
+    }
+
+    const user = userData.info;
+    const submissions = userData.submissions;
 
     return (
         <div className='container profile'>
@@ -44,9 +62,9 @@ export default function Profile() {
             </div>
             <div className='mt-3'>
                 <h1>Submissions [{submissions.length}]</h1>
-                <Level info={{ isHeader: true, Name: 'Level name', Creator: 'Creator', LevelID: 'Level ID', Rating: 'Tier', Enjoyment: 'Enjoyment', UserRating: 'Rating'}} />
-                <div>
-                    {submissions.map(p => <Level info={p} key={p.LevelID}/>)}
+                <div className='ratings'>
+                    <Level info={{ isHeader: true }} />
+                    {submissions.slice(0, 25).map(p => <Level info={p} key={p.LevelID}/>)}
                 </div>
             </div>
         </div>
