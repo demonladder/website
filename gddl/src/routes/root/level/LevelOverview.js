@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
-import Creator from './Creator';
 import DemonLogo from '../../../components/DemonLogo';
 import serverIP from '../../../serverIP';
 import Submission from './Submission';
@@ -61,7 +60,7 @@ export default function LevelOverview() {
                 <meta property="og:image" content={logo} />
             </Helmet>
             <h1>Level information for {level.Name}</h1>
-            by <Creator name={level.Creator} />
+            <p>by {level.Creator}</p>
             <div className='row table-container mb-5'>
                 <div className='col-12 col-md-4 col-lg-3'>
                     <img src={logo} width='100%' alt='' />

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { GetLevels } from '../../../api/levels';
 import { ChangeReferences } from '../../../api/references';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import SearchBox from '../../../components/SearchBox';
 import SearchResult from '../../../components/SearchResult';
 import serverIP from '../../../serverIP';
 
