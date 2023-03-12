@@ -17,7 +17,6 @@ export default function Remove({ pack, setChangeList }) {
     }
 
     async function handleSearch(search) {
-        console.log(pack);
         return FetchLevels.byPack(search, pack.ID).then(levels => {
             levels.forEach(l => l.msg = l.Name + ' by ' + l.Creator);
             return levels;

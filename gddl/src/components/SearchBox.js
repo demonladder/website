@@ -31,7 +31,7 @@ export default function SearchBox({ dataFn, descriptor, setFirst }) {
     return (
         <div className='position-relative'>
             <Form.Control type='text' value={search} onChange={handleChange} onFocus={() => setResultVisible(true)} onBlur={handleBlur} />
-            <div className={(resultVisible ? 'd-block' : 'd-none') + ' search-result border'}>
+            <div className={(resultVisible ? 'd-block' : 'd-none') + ' search-result'}>
                 {
                     result.map(r => <SearchResult msg={r[descriptor]} onClick={() => setSearch(r[descriptor])} key={r.ID} />)
                 }

@@ -1,5 +1,219 @@
-.bg-middle {
-  background-color: #3f6e52;
+.tier-0 {
+  background-color: #360432;
+}
+
+.tier-1 {
+  background-color: #DDDFEE;
+}
+
+.tier-2 {
+  background-color: #D5D3E9;
+}
+
+.tier-3 {
+  background-color: #D3CBE7;
+}
+
+.tier-4 {
+  background-color: #D3C3E4;
+}
+
+.tier-5 {
+  background-color: #D4BBE2;
+}
+
+.tier-6 {
+  background-color: #D5B0DE;
+}
+
+.tier-7 {
+  background-color: #DBA7DC;
+}
+
+.tier-8 {
+  background-color: #DB9FD1;
+}
+
+.tier-9 {
+  background-color: #D991C1;
+}
+
+.tier-10 {
+  background-color: #DA86B0;
+}
+
+.tier-11 {
+  background-color: #DB7698;
+}
+
+.tier-12 {
+  background-color: #DC6A7D;
+}
+
+.tier-13 {
+  background-color: #DD5A5A;
+}
+
+.tier-14 {
+  background-color: #DC514C;
+}
+
+.tier-15 {
+  background-color: #DA493E;
+}
+
+.tier-16 {
+  background-color: #DA4534;
+}
+
+.tier-17 {
+  background-color: #D93E26;
+}
+
+.tier-18 {
+  background-color: #DC3F23;
+}
+
+.tier-19 {
+  background-color: #C03A1B;
+}
+
+.tier-20 {
+  background-color: #B23415;
+}
+
+.tier-21 {
+  background-color: #A23010;
+}
+
+.tier-22 {
+  background-color: #9B2B0C;
+}
+
+.tier-23 {
+  background-color: #932B0B;
+}
+
+.tier-24 {
+  background-color: #892608;
+}
+
+.tier-25 {
+  background-color: #832607;
+}
+
+.tier-26 {
+  background-color: #752105;
+}
+
+.tier-27 {
+  background-color: #6C1E04;
+}
+
+.tier-28 {
+  background-color: #601A02;
+}
+
+.tier-29 {
+  background-color: #5A1802;
+}
+
+.tier-30 {
+  background-color: #511700;
+}
+
+.tier-31 {
+  background-color: #491900;
+}
+
+.tier-32 {
+  background-color: #3F1A00;
+}
+
+.tier-33 {
+  background-color: #331700;
+}
+
+.tier-34 {
+  background-color: #231300;
+}
+
+.tier-35 {
+  background-color: #110A00;
+}
+
+.tier-1, .tier-2, .tier-3, .tier-4, .tier-5,
+.tier-6, .tier-7, .tier-8, .tier-9, .tier-10,
+.tier-11, .tier-12, .tier-13, .tier-14, .tier-15 {
+  color: black;
+}
+
+.enj-0 {
+  background-color: #E67C73;
+}
+
+.enj-1 {
+  background-color: #EA8B71;
+}
+
+.enj-2 {
+  background-color: #EE9A6D;
+}
+
+.enj-3 {
+  background-color: #F2A96D;
+}
+
+.enj-4 {
+  background-color: #F6B86B;
+}
+
+.enj-5 {
+  background-color: #FAC769;
+}
+
+.enj-6 {
+  background-color: #FFD666;
+}
+
+.enj-7 {
+  background-color: #D5D06F;
+}
+
+.enj-8 {
+  background-color: #ABC978;
+}
+
+.enj-9 {
+  background-color: #81C281;
+}
+
+.enj-10 {
+  background-color: #57BB8A;
+}
+
+.ref-72 {
+  background-color: #FF9900;
+}
+
+.ref-120 {
+  background-color: #FFFF00;
+}
+
+.ref-144 {
+  background-color: #00FF00;
+}
+
+.ref-240 {
+  background-color: #00FFFF;
+}
+
+.ref-288 {
+  background-color: #FF00FF;
+}
+
+.ref-300 {
+  background-color: #000000;
 }
 
 .container {
@@ -63,12 +277,81 @@ button.navbar-toggler:focus {
   color: white;
 }
 
-#level-list .level.list {
-  border: 1px #998888 solid;
-  border-bottom: none;
-  border-right: none;
-  border-left: none;
+button {
+  transition: all 0.2s ease-in-out;
+}
+button.danger {
+  background: none;
+  color: white;
+  border: 3px solid #870000;
+}
+button.danger:hover:not(:active) {
+  background-color: #540000;
+  transform: scale(1.1);
+}
+
+.underline {
+  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
   padding: 0;
+  text-decoration: none !important;
+}
+.underline:hover {
+  background-size: 100% 2px;
+}
+
+.divider-sm {
+  border-bottom: 1px solid white;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.divider-md {
+  border-bottom: 1px solid white;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.divider-lg {
+  border-bottom: 1px solid white;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+#level-list p, #level-list h4 {
+  margin: 0;
+}
+#level-list .level.list {
+  border-bottom: 1px #998888 solid;
+  padding: 0;
+}
+#level-list .level.list a {
+  color: white;
+  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
+  padding: 0;
+  text-decoration: none !important;
+}
+#level-list .level.list a:hover {
+  background-size: 100% 2px;
+}
+#level-list .level.list button.id-button {
+  color: white;
+  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
+  padding: 0;
+  text-decoration: none !important;
+  border: none;
+  width: 100%;
+}
+#level-list .level.list button.id-button:hover {
+  background-size: 100% 2px;
 }
 #level-list .level.list h3 {
   font-weight: 350;
@@ -160,8 +443,8 @@ button.list {
 }
 
 button.list.active {
-  background-color: rgb(197, 197, 197);
-  border-color: rgb(197, 197, 197);
+  background-color: rgb(171, 171, 171);
+  border-color: rgb(171, 171, 171);
 }
 
 .list-options .btn {
@@ -172,7 +455,7 @@ button.list.active {
   background: none;
   color: white;
   border: 2px solid white;
-  border-radius: 10px;
+  flex-grow: 1;
   transition-duration: 0.1s;
   align-items: center;
   padding: 0.6rem 2rem;
@@ -219,6 +502,23 @@ ul {
   padding-right: 10px !important;
   border-radius: 0;
 }
+.search .search-bar {
+  flex-grow: 1;
+  margin: 0.5rem;
+  position: relative;
+}
+.search .search-bar .clear-search {
+  position: absolute;
+  right: 0;
+  top: -6px;
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0;
+}
+.search .search-bar:hover .clear-search {
+  opacity: 1;
+}
 
 #filter-menu {
   background-color: #3b1118;
@@ -246,14 +546,6 @@ button.open-extended:hover {
   border-bottom: 1px solid white;
 }
 
-input.num-sm {
-  max-width: 50px;
-}
-
-input.num-lg {
-  min-width: 50px;
-}
-
 #extended-filters-menu .content {
   max-height: 0;
   overflow: hidden;
@@ -273,7 +565,6 @@ input.num-lg {
   margin-left: auto;
   margin-right: auto;
   overflow-x: auto;
-  --head-radius: 15px;
 }
 
 .tier-container {
@@ -282,163 +573,9 @@ input.num-lg {
   border-width: 1px;
   border-left: 0;
 }
-
-.tier-0 {
-  background-color: #360432;
-}
-
-.tier-1 {
-  background-color: #DDDFEE;
-}
-
-.tier-2 {
-  background-color: #D5D3E9;
-}
-
-.tier-3 {
-  background-color: #D3CBE7;
-}
-
-.tier-3.head {
-  border-top-left-radius: var(--head-radius);
-}
-
-.tier-4 {
-  background-color: #D3C3E4;
-}
-
-.tier-5 {
-  background-color: #D4BBE2;
-}
-
-.tier-6 {
-  background-color: #D5B0DE;
-}
-
-.tier-7 {
-  background-color: #DBA7DC;
-}
-
-.tier-8 {
-  background-color: #DB9FD1;
-}
-
-.tier-9 {
-  background-color: #DB9FD1;
-}
-
-.tier-10 {
-  background-color: #DA86B0;
-}
-
-.tier-11 {
-  background-color: #DB7698;
-}
-
-.tier-12 {
-  background-color: #DC6A7D;
-}
-
-.tier-13 {
-  background-color: #DD5A5A;
-}
-
-.tier-14 {
-  background-color: #DC514C;
-}
-
-.tier-15 {
-  background-color: #DA493E;
-}
-
-.tier-1, .tier-2, .tier-3, .tier-4, .tier-5,
-.tier-6, .tier-7, .tier-8, .tier-9, .tier-10,
-.tier-11, .tier-12, .tier-13, .tier-14, .tier-15 {
-  color: black;
-}
-
-.tier-16 {
-  background-color: #DA4534;
-}
-
-.tier-17 {
-  background-color: #D93E26;
-}
-
-.tier-18 {
-  background-color: #DC3F23;
-}
-
-.tier-19 {
-  background-color: #C03A1B;
-}
-
-.tier-20 {
-  background-color: #B23415;
-}
-
-.tier-21 {
-  background-color: #A23010;
-}
-
-.tier-22 {
-  background-color: #9B2B0C;
-}
-
-.tier-23 {
-  background-color: #932B0B;
-}
-
-.tier-24 {
-  background-color: #892608;
-}
-
-.tier-25 {
-  background-color: #832607;
-}
-
-.tier-26 {
-  background-color: #752105;
-}
-
-.tier-27 {
-  background-color: #6C1E04;
-}
-
-.tier-28 {
-  background-color: #601A02;
-}
-
-.tier-28.head {
-  border-top-right-radius: var(--head-radius);
-}
-
-.tier-29 {
-  background-color: #5A1802;
-}
-
-.tier-30 {
-  background-color: #511700;
-}
-
-.tier-31 {
-  background-color: #491900;
-}
-
-.tier-32 {
-  background-color: #3F1A00;
-}
-
-.tier-33 {
-  background-color: #331700;
-}
-
-.tier-34 {
-  background-color: #231300;
-}
-
-.tier-35 {
-  background-color: #110A00;
+.tier-container a {
+  color: white;
+  text-decoration: none;
 }
 
 .tier-label p {
@@ -448,6 +585,7 @@ input.num-lg {
 .levels {
   color: white;
   min-width: 230px;
+  min-height: 120px;
 }
 .levels .level-label {
   height: 1.5rem;
@@ -465,20 +603,33 @@ input.num-lg {
 
 .search-result {
   position: absolute;
-  z-index: 100;
-  background-color: white;
-  color: black;
+  background-color: rgb(95, 28, 28);
   padding: 0.5rem 0;
-  border-radius: 12px;
 }
 .search-result .result {
   padding: 0.25rem 1rem;
+  transition: background-color 200ms ease-in-out;
 }
 .search-result .result:hover {
-  background-color: rgb(221, 221, 221);
+  background-color: #3b1118;
   cursor: pointer;
 }
 
+.navbar .profile {
+  color: white;
+  text-decoration: none;
+}
+.navbar .profile > span {
+  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
+  padding: 0;
+  text-decoration: none !important;
+}
+.navbar .profile > span:hover {
+  background-size: 100% 2px;
+}
 .profile .information {
   display: flex;
 }
@@ -520,28 +671,10 @@ input.num-lg {
   }
 }
 
-.navbar-nav a,
-.navbar-collapse a,
-.level * a,
-div.level-overview a {
-  color: white;
-  background-color: rgba(0, 0, 0, 0);
-  border: 0;
-  border-radius: 4px;
-  text-decoration: none;
-  transition-duration: 0.2s;
-}
-
 a.nav {
   margin-left: 0.15rem;
   margin-right: 0.15rem;
   padding: 0.15rem;
-}
-
-a:hover {
-  /*background-color: rgb(0, 0, 0, 0.2);
-  box-shadow: 0 0 10px rgb(0, 0, 0, 0.5);*/
-  text-decoration: underline;
 }
 
 #root {
@@ -647,31 +780,6 @@ a:hover {
   box-shadow: none;
 }
 
-button {
-  transition: all 0.2s ease-in-out;
-}
-button.danger {
-  background: none;
-  color: white;
-  border: 3px solid #870000;
-}
-button.danger:hover:not(:active) {
-  background-color: #540000;
-  transform: scale(1.1);
-}
-
-.underline {
-  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
-  background-size: 0 2px;
-  background-position: 50% 100%;
-  transition: background-size 100ms ease-in-out;
-  padding: 0;
-  text-decoration: none !important;
-}
-.underline:hover {
-  background-size: 100% 2px;
-}
-
 input:not([type=radio]):not([type=checkbox]),
 .style-input,
 select {
@@ -700,6 +808,15 @@ input[type=text]:focus {
   background: rgba(0, 0, 0, 0.295);
   caret-color: white;
   box-shadow: 0 0 30px 5px rgba(182, 58, 58, 0.2);
+}
+
+label:has(input:disabled) {
+  color: rgb(0, 0, 0) !important;
+  text-decoration: line-through;
+}
+
+input:disabled {
+  color: rgb(0, 0, 0) !important;
 }
 
 input[type=checkbox],
@@ -759,6 +876,89 @@ input[type=radio]::before {
 
 button {
   outline: none;
+}
+
+input.num-sm {
+  width: 100%;
+}
+
+input.num-lg {
+  min-width: 50px;
+}
+
+#mod-menu a {
+  background: #3b1118;
+  padding: 1rem;
+  text-decoration: none;
+  transition: background-color 200ms ease-in-out;
+}
+#mod-menu a.active {
+  background: #b63a3a;
+  color: white;
+}
+
+#edit-packs .nav button {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-radius: 0;
+}
+#edit-packs .nav button.nav-link {
+  color: white;
+}
+#edit-packs .nav button.nav-link:hover:not(.active) {
+  background: #3b1118;
+}
+#edit-packs .nav button.active {
+  background: #b63a3a;
+  color: white;
+}
+
+#edit-references .control {
+  display: flex;
+  justify-content: space-between;
+}
+#edit-references .control button.save {
+  border: none;
+  background: #25d525;
+  opacity: 0;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+}
+#edit-references .control button.save:hover {
+  background: #1daa1d;
+}
+#edit-references .control button.save:active {
+  background: #167e16;
+}
+#edit-references .control button.save.show {
+  opacity: 1;
+}
+#edit-references .control button.save:disabled {
+  background: #646464;
+}
+#edit-references .list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+#edit-references .list .reference {
+  display: flex;
+  justify-content: space-between;
+}
+#edit-references .list .reference > div {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+#edit-references .list .reference h4, #edit-references .list .reference p {
+  margin: 0;
+}
+#edit-references .list .reference button {
+  color: white;
+  background: #b63a3a;
+  border: none;
 }
 
 body {

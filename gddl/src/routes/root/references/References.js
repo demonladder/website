@@ -1,7 +1,9 @@
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
 import Difficulty from './Difficulty';
 import serverIP from '../../../serverIP';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import { GetReferences } from '../../../api/references';
 
 export async function referencesLoader() {
     return fetch(serverIP + '/getReferences')
@@ -10,13 +12,14 @@ export async function referencesLoader() {
 }
 
 export default function References () {
-    const referenceDemons = useLoaderData();
-    if (referenceDemons.error) {
-        return (
-            <div className='container'>
-                <h1>{referenceDemons.message}</h1>
-            </div>
-        );
+    const { status, data: referenceDemons } = useQuery({
+        queryKey: ['references'],
+        queryFn: GetReferences,
+        staleTime: 1000 * 60 * 5
+    });
+
+    if (status === 'loading') {
+        return <LoadingSpinner />;
     }
 
     let difficulties = [

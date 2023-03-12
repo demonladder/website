@@ -23,9 +23,9 @@ export default function PackOverview() {
         <div className='container'>
             <h1>{pack.Name}</h1>
             <div id='levelList' className='my-3'>
-                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} key={-1} classes='head' />
+                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={true} key={-1} classes='head' />
                 {pack.Levels.map(l => (
-                    <Level info={l} key={l.ID} />
+                    <Level info={l} isListView={true} key={l.ID} />
                 ))}
             </div>
         </div>

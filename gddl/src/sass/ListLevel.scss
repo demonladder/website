@@ -1,12 +1,27 @@
-@use 'Colors.scss';
+@use 'Colors';
+@use 'Utils';
 
 #level-list {
+    p, h4 {
+        margin: 0;
+    }
+
     .level.list {
-        border: 1px #998888 solid;
-        border-bottom: none;
-        border-right: none;
-        border-left: none;
+        border-bottom: 1px #998888 solid;
         padding: 0;
+
+        a {
+            color: white;
+            @include Utils.underline();
+        }
+
+        button.id-button {
+            color: white;
+            @include Utils.underline();
+            border: none;
+            width: 100%;
+            //text-align: start;
+        }
     
         h3 {
             font-weight: 350;

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Select from '../../../components/Select';
 import FiltersExtended from './FiltersExtended';
-import { toggleShowFilter } from './Ladder';
 
-export default function FilterMenu({ filter, sessionID, setExtended }) {
+export default function FilterMenu({ filter, setExtended }) {
     const resetExtended = useRef();
     const [lowTier, setLowTier] = useState('');
     const [highTier, setHighTier] = useState('');
@@ -16,16 +15,6 @@ export default function FilterMenu({ filter, sessionID, setExtended }) {
     function onHighTierChange(event) {
         let value = event.target.value;
         setHighTier(value);
-    }
-
-    const [removeUnrated, setRemoveUnrated] = useState(false);
-    function onUnratedChange(event) {
-        setRemoveUnrated(event.target.checked);
-    }
-
-    const [removeCompleted, setRemoveCompleted] = useState(false);
-    function onCompletedChange(event) {
-        setRemoveCompleted(event.target.checked);
     }
 
     const [difficulty, setDifficulty] = useState(0);
@@ -53,11 +42,10 @@ export default function FilterMenu({ filter, sessionID, setExtended }) {
             enjLow,
             enjHigh,
             difficulty,
-            removeUnrated,
             creator,
             song
         });
-    }, [lowTier, highTier, enjLow, enjHigh, difficulty, removeUnrated, creator, song]);
+    }, [lowTier, highTier, enjLow, enjHigh, difficulty, creator, song]);
 
     function reset() {
         setLowTier('');
@@ -65,8 +53,6 @@ export default function FilterMenu({ filter, sessionID, setExtended }) {
         setEnjLow('');
         setEnjHigh('');
         setDifficulty(0);
-        setRemoveUnrated(false);
-        setRemoveCompleted(false);
         setCreator('');
         setSong('');
         resetExtended.current.reset();
@@ -80,8 +66,8 @@ export default function FilterMenu({ filter, sessionID, setExtended }) {
                     <button className='danger' onClick={reset}>Reset</button>
                 </div>
                 <div className='d-flex flex-column gap-3'>
-                    <div className='row gap-xl-3'>
-                        <div className='col-sm-5 col-lg-4 col-xl-2'>
+                    <div className='row gap-xl-3 row-gap-2'>
+                        <div className='col-6 col-sm-5 col-lg-4 col-xl-2'>
                             <p className='form-label m-0'>Tier range:</p>
                             <div className='d-flex align-items-center'>
                                 <input type='number' min='1' max='35' value={lowTier} onChange={onLowTierChange} />
@@ -89,7 +75,7 @@ export default function FilterMenu({ filter, sessionID, setExtended }) {
                                 <input type='number' min='1' max='35' value={highTier} onChange={onHighTierChange} />
                             </div>
                         </div>
-                        <div className='col-sm-5 col-lg-4 col-xl-2'>
+                        <div className='col-6 col-sm-5 col-lg-4 col-xl-2'>
                             <p className='form-label m-0'>Enjoyment:</p>
                             <div className='d-flex align-items-center'>
                                 <input type='number' min='0' max='10' value={enjLow} onChange={(e) => setEnjLow(e.target.value)} />
@@ -117,16 +103,6 @@ export default function FilterMenu({ filter, sessionID, setExtended }) {
                             <p className='form-label m-0'>Song:</p>
                             <input type="text" value={song} onChange={onSongChange} />
                         </div>
-                    </div>
-                    <div className='col-md-5 col-lg-4'>
-                        <label className='d-flex gap-2'>
-                            <input type='checkbox' checked={removeUnrated} onChange={onUnratedChange} />
-                            Exclude unrated
-                        </label>
-                        <label className='d-flex gap-2'>
-                            <input type='checkbox' checked={removeCompleted} onChange={onCompletedChange} disabled={!sessionID} />
-                            Exclude completed
-                        </label>
                     </div>
                 </div>
                 <FiltersExtended set={setExtended} resetRef={resetExtended} />

@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 
 export default function FiltersExtended({ set, resetRef }) {
@@ -13,8 +14,10 @@ export default function FiltersExtended({ set, resetRef }) {
             bigContent.style.maxHeight = bigContent.scrollHeight + content.scrollHeight + 'px';
         }
 
-        document.querySelector('#extended-filters-menu button.open-extended .open-spinner').classList.toggle('spin');
+        document.querySelector('#extended-filters-menu button.open-extended .open-spinner').classList.toggle('spin');  // Toggle 'V' upside down
     }
+
+    const inSession = Cookies.get('sessionToken') != null;
 
     const [subLowCount, setSubLowCount] = useState('');
     const [subHighCount, setSubHighCount] = useState('');
@@ -24,6 +27,18 @@ export default function FiltersExtended({ set, resetRef }) {
     
     const [devLow, setDevLow] = useState('');
     const [devHigh, setDevHigh] = useState('');
+    
+    const [IDLow, setIDLow] = useState('');
+    const [IDHigh, setIDHigh] = useState('');
+
+    const [exactName, setExactName] = useState(false);
+
+    const [removeUnrated, setRemoveUnrated] = useState(false);
+    const [removeUnratedEnj, setRemoveUnratedEnj] = useState(false);
+    const [removeRated, setRemoveRated] = useState(false);
+    const [removeRatedEnj, setRemoveRatedEnj] = useState(false);
+
+    const [removeCompleted, setRemoveCompleted] = useState(false);
 
     useEffect(() => {
         set({
@@ -32,9 +47,14 @@ export default function FiltersExtended({ set, resetRef }) {
             enjLowCount,
             enjHighCount,
             devLow,
-            devHigh
+            devHigh,
+            exactName,
+            removeUnrated,
+            removeUnratedEnj,
+            removeRated,
+            removeRatedEnj
         });
-    }, [subLowCount, subHighCount, enjLowCount, enjHighCount, devLow, devHigh]);
+    }, [subLowCount, subHighCount, enjLowCount, enjHighCount, devLow, devHigh, exactName, removeUnrated, removeUnratedEnj, removeRated, removeRatedEnj]);
 
     useImperativeHandle(resetRef, () => ({
         reset() {        
@@ -44,6 +64,12 @@ export default function FiltersExtended({ set, resetRef }) {
             setEnjHighCount('');
             setDevLow('');
             setDevHigh('');
+            setExactName(false);
+            setRemoveUnrated(false);
+            setRemoveUnratedEnj(false);
+            setRemoveRated(false);
+            setRemoveRatedEnj(false);
+            setRemoveCompleted(false);
         }
     }))
 
@@ -56,30 +82,66 @@ export default function FiltersExtended({ set, resetRef }) {
                 </b>
             </button>
             <div className='content'>
-                <div className='d-flex flex-wrap gap-5'>
-                    <div>
-                        <p className='form-label m-0'>Submission count:</p>
-                        <div className='d-flex align-items-center'>
-                            <input type='number' className='num-sm' value={subLowCount} min='1' max='10' onChange={(e) => setSubLowCount(e.target.value)} />
-                            <p className='m-0 mx-2'>to</p>
-                            <input type='number' className='num-sm' value={subHighCount} min='1' max='10' onChange={(e) => setSubHighCount(e.target.value)} />
+                <div className='d-flex flex-column gap-3'>
+                    <div className='d-flex flex-wrap gap-4 row-gap-3'>
+                        <div>
+                            <p className='form-label m-0'>Submission count:</p>
+                            <div className='d-flex align-items-center'>
+                                <input type='number' className='num-sm' value={subLowCount} min='1' max='10' onChange={(e) => setSubLowCount(e.target.value)} />
+                                <p className='m-0 mx-2'>to</p>
+                                <input type='number' className='num-sm' value={subHighCount} min='1' max='10' onChange={(e) => setSubHighCount(e.target.value)} />
+                            </div>
+                        </div>
+                        <div>
+                            <p className='form-label m-0'>Enjoyment count:</p>
+                            <div className='d-flex align-items-center'>
+                                <input type='number' className='num-sm' value={enjLowCount} min='1' max='10' onChange={(e) => setEnjLowCount(e.target.value)} />
+                                <p className='m-0 mx-2'>to</p>
+                                <input type='number' className='num-sm' value={enjHighCount} min='1' max='10' onChange={(e) => setEnjHighCount(e.target.value)} />
+                            </div>
+                        </div>
+                        <div>
+                            <p className='form-label m-0'>Deviation:</p>
+                            <div className='d-flex align-items-center'>
+                                <input type='number' className='num-lg' value={devLow} min='1' max='10' onChange={(e) => setDevLow(e.target.value)} />
+                                <p className='m-0 mx-2'>to</p>
+                                <input type='number' className='num-lg' value={devHigh} min='1' max='10' onChange={(e) => setDevHigh(e.target.value)} />
+                            </div>
+                        </div>
+                        <div>
+                            <p className='form-label m-0'>Level ID:</p>
+                            <div className='d-flex align-items-center'>
+                                <input type='number' className='num-lg' value={IDLow} min='1' max='500000000' onChange={(e) => setIDLow(e.target.value)} />
+                                <p className='m-0 mx-2'>to</p>
+                                <input type='number' className='num-lg' value={IDHigh} min='1' max='500000000' onChange={(e) => setIDHigh(e.target.value)} />
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <p className='form-label m-0'>Enjoyment count:</p>
-                        <div className='d-flex align-items-center'>
-                            <input type='number' className='num-sm' value={enjLowCount} min='1' max='10' onChange={(e) => setEnjLowCount(e.target.value)} />
-                            <p className='m-0 mx-2'>to</p>
-                            <input type='number' className='num-sm' value={enjHighCount} min='1' max='10' onChange={(e) => setEnjHighCount(e.target.value)} />
-                        </div>
-                    </div>
-                    <div>
-                        <p className='form-label m-0'>Deviation:</p>
-                        <div className='d-flex align-items-center'>
-                            <input type='number' className='num-lg' value={devLow} min='1' max='10' onChange={(e) => setDevLow(e.target.value)} />
-                            <p className='m-0 mx-2'>to</p>
-                            <input type='number' className='num-lg' value={devHigh} min='1' max='10' onChange={(e) => setDevHigh(e.target.value)} />
-                        </div>
+                    <div className='row'>
+                        <label className='col-12 col-lg-6 col-xl-4 d-flex align-items-center gap-2'>
+                            <input type='checkbox' checked={exactName} onChange={() => setExactName(prev => !prev)} />
+                            Exact name search
+                        </label>
+                        <label className='col-12 col-lg-6 col-xl-4 d-flex align-items-center gap-2'>
+                            <input type='checkbox' checked={removeCompleted} onChange={() => setRemoveCompleted(prev => !prev)} disabled={!inSession} />
+                            Exclude completed
+                        </label>
+                        <label className='col-12 col-lg-6 col-xl-4 d-flex align-items-center gap-2'>
+                            <input type='checkbox' checked={removeUnrated} onChange={() => setRemoveUnrated(prev => !prev)} />
+                            Exclude unrated tier
+                        </label>
+                        <label className='col-12 col-lg-6 col-xl-4 d-flex align-items-center gap-2'>
+                            <input type='checkbox' checked={removeUnratedEnj} onChange={() => setRemoveUnratedEnj(prev => !prev)} />
+                            Exclude unrated enjoyment
+                        </label>
+                        <label className='col-12 col-lg-6 col-xl-4 d-flex align-items-center gap-2'>
+                            <input type='checkbox' checked={removeRated} onChange={() => setRemoveRated(prev => !prev)} />
+                            Exclude rated tier
+                        </label>
+                        <label className='col-12 col-xl-4 d-flex align-items-center gap-2'>
+                            <input type='checkbox' checked={removeRatedEnj} onChange={() => setRemoveRatedEnj(prev => !prev)} />
+                            Exclude rated enjoyment
+                        </label>
                     </div>
                 </div>
             </div>

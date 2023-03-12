@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLoaderData, useOutletContext } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../icons/filter-empty.svg';
 import FilterMenu from './FilterMenu';
@@ -39,8 +39,6 @@ export function toggleShowFilter() {
 }
 
 export default function Ladder() {
-    const [sessionID] = useOutletContext();
-
     const [loaderResponse, setLoaderResponse] = useState(useLoaderData());
     const [levels, setLevels] = useState(!loaderResponse.error ? loaderResponse.data : { count: 0, levels: [] });
     useEffect(() => {
@@ -109,6 +107,10 @@ export default function Ladder() {
         setSearch(event.target.value);
     }
 
+    function clearSearch() {
+        setSearch('');
+    }
+
     const [listView, setListView] = useState(true);
     function onViewList() {
         if (!listView) setListView(true);
@@ -119,7 +121,7 @@ export default function Ladder() {
     }
 
     const list = (
-        <div className='row p-0 m-0'>
+        <div className='d-flex flex-column'>
             <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
             {!loaderResponse.error ? levels.levels.map(l => <Level info={l} isListView={listView} key={l.ID} />)
             : <h1 className='m-5'>{loaderResponse.message}</h1>}
@@ -128,12 +130,12 @@ export default function Ladder() {
 
     const grid = (
         <>
-            <div className='d-flex flex-column col-6 p-0 m-0'>
+            <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
                 <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
                 {!loaderResponse.error ? levels.levels.slice(0, (levels.levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)
                 : <h1 className='m-5'>{loaderResponse.message}</h1>}
             </div>
-            <div className='d-flex flex-column col-6 p-0 m-0'>
+            <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
                 {!loaderResponse.error ? levels.levels.slice((levels.levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)
                 : <h1 className='m-5'>{loaderResponse.message}</h1>}
             </div>
@@ -144,8 +146,9 @@ export default function Ladder() {
         <div className='container'>
             <h1>The Ladder</h1>
             <div className='d-flex align-items-center search'>
-                <div className='flex-fill m-2'>
+                <div className='search-bar'>
                     <input type='text' placeholder='  Search level name...' name='query' value={search} onChange={onSearchChange} />
+                    <button className='clear-search' onClick={clearSearch}>X</button>
                 </div>
                 <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={toggleShowFilter}>
                     <img src={filterEmpty} alt='' />
@@ -160,13 +163,13 @@ export default function Ladder() {
                     </button>
                 </div>
             </div>
-            <FilterMenu filter={setFilters} setExtended={setExtendedFilters} sessionID={sessionID} />
+            <FilterMenu filter={setFilters} setExtended={setExtendedFilters} />
             <div id='level-list' className={'my-3' + (listView ? '' : ' d-flex')}>
                 {listView ? list : grid}
             </div>
-            <div className='d-flex align-items-center justify-content-evenly'>
+            <div className='d-flex align-items-center'>
                 <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='' /></button>
-                <p className='text-center m-0 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/16) || 0}</p>
+                <p className='text-center m-0 mx-5 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/16) || 0}</p>
                 <button className='page-scroller' onClick={pageUp}><img src={caretR} alt='' /></button>
             </div>
         </div>

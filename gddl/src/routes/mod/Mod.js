@@ -19,23 +19,17 @@ export default function Mod() {
         <div>
             <Header />
             <div className='container'>
-                <div className='row'>
-                    <div className='d-flex flex-column flex-shrink-0 p-3 m-0 col-12 col-md-5 col-lg-4'>
+                <div className='row gap-5'>
+                    <div id='mod-menu' className='d-flex flex-column flex-shrink-0 p-3 m-0 col-12 col-md-5 col-lg-4'>
                         <h1>Mod page</h1>
                         <hr />
-                        <ul className='nav nav-pills flex-column mb-auto'>
-                            <li className='nav-item'>
-                                <Link className={`nav-link ${path === '/mod' ? 'active' : 'link-light'}`} to='/mod'>Overview</Link>
-                            </li>
-                            <li className='nav-item'>
-                                <Link className={`nav-link ${path === '/mod/queue' ? 'active' : 'link-light'}`} to='/mod/queue'>Submissions queue</Link>
-                            </li>
-                            <li className='nav-item'>
-                                <Link className={`nav-link ${path === '/mod/packs' ? 'active' : 'link-light'}`} to='/mod/packs'>Edit packs</Link>
-                            </li>
-                        </ul>
+                        <div className='d-flex flex-column'>
+                            <Link className={`${path === '/mod' ? 'active' : 'link-light'}`} to='/mod'>Overview</Link>
+                            <Link className={`${path === '/mod/queue' ? 'active' : 'link-light'}`} to='/mod/queue'>Submissions queue</Link>
+                            <Link className={`${path === '/mod/packs' ? 'active' : 'link-light'}`} to='/mod/packs'>Edit packs</Link>
+                            <Link className={`${path === '/mod/references' ? 'active' : 'link-light'}`} to='/mod/references'>Edit references</Link>
+                        </div>
                     </div>
-                    <div className='spacer col-1 d-none d-sm-block'></div>
                     <div className='col-12 col-md-6 col-lg-7'>
                         <Outlet />
                     </div>

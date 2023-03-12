@@ -31,6 +31,19 @@ export default function SortMenu({ set }) {
         });
     }, [sortAscending, sorter]);
 
+    document.onmousemove = (e) => {  // Auto close sort menu when mouse wanders too far
+        const menu = document.getElementById('sort-menu');
+        if (!menu) return;
+        const rect = menu.getBoundingClientRect();
+        const dist = 300;
+
+        if (e.clientX < rect.x - dist ||
+            e.clientX > rect.x + rect.width + dist ||
+            e.clientY > rect.y + rect.height + dist) {
+            closeSortMenu();
+        }
+    };
+
     return (        
         <div className='position-relative h-100'>
             <button className='btn btn-light btn-sm px-3 h-100' onClick={toggleSortMenu}>
@@ -76,19 +89,19 @@ export default function SortMenu({ set }) {
                             </label>
                         </div>
                         <div className='option'>
-                            <label htmlFor='tier' className='p-0'>
+                            <label htmlFor='enjoyment' className='p-0'>
                                 <input type='radio' id='enjoyment' name='sort' checked={sorter ==='enjoyment'} onChange={handleSortMenu} />
                                 Enjoyment
                             </label>
                         </div>
                         <div className='option'>
-                            <label htmlFor='tier' className='p-0'>
+                            <label htmlFor='ratings' className='p-0'>
                                 <input type='radio' id='ratings' name='sort' checked={sorter ==='ratings'} onChange={handleSortMenu} />
                                 Rating count
                             </label>
                         </div>
                         <div className='option'>
-                            <label htmlFor='tier' className='p-0'>
+                            <label htmlFor='enjoyments' className='p-0'>
                                 <input type='radio' id='enjoyments' name='sort' checked={sorter ==='enjoyments'} onChange={handleSortMenu} />
                                 Enjoyment count
                             </label>

@@ -1,5 +1,7 @@
 @use 'Colors';
 
+//Re-adjusts bootstrap container width so it's thinner across all breakpoints.
+
 .container {
     width: 100%;
     background-color: Colors.$background-light;

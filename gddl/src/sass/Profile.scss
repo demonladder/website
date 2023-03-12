@@ -1,3 +1,6 @@
+@use 'Utils';
+@use 'Colors';
+
 .pfp {
     width: 48px;
     border-radius: 50%;
@@ -10,22 +13,30 @@
 
 .search-result {
     position: absolute;
-    z-index: 100;
-    background-color: white;
-    color: black;
+    background-color: Colors.$select-bg;
+    //color: white;
     padding: 0.5rem 0;
-    border-radius: 12px;
 
     .result {
         padding: 0.25rem 1rem;
-    }
-    .result:hover {
-        background-color: rgb(221, 221, 221);
-        cursor: pointer;
+        transition: background-color 200ms ease-in-out;
+        
+        &:hover {
+            background-color: Colors.$filter-bg;
+            cursor: pointer;
+        }
     }
 }
 
 .profile {
+    .navbar & {
+        color: white;
+        text-decoration: none;
+        > span {
+            @include Utils.underline();
+        }
+    }
+
     .information {
         display: flex;
 

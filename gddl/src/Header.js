@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Container, Form, Modal, Nav, Navbar, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -7,24 +6,6 @@ import SearchResult from './routes/root/profile/SearchResult';
 import serverIP from './serverIP';
 
 export default function Header() {
-    const [user, setUser] = useState({});
-    useEffect(() => {
-        if (!user.info) {
-            const userID = Cookies.get('userID');
-            if (!userID) return;
-            fetch(`${serverIP}/getUser?userID=${userID}`).then(res => res.json())
-            .then(data => {
-                setUser(data);
-            })
-            .catch(e => {
-                return {
-                    error: true,
-                    message: 'Couldn\'t connect to the server!'
-                }
-            });
-        }
-    });
-
     const [showModal, setShowModal] = useState(false);
     function closeSubmit() { setShowModal(false); }
     function openSubmit() { setShowModal(true); }
@@ -36,7 +17,7 @@ export default function Header() {
     useEffect(() => {
         clearTimeout(timer);
         setTimer(setTimeout(() => {
-            fetch(`${serverIP}/getLevels?page=0&chunk=5&name=${levelName}`, {
+            fetch(`${serverIP}/getLevels?chunk=5&name=${levelName}`, {
                 credentials: 'include'
             }).then(res => res.json())
             .then(data => {
@@ -140,9 +121,9 @@ export default function Header() {
                             <div className='d-flex align-items-center'><LinkContainer to='/references'><Nav.Link className='text-light underline'>Reference Demons</Nav.Link></LinkContainer></div>
                             <div className='d-flex align-items-center'><LinkContainer to='/packs'><Nav.Link className='text-light underline'>Packs</Nav.Link></LinkContainer></div>
                             <div className='d-flex align-items-center'><LinkContainer to='/utils'><Nav.Link className='text-light underline'>Utils</Nav.Link></LinkContainer></div>
-                            <div><Button variant='link' className='text-start style-link fs-5 underline' type='button' onClick={openSubmit}>Submit</Button></div>
+                            <div><Button variant='link' className='text-start style-link fs-5 underline nav-link' type='button' onClick={openSubmit}>Submit</Button></div>
                         </Nav>
-                        <ProfileButtons user={user} />
+                        <ProfileButtons />
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

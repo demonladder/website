@@ -31,6 +31,15 @@ input[type=text] {
     }
 }
 
+$disabled-col:rgb(0, 0, 0)!important;
+label:has(input:disabled) {
+    color: $disabled-col;
+    text-decoration: line-through;
+}
+input:disabled {
+    color: $disabled-col;
+}
+
 input[type=checkbox],
 input[type=radio] {
     appearance: none;
@@ -97,4 +106,12 @@ input[type=radio] {
 
 button {
     outline: none;
+}
+
+input.num-sm {
+    width: 100%;
+}
+
+input.num-lg {
+    min-width: 50px;
 }

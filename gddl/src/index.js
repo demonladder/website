@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './sass/styles.css';
-import Root, { rootLoader } from './routes/root/Root';
+import Root from './routes/root/Root';
 import Index from './routes/root/RootIndex';
 import Ladder, { ladderLoader } from './routes/root/list/Ladder';
 import References, { referencesLoader } from './routes/root/references/References';
@@ -18,12 +20,12 @@ import Queue from './routes/mod/queue/Queue';
 import ModIndex from './routes/mod/ModIndex';
 import Utils from './routes/utils/Utils'
 import EditPacks from './routes/mod/packs/EditPacks';
+import EditReferences from './routes/mod/references/References';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    loader: rootLoader,
     errorElement: <ErrorElement />,
     children: [
       {
@@ -87,6 +89,10 @@ const router = createBrowserRouter([
       {
         path: 'packs',
         element: <EditPacks />
+      },
+      {
+        path: 'references',
+        element: <EditReferences />
       }
     ]
   },
@@ -96,9 +102,14 @@ const router = createBrowserRouter([
   }
 ]);
 
+const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 } } });
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </React.StrictMode>
 );
