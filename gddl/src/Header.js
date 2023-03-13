@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Container, Form, Modal, Nav, Navbar, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 import ProfileButtons from './routes/root/login/ProfileButtons';
 import SearchResult from './routes/root/profile/SearchResult';
 import serverIP from './serverIP';
@@ -113,15 +114,15 @@ export default function Header() {
         <>
             <Navbar expand='lg' className='py-4 px-5 mb-4'>
                 <Container fluid>
-                    <Navbar.Brand href='/' className='text-light title'>GDDLadder</Navbar.Brand>
+                    <Link to='/' className='navbar-brand title'>GDDLadder</Link>
                     <Navbar.Toggle aria-controls='navbar' />
                     <Navbar.Collapse id='navbar' className='justify-content-between'>
                         <Nav navbar>
-                            <div className='d-flex align-items-center'><LinkContainer to='/list'><Nav.Link className='text-light underline'>The Ladder</Nav.Link></LinkContainer></div>
-                            <div className='d-flex align-items-center'><LinkContainer to='/references'><Nav.Link className='text-light underline'>Reference Demons</Nav.Link></LinkContainer></div>
-                            <div className='d-flex align-items-center'><LinkContainer to='/packs'><Nav.Link className='text-light underline'>Packs</Nav.Link></LinkContainer></div>
-                            <div className='d-flex align-items-center'><LinkContainer to='/utils'><Nav.Link className='text-light underline'>Utils</Nav.Link></LinkContainer></div>
-                            <div><Button variant='link' className='text-start style-link fs-5 underline nav-link' type='button' onClick={openSubmit}>Submit</Button></div>
+                            <div className='d-flex align-items-center'><LinkContainer to='/list'><Nav.Link className='underline fs-5'>The Ladder</Nav.Link></LinkContainer></div>
+                            <div className='d-flex align-items-center'><LinkContainer to='/references'><Nav.Link className='underline fs-5'>Reference Demons</Nav.Link></LinkContainer></div>
+                            <div className='d-flex align-items-center'><LinkContainer to='/packs'><Nav.Link className='underline fs-5'>Packs</Nav.Link></LinkContainer></div>
+                            <div className='d-flex align-items-center'><LinkContainer to='/utils'><Nav.Link className='underline fs-5'>Utils</Nav.Link></LinkContainer></div>
+                            <div><button className='text-start fs-5 underline nav-link' onClick={openSubmit}>Submit</button></div>
                         </Nav>
                         <ProfileButtons />
                     </Navbar.Collapse>

@@ -29,7 +29,8 @@
 }
 
 .navbar {
-    background: linear-gradient(Colors.$header, Colors.$transparent);
+    background: Colors.$header;
+    color: black;
 }
 
 button.navbar-toggler {

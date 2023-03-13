@@ -9,6 +9,10 @@
     margin-bottom: 5rem;
 }
 
+.root .container {
+    background-color: adjust-color(Colors.$background-light, $alpha: -0.1);
+}
+
 @media (min-width: 992px) {
     .container {
         max-width: 720px;

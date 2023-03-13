@@ -43,3 +43,21 @@ code {
 .navbar-toggler {  // Removes the stupid 1px border around the navbar toggler
     border: none;
 }
+
+.nav-link.active {
+    font-weight: bold;
+}
+
+.bg {
+    position: absolute;
+    z-index: -10;
+    width: 100%;
+    top: 1.5rem;
+
+    img {
+        width: 100%;
+        height: 30em;
+        object-fit: cover;
+        filter: brightness(50%);
+    }
+}

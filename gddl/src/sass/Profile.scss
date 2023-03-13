@@ -30,7 +30,7 @@
 
 .profile {
     .navbar & {
-        color: white;
+        color: currentColor;
         text-decoration: none;
         > span {
             @include Utils.underline();
@@ -39,6 +39,7 @@
 
     .information {
         display: flex;
+        box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.218);
 
         .introduction {
             background: rgb(32, 32, 32);

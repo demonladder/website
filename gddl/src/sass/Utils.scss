@@ -1,21 +1,5 @@
-button {
-    transition: all 0.2s ease-in-out;
-
-    &.danger {
-        background: none;
-        color: white;
-        border: 3px solid #870000;
-        //border-radius: 3px;
-
-        &:hover:not(:active) {
-            background-color: #540000;
-            transform: scale(1.1);
-        }
-    }
-}
-
 @mixin underline {
-    background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+    background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
     background-size: 0 2px;
     background-position: 50% 100%;
     transition: background-size 100ms ease-in-out;
@@ -27,11 +11,33 @@ button {
     }
 }
 
+@mixin glow {
+    text-shadow: 0 0 3px currentColor;
+}
+
+button {
+    //transition: all 0.2s ease-in-out;
+    background: none;
+    color: currentColor;
+    border: none;
+
+    &.danger {
+        background: none;
+        color: white;
+        border: 3px solid #870000;
+
+        &:hover:not(:active) {
+            background-color: #540000;
+            transform: scale(1.1);
+        }
+    }
+}
+
 .underline {
     @include underline;
 }
 .underline-p {
-    @include underline();
+    @include underline;
     border: none;
     color: white;
 }

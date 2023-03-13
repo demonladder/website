@@ -5,8 +5,8 @@ import filterEmpty from '../../../icons/filter-empty.svg';
 import FilterMenu from './FilterMenu';
 import caretR from '../../../icons/caret-r.svg';
 import caretL from '../../../icons/caret-l.svg';
-import listSVG from '../../../icons/list.svg';
-import gridSVG from '../../../icons/grid.svg';
+import { ReactComponent as ListSVG } from '../../../icons/list.svg';
+import { ReactComponent as GridSVG } from '../../../icons/grid.svg';
 import serverIP from '../../../serverIP';
 import SortMenu, { closeSortMenu } from './SortMenu';
 
@@ -156,10 +156,10 @@ export default function Ladder() {
                 <SortMenu set={setSorter} />
                 <div className='d-flex align-items-center m-1 h-100'>
                     <button className={'list view-left ' + (listView ? 'active' : '')} onClick={onViewList}>
-                        <img src={listSVG} alt='' />
+                        <ListSVG />
                     </button>
                     <button className={'list view-right ' + (!listView ? 'active' : '')} onClick={onViewGrid}>
-                        <img src={gridSVG} alt='' />
+                        <GridSVG />
                     </button>
                 </div>
             </div>

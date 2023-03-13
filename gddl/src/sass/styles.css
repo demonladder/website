@@ -229,9 +229,13 @@
 
 .container {
   width: 100%;
-  background-color: #280808;
+  background-color: #262626;
   padding: 30px 40px;
   margin-bottom: 5rem;
+}
+
+.root .container {
+  background-color: rgba(38, 38, 38, 0.9);
 }
 
 @media (min-width: 992px) {
@@ -245,7 +249,7 @@
   }
 }
 .bg-gddl {
-  background-color: #1a0505;
+  background-color: hsl(306deg, 0%, 10%);
 }
 
 .topnav {
@@ -271,7 +275,8 @@
 }
 
 .navbar {
-  background: linear-gradient(rgba(103, 60, 60, 0.2666666667), rgba(255, 255, 255, 0));
+  background: #EFA51C;
+  color: black;
 }
 
 button.navbar-toggler:focus {
@@ -284,7 +289,9 @@ button.navbar-toggler:focus {
 }
 
 button {
-  transition: all 0.2s ease-in-out;
+  background: none;
+  color: currentColor;
+  border: none;
 }
 button.danger {
   background: none;
@@ -297,7 +304,7 @@ button.danger:hover:not(:active) {
 }
 
 .underline {
-  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
   background-position: 50% 100%;
   transition: background-size 100ms ease-in-out;
@@ -309,7 +316,7 @@ button.danger:hover:not(:active) {
 }
 
 .underline-p {
-  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
   background-position: 50% 100%;
   transition: background-size 100ms ease-in-out;
@@ -364,7 +371,7 @@ button.danger:hover:not(:active) {
 }
 #level-list .level.list a {
   color: white;
-  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
   background-position: 50% 100%;
   transition: background-size 100ms ease-in-out;
@@ -376,7 +383,7 @@ button.danger:hover:not(:active) {
 }
 #level-list .level.list button.id-button {
   color: white;
-  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
   background-position: 50% 100%;
   transition: background-size 100ms ease-in-out;
@@ -429,7 +436,7 @@ button.danger:hover:not(:active) {
 
 #sort-menu {
   position: absolute;
-  background-color: rgb(95, 28, 28);
+  background-color: #545454;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
@@ -556,7 +563,7 @@ ul {
 }
 
 #filter-menu {
-  background-color: #3b1118;
+  background-color: #2e2e2e;
   margin-bottom: 1.5rem;
   max-height: 0;
   overflow: hidden;
@@ -638,7 +645,7 @@ button.open-extended:hover {
 
 .search-result {
   position: absolute;
-  background-color: rgb(95, 28, 28);
+  background-color: #545454;
   padding: 0.5rem;
 }
 .search-result .result {
@@ -646,16 +653,16 @@ button.open-extended:hover {
   transition: background-color 200ms ease-in-out;
 }
 .search-result .result:hover {
-  background-color: #3b1118;
+  background-color: #2e2e2e;
   cursor: pointer;
 }
 
 .navbar .profile {
-  color: white;
+  color: currentColor;
   text-decoration: none;
 }
 .navbar .profile > span {
-  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
   background-position: 50% 100%;
   transition: background-size 100ms ease-in-out;
@@ -667,6 +674,7 @@ button.open-extended:hover {
 }
 .profile .information {
   display: flex;
+  box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.218);
 }
 .profile .information .introduction {
   background: rgb(32, 32, 32);
@@ -727,7 +735,7 @@ a.nav {
 }
 
 .level-overview .creator {
-  background: radial-gradient(circle at center, white 0%, white 100%) no-repeat;
+  background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
   background-position: 50% 100%;
   transition: background-size 100ms ease-in-out;
@@ -763,7 +771,7 @@ a.nav {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #b63a3a;
+  background-color: #EFA51C;
 }
 
 .pack-ref {
@@ -840,7 +848,7 @@ input:not([type=radio]):not([type=checkbox]),
 .style-input,
 select {
   outline: none;
-  background: rgba(0, 0, 0, 0.132);
+  background: hsla(0deg, 0%, 0%, 0.132);
   color: white;
   border: none;
   caret-color: white;
@@ -863,7 +871,7 @@ input[type=text]:focus {
   border-bottom: 2px solid white;
   background: rgba(0, 0, 0, 0.295);
   caret-color: white;
-  box-shadow: 0 0 30px 5px rgba(182, 58, 58, 0.2);
+  box-shadow: 0 0 30px 5px rgba(89, 89, 89, 0.2);
 }
 
 label:has(input:disabled) {
@@ -916,7 +924,7 @@ input[type=radio]::before {
 .custom-select .select-options > p {
   margin: 0;
   padding: 0.125rem 0.5rem;
-  background: rgb(95, 28, 28);
+  background: #545454;
   transition: filter 200ms;
 }
 .custom-select .select-options > p:hover {
@@ -943,13 +951,13 @@ input.num-lg {
 }
 
 #mod-menu a {
-  background: #3b1118;
+  background: #2e2e2e;
   padding: 1rem;
   text-decoration: none;
   transition: background-color 200ms ease-in-out;
 }
 #mod-menu a.active {
-  background: #b63a3a;
+  background: #595959;
   color: white;
 }
 
@@ -963,10 +971,10 @@ input.num-lg {
   color: white;
 }
 #edit-packs .nav button.nav-link:hover:not(.active) {
-  background: #3b1118;
+  background: #2e2e2e;
 }
 #edit-packs .nav button.active {
-  background: #b63a3a;
+  background: #595959;
   color: white;
 }
 
@@ -976,13 +984,13 @@ input.num-lg {
 }
 #edit-references .control button.save {
   border: none;
-  background: #25d525;
+  background: hsl(120deg, 70%, 49%);
   opacity: 0;
   font-weight: bold;
   padding: 0.25rem 0.5rem;
 }
 #edit-references .control button.save:hover {
-  background: #1daa1d;
+  background: #1ea91e;
 }
 #edit-references .control button.save:active {
   background: #167e16;
@@ -991,7 +999,7 @@ input.num-lg {
   opacity: 1;
 }
 #edit-references .control button.save:disabled {
-  background: #646464;
+  background: #636363;
 }
 #edit-references .list {
   display: flex;
@@ -1013,7 +1021,7 @@ input.num-lg {
 }
 #edit-references .list .reference button {
   color: white;
-  background: #b63a3a;
+  background: #595959;
   border: none;
 }
 
@@ -1022,7 +1030,7 @@ body {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #1a0505;
+  background-color: hsl(306deg, 0%, 10%);
 }
 
 code {
@@ -1040,6 +1048,23 @@ code {
 
 .navbar-toggler {
   border: none;
+}
+
+.nav-link.active {
+  font-weight: bold;
+}
+
+.bg {
+  position: absolute;
+  z-index: -10;
+  width: 100%;
+  top: 1.5rem;
+}
+.bg img {
+  width: 100%;
+  height: 30em;
+  object-fit: cover;
+  filter: brightness(50%);
 }
 
 /*# sourceMappingURL=styles.css.map */

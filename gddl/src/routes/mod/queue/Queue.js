@@ -1,63 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+import { ApproveSubmission, GetSubmissionQueue } from '../../../api/submissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import serverIP from '../../../serverIP';
 import Submission from './Submissions';
 
 export default function Queue() {
-    const [queue, setQueue] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const { status, isRefetching, data: queue } = useQuery({
+        queryKey: ['submissionQueue'],
+        queryFn: GetSubmissionQueue,
+        staleTime: 1000 * 30
+    });
 
-    useEffect(() => {
-        fetch(`${serverIP}/getPendingSubmissions`, {
-            credentials: 'include'
-        }).then(async (res) => {
-            return {
-                statusCode: res.status,
-                data: await res.json()
-            }
-        })
-        .then(res => {
-            if (res.statusCode === 200) {
-                setQueue(res.data.map((s) => {
-                    s.id = s.LevelID + '_' + s.UserID;
-                    return s;
-                }));
-                setLoading(false);
-            }
-        })
-        .catch(e => {
-            setError(true);
-            setLoading(false);
-        });
-    }, []);
+    const queryClient = useQueryClient();
+    const approveMutation = useMutation({
+        mutationFn: (info, deny) => {
+            ApproveSubmission(info, deny).then(() => queryClient.invalidateQueries['submissionQueue']);
+        }
+    });
 
-    function onSubmissionApprove(info, deny) {
-        setLoading(true);
-        fetch(`${serverIP}/approveSubmission?levelID=${info.LevelID}&userID=${info.UserID}${deny ? '&deny=true' : ''}`, { credentials: 'include' })
-        .then(res => {
-            setLoading(false);
-            const newQueue = queue.filter(s => !(s.UserID === info.UserID && s.LevelID === info.LevelID));
-            if (res.status === 200 || res.status === 404) setQueue(newQueue);
-        })
-        .catch(e => {
-            setLoading(false);
-        });
-    }
-
-    function onSubmissionDelete(info) {
-        onSubmissionApprove(info, true);
+    function Content() {
+        if (status === 'loading') {
+            return <LoadingSpinner />
+        } else if (status === 'error') {
+            return <h3>An error ocurred</h3>
+        } else {
+            return (
+                <div>
+                    {queue.map(s => <Submission info={s} approve={approveMutation.mutate} remove={approveMutation.mutate} key={s.LevelID + '_' + s.UserID} />)}
+                    {queue.length === 0 && <h3>Queue empty :D</h3>}
+                </div>
+            );
+        }
     }
 
     return (
         <div>
-            <h1>Submissions</h1>
-            <div>
-                <LoadingSpinner isLoading={loading} />
-                {queue.map(s => <Submission info={s} approve={onSubmissionApprove} remove={onSubmissionDelete} key={s.LevelID + '_' + s.UserID} />)}
-                {queue.length === 0 && !error && !loading ? <h3>{'Queue empty :D'}</h3> : ''}
-                {error ? <h3>Couldn't connect to the server!</h3> : ''}
+            <div className='d-flex justify-content-between'>
+                <h1>Submissions</h1>
+                <div>
+                    <button onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>
+                        {isRefetching ? <LoadingSpinner /> : 'Refresh'}
+                    </button>
+                </div>
             </div>
+            <Content />
         </div>
     );
 }

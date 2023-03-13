@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $tier-colors: (
     "0": #360432,
     "1": #DDDFEE,
@@ -82,19 +84,24 @@ $refresh-colors: (
     }
 }
 
+// Original theme: #EFA51C
 $theme: #EFA51C;
-$background: #1a0505;
-$background-light: #280808;
+$background: hsl(306, 0%, 10%);
+$text: hsl(0, 0%, 100%);
+$background-light: adjust-color($background, $lightness: 5%);
+
 $active: rgb(171, 171, 171);
-$primary: #b63a3a;
-$header: #673c3c44;
-$transparent: #ffffff00;
 
-$filter-bg: #3b1118;
-$input-bg: rgba(0, 0, 0, 0.132);
-$select-bg: rgb(95, 28, 28);
+$primary: adjust-color($background, $lightness: 25%);
+$header: #EFA51C;
 
-$save: #25d525;
+$transparent: hsla(0, 0%, 100%, 0);
+
+$filter-bg: adjust-color($background-light, $lightness: 3%);
+$input-bg: hsla(0, 0%, 0%, 0.132);
+$select-bg: adjust-color($filter-bg, $lightness: 15%);
+
+$save: hsl(120, 70%, 49%);
 $save-hover: adjust-color($save, $lightness: -10%);
 $save-active: adjust-color($save-hover, $lightness: -10%);
 $save-disabled: adjust-color($save-hover,  $saturation: -100%);

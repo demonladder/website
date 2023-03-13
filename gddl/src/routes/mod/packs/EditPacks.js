@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Tab, Tabs } from 'react-bootstrap';
 import PackSearchBox from '../../../components/PackSearchBox';
-import FetchPacks from '../../../fetches/Packs';
 import Add from './Add';
 import ChangeItem from './ChangeItem';
 import Move from './Move';
@@ -13,10 +12,6 @@ export default function EditPacks() {
     const [changeList, setChangeList] = useState([]);
     function removeChange(id) {
         setChangeList(changeList.filter(c => c.ID !== id));
-    }
-
-    function handleSearch(search) {
-        return FetchPacks.byName(search);
     }
 
     return (

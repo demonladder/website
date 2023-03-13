@@ -18,7 +18,7 @@ export default function Submission({ info, approve, remove }) {
             </div>
             <div className='d-flex justify-content-evenly'>
                 <button className='btn btn-primary px-3' onClick={() => approve(info)}>Approve</button>
-                <button className='btn btn-danger px-3' onClick={() => remove(info)}>Delete</button>
+                <button className='btn btn-danger px-3' onClick={() => remove(info, true)}>Delete</button>
             </div>
         </div>
     );
