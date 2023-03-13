@@ -8,7 +8,7 @@ import Root from './routes/root/Root';
 import Index from './routes/root/RootIndex';
 import Ladder, { ladderLoader } from './routes/root/list/Ladder';
 import References from './routes/root/references/References';
-import LevelOverview, { levelLoader } from './routes/root/level/LevelOverview';
+import LevelOverview from './routes/root/level/LevelOverview';
 import Login, { loginAction } from './routes/root/login/Login';
 import Packs from './routes/root/packs/Packs';
 import Profile from './routes/root/profile/Profile';
@@ -42,9 +42,8 @@ const router = createBrowserRouter([
         element: <References />
       },
       {
-        path: 'level/:level_id',
-        element: <LevelOverview />,
-        loader: levelLoader
+        path: 'level/:levelID',
+        element: <LevelOverview />
       },
       {
         path: 'packs',

@@ -322,6 +322,18 @@ button.danger:hover:not(:active) {
   background-size: 100% 2px;
 }
 
+.bg-fade {
+  animation: bg-fade 1s;
+}
+
+@keyframes bg-fade {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: transparent;
+  }
+}
 .divider-sm {
   border-bottom: 1px solid white;
   margin-top: 0.5rem;
@@ -627,10 +639,10 @@ button.open-extended:hover {
 .search-result {
   position: absolute;
   background-color: rgb(95, 28, 28);
-  padding: 0.5rem 0;
+  padding: 0.5rem;
 }
 .search-result .result {
-  padding: 0.25rem 1rem;
+  padding: 0.25rem;
   transition: background-color 200ms ease-in-out;
 }
 .search-result .result:hover {
@@ -1024,6 +1036,10 @@ code {
   padding: 0.25rem 0.5rem;
   background-color: white;
   color: black;
+}
+
+.navbar-toggler {
+  border: none;
 }
 
 /*# sourceMappingURL=styles.css.map */

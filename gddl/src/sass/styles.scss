@@ -39,3 +39,7 @@ code {
     background-color: white;
     color: black;
 }
+
+.navbar-toggler {  // Removes the stupid 1px border around the navbar toggler
+    border: none;
+}

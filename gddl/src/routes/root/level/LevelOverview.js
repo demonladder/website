@@ -1,25 +1,27 @@
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import DemonLogo from '../../../components/DemonLogo';
-import serverIP from '../../../serverIP';
 import Submission from './Submission';
 import { Helmet } from 'react-helmet';
 import PackRef from '../../../components/PackRef';
 import { Accordion } from 'react-bootstrap';
-
-export async function levelLoader({ params }) {
-    return fetch(`${serverIP}/getLevel?levelID=${params.level_id}&returnPacks=true`)
-    .then((res) => res.json())
-    .catch(e => { return { error: true, message: 'Couldn\'t connect to the server!' }});
-}
+import { GetLevel } from '../../../api/levels';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export default function LevelOverview() {
-    const levelInfo = useLoaderData();
+    const levelID = useParams().levelID;
+    const { status, data: levelInfo } = useQuery({
+        queryKey: ['levels', levelID],
+        queryFn: () => GetLevel(levelID)
+    });
 
-    if (levelInfo.error) {
+    if (status === 'loading'){
+        return <LoadingSpinner />;
+    } else if (status === 'error') {
         return (
             <div className='container'>
-                <h1>{levelInfo.message}</h1>
+                <h1>An error ocurred</h1>
             </div>
         )
     }

@@ -8,7 +8,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export default function Profile() {
     const userID = useParams().userID;
-    const { status, error, data: userData } = useQuery({
+    const { status, data: userData } = useQuery({
         queryKey: ['user', userID],
         queryFn:  () => GetUser(userID)
     });

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
+import LoadingSpinner from './LoadingSpinner';
 import SearchResult from './SearchResult';
 
-export default function SearchBox({ dataFn, descriptor, setFirst }) {
+export default function SearchBox({ list, update, setResult, status }) {
     const [search, setSearch] = useState('');
-    const [result, setResult] = useState([]);
-    const [resultVisible, setResultVisible] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     function handleChange(e) {
         setSearch(e.target.value);
@@ -15,25 +15,23 @@ export default function SearchBox({ dataFn, descriptor, setFirst }) {
     useEffect(() => {
         clearTimeout(timer);
         setTimer(setTimeout(() => {
-            dataFn(search).then(data => {
-                setFirst(data[0] || null);
-                setResult(data);
-            });
+            update(search);
         }, 300));
     }, [search]);
 
     function handleBlur() {
         setTimeout(() => {
-            setResultVisible(false);
+            setVisible(false);
         }, 300);
     }
 
     return (
         <div className='position-relative'>
-            <Form.Control type='text' value={search} onChange={handleChange} onFocus={() => setResultVisible(true)} onBlur={handleBlur} />
-            <div className={(resultVisible ? 'd-block' : 'd-none') + ' search-result'}>
-                {
-                    result.map(r => <SearchResult msg={r[descriptor]} onClick={() => setSearch(r[descriptor])} key={r.ID} />)
+            <Form.Control type='text' value={search} onChange={handleChange} onFocus={() => setVisible(true)} onBlur={handleBlur} />
+            <div className={(visible ? 'd-block' : 'd-none') + ' search-result'}>
+                {status === 'loading' ?
+                    <LoadingSpinner /> :
+                    list.map(r => <SearchResult msg={r.label} onClick={() => setResult(r)} key={r.label} />)
                 }
             </div>
         </div>

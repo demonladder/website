@@ -8,3 +8,7 @@ export function GetPacks() {
 export function GetPack(id) {
     return axios.get(`${serverIP}/getPack?packID=${id}`).then(res => res.data);
 }
+
+export function SearchPacks(name) {
+    return axios.get(`${serverIP}/getPacks?name=${name}`).then(res => res.data);
+}

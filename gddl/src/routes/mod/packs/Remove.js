@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import SearchBox from '../../../components/SearchBox';
+import LevelSearchBox from '../../../components/LevelSearchBox';
 import FetchLevels from '../../../fetches/Levels';
 const { uuid } = require('uuidv4');
 
@@ -27,7 +27,7 @@ export default function Remove({ pack, setChangeList }) {
         <div className='mb-5 position-relative'>
             <Form.Group className='mb-3'>
                 <Form.Label>Search</Form.Label>
-                <SearchBox dataFn={handleSearch} descriptor='msg' setFirst={setResult} />
+                <LevelSearchBox setResult={setResult} />
             </Form.Group>
             <Button variant='primary' onClick={handleSubmit}>Remove level</Button>
         </div>

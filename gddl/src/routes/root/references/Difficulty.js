@@ -2,23 +2,35 @@ import React from 'react';
 import Tier from './Tier';
 
 export default function({ info }) {
-    let tiers = [];
+    const lowestTier = info.levels[0].Tier;
+    const highestTier = info.levels[info.levels.length - 1].Tier;
+    const tiers = [];
+    for (let i = 0; i < highestTier-lowestTier+1; i++) tiers[i] = [];
 
-    for (let i = 0; i < info.tiers.length/5; i++) {
-        tiers.push(info.tiers.slice(i*5, i*5+5));
+    info.levels.forEach(l => {
+        tiers[l.Tier - lowestTier].push(l);
+    });
+
+    const tiersPerDiff = 5;
+
+    const columns = [];
+    while (tiers.length > 0) {
+        columns.push(tiers.splice(0, tiersPerDiff));
     }
 
     return (
         <div>
-            <div className={`tier-${(Math.ceil(info.minRange+info.maxRange)/2)} head`}>
+            <div className={`tier-${((highestTier + lowestTier)/2)} head`}>
                 <h3 className='m-0 p-2 text-center'>{info.name}</h3>
             </div>
             <div className='d-flex'>
-                {tiers.map(column => 
-                    <div className='flex-fill'>
-                        {column.map(t => <Tier tier={t} key={t.tier} />)}
-                    </div>
-                )}
+                {
+                    columns.map(c => <div className='d-flex flex-column'>
+                        {
+                            c.map(t => <Tier tier={t} key={'tier-' + t[0].Tier} />)
+                        }
+                    </div>)
+                }
             </div>
         </div>
     );

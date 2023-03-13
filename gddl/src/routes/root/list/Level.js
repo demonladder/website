@@ -2,9 +2,14 @@ import React from 'react';
 import DemonLogo from '../../../components/DemonLogo';
 
 export default function Level({ info, isListView }) {
-    function onIDClick() {
+    function onIDClick(e) {
         if (info.isHeader) return;
         navigator.clipboard.writeText(info.ID);
+
+        e.target.classList.add('bg-fade');
+        setTimeout(() => {
+            e.target.classList.remove('bg-fade');
+        }, 1000);
     }
 
     if (isListView) {

@@ -115,8 +115,8 @@ export default function Header() {
                 <Container fluid>
                     <Navbar.Brand href='/' className='text-light title'>GDDLadder</Navbar.Brand>
                     <Navbar.Toggle aria-controls='navbar' />
-                    <Navbar.Collapse id='navbar'>
-                        <Nav className='me-auto' navbar>
+                    <Navbar.Collapse id='navbar' className='justify-content-between'>
+                        <Nav navbar>
                             <div className='d-flex align-items-center'><LinkContainer to='/list'><Nav.Link className='text-light underline'>The Ladder</Nav.Link></LinkContainer></div>
                             <div className='d-flex align-items-center'><LinkContainer to='/references'><Nav.Link className='text-light underline'>Reference Demons</Nav.Link></LinkContainer></div>
                             <div className='d-flex align-items-center'><LinkContainer to='/packs'><Nav.Link className='text-light underline'>Packs</Nav.Link></LinkContainer></div>

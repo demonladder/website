@@ -36,6 +36,18 @@ button {
     color: white;
 }
 
+.bg-fade {
+    animation: bg-fade 1s;
+}
+@keyframes bg-fade {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
 $divider-sizes: (
     "sm": 0.5rem,
     "md": 1rem,

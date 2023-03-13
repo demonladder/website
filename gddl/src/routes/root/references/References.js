@@ -13,68 +13,36 @@ export default function References () {
 
     if (status === 'loading') {
         return <LoadingSpinner />;
+    } else if (status === 'error') {
+        return (
+            <div className='container'>
+                <h1>An error ocurred</h1>
+            </div>
+        );
     }
 
-    let difficulties = [
-        {
-            name: 'Easy Demons',
-            minRange: 1,
-            maxRange: 5,
-            css: 1
-        },
-        {
-            name: 'Medium Demons',
-            minRange: 6,
-            maxRange: 10,
-            css: 2
-        },
-        {
-            name: 'Hard Demons',
-            minRange: 11,
-            maxRange: 15,
-            css: 3
-        },
-        {
-            name: 'Insane Demons',
-            minRange: 16,
-            maxRange: 20,
-            css: 4
-        },
-        {
-            name: 'Extreme Demons',
-            minRange: 21,
-            maxRange: 35,
-            css: 5
-        }
-    ];
-
-    // Set up tiers array
-    for (let diff of difficulties) {
-        diff.tiers = [];
-        for (let i = diff.minRange; i <= diff.maxRange; i++) {
-            diff.tiers.push({
-                tier: i,
-                relativeTier: i - diff.minRange + 1,
-                levels: []
-            });
-        }
-    }
-
-    for (let level of referenceDemons) {
-        for (let tier of difficulties) {
-            if (level.Tier >= tier.minRange && level.Tier <= tier.maxRange) {
-                tier.tiers.find(t => t.tier === level.Tier).levels.push(level);
-            }
-        }
-    }
+    referenceDemons.sort((a, b) => (a.Tier > b.Tier) ? 1 : -1);
+    
+    const diffs = ['Easy', 'Medium', 'Hard', 'Insane', 'Extreme'].map(a => a + ' Demons');
+    const tierSpread = [5, 5, 5, 5, 15];
+    
+    let acc = 0;
+    const difficulties = tierSpread.reduce((a, t, i) => {
+        a.push({
+            name: diffs[i],
+            levels: referenceDemons.filter(d => d.Tier > acc && d.Tier <= acc + t)
+        });
+        acc += t;
+        return a;
+    }, []);
 
     return (
-        <>
-            <div className='ref-container mb-5'>
-                <div className='d-flex references'>
-                    {difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)}
-                </div>
+        <div className='ref-container mb-5'>
+            <div className='d-flex references'>
+                {
+                    difficulties.map(diff => <Difficulty info={diff} key={diff.name} />)
+                }
             </div>
-        </>
+        </div>
     );
 }
