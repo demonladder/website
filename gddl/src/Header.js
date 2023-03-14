@@ -3,8 +3,8 @@ import { Button, Container, Form, Modal, Nav, Navbar, Spinner } from 'react-boot
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import ProfileButtons from './routes/root/login/ProfileButtons';
-import SearchResult from './routes/root/profile/SearchResult';
 import serverIP from './serverIP';
+import LevelSearchBox from './components/LevelSearchBox';
 
 export default function Header() {
     const [showModal, setShowModal] = useState(false);
@@ -12,31 +12,12 @@ export default function Header() {
     function openSubmit() { setShowModal(true); }
 
     const [levelName, setLevelName] = useState('');
-    const [results, setResults] = useState([]);
-
-    const [timer, setTimer] = useState();
+    const [result, setResult] = useState(null);
     useEffect(() => {
-        clearTimeout(timer);
-        setTimer(setTimeout(() => {
-            fetch(`${serverIP}/getLevels?chunk=5&name=${levelName}`, {
-                credentials: 'include'
-            }).then(res => res.json())
-            .then(data => {
-                setResults(data.levels);
-            }).catch(e => {
-                console.error(e);
-            });
-        }, 300));
-    }, [levelName]);
+        console.log(result);
+        if (result) setLevelName(result.Name);
+    }, [result])
 
-    const [resultVisible, setResultVisible] = useState(false);
-    function handleBlur() {
-        setTimeout(() => {
-            setResultVisible(false);
-        }, 100);
-    }
-
-    const [clickedID, setClickedID] = useState(null);
     let rating = useRef();
     let enjoyment = useRef();
     let refreshRate = useRef();
@@ -48,8 +29,8 @@ export default function Header() {
         e.preventDefault();
         e.stopPropagation();
 
-        if (levelName === '') {
-            setResponse('Level name required!');
+        if (!result) {
+            setResponse('Click on a level!');
             return;
         }
 
@@ -63,17 +44,8 @@ export default function Header() {
             return;
         }
 
-
-
-        // On validation
-        let ID = null;
-        if (results.length > 0) {
-            ID = results[0].ID;
-        }
-
-        console.log(clickedID);
         const data = {
-            levelID: clickedID || ID,
+            levelID: result.ID,
             rating: parseInt(rating.current.value) || 0,
             enjoyment: parseInt(enjoyment.current.value),
             refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
@@ -81,7 +53,6 @@ export default function Header() {
             proof: proof.current.value
         };
 
-        console.log(data);
         setSending(true);
         
         fetch(`${serverIP}/submit`, {
@@ -140,13 +111,8 @@ export default function Header() {
                                 <label className='text-dark'>Level name: </label>
                             </div>
                             <div className='col-auto'>
-                                <input type='text' className='form-control' value={levelName} onChange={(e) => setLevelName(e.target.value)} onFocus={() => setResultVisible(true)} onBlur={handleBlur} required />
+                                <LevelSearchBox setResult={setResult} />
                             </div>
-                        </div>
-                        <div className={(resultVisible ? 'd-block' : 'd-none') + ' search-result border'} style={{ left: '25%' }}>
-                            {results &&
-                                results.map(r => <SearchResult level={r} setSearch={setLevelName} setID={setClickedID} key={r.ID} />)
-                            }
                         </div>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>

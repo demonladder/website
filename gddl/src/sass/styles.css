@@ -1025,6 +1025,48 @@ input.num-lg {
   border: none;
 }
 
+.cmodal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 500;
+  transition: background-color 300ms ease-in-out;
+}
+.cmodal.show {
+  background: hsla(0deg, 0%, 0%, 0.389);
+  pointer-events: all;
+}
+.cmodal.show .content {
+  opacity: 1;
+  transform: translateX(-50%) translateY(50px);
+}
+.cmodal .content {
+  max-width: 500px;
+  width: 500px;
+  position: absolute;
+  z-index: 505;
+  left: 50%;
+  top: -20px;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  background: hsl(0deg, 0%, 35%);
+}
+.cmodal .content > * {
+  padding: 1.5rem 1.5rem;
+}
+.cmodal .content .header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid white;
+}
+.cmodal .content .body {
+  border-bottom: 1px solid white;
+}
+
 body {
   margin: 0;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
