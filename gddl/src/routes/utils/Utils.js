@@ -24,6 +24,8 @@ export default function Utils() {
                         <Body>
                             <label>Level name: </label>
                             <LevelSearchBox setResult={setResult} />
+                            <label>Rating</label>
+                            <input type='number' min='1' max='35' className='num-sm' />
                         </Body>
                         <Footer>
                             <div className='d-flex justify-content-end gap-2'>
