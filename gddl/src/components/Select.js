@@ -27,7 +27,7 @@ export default function Select({ options, onChange }) {
     useEffect(() => {
         setOpen(false);
         setOpenStatus('closed');
-        onChange(value);
+        if (onChange) onChange(value);
     }, [value]);
 
     return (

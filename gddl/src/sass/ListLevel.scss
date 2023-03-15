@@ -16,15 +16,14 @@
 
         a {
             color: white;
-            @include Utils.underline();
+            @include Utils.underline;
         }
 
         button.id-button {
             color: white;
-            @include Utils.underline();
+            @include Utils.underline;
             border: none;
             width: 100%;
-            //text-align: start;
         }
     
         h3 {

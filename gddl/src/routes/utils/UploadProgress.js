@@ -3,8 +3,8 @@ import { Alert, Form, Spinner } from 'react-bootstrap';
 import pako from 'pako';
 import convert from 'xml-js';
 import parseDict from './ParseDict';
-import { Link } from 'react-router-dom';
 import serverIP from '../../serverIP';
+import IDButton from '../../components/IDButton';
 
 export default function UploadProgress() {
     const [loading, setLoading] = useState(false);
@@ -81,11 +81,13 @@ export default function UploadProgress() {
 
             if (res.status === 200) res.json().then(data => {
                 demonProgress.forEach(e => {
-                    e.Name = data.find(l => l.ID === e.levelID).Name || null;
-                    e.Rating = data.find(l => l.ID === e.levelID).Rating || 'NaN';
+                    const level = data.find(l => l.ID === e.levelID);
+                    if (!level) return;
+
+                    e.Name = level.Name || null;
+                    e.Rating = level.Rating.toFixed(2) || 'NaN';
                 });
-                setProgress(demonProgress);
-                console.log(demonProgress);
+                setProgress(demonProgress.filter(l => l.Name));
             });
             else res.json().then(msg => setAlert(msg.message));
         }).catch(e => {
@@ -101,7 +103,7 @@ export default function UploadProgress() {
             <p>Use this tool quickly load progress into your user profile. After parsing CCGameManager.dat, the browser will only send the IDs to the webserver to retrieve the level name and tier.</p>
             <Form.Group controlId='saveFile' className='mb-4'>
                 <Form.Label>Select CCGameManager.dat:</Form.Label>
-                <Form.Control type='file' onChange={onFileChange}></Form.Control>
+                <Form.Control type='file' onChange={onFileChange} />
             </Form.Group>
             <Spinner className={!loading ? 'd-none' : null} />
             <Alert show={showAlert} variant='danger' onClose={() => setShowAlert(false)} dismissible>
@@ -109,20 +111,24 @@ export default function UploadProgress() {
                 <p>{alertMessage}</p>
             </Alert>
 
-            {progress.length > 0 ?
-            <div className='row border-bottom'>
-                <p className='col-8 h1 m-0'>Level name</p>
-                <p className='col-2 m-0 align-self-end'>Level ID</p>
-                <p className='col-1 m-0 align-self-end'>Progress</p>
-                <p className='col-1 m-0 align-self-end'>Tier</p>
-            </div> : null}
-            {progress.map(p =>
-            <div className='row' key={p.levelID}>
-                <Link to={`/level/${p.levelID}`} className='col-8 h3'>{p.Name}</Link>
-                <p className='col-2'>{p.levelID}</p>
-                <p className='col-1 text-end'>{p.progress}%</p>
-                <div className={`col-1 tier-${Math.round(p.Rating)}`}>{p.Rating}</div>
-            </div>)}
+            <div>
+                {progress.length > 0 ?
+                    <div className='row border-bottom'>
+                        <h3 className='col-8 m-0'>Level name</h3>
+                        <div className='col-2 align-self-end text-end'><p className='m-0'>Level ID</p></div>
+                        <div className='col-1 p-0 align-self-end'><p className='m-0'>Progress</p></div>
+                        <div className='col-1 align-self-end'><p className='m-0'>Tier</p></div>
+                    </div> : null
+                }
+                {progress.map(p =>
+                    <div className='row' key={p.levelID}>
+                        <h3 className='col-8 m-0'><a href={`/level/${p.levelID}`} className='text-light underline' target='_blank' rel='noopener noreferrer'>{p.Name}</a></h3>
+                        <div className='col-2 text-end'><IDButton id={p.levelID} /></div>
+                        <div className='col-1 text-center'><p className='m-0'>{p.progress}%</p></div>
+                        <div className={`col-1 d-flex justify-content-center tier-${Math.round(p.Rating)}`}><p className='m-0 align-self-center'>{p.Rating}</p></div>
+                    </div>)
+                }
+            </div>
         </div>
     )
 }

@@ -16,18 +16,16 @@
 }
 
 button {
-    //transition: all 0.2s ease-in-out;
     background: none;
     color: currentColor;
     border: none;
 
     &.danger {
-        background: none;
+        background: #870000;
         color: white;
-        border: 3px solid #870000;
 
         &:hover:not(:active) {
-            background-color: #540000;
+            background-color: #600000;
             transform: scale(1.1);
         }
     }

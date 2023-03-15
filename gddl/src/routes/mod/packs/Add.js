@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import LevelSearchBox from '../../../components/LevelSearchBox';
-import FetchLevels from '../../../fetches/Levels';
 const { uuid } = require('uuidv4');
 
 export default function Add({ pack, setChangeList }) {
@@ -14,13 +13,6 @@ export default function Add({ pack, setChangeList }) {
             pack,
             ID: uuid()
         }]);    
-    }
-
-    async function handleSearch(search) {
-        return FetchLevels.byName(search).then(data => data.levels).then(levels => {
-            levels.forEach(l => l.msg = l.Name + ' by ' + l.Creator);
-            return levels;
-        });
     }
 
     return (

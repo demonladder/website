@@ -51,7 +51,7 @@ export default function EditReferences() {
         return (
             <div className='reference'>
                 <div>
-                    <button onClick={remove}>X</button>
+                    <button className='danger' onClick={remove}>X</button>
                     <div className='name'>
                         <h4>{data.Name}</h4>
                         <p>{data.Type && (action + preposition + targetTier)}</p>
@@ -85,7 +85,7 @@ export default function EditReferences() {
     const [resultVisible, setResultVisible] = useState(false);
     function addChange() {
         if (!clicked) return;
-        if (changeList.filter(c => c.ID == clicked.ID && c.Type === 'add').length === 1) return;
+        if (changeList.filter(c => c.ID === clicked.ID && c.Type === 'add').length === 1) return;
 
         const newChange = {...clicked, Type: 'add'};
         newChange.Tier = tier;

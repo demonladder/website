@@ -1,28 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Container, Form, Modal, Nav, Navbar, Spinner } from 'react-bootstrap';
+import React, { useRef, useState } from 'react';
+import { Button, Container, Form, Nav, Navbar, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import ProfileButtons from './routes/root/login/ProfileButtons';
 import serverIP from './serverIP';
 import LevelSearchBox from './components/LevelSearchBox';
+import Modal, { Body, Footer } from './components/Modal';
+import Select from './components/Select';
 
 export default function Header() {
     const [showModal, setShowModal] = useState(false);
     function closeSubmit() { setShowModal(false); }
     function openSubmit() { setShowModal(true); }
 
-    const [levelName, setLevelName] = useState('');
     const [result, setResult] = useState(null);
-    useEffect(() => {
-        console.log(result);
-        if (result) setLevelName(result.Name);
-    }, [result])
 
     let rating = useRef();
-    let enjoyment = useRef();
+    const [enjoyment, setEnjoyment] = useState(-1);
     let refreshRate = useRef();
-    let device = useRef();
+    const [device, setDevice] = useState(1);
     let proof = useRef();
+
+    function handleEnjoymentSelect(option) {
+        setEnjoyment(option.key);
+    }
+
+    function handleDeviceSelect(option) {
+        setDevice(option.key);
+    }
 
     const [sending, setSending] = useState(false);
     async function submitForm(e) {
@@ -99,16 +104,12 @@ export default function Header() {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <Modal show={showModal} onHide={closeSubmit}>
-                <Modal.Header>
-                    <h1 className='moda-title fs-3 text-dark' id='modalTitle'>Submit rating</h1>
-                    <button type='button' className='btn-close' onClick={closeSubmit}></button>
-                </Modal.Header>
-                <Modal.Body>
+            <Modal title='Submit rating' show={showModal} onHide={closeSubmit}>
+                <Body>
                     <Form noValidate onSubmit={submitForm} className='position-relative'>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>
-                                <label className='text-dark'>Level name: </label>
+                                <label>Level name: </label>
                             </div>
                             <div className='col-auto'>
                                 <LevelSearchBox setResult={setResult} />
@@ -116,7 +117,7 @@ export default function Header() {
                         </div>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>
-                                <label className='text-dark'>Rating: </label>
+                                <label>Rating: </label>
                             </div>
                             <div className='col-auto'>
                                 <input type='number' className='form-control' ref={rating} />
@@ -124,28 +125,28 @@ export default function Header() {
                         </div>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>
-                                <label className='text-dark'>Enjoyment: </label>
+                                <label>Enjoyment: </label>
                             </div>
-                            <div className='col-auto'>
-                                <select className='form-select' ref={enjoyment}>
-                                    <option value="-1"></option>
-                                    <option value="10">10 Masterpiece</option>
-                                    <option value="9">9 Great</option>
-                                    <option value="8">8 Very good</option>
-                                    <option value="7">7 Good</option>
-                                    <option value="6">6 Fine</option>
-                                    <option value="5">5 Average</option>
-                                    <option value="4">4 Bad</option>
-                                    <option value="3">3 Very bad</option>
-                                    <option value="2">2 Horrible</option>
-                                    <option value="1">1 Appalling</option>
-                                    <option value="0">0 Abysmal</option>
-                                </select>
+                            <div className='col-4'>
+                                <Select options={[
+                                    { key: -1, value: '-' },
+                                    { key: 0, value: '0 Abysmal' },
+                                    { key: 1, value: '1 Appalling' },
+                                    { key: 2, value: '2 Horrible' },
+                                    { key: 3, value: '3 Very bad' },
+                                    { key: 4, value: '4 Bad' },
+                                    { key: 5, value: '5 Average' },
+                                    { key: 6, value: '6 Fine' },
+                                    { key: 7, value: '7 Good' },
+                                    { key: 8, value: '8 Very good' },
+                                    { key: 9, value: '9 Great' },
+                                    { key: 10, value: '10 Masterpiece' }
+                                ]} onChange={handleEnjoymentSelect} />
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>
-                                <label className='text-dark'>Refresh rate: </label>
+                                <label>Refresh rate: </label>
                             </div>
                             <div className='col-auto'>
                                 <input type='text' className='form-control' ref={refreshRate} />
@@ -153,33 +154,33 @@ export default function Header() {
                         </div>
                         <div className='row align-items-center mb-2'>
                             <div className='col-12 col-sm-3'>
-                                <label className='text-dark'>Device: </label>
+                                <label>Device: </label>
                             </div>
-                            <div className='col-auto'>
-                                <select className='form-select' ref={device}>
-                                    <option value="1">PC</option>
-                                    <option value="2">Mobile</option>
-                                </select>
+                            <div className='col-4'>
+                                <Select options={[
+                                    { key: 1, value: 'PC' },
+                                    { key: 2, value: 'Mobile' }
+                                ]} onChange={handleDeviceSelect} />
                             </div>
                         </div>
                         <div className='row align-items-center'>
                             <div className='col-12 col-sm-3'>
-                                <label className='text-dark'>Proof: </label>
+                                <label>Proof: </label>
                             </div>
                             <div className='col-9'>
                                 <input type='text' className='form-control' ref={proof} />
                             </div>
                         </div>
                     </Form>
-                </Modal.Body>
-                <Modal.Footer>
+                </Body>
+                <Footer>
                     <span className='text-dark'>{responseMessage}</span>
                     <Button variant='secondary' onClick={closeSubmit}>Close</Button>
                     <Button variant='primary' type="submit" onClick={submitForm}>
                         {sending ? <Spinner as='span' animation='border' size='sm'  /> : ''}
                         Submit
                     </Button>
-                </Modal.Footer>
+                </Footer>
             </Modal>
         </>
     );

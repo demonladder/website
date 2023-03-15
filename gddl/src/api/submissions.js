@@ -8,6 +8,6 @@ export function GetSubmissionQueue() {
     }));
 }
 
-export function ApproveSubmission(info, deny) {
-    return axios.get(`${serverIP}/approveSubmission?levelID=${info.LevelID}&userID=${info.UserID}${deny ? '&deny=true' : ''}`, { withCredentials: true});
+export function ApproveSubmission(info) {
+    return axios.get(`${serverIP}/approveSubmission?levelID=${info.LevelID}&userID=${info.UserID}${info.deny ? '&deny=true' : ''}`, { withCredentials: true});
 }

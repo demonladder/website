@@ -45,6 +45,10 @@
             background: rgb(32, 32, 32);
             padding: 1rem;
             min-width: 25%;
+
+            .label {
+                margin: 0;
+            }
         }
 
         .trackers {

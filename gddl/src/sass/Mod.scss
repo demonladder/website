@@ -14,30 +14,6 @@
     }
 }
 
-#edit-packs {
-    .nav {
-        button {
-            border-top: none;
-            border-right: none;
-            border-left: none;
-            border-radius: 0;
-
-            &.nav-link {
-                color: white;
-                
-                &:hover:not(.active) {
-                    background: Colors.$filter-bg;
-                }
-            }
-
-            &.active {
-                background: Colors.$primary;
-                color: white;
-            }
-        }
-    }
-}
-
 #edit-references {
     .control {
         display: flex;
@@ -86,12 +62,6 @@
 
             h4, p {
                 margin: 0;
-            }
-
-            button {
-                color: white;
-                background: Colors.$primary;
-                border: none;
             }
         }
     }

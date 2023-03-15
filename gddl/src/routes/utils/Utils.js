@@ -14,7 +14,7 @@ export default function Utils() {
     return (
         <div className='container'>
             <h1 className='mb-4'>Utils</h1>
-            <Tabs defaultActiveKey='modal' className='mb-3'>
+            <Tabs defaultActiveKey='uploadProgress' className='mb-3'>
                 <Tab eventKey='uploadProgress' title='Upload progress'>
                     <UploadProgress />
                 </Tab>

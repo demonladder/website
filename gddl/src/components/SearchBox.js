@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 import SearchResult from './SearchResult';
 

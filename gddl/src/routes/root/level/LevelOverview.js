@@ -8,6 +8,7 @@ import PackRef from '../../../components/PackRef';
 import { Accordion } from 'react-bootstrap';
 import { GetLevel } from '../../../api/levels';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import IDButton from '../../../components/IDButton';
 
 export default function LevelOverview() {
     const levelID = useParams().levelID;
@@ -46,10 +47,6 @@ export default function LevelOverview() {
     }
     
     const logo = DemonLogo(level.Difficulty);
-    
-    function onIDClick() {
-        navigator.clipboard.writeText(level.ID);
-    }
 
     return (
         <div className='container level-overview'>
@@ -70,7 +67,7 @@ export default function LevelOverview() {
                 <div className='row col-12 col-md-8 col-lg-9'>
                     <div className='col-6 col-lg-4'>
                         <b className='d-block'>ID</b>
-                        <button className='style-link p-0 fs-2' onClick={onIDClick}>{level.ID}</button>
+                        <IDButton id={level.ID} />
                     </div>
                     <div className='col-6 col-lg-4'>
                         <b>Tier</b>

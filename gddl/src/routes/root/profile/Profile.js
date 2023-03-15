@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Level from './Level';
-import serverIP from '../../../serverIP.js';
 import { useQuery } from '@tanstack/react-query';
 import { GetUser } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import Cookies from 'js-cookie';
 
 export default function Profile() {
     const userID = useParams().userID;
@@ -12,6 +12,7 @@ export default function Profile() {
         queryKey: ['user', userID],
         queryFn:  () => GetUser(userID)
     });
+    const [introduction, setIntroduction] = useState('-');
 
     if (status === 'loading') {
         return (
@@ -27,15 +28,19 @@ export default function Profile() {
         );
     }
 
-    const user = userData.info;
-    const submissions = userData.submissions;
+    const { info: user, submissions } = userData;
+
+    function handleIntroduction(e) {
+        setIntroduction(e.target.value);
+    }
 
     return (
         <div className='container profile'>
             <h1>{user.Name}</h1>
             <div className='information'>
                 <div className='introduction'>
-                    <p><b>Introduction:</b> {user.Introduction || '-'}</p>
+                    <p className='label'><b>Introduction:</b></p>
+                    <textarea onKeyDown={handleIntroduction} disabled={userID !== Cookies.get('userID')}>{introduction}</textarea>
                 </div>
                 <div className='trackers'>
                     <div className='tracker'>
@@ -69,12 +74,4 @@ export default function Profile() {
             </div>
         </div>
     );
-}
-
-export async function getUser(id, all) {
-    let res = await fetch(`${serverIP}/getUser?userID=${id}&all=${all === true}`, {
-        credentials: 'include'
-    }).then(res => res.json())
-    .catch(e => e);
-    return res;
 }

@@ -249,7 +249,7 @@
   }
 }
 .bg-gddl {
-  background-color: hsl(306, 0%, 10%);
+  background-color: hsl(306deg, 0%, 10%);
 }
 
 .topnav {
@@ -294,12 +294,11 @@ button {
   border: none;
 }
 button.danger {
-  background: none;
+  background: #870000;
   color: white;
-  border: 3px solid #870000;
 }
 button.danger:hover:not(:active) {
-  background-color: #540000;
+  background-color: #600000;
   transform: scale(1.1);
 }
 
@@ -681,6 +680,9 @@ button.open-extended:hover {
   padding: 1rem;
   min-width: 25%;
 }
+.profile .information .introduction .label {
+  margin: 0;
+}
 .profile .information .trackers {
   background: rgb(46, 46, 46);
   padding: 1rem;
@@ -848,13 +850,14 @@ input:not([type=radio]):not([type=checkbox]),
 .style-input,
 select {
   outline: none;
-  background: hsla(0, 0%, 0%, 0.132);
+  background: hsla(0deg, 0%, 0%, 0.132);
   color: white;
   border: none;
   caret-color: white;
   transition: ease-in-out;
   transition-duration: 200ms;
   border-bottom: 2px solid white;
+  border-radius: 0;
   height: 28px;
   margin-bottom: 0.5rem;
 }
@@ -913,6 +916,7 @@ input[type=radio]::before {
   cursor: pointer;
   text-indent: 0.5rem;
   position: relative;
+  margin: 0;
 }
 .custom-select .select-options {
   top: 28px;
@@ -934,6 +938,7 @@ input[type=radio]::before {
 }
 .custom-select .select-options.open, .custom-select .select-options.opening {
   max-height: 200px;
+  z-index: 1000;
 }
 .custom-select .select-options.open {
   overflow: auto;
@@ -951,6 +956,13 @@ input.num-lg {
   min-width: 50px;
 }
 
+textarea {
+  background: transparent;
+  color: currentColor;
+  border: none;
+  resize: none;
+}
+
 #mod-menu a {
   background: #2e2e2e;
   padding: 1rem;
@@ -962,30 +974,13 @@ input.num-lg {
   color: white;
 }
 
-#edit-packs .nav button {
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-radius: 0;
-}
-#edit-packs .nav button.nav-link {
-  color: white;
-}
-#edit-packs .nav button.nav-link:hover:not(.active) {
-  background: #2e2e2e;
-}
-#edit-packs .nav button.active {
-  background: #595959;
-  color: white;
-}
-
 #edit-references .control {
   display: flex;
   justify-content: space-between;
 }
 #edit-references .control button.save {
   border: none;
-  background: hsl(120, 70%, 49%);
+  background: hsl(120deg, 70%, 49%);
   opacity: 0;
   font-weight: bold;
   padding: 0.25rem 0.5rem;
@@ -1020,11 +1015,6 @@ input.num-lg {
 #edit-references .list .reference h4, #edit-references .list .reference p {
   margin: 0;
 }
-#edit-references .list .reference button {
-  color: white;
-  background: #595959;
-  border: none;
-}
 
 .cmodal {
   position: fixed;
@@ -1037,7 +1027,7 @@ input.num-lg {
   transition: background-color 300ms ease-in-out;
 }
 .cmodal.show {
-  background: hsla(0, 0%, 0%, 0.389);
+  background: hsla(0deg, 0%, 0%, 0.389);
   pointer-events: all;
 }
 .cmodal.show .content {
@@ -1054,7 +1044,7 @@ input.num-lg {
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
-  background: hsl(0, 0%, 35%);
+  background: hsl(0deg, 0%, 35%);
 }
 .cmodal .content > * {
   padding: 1.5rem 1.5rem;
@@ -1068,12 +1058,25 @@ input.num-lg {
   border-bottom: 1px solid white;
 }
 
+.nav-tabs[role=tablist] {
+  border-color: #EFA51C;
+}
+.nav-tabs[role=tablist] .nav-item button {
+  border: none;
+  border-radius: 0;
+  color: currentColor;
+}
+.nav-tabs[role=tablist] .nav-item button[aria-selected=true] {
+  background-color: #EFA51C;
+  color: black;
+}
+
 body {
   margin: 0;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: hsl(306, 0%, 10%);
+  background-color: hsl(306deg, 0%, 10%);
 }
 
 code {

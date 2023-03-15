@@ -13,10 +13,17 @@ export default function Queue() {
 
     const queryClient = useQueryClient();
     const approveMutation = useMutation({
-        mutationFn: (info, deny) => {
-            ApproveSubmission(info, deny).then(() => queryClient.invalidateQueries['submissionQueue']);
+        mutationFn: (info) => {
+            return ApproveSubmission(info).then(() => queryClient.invalidateQueries(['submissionQueue']));
         }
     });
+
+    function approve(info) {
+        approveMutation.mutate({ ...info, deny: false});
+    }
+    function deny(info) {
+        approveMutation.mutate({ ...info, deny: true});
+    }
 
     function Content() {
         if (status === 'loading') {
@@ -26,7 +33,7 @@ export default function Queue() {
         } else {
             return (
                 <div>
-                    {queue.map(s => <Submission info={s} approve={approveMutation.mutate} remove={approveMutation.mutate} key={s.LevelID + '_' + s.UserID} />)}
+                    {queue.map(s => <Submission info={s} approve={approve} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
                     {queue.length === 0 && <h3>Queue empty :D</h3>}
                 </div>
             );

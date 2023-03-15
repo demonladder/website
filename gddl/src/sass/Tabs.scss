@@ -1,0 +1,18 @@
+@use 'Colors';
+
+.nav-tabs[role=tablist] {
+    border-color: Colors.$theme;
+
+    .nav-item {
+        button {
+            border: none;
+            border-radius: 0;
+            color: currentColor;
+
+            &[aria-selected=true] {
+                background-color: Colors.$theme;
+                color: black;
+            }
+        }
+    }
+}

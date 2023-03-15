@@ -11,6 +11,7 @@ select {
     transition: ease-in-out;
     transition-duration: 200ms;
     border-bottom: 2px solid white;
+    border-radius: 0;
     height: 28px;
     margin-bottom: 0.5rem;
 }
@@ -73,6 +74,7 @@ input[type=radio] {
     cursor: pointer;
     text-indent: 0.5rem;
     position: relative;
+    margin: 0;
 
     .select-options {
         top: 28px;
@@ -97,6 +99,7 @@ input[type=radio] {
         &.open,
         &.opening {
             max-height: 200px;
+            z-index: 1000;
         }
 
         &.open {
@@ -115,4 +118,11 @@ input.num-sm {
 
 input.num-lg {
     min-width: 50px;
+}
+
+textarea {
+    background: transparent;
+    color: currentColor;
+    border: none;
+    resize: none;
 }
