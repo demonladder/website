@@ -35,10 +35,11 @@ export default function SortMenu({ set }) {
         const menu = document.getElementById('sort-menu');
         if (!menu) return;
         const rect = menu.getBoundingClientRect();
-        const dist = 300;
+        const dist = 100;
 
         if (e.clientX < rect.x - dist ||
             e.clientX > rect.x + rect.width + dist ||
+            e.clientY < rect.y - dist ||
             e.clientY > rect.y + rect.height + dist) {
             closeSortMenu();
         }
