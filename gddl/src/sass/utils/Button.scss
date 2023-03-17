@@ -1,0 +1,27 @@
+@use 'sass:list';
+
+$button-types: (
+    'danger': (
+        white,  // Text
+        #870000,  // Default bg
+        #600000  // Hover bg
+    )
+);
+
+button {
+    background: none;
+    color: currentColor;
+    border: none;
+
+    @each $type, $colors in $button-types {
+        &.#{$type} {
+            color: list.nth($colors, 1);
+            background: list.nth($colors, 2);
+
+            &:hover:not(:active) {
+                background-color: list.nth($colors, 3);
+                transform: scale(1.1);
+            }
+        }
+    }
+}

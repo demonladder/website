@@ -1,3 +1,5 @@
+@use 'utils/Button';
+
 @mixin underline {
     background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
     background-size: 0 2px;
@@ -13,22 +15,6 @@
 
 @mixin glow {
     text-shadow: 0 0 3px currentColor;
-}
-
-button {
-    background: none;
-    color: currentColor;
-    border: none;
-
-    &.danger {
-        background: #870000;
-        color: white;
-
-        &:hover:not(:active) {
-            background-color: #600000;
-            transform: scale(1.1);
-        }
-    }
 }
 
 .underline {

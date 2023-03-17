@@ -249,7 +249,7 @@
   }
 }
 .bg-gddl {
-  background-color: hsl(306deg, 0%, 10%);
+  background-color: hsl(306, 0%, 10%);
 }
 
 .topnav {
@@ -294,8 +294,8 @@ button {
   border: none;
 }
 button.danger {
-  background: #870000;
   color: white;
+  background: #870000;
 }
 button.danger:hover:not(:active) {
   background-color: #600000;
@@ -850,7 +850,7 @@ input:not([type=radio]):not([type=checkbox]),
 .style-input,
 select {
   outline: none;
-  background: hsla(0deg, 0%, 0%, 0.132);
+  background: hsla(0, 0%, 0%, 0.132);
   color: white;
   border: none;
   caret-color: white;
@@ -980,7 +980,7 @@ textarea {
 }
 #edit-references .control button.save {
   border: none;
-  background: hsl(120deg, 70%, 49%);
+  background: hsl(120, 70%, 49%);
   opacity: 0;
   font-weight: bold;
   padding: 0.25rem 0.5rem;
@@ -1027,7 +1027,7 @@ textarea {
   transition: background-color 300ms ease-in-out;
 }
 .cmodal.show {
-  background: hsla(0deg, 0%, 0%, 0.389);
+  background: hsla(0, 0%, 0%, 0.389);
   pointer-events: all;
 }
 .cmodal.show .content {
@@ -1044,7 +1044,7 @@ textarea {
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
-  background: hsl(0deg, 0%, 35%);
+  background: hsl(0, 0%, 35%);
 }
 .cmodal .content > * {
   padding: 1.5rem 1.5rem;
@@ -1076,7 +1076,7 @@ body {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: hsl(306deg, 0%, 10%);
+  background-color: hsl(306, 0%, 10%);
 }
 
 code {

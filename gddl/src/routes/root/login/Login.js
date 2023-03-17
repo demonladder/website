@@ -1,11 +1,12 @@
 import React from 'react';
 import { Form, redirect, useActionData } from 'react-router-dom';
 import serverIP from '../../../serverIP';
+import { useQueryClient } from '@tanstack/react-query';
 
 export async function loginAction({ request }) {
-    let data = await request.formData();
+    const data = await request.formData();
 
-    let response = await fetch(serverIP + '/login', {
+    const response = await fetch(serverIP + '/login', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -16,14 +17,19 @@ export async function loginAction({ request }) {
             password: data.get('password')
         })
     })
-    .then(res => res.json())
     .catch(e => { return { error: 'Couldn\'t connect to the server!' }});
 
-    if (response.error) {
-        return response;
+    if (response.status === 400) {
+        return await response.json();
     }
     
-    return redirect('/');
+    if (response.status === 200) {
+        return redirect('/');
+    }
+
+    const queryClient = useQueryClient();
+    queryClient.invalidateQueries(['user']);
+    return null;
 }
 
 export default function Login() {
@@ -46,7 +52,7 @@ export default function Login() {
                 </Form>
             </div>
             <div className='d-flex justify-content-center m-5'>
-                <h3>{actionError ? actionError.error : ''}</h3>
+                <h3>{actionError ? actionError.message : ''}</h3>
             </div>
         </div>
     );

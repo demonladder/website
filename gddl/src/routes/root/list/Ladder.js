@@ -164,7 +164,7 @@ export default function Ladder() {
                 </div>
             </div>
             <FilterMenu filter={setFilters} setExtended={setExtendedFilters} />
-            <div id='level-list' className={'my-3' + (listView ? '' : ' d-flex')}>
+            <div id='level-list' className={'my-3' + (listView ? '' : ' d-flex flex-column flex-xl-row')}>
                 {listView ? list : grid}
             </div>
             <div className='d-flex align-items-center'>
