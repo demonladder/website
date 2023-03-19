@@ -2,11 +2,10 @@ import axios from 'axios';
 import serverIP from '../serverIP';
 
 export function ChangeReferences(changes) {
-    return axios({
-        method: 'post',
-        url: `${serverIP}/changeReferences`,
-        withCredentials: true,
-        data: changes.map(c => { return { ID: c.ID, Type: c.Type, Tier: c.Tier } })
+    const csrfToken = JSON.parse(localStorage.getItem('user')).csrfToken;
+
+    return axios.post(`${serverIP}/changeReferences`, { csrfToken, changes: changes.map(c => { return { ID: c.ID, Type: c.Type, Tier: c.Tier }})}, {
+        withCredentials: true
     });
 }
 

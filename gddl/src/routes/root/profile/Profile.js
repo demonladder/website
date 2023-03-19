@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Level from './Level';
-import { useQuery } from '@tanstack/react-query';
-import { GetUser } from '../../../api/users';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { GetUser, SaveProfile } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import Cookies from 'js-cookie';
+import Save from '../../../components/Save';
 
 export default function Profile() {
-    const userID = useParams().userID;
+    const userID = parseInt(useParams().userID);
+
     const { status, data: userData } = useQuery({
         queryKey: ['user', userID],
         queryFn:  () => GetUser(userID)
     });
-    const [introduction, setIntroduction] = useState('-');
 
+    const save = useMutation({
+        mutationFn: SaveProfile,
+        onSettled: () => setShowSave(false)
+    });
+    
+    const [showSave, setShowSave] = useState(false);
+    const [introduction, setIntroduction] = useState('');
+    
+    function handleSave() {
+        save.mutate({ ...userData.info, Introduction: introduction });
+    }
+    function handleCancel() {
+        setIntroduction(userData && (userData.info.Introduction || ''));
+        setShowSave(false);
+    }
+    
+    useEffect(() => {
+        setIntroduction((userData && userData.info.Introduction));
+    }, [status]);
+    
     if (status === 'loading') {
         return (
             <div className='container profile'>
@@ -32,7 +52,10 @@ export default function Profile() {
 
     function handleIntroduction(e) {
         setIntroduction(e.target.value);
+        if (!showSave) setShowSave(e.target.value !== user.Introduction);
     }
+
+    const storedUser = JSON.parse(localStorage.getItem('user'));
 
     return (
         <div className='container profile'>
@@ -40,7 +63,7 @@ export default function Profile() {
             <div className='information'>
                 <div className='introduction'>
                     <p className='label'><b>Introduction:</b></p>
-                    <textarea onKeyDown={handleIntroduction} disabled={userID !== Cookies.get('userID')}>{introduction}</textarea>
+                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={storedUser && (userID !== storedUser.ID)} />
                 </div>
                 <div className='trackers'>
                     <div className='tracker'>
@@ -72,6 +95,7 @@ export default function Profile() {
                     {submissions.slice(0, 25).map(p => <Level info={p} key={p.LevelID}/>)}
                 </div>
             </div>
+            <Save show={showSave} onSave={handleSave} onCancel={handleCancel} loading={save.isLoading} />
         </div>
     );
 }

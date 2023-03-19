@@ -6,5 +6,7 @@ export async function Logout() {
         credentials: 'include'
     });
 
+    localStorage.clear('user');
+
     return redirect('/');
 }

@@ -18,6 +18,8 @@
 @use 'Modal';
 @use 'Tabs';
 
+@use 'components/components';
+
 body {
     margin: 0;
     font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -61,5 +63,13 @@ code {
         height: 30em;
         object-fit: cover;
         filter: brightness(50%);
+    }
+}
+
+.cmodal {
+    .body {
+        .search-result {
+            z-index: 1050;
+        }
     }
 }

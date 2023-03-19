@@ -2,10 +2,17 @@ import React from 'react';
 import { Link, Outlet, redirect, useResolvedPath } from 'react-router-dom';
 import Header from '../../Header';
 import serverIP from '../../serverIP';
+import axios from 'axios';
 
 export function modLoader() {
-    return fetch(serverIP + '/isMod', {
-        credentials: 'include'
+    const token = JSON.parse(localStorage.getItem('user')).csrfToken;
+    if (!token) return redirect('/');
+
+    return axios.get(serverIP + '/isMod', {
+        withCredentials: true,
+        params: {
+            csrfToken: token
+        }
     }).then(res => {
         if (res.status !== 200) return redirect('/');
         return null;

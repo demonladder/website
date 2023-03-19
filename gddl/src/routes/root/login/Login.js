@@ -24,6 +24,7 @@ export async function loginAction({ request }) {
     }
     
     if (response.status === 200) {
+        localStorage.setItem('user', JSON.stringify(await response.json()));
         return redirect('/');
     }
 

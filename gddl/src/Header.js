@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Button, Container, Form, Nav, Navbar, Spinner } from 'react-bootstrap';
+import { Container, Form, Nav, Navbar, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import ProfileButtons from './routes/root/login/ProfileButtons';
@@ -15,11 +15,11 @@ export default function Header() {
 
     const [result, setResult] = useState(null);
 
-    let rating = useRef();
+    const [rating, setRating] = useState('');
     const [enjoyment, setEnjoyment] = useState(-1);
-    let refreshRate = useRef();
+    const [refreshRate, setRefreshRate] = useState('');
     const [device, setDevice] = useState(1);
-    let proof = useRef();
+    const [proof, setProof] = useState();
 
     function handleEnjoymentSelect(option) {
         setEnjoyment(option.key);
@@ -30,33 +30,34 @@ export default function Header() {
     }
 
     const [sending, setSending] = useState(false);
-    async function submitForm(e) {
+    function submitForm(e) {
         e.preventDefault();
         e.stopPropagation();
 
         if (!result) {
-            setResponse('Click on a level!');
+            setResponse('Select a level!');
             return;
         }
 
-        if (rating.current.value && (rating.current.value < 1 || rating.current.value > 35)) {
+        if (rating && (rating < 1 || rating > 35)) {
             setResponse('Rating must be between 1 and 35!');
             return;
         }
 
-        if (proof.current.value && !proof.current.value.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
+        if (proof && !proof.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
             setResponse('Proof link is invalid!');
             return;
         }
 
         const data = {
             levelID: result.ID,
-            rating: parseInt(rating.current.value) || 0,
-            enjoyment: parseInt(enjoyment.current.value),
-            refreshRate: parseInt(refreshRate.current.value.match(/([0-9]*)/)[0]) || 60,
-            device: parseInt(device.current.value),
-            proof: proof.current.value
+            rating: parseInt(rating) || 0,
+            enjoyment: parseInt(enjoyment) || -1,
+            refreshRate: parseInt(refreshRate.match(/([0-9]*)/)[0]) || 60,
+            device: parseInt(device),
+            proof: proof
         };
+        console.log(data);
 
         setSending(true);
         
@@ -120,7 +121,7 @@ export default function Header() {
                                 <label>Rating: </label>
                             </div>
                             <div className='col-auto'>
-                                <input type='number' className='form-control' ref={rating} />
+                                <input type='number' className='form-control' value={rating} onChange={(e) => setRating(e.target.value)} />
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
@@ -141,7 +142,7 @@ export default function Header() {
                                     { key: 8, value: '8 Very good' },
                                     { key: 9, value: '9 Great' },
                                     { key: 10, value: '10 Masterpiece' }
-                                ]} onChange={handleEnjoymentSelect} />
+                                ]} onChange={handleEnjoymentSelect} zIndex='1030' />
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
@@ -149,7 +150,7 @@ export default function Header() {
                                 <label>Refresh rate: </label>
                             </div>
                             <div className='col-auto'>
-                                <input type='text' className='form-control' ref={refreshRate} />
+                                <input type='text' className='form-control' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} />
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
@@ -168,18 +169,22 @@ export default function Header() {
                                 <label>Proof: </label>
                             </div>
                             <div className='col-9'>
-                                <input type='text' className='form-control' ref={proof} />
+                                <input type='text' className='form-control' value={proof} onChange={(e) => setProof(e.target.value)} />
                             </div>
                         </div>
                     </Form>
                 </Body>
                 <Footer>
-                    <span className='text-dark'>{responseMessage}</span>
-                    <Button variant='secondary' onClick={closeSubmit}>Close</Button>
-                    <Button variant='primary' type="submit" onClick={submitForm}>
-                        {sending ? <Spinner as='span' animation='border' size='sm'  /> : ''}
-                        Submit
-                    </Button>
+                    <div className='d-flex justify-content-between'>
+                        <span>{responseMessage}</span>
+                        <div>
+                            <button className='secondary' onClick={closeSubmit}>Close</button>
+                            <button className='primary' type="submit" onClick={submitForm}>
+                                {sending ? <Spinner as='span' animation='border' size='sm'  /> : ''}
+                                Submit
+                            </button>
+                        </div>
+                    </div>
                 </Footer>
             </Modal>
         </>

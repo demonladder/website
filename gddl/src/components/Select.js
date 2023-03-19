@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Select({ options, onChange }) {
+export default function Select({ options, onChange, zIndex = 1000 }) {
     const [open, setOpen] = useState(false);
     const [openStatus, setOpenStatus] = useState('closed');
     const [value, setValue] = useState(options[0]);
@@ -33,7 +33,7 @@ export default function Select({ options, onChange }) {
     return (
         <div className='style-input custom-select' onClick={handleToggle}>
             {value.value}
-            <div className={'select-options ' + openStatus}>
+            <div className={'select-options ' + openStatus} style={{ zIndex }}>
                 {
                     options.map((o, i) => <SelectOption option={o} setValue={setValue} key={i} />)
                 }

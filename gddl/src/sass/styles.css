@@ -249,7 +249,7 @@
   }
 }
 .bg-gddl {
-  background-color: hsl(306, 0%, 10%);
+  background-color: hsl(306deg, 0%, 10%);
 }
 
 .topnav {
@@ -292,14 +292,38 @@ button {
   background: none;
   color: currentColor;
   border: none;
+  padding: 0.25rem 0.4rem;
+  transition: background-color 100ms ease-in-out;
+}
+button.secondary {
+  color: white;
+  background: #929292;
+}
+button.secondary:hover {
+  background-color: #797979;
+}
+button.secondary:active {
+  background-color: #666666;
+}
+button.primary {
+  color: white;
+  background: #2c6cd4;
+}
+button.primary:hover {
+  background-color: #225bb8;
+}
+button.primary:active {
+  background-color: #184a99;
 }
 button.danger {
   color: white;
-  background: #870000;
+  background: #b50000;
 }
-button.danger:hover:not(:active) {
-  background-color: #600000;
-  transform: scale(1.1);
+button.danger:hover {
+  background-color: #9b0000;
+}
+button.danger:active {
+  background-color: #8e0000;
 }
 
 .underline {
@@ -680,6 +704,9 @@ button.open-extended:hover {
   padding: 1rem;
   min-width: 25%;
 }
+.profile .information .introduction textarea {
+  padding: 0;
+}
 .profile .information .introduction .label {
   margin: 0;
 }
@@ -687,12 +714,18 @@ button.open-extended:hover {
   background: rgb(46, 46, 46);
   padding: 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   column-gap: 2rem;
   flex-grow: 1;
 }
+@media (min-width: 768px) {
+  .profile .information .trackers {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 .profile .information .trackers .tracker {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 .profile .information .trackers .tracker * {
@@ -702,23 +735,39 @@ button.open-extended:hover {
   color: white;
   text-decoration: none;
 }
-.profile .ratings .row {
-  border-bottom: 1px solid #998888;
-}
-.profile .ratings .row h3, .profile .ratings .row p {
-  margin: 0;
-  justify-self: center;
-}
-.profile .ratings .row p {
+.profile .ratings p {
   margin: 0;
 }
-.profile .ratings .row .level-name {
-  justify-self: start;
+.profile .ratings .submission {
+  display: grid;
+  grid-template-columns: 12fr 3fr 2fr;
 }
-.profile .ratings .row .enjoyment, .profile .ratings .row .rating, .profile .ratings .row .user-rating, .profile .ratings .row .creator {
+.profile .ratings .submission .enjoyment, .profile .ratings .submission .user-rating {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.profile .ratings .submission .creator, .profile .ratings .submission .rating {
+  display: none;
+}
+@media (min-width: 992px) {
+  .profile .ratings .submission {
+    grid-template-columns: 12fr 3fr 2fr;
+  }
+  .profile .ratings .submission .rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media (min-width: 1200px) {
+  .profile .ratings .submission {
+    grid-template-columns: 12fr 6fr 3fr 2fr;
+  }
+  .profile .ratings .submission .creator {
+    display: flex;
+    align-items: center;
+  }
 }
 @media (max-width: 550px) {
   .profile .information {
@@ -850,7 +899,7 @@ input:not([type=radio]):not([type=checkbox]),
 .style-input,
 select {
   outline: none;
-  background: hsla(0, 0%, 0%, 0.132);
+  background: hsla(0deg, 0%, 0%, 0.132);
   color: white;
   border: none;
   caret-color: white;
@@ -939,6 +988,7 @@ input[type=radio]::before {
 .custom-select .select-options.open, .custom-select .select-options.opening {
   max-height: 200px;
   z-index: 1000;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.377);
 }
 .custom-select .select-options.open {
   overflow: auto;
@@ -980,7 +1030,7 @@ textarea {
 }
 #edit-references .control button.save {
   border: none;
-  background: hsl(120, 70%, 49%);
+  background: hsl(120deg, 70%, 49%);
   opacity: 0;
   font-weight: bold;
   padding: 0.25rem 0.5rem;
@@ -1027,7 +1077,7 @@ textarea {
   transition: background-color 300ms ease-in-out;
 }
 .cmodal.show {
-  background: hsla(0, 0%, 0%, 0.389);
+  background: hsla(0deg, 0%, 0%, 0.389);
   pointer-events: all;
 }
 .cmodal.show .content {
@@ -1044,7 +1094,7 @@ textarea {
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
-  background: hsl(0, 0%, 35%);
+  background: hsl(0deg, 0%, 35%);
 }
 .cmodal .content > * {
   padding: 1.5rem 1.5rem;
@@ -1071,12 +1121,40 @@ textarea {
   color: black;
 }
 
+.save-dialogue {
+  position: fixed;
+  opacity: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: #262626;
+  padding: 1.5rem 2rem;
+  transition: transform 200ms ease-in, opacity 200ms ease-in;
+}
+.save-dialogue.show {
+  transform: translate(-50%, -30px);
+  opacity: 1;
+}
+.save-dialogue .header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.save-dialogue .wrapper {
+  display: flex;
+  gap: 1rem;
+}
+.save-dialogue button {
+  min-width: 100px;
+  min-height: 40px;
+}
+
 body {
   margin: 0;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: hsl(306, 0%, 10%);
+  background-color: hsl(306deg, 0%, 10%);
 }
 
 code {
@@ -1111,6 +1189,10 @@ code {
   height: 30em;
   object-fit: cover;
   filter: brightness(50%);
+}
+
+.cmodal .body .search-result {
+  z-index: 1050;
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -74,22 +74,26 @@ export default function UploadProgress() {
             },
             body: JSON.stringify({
                 commit: false,
-                progress: demonProgress
+                progress: demonProgress,
+                csrfToken: JSON.parse(localStorage.getItem('user')).csrfToken
             })
         }).then(res => {
             setLoading(false);
 
-            if (res.status === 200) res.json().then(data => {
-                demonProgress.forEach(e => {
-                    const level = data.find(l => l.ID === e.levelID);
-                    if (!level) return;
+            if (res.status === 200) {
+                res.json().then(data => {
+                    demonProgress.forEach(e => {
+                        const level = data.find(l => l.ID === e.levelID);
+                        if (!level) return;
 
-                    e.Name = level.Name || null;
-                    e.Rating = level.Rating.toFixed(2) || 'NaN';
+                        e.Name = level.Name || null;
+                        e.Rating = level.Rating.toFixed(2) || 'NaN';
+                    });
+                    setProgress(demonProgress.filter(l => l.Name));
                 });
-                setProgress(demonProgress.filter(l => l.Name));
-            });
-            else res.json().then(msg => setAlert(msg.message));
+            } else {
+                res.json().then(msg => setAlert(msg.message));
+            }
         }).catch(e => {
             setAlert('Something went wrong when connecting to the server!')
             setLoading(false);

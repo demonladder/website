@@ -1,27 +1,34 @@
 import React from 'react';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import LoginButton from './LoginButton';
-import ProfileButton from './ProfileButton';
-import { useQuery } from '@tanstack/react-query';
+import { tierToIcon } from '../../../components/DemonLogo.js';
+import { Link, useNavigation } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import serverIP from './../../../serverIP';
 
 export default function ProfileButtons() {
-    const userID = Cookies.get('userID');
-    const { status, data: user } = useQuery({
-        queryKey: ['user', userID],
-        queryFn: () => {
-            if (!userID) return new Promise((resolve) => resolve(null));
-            return fetch(`${serverIP}/getUser?userID=${userID}&all=true`).then(res => res.json())
-        }
-    });
-
-    if (status === 'loading') {
-        return <LoadingSpinner isLoading={true} />;
+    useNavigation();  // Used to re-render this component whenever location changes.
+    
+    const session = Cookies.get('session');
+    if (!session) {
+        localStorage.removeItem('user');
+        return <LoginButton />
     }
+    
+    const user = localStorage.getItem('user');
+    return <ProfileButton user={JSON.parse(user)} />;
+}
 
+function ProfileButton({ user }) {
     return (
-        (!user || !user.info) ? <LoginButton />
-        : <ProfileButton user={user} />
+        <Link to={`/profile/${user.ID}`} className='profile px-0'>
+            <span>{user.Name}</span>
+            <img className='ms-3 pfp' src={tierToIcon(user.Hardest)} alt='' />
+        </Link>
+    );
+}
+
+function LoginButton() {
+    return (
+        <Link to='login' className='log-in align-middle me-5 ms-auto'>
+            Log in
+        </Link>
     );
 }

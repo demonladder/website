@@ -11,6 +11,12 @@ export default function Utils() {
 
     const [show, setShow] = useState(false);
 
+    function test() {
+        const waow = { introduction: 'asdf' };
+        const copy = { ...waow, introduction: 'waow'};
+        console.log(copy);
+    }
+
     return (
         <div className='container'>
             <h1 className='mb-4'>Utils</h1>
@@ -34,6 +40,9 @@ export default function Utils() {
                             </div>
                         </Footer>
                     </Modal>
+                </Tab>
+                <Tab eventKey='tests' title='Tests'>
+                    <button onClick={test}>Click Me!</button>
                 </Tab>
             </Tabs>
         </div>

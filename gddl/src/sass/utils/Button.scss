@@ -1,10 +1,23 @@
 @use 'sass:list';
 
 $button-types: (
+    'secondary': (
+        white,  // Text
+        #929292,  // Default bg
+        #797979,  // Hover bg
+        #666666  // Active bg
+    ),
+    'primary': (
+        white,  // Text
+        #2c6cd4,  // Default bg
+        #225bb8,  // Hover bg
+        #184a99  // Active bg
+    ),
     'danger': (
         white,  // Text
-        #870000,  // Default bg
-        #600000  // Hover bg
+        #b50000,  // Default bg
+        #9b0000,  // Hover bg
+        #8e0000  // Active bg
     )
 );
 
@@ -12,15 +25,19 @@ button {
     background: none;
     color: currentColor;
     border: none;
+    padding: 0.25rem 0.4rem;
+    transition: background-color 100ms ease-in-out;
 
     @each $type, $colors in $button-types {
         &.#{$type} {
             color: list.nth($colors, 1);
             background: list.nth($colors, 2);
 
-            &:hover:not(:active) {
+            &:hover {
                 background-color: list.nth($colors, 3);
-                transform: scale(1.1);
+            }
+            &:active {
+                background-color: list.nth($colors, 4);
             }
         }
     }
