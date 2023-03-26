@@ -2,29 +2,27 @@ import React from 'react';
 import { Form, redirect, useActionData } from 'react-router-dom';
 import serverIP from '../../../serverIP';
 import { useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 export async function loginAction({ request }) {
     const data = await request.formData();
 
-    const response = await fetch(serverIP + '/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: data.get('username'),
-            password: data.get('password')
-        })
-    })
-    .catch(e => { return { error: 'Couldn\'t connect to the server!' }});
+
+    const response = await axios.post(`${serverIP}/login`, {
+        username: data.get('username'),
+        password: data.get('password')
+    }, {
+        withCredentials: true
+    });
 
     if (response.status === 400) {
-        return await response.json();
+        return response.data;
     }
+    console.log(response.data);
     
     if (response.status === 200) {
-        localStorage.setItem('user', JSON.stringify(await response.json()));
+        localStorage.setItem('csrf', response.data.csrfToken);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         return redirect('/');
     }
 

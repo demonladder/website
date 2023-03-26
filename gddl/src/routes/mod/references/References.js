@@ -64,18 +64,15 @@ export default function EditReferences() {
 
     const queryClient = useQueryClient();
 
-    const [saving, setSaving] = useState(false);
     const mutateReferences = useMutation({
         mutationFn: ChangeReferences,
         onSuccess: () => {
             setChangeList([]);
-            setSaving(false);
             queryClient.invalidateQueries(['editReferences']);
         }
     });
 
     function save() {
-        setSaving(true);
         mutateReferences.mutate(changeList);
     }
 
@@ -116,7 +113,7 @@ export default function EditReferences() {
                     <label className='me-2'>Tier:</label>
                     <input type='number' min='0' max='35' value={tier} onChange={e => setTier(e.target.value)} />
                 </div>
-                <button className={'save' + (changeList.length > 0 ? ' show' : '')} disabled={saving} onClick={save}>Save changes</button>
+                <button className={'save' + (changeList.length > 0 ? ' show' : '')} disabled={mutateReferences.isLoading} onClick={save}>Save changes</button>
             </div>
             <div className='position-relative'>
                 <input type='text' value={search} onChange={e => setSearch(e.target.value)} onFocus={() => setResultVisible(true)} onBlur={handleBlur} />

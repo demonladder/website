@@ -14,7 +14,7 @@ export default function LevelOverview() {
     const levelID = useParams().levelID;
     const { status, data: levelInfo } = useQuery({
         queryKey: ['levels', levelID],
-        queryFn: () => GetLevel(levelID)
+        queryFn: GetLevel
     });
 
     if (status === 'loading'){

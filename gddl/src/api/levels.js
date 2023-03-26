@@ -1,14 +1,18 @@
 import axios from "axios";
 import serverIP from "../serverIP";
 
-export function GetLevels(name) {
-    return axios.get(`${serverIP}/getLevels?chunk=5&name=${name}&exactName=true`).then(res => res.data.levels);
+export async function GetLevels(name) {
+    const res = await axios.get(`${serverIP}/getLevels?chunk=5&name=${name}&exactName=true`);
+    return res.data.levels;
 }
 
-export function SearchLevels(name, exact = true) {
-    return axios.get(`${serverIP}/getLevels?chunk=5&name=${name}&exactName=${exact}`).then(res => res.data.levels);
+export async function SearchLevels(name, exact = true) {
+    const res = await axios.get(`${serverIP}/getLevels?chunk=5&name=${name}&exactName=${exact}`);
+    return res.data.levels;
 }
 
-export function GetLevel(id) {
-    return axios.get(`${serverIP}/getLevel?levelID=${id}&returnPacks=true`).then(res => res.data);
+export async function GetLevel({ queryKey }) {
+    const [_, id] = queryKey;
+    const res = await axios.get(`${serverIP}/getLevel?levelID=${id}&returnPacks=true`);
+    return res.data;
 }

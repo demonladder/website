@@ -7,6 +7,7 @@ export async function Logout() {
     });
 
     localStorage.clear('user');
+    localStorage.clear('csrf');
 
     return redirect('/');
 }

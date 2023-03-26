@@ -7,6 +7,7 @@ function Root() {
   return (
     <>
       <Helmet>
+        <title>GD Demon Ladder</title>
         <meta property="og:type" content="website" />
         <meta property="og:title" content="GDDLadder" />
         <meta property="og:url" content="https://gdladder.com" />

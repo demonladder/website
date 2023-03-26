@@ -8,7 +8,7 @@ export default function ProfileButtons() {
     
     const session = Cookies.get('session');
     if (!session) {
-        localStorage.removeItem('user');
+        localStorage.removeItem('csrf');
         return <LoginButton />
     }
     
@@ -19,7 +19,7 @@ export default function ProfileButtons() {
 function ProfileButton({ user }) {
     return (
         <Link to={`/profile/${user.ID}`} className='profile px-0'>
-            <span>{user.Name}</span>
+            <span className='fs-5'>{user.Name}</span>
             <img className='ms-3 pfp' src={tierToIcon(user.Hardest)} alt='' />
         </Link>
     );

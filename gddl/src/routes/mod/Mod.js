@@ -4,19 +4,13 @@ import Header from '../../Header';
 import serverIP from '../../serverIP';
 import axios from 'axios';
 
-export function modLoader() {
-    const token = JSON.parse(localStorage.getItem('user')).csrfToken;
+export async function modLoader() {
+    const token = localStorage.getItem('csrf');
     if (!token) return redirect('/');
 
-    return axios.get(serverIP + '/isMod', {
-        withCredentials: true,
-        params: {
-            csrfToken: token
-        }
-    }).then(res => {
-        if (res.status !== 200) return redirect('/');
-        return null;
-    });
+    const response = await axios.post(serverIP + '/isMod', { csrfToken: token }, { withCredentials: true });
+    if (response.status !== 200) return redirect('/');
+    return null;
 }
 
 export default function Mod() {

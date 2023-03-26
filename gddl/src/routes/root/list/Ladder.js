@@ -9,6 +9,7 @@ import { ReactComponent as ListSVG } from '../../../icons/list.svg';
 import { ReactComponent as GridSVG } from '../../../icons/grid.svg';
 import serverIP from '../../../serverIP';
 import SortMenu, { closeSortMenu } from './SortMenu';
+import axios from 'axios';
 
 export async function ladderLoader() {
     return fetch(`${serverIP}/getLevels`)
@@ -67,6 +68,7 @@ export default function Ladder() {
     const [extendedFilters, setExtendedFilters] = useState({ subLowCount: '', subHighCount: '', enjLowCount: '', enjHighCount: '', enjLow:'', enjHigh: '', devLow: '', devHigh: '' });
     const [search, setSearch] = useState('');
     const [timer, setTimer] = useState();
+
     useEffect(() => {
         clearTimeout(timer);
         setTimer(setTimeout(() => {
@@ -77,24 +79,26 @@ export default function Ladder() {
                 ...sorter,
                 page: pageIndex,
                 name: search
-            }
-            let q = `${serverIP}/getLevels`;
-            const extra = [];
+            };
+            const q = {};
             for (let p of Object.keys(joined)) {
                 if (!joined[p]) continue;
-                extra.push(p + '=' + joined[p]);
+                q[p] = joined[p];
             }
-            if (extra.length > 0) q += '?' + extra.join('&');
-            q = encodeURI(q);
 
-            fetch(q, {
-                credentials: 'include'
-            }).then(res => res.json()).then(data => {
-                setLoaderResponse({ error: false, data })
-            }).catch(e => {
+            axios.get(`${serverIP}/getLevels`, {
+                withCredentials: 'include',
+                params: q
+            }).then(res => setLoaderResponse({ error: false, data: res.data }))
+            .catch(e => {
+                if (e.response.status === 404) {
+                    setLoaderResponse({ error: true, message: 'No results!' });
+                    return;
+                }
+
                 setLoaderResponse({ error: true, message: 'Couldn\'t connect to the sever!' });
             });
-        }, 200));
+        }, 500));
     }, [search, filters, extendedFilters, pageIndex, sorter]);
 
     useEffect(() => {  // Watch for changes in search and filters

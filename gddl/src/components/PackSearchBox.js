@@ -8,7 +8,7 @@ export default function PackSearchBox({ setResult }) {
 
     const { status, data } = useQuery({
         queryKey: ['packSearch', search],
-        queryFn: (context) => SearchPacks(context.queryKey[1])
+        queryFn: SearchPacks
     });
 
     const update = (search) => {

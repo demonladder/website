@@ -1,16 +1,19 @@
 import axios from "axios";
 import serverIP from "../serverIP";
 
-function GetUser(id) {
-    return axios.get(`${serverIP}/getUser?userID=${id}&all=true`).then(res => res.data);
+async function GetUser({ queryKey }) {
+    const [_, id] = queryKey;
+    const res = await axios.get(`${serverIP}/getUser?userID=${id}&all=true`);
+    return res.data;
 }
 
-function SaveProfile(user) {
-    const csrfToken = JSON.parse(localStorage.getItem('user')).csrfToken;
+async function SaveProfile(user) {
+    const csrfToken = localStorage.getItem('csrf');
 
-    return axios.post(`${serverIP}/saveUser?userID=${user.ID}`, { csrfToken, user }, {
+    const res = await axios.post(`${serverIP}/saveUser?userID=${user.ID}`, { csrfToken, user }, {
         withCredentials: true,
-    }).then(res => res.data);
+    });
+    return res.data;
 }
 
 export {

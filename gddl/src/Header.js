@@ -1,7 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Form, Nav, Navbar, Spinner } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
 import ProfileButtons from './routes/root/login/ProfileButtons';
 import serverIP from './serverIP';
 import LevelSearchBox from './components/LevelSearchBox';
@@ -91,7 +90,7 @@ export default function Header() {
         <>
             <Navbar expand='lg' className='py-4 px-5 mb-4'>
                 <Container fluid>
-                    <Link to='/' className='navbar-brand title'>GDDLadder</Link>
+                    <Navbar.Brand href='/' className='title'>GDDLadder</Navbar.Brand>
                     <Navbar.Toggle aria-controls='navbar' />
                     <Navbar.Collapse id='navbar' className='justify-content-between'>
                         <Nav navbar>

@@ -20,7 +20,7 @@ export default function({ info }) {
 
     return (
         <div>
-            <div className={`tier-${((highestTier + lowestTier)/2)} head`}>
+            <div className={`tier-${Math.floor((highestTier + lowestTier)/2)} head`}>
                 <h3 className='m-0 p-2 text-center'>{info.name}</h3>
             </div>
             <div className='d-flex'>
