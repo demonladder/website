@@ -36,7 +36,8 @@ $tier-colors: (
     "32": #3F1A00,
     "33": #331700,
     "34": #231300,
-    "35": #110A00
+    "35": #110A00,
+    "36": #000
 );
 @each $name, $color in $tier-colors {  // Create class definitions
     .tier-#{$name} {
