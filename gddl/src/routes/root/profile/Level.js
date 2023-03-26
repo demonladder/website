@@ -13,7 +13,7 @@ export default function Level({ info }) {
     }
 
     const userRating = info.UserRating ? info.UserRating : '-';
-    const userEnjoyment = info.Enjoyment ? info.Enjoyment : '-';
+    const userEnjoyment = info.Enjoyment ? (parseInt(info.Enjoyment) === -1 ? '-' : info.Enjoyment) : '-';
 
     return (
         <div className='submission'>

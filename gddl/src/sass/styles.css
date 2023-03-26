@@ -912,7 +912,6 @@ select {
   border-bottom: 2px solid white;
   border-radius: 0;
   height: 28px;
-  margin-bottom: 0.5rem;
 }
 
 input[type=text] {
@@ -1151,6 +1150,10 @@ textarea {
 .save-dialogue button {
   min-width: 100px;
   min-height: 40px;
+}
+
+.search-box {
+  position: relative;
 }
 
 body {

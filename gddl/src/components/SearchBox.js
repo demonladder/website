@@ -30,12 +30,12 @@ export default function SearchBox({ list, update, setResult, status }) {
     }
 
     return (
-        <div className='position-relative'>
+        <div className='search-box'>
             <input type='text' value={search} onChange={handleChange} onFocus={() => setVisible(true)} onBlur={handleBlur} />
             <div className={(visible ? 'd-block' : 'd-none') + ' search-result'}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :
-                    (status === 'error' ? <p>Couldn't connect to the server</p> :
+                    (status === 'error' ? <p>No results</p> :
                     list.map(r => <SearchResult msg={r.label} onClick={() => handleClick(r)} key={r.label} />))
                 }
             </div>

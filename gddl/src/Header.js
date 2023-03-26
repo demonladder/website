@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Container, Form, Nav, Navbar, Spinner } from 'react-bootstrap';
+import { Container, Form, Nav, Navbar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ProfileButtons from './routes/root/login/ProfileButtons';
-import serverIP from './serverIP';
 import LevelSearchBox from './components/LevelSearchBox';
 import Modal, { Body, Footer } from './components/Modal';
 import Select from './components/Select';
+import { useMutation } from '@tanstack/react-query';
+import { SendSubmission } from './api/submissions';
+import LoadingSpinner from './components/LoadingSpinner';
 
 export default function Header() {
     const [showModal, setShowModal] = useState(false);
@@ -28,7 +30,16 @@ export default function Header() {
         setDevice(option.key);
     }
 
-    const [sending, setSending] = useState(false);
+    const sendSubmission = useMutation({
+        mutationFn: SendSubmission,
+        onSuccess: () => {
+            closeSubmit();
+        },
+        onError: (error) => {
+            setResponse(error.response.data.message);
+        }
+    });
+
     function submitForm(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -57,25 +68,8 @@ export default function Header() {
             proof: proof
         };
         console.log(data);
-
-        setSending(true);
         
-        fetch(`${serverIP}/submit`, {
-            credentials: 'include',
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(res => {
-            setSending(false);
-
-            res.json().then(data => setResponse(data.message));
-        })
-        .catch(e => {
-            console.log('Error occurred');
-            setSending(false);
-        });
+        sendSubmission.mutate(data);
     }
 
     const [responseMessage, setResponseMessage] = useState('');
@@ -106,9 +100,9 @@ export default function Header() {
             </Navbar>
             <Modal title='Submit rating' show={showModal} onHide={closeSubmit}>
                 <Body>
-                    <Form noValidate onSubmit={submitForm} className='position-relative'>
+                    <Form noValidate onSubmit={submitForm} className='position-relative d-flex flex-column gap-2'>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-12 col-sm-3'>
+                            <div className='col-12 col-sm-4'>
                                 <label>Level name: </label>
                             </div>
                             <div className='col-auto'>
@@ -116,7 +110,7 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-12 col-sm-3'>
+                            <div className='col-12 col-sm-4'>
                                 <label>Rating: </label>
                             </div>
                             <div className='col-auto'>
@@ -124,10 +118,10 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-12 col-sm-3'>
+                            <div className='col-12 col-sm-4'>
                                 <label>Enjoyment: </label>
                             </div>
-                            <div className='col-4'>
+                            <div className='col-5'>
                                 <Select options={[
                                     { key: -1, value: '-' },
                                     { key: 0, value: '0 Abysmal' },
@@ -145,7 +139,7 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-12 col-sm-3'>
+                            <div className='col-12 col-sm-4'>
                                 <label>Refresh rate: </label>
                             </div>
                             <div className='col-auto'>
@@ -153,7 +147,7 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center mb-2'>
-                            <div className='col-12 col-sm-3'>
+                            <div className='col-12 col-sm-4'>
                                 <label>Device: </label>
                             </div>
                             <div className='col-4'>
@@ -164,10 +158,10 @@ export default function Header() {
                             </div>
                         </div>
                         <div className='row align-items-center'>
-                            <div className='col-12 col-sm-3'>
+                            <div className='col-12 col-sm-4'>
                                 <label>Proof: </label>
                             </div>
-                            <div className='col-9'>
+                            <div className='col-8'>
                                 <input type='text' className='form-control' value={proof} onChange={(e) => setProof(e.target.value)} />
                             </div>
                         </div>
@@ -177,9 +171,9 @@ export default function Header() {
                     <div className='d-flex justify-content-between'>
                         <span>{responseMessage}</span>
                         <div>
+                            <LoadingSpinner isLoading={sendSubmission.isLoading} />
                             <button className='secondary' onClick={closeSubmit}>Close</button>
                             <button className='primary' type="submit" onClick={submitForm}>
-                                {sending ? <Spinner as='span' animation='border' size='sm'  /> : ''}
                                 Submit
                             </button>
                         </div>
