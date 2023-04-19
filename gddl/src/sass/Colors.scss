@@ -1,7 +1,9 @@
 @use 'sass:color';
 
+$not-found: #360432;
+
 $tier-colors: (
-    "0": #360432,
+    "0": $not-found,
     "1": #DDDFEE,
     "2": #D5D3E9,
     "3": #D3CBE7,
@@ -52,6 +54,7 @@ $tier-colors: (
 }
 
 $enjoyment-colors: (
+    "-1": $not-found,
     "0": #E67C73,
     "1": #EA8B71,
     "2": #EE9A6D,
@@ -70,7 +73,11 @@ $enjoyment-colors: (
         background-color: $color;
     }
 }
-   
+
+.enj--1 {
+    color: white;
+}
+
 $refresh-colors: (
     "72": #FF9900,
     "120": #FFFF00,

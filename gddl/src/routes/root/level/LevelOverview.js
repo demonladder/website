@@ -5,7 +5,6 @@ import DemonLogo from '../../../components/DemonLogo';
 import Submission from './Submission';
 import { Helmet } from 'react-helmet';
 import PackRef from '../../../components/PackRef';
-import { Accordion } from 'react-bootstrap';
 import { GetLevel } from '../../../api/levels';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import IDButton from '../../../components/IDButton';
@@ -38,7 +37,7 @@ export default function LevelOverview() {
     if (level.RatingCount > 0) {
         avgRating = level.Rating.toFixed(2);
         roundedRating = Math.round(level.Rating);
-        standardDeviation = level.Deviation.toFixed(2);
+        standardDeviation = level.Deviation ? level.Deviation.toFixed(2) : 0;
     }
 
     if (level.EnjoymentCount > 0) {
@@ -91,22 +90,14 @@ export default function LevelOverview() {
                     </div>
                 </div>
             </div>
-            <Accordion>
-                <Accordion.Item eventKey='0'>
-                    <Accordion.Header><h1>Submissions [{level.SubmissionCount}]</h1></Accordion.Header>
-                    <Accordion.Body>
-                        {levelInfo.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
-                        {levelInfo.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
-                    </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey='1'>
-                    <Accordion.Header><h1>Packs [{levelInfo.packs.length}]</h1></Accordion.Header>
-                    <Accordion.Body>
-                        {levelInfo.packs.map(p => <PackRef pack={p} key={p.ID} />)}
-                        {levelInfo.packs.length === 0 ? <p className='mb-0'>This level is not part of any packs</p> : null}
-                    </Accordion.Body>
-                </Accordion.Item>
-            </Accordion>
+            <h2>Submissions</h2>
+            <div className='submission-wrapper'>
+                {levelInfo.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
+                {levelInfo.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
+            </div>
+            <h2>Packs [{levelInfo.packs.length}]</h2>
+            {levelInfo.packs.map(p => <PackRef pack={p} key={p.ID} />)}
+            {levelInfo.packs.length === 0 ? <p className='mb-0'>This level is not part of any packs</p> : null}
         </div>
     );
 }

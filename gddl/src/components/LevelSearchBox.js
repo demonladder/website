@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { SearchLevels } from '../api/levels';
+import { GetLevels } from '../api/levels';
 import SearchBox from './SearchBox';
 
 export default function LevelSearchBox({ setResult }) {
@@ -8,7 +8,7 @@ export default function LevelSearchBox({ setResult }) {
 
     const { status, data } = useQuery({
         queryKey: ['levelSearch', search],
-        queryFn: (context) => SearchLevels(context.queryKey[1], false)
+        queryFn: (context) => GetLevels({ name: context.queryKey[1], exact: false })
     });
 
     const update = (search) => {

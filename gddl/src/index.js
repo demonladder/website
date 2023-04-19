@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './sass/styles.css';
 import Root from './routes/root/Root';
 import Index from './routes/root/RootIndex';
-import Ladder, { ladderLoader } from './routes/root/list/Ladder';
+import Ladder from './routes/root/list/Ladder';
 import References from './routes/root/references/References';
 import LevelOverview from './routes/root/level/LevelOverview';
 import Login, { loginAction } from './routes/root/login/Login';
@@ -34,8 +34,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'list',
-        element: <Ladder />,
-        loader: ladderLoader
+        element: <Ladder />
       },
       {
         path: 'references',

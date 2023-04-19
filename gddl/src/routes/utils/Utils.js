@@ -12,9 +12,7 @@ export default function Utils() {
     const [show, setShow] = useState(false);
 
     function test() {
-        const waow = { introduction: 'asdf' };
-        const copy = { ...waow, introduction: 'waow'};
-        console.log(copy);
+        console.log('Test button clicked');
     }
 
     return (

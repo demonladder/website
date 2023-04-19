@@ -21,6 +21,10 @@ export default function References () {
         );
     }
 
+    if (referenceDemons.length == 0) {
+        return <div className='container'><h1>References are not available</h1></div>;
+    }
+
     referenceDemons.sort((a, b) => (a.Tier > b.Tier) ? 1 : -1);
     
     const diffs = ['Easy', 'Medium', 'Hard', 'Insane', 'Extreme'].map(a => a + ' Demons');

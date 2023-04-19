@@ -34,7 +34,7 @@ export default function Level({ info, isListView }) {
                 <div className='col-xl-2 col-lg-3 col-md-3 d-none d-sm-inline-block col-sm-3 align-self-center'><p>{info.Creator}</p></div>
                 <div className='col-xl-3 d-none d-xl-block align-self-center'><p>{info.Song}</p></div>
                 <div className='col-xl-2 col-lg-2 d-none d-lg-block align-self-center'><button className='id-button underline-p' onClick={onIDClick}>{info.ID}</button></div>
-                <div className={`col-lg-1 col-md-2 col-2 d-flex justify-content-center tier-${Math.floor(info.Rating)}`}><p className='align-self-center'>{info.Rating === 0 ? 'Unrated' : `${info.Rating.toFixed(2)}`}</p></div>
+                <div className={`col-lg-1 col-md-2 col-2 d-flex justify-content-center tier-${Math.floor(info.Rating)}`}><p className='align-self-center'>{!info.Rating ? 'Unrated' : `${info.Rating.toFixed(2)}`}</p></div>
             </div>
         );
     }

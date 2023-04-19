@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import Level from './Level';
 import filterEmpty from '../../../icons/filter-empty.svg';
 import FilterMenu from './FilterMenu';
@@ -7,23 +6,10 @@ import caretR from '../../../icons/caret-r.svg';
 import caretL from '../../../icons/caret-l.svg';
 import { ReactComponent as ListSVG } from '../../../icons/list.svg';
 import { ReactComponent as GridSVG } from '../../../icons/grid.svg';
-import serverIP from '../../../serverIP';
 import SortMenu, { closeSortMenu } from './SortMenu';
-import axios from 'axios';
-
-export async function ladderLoader() {
-    return fetch(`${serverIP}/getLevels`)
-    .then(res => res.json())
-    .then(data => {
-        return {
-            error: false,
-            data
-        };
-    })
-    .catch((e) => {
-        return { error: true, message: 'Couldn\'t connect to the sever!' };
-    });
-}
+import { SearchLevels } from '../../../api/levels';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export function toggleShowFilter() {
     const content = document.getElementById('filter-menu');
@@ -40,26 +26,9 @@ export function toggleShowFilter() {
 }
 
 export default function Ladder() {
-    const [loaderResponse, setLoaderResponse] = useState(useLoaderData());
-    const [levels, setLevels] = useState(!loaderResponse.error ? loaderResponse.data : { count: 0, levels: [] });
-    useEffect(() => {
-        setLevels(!loaderResponse.error ? loaderResponse.data : { count: 0, levels: [] });
-    }, [loaderResponse]);
-
-    const [pageIndex, setPageIndex] = useState(0);
-    const pageUp = () => {
-        if (levels.error) return;
-        if (pageIndex + 1 < levels.count / 15) {
-            setPageIndex(prev => prev + 1);
-        }
-    }
-    const pageDown = () => {
-        if (pageIndex > 0) {
-            setPageIndex(prev => prev - 1);
-        }
-    }
-
     const [sorter, setSorter] = useState({});
+    const [pageIndex, setPageIndex] = useState(0);
+    const [levels, setLevels] = useState([]);
 
     //
     // Filter levels
@@ -68,6 +37,7 @@ export default function Ladder() {
     const [extendedFilters, setExtendedFilters] = useState({ subLowCount: '', subHighCount: '', enjLowCount: '', enjHighCount: '', enjLow:'', enjHigh: '', devLow: '', devHigh: '' });
     const [search, setSearch] = useState('');
     const [timer, setTimer] = useState();
+    const [q, setQ] = useState({});
 
     useEffect(() => {
         clearTimeout(timer);
@@ -86,20 +56,30 @@ export default function Ladder() {
                 q[p] = joined[p];
             }
 
-            axios.get(`${serverIP}/getLevels`, {
-                withCredentials: 'include',
-                params: q
-            }).then(res => setLoaderResponse({ error: false, data: res.data }))
-            .catch(e => {
-                if (e.response.status === 404) {
-                    setLoaderResponse({ error: true, message: 'No results!' });
-                    return;
-                }
-
-                setLoaderResponse({ error: true, message: 'Couldn\'t connect to the sever!' });
-            });
+            setQ(q);
         }, 500));
     }, [search, filters, extendedFilters, pageIndex, sorter]);
+    
+    const { status: searchStatus, data: searchData } = useQuery({
+        queryKey: ['search', q],
+        queryFn: ({ queryKey }) => SearchLevels(queryKey[1]),
+        onSuccess: (data) => {setLevels(data.levels)},
+        retryDelay: 500,
+        cacheTime: 0
+    });
+
+    const pageUp = () => {
+        if (searchStatus !== 'success') return;
+        if (pageIndex + 1 < searchData.count / 15) {
+            setPageIndex(prev => prev + 1);
+        }
+    }
+    const pageDown = () => {
+        if (searchStatus !== 'success') return;
+        if (pageIndex > 0) {
+            setPageIndex(prev => prev - 1);
+        }
+    }
 
     useEffect(() => {  // Watch for changes in search and filters
         setPageIndex(0);  // Reset index to page 1
@@ -124,28 +104,46 @@ export default function Ladder() {
         if (listView) setListView(false);
     }
 
-    const list = (
-        <div className='d-flex flex-column'>
-            <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
-            {!loaderResponse.error ? levels.levels.map(l => <Level info={l} isListView={listView} key={l.ID} />)
-            : <h1 className='m-5'>{loaderResponse.message}</h1>}
-        </div>
-    );
-
-    const grid = (
-        <>
-            <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
+    function List({ levels }) {
+        return (
+            <div className='d-flex flex-column'>
                 <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
-                {!loaderResponse.error ? levels.levels.slice(0, (levels.levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)
-                : <h1 className='m-5'>{loaderResponse.message}</h1>}
+                {levels.map(l => <Level info={l} isListView={listView} key={l.ID} />)}
             </div>
-            <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
-                {!loaderResponse.error ? levels.levels.slice((levels.levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)
-                : <h1 className='m-5'>{loaderResponse.message}</h1>}
-            </div>
-        </>
-    );
+        );
+    }
+    function Grid({ levels }) {
+        return (
+            <>
+                <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
+                    <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={listView} key={-1} />
+                    {levels.slice(0, (levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)}
+                </div>
+                <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
+                    {levels.slice((levels.length+1)/2).map(l => <Level info={l} isListView={listView} key={l.ID} />)}
+                </div>
+            </>
+        );
+    }
 
+    function Content() {
+        switch(searchStatus) {
+            case 'loading': {
+                if (!levels) return;
+                if (listView) return <List levels={levels} />
+                else          return <Grid levels={levels} />
+            }
+            case 'error': {
+                return <h2>Couldn't connect to the server!</h2>
+            }
+            case 'success': {
+                if (listView) return <List levels={searchData.levels} />;
+                else          return <Grid levels={searchData.levels} />;
+            }
+        }
+    }
+    
+    //{searchStatus === 'loading' && <LoadingSpinner />}
     return (
         <div className='container'>
             <h1>The Ladder</h1>
@@ -169,11 +167,11 @@ export default function Ladder() {
             </div>
             <FilterMenu filter={setFilters} setExtended={setExtendedFilters} />
             <div id='level-list' className={'my-3' + (listView ? '' : ' d-flex flex-column flex-xl-row')}>
-                {listView ? list : grid}
+                <Content />
             </div>
             <div className='d-flex align-items-center'>
                 <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='' /></button>
-                <p className='text-center m-0 mx-5 fs-3'>{pageIndex + 1} / {Math.ceil(levels.count/16) || 0}</p>
+                <p className='text-center m-0 mx-5 fs-3'>{pageIndex + 1} / {(searchData && Math.ceil(searchData.count/16)) || 0}</p>
                 <button className='page-scroller' onClick={pageUp}><img src={caretR} alt='' /></button>
             </div>
         </div>

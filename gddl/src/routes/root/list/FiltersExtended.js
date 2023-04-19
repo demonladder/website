@@ -87,17 +87,17 @@ export default function FiltersExtended({ set, resetRef }) {
                         <div>
                             <p className='form-label m-0'>Submission count:</p>
                             <div className='d-flex align-items-center'>
-                                <input type='number' className='num-sm' value={subLowCount} min='1' max='10' onChange={(e) => setSubLowCount(e.target.value)} />
+                                <input type='number' className='num-sm' value={subLowCount} min='1' max='1000' onChange={(e) => setSubLowCount(e.target.value)} />
                                 <p className='m-0 mx-2'>to</p>
-                                <input type='number' className='num-sm' value={subHighCount} min='1' max='10' onChange={(e) => setSubHighCount(e.target.value)} />
+                                <input type='number' className='num-sm' value={subHighCount} min='1' max='1000' onChange={(e) => setSubHighCount(e.target.value)} />
                             </div>
                         </div>
                         <div>
                             <p className='form-label m-0'>Enjoyment count:</p>
                             <div className='d-flex align-items-center'>
-                                <input type='number' className='num-sm' value={enjLowCount} min='1' max='10' onChange={(e) => setEnjLowCount(e.target.value)} />
+                                <input type='number' className='num-sm' value={enjLowCount} min='1' max='1000' onChange={(e) => setEnjLowCount(e.target.value)} />
                                 <p className='m-0 mx-2'>to</p>
-                                <input type='number' className='num-sm' value={enjHighCount} min='1' max='10' onChange={(e) => setEnjHighCount(e.target.value)} />
+                                <input type='number' className='num-sm' value={enjHighCount} min='1' max='1000' onChange={(e) => setEnjHighCount(e.target.value)} />
                             </div>
                         </div>
                         <div>
