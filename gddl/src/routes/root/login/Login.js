@@ -1,33 +1,30 @@
 import React from 'react';
 import { Form, redirect, useActionData } from 'react-router-dom';
 import serverIP from '../../../serverIP';
-import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { setUser } from '../../../storageManager';
 
 export async function loginAction({ request }) {
     const data = await request.formData();
 
+    try {
+        const response = await axios.post(`${serverIP}/login`, {
+            username: data.get('username'),
+            password: data.get('password')
+        }, {
+            withCredentials: true
+        });
 
-    const response = await axios.post(`${serverIP}/login`, {
-        username: data.get('username'),
-        password: data.get('password')
-    }, {
-        withCredentials: true
-    });
-
-    if (response.status === 400) {
-        return response.data;
-    }
-    console.log(response.data);
-    
-    if (response.status === 200) {
-        localStorage.setItem('csrf', response.data.csrfToken);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        return redirect('/');
+        if (response.status === 200) {
+            setUser(response.data.csrfToken, JSON.stringify(response.data.user));
+            return redirect('/');
+        }
+    } catch (err) {
+        return { message: err.response.data };
     }
 
-    const queryClient = useQueryClient();
-    queryClient.invalidateQueries(['user']);
+    //const queryClient = useQueryClient();
+    //queryClient.invalidateQueries(['user']);
     return null;
 }
 
@@ -47,7 +44,7 @@ export default function Login() {
                         <label className='form-label'>Password</label>
                         <input type='password' name='password' className='form-control' />
                     </div>
-                    <button type='submit' className='btn btn-lg btn-primary w-100'>Login</button>
+                    <button type='submit' className='primary w-100'>Login</button>
                 </Form>
             </div>
             <div className='d-flex justify-content-center m-5'>

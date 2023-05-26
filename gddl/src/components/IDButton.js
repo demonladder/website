@@ -1,13 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 
 export default function IDButton({ id, disabled = false, className }) {
     function onIDClick(e) {
         navigator.clipboard.writeText(''+id);
 
-        e.target.classList.add('bg-fade');
+        e.target.classList.remove('bg-fade');
         setTimeout(() => {
-            e.target.classList.remove('bg-fade');
-        }, 1000);
+            e.target.classList.add('bg-fade');
+        }, 10);
     }
 
     if (disabled) {

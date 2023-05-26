@@ -21,7 +21,7 @@ export default function References () {
         );
     }
 
-    if (referenceDemons.length == 0) {
+    if (referenceDemons.length === 0) {
         return <div className='container'><h1>References are not available</h1></div>;
     }
 

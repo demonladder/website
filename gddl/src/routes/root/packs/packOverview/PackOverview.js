@@ -10,7 +10,7 @@ export default function PackOverview() {
     const packID = useParams().packID;
     const { status, data: pack } = useQuery({
         queryKey: ['packs', packID],
-        queryFn: GetPack
+        queryFn: () => GetPack(packID),
     });
 
     if (status === 'loading') {

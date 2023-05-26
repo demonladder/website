@@ -402,7 +402,6 @@ button.danger:active {
   display: flex;
 }
 #level-list .level.list {
-  border-bottom: 1px #998888 solid;
   padding: 0;
 }
 #level-list .level.list a {
@@ -433,6 +432,9 @@ button.danger:active {
 }
 #level-list .level.list h3 {
   font-weight: 350;
+}
+#level-list .level.list:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.07);
 }
 #level-list .level.grid {
   margin: 0.5rem;
@@ -753,6 +755,7 @@ button.open-extended:hover {
 }
 .profile .ratings .submission {
   display: grid;
+  padding-left: 0.75rem;
   grid-template-columns: 12fr 3fr 2fr;
 }
 .profile .ratings .submission .enjoyment, .profile .ratings .submission .user-rating {
@@ -762,6 +765,9 @@ button.open-extended:hover {
 }
 .profile .ratings .submission .creator, .profile .ratings .submission .rating {
   display: none;
+}
+.profile .ratings .submission .level-name {
+  padding-top: 0.3rem;
 }
 @media (min-width: 992px) {
   .profile .ratings .submission {
@@ -781,6 +787,12 @@ button.open-extended:hover {
     display: flex;
     align-items: center;
   }
+}
+.profile .ratings .submission:nth-of-type(2n) {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+.profile .ratings .submission:nth-of-type(2n+1) {
+  background-color: rgba(255, 255, 255, 0.03);
 }
 @media (max-width: 550px) {
   .profile .information {
@@ -896,7 +908,6 @@ a.nav {
   background-color: white;
   color: black;
   align-self: center;
-  border-radius: 10px !important;
   font-weight: 600;
   padding: 0.5rem 0.75rem;
 }
@@ -927,6 +938,7 @@ select {
   border-bottom: 2px solid white;
   border-radius: 0;
   height: 28px;
+  min-width: 0;
 }
 
 input[type=text] {
@@ -1017,7 +1029,8 @@ button {
 }
 
 input.num-sm {
-  width: 100%;
+  max-width: 50px;
+  width: 50px;
 }
 
 input.num-lg {
@@ -1147,11 +1160,13 @@ textarea {
   transform: translate(-50%, 0);
   background-color: #262626;
   padding: 1.5rem 2rem;
+  pointer-events: none;
   transition: transform 200ms ease-in, opacity 200ms ease-in;
 }
 .save-dialogue.show {
   transform: translate(-50%, -30px);
   opacity: 1;
+  pointer-events: all;
 }
 .save-dialogue .header {
   display: flex;

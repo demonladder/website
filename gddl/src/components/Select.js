@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 export default function Select({ options, onChange, zIndex = 1000 }) {
     const [open, setOpen] = useState(false);
@@ -24,18 +24,19 @@ export default function Select({ options, onChange, zIndex = 1000 }) {
         }
     }
 
-    useEffect(() => {
+    function optionClicked(option) {
         setOpen(false);
         setOpenStatus('closed');
-        if (onChange) onChange(value);
-    }, [value]);
+        setValue(option);
+        if (onChange) onChange(option);
+    }
 
     return (
         <div className='style-input custom-select' onClick={handleToggle}>
             {value.value}
             <div className={'select-options ' + openStatus} style={{ zIndex }}>
                 {
-                    options.map((o, i) => <SelectOption option={o} setValue={setValue} key={i} />)
+                    options.map((o, i) => <SelectOption option={o} setValue={optionClicked} key={i} />)
                 }
             </div>
         </div>
@@ -43,11 +44,7 @@ export default function Select({ options, onChange, zIndex = 1000 }) {
 }
 
 function SelectOption({ option, setValue }) {
-    function onClick() {
-        setValue(option);
-    }
-
     return (
-        <p onClick={onClick}>{option.value}</p>
+        <p onClick={() => setValue(option)}>{option.value}</p>
     );
 }

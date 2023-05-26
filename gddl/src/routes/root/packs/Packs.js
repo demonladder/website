@@ -5,7 +5,7 @@ import { GetPacks } from '../../../api/packs';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export default function Packs() {
-    const { status, data: packs } = useQuery({
+    const { status, data: packs, failureReason } = useQuery({
         queryKey: ['packs'],
         queryFn: GetPacks
     });
@@ -19,16 +19,12 @@ export default function Packs() {
     } else if (status === 'error') {
         return (
             <div className='container'>
-                <h1>An error ocurred</h1>
+                <h1>{(failureReason?.code === 'ERR_NETWORK' && 'Could not connect to the server') || 'An error ocurred'}</h1>
             </div>
         )
     }
 
-    packs.sort((a, b) => {
-        if (a.Name < b.Name) return -1
-        if (a.Name > b.Name) return 1
-        return 0;
-    });
+    packs.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
     return (
         <div className='container'>

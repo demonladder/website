@@ -91,6 +91,7 @@
 
         .submission {
             display: grid;
+            padding-left: 0.75rem;
             
             .enjoyment, .user-rating {
                 display: flex;
@@ -100,6 +101,10 @@
 
             .creator, .rating {
                 display: none;
+            }
+
+            .level-name {
+                padding-top: 0.3rem;
             }
 
             grid-template-columns: 12fr 3fr 2fr;
@@ -121,6 +126,13 @@
                     align-items: center;
                 }
             }
+        }
+
+        .submission:nth-of-type(2n) {
+            background-color: rgba(255, 255, 255, 0.07);
+        }
+        .submission:nth-of-type(2n+1) {
+            background-color: rgba(255, 255, 255, 0.03);
         }
     }
 

@@ -1,10 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
-import { GetLevels } from '../../../api/levels';
-import { ChangeReferences } from '../../../api/references';
+import React, { useState } from 'react';
+import { ChangeReferences, GetReferences } from '../../../api/references';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import SearchResult from '../../../components/SearchResult';
-import serverIP from '../../../serverIP';
+import LevelSearchBox from '../../../components/LevelSearchBox';
 
 export default function EditReferences() {
     const [tier, setTier] = useState(1);
@@ -12,7 +10,7 @@ export default function EditReferences() {
 
     const { status, data } = useQuery({
         queryKey: ['editReferences'],
-        queryFn: () => fetch(`${serverIP}/getReferences`).then(res => res.json())
+        queryFn: GetReferences
     });
 
     function Content() {
@@ -77,32 +75,13 @@ export default function EditReferences() {
     }
 
     const [search, setSearch] = useState('');
-    const [result, setResult] = useState(null);
-    const [clicked, setClicked] = useState(null);
-    const [resultVisible, setResultVisible] = useState(false);
     function addChange() {
-        if (!clicked) return;
-        if (changeList.filter(c => c.ID === clicked.ID && c.Type === 'add').length === 1) return;
+        if (!search) return;
+        if (changeList.filter(c => c.ID === search.ID && c.Type === 'add').length === 1) return;
 
-        const newChange = {...clicked, Type: 'add'};
+        const newChange = {...search, Type: 'add'};
         newChange.Tier = tier;
         setChangeList(prev => [...prev, newChange])
-    }
-
-    const [timer, setTimer] = useState();
-    useEffect(() => {
-        clearTimeout(timer);
-        setTimer(setTimeout(() => {
-            GetLevels(search).then(data => {
-                setResult(data);
-            });
-        }, 300));
-    }, [search]);
-
-    function handleBlur() {
-        setTimeout(() => {
-            setResultVisible(false);
-        }, 300);
     }
 
     return (
@@ -116,14 +95,9 @@ export default function EditReferences() {
                 <button className={'save' + (changeList.length > 0 ? ' show' : '')} disabled={mutateReferences.isLoading} onClick={save}>Save changes</button>
             </div>
             <div className='position-relative'>
-                <input type='text' value={search} onChange={e => setSearch(e.target.value)} onFocus={() => setResultVisible(true)} onBlur={handleBlur} />
-                <div className={(resultVisible ? 'd-block' : 'd-none') + ' search-result'}>
-                    {result &&
-                        result.map(r => <SearchResult msg={r.Name + ' by ' + r.Creator} onClick={() => { setSearch(r.Name); setClicked(r) }} key={r.ID} />)
-                    }
-                </div>
+                <LevelSearchBox setResult={s => setSearch(s)} />
             </div>
-            <button onClick={addChange}>Add</button>
+            <button className='primary' onClick={addChange}>Add</button>
             <Content />
         </div>
     );

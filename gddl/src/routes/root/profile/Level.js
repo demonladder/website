@@ -12,7 +12,7 @@ export default function Level({ info }) {
         );
     }
 
-    const userRating = info.UserRating ? info.UserRating : '-';
+    const userRating = info.Rating ? info.Rating : '-';
     const userEnjoyment = info.Enjoyment ? (parseInt(info.Enjoyment) === -1 ? '-' : info.Enjoyment) : '-';
 
     return (

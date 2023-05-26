@@ -8,12 +8,14 @@
     transform: translate(-50%, 0);
     background-color: Colors.$background-light;
     padding: 1.5rem 2rem;
+    pointer-events: none;
 
     transition: transform 200ms ease-in, opacity 200ms ease-in;
 
     &.show {
         transform: translate(-50%, -30px);
         opacity: 1;
+        pointer-events: all;
     }
 
     .header {

@@ -11,7 +11,6 @@
     }
 
     .level.list {
-        border-bottom: 1px #998888 solid;
         padding: 0;
 
         a {
@@ -29,6 +28,10 @@
         h3 {
             font-weight: 350;
         }
+    }
+
+    .level.list:nth-child(2n) {
+        background-color: rgba(255, 255, 255, 0.07);
     }
 
     .level.grid {

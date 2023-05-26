@@ -8,11 +8,22 @@ import Select from './components/Select';
 import { useMutation } from '@tanstack/react-query';
 import { SendSubmission } from './api/submissions';
 import LoadingSpinner from './components/LoadingSpinner';
+import { hasSession } from './storageManager';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
+    function openSubmit() {
+        // Check if user is logged in
+        if (!hasSession()) {
+            navigate('/login');
+            return;
+        }
+        
+        setShowModal(true);
+    }
     function closeSubmit() { setShowModal(false); }
-    function openSubmit() { setShowModal(true); }
 
     const [result, setResult] = useState(null);
 

@@ -1,17 +1,9 @@
 import React from 'react';
 import DemonLogo from '../../../components/DemonLogo';
+import { ToFixed } from '../../../functions';
+import IDButton from '../../../components/IDButton';
 
 export default function Level({ info, isListView }) {
-    function onIDClick(e) {
-        if (info.isHeader) return;
-        navigator.clipboard.writeText(info.ID);
-
-        e.target.classList.add('bg-fade');
-        setTimeout(() => {
-            e.target.classList.remove('bg-fade');
-        }, 1000);
-    }
-
     if (isListView) {
         if (info.isHeader) {
             return (
@@ -26,15 +18,15 @@ export default function Level({ info, isListView }) {
         }
 
         return (
-            <div className='level list'>
+            <div className='level list ps-2'>
                 <h3 className='col-xl-4 col-lg-6 col-md-7 col-sm-7 col-10 m-0'>
                     <a href={'/level/' + info.ID} target='_blank' rel='noopener noreferrer' className='underline-p'>{info.Name}</a>
                 </h3>
 
                 <div className='col-xl-2 col-lg-3 col-md-3 d-none d-sm-inline-block col-sm-3 align-self-center'><p>{info.Creator}</p></div>
                 <div className='col-xl-3 d-none d-xl-block align-self-center'><p>{info.Song}</p></div>
-                <div className='col-xl-2 col-lg-2 d-none d-lg-block align-self-center'><button className='id-button underline-p' onClick={onIDClick}>{info.ID}</button></div>
-                <div className={`col-lg-1 col-md-2 col-2 d-flex justify-content-center tier-${Math.floor(info.Rating)}`}><p className='align-self-center'>{!info.Rating ? 'Unrated' : `${info.Rating.toFixed(2)}`}</p></div>
+                <div className='col-xl-2 col-lg-2 d-none d-lg-block align-self-center'><IDButton className='id-button underline-p' id={info.ID} /></div>
+                <div className={`col-lg-1 col-md-2 col-2 d-flex justify-content-center tier-${Math.floor(info.Rating)}`}><p className='align-self-center'>{ToFixed(info.Rating, 2, 'Unrated')}</p></div>
             </div>
         );
     }

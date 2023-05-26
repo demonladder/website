@@ -9,7 +9,6 @@ import { ReactComponent as GridSVG } from '../../../icons/grid.svg';
 import SortMenu, { closeSortMenu } from './SortMenu';
 import { SearchLevels } from '../../../api/levels';
 import { useQuery } from '@tanstack/react-query';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 
 export function toggleShowFilter() {
     const content = document.getElementById('filter-menu');
@@ -57,7 +56,7 @@ export default function Ladder() {
             }
 
             setQ(q);
-        }, 500));
+        }, 500));  // eslint-disable-next-line
     }, [search, filters, extendedFilters, pageIndex, sorter]);
     
     const { status: searchStatus, data: searchData } = useQuery({
@@ -128,6 +127,7 @@ export default function Ladder() {
 
     function Content() {
         switch(searchStatus) {
+            default:
             case 'loading': {
                 if (!levels) return;
                 if (listView) return <List levels={levels} />

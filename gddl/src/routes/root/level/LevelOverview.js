@@ -11,9 +11,9 @@ import IDButton from '../../../components/IDButton';
 
 export default function LevelOverview() {
     const levelID = useParams().levelID;
-    const { status, data: levelInfo } = useQuery({
+    const { status, data: levelInfo, failureReason } = useQuery({
         queryKey: ['levels', levelID],
-        queryFn: GetLevel
+        queryFn: () => GetLevel(levelID),
     });
 
     if (status === 'loading'){
@@ -21,7 +21,7 @@ export default function LevelOverview() {
     } else if (status === 'error') {
         return (
             <div className='container'>
-                <h1>An error ocurred</h1>
+                <h1>{failureReason.response.data || 'An error ocurred'}</h1>
             </div>
         )
     }

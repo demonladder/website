@@ -8,7 +8,7 @@ export default function LevelSearchBox({ setResult }) {
 
     const { status, data } = useQuery({
         queryKey: ['levelSearch', search],
-        queryFn: (context) => GetLevels({ name: context.queryKey[1], exact: false })
+        queryFn: () => GetLevels({ name: search, exact: false })
     });
 
     const update = (search) => {

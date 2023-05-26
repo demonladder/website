@@ -29,7 +29,7 @@ export default function SortMenu({ set }) {
             sortDirection: sortAscending ? 'asc' : 'desc',
             sort: sorter
         });
-    }, [sortAscending, sorter]);
+    }, [sortAscending, sorter, set]);
 
     document.onmousemove = (e) => {  // Auto close sort menu when mouse wanders too far
         const menu = document.getElementById('sort-menu');

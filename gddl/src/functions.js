@@ -1,4 +1,4 @@
-export default function ParseDiff(diff) {
+export function ParseDiff(diff) {
     switch(diff) {
         case 0:
             return 'Official Demon';
@@ -15,4 +15,9 @@ export default function ParseDiff(diff) {
         default:
             return 'Unknown'
     }
+}
+
+export function ToFixed(f, d, def) {
+    if (isNaN( parseFloat(f))) return def;
+    return parseFloat(f).toFixed(d);
 }

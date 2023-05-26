@@ -54,7 +54,7 @@ export default function FiltersExtended({ set, resetRef }) {
             removeRated,
             removeRatedEnj
         });
-    }, [subLowCount, subHighCount, enjLowCount, enjHighCount, devLow, devHigh, exactName, removeUnrated, removeUnratedEnj, removeRated, removeRatedEnj]);
+    }, [subLowCount, subHighCount, enjLowCount, enjHighCount, devLow, devHigh, exactName, removeUnrated, removeUnratedEnj, removeRated, removeRatedEnj, set]);
 
     useImperativeHandle(resetRef, () => ({
         reset() {        

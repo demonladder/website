@@ -96,7 +96,16 @@ const router = createBrowserRouter([
   }
 ]);
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 1000 * 60 } } });
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 10,  // 10 minutes
+      cacheTime: 1000 * 60 * 15,  // 15 minutes
+      retry: false,
+      keepPreviousData: true,
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

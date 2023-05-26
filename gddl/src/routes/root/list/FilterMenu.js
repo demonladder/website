@@ -45,7 +45,7 @@ export default function FilterMenu({ filter, setExtended }) {
             creator,
             song
         });
-    }, [lowTier, highTier, enjLow, enjHigh, difficulty, creator, song]);
+    }, [lowTier, highTier, enjLow, enjHigh, difficulty, creator, song, filter]);
 
     function reset() {
         setLowTier('');
