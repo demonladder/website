@@ -3,7 +3,23 @@ import DemonLogo from '../../../components/DemonLogo';
 import { ToFixed } from '../../../functions';
 import IDButton from '../../../components/IDButton';
 
-export default function Level({ info, isListView }) {
+export type Level = {
+    ID: number,
+    Rating: number,
+    Name: string,
+    Creator: string,
+    Song: string,
+    Difficulty: string,
+}
+
+type Props = {
+    info: {
+        isHeader: boolean,
+    } & Level,
+    isListView: boolean,
+}
+
+export default function Level({ info, isListView }: Props) {
     if (isListView) {
         if (info.isHeader) {
             return (

@@ -2,7 +2,7 @@ import React from 'react';
 
 type Props = {
     id: number,
-    disabled: boolean,
+    disabled?: boolean,
     className: string,
 }
 
