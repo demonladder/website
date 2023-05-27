@@ -1,6 +1,13 @@
 import React from 'react';
 
-export default function Modal({ title, show, onHide, children }) {
+type Props = {
+    title: string,
+    show: boolean,
+    onHide: (e: any) => void,
+    children: React.ReactNode,
+}
+
+export default function Modal({ title, show, onHide, children }: Props) {
     return (
         <div className={'cmodal' + (show ? ' show' : '')}>
             <div className='content'>
@@ -14,13 +21,17 @@ export default function Modal({ title, show, onHide, children }) {
     );
 }
 
-export function Body({ children }) {
+type ChildProps = {
+    children: React.ReactNode,
+}
+
+export function Body({ children }: ChildProps) {
     return <div className='body'>
         {children}
     </div>;
 }
 
-export function Footer({ children }) {
+export function Footer({ children }: ChildProps) {
     return <div className='footer'>
         {children}
     </div>;

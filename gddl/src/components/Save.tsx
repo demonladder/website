@@ -1,7 +1,14 @@
 import React from 'react';
 import LoadingSpinner from './LoadingSpinner';
 
-export default function Save({ show, onSave, onCancel, loading }) {
+type Props = {
+    show: boolean,
+    onSave: (e: any) => void,
+    onCancel: (e: any) => void,
+    loading: boolean,
+}
+
+export default function Save({ show, onSave, onCancel, loading }: Props) {
     return (
         <div className={'save-dialogue' + (show ? ' show' : '')}>
             <div className='header'>

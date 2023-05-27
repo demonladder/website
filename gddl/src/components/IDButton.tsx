@@ -1,7 +1,13 @@
 import React from 'react';
 
-export default function IDButton({ id, disabled = false, className }) {
-    function onIDClick(e) {
+type Props = {
+    id: number,
+    disabled: boolean,
+    className: string,
+}
+
+export default function IDButton({ id, disabled = false, className }: Props) {
+    function onIDClick(e: any) {
         navigator.clipboard.writeText(''+id);
 
         e.target.classList.remove('bg-fade');

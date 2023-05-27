@@ -3,8 +3,12 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { GetPack } from '../../../../api/packs.js';
-import LoadingSpinner from '../../../../components/LoadingSpinner.js';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
 import Level from '../../list/Level.js';
+
+type Level = {
+    ID: number,
+}
 
 export default function PackOverview() {
     const packID = useParams().packID;
@@ -35,8 +39,8 @@ export default function PackOverview() {
             </Helmet>
             <h1>{pack.Name}</h1>
             <div id='level-list' className='my-3'>
-                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={true} key={-1} classes='head' />
-                {pack.Levels.map(l => (
+                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={true} key={-1} />
+                {pack.Levels.map((l: Level) => (
                     <Level info={l} isListView={true} key={l.ID} />
                 ))}
             </div>

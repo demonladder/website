@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 
-export default function Select({ options, onChange, zIndex = 1000 }) {
+type Option = {
+    key: number,
+    value: string,
+}
+
+type Props = {
+    options: Option[],
+    onChange: (option: Option) => void,
+    zIndex: number,
+}
+
+export default function Select({ options, onChange, zIndex = 1000 }: Props) {
     const [open, setOpen] = useState(false);
     const [openStatus, setOpenStatus] = useState('closed');
     const [value, setValue] = useState(options[0]);
@@ -24,7 +35,7 @@ export default function Select({ options, onChange, zIndex = 1000 }) {
         }
     }
 
-    function optionClicked(option) {
+    function optionClicked(option: Option) {
         setOpen(false);
         setOpenStatus('closed');
         setValue(option);
@@ -43,7 +54,7 @@ export default function Select({ options, onChange, zIndex = 1000 }) {
     );
 }
 
-function SelectOption({ option, setValue }) {
+function SelectOption({ option, setValue }: {option: Option, setValue: (option: Option) => void}) {
     return (
         <p onClick={() => setValue(option)}>{option.value}</p>
     );

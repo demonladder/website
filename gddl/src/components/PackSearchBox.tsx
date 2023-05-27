@@ -3,7 +3,16 @@ import React, { useState } from 'react';
 import { SearchPacks } from '../api/packs';
 import SearchBox from './SearchBox';
 
-export default function PackSearchBox({ setResult }) {
+type Props = {
+    setResult: (e: any) => void,
+}
+
+type Pack = {
+    label: string,
+    Name: string,
+}
+
+export default function PackSearchBox({ setResult }: Props) {
     const [search, setSearch] = useState('');
 
     const { status, data } = useQuery({
@@ -11,9 +20,9 @@ export default function PackSearchBox({ setResult }) {
         queryFn: () => SearchPacks(search)
     });
 
-    const update = (search) => {
+    const update = (search: string) => {
         setSearch(search);
     }
 
-    return <SearchBox list={data && data.map(d => {d.label = d.Name; return d;})} update={update} setResult={setResult} status={status} />
+    return <SearchBox list={data && data.map((d: Pack) => {d.label = d.Name; return d;})} update={update} setResult={setResult} status={status} />
 }

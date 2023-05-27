@@ -2,20 +2,27 @@ import React, { useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import SearchResult from './SearchResult';
 
+type Props = {
+    list: any[],
+    update: (a: string) => void,
+    setResult: (result: any) => void,
+    status: string,
+}
+
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox({ list, update, setResult, status }) {
+export default function SearchBox({ list, update, setResult, status }: Props) {
     const [search, setSearch] = useState('');  // The value the user types into the input field
     const [visible, setVisible] = useState(false);  // State of the search results
 
     // When the search changes, wait a bit before telling the parent
-    const [timer, setTimer] = useState();
-    function onChange(e) {
+    const [timer, setTimer] = useState(-1);
+    function onChange(e: any) {
         setSearch(e.target.value);
         clearTimeout(timer);
-        setTimer(setTimeout(() => {
+        setTimer((setTimeout(() => {
             update(search);
-        }, 300));
+        }, 300) as unknown) as number);
     }
 
     // Hide the results after some time when user clicks off
@@ -26,7 +33,7 @@ export default function SearchBox({ list, update, setResult, status }) {
     }
 
     // When the user clicks a result, set search state and pass the clicked result to parent
-    function handleClick(r) {
+    function handleClick(r: any) {
         setSearch(r.Name);
         setResult(r);
     }

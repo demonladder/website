@@ -4,6 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { GetPacks } from '../../../api/packs';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
+export type Pack = {
+    Name: string,
+    ID: number,
+}
+
 export default function Packs() {
     const { status, data: packs, failureReason } = useQuery({
         queryKey: ['packs'],
@@ -17,20 +22,21 @@ export default function Packs() {
             </div>
         );
     } else if (status === 'error') {
+        const code = failureReason ? (failureReason as {code: string}).code : 'UNKNOWN';
         return (
             <div className='container'>
-                <h1>{(failureReason?.code === 'ERR_NETWORK' && 'Could not connect to the server') || 'An error ocurred'}</h1>
+                <h1>{(code === 'ERR_NETWORK' && 'Could not connect to the server') || 'An error ocurred'}</h1>
             </div>
         )
     }
 
-    packs.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
+    packs.sort((a: Pack, b: Pack) => (a.Name > b.Name) ? 1 : -1);
 
     return (
         <div className='container'>
             <h1 className='mb-4'>Packs</h1>
             <div className='row'>
-                {packs.map(p => <div className='mb-2 col-4 text-center' key={p.ID}><PackRef pack={p} key={p.ID} /></div>)}
+                {packs.map((p: Pack) => <div className='mb-2 col-4 text-center' key={p.ID}><PackRef pack={p} key={p.ID} /></div>)}
             </div>
         </div>
     )

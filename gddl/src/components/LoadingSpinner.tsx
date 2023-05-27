@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function LoadingSpinner({ isLoading = true }) {
-    if (!isLoading) return '';
+    if (!isLoading) return <></>;
 
     return (
         <div className='d-flex justify-content-center'>

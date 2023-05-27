@@ -1,5 +1,5 @@
 import React from 'react';
-import { tierToIcon } from '../../../components/DemonLogo.js';
+import { tierToIcon } from '../../../components/DemonLogo';
 import { Link, useNavigation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
