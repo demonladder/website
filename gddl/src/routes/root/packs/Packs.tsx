@@ -1,13 +1,8 @@
 import React from 'react';
 import PackRef from '../../../components/PackRef';
 import { useQuery } from '@tanstack/react-query';
-import { GetPacks } from '../../../api/packs';
+import { GetPacks, Pack } from '../../../api/packs';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-
-export type Pack = {
-    Name: string,
-    ID: number,
-}
 
 export default function Packs() {
     const { status, data: packs, failureReason } = useQuery({

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Pack } from '../routes/root/packs/Packs';
+import { Pack } from '../api/packs';
 
 export default function PackRef({ pack }: {pack: Pack}) {
     return (

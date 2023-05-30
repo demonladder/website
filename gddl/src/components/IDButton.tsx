@@ -3,7 +3,7 @@ import React from 'react';
 type Props = {
     id: number,
     disabled?: boolean,
-    className: string,
+    className?: string,
 }
 
 export default function IDButton({ id, disabled = false, className }: Props) {

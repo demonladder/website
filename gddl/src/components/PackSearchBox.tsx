@@ -24,5 +24,6 @@ export default function PackSearchBox({ setResult }: Props) {
         setSearch(search);
     }
 
-    return <SearchBox list={data && data.map((d: Pack) => {d.label = d.Name; return d;})} update={update} setResult={setResult} status={status} />
+    if (data === undefined) return <></>;
+    return <SearchBox list={data && data.map((d) => {return {...d, label: d.Name}})} update={update} setResult={setResult} status={status} />
 }

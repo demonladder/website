@@ -2,16 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
-import { GetPack } from '../../../../api/packs.js';
+import { GetPack } from '../../../../api/packs';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
-import Level from '../../list/Level.js';
-
-type Level = {
-    ID: number,
-}
+import Level from '../../list/Level';
 
 export default function PackOverview() {
-    const packID = useParams().packID;
+    const packID = parseInt(''+useParams().packID) || 0;
     const { status, data: pack } = useQuery({
         queryKey: ['packs', packID],
         queryFn: () => GetPack(packID),
@@ -22,7 +18,7 @@ export default function PackOverview() {
     } else if (status === 'error') {
         return (
             <div className='container'>
-                <h1>{pack.message}</h1>
+                <h1>An error occurred</h1>
             </div>
         )
     }
@@ -39,9 +35,9 @@ export default function PackOverview() {
             </Helmet>
             <h1>{pack.Name}</h1>
             <div id='level-list' className='my-3'>
-                <Level info={{ Name: 'Level Name', Song: 'Song', Creator: 'Creator', ID: 'Level ID', Rating: 'Tier', isHeader: true}} isListView={true} key={-1} />
-                {pack.Levels.map((l: Level) => (
-                    <Level info={l} isListView={true} key={l.ID} />
+                <Level.Header />
+                {pack.Levels.map((l) => (
+                    <Level info={l} key={l.ID} />
                 ))}
             </div>
         </div>

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
-type Option = {
+export type SelectOption = {
     key: number,
     value: string,
 }
 
 type Props = {
-    options: Option[],
-    onChange: (option: Option) => void,
-    zIndex: number,
+    options: SelectOption[],
+    onChange: (option: SelectOption) => void,
+    zIndex?: number,
 }
 
 export default function Select({ options, onChange, zIndex = 1000 }: Props) {
@@ -35,7 +35,7 @@ export default function Select({ options, onChange, zIndex = 1000 }: Props) {
         }
     }
 
-    function optionClicked(option: Option) {
+    function optionClicked(option: SelectOption) {
         setOpen(false);
         setOpenStatus('closed');
         setValue(option);
@@ -54,7 +54,7 @@ export default function Select({ options, onChange, zIndex = 1000 }: Props) {
     );
 }
 
-function SelectOption({ option, setValue }: {option: Option, setValue: (option: Option) => void}) {
+function SelectOption({ option, setValue }: {option: SelectOption, setValue: (option: SelectOption) => void}) {
     return (
         <p onClick={() => setValue(option)}>{option.value}</p>
     );

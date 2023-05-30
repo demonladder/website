@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { GetLevels } from '../api/levels';
+import { GetLevels, Level } from '../api/levels';
 import SearchBox from './SearchBox';
-import { Level } from '../routes/root/list/Level';
 
 type Props = {
     setResult: (e: any) => void
@@ -24,5 +23,12 @@ export default function LevelSearchBox({ setResult }: Props) {
         setSearch(search);
     }
 
-    return <SearchBox list={data && data.map((d: Level & Label) => {d.label = d.Name + ' by ' + d.Creator; return d;})} update={update} setResult={setResult} status={status} />
+    if (data === undefined) return <></>;
+    return <SearchBox list={data && data.levels.map((d) => {
+        const l: Level & Label = {
+            ...d,
+            label: d.Name + ' by ' + d.Creator,
+        }
+        return l;
+    })} update={update} setResult={setResult} status={status} />
 }
