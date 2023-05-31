@@ -5,20 +5,32 @@ import { Level } from "./levels";
 export type Pack = {
     ID: number,
     Name: string,
-    Levels: Level[]
+    Levels: Level[],
 }
 
-export async function GetPacks(): Promise<Pack[]> {
-    const res = await axios.get(`${serverIP}/packs?chunk=300`);
+export type PackShell = {
+    ID: number,
+    Name: string,
+}
+
+export type PackInfo = {
+    previousPage: number,
+    nextPage: number,
+    count: number,
+    packs: PackShell[],
+}
+
+export async function GetPacks(page: number): Promise<PackInfo> {
+    const res = await axios.get(`${serverIP}/packs?chunk=48&page=${page}`);
     return res.data;
 }
 
 export async function GetPack(packID: number): Promise<Pack> {
     const res = await axios.get(`${serverIP}/pack?packID=${packID}`);
-    return res.data;
+    return {...res.data, ID: packID};
 }
 
-export async function SearchPacks(name: string): Promise<Pack[]> {
+export async function SearchPacks(name: string): Promise<PackInfo> {
     const res = await axios.get(`${serverIP}/packs?name=${name}`);
     return res.data;
 }

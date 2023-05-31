@@ -3,6 +3,7 @@ import Level from './Level';
 import { useQuery } from '@tanstack/react-query';
 import { GetUserSubmissions } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import PageButtons from '../../../components/PageButtons';
 
 type Props = {
     userID: number,
@@ -11,7 +12,11 @@ type Props = {
 export default function Submissions({ userID }: Props) {
     const [page, setPage] = useState(1);
 
-    const { status, data } = useQuery({
+    function pageChange(_page: number) {
+        setPage(_page);
+    }
+
+    const { status, data, fetchStatus } = useQuery({
         queryKey: ['user/submissions', {userID, page}],
         queryFn: () => GetUserSubmissions(userID, page)
     });
@@ -44,11 +49,7 @@ export default function Submissions({ userID }: Props) {
                 <Level isHeader={true} />
                 {submissions.slice(0, 25).map((p) => <Level isHeader={false} info={p} key={p.LevelID}/>)}
             </div>
-            <div className='mt-3 d-flex gap-3 justify-content-center'>
-                <button className='primary' onClick={() => setPage(data.previousPage)}>Previous</button>
-                <span>Page {page}</span>
-                <button className='primary' onClick={() => setPage(data.nextPage)}>Next</button>
-            </div>
+            <PageButtons onPageChange={pageChange} page={page} next={data.nextPage} prev={data.previousPage} loadingState={fetchStatus} />
         </div>
     );
 }
