@@ -63,7 +63,7 @@ export default function Ladder() {
     
     const { status: searchStatus, data: searchData } = useQuery({
         queryKey: ['search', q],
-        queryFn: ({ queryKey }) => SearchLevels(queryKey[1]),
+        queryFn: () => SearchLevels(q),
         onSuccess: (data) => {setLevels(data.levels)},
         retryDelay: 500,
         cacheTime: 0
