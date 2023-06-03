@@ -4,20 +4,21 @@ import LoadingSpinner from './LoadingSpinner';
 type Props = {
     onPageChange: (page: number) => void,
     page: number,
-    next: number,
-    prev: number,
+    meta: {
+        pages: number,
+        previousPage: number,
+        nextPage: number,
+    },
     loadingState?: any,
 }
 
-export default function PageButtons({ onPageChange, page, next, prev, loadingState }: Props) {
-    console.log(loadingState);
-    
+export default function PageButtons({ onPageChange, page, meta, loadingState }: Props) {
     return (
         <div className='mt-3 d-flex gap-3 justify-content-center'>
-            <button className='primary' onClick={() => onPageChange(prev)}>Previous</button>
-            <span>Page {page}</span>
+            <button className='primary' onClick={() => onPageChange(meta.previousPage)}>Previous</button>
+            <span>Page {page}/{meta.pages}</span>
             {loadingState === 'fetching' && <LoadingSpinner />}
-            <button className='primary' onClick={() => onPageChange(next)}>Next</button>
+            <button className='primary' onClick={() => onPageChange(meta.nextPage)}>Next</button>
         </div>
     );
 }

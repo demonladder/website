@@ -16,7 +16,7 @@ export type PackShell = {
 export type PackInfo = {
     previousPage: number,
     nextPage: number,
-    count: number,
+    pages: number,
     packs: PackShell[],
 }
 

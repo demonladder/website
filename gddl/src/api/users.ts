@@ -5,7 +5,7 @@ import { Submission } from "./submissions";
 type UserSubmissions = {
     previousPage: number,
     nextPage: number,
-    count: number,
+    pages: number,
     submissions: Submission[],
 }
 

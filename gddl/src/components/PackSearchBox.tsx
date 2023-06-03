@@ -7,11 +7,6 @@ type Props = {
     setResult: (e: any) => void,
 }
 
-type Pack = {
-    label: string,
-    Name: string,
-}
-
 export default function PackSearchBox({ setResult }: Props) {
     const [search, setSearch] = useState('');
 

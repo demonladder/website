@@ -17,6 +17,7 @@ export default function Profile() {
         queryFn: () => GetUser(userID)
     });
 
+    // TODO: Fix saving intro
     const save = useMutation({
         mutationFn: SaveProfile,
         onSettled: () => setShowSave(false)

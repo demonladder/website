@@ -8,6 +8,7 @@ type Props = {
     setResult: (result: any) => void,
     status: string,
 }
+// TODO: Fix querying happening one render later
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
@@ -16,13 +17,13 @@ export default function SearchBox({ list, update, setResult, status }: Props) {
     const [visible, setVisible] = useState(false);  // State of the search results
 
     // When the search changes, wait a bit before telling the parent
-    const [timer, setTimer] = useState(-1);
+    const [timer, setTimer] = useState<NodeJS.Timeout>();
     function onChange(e: any) {
         setSearch(e.target.value);
         clearTimeout(timer);
-        setTimer((setTimeout(() => {
+        setTimer(setTimeout(() => {
             update(search);
-        }, 300) as unknown) as number);
+        }, 300));
     }
 
     // Hide the results after some time when user clicks off

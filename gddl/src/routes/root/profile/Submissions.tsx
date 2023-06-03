@@ -31,25 +31,18 @@ export default function Submissions({ userID }: Props) {
 
     const submissions = data?.submissions;
 
-    if (!submissions) {
-        return (
-            <div className='mt-3'>
-            <h1>Submissions [0]</h1>
-            <div className='ratings'>
-                <Level isHeader={true} />
-            </div>
-        </div>
-        );
+    if (submissions === undefined || data === undefined || submissions.length === 0) {
+        return <></>;
     }
 
     return (
         <div className='mt-3'>
-            <h1>Submissions [{data ? data.count : '0'}]</h1>
+            <h1>Submissions</h1>
             <div className='ratings'>
                 <Level isHeader={true} />
                 {submissions.slice(0, 25).map((p) => <Level isHeader={false} info={p} key={p.LevelID}/>)}
             </div>
-            <PageButtons onPageChange={pageChange} page={page} next={data.nextPage} prev={data.previousPage} loadingState={fetchStatus} />
+            <PageButtons onPageChange={pageChange} page={page} meta={data} loadingState={fetchStatus} />
         </div>
     );
 }

@@ -32,10 +32,6 @@ type Query = {
 
 }
 
-export function GetLevels(options: {name: string, exact: boolean}) {
-    return SearchLevels(options);
-}
-
 export async function SearchLevels(q: Query): Promise<SearchInfo> {
     return (await axios.get(`${serverIP}/level/search`, {
         withCredentials: true,

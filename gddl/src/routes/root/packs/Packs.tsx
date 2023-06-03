@@ -32,15 +32,13 @@ export default function Packs() {
     }
 
     packs.packs.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
-    console.log(packs);
-    
 
     return (
         <div className='container'>
             <h1 className='mb-4'>Packs</h1>
             <div className='row'>
                 {packs.packs.map((p) => <div className='mb-2 col-4 text-center' key={p.ID}><PackRef pack={p} key={p.ID} /></div>)}
-                <PageButtons onPageChange={pageChange} page={page} next={packs.nextPage} prev={packs.previousPage} />
+                <PageButtons onPageChange={pageChange} page={page} meta={packs} />
             </div>
         </div>
     )
