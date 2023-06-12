@@ -3,14 +3,16 @@ import { Link, Outlet, redirect, useLocation } from 'react-router-dom';
 import Header from '../../Header';
 import serverIP from '../../serverIP';
 import axios from 'axios';
+import { StorageManager } from '../../storageManager';
 
 export async function modLoader() {
-    const token = localStorage.getItem('csrf');
-    if (!token) return redirect('/');
+    if (!StorageManager.hasSession()) return redirect('/');
 
-    const response = await axios.post(serverIP + '/isMod', { csrfToken: token }, { withCredentials: true });
-    if (response.status !== 200) return redirect('/');
-    return null;
+    return axios.get(serverIP + '/isMod', { headers: StorageManager.authHeader() }).then((response) => {
+        return null;
+    }).catch((error) => {
+        return redirect('/');
+    });
 }
 
 export default function Mod() {
@@ -28,6 +30,7 @@ export default function Mod() {
                             <Link className={`${path === '/mod' ? 'active' : 'link-light'}`} to='/mod'>Overview</Link>
                             <Link className={`${path === '/mod/queue' ? 'active' : 'link-light'}`} to='/mod/queue'>Submissions queue</Link>
                             <Link className={`${path === '/mod/packs' ? 'active' : 'link-light'}`} to='/mod/packs'>Edit packs</Link>
+                            <Link className={`${path === '/mod/createPack' ? 'active' : 'link-light'}`} to='/mod/createPack'>Create pack</Link>
                             <Link className={`${path === '/mod/references' ? 'active' : 'link-light'}`} to='/mod/references'>Edit references</Link>
                         </div>
                     </div>

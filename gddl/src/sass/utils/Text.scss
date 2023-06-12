@@ -1,0 +1,24 @@
+@use 'sass:list';
+
+$text-types: (
+    'danger': (
+        white,  // Text
+        #c32525,  // BG
+    )
+);
+
+.txt {
+    background: none;
+    color: currentColor;
+    border: none;
+
+    @each $type, $colors in $text-types {
+        &-#{$type} {
+            color: list.nth($colors, 1);
+            background: list.nth($colors, 2);
+
+            border-radius: 3px;
+            padding: 0.25rem 0.5rem;
+        }
+    }
+}

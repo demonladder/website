@@ -6,25 +6,25 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import Save from '../../../components/Save';
 import { Helmet } from 'react-helmet';
 import Submissions from './Submissions';
-import { ToFixed } from '../../../functions';
+import { ToFixed, discriminator } from '../../../functions';
 import { StorageManager } from '../../../storageManager';
 
 export default function Profile() {
     const userID = parseInt(''+useParams().userID) || 0;
 
-    const { status, data: userData } = useQuery({
-        queryKey: ['user', userID],
-        queryFn: () => GetUser(userID)
-    });
-
-    // TODO: Fix saving intro
-    const save = useMutation({
-        mutationFn: SaveProfile,
-        onSettled: () => setShowSave(false)
-    });
-    
     const [showSave, setShowSave] = useState(false);
     const [introduction, setIntroduction] = useState('');
+    
+    const { status, data: userData } = useQuery({
+        queryKey: ['user', userID],
+        queryFn: () => GetUser(userID),
+        onSuccess: (data) => setIntroduction(data.Introduction),
+    });
+
+    const save = useMutation({
+        mutationFn: SaveProfile,
+        onSettled: () => setShowSave(false),
+    });
     
     if (status === 'loading') {
         return (
@@ -42,12 +42,12 @@ export default function Profile() {
     
     function handleSave() {
         if (userData === undefined) return;
+
         save.mutate({ ...userData, Introduction: introduction });
     }
     function handleCancel() {
         setShowSave(false);
-        if (userData === undefined) return;
-        setIntroduction(userData && (userData.Introduction || ''));
+        setIntroduction(userData?.Introduction || '');
     }
 
     function handleIntroduction(e: any) {
@@ -58,8 +58,10 @@ export default function Profile() {
 
     const storedUser = StorageManager.getUser();
 
+    
+
     return (
-        <div className='container profile'>
+        <div className='container profile' key={userID}>
             <Helmet>
                 <title>{'GDDL - ' + userData.Name}</title>
                 <meta property='og:type' content='website' />
@@ -68,20 +70,20 @@ export default function Profile() {
                 <meta property='og:url' content={`https://gdladder.com/profile/${userData.ID}`} />
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
-            <h1>{userData.Name}</h1>
+            <h1>{userData.Name + discriminator()}</h1>
             <div className='information'>
                 <div className='introduction'>
                     <p className='label'><b>Introduction:</b></p>
-                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={userID !== storedUser?.ID} />
+                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={userID !== storedUser?.ID} autoCorrect='off' spellCheck={false} />
                 </div>
                 <div className='trackers'>
                     <div className='tracker'>
                         <p>Hardest:</p>
-                        <Link to={'/level/' + userData.Hardest} className='link-disable'>{userData.Hardest || '-'}</Link>
+                        <Link to={'/level/' + userData.Hardest} className={(!userData.Hardest && 'link-disable') || ''}>{userData.Hardest || '-'}</Link>
                     </div>
                     <div className='tracker'>
                         <p>Favorite level:</p>
-                        <Link to={'/level/' + userData.Favorite} className='link-disable'>{userData.Favorite || '-'}</Link>
+                        <Link to={'/level/' + userData.Favorite} className={(!userData.Favorite && 'link-disable') || ''}>{userData.Favorite || '-'}</Link>
                     </div>
                     <div className='tracker'>
                         <p>Least favorite level:</p>

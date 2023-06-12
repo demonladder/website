@@ -1,6 +1,7 @@
 import axios from "axios";
 import serverIP from "../serverIP";
 import { Submission } from "./submissions";
+import { StorageManager } from "../storageManager";
 
 type UserSubmissions = {
     previousPage: number,
@@ -31,10 +32,9 @@ async function GetUserSubmissions(userID: number, page = 1): Promise<UserSubmiss
 }
 
 async function SaveProfile(user: User) {
-    const csrfToken = localStorage.getItem('csrf');
-
-    const res = await axios.put(`${serverIP}/user?userID=${user.ID}`, { csrfToken, user }, {
+    const res = await axios.put(`${serverIP}/user?userID=${user.ID}`, { user }, {
         withCredentials: true,
+        headers: StorageManager.authHeader(),
     });
     return res.data;
 }

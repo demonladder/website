@@ -7,7 +7,7 @@ type Props = {
     children: React.ReactNode,
 }
 
-export default function Modal({ title, show, onHide, children }: Props) {
+function Modal({ title, show, onHide, children }: Props) {
     return (
         <div className={'cmodal' + (show ? ' show' : '')}>
             <div className='content'>
@@ -25,14 +25,19 @@ type ChildProps = {
     children: React.ReactNode,
 }
 
-export function Body({ children }: ChildProps) {
+function Body({ children }: ChildProps) {
     return <div className='body'>
         {children}
     </div>;
 }
 
-export function Footer({ children }: ChildProps) {
+function Footer({ children }: ChildProps) {
     return <div className='footer'>
         {children}
     </div>;
 }
+
+export default Object.assign(Modal, {
+    Body,
+    Footer,
+});

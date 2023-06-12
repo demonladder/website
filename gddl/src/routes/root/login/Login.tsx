@@ -16,7 +16,7 @@ export async function loginAction({ request }: {request: any}) {
         });
 
         if (response.status === 200) {
-            StorageManager.setUser(response.data.csrfToken, response.data.user);
+            StorageManager.setUser(response.data);
             return redirect('/');
         }
     } catch (err) {

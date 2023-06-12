@@ -49,7 +49,7 @@ function Grid({ info }: Props) {
 function Level({ info }: Props) {
     return (
         <div className='level list ps-2'>
-            <h3 className='col-xl-4 col-lg-6 col-md-7 col-sm-7 col-10 m-0'>
+            <h3 className='col-xl-4 col-lg-6 col-md-7 col-sm-7 col-10 m-0 align-self-center'>
                 <a href={'/level/' + info.ID} target='_blank' rel='noopener noreferrer' className='underline-p'>{info.Name}</a>
             </h3>
 

@@ -3,7 +3,6 @@
 
 .pfp {
     width: 48px;
-    border-radius: 50%;
 }
 
 .style-none {
@@ -32,6 +31,8 @@
     .navbar & {
         color: currentColor;
         text-decoration: none;
+        display: flex;
+        align-items: center;
         > span {
             @include Utils.underline();
         }

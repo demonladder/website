@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import LevelSearchBox from '../../components/LevelSearchBox';
-import Modal, { Body, Footer } from '../../components/Modal';
+import Modal from '../../components/Modal';
 import UploadProgress from './UploadProgress';
 
 export default function Utils() {
@@ -25,18 +25,18 @@ export default function Utils() {
                 <Tab eventKey='modal' title='Modal'>
                     <button onClick={() => setShow(true)}>Show modal</button>
                     <Modal title='Submit rating' show={show} onHide={() => setShow(false)}>
-                        <Body>
+                        <Modal.Body>
                             <label>Level name: </label>
                             <LevelSearchBox setResult={setResult} />
                             <label>Rating</label>
                             <input type='number' min='1' max='35' className='num-sm' />
-                        </Body>
-                        <Footer>
+                        </Modal.Body>
+                        <Modal.Footer>
                             <div className='d-flex justify-content-end gap-2'>
                                 <button className='underline' onClick={() => setShow(false)}>Close</button>
                                 <button type='submit' className='underline'>Submit</button>
                             </div>
-                        </Footer>
+                        </Modal.Footer>
                     </Modal>
                 </Tab>
                 <Tab eventKey='tests' title='Tests'>

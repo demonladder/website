@@ -4,21 +4,20 @@ import { Link, useNavigation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { StorageManager, User } from '../../../storageManager';
 
-export default function ProfileButtons() {
+export default function ProfileButtons({ className = '' }: { className?: string }) {
     useNavigation();  // Used to re-render this component whenever location changes.
     
-    const session = Cookies.get('session');
-    if (!session) {
+    if (!StorageManager.hasSession()) {
         localStorage.removeItem('csrf');
-        return <LoginButton />
+        return <LoginButton className={className} />
     }
     
-    return <ProfileButton user={StorageManager.getUser()} />;
+    return <ProfileButton user={StorageManager.getUser()} className={className} />;
 }
 
-function ProfileButton({ user }: {user: User | null}) {
+function ProfileButton({ user, className = '' }: { user: User | null, className?: string }) {
     if (user === null) {
-        return <LoginButton />;
+        return <LoginButton className={className} />;
     }
     
     return (
@@ -29,9 +28,9 @@ function ProfileButton({ user }: {user: User | null}) {
     );
 }
 
-function LoginButton() {
+function LoginButton({ className = '' }: { className?: string}) {
     return (
-        <Link to='login' className='log-in align-middle me-5 ms-auto'>
+        <Link to='/login' className={'log-in align-middle me-5 ms-auto ' + className}>
             Log in
         </Link>
     );

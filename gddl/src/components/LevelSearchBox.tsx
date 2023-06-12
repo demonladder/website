@@ -15,8 +15,8 @@ export default function LevelSearchBox({ setResult }: Props) {
     const [search, setSearch] = useState('');
 
     const { status, data } = useQuery({
-        queryKey: ['levelSearch', search],
-        queryFn: () => SearchLevels({ name: search, exact: false })
+        queryKey: ['level/search', search],
+        queryFn: () => SearchLevels({ name: search, exact: false, chunk: 5 }),
     });
 
     const update = (search: string) => {

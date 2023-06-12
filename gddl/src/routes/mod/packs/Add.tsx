@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import LevelSearchBox from '../../../components/LevelSearchBox';
 import { Pack } from '../../../api/packs';
 const { uuid } = require('uuidv4');
@@ -30,7 +30,7 @@ export default function Add({ pack, setChangeList }: Props) {
                 <Form.Label>Search</Form.Label>
                 <LevelSearchBox setResult={setResult} />
             </Form.Group>
-            <Button variant='primary' onClick={handleSubmit}>Add level</Button>
+            <button className='primary' onClick={handleSubmit}>Add level</button>
         </div>
     );
 }

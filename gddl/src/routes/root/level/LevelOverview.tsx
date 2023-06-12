@@ -13,7 +13,7 @@ import { ToFixed } from '../../../functions';
 export default function LevelOverview() {
     const levelID = parseInt(''+useParams().levelID) || 0;
     const { status, data: levelInfo, failureReason } = useQuery({
-        queryKey: ['levels', levelID],
+        queryKey: ['level', levelID],
         queryFn: () => GetLevel(levelID),
     });
 

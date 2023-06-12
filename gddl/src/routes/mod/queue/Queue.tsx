@@ -12,7 +12,6 @@ export default function Queue() {
     const { status, isRefetching, data: queue } = useQuery({
         queryKey: ['submissionQueue'],
         queryFn: GetSubmissionQueue,
-        staleTime: 1000 * 30
     });
 
     const queryClient = useQueryClient();
@@ -51,7 +50,7 @@ export default function Queue() {
                 <h1>Submissions</h1>
                 <div>
                     <button onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>
-                        {isRefetching ? <LoadingSpinner /> : 'Refresh'}
+                        {(isRefetching && <LoadingSpinner />) || <button className='primary'>Refresh</button>}
                     </button>
                 </div>
             </div>

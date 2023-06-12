@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import LevelSearchBox from '../../../components/LevelSearchBox';
 import { Pack } from '../../../api/packs';
 const { uuid } = require('uuidv4');
@@ -17,7 +17,7 @@ export default function Remove({ pack, setChangeList }: Props) {
             type: 'remove',
             level: result || { ID: '-1', Name: 'null' },
             pack,
-            ID: uuid()
+            ID: uuid(),
         }]);    
     }
 
@@ -27,7 +27,7 @@ export default function Remove({ pack, setChangeList }: Props) {
                 <Form.Label>Search</Form.Label>
                 <LevelSearchBox setResult={setResult} />
             </Form.Group>
-            <Button variant='primary' onClick={handleSubmit}>Remove level</Button>
+            <button className='danger' onClick={handleSubmit}>Remove level</button>
         </div>
     );
 }

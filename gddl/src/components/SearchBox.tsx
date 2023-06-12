@@ -8,7 +8,6 @@ type Props = {
     setResult: (result: any) => void,
     status: string,
 }
-// TODO: Fix querying happening one render later
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
@@ -22,7 +21,7 @@ export default function SearchBox({ list, update, setResult, status }: Props) {
         setSearch(e.target.value);
         clearTimeout(timer);
         setTimer(setTimeout(() => {
-            update(search);
+            update(e.target.value);
         }, 300));
     }
 
@@ -42,7 +41,7 @@ export default function SearchBox({ list, update, setResult, status }: Props) {
     return (
         <div className='search-box'>
             <input type='text' value={search} onChange={onChange} onFocus={() => setVisible(true)} onBlur={handleBlur} />
-            <div className={(visible ? 'd-block' : 'd-none') + ' search-result'}>
+            <div className={(visible ? 'd-block' : 'd-none') + ' search-result'} style={{zIndex: 5}}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :
                     ((status === 'error' || list.length === 0) ? <p>No results</p> :

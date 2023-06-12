@@ -21,6 +21,7 @@ import ModIndex from './routes/mod/ModIndex';
 import Utils from './routes/utils/Utils'
 import EditPacks from './routes/mod/packs/EditPacks';
 import EditReferences from './routes/mod/references/References';
+import CreatePack from './routes/mod/pack/CreatePack';
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: 'references',
         element: <EditReferences />
+      },
+      {
+        path: 'createPack',
+        element: <CreatePack />,
       }
     ]
   },

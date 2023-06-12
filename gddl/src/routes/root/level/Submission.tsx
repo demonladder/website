@@ -1,5 +1,7 @@
 import React from 'react';
 import { Submission as TSubmission } from '../../../api/submissions';
+import { Link } from 'react-router-dom';
+import { discriminator } from '../../../functions';
 
 type Props = {
     submission: TSubmission,
@@ -12,7 +14,7 @@ export default function Submission({ submission }: Props) {
         <div className='submission-ref'>
             <p className={'rating tier-' + (submission.Rating ? submission.Rating : '0')}>{submission.Rating || 'N/A'}</p>
             <p className={'enjoyment enj-' + enj}>{enjText}</p>
-            <a className='name' href={'/profile/' + submission.UserID}>{submission.Name}</a>
+            <Link className='name' to={'/profile/' + submission.UserID}>{submission.Name}{discriminator()}</Link>
         </div>
     );
 }

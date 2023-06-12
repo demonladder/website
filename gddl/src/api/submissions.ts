@@ -1,5 +1,6 @@
 import axios from 'axios';
 import serverIP from '../serverIP';
+import { StorageManager } from '../storageManager';
 
 export type Submission = {
     LevelID: number,
@@ -27,19 +28,16 @@ export type SubmittableSubmission = {
     proof?: string,
 }
 
-const user = JSON.parse(''+localStorage.getItem('user'));
-const csrfToken = user ? user.csrfToken : null;
-
 export async function GetSubmissionQueue(): Promise<SubmissionQueueInfo[]> {
-    const res = await axios.get(`${serverIP}/submissions/pending`, { withCredentials: true, params: { csrfToken } });
+    const res = await axios.get(`${serverIP}/submissions/pending`, { withCredentials: true, headers: StorageManager.authHeader() });
     return res.data;
 }
 
 export function ApproveSubmission(info: {deny: boolean} & Submission): Promise<void> {
-    return axios.get(`${serverIP}/approveSubmission`, { withCredentials: true, params: { levelID: info.LevelID, userID: info.UserID, deny: info.deny, csrfToken }});
+    return axios.put(`${serverIP}/submissions/approve`, { levelID: info.LevelID, userID: info.UserID, deny: info.deny }, { withCredentials: true, headers: StorageManager.authHeader() });
 }
 
 export async function SendSubmission(submission: SubmittableSubmission) {
-    const res = await axios.post(`${serverIP}/submit`, { csrfToken, submission }, { withCredentials: true });
+    const res = await axios.post(`${serverIP}/submit`, { submission }, { withCredentials: true, headers: StorageManager.authHeader() });
     return res.data;
 }

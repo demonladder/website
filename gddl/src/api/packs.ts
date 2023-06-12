@@ -31,6 +31,6 @@ export async function GetPack(packID: number): Promise<Pack> {
 }
 
 export async function SearchPacks(name: string): Promise<PackInfo> {
-    const res = await axios.get(`${serverIP}/packs?name=${name}`);
+    const res = await axios.get(`${serverIP}/packs?name=${name}&chunk=5`);
     return res.data;
 }
