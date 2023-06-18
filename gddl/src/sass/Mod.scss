@@ -66,3 +66,26 @@
         }
     }
 }
+
+#submissionList {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr;
+
+    .submission {
+        display: flex;
+        align-items: center;
+
+        & * {
+            width: 15%;
+            text-align: center;
+            margin: 0;
+            padding: 0.4rem 0.5rem;
+        }
+
+        .username {
+            background-color: #4d4d4d;
+            flex-grow: 1;
+        }
+    }
+}

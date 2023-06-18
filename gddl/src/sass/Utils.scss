@@ -1,5 +1,6 @@
 @use 'utils/Button';
 @use 'utils/Text';
+@use 'utils/Width';
 
 @mixin underline {
     background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;

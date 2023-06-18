@@ -39,16 +39,18 @@ export default function Select({ options, onChange, zIndex = 1000 }: Props) {
         setOpen(false);
         setOpenStatus('closed');
         setValue(option);
-        if (onChange) onChange(option);
+        onChange(option);
     }
 
     return (
         <div className='style-input custom-select' onClick={handleToggle}>
-            {value.value}
-            <div className={'select-options ' + openStatus} style={{ zIndex }}>
-                {
-                    options.map((o, i) => <SelectOption option={o} setValue={optionClicked} key={i} />)
-                }
+            <div className='selectWrapper'>
+                {value.value}
+                <div className={'select-options ' + openStatus} style={{ zIndex }}>
+                    {
+                        options.map((o, i) => <SelectOption option={o} setValue={optionClicked} key={i} />)
+                    }
+                </div>
             </div>
         </div>
     );

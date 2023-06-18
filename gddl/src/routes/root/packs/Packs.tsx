@@ -37,7 +37,7 @@ export default function Packs() {
         <div className='container'>
             <h1 className='mb-4'>Packs</h1>
             <div className='row'>
-                {packs.packs.map((p) => <div className='mb-2 col-4 text-center' key={p.ID}><PackRef pack={p} key={p.ID} /></div>)}
+                {packs.packs.map((p) => <div className='mb-2 col-6 col-md-4 text-center' key={p.ID}><PackRef pack={p} key={p.ID} /></div>)}
                 <PageButtons onPageChange={pageChange} page={page} meta={packs} />
             </div>
         </div>

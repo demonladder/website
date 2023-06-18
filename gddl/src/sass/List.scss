@@ -4,13 +4,15 @@
 $button-radius: 10px;
 
 button.list {
-    border: 1px solid buttonface;
+    color: rgb(43, 43, 43);
+    background-color: Colors.$active;
     padding: 0.4rem 0.6rem;
 }
 
 button.list.active {
-    background-color: Colors.$active;
-    border-color: Colors.$active;
+    color: currentColor;
+    background-color: adjust-color(Colors.$active, $lightness: -80%);
+    border: none;
 }
 
 .list-options .btn {

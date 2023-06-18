@@ -3,12 +3,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Change, ChangeReferences, ChangeType, GetReferences } from '../../../api/references';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import LevelSearchBox from '../../../components/LevelSearchBox';
-import { Level } from '../../../api/levels';
+import { Level as TLevel } from '../../../api/levels';
+import { ToFixed } from '../../../functions';
 
 type Reference = {
     Tier: number,
     ID: number,
     Name: string,
+    Rating: number,
 }
 
 type LevelProps = {
@@ -39,7 +41,7 @@ export default function EditReferences() {
                 <div className='divider-lg'></div>
                 <div className='list'>
                     {
-                        data.filter((l) => l.Tier === tier).map((l: Reference) => <Level data={l} remove={() => {
+                        data.filter((l) => l.Tier === tier).map(l => <Level data={l} remove={() => {
                             if (changeList.filter((e: Change) => e.ID === l.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
 
                             setChangeList((prev: Change[]) => [...prev, {Tier: l.Tier, ID: l.ID, Type: 'remove'} as Change]);
@@ -60,14 +62,17 @@ export default function EditReferences() {
     
     function Level({ data, remove }: LevelProps) {
         return (
-            <div className='reference'>
-                <div>
-                    <button className='danger' onClick={remove}>X</button>
-                    <div className='name'>
-                        <h4>{data.Name}</h4>
+            <div className='d-flex gap-2'>
+                <div className='reference flex-grow-1'>
+                    <div>
+                        <button className='danger' onClick={remove}>X</button>
+                        <div className='name'>
+                            <h4>{data.Name}</h4>
+                        </div>
                     </div>
+                    <p>{data.ID}</p>
                 </div>
-                <p>{data.ID}</p>
+                <p>{ToFixed(''+data.Rating, 2, '-')}</p>
             </div>
         );
     }
@@ -105,7 +110,7 @@ export default function EditReferences() {
         mutateReferences.mutate(changeList);
     }
 
-    const [search, setSearch] = useState<Level>();
+    const [search, setSearch] = useState<TLevel>();
     function addChange() {
         if (!search) return;
         if (changeList.filter(c => c.ID === search.ID && c.Type === 'add').length === 1) return;
@@ -118,15 +123,16 @@ export default function EditReferences() {
     return (
         <div id='edit-references'>
             <h1 className='mb-5'>Edit References</h1>
-            <div className='control'>
+            <div className='control mb-3'>
                 <div>
-                    <label className='me-2'>Tier:</label>
-                    <input type='number' min='0' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
+                    <label className='me-2' htmlFor='editReferenceTierInput'>Edit tier:</label>
+                    <input type='number' id='editReferenceTierInput' min='0' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
                 </div>
                 <button className={'save' + (changeList.length > 0 ? ' show' : '')} disabled={mutateReferences.isLoading} onClick={save}>Save changes</button>
             </div>
             <div className='position-relative'>
-                <LevelSearchBox setResult={s => setSearch(s)} />
+                <label htmlFor='editReferenceLevelInput'>Level:</label>
+                <LevelSearchBox id='editReferenceLevelInput' setResult={s => setSearch(s)} />
             </div>
             <button className='primary' onClick={addChange}>Add</button>
             <Content />

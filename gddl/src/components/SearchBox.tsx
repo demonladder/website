@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import SearchResult from './SearchResult';
 
@@ -7,11 +7,12 @@ type Props = {
     update: (a: string) => void,
     setResult: (result: any) => void,
     status: string,
+    id?: string,
 }
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox({ list, update, setResult, status }: Props) {
+export default function SearchBox({ list, update, setResult, status, id }: Props) {
     const [search, setSearch] = useState('');  // The value the user types into the input field
     const [visible, setVisible] = useState(false);  // State of the search results
 
@@ -25,12 +26,21 @@ export default function SearchBox({ list, update, setResult, status }: Props) {
         }, 300));
     }
 
-    // Hide the results after some time when user clicks off
-    function handleBlur() {
-        setTimeout(() => {
-            setVisible(false);
-        }, 300);
-    }
+    useEffect(() => {
+        function onClick(e: any) {
+            if (id === undefined) return;
+    
+            if (e.target !== document.getElementById(id)) {
+                setVisible(false);
+            }
+        }
+
+        document.addEventListener('click', onClick);
+
+        return () => {
+            document.removeEventListener('click', onClick);
+        }
+    }, [id]);
 
     // When the user clicks a result, set search state and pass the clicked result to parent
     function handleClick(r: any) {
@@ -40,7 +50,7 @@ export default function SearchBox({ list, update, setResult, status }: Props) {
 
     return (
         <div className='search-box'>
-            <input type='text' value={search} onChange={onChange} onFocus={() => setVisible(true)} onBlur={handleBlur} />
+            <input id={id} type='text' value={search} placeholder='Search...' onChange={onChange} onFocus={() => setVisible(true)} />
             <div className={(visible ? 'd-block' : 'd-none') + ' search-result'} style={{zIndex: 5}}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :

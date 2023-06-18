@@ -1,7 +1,7 @@
 @use 'Colors';
 @use 'Utils';
 
-#level-list {
+.level-list {
     p, h4 {
         margin: 0;
     }
@@ -35,24 +35,22 @@
     }
 
     .level.grid {
-        margin: 0.5rem;
-        padding: 0.25rem 1rem;
-        border-radius: 10px;
+        margin-bottom: 0.5rem;
+        padding: 0.25rem 3px 0.25rem 1rem;
+        cursor: pointer;
 
         img {
-            width: 128px;
-            height: 128px;
+            max-width: 96px;
             align-self: center;
         }
 
         .info {
             width: fit-content;
-        }
+            flex-grow: 1;
 
-        transition-duration: 200ms;
-        &:hover {
-            cursor: pointer;
-            transform: scale(1.05);
+            .created-by {
+                word-break: break-all;
+            }
         }
     }
     

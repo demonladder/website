@@ -5,9 +5,10 @@ import SearchBox from './SearchBox';
 
 type Props = {
     setResult: (e: any) => void,
+    id: string,
 }
 
-export default function PackSearchBox({ setResult }: Props) {
+export default function PackSearchBox({ setResult, id }: Props) {
     const [search, setSearch] = useState('');
 
     const { status, data } = useQuery({
@@ -20,5 +21,5 @@ export default function PackSearchBox({ setResult }: Props) {
     }
 
     if (data === undefined) return <></>;
-    return <SearchBox list={data.packs.map((d) => {return {...d, label: d.Name}})} update={update} setResult={setResult} status={status} />
+    return <SearchBox id={id} list={data.packs.map((d) => {return {...d, label: d.Name}})} update={update} setResult={setResult} status={status} />
 }

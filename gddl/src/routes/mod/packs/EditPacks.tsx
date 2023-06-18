@@ -19,8 +19,8 @@ export default function EditPacks() {
             <h1>Edit packs</h1>
             <p className='mb-5'>Select a range of edits to perform. Once done, click the save button to push the changes. A changelog will also be generated.</p>
             <div className='mb-5'>
-                <Form.Label className='me-3 mb-0 align-self-center'>Choose pack to edit</Form.Label>
-                <PackSearchBox setResult={setResult} />
+                <Form.Label htmlFor='editPacksSearch' className='me-3 mb-0 align-self-center'>Choose pack to edit</Form.Label>
+                <PackSearchBox id='editPacksSearch' setResult={setResult} />
             </div>
             <Tabs className='mb-3'>
                 <Tab eventKey='add' title='Add level'>

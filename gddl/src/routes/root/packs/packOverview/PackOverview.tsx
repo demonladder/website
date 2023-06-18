@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { GetPack } from '../../../../api/packs';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
-import Level from '../../list/Level';
+import Level from './Level';
 
 export default function PackOverview() {
     const packID = parseInt(''+useParams().packID) || 0;
@@ -34,9 +34,16 @@ export default function PackOverview() {
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
             <h1>{pack.Name}</h1>
-            <div id='level-list' className='my-3'>
+            <div className='level-list my-3 mb-5'>
                 <Level.Header />
-                {pack.Levels.map((l) => (
+                {pack.Levels.filter((lvl) => !lvl.EX).map((l) => (
+                    <Level info={l} key={l.ID} />
+                ))}
+            </div>
+            <h3 className='mb-3'>The following demons are not required for pack completion</h3>
+            <div className='level-list'>
+                <Level.Header />
+                {pack.Levels.filter((lvl) => lvl.EX).map((l) => (
                     <Level info={l} key={l.ID} />
                 ))}
             </div>

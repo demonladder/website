@@ -87,13 +87,13 @@
     font-weight: 500;
     -webkit-user-drag: none;
     transition-duration: 0.3s;
-}
 
-.pack-ref:hover {
-    text-decoration: none;
-    transition-duration: 0.15s;
-    box-shadow: 0 3px rgb(126, 126, 126);
-    transform: translateY(-3px);
+    &:hover {
+        text-decoration: none;
+        transition-duration: 0.15s;
+        box-shadow: 0 3px rgb(126, 126, 126);
+        transform: translateY(-3px);
+    }
 }
 
 .pack-ref:active {

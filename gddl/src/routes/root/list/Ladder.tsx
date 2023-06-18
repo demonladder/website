@@ -6,25 +6,10 @@ import caretR from '../../../icons/caret-r.svg';
 import caretL from '../../../icons/caret-l.svg';
 import { ReactComponent as ListSVG } from '../../../icons/list.svg';
 import { ReactComponent as GridSVG } from '../../../icons/grid.svg';
-import SortMenu, { closeSortMenu } from './SortMenu';
+import SortMenu from './SortMenu';
 import { Level as TLevel, SearchLevels } from '../../../api/levels';
 import { useQuery } from '@tanstack/react-query';
 import { TExtendedFilters } from './FiltersExtended';
-
-export function toggleShowFilter() {
-    const content = document.getElementById('filter-menu');
-    if (content === null) return;
-    content.getBoundingClientRect()
-
-    if (content.style.maxHeight) {
-        content.style.maxHeight = '';
-        content.style.overflow = 'hidden';
-    } else {
-        content.style.maxHeight = content.scrollHeight + 'px';
-        setTimeout(() => {content.style.overflow = 'visible';}, 500);
-        closeSortMenu();
-    }
-}
 
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
@@ -39,6 +24,7 @@ export default function Ladder() {
     const [search, setSearch] = useState('');
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     const [q, setQ] = useState({});
+    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         clearTimeout(timer);
@@ -117,7 +103,6 @@ export default function Ladder() {
         return (
             <>
                 <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
-                    <Level.Header />
                     {levels.slice(0, (levels.length+1)/2).map(l => <Level.Grid info={l} key={l.ID} />)}
                 </div>
                 <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
@@ -154,7 +139,7 @@ export default function Ladder() {
                     <input type='text' placeholder='  Search level name...' name='query' value={search} onChange={onSearchChange} />
                     <button className='clear-search' onClick={clearSearch}>X</button>
                 </div>
-                <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={toggleShowFilter}>
+                <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={() => setShowFilters(prev => !prev)}>
                     <img src={filterEmpty} alt='' />
                 </button>
                 <SortMenu set={setSorter} />
@@ -167,8 +152,8 @@ export default function Ladder() {
                     </button>
                 </div>
             </div>
-            <FilterMenu filter={setFilters} setExtended={setExtendedFilters} />
-            <div id='level-list' className={'my-3' + (listView ? '' : ' d-flex flex-column flex-xl-row')}>
+            <FilterMenu filter={setFilters} setExtended={setExtendedFilters} show={showFilters} />
+            <div className={'level-list my-3' + (listView ? '' : ' d-flex flex-column flex-xl-row')}>
                 <Content />
             </div>
             <div className='d-flex align-items-center'>

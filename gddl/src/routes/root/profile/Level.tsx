@@ -1,5 +1,6 @@
 import React from 'react';
 import { Submission } from '../../../api/submissions';
+import { Link } from 'react-router-dom';
 
 type Props = {
     isHeader: boolean,
@@ -19,11 +20,11 @@ export default function Level({ info, isHeader }: Props) {
     }
 
     const userRating = info.Rating ? info.Rating : '-';
-    const userEnjoyment = info.Enjoyment ? (info.Enjoyment === -1 ? '-' : info.Enjoyment) : '-';
+    const userEnjoyment = info.Enjoyment !== null ? (info.Enjoyment === -1 ? '-' : info.Enjoyment) : '-';
 
     return (
         <div className='submission'>
-            <h3 className='level-name'><a href={'/level/' + info.LevelID} target='_blank' rel='noopener noreferrer' className='underline text-light'>{info.Name}</a></h3>
+            <h3 className='level-name'><Link to={'/level/' + info.LevelID} className='underline text-light'>{info.Name}</Link></h3>
             <div className='creator'><p>{info.Creator}</p></div>
             <div className={'user-rating tier-' + userRating}><p>{userRating}</p></div>
             <div className={'enjoyment enj-' + userEnjoyment}><p>{userEnjoyment}</p></div>

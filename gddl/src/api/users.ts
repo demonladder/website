@@ -1,7 +1,6 @@
 import axios from "axios";
 import serverIP from "../serverIP";
 import { Submission } from "./submissions";
-import { StorageManager } from "../storageManager";
 
 type UserSubmissions = {
     previousPage: number,
@@ -10,16 +9,17 @@ type UserSubmissions = {
     submissions: Submission[],
 }
 
-type User = {
+export type User = {
     ID: number,
     Name: string,
-    Hardest: number,
-    Favorite: number,
-    LeastFavorite: number,
-    MinPref: number,
-    MaxPref: number,
-    Introduction: string,
-    AverageEnjoyment: number,
+    Hardest: number | null,
+    Favorite: number | null,
+    LeastFavorite: number | null,
+    MinPref: number | null,
+    MaxPref: number | null,
+    Introduction: string | null,
+    AverageEnjoyment: number | null,
+    Type: number,
 }
 
 async function GetUser(userID: number): Promise<User> {
@@ -34,7 +34,6 @@ async function GetUserSubmissions(userID: number, page = 1): Promise<UserSubmiss
 async function SaveProfile(user: User) {
     const res = await axios.put(`${serverIP}/user?userID=${user.ID}`, { user }, {
         withCredentials: true,
-        headers: StorageManager.authHeader(),
     });
     return res.data;
 }

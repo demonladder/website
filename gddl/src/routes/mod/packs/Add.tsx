@@ -27,8 +27,8 @@ export default function Add({ pack, setChangeList }: Props) {
     return (
         <div className='mb-5 position-relative'>
             <Form.Group className='mb-3'>
-                <Form.Label>Search</Form.Label>
-                <LevelSearchBox setResult={setResult} />
+                <Form.Label htmlFor='addLevelSearch'>Level:</Form.Label>
+                <LevelSearchBox id='addLevelSearch' setResult={setResult} />
             </Form.Group>
             <button className='primary' onClick={handleSubmit}>Add level</button>
         </div>

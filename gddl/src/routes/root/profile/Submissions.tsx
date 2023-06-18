@@ -16,9 +16,6 @@ export default function Submissions({ userID }: Props) {
         setPage(_page);
     }
 
-    // TODO: page state is synced to all profiles,
-    // so if a client scrolls to page 17 of user A's submissions,
-    // it will try and GET user B's page 17 of submissions.
     const { status, data, fetchStatus } = useQuery({
         queryKey: ['user/submissions', {userID, page}],
         queryFn: () => GetUserSubmissions(userID, page),

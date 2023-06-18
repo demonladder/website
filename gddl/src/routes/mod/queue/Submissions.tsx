@@ -19,7 +19,7 @@ export default function Submission({ info, approve, remove }: Props) {
     return (
         <div className={`tier-${Math.round(info.ActualRating) || 0} p-3 my-2`}>
             <div className='mb-3'>
-                <Link to={`/level/${info.LevelID}`} className='h3 underline'>{levelData?.info.Name || info.LevelID}</Link>
+                <Link to={`/level/${info.LevelID}`} className='h3 underline'>{levelData?.Name || info.LevelID}</Link>
                 <p>submitted by <a href={`/profile/${info.UserID}`} className='underline fw-bold' target='_blank' rel='noopener noreferrer'>{info.UserName}</a></p>
             </div>
             <div>

@@ -98,7 +98,7 @@ $background: hsl(306, 0%, 10%);
 $text: hsl(0, 0%, 100%);
 $background-light: adjust-color($background, $lightness: 5%);
 
-$active: rgb(171, 171, 171);
+$active: rgb(255, 255, 255);
 
 $primary: adjust-color($background, $lightness: 25%);
 $header: #EFA51C;

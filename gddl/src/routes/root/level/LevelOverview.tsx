@@ -2,17 +2,17 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import DemonLogo from '../../../components/DemonLogo';
-import Submission from './Submission';
 import { Helmet } from 'react-helmet';
-import PackRef from '../../../components/PackRef';
 import { GetLevel } from '../../../api/levels';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import IDButton from '../../../components/IDButton';
 import { ToFixed } from '../../../functions';
+import Packs from './Packs';
+import Submissions from './Submissions';
 
 export default function LevelOverview() {
     const levelID = parseInt(''+useParams().levelID) || 0;
-    const { status, data: levelInfo, failureReason } = useQuery({
+    const { status, data: level, error } = useQuery({
         queryKey: ['level', levelID],
         queryFn: () => GetLevel(levelID),
     });
@@ -20,14 +20,13 @@ export default function LevelOverview() {
     if (status === 'loading'){
         return <LoadingSpinner />;
     } else if (status === 'error') {
+        console.log(error);
         return (
             <div className='container'>
-                <h1>{(failureReason as any).response.data || 'An error ocurred'}</h1>
+                <h1>An error ocurred</h1>
             </div>
         )
     }
-
-    const level = levelInfo.info;
 
     let avgRating = '-';
     let roundedRating = 'Unrated';
@@ -47,8 +46,6 @@ export default function LevelOverview() {
     }
     
     const logo = DemonLogo(level.Difficulty);
-
-    const packAmount = levelInfo.packs?.length || '0';
 
     return (
         <div className='container level-overview'>
@@ -79,6 +76,10 @@ export default function LevelOverview() {
                         <b>Enjoyment</b>
                         <p>{roundedEnjoyment} [{avgEnjoyment}]</p>
                     </div>
+                    <div className='col-12 col-md-6 col-lg-4'>
+                        <b>Standard deviation</b>
+                        <p>{standardDeviation}</p>
+                    </div>
                     <div className='col-6 col-md-12 col-lg-4'>
                         <b>Difficulty</b>
                         <p>{level.Difficulty + ' Demon'}</p>
@@ -87,20 +88,11 @@ export default function LevelOverview() {
                         <b>Song name</b>
                         <p>{level.Song}</p>
                     </div>
-                    <div className='col-12 col-md-6 col-lg-4'>
-                        <b>Standard deviation</b>
-                        <p>{standardDeviation}</p>
-                    </div>
                 </div>
             </div>
             <h2>Submissions</h2>
-            <div className='submission-wrapper'>
-                {levelInfo.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
-                {levelInfo.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
-            </div>
-            <h2>Packs [{packAmount}]</h2>
-            {levelInfo.packs?.map(p => <PackRef pack={p} key={p.ID} />)}
-            {levelInfo.packs?.length === 0 ? <p className='mb-0'>This level is not part of any packs</p> : null}
+            <Submissions levelID={levelID} />
+            <Packs levelID={levelID} />
         </div>
     );
 }

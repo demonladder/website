@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { GetUser, SaveProfile } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -8,6 +8,9 @@ import { Helmet } from 'react-helmet';
 import Submissions from './Submissions';
 import { ToFixed, discriminator } from '../../../functions';
 import { StorageManager } from '../../../storageManager';
+import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
+import LevelTracker from './LevelTracker';
+import { AxiosError } from 'axios';
 
 export default function Profile() {
     const userID = parseInt(''+useParams().userID) || 0;
@@ -15,10 +18,10 @@ export default function Profile() {
     const [showSave, setShowSave] = useState(false);
     const [introduction, setIntroduction] = useState('');
     
-    const { status, data: userData } = useQuery({
+    const { status, data: userData, error } = useQuery({
         queryKey: ['user', userID],
         queryFn: () => GetUser(userID),
-        onSuccess: (data) => setIntroduction(data.Introduction),
+        onSuccess: (data) => data.Introduction && setIntroduction(data.Introduction),
     });
 
     const save = useMutation({
@@ -35,7 +38,7 @@ export default function Profile() {
     } else if (status === 'error') {
         return (
             <div className='container profile'>
-                <h1>Uh oh, an error ocurred</h1>
+                <h1>{((error as AxiosError).response?.data as any).error || 'Uh oh, an error ocurred'}</h1>
             </div>
         );
     }
@@ -58,8 +61,14 @@ export default function Profile() {
 
     const storedUser = StorageManager.getUser();
 
+    if (userData === undefined) {
+        return (
+            <div className="container">
+                <h5>No user data</h5>
+            </div>
+        );
+    }
     
-
     return (
         <div className='container profile' key={userID}>
             <Helmet>
@@ -70,25 +79,16 @@ export default function Profile() {
                 <meta property='og:url' content={`https://gdladder.com/profile/${userData.ID}`} />
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
-            <h1>{userData.Name + discriminator()}</h1>
+            <h1>{userData.Name + discriminator()} <ProfileTypeIcon user={userData} /></h1>
             <div className='information'>
                 <div className='introduction'>
                     <p className='label'><b>Introduction:</b></p>
-                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={userID !== storedUser?.ID} autoCorrect='off' spellCheck={false} />
+                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={!(StorageManager.hasSession() && userID === storedUser?.ID)} autoCorrect='off' spellCheck={false} />
                 </div>
                 <div className='trackers'>
-                    <div className='tracker'>
-                        <p>Hardest:</p>
-                        <Link to={'/level/' + userData.Hardest} className={(!userData.Hardest && 'link-disable') || ''}>{userData.Hardest || '-'}</Link>
-                    </div>
-                    <div className='tracker'>
-                        <p>Favorite level:</p>
-                        <Link to={'/level/' + userData.Favorite} className={(!userData.Favorite && 'link-disable') || ''}>{userData.Favorite || '-'}</Link>
-                    </div>
-                    <div className='tracker'>
-                        <p>Least favorite level:</p>
-                        <Link to={'/level/' + userData.LeastFavorite} className='link-disable'>{userData.LeastFavorite || '-'}</Link>
-                    </div>
+                    <LevelTracker levelID={userData.Hardest} title='Hardest' />
+                    <LevelTracker levelID={userData.Favorite} title='Favorite' />
+                    <LevelTracker levelID={userData.LeastFavorite} title='LeastFavorite' />
                     <div className='tracker'>
                         <p>Minimum tier preference:</p>
                         <p>{userData.MinPref || '-'}</p>

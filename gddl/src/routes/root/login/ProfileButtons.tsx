@@ -1,7 +1,6 @@
 import React from 'react';
 import { tierToIcon } from '../../../components/DemonLogo';
 import { Link, useNavigation } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { StorageManager, User } from '../../../storageManager';
 
 export default function ProfileButtons({ className = '' }: { className?: string }) {

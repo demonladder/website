@@ -4,7 +4,7 @@ import serverIP from '../../../serverIP';
 import axios from 'axios';
 import { StorageManager } from '../../../storageManager';
 
-export async function loginAction({ request }: {request: any}) {
+async function loginAction({ request }: {request: any}) {
     const data = await request.formData();
 
     try {
@@ -16,25 +16,24 @@ export async function loginAction({ request }: {request: any}) {
         });
 
         if (response.status === 200) {
-            StorageManager.setUser(response.data);
+            StorageManager.setCSRF(response.data.csrfToken);
+            StorageManager.setUser(response.data.jwt);
             return redirect('/');
         }
-    } catch (err) {
-        return { message: (err as any).response.data };
+    } catch (err: any) {
+        return err.response.data;
     }
 
-    //const queryClient = useQueryClient();
-    //queryClient.invalidateQueries(['user']);
     return null;
 }
 
-export default function Login() {
-    const actionError = useActionData();
+function Login() {
+    const actionError = useActionData() as any;
 
     return (
         <div className='container'>
             <div className='d-flex justify-content-center'>
-                <Form method='post' action='/login' className='w-25'>
+                <Form method='post' action='/login' className='w-75 w-md-50'>
                     <h1 className='mb-3 fw-normal text-white'>Login</h1>
                     <div className='mb-3'>
                         <label className='form-label'>Username</label>
@@ -48,8 +47,12 @@ export default function Login() {
                 </Form>
             </div>
             <div className='d-flex justify-content-center m-5'>
-                <h3>{actionError ? (actionError as any).message : ''}</h3>
+                <h3>{actionError?.error || ''}</h3>
             </div>
         </div>
     );
 }
+
+export default Object.assign(Login, {
+    loginAction,
+});

@@ -39,6 +39,12 @@ export async function SearchLevels(q: Query): Promise<SearchInfo> {
     })).data;
 }
 
-export async function GetLevel(id: number): Promise<LevelInfo> {
+export async function GetLevel(id: number | null) {
+    if (id === null) return null;
+
     return (await axios.get(`${serverIP}/level?levelID=${id}&returnPacks=true`)).data;
+}
+
+export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string }[]> {
+    return axios.get(`${serverIP}/level/packs?levelID=${levelID}`).then(res => res.data);
 }

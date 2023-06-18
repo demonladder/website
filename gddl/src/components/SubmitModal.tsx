@@ -81,8 +81,8 @@ export default function SubmitModal({ show, onClose }: Props) {
             <Modal.Body>
                 <Form noValidate onSubmit={submitForm} className='position-relative d-flex flex-column gap-2'>
                     <div className='mb-3'>
-                        <label>Level name:</label>
-                        <LevelSearchBox setResult={setResult} />
+                        <label htmlFor='submitLevelSearch'>Level name:</label>
+                        <LevelSearchBox id='submitLevelSearch' setResult={setResult} />
                     </div>
                     <div className='mb-3'>
                         <label>Rating:</label>

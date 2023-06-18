@@ -76,3 +76,9 @@ code {
 a.link-disable {
     pointer-events: none;
 }
+
+@media(max-width:600px) {
+    :root {
+        font-size: 14px;
+    }
+}

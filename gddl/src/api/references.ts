@@ -5,6 +5,7 @@ export type Reference = {
     Tier: number,
     ID: number,
     Name: string,
+    Rating: number,
 }
 
 export enum ChangeType {

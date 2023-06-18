@@ -1,11 +1,20 @@
 @use 'Colors';
+@use 'Utils';
 
-#filter-menu {
-    background-color: Colors.$filter-bg;
-    margin-bottom: 1.5rem;
-    max-height: 0;
+.filterMenuWrapper {
+    display: grid;
+    grid-template-rows: 0fr;
     overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.56, 0.06, 0.04, 0.98);
+    transition: grid-template-rows 400ms;
+
+    &.show {
+        grid-template-rows: 1fr;
+    }
+}
+
+.filterMenu {
+    background-color: Colors.$filter-bg;
+    min-height: 0;
 
     > .content {
         padding: 1rem;
@@ -18,30 +27,31 @@ button.open-extended {
     padding: 0;
     background: none;
     outline: none;
-    border: none;
-    border-bottom: 1px solid transparent;
-    color: white;
-    transition: border 0.2s ease-in-out;
+    
+    @include Utils.underline;
+}
 
-    &:hover {
-        border-bottom: 1px solid white;
+.extendedFilterMenuWrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.4s cubic-bezier(0.56, 0.06, 0.04, 0.98);
+
+    &.show {
+        grid-template-rows: 1fr;
     }
 }
 
-#extended-filters-menu {
-    .content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s cubic-bezier(0.56, 0.06, 0.04, 0.98);
-    }
+.extendedFilterMenu {
+    min-height: 0;
+}
 
-    .open-spinner {
-        display: inline-block;
-        transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        margin-left: 0.4rem;
+.openSpinner {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    margin-left: 0.4rem;
 
-        &.spin {
-            transform: rotate(180deg);
-        }
+    &.spin {
+        transform: rotate(180deg);
     }
 }

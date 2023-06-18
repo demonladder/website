@@ -24,8 +24,8 @@ export default function Remove({ pack, setChangeList }: Props) {
     return (
         <div className='mb-5 position-relative'>
             <Form.Group className='mb-3'>
-                <Form.Label>Search</Form.Label>
-                <LevelSearchBox setResult={setResult} />
+                <Form.Label htmlFor='removeLevelSearch'>Level:</Form.Label>
+                <LevelSearchBox id='removeLevelSearch' setResult={setResult} />
             </Form.Group>
             <button className='danger' onClick={handleSubmit}>Remove level</button>
         </div>
