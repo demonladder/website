@@ -42,9 +42,9 @@ export default function EditReferences() {
                 <div className='list'>
                     {
                         data.filter((l) => l.Tier === tier).map(l => <Level data={l} remove={() => {
-                            if (changeList.filter((e: Change) => e.ID === l.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
+                            if (changeList.filter((e) => e.ID === l.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
 
-                            setChangeList((prev: Change[]) => [...prev, {Tier: l.Tier, ID: l.ID, Type: 'remove'} as Change]);
+                            setChangeList((prev) => [...prev, {Tier: l.Tier, ID: l.ID, Type: 'remove', Name: l.Name } as Change]);
                         }} key={l.ID} />)
                     }
                 </div>
@@ -72,7 +72,6 @@ export default function EditReferences() {
                     </div>
                     <p>{data.ID}</p>
                 </div>
-                <p>{ToFixed(''+data.Rating, 2, '-')}</p>
             </div>
         );
     }
@@ -87,7 +86,7 @@ export default function EditReferences() {
                 <div>
                     <button className='danger' onClick={remove}>X</button>
                     <div className='name'>
-                        <h4>{data.Type}</h4>
+                        <h4>{data.Name}</h4>
                         <p>{action + preposition + targetTier}</p>
                     </div>
                 </div>
@@ -115,7 +114,7 @@ export default function EditReferences() {
         if (!search) return;
         if (changeList.filter(c => c.ID === search.ID && c.Type === 'add').length === 1) return;
 
-        const newChange: Change = {Tier: search.Rating, ID: search.ID, Type: ChangeType.Add};
+        const newChange: Change = {Tier: search.Rating, ID: search.ID, Name: search.Name, Type: ChangeType.Add};
         newChange.Tier = tier;
         setChangeList(prev => [...prev, newChange])
     }
@@ -132,9 +131,11 @@ export default function EditReferences() {
             </div>
             <div className='position-relative'>
                 <label htmlFor='editReferenceLevelInput'>Level:</label>
-                <LevelSearchBox id='editReferenceLevelInput' setResult={s => setSearch(s)} />
+                <div className='d-flex'>
+                    <LevelSearchBox className='flex-grow-1' id='editReferenceLevelInput' setResult={s => setSearch(s)} />
+                    <button className='primary' onClick={addChange}>Add</button>
+                </div>
             </div>
-            <button className='primary' onClick={addChange}>Add</button>
             <Content />
         </div>
     );

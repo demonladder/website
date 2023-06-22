@@ -1,6 +1,5 @@
-import axios from "axios";
-import serverIP from "../serverIP";
 import { Submission } from "./submissions";
+import instance from "./axios";
 
 type UserSubmissions = {
     previousPage: number,
@@ -23,16 +22,16 @@ export type User = {
 }
 
 async function GetUser(userID: number): Promise<User> {
-    const res = await axios.get(`${serverIP}/user?userID=${userID}&all=true`);
+    const res = await instance.get(`/user?userID=${userID}&all=true`);
     return res.data;
 }
 
 async function GetUserSubmissions(userID: number, page = 1): Promise<UserSubmissions> {
-    return (await axios.get(`${serverIP}/user/submissions?userID=${userID}&page=${page}`)).data;
+    return (await instance.get(`/user/submissions?userID=${userID}&page=${page}`)).data;
 }
 
 async function SaveProfile(user: User) {
-    const res = await axios.put(`${serverIP}/user?userID=${user.ID}`, { user }, {
+    const res = await instance.put(`/user?userID=${user.ID}`, { user }, {
         withCredentials: true,
     });
     return res.data;
@@ -41,5 +40,5 @@ async function SaveProfile(user: User) {
 export {
     GetUser,
     GetUserSubmissions,
-    SaveProfile
+    SaveProfile,
 }

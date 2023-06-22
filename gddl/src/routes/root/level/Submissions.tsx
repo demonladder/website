@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetSubmissions, Submission as TSubmission } from '../../../api/submissions';
 import { Link } from 'react-router-dom';
-import { discriminator } from '../../../functions';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
@@ -17,7 +16,7 @@ function Submission({ submission }: Props) {
         <div className='submission-ref'>
             <p className={'rating tier-' + (submission.Rating ? submission.Rating : '0')}>{submission.Rating || 'N/A'}</p>
             <p className={'enjoyment enj-' + enj}>{enjText}</p>
-            <Link className='name' to={'/profile/' + submission.UserID}>{submission.Name}{discriminator()}</Link>
+            <Link className='name' to={'/profile/' + submission.UserID}>{submission.Name}</Link>
         </div>
     );
 }

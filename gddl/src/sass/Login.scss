@@ -1,7 +1,13 @@
+@use 'Utils';
+
 .log-in {
+    color: currentColor;
+    text-decoration: none;
     background-color: white;
-    color: black;
-    align-self: center;
-    font-weight: 600;
-    padding: 0.5rem 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.signUp {
+    color: currentColor;
+    @include Utils.underline;
 }

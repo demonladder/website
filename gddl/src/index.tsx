@@ -22,6 +22,7 @@ import EditReferences from './routes/mod/references/References';
 import CreatePack from './routes/mod/pack/CreatePack';
 import DeleteSubmission from './routes/mod/deleteSubmissions/DeleteSubmissions';
 import LoadingSpinner from './components/LoadingSpinner';
+import SignUp from './routes/root/signup/SignUp';
 
 const router = createBrowserRouter(
   [
@@ -58,6 +59,11 @@ const router = createBrowserRouter(
           path: 'login',
           element: <Login />,
           action: Login.loginAction,
+        },
+        {
+          path: 'signup',
+          element: <SignUp />,
+          action: SignUp.Action,
         },
         {
           path: 'profile/:userID',
@@ -98,7 +104,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: '/65fd23f2bc54c9bbab72c8b05a8c5f273f23046e66e11778d11995f121abfd1f',
+    //basename: '/65fd23f2bc54c9bbab72c8b05a8c5f273f23046e66e11778d11995f121abfd1f',
   },
 );
 
@@ -113,7 +119,14 @@ const queryClient = new QueryClient({
   },
 });
 
-const rootElement = document.getElementById('root') || document.createElement('div');
+function createRoot() {
+  const root = document.createElement('div');
+  root.id = 'root';
+  document.body.appendChild(root);
+  return root;
+}
+
+const rootElement = document.getElementById('root') || createRoot();
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>

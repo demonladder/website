@@ -6,13 +6,14 @@ import SearchBox from './SearchBox';
 type Props = {
     setResult: (e: any) => void,
     id?: string,
+    className?: string,
 }
 
 type Label = {
     label: string,
 }
 
-export default function LevelSearchBox({ setResult, id }: Props) {
+export default function LevelSearchBox({ setResult, id, className }: Props) {
     const [search, setSearch] = useState('');
 
     const { status, data } = useQuery({
@@ -25,7 +26,7 @@ export default function LevelSearchBox({ setResult, id }: Props) {
     }
 
     if (data === undefined) return <></>;
-    return <SearchBox id={id} list={data && data.levels.map((d) => {
+    return <SearchBox className={className} id={id} list={data && data.levels.map((d) => {
         const l: Level & Label = {
             ...d,
             label: d.Name + ' by ' + d.Creator,

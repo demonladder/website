@@ -1,7 +1,4 @@
-import axios from "axios";
-import serverIP from "../serverIP";
-import { Pack } from "./packs";
-import { Submission } from "./submissions";
+import instance from "./axios";
 
 export type Level = {
     ID: number,
@@ -17,12 +14,6 @@ export type Level = {
     Creator: string,
 }
 
-type LevelInfo = {
-    info: Level,
-    submissions: Submission[],
-    packs?: Pack[]
-}
-
 type SearchInfo = {
     count: number,
     levels: Level[],
@@ -33,18 +24,18 @@ type Query = {
 }
 
 export async function SearchLevels(q: Query): Promise<SearchInfo> {
-    return (await axios.get(`${serverIP}/level/search`, {
+    return (await instance.get('/level/search', {
         withCredentials: true,
-        params: q
+        params: q,
     })).data;
 }
 
-export async function GetLevel(id: number | null) {
+export async function GetLevel(id: number | null): Promise<Level | null> {
     if (id === null) return null;
 
-    return (await axios.get(`${serverIP}/level?levelID=${id}&returnPacks=true`)).data;
+    return (await instance.get(`/level?levelID=${id}&returnPacks=true`)).data;
 }
 
 export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string }[]> {
-    return axios.get(`${serverIP}/level/packs?levelID=${levelID}`).then(res => res.data);
+    return instance.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
 }

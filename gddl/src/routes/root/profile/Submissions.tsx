@@ -9,6 +9,15 @@ type Props = {
     userID: number,
 }
 
+function Container({ children }: { children: React.ReactNode}) {
+    return (
+        <div className='mt-3'>
+            <h1>Submissions</h1>
+            {children}
+        </div>
+    );
+}
+
 export default function Submissions({ userID }: Props) {
     const [page, setPage] = useState(1);
 
@@ -23,10 +32,9 @@ export default function Submissions({ userID }: Props) {
 
     if (status === 'loading') {
         return (
-            <div className='mt-3'>
-                <h1>Submissions</h1>
+            <Container>
                 <LoadingSpinner />
-            </div>
+            </Container>
         );
     }
 
@@ -37,13 +45,12 @@ export default function Submissions({ userID }: Props) {
     }
 
     return (
-        <div className='mt-3'>
-            <h1>Submissions</h1>
+        <Container>
             <div className='ratings'>
                 <Level isHeader={true} />
                 {submissions.slice(0, 25).map((p) => <Level isHeader={false} info={p} key={p.LevelID}/>)}
             </div>
             <PageButtons onPageChange={pageChange} page={page} meta={data} loadingState={fetchStatus} />
-        </div>
+        </Container>
     );
 }

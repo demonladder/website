@@ -26,8 +26,8 @@ export default function Level({ info, isHeader }: Props) {
         <div className='submission'>
             <h3 className='level-name'><Link to={'/level/' + info.LevelID} className='underline text-light'>{info.Name}</Link></h3>
             <div className='creator'><p>{info.Creator}</p></div>
-            <div className={'user-rating tier-' + userRating}><p>{userRating}</p></div>
-            <div className={'enjoyment enj-' + userEnjoyment}><p>{userEnjoyment}</p></div>
+            <div className={'user-rating cursor-default tier-' + userRating}><p>{userRating}</p></div>
+            <div className={'enjoyment cursor-default enj-' + userEnjoyment}><p>{userEnjoyment}</p></div>
         </div>
     );
 }

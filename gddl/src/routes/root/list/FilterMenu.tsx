@@ -101,9 +101,9 @@ export default function FilterMenu({ filter, setExtended, show }: Props) {
                                     <input type='number' min='0' max='10' value={enjHigh} onChange={(e) => setEnjHigh(e.target.value)} />
                                 </div>
                             </div>
-                            <div className='col-md-6 col-lg-4 col-xl-2'>
+                            <div className='col-md-6 col-lg-4 col-xl-2' style={{height: '52px'}} hidden={!show}>
                                 <p className='form-label m-0'>Difficulty:</p>
-                                <Select options={[
+                                <Select id='filtersDifficulty' options={[
                                     { key: 0, value: '-' },
                                     { key: 1, value: 'Official' },
                                     { key: 2, value: 'Easy' },

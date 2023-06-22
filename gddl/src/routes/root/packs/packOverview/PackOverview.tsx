@@ -22,6 +22,8 @@ export default function PackOverview() {
             </div>
         )
     }
+
+    const exLevels = pack.Levels.filter((lvl) => lvl.EX);
     
     return (
         <div className='container'>
@@ -40,13 +42,15 @@ export default function PackOverview() {
                     <Level info={l} key={l.ID} />
                 ))}
             </div>
-            <h3 className='mb-3'>The following demons are not required for pack completion</h3>
-            <div className='level-list'>
-                <Level.Header />
-                {pack.Levels.filter((lvl) => lvl.EX).map((l) => (
-                    <Level info={l} key={l.ID} />
-                ))}
-            </div>
+            {exLevels.length > 0 && <>
+                <h3 className='mb-3'>The following demons are not required for pack completion:</h3>
+                <div className='level-list'>
+                    <Level.Header />
+                    {exLevels.map((l) => (
+                        <Level info={l} key={l.ID} />
+                    ))}
+                </div></>
+            }
         </div>
     );
 }

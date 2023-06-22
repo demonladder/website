@@ -16,27 +16,26 @@ select {
     min-width: 0;
     display: block;
     width: 100%;
+    padding-left: 0.4rem;
 }
 
-input[type=text] {
+input[type=text],
+input[type=number] {
     background: rgba(0, 0, 0, 0.132);
     border: none;
     border-radius: 0;
-    padding: 0.4rem 1rem;
     display: block;
     width: 100%;
     color: white;
 
     &:focus {
-        border-bottom: 2px solid white;
         background: rgba(0, 0, 0, 0.295);
-        caret-color: white;
         box-shadow: 0 0 30px 5px adjust-color($color: Colors.$primary, $alpha: -0.8);
     }
 }
 
 $disabled-col:rgb(0, 0, 0)!important;
-label:has(input:disabled) {
+label.disabled {
     color: $disabled-col;
     text-decoration: line-through;
 }
@@ -74,40 +73,45 @@ input[type=radio] {
 
 .custom-select {
     cursor: pointer;
-    text-indent: 0.5rem;
     position: relative;
     margin: 0;
     user-select: none;
+    position: absolute;
+    width: 145px;
 
-    .select-options {
-        top: 28px;
-        overflow: hidden;
+    .select-wrapper {
+        position: fixed;
+    }
+
+    .selectOptionsWrapper {
         position: absolute;
-        text-indent: 0;
+        top: 28px;
+        left: 0;
+        overflow: hidden;
 
-        & > p {
-            margin: 0;
-            padding: 0.125rem 0.5rem;
-            background: Colors.$select-bg;
-            transition: filter 200ms;
-
-            &:hover {
-                filter: brightness(90%);
-                cursor: pointer;
-            }
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 200ms ease-in-out;
+        overflow: hidden;
+        &.show {
+            grid-template-rows: 1fr;
         }
 
-        transition: height 200ms ease-in-out;
-        height: 0;
-        &.open,
-        &.opening {
-            height: 200px;
-            z-index: 1000;
+        .selectOptions {
+            min-height: 0;
             box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.377);
-        }
 
-        &.open {
-            overflow: auto;
+            & > p {
+                margin: 0;
+                padding: 0.125rem 0.5rem;
+                background: Colors.$select-bg;
+                transition: filter 200ms;
+    
+                &:hover {
+                    filter: brightness(90%);
+                    cursor: pointer;
+                }
+            }
         }
     }
 }

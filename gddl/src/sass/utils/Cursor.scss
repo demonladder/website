@@ -1,0 +1,10 @@
+$types: (
+    'default': default,
+    'help': help
+);
+
+@each $type, $cursor in $types {
+    .cursor-#{$type} {
+        cursor: $cursor;
+    }
+}

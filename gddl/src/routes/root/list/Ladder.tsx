@@ -10,6 +10,7 @@ import SortMenu from './SortMenu';
 import { Level as TLevel, SearchLevels } from '../../../api/levels';
 import { useQuery } from '@tanstack/react-query';
 import { TExtendedFilters } from './FiltersExtended';
+import PageButtons from '../../../components/PageButtons';
 
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
@@ -136,7 +137,7 @@ export default function Ladder() {
             <h1>The Ladder</h1>
             <div className='d-flex align-items-center search'>
                 <div className='search-bar'>
-                    <input type='text' placeholder='  Search level name...' name='query' value={search} onChange={onSearchChange} />
+                    <input type='text' placeholder='Search level name...' value={search} onChange={onSearchChange} />
                     <button className='clear-search' onClick={clearSearch}>X</button>
                 </div>
                 <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={() => setShowFilters(prev => !prev)}>
@@ -153,7 +154,7 @@ export default function Ladder() {
                 </div>
             </div>
             <FilterMenu filter={setFilters} setExtended={setExtendedFilters} show={showFilters} />
-            <div className={'level-list my-3' + (listView ? '' : ' d-flex flex-column flex-xl-row')}>
+            <div className={'level-list my-3' + (listView ? '' : ' d-flex flex-column flex-xl-row gap-xl-2')}>
                 <Content />
             </div>
             <div className='d-flex align-items-center'>

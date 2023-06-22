@@ -6,11 +6,20 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import Save from '../../../components/Save';
 import { Helmet } from 'react-helmet';
 import Submissions from './Submissions';
-import { ToFixed, discriminator } from '../../../functions';
+import { ToFixed } from '../../../functions';
 import { StorageManager } from '../../../storageManager';
 import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
+import logout from '../../../api/logout';
 import { AxiosError } from 'axios';
+
+function Container({ children }: { children: React.ReactNode}) {
+    return (
+        <div className='container profile'>
+            {children}
+        </div>
+    );
+}
 
 export default function Profile() {
     const userID = parseInt(''+useParams().userID) || 0;
@@ -31,15 +40,23 @@ export default function Profile() {
     
     if (status === 'loading') {
         return (
-            <div className='container profile'>
+            <Container>
                 <LoadingSpinner />
-            </div>
+            </Container>
         );
     } else if (status === 'error') {
+        if ((error as AxiosError).response?.status === 404) {
+            return (
+                <Container>
+                    <h1>User does not exist</h1>
+                </Container>
+            );
+        }
+
         return (
-            <div className='container profile'>
-                <h1>{((error as AxiosError).response?.data as any).error || 'Uh oh, an error ocurred'}</h1>
-            </div>
+            <Container>
+                <h1>An error ocurred</h1>
+            </Container>
         );
     }
     
@@ -68,9 +85,11 @@ export default function Profile() {
             </div>
         );
     }
+
+    const ownPage = StorageManager.hasSession() && userID === storedUser?.ID;
     
     return (
-        <div className='container profile' key={userID}>
+        <Container key={userID}>
             <Helmet>
                 <title>{'GDDL - ' + userData.Name}</title>
                 <meta property='og:type' content='website' />
@@ -79,11 +98,14 @@ export default function Profile() {
                 <meta property='og:url' content={`https://gdladder.com/profile/${userData.ID}`} />
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
-            <h1>{userData.Name + discriminator()} <ProfileTypeIcon user={userData} /></h1>
+            <div className='d-flex justify-content-between align-items-center'>
+                <h1>{userData.Name} <ProfileTypeIcon user={userData} /></h1>
+                <button className='secondary' onClick={logout} hidden={!ownPage}>Log out</button>
+            </div>
             <div className='information'>
                 <div className='introduction'>
                     <p className='label'><b>Introduction:</b></p>
-                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={!(StorageManager.hasSession() && userID === storedUser?.ID)} autoCorrect='off' spellCheck={false} />
+                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={!ownPage} autoCorrect='off' spellCheck={false} />
                 </div>
                 <div className='trackers'>
                     <LevelTracker levelID={userData.Hardest} title='Hardest' />
@@ -105,6 +127,6 @@ export default function Profile() {
             </div>
             <Submissions userID={userID} />
             <Save show={showSave} onSave={handleSave} onCancel={handleCancel} loading={save.isLoading} />
-        </div>
+        </Container>
     );
 }

@@ -23,7 +23,7 @@ export default function LevelTracker({ levelID, title }: Props) {
             </div>);
     }
 
-    if (data === undefined || levelID === null) {
+    if (!data || levelID === null) {
         return (
             <div className='tracker'>
                 <p>{title}:</p>

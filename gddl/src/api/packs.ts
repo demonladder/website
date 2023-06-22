@@ -1,5 +1,4 @@
-import axios from "axios";
-import serverIP from "../serverIP";
+import instance from "./axios";
 
 export type Pack = {
     ID: number,
@@ -29,16 +28,16 @@ export type PackInfo = {
 };
 
 export async function GetPacks(page: number): Promise<PackInfo> {
-    const res = await axios.get(`${serverIP}/packs?chunk=48&page=${page}`);
+    const res = await instance.get('/packs', { params: { chunk: 48, page, }});
     return res.data;
 };
 
 export async function GetPack(packID: number): Promise<Pack> {
-    const res = await axios.get(`${serverIP}/pack?packID=${packID}`);
+    const res = await instance.get('/pack', { params: { packID }});
     return {...res.data, ID: packID};
 }
 
 export async function SearchPacks(name: string): Promise<PackInfo> {
-    const res = await axios.get(`${serverIP}/packs?name=${name}&chunk=5`);
+    const res = await instance.get('/packs', { params: { chunk: 5, name, }});
     return res.data;
 }

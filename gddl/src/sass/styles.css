@@ -423,6 +423,14 @@ button.danger:active {
     width: 100% !important;
   }
 }
+.cursor-default {
+  cursor: default;
+}
+
+.cursor-help {
+  cursor: help;
+}
+
 .underline {
   background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
@@ -477,6 +485,16 @@ button.danger:active {
   border-bottom: 1px solid white;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+.errorElement {
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.errorElement > div {
+  text-align: center;
 }
 
 .level-list p, .level-list h4 {
@@ -815,7 +833,7 @@ button.open-extended:hover {
   display: flex;
   align-items: center;
 }
-.navbar .profile > span {
+.navbar .profile:hover > span {
   background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;
   background-position: 50% 100%;
@@ -823,7 +841,7 @@ button.open-extended:hover {
   padding: 0;
   text-decoration: none !important;
 }
-.navbar .profile > span:hover {
+.navbar .profile:hover > span:hover {
   background-size: 100% 2px;
 }
 .profile .information {
@@ -1020,11 +1038,23 @@ a.nav {
 }
 
 .log-in {
+  color: currentColor;
+  text-decoration: none;
   background-color: white;
-  color: black;
-  align-self: center;
-  font-weight: 600;
-  padding: 0.5rem 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.signUp {
+  color: currentColor;
+  background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
+  background-size: 0 2px;
+  background-position: 50% 100%;
+  transition: background-size 100ms ease-in-out;
+  padding: 0;
+  text-decoration: none !important;
+}
+.signUp:hover {
+  background-size: 100% 2px;
 }
 
 ::-webkit-scrollbar {
@@ -1056,25 +1086,25 @@ select {
   min-width: 0;
   display: block;
   width: 100%;
+  padding-left: 0.4rem;
 }
 
-input[type=text] {
+input[type=text],
+input[type=number] {
   background: rgba(0, 0, 0, 0.132);
   border: none;
   border-radius: 0;
-  padding: 0.4rem 1rem;
   display: block;
   width: 100%;
   color: white;
 }
-input[type=text]:focus {
-  border-bottom: 2px solid white;
+input[type=text]:focus,
+input[type=number]:focus {
   background: rgba(0, 0, 0, 0.295);
-  caret-color: white;
   box-shadow: 0 0 30px 5px rgba(89, 89, 89, 0.2);
 }
 
-label:has(input:disabled) {
+label.disabled {
   color: rgb(0, 0, 0) !important;
   text-decoration: line-through;
 }
@@ -1110,36 +1140,41 @@ input[type=radio]::before {
 
 .custom-select {
   cursor: pointer;
-  text-indent: 0.5rem;
   position: relative;
   margin: 0;
   user-select: none;
-}
-.custom-select .select-options {
-  top: 28px;
-  overflow: hidden;
   position: absolute;
-  text-indent: 0;
-  transition: height 200ms ease-in-out;
-  height: 0;
+  width: 145px;
 }
-.custom-select .select-options > p {
+.custom-select .select-wrapper {
+  position: fixed;
+}
+.custom-select .selectOptionsWrapper {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms ease-in-out;
+  overflow: hidden;
+}
+.custom-select .selectOptionsWrapper.show {
+  grid-template-rows: 1fr;
+}
+.custom-select .selectOptionsWrapper .selectOptions {
+  min-height: 0;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.377);
+}
+.custom-select .selectOptionsWrapper .selectOptions > p {
   margin: 0;
   padding: 0.125rem 0.5rem;
   background: #545454;
   transition: filter 200ms;
 }
-.custom-select .select-options > p:hover {
+.custom-select .selectOptionsWrapper .selectOptions > p:hover {
   filter: brightness(90%);
   cursor: pointer;
-}
-.custom-select .select-options.open, .custom-select .select-options.opening {
-  height: 200px;
-  z-index: 1000;
-  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.377);
-}
-.custom-select .select-options.open {
-  overflow: auto;
 }
 
 button {

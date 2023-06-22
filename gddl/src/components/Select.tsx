@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export type SelectOption = {
     key: number,
@@ -9,47 +9,42 @@ type Props = {
     options: SelectOption[],
     onChange: (option: SelectOption) => void,
     zIndex?: number,
+    id: string,
 }
 
-export default function Select({ options, onChange, zIndex = 1000 }: Props) {
+export default function Select({ options, onChange, zIndex = 1001, id }: Props) {
     const [open, setOpen] = useState(false);
-    const [openStatus, setOpenStatus] = useState('closed');
     const [value, setValue] = useState(options[0]);
 
-    const animTime = 200;
-
-    function handleToggle() {
-        if (openStatus === 'opening' || openStatus === 'closing') return;
-
-        setOpen(prev => !prev);
-        if (open) {
-            setOpenStatus('closing');
-            setTimeout(() => {
-                setOpenStatus('closed');
-            }, animTime);
-        } else {
-            setOpenStatus('opening');
-            setTimeout(() => {
-                setOpenStatus('open');
-            }, animTime);
-        }
-    }
-
     function optionClicked(option: SelectOption) {
-        setOpen(false);
-        setOpenStatus('closed');
         setValue(option);
         onChange(option);
     }
 
+    useEffect(() => {
+        function onClick(e: MouseEvent) {
+            if (e.target !== document.getElementById(id)) {
+                setOpen(false);
+            }
+        }
+
+        document.addEventListener('click', onClick);
+
+        return () => {
+            document.removeEventListener('click', onClick);
+        }
+    }, []);
+
     return (
-        <div className='style-input custom-select' onClick={handleToggle}>
-            <div className='selectWrapper'>
+        <div className='style-input custom-select' onClick={() => setOpen(prev => !prev)}>
+            <div id={id} className='selectWrapper'>
                 {value.value}
-                <div className={'select-options ' + openStatus} style={{ zIndex }}>
-                    {
-                        options.map((o, i) => <SelectOption option={o} setValue={optionClicked} key={i} />)
-                    }
+                <div className={'selectOptionsWrapper' + (open ? ' show' : '')}>
+                    <div className='selectOptions' style={{ zIndex }}>
+                        {
+                            options.map((o) => <SelectOption option={o} setValue={optionClicked} key={o.value} />)
+                        }
+                    </div>
                 </div>
             </div>
         </div>

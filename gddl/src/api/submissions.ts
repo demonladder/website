@@ -1,6 +1,5 @@
-import axios from 'axios';
-import serverIP from '../serverIP';
 import { StorageManager } from '../storageManager';
+import instance from './axios';
 
 export type Submission = {
     LevelID: number,
@@ -37,27 +36,27 @@ type SubmissionInfo = {
 
 export async function GetSubmissionQueue(): Promise<SubmissionQueueInfo[]> {
     const csrfToken = StorageManager.getCSRF();
-    const res = await axios.get(`${serverIP}/submissions/pending`, { withCredentials: true, params: { csrfToken } });
+    const res = await instance.get('/submissions/pending', { withCredentials: true, params: { csrfToken } });
     return res.data;
 }
 
 export async function GetSubmissions({ levelID, page = 1, chunk = 25 }: { levelID: number, page?: number, chunk?: number }): Promise<SubmissionInfo> {
-    const res = await axios.get(`${serverIP}/submissions`, { params: { levelID, page, chunk } });
+    const res = await instance.get('/submissions', { params: { levelID, page, chunk } });
     return res.data;
 }
 
 export function DeleteSubmission(submission: { levelID: number, userID: number }) {
     const csrfToken = StorageManager.getCSRF();
-    return axios.delete(`${serverIP}/submissions`, { withCredentials: true, params: { ...submission, csrfToken } });
+    return instance.delete('/submissions', { withCredentials: true, params: { ...submission, csrfToken } });
 }
 
 export function ApproveSubmission(info: {deny: boolean} & Submission): Promise<void> {
     const csrfToken = StorageManager.getCSRF();
-    return axios.put(`${serverIP}/submissions/approve`, { levelID: info.LevelID, userID: info.UserID, deny: info.deny }, { withCredentials: true, params: { csrfToken } });
+    return instance.put('/submissions/approve', { levelID: info.LevelID, userID: info.UserID, deny: info.deny }, { withCredentials: true, params: { csrfToken } });
 }
 
 export async function SendSubmission(submission: SubmittableSubmission) {
     const csrfToken = StorageManager.getCSRF();
-    const res = await axios.post(`${serverIP}/submit`, { submission }, { withCredentials: true, params: { csrfToken } });
+    const res = await instance.post('/submit', { submission }, { withCredentials: true, params: { csrfToken } });
     return res.data;
 }

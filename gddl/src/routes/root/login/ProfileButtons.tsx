@@ -5,6 +5,7 @@ import { StorageManager, User } from '../../../storageManager';
 
 export default function ProfileButtons({ className = '' }: { className?: string }) {
     useNavigation();  // Used to re-render this component whenever location changes.
+    return <></>;
     
     if (!StorageManager.hasSession()) {
         localStorage.removeItem('csrf');
@@ -29,8 +30,9 @@ function ProfileButton({ user, className = '' }: { user: User | null, className?
 
 function LoginButton({ className = '' }: { className?: string}) {
     return (
-        <Link to='/login' className={'log-in align-middle me-5 ms-auto ' + className}>
-            Log in
-        </Link>
+        <div className={'py-2 d-flex align-items-center gap-3' + (className !== undefined ? ' '+className : '')}>
+            <Link to='/signup' className='signUp align-middle'>Sign up</Link>
+            <Link to='/login' className='log-in align-middle'>Log in</Link>
+        </div>
     );
 }

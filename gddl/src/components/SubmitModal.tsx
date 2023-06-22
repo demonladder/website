@@ -85,12 +85,12 @@ export default function SubmitModal({ show, onClose }: Props) {
                         <LevelSearchBox id='submitLevelSearch' setResult={setResult} />
                     </div>
                     <div className='mb-3'>
-                        <label>Rating:</label>
-                        <input type='number' value={rating} onChange={(e: any) => setRating(e.target.value)} />
+                        <label htmlFor='submitRating'>Rating:</label>
+                        <input id='submitRating' type='number' value={rating} onChange={(e: any) => setRating(e.target.value)} />
                     </div>
-                    <div className='mb-3'>
-                        <label>Enjoyment:</label>
-                        <Select options={[
+                    <div className='mb-3' style={{height: '52px'}}>
+                        <label htmlFor='submitEnjoyment'>Enjoyment:</label>
+                        <Select id='submitEnjoyment' options={[
                             { key: -1, value: '-' },
                             { key: 0, value: '0 Abysmal' },
                             { key: 1, value: '1 Appalling' },
@@ -106,19 +106,19 @@ export default function SubmitModal({ show, onClose }: Props) {
                         ]} onChange={(option) => setEnjoyment(option.key)} zIndex={1030} />
                     </div>
                     <div className='mb-3'>
-                        <label>Refresh rate:</label>
-                        <input type='number' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} />
+                        <label htmlFor='submitRefreshRate'>Refresh rate:</label>
+                        <input id='submitRefreshRate' type='number' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} />
                     </div>
-                    <div className='mb-3'>
+                    <div className='mb-3' style={{height: '52px'}}>
                         <label>Device:</label>
-                        <Select options={[
+                        <Select id='submitDevice' options={[
                             { key: 1, value: 'PC' },
                             { key: 2, value: 'Mobile' }
                         ]} onChange={(option) => setDevice(option.key)} />
                     </div>
                     <div>
-                        <label>Proof:</label>
-                        <input type='text' value={proof} onChange={(e) => setProof(e.target.value)} />
+                        <label htmlFor='submitProof'>Proof:</label>
+                        <input id='submitProof' type='text' value={proof} onChange={(e) => setProof(e.target.value)} />
                     </div>
                 </Form>
             </Modal.Body>

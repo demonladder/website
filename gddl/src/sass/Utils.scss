@@ -1,6 +1,7 @@
 @use 'utils/Button';
 @use 'utils/Text';
 @use 'utils/Width';
+@use 'utils/Cursor';
 
 @mixin underline {
     background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
@@ -54,3 +55,16 @@ $divider-sizes: (
 }
 
 $b-radius: 5px;
+
+.errorElement {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > div {
+        text-align: center;
+    }
+
+    // text-center mt-5
+}

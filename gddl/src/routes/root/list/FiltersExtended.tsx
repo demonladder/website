@@ -97,15 +97,15 @@ export default function FiltersExtended({ set, resetRef }: Props) {
                                         <input type='number' value={enjHighCount} min='1' max='1000' onChange={(e) => setEnjHighCount(e.target.value)} />
                                     </div>
                                 </div>
-                                <div className='col-md-3 col-lg-4'>
-                                    <p className='form-label m-0'>Deviation:</p>
+                                <div className='col-md-4 col-lg-4'>
+                                    <p className='form-label m-0'>Rating deviation:</p>
                                     <div className='d-flex align-items-center'>
                                         <input type='number' className='num-lg' value={devLow} min='1' max='10' onChange={(e) => setDevLow(e.target.value)} />
                                         <p className='m-0 mx-2'>to</p>
                                         <input type='number' className='num-lg' value={devHigh} min='1' max='10' onChange={(e) => setDevHigh(e.target.value)} />
                                     </div>
                                 </div>
-                                <div className='col-md-9 col-xl-6'>
+                                <div className='col-md-8 col-xl-6'>
                                     <p className='form-label m-0'>Level ID:</p>
                                     <div className='d-flex align-items-center'>
                                         <input type='number' className='num-lg' value={IDLow} min='1' max='500000000' onChange={(e) => setIDLow(e.target.value)} />
@@ -119,7 +119,7 @@ export default function FiltersExtended({ set, resetRef }: Props) {
                                     <input type='checkbox' checked={exactName} onChange={() => setExactName(prev => !prev)} />
                                     Exact name search
                                 </label>
-                                <label className='col-12 col-lg-6 col-xl-4 d-flex align-items-center gap-2'>
+                                <label className={'col-12 col-lg-6 col-xl-4 d-flex align-items-center gap-2' + (inSession ? '' : ' disabled')}>
                                     <input type='checkbox' checked={removeCompleted} onChange={() => setRemoveCompleted(prev => !prev)} disabled={!inSession} />
                                     Exclude completed
                                 </label>

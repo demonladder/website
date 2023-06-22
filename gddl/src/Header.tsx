@@ -21,7 +21,7 @@ export default function Header() {
 
     return (
         <>
-            <Navbar expand='lg' className='py-2 py-sm-3 py-md-4 px-3 px-sm-4 px-md-5 mb-4' collapseOnSelect={true}>
+            <Navbar expand='md' className='py-2 py-sm-3 py-md-4 px-3 px-sm-4 px-md-5 mb-4' collapseOnSelect={true}>
                 <Container fluid>
                     <Navbar.Brand><Link to='/' className='title'>GDDLadder</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls='navbar' />
@@ -30,13 +30,13 @@ export default function Header() {
                             <div className='d-flex align-items-center'><LinkContainer to='/list'><Nav.Link className='underline fs-5'>The Ladder</Nav.Link></LinkContainer></div>
                             <div className='d-flex align-items-center'><LinkContainer to='/references'><Nav.Link className='underline fs-5'>Reference Demons</Nav.Link></LinkContainer></div>
                             <div className='d-flex align-items-center'><LinkContainer to='/packs'><Nav.Link className='underline fs-5'>Packs</Nav.Link></LinkContainer></div>
-                            <button className='text-start fs-5 underline nav-link' onClick={openSubmit}>Submit</button>
+                            {/* {<button className='text-start fs-5 underline nav-link' onClick={openSubmit}>Submit</button>} */}
                         </Nav>
                         <ProfileButtons />
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <SubmitModal show={showModal} onClose={() => setShowModal(false)} />
+            {/* {<SubmitModal show={showModal} onClose={() => setShowModal(false)} />} */}
         </>
     );
 }

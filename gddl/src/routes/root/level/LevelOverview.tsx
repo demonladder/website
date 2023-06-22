@@ -28,6 +28,10 @@ export default function LevelOverview() {
         )
     }
 
+    console.log(level);
+    
+    if (level === null) return null;
+
     let avgRating = '-';
     let roundedRating = 'Unrated';
     let avgEnjoyment = '-';
@@ -80,13 +84,21 @@ export default function LevelOverview() {
                         <b>Standard deviation</b>
                         <p>{standardDeviation}</p>
                     </div>
-                    <div className='col-6 col-md-12 col-lg-4'>
+                    <div className='col col-lg-4'>
                         <b>Difficulty</b>
                         <p>{level.Difficulty + ' Demon'}</p>
                     </div>
                     <div className='col-12 col-lg-4'>
                         <b>Song name</b>
                         <p>{level.Song}</p>
+                    </div>
+                    <div className='col-6'>
+                        <b>Ratings</b>
+                        <p>{level.RatingCount}</p>
+                    </div>
+                    <div className='col-6'>
+                        <b>Enjoyments</b>
+                        <p>{level.EnjoymentCount}</p>
                     </div>
                 </div>
             </div>

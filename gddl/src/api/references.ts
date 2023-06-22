@@ -1,5 +1,4 @@
-import axios from 'axios';
-import serverIP from '../serverIP';
+import instance from './axios';
 
 export type Reference = {
     Tier: number,
@@ -10,24 +9,25 @@ export type Reference = {
 
 export enum ChangeType {
     Add = 'add',
-    Remove = 'remove'
+    Remove = 'remove',
 }
 
 export type Change = {
     Tier: number,
     ID: any,
+    Name: string,
     Type: ChangeType,
 }
 
 export function ChangeReferences(changes: Change[]) {
     const csrfToken = localStorage.getItem('csrf');
 
-    return axios.post(`${serverIP}/references`, { csrfToken, changes: changes.map((c) => { return { ID: c.ID, Type: c.Type, Tier: c.Tier }})}, {
+    return instance.post('/references', { csrfToken, changes: changes.map((c) => { return { ID: c.ID, Type: c.Type, Tier: c.Tier }})}, {
         withCredentials: true
     });
 }
 
 export async function GetReferences(): Promise<Reference[]> {
-    const res = await axios.get(`${serverIP}/references`);
+    const res = await instance.get('/references');
     return res.data;
 }
