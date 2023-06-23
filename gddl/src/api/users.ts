@@ -18,7 +18,7 @@ export type User = {
     MaxPref: number | null,
     Introduction: string | null,
     AverageEnjoyment: number | null,
-    Type: number,
+    PermissionLevel: number,
 }
 
 async function GetUser(userID: number): Promise<User> {

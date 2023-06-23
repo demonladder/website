@@ -2,12 +2,12 @@ import * as React from 'react';
 import { User } from '../api/users';
 
 export default function ProfileTypeIcon({ user }: { user: User }) {
-    switch(user.Type) {
-        case 1: return <span className='m-0 cursor-help' title="GDDL List Helper" role='img' aria-label='Role icon'>📝</span>;
-        case 2: return <span className='m-0 cursor-help' title="GDDL Developer" role='img' aria-label='Role icon'>🖥️</span>;
-        case 3: return <span className='m-0 cursor-help' title="GDDL Moderator" role='img' aria-label='Role icon'>🔰</span>;
-        case 4: return <span className='m-0 cursor-help' title="GDDL Admin" role='img' aria-label='Role icon'>🛡️</span>;
-        case 5: return <span className='m-0 cursor-help' title="Owner of GDDL" role='img' aria-label='Role icon'>⭐</span>;
+    switch(user.PermissionLevel) {
+        case 1: return <span className='m-0 cursor-help' title="List Helper" role='img' aria-label='Role icon'>📝</span>;
+        case 2: return <span className='m-0 cursor-help' title="Developer" role='img' aria-label='Role icon'>🖥️</span>;
+        case 3: return <span className='m-0 cursor-help' title="Moderator" role='img' aria-label='Role icon'>🔰</span>;
+        case 4: return <span className='m-0 cursor-help' title="Admin" role='img' aria-label='Role icon'>🛡️</span>;
+        case 5: return <span className='m-0 cursor-help' title="Owner" role='img' aria-label='Role icon'>⭐</span>;
         default: return <></>;
     }
 }

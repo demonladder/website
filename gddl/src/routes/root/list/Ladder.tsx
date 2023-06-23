@@ -10,7 +10,6 @@ import SortMenu from './SortMenu';
 import { Level as TLevel, SearchLevels } from '../../../api/levels';
 import { useQuery } from '@tanstack/react-query';
 import { TExtendedFilters } from './FiltersExtended';
-import PageButtons from '../../../components/PageButtons';
 
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
@@ -122,7 +121,7 @@ export default function Ladder() {
                 else          return <Grid levels={levels} />
             }
             case 'error': {
-                return <h2>Couldn't connect to the server!</h2>
+                return <h2>An error ocurred!</h2>
             }
             case 'success': {
                 if (listView) return <List levels={searchData.levels} />;

@@ -5,7 +5,6 @@ import { StorageManager, User } from '../../../storageManager';
 
 export default function ProfileButtons({ className = '' }: { className?: string }) {
     useNavigation();  // Used to re-render this component whenever location changes.
-    return <></>;
     
     if (!StorageManager.hasSession()) {
         localStorage.removeItem('csrf');
