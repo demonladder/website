@@ -38,7 +38,7 @@ export default function Queue() {
             return (
                 <div>
                     {queue.map((s) => <Submission info={s} approve={approve} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
-                    {queue.length === 0 && <h3>Queue empty :D</h3>}
+                    {queue.length === 0 && <h5>Queue empty :D</h5>}
                 </div>
             );
         }
@@ -47,7 +47,7 @@ export default function Queue() {
     return (
         <div>
             <div className='d-flex justify-content-between'>
-                <h1>Submissions</h1>
+                <h3>Submissions</h3>
                 <div>
                     <button onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>
                         {(isRefetching && <LoadingSpinner />) || <button className='primary'>Refresh</button>}

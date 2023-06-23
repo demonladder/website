@@ -121,7 +121,7 @@ export default function EditReferences() {
 
     return (
         <div id='edit-references'>
-            <h1 className='mb-5'>Edit References</h1>
+            <h3 className='mb-5'>Edit References</h3>
             <div className='control mb-3'>
                 <div>
                     <label className='me-2' htmlFor='editReferenceTierInput'>Edit tier:</label>

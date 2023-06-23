@@ -16,7 +16,7 @@ export default function EditPacks() {
 
     return (
         <div id='edit-packs' className='position-relative'>
-            <h1>Edit packs</h1>
+            <h3>Edit packs</h3>
             <p className='mb-5'>Select a range of edits to perform. Once done, click the save button to push the changes. A changelog will also be generated.</p>
             <div className='mb-5'>
                 <Form.Label htmlFor='editPacksSearch' className='me-3 mb-0 align-self-center'>Choose pack to edit</Form.Label>

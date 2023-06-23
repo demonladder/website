@@ -3,7 +3,7 @@ import serverIP from "../serverIP";
 
 const instance = axios.create({
     baseURL: serverIP,
-    timeout: 5000,
+    timeout: 10000,
 });
 
 export default instance;

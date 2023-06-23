@@ -31,6 +31,8 @@ function Mod() {
                             <Link className={`${path === '/mod' ? 'active' : 'link-light'}`} to='/mod'>Overview</Link>
                             <Link className={`${path === '/mod/queue' ? 'active' : 'link-light'}`} to='/mod/queue'>Submissions queue</Link>
                             <Link className={`${path === '/mod/deleteSubmission' ? 'active' : 'link-light'}`} to='/mod/deleteSubmission'>Delete submission</Link>
+                            <Link className={`${path === '/mod/promote' ? 'active' : 'link-light'}`} to='/mod/promote'>Promote user</Link>
+                            <Link className={`${path === '/mod/signupLinks' ? 'active' : 'link-light'}`} to='/mod/signupLinks'>Sign-up links</Link>
                             <Link className={`${path === '/mod/createPack' ? 'active' : 'link-light'}`} to='/mod/createPack'>Create pack</Link>
                             <Link className={`${path === '/mod/packs' ? 'active' : 'link-light'}`} to='/mod/packs'>Edit packs</Link>
                             <Link className={`${path === '/mod/references' ? 'active' : 'link-light'}`} to='/mod/references'>Edit references</Link>

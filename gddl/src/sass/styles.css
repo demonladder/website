@@ -431,6 +431,10 @@ button.danger:active {
   cursor: help;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .underline {
   background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
   background-size: 0 2px;

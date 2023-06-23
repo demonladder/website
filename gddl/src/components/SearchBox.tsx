@@ -49,9 +49,15 @@ export default function SearchBox({ list, update, setResult, status, id, classNa
         setResult(r);
     }
 
+    function keyDown(event: any) {
+        if (event.key === 'Enter') {
+            handleClick(list[0]);
+        }
+    }
+    
     return (
         <div className={'search-box ' + ((className && className) || '')}>
-            <input id={id} type='text' value={search} placeholder='Search...' onChange={onChange} onFocus={() => setVisible(true)} />
+            <input id={id} type='text' onKeyDown={keyDown} value={search} placeholder='Search...' onChange={onChange} onFocus={() => setVisible(true)} />
             <div className={(visible ? 'd-block' : 'd-none') + ' search-result'} style={{zIndex: 5}}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :

@@ -23,6 +23,8 @@ import CreatePack from './routes/mod/pack/CreatePack';
 import DeleteSubmission from './routes/mod/deleteSubmissions/DeleteSubmissions';
 import LoadingSpinner from './components/LoadingSpinner';
 import SignUp from './routes/root/signup/SignUp';
+import Promote from './routes/mod/promote/Promote';
+import SignupLink from './routes/mod/signupLinks/SignupLink';
 
 const router = createBrowserRouter(
   [
@@ -99,7 +101,15 @@ const router = createBrowserRouter(
         {
           path: 'deleteSubmission',
           element: <DeleteSubmission />,
-        }
+        },
+        {
+          path: 'promote',
+          element: <Promote />,
+        },
+        {
+          path: 'signupLinks',
+          element: <SignupLink />,
+        },
       ]
     },
   ],

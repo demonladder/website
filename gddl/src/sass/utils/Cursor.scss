@@ -1,6 +1,7 @@
 $types: (
     'default': default,
-    'help': help
+    'help': help,
+    'pointer': pointer,
 );
 
 @each $type, $cursor in $types {

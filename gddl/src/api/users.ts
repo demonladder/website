@@ -21,8 +21,19 @@ export type User = {
     PermissionLevel: number,
 }
 
+export type TinyUser = {
+    ID: number,
+    Name: string,
+    PermissionLevel: number,
+}
+
 async function GetUser(userID: number): Promise<User> {
     const res = await instance.get(`/user?userID=${userID}&all=true`);
+    return res.data;
+}
+
+async function SearchUser(name: string): Promise<TinyUser[]> {
+    const res = await instance.get(`/user/search`, { params: { name, chunk: 5, } });
     return res.data;
 }
 
@@ -37,8 +48,14 @@ async function SaveProfile(user: User) {
     return res.data;
 }
 
+async function PromoteUser(userID: number, permissionLevel: number) {
+    await instance.put('/user/promote', { userID, permissionLevel }, { withCredentials: true });
+}
+
 export {
     GetUser,
+    SearchUser,
     GetUserSubmissions,
     SaveProfile,
+    PromoteUser,
 }
