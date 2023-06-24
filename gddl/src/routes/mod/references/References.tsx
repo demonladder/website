@@ -61,9 +61,11 @@ export default function EditReferences() {
     }
     
     function Level({ data, remove }: LevelProps) {
+        const roundedTier = Math.round(data.Rating);
+
         return (
-            <div className='d-flex gap-2'>
-                <div className='reference flex-grow-1'>
+            <div className='row gap-2'>
+                <div className='reference col align-items-center'>
                     <div>
                         <button className='danger' onClick={remove}>X</button>
                         <div className='name'>
@@ -71,6 +73,9 @@ export default function EditReferences() {
                         </div>
                     </div>
                     <p>{data.ID}</p>
+                </div>
+                <div className={'d-flex col-1 justify-content-center tier-' + roundedTier}>
+                    <p className='m-0 align-self-center'>{ToFixed(''+data.Rating, 2, '-')}</p>
                 </div>
             </div>
         );

@@ -18,7 +18,7 @@ function Action({ request }: { request: any }) {
         }
         
         // Make post request
-        return instance.post('/login/signup', { username: data.username, password: data.password, overrideKey: data.overrideKey }).then((res) => {
+        return instance.post('/login/signup', { username: data.username, password: data.password, overrideKey: data.key }).then((res) => {
             StorageManager.setCSRF(res.data.csrfToken);
             
             return redirect('/');
@@ -31,7 +31,7 @@ function Action({ request }: { request: any }) {
                 return 'Server error, try again later!';
             }
 
-            return error.message;
+            return (error.response?.data as any).error || 'An error ocurred';
         });
     });
 }
@@ -61,8 +61,8 @@ function SignUp() {
                             <label htmlFor='confirmPassword'>Confirm password</label>
                             <input type='password' id='confirmPassword' name='password2' className='form-control' />
                         </div>
-                        <input type='text' name='overrideKey' value={overrideKey} hidden />
                         <button type='submit' className='primary w-100'>Sign Up</button>
+                        <input name='key' value={overrideKey} onChange={() => {}} hidden />
                     </Form>
                 </div>
             </div>
