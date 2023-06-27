@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { GetUser, SaveProfile } from '../../../api/users';
@@ -30,13 +30,16 @@ export default function Profile() {
     const { status, data: userData, error } = useQuery({
         queryKey: ['user', userID],
         queryFn: () => GetUser(userID),
-        onSuccess: (data) => data.Introduction && setIntroduction(data.Introduction),
     });
 
     const save = useMutation({
         mutationFn: SaveProfile,
         onSettled: () => setShowSave(false),
     });
+
+    useEffect(() => {
+        if (userData !== undefined) setIntroduction(userData.Introduction || '');
+    }, [userData]);
     
     if (status === 'loading') {
         return (
@@ -110,14 +113,10 @@ export default function Profile() {
                 <div className='trackers'>
                     <LevelTracker levelID={userData.Hardest} title='Hardest' />
                     <LevelTracker levelID={userData.Favorite} title='Favorite' />
-                    <LevelTracker levelID={userData.LeastFavorite} title='LeastFavorite' />
+                    <LevelTracker levelID={userData.LeastFavorite} title='Least favorite' />
                     <div className='tracker'>
-                        <p>Minimum tier preference:</p>
-                        <p>{userData.MinPref || '-'}</p>
-                    </div>
-                    <div className='tracker'>
-                        <p>Maximum tier preference:</p>
-                        <p>{userData.MaxPref || '-'}</p>
+                        <p>Tier preference:</p>
+                        <p>{userData.MinPref || '-'} to {userData.MaxPref || '-'}</p>
                     </div>
                     <div className='tracker'>
                         <p>Average enjoyment:</p>

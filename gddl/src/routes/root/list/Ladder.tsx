@@ -157,9 +157,9 @@ export default function Ladder() {
                 <Content />
             </div>
             <div className='d-flex align-items-center'>
-                <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='' /></button>
-                <p className='text-center m-0 mx-5 fs-3'>{pageIndex + 1} / {(searchData && Math.ceil(searchData.count/16)) || 0}</p>
-                <button className='page-scroller' onClick={pageUp}><img src={caretR} alt='' /></button>
+                <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='Previous page' /></button>
+                <p className='text-center m-0 mx-5 fs-3 cursor-default'>{pageIndex + 1} / {(searchData && Math.ceil(searchData.count/16)) || 0}</p>
+                <button className='page-scroller' onClick={pageUp}><img src={caretR} alt='Next page' /></button>
             </div>
         </div>
     );

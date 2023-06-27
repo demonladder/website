@@ -1,6 +1,5 @@
 import React from 'react';
 import DemonLogo from '../../../components/DemonLogo';
-import { ToFixed } from '../../../functions';
 import IDButton from '../../../components/IDButton';
 import { Level as TLevel } from '../../../api/levels';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,12 +11,12 @@ type Props = {
 
 function Header() {
     return (
-        <div className='level head ps-2'>
+        <div className='level head ps-2 cursor-default'>
             <h4 className='col-10 col-sm-7 col-md-7 col-lg-6 col-xl-4'>Level Name</h4>
             <h4 className='col-sm-3 col-md-3 col-lg-3 col-xl-2 d-none d-sm-inline-block'>Creator</h4>
             <h4 className='col-xl-3 d-none d-xl-block'>Song</h4>
             <h4 className='col-lg-2 col-xl-2 d-none d-lg-block text-center'>ID</h4>
-            <h4 className='col-lg-1 col-md-2 col-2 d-flex justify-content-center'><p className='align-self-center'>Rating</p></h4>
+            <h4 className='col-lg-1 col-md-2 col-2 d-flex justify-content-center'><p className='align-self-center'>Tier</p></h4>
         </div>
     );
 }
@@ -52,16 +51,19 @@ function Grid({ info }: Props) {
 }
 
 function Level({ info }: Props) {
+    const roundedTier = Math.round(info.Rating) || '-';
+    const tierClass = 'tier-' + Math.round(info.Rating);
+
     return (
         <div className='level list ps-2'>
             <h3 className='col-xl-4 col-lg-6 col-md-7 col-sm-7 col-10 m-0 align-self-center'>
-                <Link to={'/level/' + info.ID} className='underline-p'>{info.Name}</Link>
+                <Link to={'/level/' + info.ID} className='underline-p text-break'>{info.Name}</Link>
             </h3>
 
-            <div className='col-xl-2 col-lg-3 col-md-3 d-none d-sm-inline-block col-sm-3 align-self-center'><p>{info.Creator}</p></div>
-            <div className='col-xl-3 d-none d-xl-block align-self-center'><p>{info.Song}</p></div>
+            <div className='col-xl-2 col-lg-3 col-md-3 d-none d-sm-inline-block col-sm-3 align-self-center'><p className='cursor-default'>{info.Creator}</p></div>
+            <div className='col-xl-3 d-none d-xl-block align-self-center'><p className='cursor-default'>{info.Song}</p></div>
             <div className='col-xl-2 col-lg-2 d-none d-lg-block align-self-center'><IDButton className='id-button underline-p' id={info.ID} /></div>
-            <div className={`col-lg-1 col-md-2 col-2 d-flex justify-content-center tier-${Math.floor(info.Rating)}`}><p className='align-self-center'>{ToFixed(''+info.Rating, 2, '-')}</p></div>
+            <div className={`col-lg-1 col-md-2 col-2 d-flex justify-content-center ${tierClass}`}><p className='align-self-center cursor-default'>{roundedTier}</p></div>
         </div>
     );
 }

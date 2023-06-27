@@ -509,6 +509,7 @@ button.danger:active {
 }
 .level-list .level.list {
   padding: 0;
+  min-height: 50px;
 }
 .level-list .level.list a {
   color: white;
@@ -649,18 +650,13 @@ button.list.active {
   color: white;
   border: 2px solid white;
   flex-grow: 1;
-  transition-duration: 0.1s;
+  transition: transform 0.1s ease-in-out;
   align-items: center;
   padding: 0.6rem 2rem;
 }
-.page-scroller img {
-  filter: invert(100%) brightness(100%);
-}
-
 .page-scroller:hover {
   transform: scale(1.1);
 }
-
 .page-scroller:active {
   transform: scale(1.15);
 }
@@ -855,10 +851,13 @@ button.open-extended:hover {
 .profile .information .introduction {
   background: rgb(32, 32, 32);
   padding: 1rem;
-  min-width: 25%;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
 }
 .profile .information .introduction textarea {
-  padding: 0;
+  padding: 0.25rem;
+  flex-grow: 1;
 }
 .profile .information .introduction .label {
   margin: 0;
@@ -868,10 +867,10 @@ button.open-extended:hover {
   padding: 1rem;
   display: grid;
   grid-template-columns: 1fr;
-  column-gap: 2rem;
+  column-gap: 0.5rem;
   flex-grow: 1;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .profile .information .trackers {
     grid-template-columns: 1fr 1fr;
   }
@@ -880,9 +879,6 @@ button.open-extended:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-}
-.profile .information .trackers .tracker * {
-  margin: 0;
 }
 .profile .information .trackers .tracker a {
   color: white;
@@ -894,7 +890,10 @@ button.open-extended:hover {
 .profile .ratings .submission {
   display: grid;
   padding-left: 0.75rem;
-  grid-template-columns: 12fr 3fr 2fr;
+  grid-template-columns: 12fr 2fr 2fr;
+}
+.profile .ratings .submission.header h3 {
+  font-weight: 700;
 }
 .profile .ratings .submission .enjoyment, .profile .ratings .submission .user-rating {
   display: flex;
@@ -907,9 +906,14 @@ button.open-extended:hover {
 .profile .ratings .submission .level-name {
   padding-top: 0.3rem;
 }
+@media (max-width: 576px) {
+  .profile .ratings .submission {
+    grid-template-columns: 9fr 2fr 2fr;
+  }
+}
 @media (min-width: 992px) {
   .profile .ratings .submission {
-    grid-template-columns: 12fr 3fr 2fr;
+    grid-template-columns: 12fr 2fr 2fr;
   }
   .profile .ratings .submission .rating {
     display: flex;
@@ -919,7 +923,7 @@ button.open-extended:hover {
 }
 @media (min-width: 1200px) {
   .profile .ratings .submission {
-    grid-template-columns: 12fr 6fr 3fr 2fr;
+    grid-template-columns: 5fr 4fr 1fr 1fr;
   }
   .profile .ratings .submission .creator {
     display: flex;
@@ -1079,16 +1083,12 @@ input:not([type=radio]):not([type=checkbox]),
 select {
   outline: none;
   background: hsla(0deg, 0%, 0%, 0.132);
-  color: white;
-  border: none;
   caret-color: white;
+  color: white;
   transition: ease-in-out;
   transition-duration: 200ms;
   border-bottom: 2px solid white;
-  border-radius: 0;
   height: 28px;
-  min-width: 0;
-  display: block;
   width: 100%;
   padding-left: 0.4rem;
 }
@@ -1097,15 +1097,21 @@ input[type=text],
 input[type=number] {
   background: rgba(0, 0, 0, 0.132);
   border: none;
-  border-radius: 0;
-  display: block;
-  width: 100%;
-  color: white;
 }
 input[type=text]:focus,
 input[type=number]:focus {
   background: rgba(0, 0, 0, 0.295);
   box-shadow: 0 0 30px 5px rgba(89, 89, 89, 0.2);
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 label.disabled {
@@ -1121,7 +1127,6 @@ input[type=checkbox],
 input[type=radio] {
   appearance: none;
   margin: 0;
-  color: currentColor;
   width: 1.1rem;
   height: 1.1rem;
   border: 1px solid currentColor;
@@ -1198,7 +1203,7 @@ textarea {
   background: transparent;
   color: currentColor;
   border: none;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid currentColor;
   resize: none;
 }
 
@@ -1360,8 +1365,31 @@ textarea {
   min-height: 40px;
 }
 
-.search-box {
-  position: relative;
+.searchBox {
+  color: black;
+}
+.searchBox .result {
+  color: white;
+}
+.searchBox.userSearchBox input {
+  color: black;
+  caret-color: black;
+}
+
+::placeholder {
+  color: currentColor;
+  opacity: 0.5;
+}
+
+#navbar {
+  color: black;
+}
+#navbar a {
+  color: currentColor;
+  font-size: 1.25rem;
+}
+#navbar a.active {
+  font-weight: 700;
 }
 
 body {
@@ -1418,6 +1446,9 @@ a.link-disable {
   :root {
     font-size: 14px;
   }
+}
+p {
+  margin: 0;
 }
 
 /*# sourceMappingURL=styles.css.map */

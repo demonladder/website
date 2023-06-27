@@ -9,11 +9,12 @@ type Props = {
     status: string,
     id?: string,
     className?: string,
+    placeholder?: string,
 }
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox({ list, update, setResult, status, id, className }: Props) {
+export default function SearchBox({ list, update, setResult, status, id, className, placeholder = 'Search...' }: Props) {
     const [search, setSearch] = useState('');  // The value the user types into the input field
     const [visible, setVisible] = useState(false);  // State of the search results
 
@@ -56,8 +57,8 @@ export default function SearchBox({ list, update, setResult, status, id, classNa
     }
     
     return (
-        <div className={'search-box ' + ((className && className) || '')}>
-            <input id={id} type='text' onKeyDown={keyDown} value={search} placeholder='Search...' onChange={onChange} onFocus={() => setVisible(true)} />
+        <div className={'searchBox ' + ((className && className) || '')}>
+            <input id={id} type='text' onKeyDown={keyDown} value={search} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} />
             <div className={(visible ? 'd-block' : 'd-none') + ' search-result'} style={{zIndex: 5}}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :

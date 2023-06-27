@@ -25,7 +25,11 @@ export default function PageButtons({ onPageChange, page, meta, loadingState }: 
                 <button className='primary px-2' onClick={() => onPageChange(meta.previousPage)}>{'<'}</button>
             </div>
             }
-            <p className='m-0'>Page {page}/{meta.pages}</p>
+            <div className='d-flex align-items-center gap-1'>
+                <p className='m-0'>Page</p>
+                <input type='number' value={page} onChange={(e) => onPageChange(parseInt(e.target.value) || 1)} style={{width: '2.2rem'}} />
+                <p>/{meta.pages}</p>
+            </div>
             {loadingState === 'fetching' && <LoadingSpinner />}
             {page !== meta.nextPage &&  // If the current page is not the last, render button
             <div className='d-flex gap-2'>

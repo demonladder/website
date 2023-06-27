@@ -5,17 +5,14 @@ input:not([type="radio"]):not([type="checkbox"]),
 select {
     outline: none;
     background: Colors.$input-bg;
-    color: white;
-    border: none;
     caret-color: white;
+    color: white;
     transition: ease-in-out;
     transition-duration: 200ms;
     border-bottom: 2px solid white;
-    border-radius: 0;
     height: 28px;
-    min-width: 0;
-    display: block;
     width: 100%;
+    //display: block;
     padding-left: 0.4rem;
 }
 
@@ -23,15 +20,22 @@ input[type=text],
 input[type=number] {
     background: rgba(0, 0, 0, 0.132);
     border: none;
-    border-radius: 0;
-    display: block;
-    width: 100%;
-    color: white;
+    //display: block;
 
     &:focus {
         background: rgba(0, 0, 0, 0.295);
         box-shadow: 0 0 30px 5px adjust-color($color: Colors.$primary, $alpha: -0.8);
     }
+}
+
+//Remove arrows from input
+input[type=number] {
+    -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 $disabled-col:rgb(0, 0, 0)!important;
@@ -48,7 +52,6 @@ input[type=radio] {
     appearance: none;
     margin: 0;
 
-    color: currentColor;
     width: 1.1rem;
     height: 1.1rem;
     border: 1px solid currentColor;
@@ -133,6 +136,6 @@ textarea {
     background: transparent;
     color: currentColor;
     border: none;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid currentColor;
     resize: none;
 }

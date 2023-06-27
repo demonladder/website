@@ -57,16 +57,16 @@ const router = createBrowserRouter(
           path: 'pack/:packID',
           element: <PackOverview />
         },
-        {
-          path: 'login',
-          element: <Login />,
-          action: Login.loginAction,
-        },
-        {
-          path: 'signup',
-          element: <SignUp />,
-          action: SignUp.Action,
-        },
+        // {
+        //   path: 'login',
+        //   element: <Login />,
+        //   action: Login.loginAction,
+        // },
+        // {
+        //   path: 'signup',
+        //   element: <SignUp />,
+        //   action: SignUp.Action,
+        // },
         {
           path: 'profile/:userID',
           element: <Profile />,

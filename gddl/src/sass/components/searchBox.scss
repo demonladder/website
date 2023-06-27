@@ -1,3 +1,17 @@
-.search-box {
-    position: relative;
+.searchBox {
+    color: black;
+
+    .result {
+        color: white;
+    }
+
+    &.userSearchBox input {
+        color: black;
+        caret-color: black;
+    }
+}
+
+::placeholder {
+    color: currentColor;
+    opacity: 0.5;
 }

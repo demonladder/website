@@ -21,5 +21,5 @@ export default function UserSearchBox({ setResult, id }: Props) {
     }
 
     if (users === undefined) return <></>;
-    return <SearchBox id={id} list={users.map((d) => ({...d, label: d.Name}))} update={update} setResult={setResult} status={status} />
+    return <SearchBox id={id} className='userSearchBox' list={users.map((d) => ({...d, label: d.Name}))} update={update} setResult={setResult} status={status} placeholder='Search user...' />
 }

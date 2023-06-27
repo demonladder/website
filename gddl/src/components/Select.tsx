@@ -33,7 +33,7 @@ export default function Select({ options, onChange, zIndex = 1001, id }: Props) 
         return () => {
             document.removeEventListener('click', onClick);
         }
-    }, []);
+    }, [id]);
 
     return (
         <div className='style-input custom-select' onClick={() => setOpen(prev => !prev)}>

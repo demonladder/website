@@ -80,7 +80,7 @@ export default function FilterMenu({ filter, setExtended, show }: Props) {
             <div className='filterMenu'>
                 <div className='content'>
                     <div className='d-flex justify-content-between mb-3'>
-                        <h2 className='m-0'>Filters</h2>
+                        <h2 className='m-0' style={{color: 'currentColor'}}>Filters</h2>
                         <button className='danger' onClick={reset}>Reset</button>
                     </div>
                     <div className='d-flex flex-column gap-3'>

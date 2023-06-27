@@ -1,0 +1,12 @@
+#navbar {
+    color: black;
+
+    a {
+        color: currentColor;
+        font-size: 1.25rem;
+
+        &.active {
+            font-weight: 700;
+        }
+    }
+}
