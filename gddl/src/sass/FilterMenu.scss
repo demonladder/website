@@ -1,5 +1,6 @@
 @use 'Colors';
 @use 'Utils';
+@use 'themes';
 
 .filterMenuWrapper {
     display: grid;
@@ -13,7 +14,10 @@
 }
 
 .filterMenu {
-    background-color: Colors.$filter-bg;
+    @include themes.themed() {
+        background-color: themes.t('filter-bg');
+    }
+    
     min-height: 0;
 
     > .content {

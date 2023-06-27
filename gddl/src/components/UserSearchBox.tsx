@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import SearchBox from './SearchBox';
+import SearchBox from './SearchBox/SearchBox';
 import { SearchUser } from '../api/users';
 
 type Props = {

@@ -1,12 +1,10 @@
 @use 'Colors';
 @use 'Container';
 @use 'Header';
-@use 'Padding';
 @use 'ListLevel';
 @use 'List';
 @use 'FilterMenu';
 @use 'References';
-@use 'Profile';
 @use 'Root';
 @use 'LevelOverview';
 @use 'Login';
@@ -16,6 +14,7 @@
 @use 'Mod';
 @use 'Modal';
 @use 'Tabs';
+@use 'themes';
 
 @use 'components/components';
 
@@ -27,7 +26,10 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    background-color: Colors.$background;
+    @include themes.themed() {
+        background-color: themes.t('bg');
+        color: themes.t('text');
+    }
 }
 
 code {
@@ -45,10 +47,6 @@ code {
 
 .navbar-toggler {  // Removes the stupid 1px border around the navbar toggler
     border: none;
-}
-
-.nav-link.active {
-    font-weight: bold;
 }
 
 .bg {

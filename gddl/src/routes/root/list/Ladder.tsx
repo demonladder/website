@@ -6,6 +6,7 @@ import caretR from '../../../icons/caret-r.svg';
 import caretL from '../../../icons/caret-l.svg';
 import { ReactComponent as ListSVG } from '../../../icons/list.svg';
 import { ReactComponent as GridSVG } from '../../../icons/grid.svg';
+import { ReactComponent as Cross } from '../../../icons/cross.svg';
 import SortMenu from './SortMenu';
 import { Level as TLevel, SearchLevels } from '../../../api/levels';
 import { useQuery } from '@tanstack/react-query';
@@ -135,9 +136,11 @@ export default function Ladder() {
         <div className='container'>
             <h1>The Ladder</h1>
             <div className='d-flex align-items-center search'>
-                <div className='search-bar'>
+                <div className='searchBar'>
                     <input type='text' placeholder='Search level name...' value={search} onChange={onSearchChange} />
-                    <button className='clear-search' onClick={clearSearch}>X</button>
+                    <button className='clearSearch' onClick={clearSearch}>
+                        <Cross />
+                    </button>
                 </div>
                 <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={() => setShowFilters(prev => !prev)}>
                     <img src={filterEmpty} alt='' />

@@ -1,30 +1,34 @@
 @use 'Colors';
+@use 'themes';
 
 input:not([type="radio"]):not([type="checkbox"]),
 .style-input,
 select {
     outline: none;
-    background: Colors.$input-bg;
     caret-color: white;
     color: white;
     transition: ease-in-out;
     transition-duration: 200ms;
+    border: none;
     border-bottom: 2px solid white;
     height: 28px;
     width: 100%;
     //display: block;
     padding-left: 0.4rem;
+    border-radius: 0;
+
+    @include themes.themed() {
+        background: themes.t('input-bg');
+    }
 }
 
 input[type=text],
 input[type=number] {
     background: rgba(0, 0, 0, 0.132);
-    border: none;
-    //display: block;
 
     &:focus {
         background: rgba(0, 0, 0, 0.295);
-        box-shadow: 0 0 30px 5px adjust-color($color: Colors.$primary, $alpha: -0.8);
+        box-shadow: 0 0 30px 5px adjust-color($color: black, $alpha: -0.8);
     }
 }
 
@@ -107,8 +111,11 @@ input[type=radio] {
             & > p {
                 margin: 0;
                 padding: 0.125rem 0.5rem;
-                background: Colors.$select-bg;
                 transition: filter 200ms;
+
+                @include themes.themed() {
+                    background-color: themes.t('select-bg');
+                }
     
                 &:hover {
                     filter: brightness(90%);

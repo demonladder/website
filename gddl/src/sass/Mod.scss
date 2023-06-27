@@ -1,15 +1,22 @@
 @use 'Colors';
+@use 'themes';
 
 #mod-menu {
     a {
-        background: Colors.$filter-bg;
         padding: 1rem;
         text-decoration: none;
         transition: background-color 200ms ease-in-out;
 
+        @include themes.themed() {
+            background-color: themes.t('filter-bg');
+        }
+
         &.active {
-            background: Colors.$primary;
             color: white;
+
+            @include themes.themed() {
+                background-color: themes.t('primary');
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { SearchPacks } from '../api/packs';
-import SearchBox from './SearchBox';
+import SearchBox from './SearchBox/SearchBox';
 
 type Props = {
     setResult: (e: any) => void,

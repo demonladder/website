@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './sass/styles.css';
+import './sass/styles.scss';
 import Root from './routes/root/Root';
 import Index from './routes/root/RootIndex';
 import Ladder from './routes/root/list/Ladder';
@@ -57,16 +57,16 @@ const router = createBrowserRouter(
           path: 'pack/:packID',
           element: <PackOverview />
         },
-        // {
-        //   path: 'login',
-        //   element: <Login />,
-        //   action: Login.loginAction,
-        // },
-        // {
-        //   path: 'signup',
-        //   element: <SignUp />,
-        //   action: SignUp.Action,
-        // },
+        {
+          path: 'login',
+          element: <Login />,
+          action: Login.loginAction,
+        },
+        {
+          path: 'signup',
+          element: <SignUp />,
+          action: SignUp.Action,
+        },
         {
           path: 'profile/:userID',
           element: <Profile />,

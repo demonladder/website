@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { AxiosError } from 'axios';
 import { Form, redirect, useActionData, useLocation } from 'react-router-dom';
 import { StorageManager } from '../../../storageManager';
@@ -18,8 +18,9 @@ function Action({ request }: { request: any }) {
         }
         
         // Make post request
-        return instance.post('/login/signup', { username: data.username, password: data.password, overrideKey: data.key }).then((res) => {
+        return instance.post('/login/signup', { username: data.username, password: data.password, overrideKey: data.key }, { withCredentials: true }).then((res) => {
             StorageManager.setCSRF(res.data.csrfToken);
+            StorageManager.setUser(res.data.jwt);
             
             return redirect('/');
         }).catch((error: AxiosError) => {
@@ -38,20 +39,22 @@ function Action({ request }: { request: any }) {
 
 function SignUp() {
     const actionResponse: any = useActionData();
-    const overrideKey = new URLSearchParams(useLocation().search).get('key') || '';
+    const url = new URLSearchParams(useLocation().search);
+    const overrideKey = url.get('key') || '';
+    const [username, setUsername] = useState(url.get('name') || '');
 
     return (
         <div className='container'>
             <div className='d-flex justify-content-center'>
                 <div className='w-75 w-md-50'>
                     <h1 className='mb-3 fw-normal text-white'>Sign Up</h1>
-                    <div>
+                    <div className='my-4'>
                         <p>Already have your name on the sheet? Contact the mod team to get an alternative sign up link.</p>
                     </div>
                     <Form method='post' action='/signup'>
                         <div className='mb-3'>
                             <label htmlFor='username'>Username</label>
-                            <input type='text' id='username' name='username' className='form-control' />
+                            <input type='text' id='username' value={username} onChange={(e) => setUsername(e.target.value)} name='username' className='form-control' />
                         </div>
                         <div className='mb-3'>
                             <label htmlFor='password'>Password</label>

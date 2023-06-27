@@ -14,7 +14,9 @@ function Root() {
         <meta property="og:description" content="The project to improve demon difficulties" />
       </Helmet>
       <Header />
-      <Outlet />
+      <div className='mt-4'>
+        <Outlet />
+      </div>
     </>
   );
 }

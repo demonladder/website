@@ -1,0 +1,36 @@
+@use '../../sass/themes';
+
+.searchBox {
+    .navbar &.userSearchBox input {
+        color: black;
+        caret-color: black;
+    }
+
+    .searchResult {
+        position: absolute;
+        padding: 0.5rem;
+        
+        @include themes.themed() {
+            background-color: themes.t('select-bg');
+        }
+    
+        .resultItem {
+            padding: 0.25rem;
+            transition: background-color 200ms ease-in-out;
+            color: white;
+            
+            &:hover {
+                cursor: pointer;
+
+                @include themes.themed() {
+                    background-color: themes.t('filter-bg');
+                }
+            }
+        }
+    }
+}
+
+::placeholder {
+    color: currentColor;
+    opacity: 0.5;
+}

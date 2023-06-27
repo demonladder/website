@@ -1,5 +1,5 @@
-@use 'Utils';
-@use 'Colors';
+@use '../../../sass/Utils';
+@use '../../../sass/Colors';
 
 .pfp {
     width: 48px;
@@ -8,23 +8,6 @@
 .style-none {
     background-color: none;
     border: none;
-}
-
-.search-result {
-    position: absolute;
-    background-color: Colors.$select-bg;
-    //color: white;
-    padding: 0.5rem;
-
-    .result {
-        padding: 0.25rem;
-        transition: background-color 200ms ease-in-out;
-        
-        &:hover {
-            background-color: Colors.$filter-bg;
-            cursor: pointer;
-        }
-    }
 }
 
 .profile {

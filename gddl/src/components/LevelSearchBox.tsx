@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { Level, SearchLevels } from '../api/levels';
-import SearchBox from './SearchBox';
+import SearchBox from './SearchBox/SearchBox';
 
 type Props = {
     setResult: (e: any) => void,

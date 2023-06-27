@@ -1,16 +1,16 @@
 @use 'Colors';
+@use 'themes';
 
 //Re-adjusts bootstrap container width so it's thinner across all breakpoints.
 
 .container {
     width: 100%;
-    background-color: Colors.$background-light;
     padding: 30px 40px;
     margin-bottom: 5rem;
-}
-
-.root .container {
-    background-color: adjust-color(Colors.$background-light, $alpha: -0.1);
+    
+    @include themes.themed() {
+        background-color: themes.t('bg-light');
+    }
 }
 
 @media (min-width: 992px) {

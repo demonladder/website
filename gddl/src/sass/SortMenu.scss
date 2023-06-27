@@ -1,4 +1,5 @@
 @use 'Colors';
+@use 'themes';
 
 .sortMenuWrapper {
     position: absolute;
@@ -16,7 +17,10 @@
 }
 
 .sortMenu {
-    background-color: Colors.$select-bg;
+    @include themes.themed() {
+        background-color: themes.t('select-bg');
+    }
+
     min-height: 0;
 
     width: max-content;

@@ -1,12 +1,10 @@
 import React from 'react';
 import { tierToIcon } from '../../../components/DemonLogo';
-import { Link, useNavigation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { StorageManager, User } from '../../../storageManager';
 
 export default function ProfileButtons({ className = '' }: { className?: string }) {
-    useNavigation();  // Used to re-render this component whenever location changes.
-    return <></>;
-    
+    return null;
     if (!StorageManager.hasSession()) {
         localStorage.removeItem('csrf');
         return <LoginButton className={className} />
@@ -30,7 +28,7 @@ function ProfileButton({ user, className = '' }: { user: User | null, className?
 
 function LoginButton({ className = '' }: { className?: string}) {
     return (
-        <div className={'py-2 d-flex align-items-center gap-3' + (className !== undefined ? ' '+className : '')}>
+        <div className={'py-2 d-flex align-items-center gap-3 ' + className}>
             <Link to='/signup' className='signUp align-middle'>Sign up</Link>
             <Link to='/login' className='log-in align-middle'>Log in</Link>
         </div>

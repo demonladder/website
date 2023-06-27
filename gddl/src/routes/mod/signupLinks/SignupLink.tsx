@@ -7,8 +7,10 @@ import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/users';
 
 function Token({ token }: { token: TokenPair }) {
-    function linkClick(e: any, token: string ) {
-        navigator.clipboard.writeText('https://gdladder.com/signup?key=' + token);
+    const link = 'https://gdladder.com/signup?key=' + token.Token + '&name=' + token.UserName;
+
+    function linkClick(e: any ) {
+        navigator.clipboard.writeText(link);
 
         e.target.classList.remove('bg-fade');
         setTimeout(() => {
@@ -19,7 +21,7 @@ function Token({ token }: { token: TokenPair }) {
     return (
         <div>
             <b className='mb-0'>{token.UserName}:</b>
-            <p className='text-break cursor-pointer underline' onClick={(e) => linkClick(e, token.Token)}>https://gdladder.com/signup?key={token.Token}</p>
+            <p className='text-break cursor-pointer underline' onClick={(e) => linkClick(e)}>{link}</p>
         </div>
     );
 }
@@ -50,7 +52,7 @@ export default function SignupLink() {
     return (
         <div>
             <h3 className='mb-3'>Get Sign-up Link</h3>
-            <p>Generate a one-time sign-up link for an existing user. Anyone with the link can create a password for the listed username.</p>
+            <p className='mb-3'>Generate a one-time sign-up link for an existing user. Anyone with the link can create a password for the listed username.</p>
             <div className='mb-3'>
                 <label htmlFor='tokenReceiver'>User:</label>
                 <UserSearchBox setResult={setResult} id='tokenReceiver' />

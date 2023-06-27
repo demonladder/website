@@ -12,6 +12,7 @@ import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
 import logout from '../../../api/logout';
 import { AxiosError } from 'axios';
+import './styles.scss';
 
 function Container({ children }: { children: React.ReactNode}) {
     return (

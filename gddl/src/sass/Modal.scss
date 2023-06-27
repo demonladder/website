@@ -1,4 +1,4 @@
-@use 'Colors';
+$modal: hsl(0, 0%, 35%);
 
 .cmodal {
     position: fixed;
@@ -31,7 +31,7 @@
         opacity: 0;
         transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
 
-        background: Colors.$modal;
+        background: $modal;
 
         > * {
             padding: 1.5rem 1.5rem;

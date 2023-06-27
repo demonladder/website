@@ -7,7 +7,7 @@ type Props = {
 
 export default function SearchResult({ msg, onClick }: Props) {
     return (
-        <div className='result'>
+        <div className='resultItem'>
             <p className='m-0' onClick={onClick}>{msg}</p>
         </div>
     );

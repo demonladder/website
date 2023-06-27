@@ -39,7 +39,7 @@ $tier-colors: (
     "33": #331700,
     "34": #231300,
     "35": #110A00,
-    "36": #000
+    "36": #000000,
 );
 @each $name, $color in $tier-colors {  // Create class definitions
     .tier-#{$name} {
@@ -47,6 +47,7 @@ $tier-colors: (
     }
 }
 
+// Background is too bright, make text black:
 .tier-1, .tier-2, .tier-3, .tier-4, .tier-5,
 .tier-6, .tier-7, .tier-8, .tier-9, .tier-10,
 .tier-11, .tier-12, .tier-13, .tier-14, .tier-15 {
@@ -94,24 +95,18 @@ $refresh-colors: (
 
 // Original theme: #EFA51C
 $theme: #EFA51C;
-$background: hsl(306, 0%, 10%);
-$text: hsl(0, 0%, 100%);
-$background-light: adjust-color($background, $lightness: 5%);
 
 $active: rgb(255, 255, 255);
 
-$primary: adjust-color($background, $lightness: 25%);
-$header: #EFA51C;
-
 $transparent: hsla(0, 0%, 100%, 0);
 
-$filter-bg: adjust-color($background-light, $lightness: 3%);
-$input-bg: hsla(0, 0%, 0%, 0.132);
-$select-bg: adjust-color($filter-bg, $lightness: 15%);
+@media(prefers-color-scheme: light) {
+    :root {
+        --background-col: hsl(0, 0%, 100%);
+    }
+}
 
 $save: hsl(120, 70%, 49%);
 $save-hover: adjust-color($save, $lightness: -10%);
 $save-active: adjust-color($save-hover, $lightness: -10%);
 $save-disabled: adjust-color($save-hover,  $saturation: -100%);
-
-$modal: hsl(0, 0%, 35%);

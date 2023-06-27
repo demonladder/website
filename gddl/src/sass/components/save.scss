@@ -1,4 +1,5 @@
 @use '../Colors';
+@use '../themes';
 
 .save-dialogue {
     position: fixed;
@@ -6,9 +7,12 @@
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 0);
-    background-color: Colors.$background-light;
     padding: 1.5rem 2rem;
     pointer-events: none;
+
+    @include themes.themed() {
+        background-color: themes.t('bg-light');
+    }
 
     transition: transform 200ms ease-in, opacity 200ms ease-in;
 

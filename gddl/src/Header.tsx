@@ -21,16 +21,16 @@ export default function Header() {
 
     return (
         <>
-            <Navbar expand='lg' className='py-2 py-sm-3 py-md-4 px-3 px-sm-4 px-md-5 mb-4' collapseOnSelect={true} onSelect={(e) => console.log(e)}>
+            <Navbar expand='xxl' className='py-4 px-5' >
                 <Container fluid>
                     <Navbar.Brand><Link to='/' className='title'>GDDLadder</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls='navbar' color='black'>
-                        <svg width='1.5em' height='1.5em' viewBox='0 0 30 30' stroke='black' strokeLinecap='round' strokeMiterlimit='10' strokeWidth='2'>
+                        <svg width='30px' height='30px' viewBox='0 0 30 30' stroke='black' strokeWidth='2'>
                             <path d='M4 7h22M4 15h22M4 23h22' />
                         </svg>
                     </Navbar.Toggle>
                     <Navbar.Collapse id='navbar'>
-                        <Nav navbar className='me-auto gap-2 gap-lg-3'>
+                        <Nav navbar className='me-auto gap-2 gap-xxl-3'>
                             <div><NavLink to='/list' className='underline'>The Ladder</NavLink></div>
                             <div><NavLink to='/references' className='underline'>Reference Demons</NavLink></div>
                             <div><NavLink to='/packs' className='underline'>Packs</NavLink></div>

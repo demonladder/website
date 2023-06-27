@@ -56,9 +56,9 @@ function Level({ info }: Props) {
 
     return (
         <div className='level list ps-2'>
-            <h3 className='col-xl-4 col-lg-6 col-md-7 col-sm-7 col-10 m-0 align-self-center'>
+            <h4 className='col-xl-4 col-lg-6 col-md-7 col-sm-7 col-10 m-0 align-self-center'>
                 <Link to={'/level/' + info.ID} className='underline-p text-break'>{info.Name}</Link>
-            </h3>
+            </h4>
 
             <div className='col-xl-2 col-lg-3 col-md-3 d-none d-sm-inline-block col-sm-3 align-self-center'><p className='cursor-default'>{info.Creator}</p></div>
             <div className='col-xl-3 d-none d-xl-block align-self-center'><p className='cursor-default'>{info.Song}</p></div>

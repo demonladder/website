@@ -1,7 +1,10 @@
 @use 'Colors';
+@use 'themes';
 
 .bg-gddl {
-    background-color: Colors.$background;
+    @include themes.themed() {
+        background-color: themes.t('bg');
+    }
 }
 
 .topnav {
@@ -31,8 +34,11 @@
 }
 
 .navbar {
-    background: Colors.$header;
     color: black;
+    
+    @include themes.themed() {
+        background: themes.t('theme');
+    }
 }
 
 button.navbar-toggler {

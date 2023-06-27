@@ -69,23 +69,26 @@ ul {
         border-radius: 0;
     }
 
-    .search-bar {
+    .searchBar {
         flex-grow: 1;
-        margin: 0.5rem;
         position: relative;
         
-        .clear-search {
+        .clearSearch {
             position: absolute;
             right: 0;
-            top: -6px;
+            top: -8px;
             background: none;
             border: none;
             color: white;
             opacity: 0;
-
+            transition: opacity 200ms ease-in-out;
         }
 
-        &:hover .clear-search {
+        &:hover .clearSearch {
+            opacity: 1;
+        }
+
+        &:has(input:focus) .clearSearch {
             opacity: 1;
         }
     }
