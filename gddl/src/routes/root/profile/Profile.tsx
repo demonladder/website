@@ -80,7 +80,6 @@ export default function Profile() {
         if (!showSave) setShowSave(e.target.value !== userData.Introduction);
     }
 
-    const storedUser = StorageManager.getUser();
 
     if (userData === undefined) {
         return (
@@ -90,7 +89,20 @@ export default function Profile() {
         );
     }
 
+    const storedUser = StorageManager.getUser();
     const ownPage = StorageManager.hasSession() && userID === storedUser?.ID;
+
+    function calcPref() {
+        if (userData === undefined) return '-';
+
+        const { MinPref: minPref, MaxPref: maxPref } = userData;
+
+        if (minPref === null && maxPref === null) return '-';
+        if (minPref !== null && maxPref === null) return '>' + (minPref-1);
+        if (minPref === null && maxPref !== null) return '<' + (maxPref+1);
+
+        return minPref + ' to ' + maxPref;
+    }
     
     return (
         <Container key={userID}>
@@ -107,7 +119,7 @@ export default function Profile() {
                 <button className='secondary' onClick={logout} hidden={!ownPage}>Log out</button>
             </div>
             <div className='information'>
-                <div className='introduction'>
+                <div className='introduction w-100 w-sm-35'>
                     <p className='label'><b>Introduction:</b></p>
                     <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={!ownPage} autoCorrect='off' spellCheck={false} />
                 </div>
@@ -117,7 +129,7 @@ export default function Profile() {
                     <LevelTracker levelID={userData.LeastFavorite} title='Least favorite' />
                     <div className='tracker'>
                         <p>Tier preference:</p>
-                        <p>{userData.MinPref || '-'} to {userData.MaxPref || '-'}</p>
+                        <p>{calcPref()}</p>
                     </div>
                     <div className='tracker'>
                         <p>Average enjoyment:</p>

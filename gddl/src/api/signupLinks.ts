@@ -1,3 +1,4 @@
+import { StorageManager } from "../storageManager";
 import instance from "./axios";
 
 export type TokenPair = {
@@ -6,10 +7,12 @@ export type TokenPair = {
 }
 
 export async function SignupToken(tokenPair: TokenPair): Promise<void> {
-    await instance.post('/signupToken', { token: tokenPair.Token, username: tokenPair.UserName }, { withCredentials: true });
+    const csrfToken = StorageManager.getCSRF();
+    await instance.post('/signupToken', { token: tokenPair.Token, username: tokenPair.UserName }, { withCredentials: true, params: { csrfToken } });
 }
 
 export async function GetSignupTokens(): Promise<TokenPair[]> {
-    const res = await instance.get('/signupTokens', { withCredentials: true });
+    const csrfToken = StorageManager.getCSRF();
+    const res = await instance.get('/signupTokens', { withCredentials: true, params: { csrfToken } });
     return res.data;
 }

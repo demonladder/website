@@ -11,7 +11,7 @@ type Props = {
 export default function UserSearchBox({ setResult, id }: Props) {
     const [search, setSearch] = useState('');
 
-    const { status, data: users } = useQuery({
+    const { status, data: users = [] } = useQuery({
         queryKey: ['userSearch', search],
         queryFn: () => SearchUser(search)
     });
@@ -20,6 +20,5 @@ export default function UserSearchBox({ setResult, id }: Props) {
         setSearch(search);
     }
 
-    if (users === undefined) return <></>;
     return <SearchBox id={id} className='userSearchBox' list={users.map((d) => ({...d, label: d.Name}))} update={update} setResult={setResult} status={status} placeholder='Search user...' />
 }

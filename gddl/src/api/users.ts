@@ -1,5 +1,6 @@
 import { Submission } from "./submissions";
 import instance from "./axios";
+import { StorageManager } from "../storageManager";
 
 type UserSubmissions = {
     previousPage: number,
@@ -28,7 +29,7 @@ export type TinyUser = {
 }
 
 async function GetUser(userID: number): Promise<User> {
-    const res = await instance.get(`/user?userID=${userID}&all=true`);
+    const res = await instance.get(`/user?userID=${userID}`);
     return res.data;
 }
 
@@ -49,7 +50,8 @@ async function SaveProfile(user: User) {
 }
 
 async function PromoteUser(userID: number, permissionLevel: number) {
-    await instance.put('/user/promote', { userID, permissionLevel }, { withCredentials: true });
+    const csrfToken = StorageManager.getCSRF();
+    await instance.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });
 }
 
 export {

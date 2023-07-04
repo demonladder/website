@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet, redirect, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, redirect } from 'react-router-dom';
 import Header from '../../Header';
 import serverIP from '../../serverIP';
 import axios from 'axios';
@@ -17,25 +17,23 @@ async function modLoader() {
 }
 
 function Mod() {
-    const path = useLocation().pathname;
-    
     return (
         <div>
             <Header />
-            <div className='container'>
+            <div className='container mt-4'>
                 <div className='row gap-5'>
                     <div id='mod-menu' className='d-flex flex-column flex-shrink-0 p-3 m-0 col-12 col-md-5 col-lg-4'>
                         <h1>Mod page</h1>
                         <hr />
                         <div className='d-flex flex-column'>
-                            <Link className={`${path === '/mod' ? 'active' : 'link-light'}`} to='/mod'>Overview</Link>
-                            <Link className={`${path === '/mod/queue' ? 'active' : 'link-light'}`} to='/mod/queue'>Submissions queue</Link>
-                            <Link className={`${path === '/mod/deleteSubmission' ? 'active' : 'link-light'}`} to='/mod/deleteSubmission'>Delete submission</Link>
-                            <Link className={`${path === '/mod/promote' ? 'active' : 'link-light'}`} to='/mod/promote'>Promote user</Link>
-                            <Link className={`${path === '/mod/signupLinks' ? 'active' : 'link-light'}`} to='/mod/signupLinks'>Sign-up links</Link>
-                            <Link className={`${path === '/mod/createPack' ? 'active' : 'link-light'}`} to='/mod/createPack'>Create pack</Link>
-                            <Link className={`${path === '/mod/packs' ? 'active' : 'link-light'}`} to='/mod/packs'>Edit packs</Link>
-                            <Link className={`${path === '/mod/references' ? 'active' : 'link-light'}`} to='/mod/references'>Edit references</Link>
+                            <NavLink to='/mod' end>Overview</NavLink>
+                            <NavLink to='/mod/signupLinks'>Sign-up links</NavLink>
+                            <NavLink to='/mod/promote'>Promote user</NavLink>
+                            <NavLink to='/mod/queue'>Submissions queue</NavLink>
+                            <NavLink to='/mod/references'>Edit references</NavLink>
+                            <NavLink to='/mod/deleteSubmission'>Delete submission</NavLink>
+                            {/* <NavLink to='/mod/createPack'>Create pack</NavLink> */}
+                            {/* <NavLink to='/mod/packs'>Edit packs</NavLink> */}
                         </div>
                     </div>
                     <div className='col-12 col-md-6 col-lg-7'>

@@ -3,6 +3,7 @@
 @use 'utils/Width';
 @use 'utils/Cursor';
 @use 'utils/FontSize';
+@use 'utils/Information';
 
 @mixin underline {
     background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;

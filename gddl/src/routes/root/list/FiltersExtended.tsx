@@ -48,9 +48,11 @@ export default function FiltersExtended({ set, resetRef }: Props) {
             removeUnrated,
             removeUnratedEnj,
             removeRated,
-            removeRatedEnj
+            removeRatedEnj,
+            IDLow,
+            IDHigh,
         });
-    }, [subLowCount, subHighCount, enjLowCount, enjHighCount, devLow, devHigh, exactName, removeUnrated, removeUnratedEnj, removeRated, removeRatedEnj, set]);
+    }, [subLowCount, subHighCount, enjLowCount, enjHighCount, devLow, devHigh, exactName, removeUnrated, removeUnratedEnj, removeRated, removeRatedEnj, IDLow, IDHigh, set]);
 
     useImperativeHandle(resetRef, () => ({
         reset() {        
@@ -66,6 +68,8 @@ export default function FiltersExtended({ set, resetRef }: Props) {
             setRemoveRated(false);
             setRemoveRatedEnj(false);
             setRemoveCompleted(false);
+            setIDLow('');
+            setIDHigh('');
         }
     }));
 

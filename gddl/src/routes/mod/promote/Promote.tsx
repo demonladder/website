@@ -3,6 +3,9 @@ import UserSearchBox from '../../../components/UserSearchBox';
 import { PromoteUser, TinyUser } from '../../../api/users';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import WarningBox from '../../../components/message/WarningBox';
+import SuccessBox from '../../../components/message/SuccessBox';
 
 export default function Promote() {
     const [result, setResult] = useState<TinyUser>();
@@ -27,17 +30,17 @@ export default function Promote() {
     }
 
     function Response() {
-        if (promote.isSuccess) {
-            return <p>Sucess</p>
-        }
-
         if (promote.error) {
             if ((promote.error as AxiosError).response?.status === 403) {
-                return <p>Your permission level is not high enough</p>;
+                return <WarningBox text='Your permission level is not high enough!' />;
             }
 
-            return <p>An error ocurred</p>;
+            return <WarningBox text='An error ocurred!' />;
         }
+
+        if (promote.status === 'success') return <SuccessBox text='Success' />;
+
+        if (promote.status === 'loading') return <LoadingSpinner />;
     }
 
     return (
@@ -52,19 +55,17 @@ export default function Promote() {
                 <input type='number' value={permissionLevel} id='permissionLevel' onChange={(e) => setPermissionLevel(parseInt(e.target.value))} />
                 <button onClick={submit} className={'primary' + ((result?.PermissionLevel !== permissionLevel && result !== undefined) ? '' : ' d-none')}>Save</button>
             </div>
-            <div>
-                <Response />
-            </div>
+            <Response />
             <div>
                 <b className='mb-0'>Permission levels:</b>
-                <ul>
-                    <li>0: No permissions</li>
-                    <li>1: List helper</li>
-                    <li>2: Developer</li>
-                    <li>3: Moderator</li>
-                    <li>4: Admin</li>
-                    <li>5: Owner</li>
-                </ul>
+                <ol start={0}>
+                    <li>No permissions</li>
+                    <li>List helper</li>
+                    <li>Developer</li>
+                    <li>Moderator</li>
+                    <li>Admin</li>
+                    <li>Owner</li>
+                </ol>
             </div>
         </div>
     );

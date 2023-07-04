@@ -65,7 +65,7 @@ export default function SearchBox<T extends ListItem>({ list, update, setResult,
             <div className={(visible ? 'd-block' : 'd-none') + ' searchResult'} style={{zIndex: 5}}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :
-                    ((status === 'error' || list.length === 0) ? <p>No results</p> :
+                    ((status === 'error' || list.length === 0) ? <div className='resultItem'><p>No results</p></div> :
                     list.map(r => <SearchResult msg={r.label} onClick={() => handleClick(r)} key={r.label} />))
                 }
             </div>

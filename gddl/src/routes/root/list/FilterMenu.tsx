@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Select, { SelectOption } from '../../../components/Select';
 import FiltersExtended, { TExtendedFilters } from './FiltersExtended';
+import { useSessionStorage } from '../../../functions';
 
 export type Filters = {
     lowTier: string,
@@ -20,8 +21,8 @@ type Props = {
 
 export default function FilterMenu({ filter, setExtended, show }: Props) {
     const resetExtended = useRef();
-    const [lowTier, setLowTier] = useState('');
-    const [highTier, setHighTier] = useState('');
+    const [lowTier, setLowTier] = useSessionStorage('search.lowTier', '');
+    const [highTier, setHighTier] = useSessionStorage('search.highTier', '');
 
     function onLowTierChange(event: any) {
         let value: string|number = parseFloat(event.target.value);
@@ -33,23 +34,23 @@ export default function FilterMenu({ filter, setExtended, show }: Props) {
         setHighTier(value);
     }
 
-    const [difficulty, setDifficulty] = useState(0);
+    const [difficulty, setDifficulty] = useSessionStorage('search.difficulty', 0);
     function onDifficultyChange(val: SelectOption) {
         setDifficulty(val.key);
     }
 
-    const [creator, setCreator] = useState('');
+    const [creator, setCreator] = useSessionStorage('search.creator', '');
     function onCreatorChange(event: any) {
         setCreator(event.target.value);
     }
 
-    const [song, setSong] = useState('');
+    const [song, setSong] = useSessionStorage('search.song', '');
     function onSongChange(event: any) {
         setSong(event.target.value);
     }
 
-    const [enjLow, setEnjLow] = useState('');
-    const [enjHigh, setEnjHigh] = useState('');
+    const [enjLow, setEnjLow] = useSessionStorage('search.enjLow', '');
+    const [enjHigh, setEnjHigh] = useSessionStorage('search.enjHigh', '');
 
     useEffect(() => {
         filter({

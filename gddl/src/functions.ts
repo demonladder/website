@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+
 export function ParseDiff(diff: number): string {
     switch(diff) {
         case 0:
@@ -20,4 +22,14 @@ export function ParseDiff(diff: number): string {
 export function ToFixed(f: string, d: number, def: string): string {
     if (isNaN( parseFloat(f))) return def;
     return parseFloat(f).toFixed(d);
+}
+
+export function useSessionStorage(key: string, defaultValue: any) {
+    const [value, setValue] = useState(JSON.parse(sessionStorage.getItem(key) || '{}')?.value || defaultValue);
+
+    useEffect(() => {
+        sessionStorage.setItem(key, JSON.stringify({value}));
+    }, [value]);
+    
+    return [value, setValue];
 }

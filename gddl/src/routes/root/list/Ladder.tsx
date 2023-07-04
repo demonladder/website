@@ -11,6 +11,7 @@ import SortMenu from './SortMenu';
 import { Level as TLevel, SearchLevels } from '../../../api/levels';
 import { useQuery } from '@tanstack/react-query';
 import { TExtendedFilters } from './FiltersExtended';
+import { useSessionStorage } from '../../../functions';
 
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
@@ -20,31 +21,34 @@ export default function Ladder() {
     //
     // Filter levels
     //
-    const [filters, setFilters] = useState<Filters>({ lowTier: '', highTier: '', enjLow: '', enjHigh: '', difficulty: 0, creator: '', song: '' });
-    const [extendedFilters, setExtendedFilters] = useState<TExtendedFilters>({ subLowCount: '', subHighCount: '', enjLowCount: '', enjHighCount: '', enjLow:'', enjHigh: '', devLow: '', devHigh: '', removeUnrated: false });
-    const [search, setSearch] = useState('');
+    const [filters, setFilters] = useState({ lowTier: '', highTier: '', enjLow: '', enjHigh: '', difficulty: 0, creator: '', song: '' });
+    const [extendedFilters, setExtendedFilters] = useSessionStorage('extendedFilters', { subLowCount: '', subHighCount: '', enjLowCount: '', enjHighCount: '', enjLow:'', enjHigh: '', devLow: '', devHigh: '', removeUnrated: false });
+    const [search, setSearch] = useSessionStorage('search.input', '');
     const [timer, setTimer] = useState<NodeJS.Timeout>();
-    const [q, setQ] = useState({});
-    const [showFilters, setShowFilters] = useState(false);
+    const [q, setQ] = useSessionStorage('searchQuery', generateQ());
+    const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
+
+    function generateQ() {
+        const joined: any = {
+            ...filters,
+            ...extendedFilters,
+            ...sorter,
+            page: pageIndex+1,
+            name: search
+        };
+        const q: any = {};
+        for (let p of Object.keys(joined)) {
+            if (!joined[p]) continue;
+            q[p] = joined[p];
+        }
+        return q;
+    }
 
     useEffect(() => {
         clearTimeout(timer);
         setTimer(setTimeout(() => {
             // Runs a little after user input stops
-            const joined: any = {
-                ...filters,
-                ...extendedFilters,
-                ...sorter,
-                page: pageIndex+1,
-                name: search
-            };
-            const q: any = {};
-            for (let p of Object.keys(joined)) {
-                if (!joined[p]) continue;
-                q[p] = joined[p];
-            }
-
-            setQ(q);
+            setQ(generateQ());
         }, 500));  // eslint-disable-next-line
     }, [search, filters, extendedFilters, pageIndex, sorter]);
     
@@ -74,14 +78,6 @@ export default function Ladder() {
     }, [search, filters]);
 
 
-
-    function onSearchChange(event: any) {
-        setSearch(event.target.value);
-    }
-
-    function clearSearch() {
-        setSearch('');
-    }
 
     const [listView, setListView] = useState(true);
     function onViewList() {
@@ -137,12 +133,12 @@ export default function Ladder() {
             <h1>The Ladder</h1>
             <div className='d-flex align-items-center search'>
                 <div className='searchBar'>
-                    <input type='text' placeholder='Search level name...' value={search} onChange={onSearchChange} />
-                    <button className='clearSearch' onClick={clearSearch}>
+                    <input type='text' placeholder='Search level name...' value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <button className='clearSearch' onClick={() => setSearch('')}>
                         <Cross />
                     </button>
                 </div>
-                <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={() => setShowFilters(prev => !prev)}>
+                <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={() => setShowFilters((prev: boolean) => !prev)}>
                     <img src={filterEmpty} alt='' />
                 </button>
                 <SortMenu set={setSorter} />

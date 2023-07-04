@@ -28,6 +28,11 @@ body {
 
     @include themes.themed() {
         background-color: themes.t('bg');
+    }
+}
+
+#root {
+    @include themes.themed() {
         color: themes.t('text');
     }
 }

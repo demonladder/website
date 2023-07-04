@@ -1,7 +1,10 @@
 .announcement {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding: 3rem 6rem;
     margin-bottom: 1.5rem;
     text-align: center;
     cursor: default;
+
+    h1 {
+        line-height: 1.3;
+    }
 }
