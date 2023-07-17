@@ -7,7 +7,7 @@ type Props = {
 
 export default function SortMenu({ set }: Props) {
     const [sortAscending, setSortAscending] = useState(true);
-    const [sorter, setSorter] = useState('ID');
+    const [sorter, setSorter] = useState('LevelID');
     const [show, setShow] = useState(false);
     function handleSortMenu(e: any) {
         setSorter(e.target.id);
@@ -78,8 +78,8 @@ export default function SortMenu({ set }: Props) {
                                 <RadioButton id='Name' name='sort' checked={sorter ==='Name'} onChange={handleSortMenu} />
                                 Name
                             </label>
-                            <label htmlFor='ID' className='flex items-center gap-2 select-none'>
-                                <RadioButton id='ID' name='sort' checked={sorter ==='ID'} onChange={handleSortMenu} />
+                            <label htmlFor='LevelID' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='LevelID' name='sort' checked={sorter ==='LevelID'} onChange={handleSortMenu} />
                                 Level ID
                             </label>
                             <label htmlFor='Rating' className='flex items-center gap-2 select-none'>
@@ -89,14 +89,6 @@ export default function SortMenu({ set }: Props) {
                             <label htmlFor='Enjoyment' className='flex items-center gap-2 select-none'>
                                 <RadioButton id='Enjoyment' name='sort' checked={sorter ==='Enjoyment'} onChange={handleSortMenu} />
                                 Enjoyment
-                            </label>
-                            <label htmlFor='RatingCount' className='flex items-center gap-2 select-none'>
-                                <RadioButton id='RatingCount' name='sort' checked={sorter ==='RatingCount'} onChange={handleSortMenu} />
-                                Rating count
-                            </label>
-                            <label htmlFor='EnjoymentCount' className='flex items-center gap-2 select-none'>
-                                <RadioButton id='EnjoymentCount' name='sort' checked={sorter ==='EnjoymentCount'} onChange={handleSortMenu} />
-                                Enjoyment count
                             </label>
                         </div>
                     </div>

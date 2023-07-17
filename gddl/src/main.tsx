@@ -22,14 +22,15 @@ import CreatePack from './routes/mod/pack/CreatePack';
 import DeleteSubmission from './routes/mod/deleteSubmissions/DeleteSubmissions';
 import Promote from './routes/mod/promote/Promote';
 import SignupLink from './routes/mod/signupLinks/SignupLink';
-// import ErrorElement from './ErrorElement';
+import ErrorElement from './ErrorElement';
+import SignUp from './routes/root/signup/SignUp';
 
 const router = createBrowserRouter(
   [
     {
       path: '/',
       element: <Root />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorElement />,
       children: [
         {
           index: true,
@@ -59,6 +60,10 @@ const router = createBrowserRouter(
           path: 'login',
           element: <Login />,
           action: Login.loginAction,
+        },
+        {
+          path: 'signup',
+          element: <SignUp />,
         },
         {
           path: 'profile/:userID',

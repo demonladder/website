@@ -10,14 +10,15 @@ import { ToFixed } from '../../../functions';
 import { StorageManager } from '../../../storageManager';
 import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
-import logout from '../../../api/logout';
 import { AxiosError } from 'axios';
 import Container from '../../../components/Container';
 import Tracker from './Tracker';
 import { SecondaryButton } from '../../../components/Button';
+import { useLogout } from '../../../hooks';
 
 export default function Profile() {
     const userID = parseInt(''+useParams().userID) || 0;
+    const logout = useLogout();
 
     const [showSave, setShowSave] = useState(false);
     const [introduction, setIntroduction] = useState('');
@@ -109,7 +110,7 @@ export default function Profile() {
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
             <div className='flex justify-between items-center'>
-                <h1 className='text-4xl'>{userData.Name} <ProfileTypeIcon user={userData} /></h1>
+                <h1 className='text-4xl mb-2'>{userData.Name} <ProfileTypeIcon user={userData} /></h1>
                 <SecondaryButton onClick={logout} hidden={!ownPage}>Log out</SecondaryButton>
             </div>
             <div className='flex max-sm:flex-col'>

@@ -61,7 +61,7 @@ function Level({ info }: Props) {
 
             <div className='col-span-3 xl:col-span-2 hidden sm:inline-block self-center'><p className='cursor-default'>{info.Creator}</p></div>
             <div className='col-span-3 hidden xl:block self-center'><p className='cursor-default'>{info.Song}</p></div>
-            <div className='col-span-2 hidden lg:flex justify-center self-center'><IDButton className='id-button underline-p' id={info.ID} /></div>
+            <div className='col-span-2 hidden lg:flex justify-center self-center'><IDButton id={info.ID} /></div>
             <div className={`col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='self-center cursor-default'>{roundedTier}</p></div>
         </div>
     );

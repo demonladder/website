@@ -38,8 +38,8 @@ async function SearchUser(name: string): Promise<TinyUser[]> {
     return res.data;
 }
 
-async function GetUserSubmissions(userID: number, page = 1): Promise<UserSubmissions> {
-    return (await instance.get(`/user/submissions?userID=${userID}&page=${page}`)).data;
+async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { userID: number, page?: number, sort: string, sortDirection: string}): Promise<UserSubmissions> {
+    return (await instance.get(`/user/submissions?userID=${userID}&page=${page}`, { params: { userID, page, sort, sortDirection}})).data;
 }
 
 async function SaveProfile(user: User) {

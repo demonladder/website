@@ -2,18 +2,20 @@ import { tierToIcon } from '../../../components/DemonLogo';
 import { Link } from 'react-router-dom';
 import { StorageManager, User } from '../../../storageManager';
 
-export default function ProfileButtons({ className = '' }: { className?: string }) {
+export default function ProfileButtons() {
     if (!StorageManager.hasSession()) {
         localStorage.removeItem('csrf');
-        return <LoginButton className={className} />
+        return;
+        //return <LoginButton className={className} />
     }
     
-    return <ProfileButton user={StorageManager.getUser()} className={className} />;
+    return <ProfileButton user={StorageManager.getUser()} />;
 }
 
-function ProfileButton({ user, className = '' }: { user: User | null, className?: string }) {
+function ProfileButton({ user }: { user: User | null }) {
     if (user === null) {
-        return <LoginButton className={className} />;
+        return;
+        //return <LoginButton className={className} />;
     }
     
     return (
@@ -24,11 +26,11 @@ function ProfileButton({ user, className = '' }: { user: User | null, className?
     );
 }
 
-function LoginButton({ className = '' }: { className?: string}) {
-    return (
-        <div className={'py-2 flex items-center gap-4 ' + className}>
-            <Link to='/signup' className='signUp align-middle'>Sign up</Link>
-            <Link to='/login' className='log-in align-middle'>Log in</Link>
-        </div>
-    );
-}
+// function LoginButton() {
+//     return (
+//         <div className='py-2 flex items-center gap-4'>
+//             <Link to='/signup' className='signUp align-middle'>Sign up</Link>
+//             <Link to='/login' className='log-in align-middle'>Log in</Link>
+//         </div>
+//     );
+// }

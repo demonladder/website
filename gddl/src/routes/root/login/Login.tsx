@@ -1,7 +1,10 @@
 import { Form, redirect, useActionData } from 'react-router-dom';
 import serverIP from '../../../serverIP';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { StorageManager } from '../../../storageManager';
+import Container from '../../../components/Container';
+import { PasswordInput, TextInput } from '../../../components/Input';
+import { PrimaryButton } from '../../../components/Button';
 
 async function loginAction({ request }: {request: any}) {
     const data = await request.formData();
@@ -19,8 +22,8 @@ async function loginAction({ request }: {request: any}) {
             StorageManager.setUser(response.data.jwt);
             return redirect('/');
         }
-    } catch (err: any) {
-        return err.response.data;
+    } catch (err) {
+        return (err as AxiosError).response?.data || 'An error occurred';
     }
 
     return null;
@@ -30,25 +33,25 @@ function Login() {
     const actionError = useActionData() as any;
 
     return (
-        <div className='container'>
-            <div className='d-flex justify-content-center'>
-                <Form method='post' action='/login' className='w-75 w-md-50'>
-                    <h1 className='mb-3 fw-normal text-white'>Login</h1>
+        <Container className='bg-gray-800'>
+            <div className='flex justify-center'>
+                <Form method='post' action='/login' className='w-11/12 md:w-1/2 lg:w-2/6'>
+                    <h1 className='mb-4 text-4xl'>Login</h1>
                     <div className='mb-3'>
-                        <label className='form-label'>Username</label>
-                        <input type='text' name='username' className='form-control' />
+                        <label htmlFor='loginUsername'>Username</label>
+                        <TextInput id='loginUsername' name='username' />
                     </div>
                     <div className='mb-3'>
-                        <label className='form-label'>Password</label>
-                        <input type='password' name='password' className='form-control' />
+                        <label htmlFor='loginPassword'>Password</label>
+                        <PasswordInput id='loginPassword' name='password' />
                     </div>
-                    <button type='submit' className='primary w-100'>Login</button>
+                    <PrimaryButton type='submit' className='w-full'>Login</PrimaryButton>
                 </Form>
             </div>
-            <div className='d-flex justify-content-center m-5'>
+            <div className='text-center m-5'>
                 <h3>{actionError?.error || ''}</h3>
             </div>
-        </div>
+        </Container>
     );
 }
 

@@ -5,6 +5,11 @@ export function TextInput(props: DetailedHTMLProps<InputHTMLAttributes<HTMLInput
         <input {...props} type='text' className='outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' />
     );
 }
+export function PasswordInput(props: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
+    return (
+        <input {...props} type='password' className='outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' />
+    );
+}
 
 interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     disableSpinner?: boolean,

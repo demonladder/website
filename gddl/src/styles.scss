@@ -11,10 +11,10 @@
     transition: background-size 100ms ease-in-out;
     padding: 0;
     text-decoration: none!important;
-}
 
-.underline:hover {
-    background-size: 100% 2px;
+    &:hover {
+        background-size: 100% 2px;
+    }
 }
 
 .divider {
@@ -32,4 +32,16 @@ input.no-spinner::-webkit-outer-spin-button,
 input.no-spinner::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.bg-fade {
+    animation: bg-fade 1s;
+}
+@keyframes bg-fade {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: transparent;
+    }
 }

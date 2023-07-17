@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { StorageManager } from "./storageManager";
 
 export function useLocalStorage<T>(key: string, defaultValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
     const stored = localStorage.getItem(key);
@@ -20,4 +22,14 @@ export function useSessionStorage<T>(key: string, defaultValue: T): [T, React.Di
     }, [value]);
     
     return [value, setValue];
+}
+
+export function useLogout() {
+    const navigate = useNavigate();
+
+    return () => {
+        StorageManager.deleteSession();
+
+        navigate('/');
+    }
 }

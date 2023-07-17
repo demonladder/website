@@ -18,5 +18,5 @@ export default function IDButton({ id, disabled = false, className }: Props) {
         return <p className={className}>{id}</p>;
     }
 
-    return <button className={'underline ' + className} onClick={onIDClick} style={{ minWidth: '2rem' }}>{id}</button>;
+    return <button className={'underline' + (className ? ' '+className : '')} onClick={onIDClick} style={{ minWidth: '2rem' }}>{id}</button>;
 }

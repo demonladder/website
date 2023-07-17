@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
 export type User = {
     ID: number,
@@ -20,7 +20,7 @@ export class StorageManager {
     }
 
     static hasSession() {
-        return Cookies.get('session') !== null;
+        return Cookies.get('session') !== undefined;
     }
 
     static setUser(jwt: string) {
@@ -34,5 +34,6 @@ export class StorageManager {
     static deleteSession() {
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
+        Cookies.remove('session');
     }
 }
