@@ -12,22 +12,22 @@ type Props = {
 function Container({ children }: { children: React.ReactNode}) {
     return (
         <div className='mt-3'>
-            <h1>Submissions</h1>
+            <h2 className='text-3xl'>Submissions</h2>
             {children}
         </div>
     );
 }
 
 export default function Submissions({ userID }: Props) {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
 
     function pageChange(_page: number) {
         setPage(_page);
     }
 
-    const { status, data, fetchStatus } = useQuery({
+    const { status, data } = useQuery({
         queryKey: ['user/submissions', {userID, page}],
-        queryFn: () => GetUserSubmissions(userID, page),
+        queryFn: () => GetUserSubmissions(userID, page+1),
     });
 
     if (status === 'loading') {
@@ -46,11 +46,11 @@ export default function Submissions({ userID }: Props) {
 
     return (
         <Container>
-            <div className='ratings'>
+            <div className='level-list'>
                 <Level isHeader={true} />
                 {submissions.slice(0, 25).map((p) => <Level isHeader={false} info={p} key={p.LevelID}/>)}
             </div>
-            <PageButtons onPageChange={pageChange} page={page} meta={data} loadingState={fetchStatus} />
+            <PageButtons onPageChange={pageChange} meta={{...data, page }} />
         </Container>
     );
 }

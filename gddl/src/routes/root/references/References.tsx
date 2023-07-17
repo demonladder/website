@@ -1,4 +1,3 @@
-import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { GetReferences, Reference } from '../../../api/references';
@@ -67,8 +66,8 @@ export default function References() {
     ];
     
     return (
-        <div className='ref-container mb-5'>
-            <div className='d-flex references'>
+        <div className='max-w-[95%] overflow-x-scroll mx-auto mt-4'>
+            <div className='flex max-sm:flex-col'>
                 {
                     diffs.map((diff) => <Difficulty name={diff.name} minTier={diff.minTier} maxTier={diff.maxTier} key={diff.name} references={referenceDemons} />)
                 }

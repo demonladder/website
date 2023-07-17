@@ -1,4 +1,3 @@
-import React from 'react';
 import Tier from './Tier';
 import { Reference } from '../../../api/references';
 
@@ -32,9 +31,9 @@ export default function Difficulty({ references, minTier, maxTier, name }: Props
             <div className={`tier-${Math.floor((maxTier + minTier)/2)} head`}>
                 <h3 className='m-0 p-2 text-center'>{name}</h3>
             </div>
-            <div className='d-flex'>
+            <div className='flex max-sm:flex-col'>
                 {
-                    columns.map((c, i) => <div className='d-flex flex-column flex-grow-1' key={name + '-col-' + i}>
+                    columns.map((c, i) => <div className='flex flex-col flex-grow' key={name + '-col-' + i}>
                         {
                             c.map(t => <Tier references={t} key={'tier-' + t[0].Tier} />)
                         }

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import LevelSearchBox from '../../../components/LevelSearchBox';
 import { Pack } from '../../../api/packs';
-const { uuid } = require('uuidv4');
+import { uuid } from '../../../functions';
 
 type Props = {
     pack: Pack,

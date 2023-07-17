@@ -1,4 +1,3 @@
-import React from 'react';
 import { CloseButton } from 'react-bootstrap';
 import { Level } from '../../../api/levels';
 import { Pack } from '../../../api/packs';

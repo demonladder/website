@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import DemonLogo from '../../../components/DemonLogo';
@@ -9,6 +8,7 @@ import IDButton from '../../../components/IDButton';
 import { ToFixed } from '../../../functions';
 import Packs from './Packs';
 import Submissions from './Submissions';
+import Container from '../../../components/Container';
 
 export default function LevelOverview() {
     const levelID = parseInt(''+useParams().levelID) || 0;
@@ -52,59 +52,60 @@ export default function LevelOverview() {
     const logo = DemonLogo(level.Difficulty);
 
     return (
-        <div className='container level-overview'>
+        <Container className='bg-gray-800'>
             <Helmet>
                 <title>{`GDDL - ${level.Name}`}</title>
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://gdladder.com/" />
-                <meta property="og:title" content={level.Name} />
-                <meta property="og:description" content={`Tier ${avgRating || '-'}, enjoyment ${avgEnjoyment || '-'}\nby ${level.Creator}`} />
-                <meta property="og:image" content={logo} />
+                <meta property='og:type' content='website' />
+                <meta property='og:url' content='https://gdladder.com/' />
+                <meta property='og:title' content={level.Name} />
+                <meta property='og:description' content={`Tier ${avgRating || '-'}, enjoyment ${avgEnjoyment || '-'}\nby ${level.Creator}`} />
+                <meta property='og:image' content={logo} />
             </Helmet>
-            <h1>Level information for {level.Name}</h1>
-            <p>by {level.Creator}</p>
-            <div className='row table-container mb-5'>
-                <div className='col-12 col-md-4 col-lg-3'>
+            <div className='mb-1'>
+                <h1 className='text-5xl'>{level.Name}</h1>
+                <p className='text-3xl'>by {level.Creator}</p>
+            </div>
+            <div className='grid grid-cols-12 gap-4 p-4 bg-gray-700 text-2xl'>
+                <div className='col-span-12 md:col-span-4 lg:col-span-2'>
                     <img src={logo} width='100%' alt='' />
                 </div>
-                <div className='row col-12 col-md-8 col-lg-9'>
-                    <div className='col-6 col-lg-4'>
-                        <b className='d-block'>ID</b>
+                <div className='col-span-12 md:col-span-8 lg:col-span-10 grid grid-cols-12 gap-2'>
+                    <div className='col-span-6 lg:col-span-2'>
+                        <b className='block'>ID</b>
                         <IDButton id={level.ID} />
                     </div>
-                    <div className='col-6 col-lg-4'>
+                    <div className='col-span-6 lg:col-span-2'>
                         <b>Tier</b>
                         <p>{roundedRating} [{avgRating}]</p>
                     </div>
-                    <div className='col-6 col-lg-4'>
+                    <div className='col-span-6 lg:col-span-2'>
                         <b>Enjoyment</b>
                         <p>{roundedEnjoyment} [{avgEnjoyment}]</p>
                     </div>
-                    <div className='col-12 col-md-6 col-lg-4'>
+                    <div className='col-span-12 md:col-span-6 lg:col-span-3'>
                         <b>Standard deviation</b>
                         <p>{standardDeviation}</p>
                     </div>
-                    <div className='col col-lg-4'>
+                    <div className='col-span-12 lg:col-span-4'>
                         <b>Difficulty</b>
                         <p>{level.Difficulty + ' Demon'}</p>
                     </div>
-                    <div className='col-12 col-lg-4'>
+                    <div className='col-span-12 lg:col-span-4'>
                         <b>Song name</b>
                         <p>{level.Song}</p>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-span-6'>
                         <b>Ratings</b>
                         <p>{level.RatingCount}</p>
                     </div>
-                    <div className='col-6'>
+                    <div className='col-span-6'>
                         <b>Enjoyments</b>
                         <p>{level.EnjoymentCount}</p>
                     </div>
                 </div>
             </div>
-            <h2>Submissions</h2>
             <Submissions levelID={levelID} />
             <Packs levelID={levelID} />
-        </div>
+        </Container>
     );
 }

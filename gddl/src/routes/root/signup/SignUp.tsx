@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { Form, redirect, useActionData, useLocation } from 'react-router-dom';
 import { StorageManager } from '../../../storageManager';

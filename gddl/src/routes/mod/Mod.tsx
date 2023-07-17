@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink, Outlet, redirect } from 'react-router-dom';
 import Header from '../../Header';
 import serverIP from '../../serverIP';

@@ -93,19 +93,6 @@ $refresh-colors: (
     }
 }
 
-// Original theme: #EFA51C
-$theme: #EFA51C;
-
-$active: rgb(255, 255, 255);
-
-$transparent: hsla(0, 0%, 100%, 0);
-
-@media(prefers-color-scheme: light) {
-    :root {
-        --background-col: hsl(0, 0%, 100%);
-    }
-}
-
 $save: hsl(120, 70%, 49%);
 $save-hover: adjust-color($save, $lightness: -10%);
 $save-active: adjust-color($save-hover, $lightness: -10%);

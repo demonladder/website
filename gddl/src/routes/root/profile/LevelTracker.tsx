@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { GetLevel } from '../../../api/levels';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import Tracker from './Tracker';
 
 type Props = {
     levelID: number | null,
@@ -17,25 +17,25 @@ export default function LevelTracker({ levelID, title }: Props) {
 
     if (status === 'loading') {
         return (
-            <div className='tracker'>
+            <Tracker>
                 <p>{title}:</p>
                 <Link to={'/level/' + levelID} className='link-disable'><LoadingSpinner /></Link>
-            </div>);
+            </Tracker>);
     }
 
     if (!data || levelID === null) {
         return (
-            <div className='tracker'>
+            <Tracker>
                 <p>{title}:</p>
                 <Link to={'/level/' + levelID} className='link-disable'>-</Link>
-            </div>
+            </Tracker>
         );
     }
 
     return (
-        <div className='tracker'>
+        <Tracker>
             <p>{title}:</p>
             <Link to={'/level/' + levelID} className='underline'>{data.Name}</Link>
-        </div>
+        </Tracker>
     );
 }

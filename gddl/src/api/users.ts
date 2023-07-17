@@ -3,9 +3,9 @@ import instance from "./axios";
 import { StorageManager } from "../storageManager";
 
 type UserSubmissions = {
-    previousPage: number,
-    nextPage: number,
-    pages: number,
+    total: number,
+    limit: number,
+    page: number,
     submissions: Submission[],
 }
 

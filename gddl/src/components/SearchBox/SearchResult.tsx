@@ -1,13 +1,11 @@
-import React from 'react';
-
-type Props = {
+interface Props {
     msg: string,
-    onClick: (e: any) => void,
+    onClick: () => void,
 }
 
 export default function SearchResult({ msg, onClick }: Props) {
     return (
-        <div className='resultItem'>
+        <div className='px-2 py-1 hover:bg-gray-700 cursor-pointer'>
             <p className='m-0' onClick={onClick}>{msg}</p>
         </div>
     );

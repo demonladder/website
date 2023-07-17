@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function ModIndex() {
     return (
         <div className='m-0'>

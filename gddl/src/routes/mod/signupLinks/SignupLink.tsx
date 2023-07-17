@@ -1,10 +1,10 @@
-import React, { useState} from 'react';
+import { useState} from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import crypto from 'crypto';
 import { GetSignupTokens, SignupToken, TokenPair } from '../../../api/signupLinks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/users';
+import { randomBytes } from '../../../functions';
 
 function Token({ token }: { token: TokenPair }) {
     const link = 'https://gdladder.com/signup?key=' + token.Token + '&name=' + token.UserName;
@@ -45,7 +45,7 @@ export default function SignupLink() {
     function newLink() {
         if (result === undefined) return;
         
-        const token = crypto.randomBytes(32).toString('hex');
+        const token = randomBytes(32);
         genToken.mutate({ Token: token, UserName: result.Name });
     }
 

@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from "react";
-
 export function ParseDiff(diff: number): string {
     switch(diff) {
         case 0:
@@ -24,12 +22,20 @@ export function ToFixed(f: string, d: number, def: string): string {
     return parseFloat(f).toFixed(d);
 }
 
-export function useSessionStorage(key: string, defaultValue: any) {
-    const [value, setValue] = useState(JSON.parse(sessionStorage.getItem(key) || '{}')?.value || defaultValue);
+export function randomBytes(amount: number): string {
+    if (amount <= 0) return '';
 
-    useEffect(() => {
-        sessionStorage.setItem(key, JSON.stringify({value}));
-    }, [value]);
-    
-    return [value, setValue];
+    const characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+
+    let result = '';
+
+    for (let i = 0; i < amount*2; i++) {
+        result += characters[Math.floor(Math.random()*16)];
+    }
+
+    return result;
+}
+
+export function uuid() {
+    return randomBytes(4) + '-' + randomBytes(2) + '-' + randomBytes(2) + '-' + randomBytes(2) + '-' + randomBytes(6);
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, redirect, useActionData } from 'react-router-dom';
 import serverIP from '../../../serverIP';
 import axios from 'axios';

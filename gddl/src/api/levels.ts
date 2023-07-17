@@ -15,7 +15,9 @@ export type Level = {
 }
 
 type SearchInfo = {
-    count: number,
+    total: number,
+    limit: number,
+    page: number,
     levels: Level[],
 }
 
@@ -26,7 +28,7 @@ type Query = {
 export async function SearchLevels(q: Query): Promise<SearchInfo> {
     return (await instance.get('/level/search', {
         withCredentials: true,
-        params: q,
+        params: { chunk: 16, ...q, },
     })).data;
 }
 

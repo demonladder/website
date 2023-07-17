@@ -1,4 +1,3 @@
-import React from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApproveSubmission, GetSubmissionQueue, Submission as TSubmission } from '../../../api/submissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';

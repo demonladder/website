@@ -21,14 +21,14 @@ export type PackShell = {
 };
 
 export type PackInfo = {
-    previousPage: number,
-    nextPage: number,
-    pages: number,
+    total: number,
+    limit: number,
+    page: number,
     packs: PackShell[],
 };
 
 export async function GetPacks(page: number): Promise<PackInfo> {
-    const res = await instance.get('/packs', { params: { chunk: 48, page, }});
+    const res = await instance.get('/packs', { params: { chunk: 36, page, }});
     return res.data;
 };
 

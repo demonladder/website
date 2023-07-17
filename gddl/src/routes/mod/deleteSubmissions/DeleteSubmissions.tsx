@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LevelSearchBox from '../../../components/LevelSearchBox';
 import { Level } from '../../../api/levels';
 import SubmissionList from './SubmissionList';

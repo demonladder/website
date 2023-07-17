@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { User } from '../api/users';
 
 export default function ProfileTypeIcon({ user }: { user: User }) {

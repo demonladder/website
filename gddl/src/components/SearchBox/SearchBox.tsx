@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import SearchResult from './SearchResult';
-import './styles.scss';
+import { TextInput } from '../Input';
 
 type ListItem = {
     label: string;
@@ -9,13 +9,12 @@ type ListItem = {
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox<T extends ListItem>({ list, update, setResult, status, id, className, placeholder = 'Search...' }: {
+export default function SearchBox<T extends ListItem>({ list, update, setResult, status, id, placeholder = 'Search...' }: {
     list: T[],
     update: (a: string) => void,
     setResult: (result: T) => void,
     status: string,
     id?: string,
-    className?: string,
     placeholder?: string,
 }) {
     const [search, setSearch] = useState('');  // The value the user types into the input field
@@ -60,12 +59,13 @@ export default function SearchBox<T extends ListItem>({ list, update, setResult,
     }
     
     return (
-        <div className={'searchBox ' + ((className && className) || '')}>
-            <input id={id} type='text' onKeyDown={keyDown} value={search} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} />
-            <div className={(visible ? 'd-block' : 'd-none') + ' searchResult'} style={{zIndex: 5}}>
+        <div>
+            <TextInput id={id} onKeyDown={keyDown} value={search} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} />
+            {/* <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 text-white'} style={{ zIndex: 5 }}> */}
+            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 text-white text-base'}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :
-                    ((status === 'error' || list.length === 0) ? <div className='resultItem'><p>No results</p></div> :
+                    ((status === 'error' || list.length === 0) ? <div className='px-2 py-1'><p>No results</p></div> :
                     list.map(r => <SearchResult msg={r.label} onClick={() => handleClick(r)} key={r.label} />))
                 }
             </div>

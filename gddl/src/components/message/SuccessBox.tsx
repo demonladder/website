@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export default function SuccessBox({ text }: { text: string|undefined }) {
     if (!text) return null;
 

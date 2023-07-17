@@ -1,4 +1,3 @@
-import React from 'react';
 import { Level } from '../../../api/levels';
 
 type Props = {

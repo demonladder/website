@@ -1,4 +1,3 @@
-import React from 'react';
 import { DeleteSubmission, Submission as TSubmission } from '../../../api/submissions';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 

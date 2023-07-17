@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import sort from '../../../icons/sort.svg';
-import sortUp from '../../../icons/sort-up.svg';
+import { useEffect, useState } from 'react';
+import { RadioButton } from '../../../components/Input';
 
 type Props = {
     set: (sort: any) => void,
@@ -8,7 +7,7 @@ type Props = {
 
 export default function SortMenu({ set }: Props) {
     const [sortAscending, setSortAscending] = useState(true);
-    const [sorter, setSorter] = useState('level-id');
+    const [sorter, setSorter] = useState('ID');
     const [show, setShow] = useState(false);
     function handleSortMenu(e: any) {
         setSorter(e.target.id);
@@ -25,7 +24,7 @@ export default function SortMenu({ set }: Props) {
         const menu = document.querySelector('.sortMenu');
         if (!menu) return;
         const rect = menu.getBoundingClientRect();
-        const dist = 100;
+        const dist = 2000;
 
         if (e.clientX < rect.x - dist ||
             e.clientX > rect.x + rect.width + dist ||
@@ -44,68 +43,61 @@ export default function SortMenu({ set }: Props) {
     }, []);
 
     return (        
-        <div className='position-relative h-100' style={{ zIndex: 2000 }}>
-            <button className='btn btn-light btn-sm px-3 h-100' onClick={() => setShow(prev => !prev)}>
-                <img src={sortAscending ? sortUp : sort} alt='' />
+        <div className='relative h-full' style={{ zIndex: 2000 }}>
+            <button className='bg-white text-black w-7 h-7 grid place-items-center' onClick={() => setShow(prev => !prev)}>
+                {sortAscending ?
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-sort-up' viewBox='0 0 16 16'>
+                        <path d='M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z'/>
+                    </svg> :
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-sort-down' viewBox='0 0 16 16'>
+                        <path d='M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z'/>
+                    </svg>
+                }
             </button>
-            <div className={'sortMenuWrapper' + ((show && ' show') || '')}>
-                <div className='sortMenu'>
-                    <div className='menuPadding'>
-                        <div className='direction'>
+            <div className='absolute left-1/2 -translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
+                <div className='min-h-0 bg-gray-600 w-max'>
+                    <div className='p-3 flex flex-col gap-2'>
+                        <div className='columns-2'>
                             <div>
-                                <label htmlFor='asc'>
-                                    <input type='radio' id='asc' name='asc' checked={sortAscending} onChange={() => setSortAscending(true)} />
+                                <label htmlFor='asc' className='flex items-center gap-2 select-none'>
+                                    <RadioButton id='asc' name='asc' checked={sortAscending} onChange={() => setSortAscending(true)} />
                                     Asc
                                 </label>
                             </div>
                             <div>
-                                <label htmlFor='desc'>
-                                    <input type='radio' id='desc' name='asc' checked={!sortAscending} onChange={() => setSortAscending(false)} />
+                                <label htmlFor='desc' className='flex items-center gap-2 select-none'>
+                                    <RadioButton id='desc' name='asc' checked={!sortAscending} onChange={() => setSortAscending(false)} />
                                     Desc
                                 </label>
                             </div>
                         </div>
                         <div className='divider'></div>
-                        <div className='sort-by-options'>
-                            <div>
-                                <b>Sort by</b>
-                            </div>
-                            <div className='option'>
-                                <label htmlFor='name' className='p-0'>
-                                    <input type='radio' id='name' name='sort' checked={sorter ==='name'} onChange={handleSortMenu} />
-                                    Name
-                                </label>
-                            </div>
-                            <div className='option'>
-                                <label htmlFor='level-id' className='p-0'>
-                                    <input type='radio' id='level-id' name='sort' checked={sorter ==='level-id'} onChange={handleSortMenu} />
-                                    Level ID
-                                </label>
-                            </div>
-                            <div className='option'>
-                                <label htmlFor='tier' className='p-0'>
-                                    <input type='radio' id='tier' name='sort' checked={sorter ==='tier'} onChange={handleSortMenu} />
-                                    Rating
-                                </label>
-                            </div>
-                            <div className='option'>
-                                <label htmlFor='enjoyment' className='p-0'>
-                                    <input type='radio' id='enjoyment' name='sort' checked={sorter ==='enjoyment'} onChange={handleSortMenu} />
-                                    Enjoyment
-                                </label>
-                            </div>
-                            <div className='option'>
-                                <label htmlFor='ratings' className='p-0'>
-                                    <input type='radio' id='ratings' name='sort' checked={sorter ==='ratings'} onChange={handleSortMenu} />
-                                    Rating count
-                                </label>
-                            </div>
-                            <div className='option'>
-                                <label htmlFor='enjoyments' className='p-0'>
-                                    <input type='radio' id='enjoyments' name='sort' checked={sorter ==='enjoyments'} onChange={handleSortMenu} />
-                                    Enjoyment count
-                                </label>
-                            </div>
+                        <div>
+                            <b>Sort by</b>
+                            <label htmlFor='Name' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='Name' name='sort' checked={sorter ==='Name'} onChange={handleSortMenu} />
+                                Name
+                            </label>
+                            <label htmlFor='ID' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='ID' name='sort' checked={sorter ==='ID'} onChange={handleSortMenu} />
+                                Level ID
+                            </label>
+                            <label htmlFor='Rating' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='Rating' name='sort' checked={sorter ==='Rating'} onChange={handleSortMenu} />
+                                Rating
+                            </label>
+                            <label htmlFor='Enjoyment' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='Enjoyment' name='sort' checked={sorter ==='Enjoyment'} onChange={handleSortMenu} />
+                                Enjoyment
+                            </label>
+                            <label htmlFor='RatingCount' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='RatingCount' name='sort' checked={sorter ==='RatingCount'} onChange={handleSortMenu} />
+                                Rating count
+                            </label>
+                            <label htmlFor='EnjoymentCount' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='EnjoymentCount' name='sort' checked={sorter ==='EnjoymentCount'} onChange={handleSortMenu} />
+                                Enjoyment count
+                            </label>
                         </div>
                     </div>
                 </div>

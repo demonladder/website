@@ -37,35 +37,8 @@ body {
     }
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-.a {
-    border-radius: 13px;
-    font-weight: 500;
-    border: none;
-    padding: 0.25rem 0.5rem;
-    background-color: white;
-    color: black;
-}
-
 .navbar-toggler {  // Removes the stupid 1px border around the navbar toggler
     border: none;
-}
-
-.bg {
-    position: absolute;
-    z-index: -10;
-    width: 100%;
-    top: 1.5rem;
-
-    img {
-        width: 100%;
-        height: 30em;
-        object-fit: cover;
-        filter: brightness(50%);
-    }
 }
 
 .cmodal {
@@ -76,16 +49,25 @@ code {
     }
 }
 
-a.link-disable {
-    pointer-events: none;
-}
-
 @media(max-width:600px) {
     :root {
         font-size: 14px;
     }
 }
 
-p {
-    margin: 0;
+$divider-sizes: (
+    "sm": 0.5rem,
+    "md": 1rem,
+    "lg": 1.5rem
+);
+@each $name, $size in $divider-sizes {
+    .divider-#{$name} {
+        border-bottom: 1px solid white;
+        margin-top: $size;
+        margin-bottom: $size;
+    }
+}
+
+.divider {
+    border-bottom: 1px solid white;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { GetUser, SaveProfile } from '../../../api/users';
@@ -12,15 +12,9 @@ import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
 import logout from '../../../api/logout';
 import { AxiosError } from 'axios';
-import './styles.scss';
-
-function Container({ children }: { children: React.ReactNode}) {
-    return (
-        <div className='container profile'>
-            {children}
-        </div>
-    );
-}
+import Container from '../../../components/Container';
+import Tracker from './Tracker';
+import { SecondaryButton } from '../../../components/Button';
 
 export default function Profile() {
     const userID = parseInt(''+useParams().userID) || 0;
@@ -105,7 +99,7 @@ export default function Profile() {
     }
     
     return (
-        <Container key={userID}>
+        <Container key={userID} className='bg-gray-800'>
             <Helmet>
                 <title>{'GDDL - ' + userData.Name}</title>
                 <meta property='og:type' content='website' />
@@ -114,27 +108,27 @@ export default function Profile() {
                 <meta property='og:url' content={`https://gdladder.com/profile/${userData.ID}`} />
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
-            <div className='d-flex justify-content-between align-items-center'>
-                <h1>{userData.Name} <ProfileTypeIcon user={userData} /></h1>
-                <button className='secondary' onClick={logout} hidden={!ownPage}>Log out</button>
+            <div className='flex justify-between items-center'>
+                <h1 className='text-4xl'>{userData.Name} <ProfileTypeIcon user={userData} /></h1>
+                <SecondaryButton onClick={logout} hidden={!ownPage}>Log out</SecondaryButton>
             </div>
-            <div className='information'>
-                <div className='introduction w-100 w-sm-35'>
-                    <p className='label'><b>Introduction:</b></p>
-                    <textarea value={introduction} placeholder='-' onChange={handleIntroduction} disabled={!ownPage} autoCorrect='off' spellCheck={false} />
+            <div className='flex max-sm:flex-col'>
+                <div className='flex flex-col bg-gray-950 p-3 w-full sm:w-1/3'>
+                    <p><b>Introduction:</b></p>
+                    <textarea className='flex-grow bg-transparent resize-none border-b-2 outline-none' value={introduction} placeholder='-' onChange={handleIntroduction} disabled={!ownPage} autoCorrect='off' spellCheck={false} />
                 </div>
-                <div className='trackers'>
+                <div className='p-3 bg-gray-700 flex-grow grid grid-cols-1 lg:grid-cols-2 gap-x-3'>
                     <LevelTracker levelID={userData.Hardest} title='Hardest' />
                     <LevelTracker levelID={userData.Favorite} title='Favorite' />
                     <LevelTracker levelID={userData.LeastFavorite} title='Least favorite' />
-                    <div className='tracker'>
+                    <Tracker>
                         <p>Tier preference:</p>
                         <p>{calcPref()}</p>
-                    </div>
-                    <div className='tracker'>
+                    </Tracker>
+                    <Tracker>
                         <p>Average enjoyment:</p>
                         <p>{ToFixed(''+userData.AverageEnjoyment, 1, '-')}</p>
-                    </div>
+                    </Tracker>
                 </div>
             </div>
             <Submissions userID={userID} />

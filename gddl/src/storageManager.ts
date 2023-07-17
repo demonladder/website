@@ -20,7 +20,7 @@ export class StorageManager {
     }
 
     static hasSession() {
-        return localStorage.getItem('user') !== null;
+        return Cookies.get('session') !== null;
     }
 
     static setUser(jwt: string) {

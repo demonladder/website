@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Tab, Tabs } from 'react-bootstrap';
 import PackSearchBox from '../../../components/PackSearchBox';
 import Add from './Add';

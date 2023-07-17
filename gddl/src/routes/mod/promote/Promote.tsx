@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { PromoteUser, TinyUser } from '../../../api/users';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

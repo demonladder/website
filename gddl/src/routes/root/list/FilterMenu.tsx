@@ -1,130 +1,82 @@
-import React, { useEffect, useRef } from 'react';
 import Select, { SelectOption } from '../../../components/Select';
-import FiltersExtended, { TExtendedFilters } from './FiltersExtended';
-import { useSessionStorage } from '../../../functions';
-
-export type Filters = {
-    lowTier: string,
-    highTier: string,
-    enjLow: string,
-    enjHigh: string,
-    difficulty: number,
-    creator: string,
-    song: string,
-}
+import FiltersExtended from './FiltersExtended';
+import { NumberInput, TextInput } from '../../../components/Input';
+import { SearchFilters } from './Ladder';
+import { DangerButton } from '../../../components/Button';
 
 type Props = {
-    filter: (filters: Filters) => void,
-    setExtended: (filters: TExtendedFilters) => void,
+    filters: SearchFilters,
+    setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>,
+    reset: () => void,
     show: boolean,
 }
 
-export default function FilterMenu({ filter, setExtended, show }: Props) {
-    const resetExtended = useRef();
-    const [lowTier, setLowTier] = useSessionStorage('search.lowTier', '');
-    const [highTier, setHighTier] = useSessionStorage('search.highTier', '');
-
-    function onLowTierChange(event: any) {
-        let value: string|number = parseFloat(event.target.value);
+export default function FilterMenu({ filters, setFilters, reset, show }: Props) {
+    function onLowTierChange(e: any) {
+        let value: string|number = parseFloat(e.target.value);
+        
         if (isNaN(value)) value = '';
-        setLowTier(''+value);
+        setFilters(prev => ({ ...prev, lowTier: ''+value }));
     }
-    function onHighTierChange(event: any) {
-        let value = event.target.value;
-        setHighTier(value);
+    function onHighTierChange(e: any) {
+        let value: string|number = parseFloat(e.target.value);
+        
+        if (isNaN(value)) value = '';
+        setFilters(prev => ({ ...prev, highTier: ''+value }));
     }
 
-    const [difficulty, setDifficulty] = useSessionStorage('search.difficulty', 0);
     function onDifficultyChange(val: SelectOption) {
-        setDifficulty(val.key);
-    }
-
-    const [creator, setCreator] = useSessionStorage('search.creator', '');
-    function onCreatorChange(event: any) {
-        setCreator(event.target.value);
-    }
-
-    const [song, setSong] = useSessionStorage('search.song', '');
-    function onSongChange(event: any) {
-        setSong(event.target.value);
-    }
-
-    const [enjLow, setEnjLow] = useSessionStorage('search.enjLow', '');
-    const [enjHigh, setEnjHigh] = useSessionStorage('search.enjHigh', '');
-
-    useEffect(() => {
-        filter({
-            lowTier,
-            highTier,
-            enjLow,
-            enjHigh,
-            difficulty,
-            creator,
-            song
-        });
-    }, [lowTier, highTier, enjLow, enjHigh, difficulty, creator, song, filter]);
-
-    function reset() {
-        setLowTier('');
-        setHighTier('');
-        setEnjLow('');
-        setEnjHigh('');
-        setDifficulty(0);
-        setCreator('');
-        setSong('');
-        if (resetExtended.current === undefined) return;
-        (resetExtended.current as any).reset();
+        setFilters(prev => ({ ...prev, difficulty: val.key }));
     }
 
     return (
-        <div className={'filterMenuWrapper' + ((show && ' show') || '')}>
-            <div className='filterMenu'>
-                <div className='content'>
-                    <div className='d-flex justify-content-between mb-3'>
-                        <h2 className='m-0' style={{color: 'currentColor'}}>Filters</h2>
-                        <button className='danger' onClick={reset}>Reset</button>
+        <div className='grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr'}}>
+            <div className='min-h-0 bg-gray-700'>
+                <div className='px-7 py-4 flex flex-col gap-4'>
+                    <div className='flex justify-between'>
+                        <h2 className='text-2xl' style={{color: 'currentColor'}}>Filters</h2>
+                        <DangerButton onClick={reset}>Reset</DangerButton>
                     </div>
-                    <div className='d-flex flex-column gap-3'>
-                        <div className='row gap-xl-3 row-gap-2'>
-                            <div className='col-12 col-sm-6 col-lg-4 col-xl-3'>
-                                <p className='form-label m-0'>Tier range:</p>
-                                <div className='d-flex align-items-center'>
-                                    <input type='number' min='1' max='35' value={lowTier} onChange={onLowTierChange} />
-                                    <p className='m-0 mx-2'>to</p>
-                                    <input type='number' min='1' max='35' value={highTier} onChange={onHighTierChange} />
-                                </div>
-                            </div>
-                            <div className='col-12 col-sm-6 col-lg-4 col-xl-3'>
-                                <p className='form-label m-0'>Enjoyment:</p>
-                                <div className='d-flex align-items-center'>
-                                    <input type='number' min='0' max='10' value={enjLow} onChange={(e) => setEnjLow(e.target.value)} />
-                                    <p className='m-0 mx-2'>to</p>
-                                    <input type='number' min='0' max='10' value={enjHigh} onChange={(e) => setEnjHigh(e.target.value)} />
-                                </div>
-                            </div>
-                            <div className='col-md-6 col-lg-4 col-xl-2' style={{height: '52px'}} hidden={!show}>
-                                <p className='form-label m-0'>Difficulty:</p>
-                                <Select id='filtersDifficulty' options={[
-                                    { key: 0, value: '-' },
-                                    { key: 1, value: 'Official' },
-                                    { key: 2, value: 'Easy' },
-                                    { key: 3, value: 'Medium' },
-                                    { key: 4, value: 'Hard' },
-                                    { key: 5, value: 'Insane' },
-                                    { key: 6, value: 'Extreme' }
-                                ]} onChange={onDifficultyChange} />
-                            </div>
-                            <div className='col-md-6 col-lg-5 col-xl-3'>
-                                <p className='form-label m-0'>Creator:</p>
-                                <input type='text' value={creator} onChange={onCreatorChange} />
-                            </div>
-                            <div className='col-md-6 col-lg-7 col-xl-4'>
-                                <p className='form-label m-0'>Song:</p>
-                                <input type="text" value={song} onChange={onSongChange} />
+                    <div className='grid grid-cols-12 gap-4 gap-y-2'>
+                        <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2'>
+                            <p>Tier range:</p>
+                            <div className='flex items-center'>
+                                <NumberInput min='1' max='35' value={filters.lowTier} onChange={onLowTierChange} />
+                                <p className='m-0 mx-2'>to</p>
+                                <NumberInput min='1' max='35' value={filters.highTier} onChange={onHighTierChange} />
                             </div>
                         </div>
+                        <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2'>
+                            <p>Enjoyment:</p>
+                            <div className='flex items-center'>
+                                <NumberInput min='0' max='10' value={filters.enjLow} onChange={(e) => setFilters(prev => ({ ...prev, enjLow: e.target.value }))} />
+                                <p className='m-0 mx-2'>to</p>
+                                <NumberInput min='0' max='10' value={filters.enjHigh} onChange={(e) => setFilters(prev => ({ ...prev, enjHigh: e.target.value }))} />
+                            </div>
+                        </div>
+                        <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2'>
+                            <p>Difficulty:</p>
+                            <Select id='filtersDifficulty' options={[
+                                { key: 0, value: '-' },
+                                { key: 1, value: 'Official' },
+                                { key: 2, value: 'Easy' },
+                                { key: 3, value: 'Medium' },
+                                { key: 4, value: 'Hard' },
+                                { key: 5, value: 'Insane' },
+                                { key: 6, value: 'Extreme' }
+                            ]} onChange={onDifficultyChange} />
+                        </div>
+                        <div className='col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-2'>
+                            <p>Creator:</p>
+                            <TextInput value={filters.creator} onChange={(e) => setFilters(prev => ({ ...prev, creator: e.target.value }))} />
+                        </div>
+                        <div className='col-span-12 lg:col-span-7 xl:col-span-4'>
+                            <p>Song:</p>
+                            <TextInput value={filters.song} onChange={(e) => setFilters(prev => ({ ...prev, song: e.target.value }))} />
+                        </div>
                     </div>
-                    <FiltersExtended set={setExtended} resetRef={resetExtended} />
+                    <div className='divider my-3'></div>
+                    <FiltersExtended filters={filters} setFilters={setFilters} />
                 </div>
             </div>
         </div>

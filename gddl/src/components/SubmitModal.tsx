@@ -8,6 +8,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { Level } from '../api/levels';
 import { AxiosError } from 'axios';
 import { Form } from 'react-bootstrap';
+import { NumberInput, TextInput } from './Input';
+import { PrimaryButton, SecondaryButton } from './Button';
 
 type Props = {
     show: boolean,
@@ -77,7 +79,7 @@ export default function SubmitModal({ show, onClose }: Props) {
     }
 
     return (
-        <Modal title='Submit rating' show={show} onHide={onClose}>
+        <Modal title='Submit rating' show={show}>
             <Modal.Body>
                 <Form noValidate onSubmit={submitForm} className='position-relative d-flex flex-column gap-2'>
                     <div className='mb-3'>
@@ -86,7 +88,7 @@ export default function SubmitModal({ show, onClose }: Props) {
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='submitRating'>Rating:</label>
-                        <input id='submitRating' type='number' value={rating} onChange={(e: any) => setRating(e.target.value)} />
+                        <NumberInput id='submitRating' value={rating} onChange={(e: any) => setRating(e.target.value)} />
                     </div>
                     <div className='mb-3' style={{height: '52px'}}>
                         <label htmlFor='submitEnjoyment'>Enjoyment:</label>
@@ -107,7 +109,7 @@ export default function SubmitModal({ show, onClose }: Props) {
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='submitRefreshRate'>Refresh rate:</label>
-                        <input id='submitRefreshRate' type='number' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} />
+                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} />
                     </div>
                     <div className='mb-3' style={{height: '52px'}}>
                         <label>Device:</label>
@@ -118,18 +120,18 @@ export default function SubmitModal({ show, onClose }: Props) {
                     </div>
                     <div>
                         <label htmlFor='submitProof'>Proof:</label>
-                        <input id='submitProof' type='text' value={proof} onChange={(e) => setProof(e.target.value)} />
+                        <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value)} />
                     </div>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <div className='d-flex justify-content-between'>
+                <div className='flex justify-between'>
                     <span className={'txt-danger'} style={{ opacity: responseMessage === '' ? 0 : 1 }} onClick={() => setResponseMessage('')}>{responseMessage}</span>
-                    <div className='d-flex'>
-                        <button className='secondary' onClick={onClose}>Close</button>
-                        <button className='primary' type="submit" onClick={submitForm}>
+                    <div className='flex'>
+                        <SecondaryButton onClick={onClose}>Close</SecondaryButton>
+                        <PrimaryButton type="submit" onClick={submitForm}>
                             Submit
-                        </button>
+                        </PrimaryButton>
                         <LoadingSpinner isLoading={sendSubmission.isLoading} />
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from './SearchBox/SearchBox';
 import { SearchUser } from '../api/users';
@@ -20,5 +20,5 @@ export default function UserSearchBox({ setResult, id }: Props) {
         setSearch(search);
     }
 
-    return <SearchBox id={id} className='userSearchBox' list={users.map((d) => ({...d, label: d.Name}))} update={update} setResult={setResult} status={status} placeholder='Search user...' />
+    return <SearchBox id={id} list={users.map((d) => ({...d, label: d.Name}))} update={update} setResult={setResult} status={status} placeholder='Search user...' />
 }

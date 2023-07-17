@@ -1,40 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Level from './Level';
-import filterEmpty from '../../../icons/filter-empty.svg';
-import FilterMenu, { Filters } from './FilterMenu';
-import caretR from '../../../icons/caret-r.svg';
-import caretL from '../../../icons/caret-l.svg';
-import { ReactComponent as ListSVG } from '../../../icons/list.svg';
-import { ReactComponent as GridSVG } from '../../../icons/grid.svg';
-import { ReactComponent as Cross } from '../../../icons/cross.svg';
+import FilterMenu from './FilterMenu';
 import SortMenu from './SortMenu';
 import { Level as TLevel, SearchLevels } from '../../../api/levels';
 import { useQuery } from '@tanstack/react-query';
-import { TExtendedFilters } from './FiltersExtended';
-import { useSessionStorage } from '../../../functions';
+import { useLocalStorage, useSessionStorage } from '../../../hooks';
+import Container from '../../../components/Container';
+import { TextInput } from '../../../components/Input';
+import PageButtons from '../../../components/PageButtons';
+
+export type SearchFilters = {
+    name: string,
+    lowTier: string,
+    highTier: string,
+    enjLow: string,
+    enjHigh: string,
+    difficulty: number,
+    creator: string,
+    song: string,
+
+    //Extended
+    subLowCount: string,
+    subHighCount: string,
+    enjLowCount: string,
+    enjHighCount: string,
+    devLow: string,
+    devHigh: string,
+    exactName: boolean,
+    removeCompleted: boolean,
+    removeUnrated: boolean,
+    removeUnratedEnj: boolean,
+    removeRated: boolean,
+    removeRatedEnj: boolean,
+    IDLow: string,
+    IDHigh: string,
+}
 
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
     const [pageIndex, setPageIndex] = useState(0);
-    const [levels, setLevels] = useState<TLevel[]>([]);
 
     //
     // Filter levels
     //
-    const [filters, setFilters] = useState({ lowTier: '', highTier: '', enjLow: '', enjHigh: '', difficulty: 0, creator: '', song: '' });
-    const [extendedFilters, setExtendedFilters] = useSessionStorage('extendedFilters', { subLowCount: '', subHighCount: '', enjLowCount: '', enjHighCount: '', enjLow:'', enjHigh: '', devLow: '', devHigh: '', removeUnrated: false });
-    const [search, setSearch] = useSessionStorage('search.input', '');
-    const [timer, setTimer] = useState<NodeJS.Timeout>();
+    const [filters, setFilters] = useSessionStorage<SearchFilters>('search.filters', {
+        name: '',
+        lowTier: '',
+        highTier: '',
+        enjLow: '',
+        enjHigh: '',
+        difficulty: 0,
+        creator: '',
+        song: '',
+    
+        //Extended
+        subLowCount: '',
+        subHighCount: '',
+        enjLowCount: '',
+        enjHighCount: '',
+        devLow: '',
+        devHigh: '',
+        exactName: false,
+        removeCompleted: false,
+        removeUnrated: false,
+        removeUnratedEnj: false,
+        removeRated: false,
+        removeRatedEnj: false,
+        IDLow: '',
+        IDHigh: '',
+    });
     const [q, setQ] = useSessionStorage('searchQuery', generateQ());
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
+
+    function resetFilters() {
+        setFilters({
+            name: '',
+            lowTier: '',
+            highTier: '',
+            enjLow: '',
+            enjHigh: '',
+            difficulty: 0,
+            creator: '',
+            song: '',
+            subLowCount: '',
+            subHighCount: '',
+            enjLowCount: '',
+            enjHighCount: '',
+            devLow: '',
+            devHigh: '',
+            exactName: false,
+            removeCompleted: false,
+            removeUnrated: false,
+            removeUnratedEnj: false,
+            removeRated: false,
+            removeRatedEnj: false,
+            IDLow: '',
+            IDHigh: '',
+        });
+    }
 
     function generateQ() {
         const joined: any = {
             ...filters,
-            ...extendedFilters,
             ...sorter,
             page: pageIndex+1,
-            name: search
         };
         const q: any = {};
         for (let p of Object.keys(joined)) {
@@ -45,41 +114,28 @@ export default function Ladder() {
     }
 
     useEffect(() => {
-        clearTimeout(timer);
-        setTimer(setTimeout(() => {
+        const timer = setTimeout(() => {
             // Runs a little after user input stops
             setQ(generateQ());
-        }, 500));  // eslint-disable-next-line
-    }, [search, filters, extendedFilters, pageIndex, sorter]);
+        }, 500);
+
+        return () => {
+            clearTimeout(timer);
+        }
+    }, [filters, pageIndex, sorter]);
     
     const { status: searchStatus, data: searchData } = useQuery({
         queryKey: ['search', q],
         queryFn: () => SearchLevels(q),
-        onSuccess: (data) => {setLevels(data.levels)},
-        retryDelay: 500,
-        cacheTime: 0
     });
-
-    const pageUp = () => {
-        if (searchStatus !== 'success') return;
-        if (pageIndex + 1 < searchData.count / 15) {
-            setPageIndex(prev => prev + 1);
-        }
-    }
-    const pageDown = () => {
-        if (searchStatus !== 'success') return;
-        if (pageIndex > 0) {
-            setPageIndex(prev => prev - 1);
-        }
-    }
 
     useEffect(() => {  // Watch for changes in search and filters
         setPageIndex(0);  // Reset index to page 1
-    }, [search, filters]);
+    }, [filters]);
 
 
 
-    const [listView, setListView] = useState(true);
+    const [listView, setListView] = useLocalStorage('search.listView', true);
     function onViewList() {
         if (!listView) setListView(true);
     }
@@ -88,32 +144,28 @@ export default function Ladder() {
         if (listView) setListView(false);
     }
 
-    function List({ levels }: {levels: TLevel[]}) {
+    function List({ levels }: { levels: TLevel[] }) {
         return (
-            <div className='d-flex flex-column'>
+            <div className='level-list'>
                 <Level.Header />
                 {levels.map(l => <Level info={l} key={l.ID} />)}
             </div>
         );
     }
-    function Grid({ levels }: {levels: TLevel[]}) {
+    function Grid({ levels }: { levels: TLevel[] }) {
         return (
-            <>
-                <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
-                    {levels.slice(0, (levels.length+1)/2).map(l => <Level.Grid info={l} key={l.ID} />)}
-                </div>
-                <div className='d-flex flex-column col-12 col-xl-6 p-0 m-0'>
-                    {levels.slice((levels.length+1)/2).map(l => <Level.Grid info={l} key={l.ID} />)}
-                </div>
-            </>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
+                {levels.map(l => <Level.Grid info={l} key={l.ID} />)}
+            </div>
         );
     }
 
     function Content() {
+        const levels = searchData?.levels;
         switch(searchStatus) {
             default:
             case 'loading': {
-                if (!levels) return <></>;
+                if (!levels) return;
                 if (listView) return <List levels={levels} />
                 else          return <Grid levels={levels} />
             }
@@ -121,45 +173,50 @@ export default function Ladder() {
                 return <h2>An error ocurred!</h2>
             }
             case 'success': {
-                if (listView) return <List levels={searchData.levels} />;
-                else          return <Grid levels={searchData.levels} />;
+                if (!levels) return;
+                if (listView) return <List levels={levels} />;
+                else          return <Grid levels={levels} />;
             }
         }
     }
     
     //{searchStatus === 'loading' && <LoadingSpinner />}
     return (
-        <div className='container'>
-            <h1>The Ladder</h1>
-            <div className='d-flex align-items-center search'>
-                <div className='searchBar'>
-                    <input type='text' placeholder='Search level name...' value={search} onChange={(e) => setSearch(e.target.value)} />
-                    <button className='clearSearch' onClick={() => setSearch('')}>
-                        <Cross />
+        <Container className='bg-gray-800'>
+            <h1 className='text-4xl mb-2'>The Ladder</h1>
+            <div className='flex items-center gap-1'>
+                <div className='relative flex-grow group'>
+                    <TextInput placeholder='Search level name...' value={filters.name} onChange={(e) => { setFilters(prev => ({ ...prev, name: e.target.value })); setPageIndex(0) }} />
+                    <button className='absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity' onClick={() => setFilters(prev => ({ ...prev, name: '' }))}>
+                        <svg width='16' height='16' stroke='currentColor' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
+                            <path strokeWidth='2' strokeLinecap='round' d='M4 4l22 22M4 26l22 -22' />
+                        </svg>
                     </button>
                 </div>
-                <button className='btn btn-light btn-sm m-1 px-3 h-100' onClick={() => setShowFilters((prev: boolean) => !prev)}>
-                    <img src={filterEmpty} alt='' />
+                <button className='bg-white text-black w-7 h-7 grid place-items-center' onClick={() => setShowFilters((prev: boolean) => !prev)}>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16px' height='16px' fill='currentColor' viewBox='0 0 16 16'>
+                        <path d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z'/>
+                    </svg>
                 </button>
                 <SortMenu set={setSorter} />
-                <div className='d-flex align-items-center m-1 h-100'>
-                    <button className={'list view-left ' + (listView ? 'active' : '')} onClick={onViewList}>
-                        <ListSVG />
+                <div className='flex items-center text-black'>
+                    <button className={'w-7 h-7 grid place-items-center ' + (listView ? 'bg-gray-950 text-white' : 'bg-white')} onClick={onViewList}>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' stroke='currentColor' viewBox='0 0 16 16'>
+                            <path fillRule='evenodd' d='M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z'/>
+                        </svg>
                     </button>
-                    <button className={'list view-right ' + (!listView ? 'active' : '')} onClick={onViewGrid}>
-                        <GridSVG />
+                    <button className={'w-7 h-7 grid place-items-center ' + (!listView ? 'bg-gray-950 text-white' : 'bg-white')} onClick={onViewGrid}>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
+                            <path d='M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z'/>
+                        </svg>
                     </button>
                 </div>
             </div>
-            <FilterMenu filter={setFilters} setExtended={setExtendedFilters} show={showFilters} />
-            <div className={'level-list my-3' + (listView ? '' : ' d-flex flex-column flex-xl-row gap-xl-2')}>
+            <FilterMenu filters={filters} setFilters={setFilters} reset={resetFilters} show={showFilters} />
+            <div className='my-4'>
                 <Content />
             </div>
-            <div className='d-flex align-items-center'>
-                <button className='page-scroller' onClick={pageDown}><img src={caretL} alt='Previous page' /></button>
-                <p className='text-center m-0 mx-5 fs-3 cursor-default'>{pageIndex + 1} / {(searchData && Math.ceil(searchData.count/16)) || 0}</p>
-                <button className='page-scroller' onClick={pageUp}><img src={caretR} alt='Next page' /></button>
-            </div>
-        </div>
+            {searchData && <PageButtons onPageChange={setPageIndex} meta={{ limit: searchData.limit, total: searchData.total, page: pageIndex }} />}
+        </Container>
     );
 }

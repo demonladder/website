@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
 import { SearchPacks } from '../api/packs';
 import SearchBox from './SearchBox/SearchBox';
 

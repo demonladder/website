@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { GetSubmissions } from '../../../api/submissions';
 import Submission from './Submission';
 import PageButtons from '../../../components/PageButtons';
@@ -9,15 +9,15 @@ type Props = {
 }
 
 export default function SubmissionList({ levelID }: Props) {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
 
     const { data: submissionInfo } = useQuery({
         queryKey: ['submissions', {levelID, page}],
-        queryFn: () => GetSubmissions({levelID, page, chunk: 10}),
+        queryFn: () => GetSubmissions({levelID, page: page+1, chunk: 10}),
     });
 
     if (submissionInfo === undefined || levelID === 0) {
-        return (<></>);
+        return;
     }
 
     return (
@@ -26,7 +26,7 @@ export default function SubmissionList({ levelID }: Props) {
             <div id='submissionList'>
                 {submissionInfo.submissions.map((sub) => <Submission submission={sub} levelID={levelID} />)}
             </div>
-            <PageButtons onPageChange={(_page) => setPage(_page)} page={page} meta={{ nextPage: submissionInfo.nextPage, previousPage: submissionInfo.previousPage, pages: submissionInfo.pages }} />
+            <PageButtons onPageChange={(_page) => setPage(_page)} meta={{ total: submissionInfo.total, limit: submissionInfo.limit, page }} />
         </div>
     );
 }
