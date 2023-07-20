@@ -23,7 +23,7 @@ export default function SubmissionList({ levelID }: Props) {
     return (
         <div>
             <p className='m-0'>Submissions:</p>
-            <div id='submissionList'>
+            <div id='submissionList' className='grid gap-2 grid-cols-1'>
                 {submissionInfo.submissions.map((sub) => <Submission submission={sub} levelID={levelID} />)}
             </div>
             <PageButtons onPageChange={(_page) => setPage(_page)} meta={{ total: submissionInfo.total, limit: submissionInfo.limit, page }} />

@@ -1,3 +1,4 @@
+import { StorageManager } from "../storageManager";
 import instance from "./axios";
 
 export type Level = {
@@ -26,9 +27,10 @@ type Query = {
 }
 
 export async function SearchLevels(q: Query): Promise<SearchInfo> {
+    const csrfToken = StorageManager.getCSRF() || '';
     return (await instance.get('/level/search', {
         withCredentials: true,
-        params: { chunk: 16, ...q, },
+        params: { chunk: 16, ...q, csrfToken },
     })).data;
 }
 

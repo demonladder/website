@@ -6,9 +6,9 @@ export type TokenPair = {
     UserName: string,
 }
 
-export async function SignupToken(tokenPair: TokenPair): Promise<void> {
+export async function SignupToken(username: string): Promise<void> {
     const csrfToken = StorageManager.getCSRF();
-    await instance.post('/signupToken', { token: tokenPair.Token, username: tokenPair.UserName }, { withCredentials: true, params: { csrfToken } });
+    await instance.post('/signupToken', { username }, { withCredentials: true, params: { csrfToken } });
 }
 
 export async function GetSignupTokens(): Promise<TokenPair[]> {

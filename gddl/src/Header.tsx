@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import ProfileButtons from './routes/root/login/ProfileButtons';
-// import SubmitModal from './components/SubmitModal';
+import SubmitModal from './components/SubmitModal';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-// import { StorageManager } from './storageManager';
+import { StorageManager } from './storageManager';
 import UserSearchBox from './components/UserSearchBox';
 
 export default function Header() {
-    // const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [navOpen, setNavOpen] = useState(false);
     const navigate = useNavigate();
-    // function openSubmit() {
-    //     // Check if user is logged in
-    //     if (!StorageManager.hasSession()) {
-    //         navigate('/login');
-    //         return;
-    //     }
+    function openSubmit() {
+        // Check if user is logged in
+        if (!StorageManager.hasSession()) {
+            navigate('/login');
+            return;
+        }
         
-    //     setShowModal(true);
-    // }
+        setShowModal(true);
+    }
 
     return (
         <>
@@ -36,14 +36,14 @@ export default function Header() {
                             <div><NavLink to='/list' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>The Ladder</NavLink></div>
                             <div><NavLink to='/references' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>Reference Demons</NavLink></div>
                             <div><NavLink to='/packs' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>Packs</NavLink></div>
-                            {/* {<button className='text-start fs-5 underline nav-link' onClick={openSubmit}>Submit</button>} */}
+                            {<button className='text-start fs-5 underline nav-link' onClick={openSubmit}>Submit</button>}
                             <UserSearchBox setResult={(user) => navigate('/profile/' + user.ID)} id='userSearch' />
                         </div>
                         <ProfileButtons />
                     </div>
                 </div>
             </div>
-            {/* {<SubmitModal show={showModal} onClose={() => setShowModal(false)} />} */}
+            {<SubmitModal show={showModal} onClose={() => setShowModal(false)} />}
         </>
     );
 }

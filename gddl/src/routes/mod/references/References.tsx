@@ -5,6 +5,8 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import LevelSearchBox from '../../../components/LevelSearchBox';
 import { Level as TLevel } from '../../../api/levels';
 import { ToFixed } from '../../../functions';
+import { DangerButton, PrimaryButton } from '../../../components/Button';
+import { NumberInput } from '../../../components/Input';
 
 type Reference = {
     Tier: number,
@@ -23,6 +25,25 @@ type ChangeLevelProps = {
     remove: () => void,
 }
 
+function ChangeLevel({ data, remove }: ChangeLevelProps) {
+    let action = data.Type + ' ';
+    let preposition = (data.Type === 'remove' ? 'from' : 'to') + ' ';
+    let targetTier = 'tier ' + data.Tier;
+
+    return (
+        <div className='flex justify-between'>
+            <div className='flex gap-2 items-center'>
+                <DangerButton onClick={remove}>X</DangerButton>
+                <div className='name'>
+                    <h4>{data.Name}</h4>
+                    <p>{action + preposition + targetTier}</p>
+                </div>
+            </div>
+            <p>{data.ID}</p>
+        </div>
+    );
+}
+
 export default function EditReferences() {
     const [tier, setTier] = useState(1);
     const [changeList, setChangeList] = useState<Change[]>([]);
@@ -39,7 +60,7 @@ export default function EditReferences() {
         return (
             <>
                 <div className='divider-lg'></div>
-                <div className='list'>
+                <div className='flex flex-col gap-1 mb-8'>
                     {
                         data.filter((l) => l.Tier === tier).map(l => <Level data={l} remove={() => {
                             if (changeList.filter((e) => e.ID === l.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
@@ -49,7 +70,7 @@ export default function EditReferences() {
                     }
                 </div>
                 <div className='change-list'>
-                    <h3>{changeList[0] && 'Change list'}</h3>
+                    <h3 className='text-xl'>{changeList[0] && 'Change list'}</h3>
                     <div className='list'>
                         {
                             changeList.map(c => <ChangeLevel data={c} remove={() => setChangeList(changeList.filter(d => d !== c))} key={c.ID} />)
@@ -64,38 +85,19 @@ export default function EditReferences() {
         const roundedTier = Math.round(data.Rating);
 
         return (
-            <div className='row gap-2'>
-                <div className='reference col align-items-center'>
-                    <div>
-                        <button className='danger' onClick={remove}>X</button>
+            <div className='grid grid-cols-12 gap-2'>
+                <div className='flex justify-between items-center col-span-11'>
+                    <div className='flex gap-2 items-center'>
+                        <DangerButton onClick={remove}>X</DangerButton>
                         <div className='name'>
                             <h4>{data.Name}</h4>
                         </div>
                     </div>
                     <p>{data.ID}</p>
                 </div>
-                <div className={'d-flex col-1 justify-content-center tier-' + roundedTier}>
-                    <p className='m-0 align-self-center'>{ToFixed(''+data.Rating, 2, '-')}</p>
+                <div className={'flex col-span-1 justify-center tier-' + roundedTier}>
+                    <p className='self-center'>{ToFixed(''+data.Rating, 2, '-')}</p>
                 </div>
-            </div>
-        );
-    }
-
-    function ChangeLevel({ data, remove }: ChangeLevelProps) {
-        let action = data.Type + ' ';
-        let preposition = (data.Type === 'remove' ? 'from' : 'to') + ' ';
-        let targetTier = 'tier ' + data.Tier;
-
-        return (
-            <div className='reference'>
-                <div>
-                    <button className='danger' onClick={remove}>X</button>
-                    <div className='name'>
-                        <h4>{data.Name}</h4>
-                        <p>{action + preposition + targetTier}</p>
-                    </div>
-                </div>
-                <p>{data.ID}</p>
             </div>
         );
     }
@@ -126,19 +128,19 @@ export default function EditReferences() {
 
     return (
         <div id='edit-references'>
-            <h3 className='mb-5'>Edit References</h3>
-            <div className='control mb-3'>
+            <h3 className='mb-3 text-2xl'>Edit References</h3>
+            <div className='flex justify-between mb-3'>
                 <div>
                     <label className='me-2' htmlFor='editReferenceTierInput'>Edit tier:</label>
-                    <input type='number' id='editReferenceTierInput' min='0' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
+                    <NumberInput id='editReferenceTierInput' min='0' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
                 </div>
-                <button className={'save' + (changeList.length > 0 ? ' show' : '')} disabled={mutateReferences.isLoading} onClick={save}>Save changes</button>
+                <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} disabled={mutateReferences.isLoading} onClick={save}>Save changes</PrimaryButton>
             </div>
             <div className='position-relative'>
                 <label htmlFor='editReferenceLevelInput'>Level:</label>
-                <div className='d-flex'>
-                    <LevelSearchBox className='flex-grow-1' id='editReferenceLevelInput' setResult={s => setSearch(s)} />
-                    <button className='primary' onClick={addChange}>Add</button>
+                <div className='flex'>
+                    <LevelSearchBox className='flex-grow' id='editReferenceLevelInput' setResult={s => setSearch(s)} />
+                    <PrimaryButton onClick={addChange}>Add</PrimaryButton>
                 </div>
             </div>
             <Content />

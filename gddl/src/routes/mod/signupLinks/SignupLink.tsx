@@ -4,12 +4,12 @@ import { GetSignupTokens, SignupToken, TokenPair } from '../../../api/signupLink
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/users';
-import { randomBytes } from '../../../functions';
+import { PrimaryButton } from '../../../components/Button';
 
 function Token({ token }: { token: TokenPair }) {
     const link = 'https://gdladder.com/signup?key=' + token.Token + '&name=' + token.UserName;
 
-    function linkClick(e: any ) {
+    function linkClick(e: any) {
         navigator.clipboard.writeText(link);
 
         e.target.classList.remove('bg-fade');
@@ -32,11 +32,12 @@ export default function SignupLink() {
     const { data: tokens } = useQuery({
         queryKey: ['signupTokens'],
         queryFn: GetSignupTokens,
+        staleTime: 10000,
     });
 
     const queryClient = useQueryClient();
     const genToken = useMutation({
-        mutationFn: async (context: TokenPair) => {
+        mutationFn: async (context: string) => {
             await SignupToken(context);
             queryClient.invalidateQueries(['signupTokens']);
         },
@@ -45,25 +46,23 @@ export default function SignupLink() {
     function newLink() {
         if (result === undefined) return;
         
-        const token = randomBytes(32);
-        genToken.mutate({ Token: token, UserName: result.Name });
+        genToken.mutate(result.Name);
     }
 
     return (
         <div>
-            <h3 className='mb-3'>Get Sign-up Link</h3>
-            <p className='mb-3'>Generate a one-time sign-up link for an existing user. Anyone with the link can create a password for the listed username.</p>
-            <div className='mb-3'>
+            <h3 className='mb-4 text-2xl'>Create Sign-up Link</h3>
+            <p className='mb-4'>Generate a one-time sign-up link for an existing user. Anyone with the link can create a password for the listed username.</p>
+            <div className='mb-4'>
                 <label htmlFor='tokenReceiver'>User:</label>
                 <UserSearchBox setResult={setResult} id='tokenReceiver' />
-                <button className='primary' onClick={newLink}>Generate</button>
+                <PrimaryButton onClick={newLink}>Generate</PrimaryButton>
             </div>
             {genToken.isLoading && <LoadingSpinner />}
-            <div>
-                {(tokens !== undefined &&
-                    tokens.map((token) => <Token token={token} key={token.Token} />))
-                ||
-                <LoadingSpinner />
+            <div className='flex flex-col gap-4'>
+                {(tokens !== undefined) ?
+                    tokens.map((token) => <Token token={token} key={token.Token} />) :
+                    <LoadingSpinner />
                 }
             </div>
         </div>

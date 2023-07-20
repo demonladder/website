@@ -24,120 +24,123 @@ import Promote from './routes/mod/promote/Promote';
 import SignupLink from './routes/mod/signupLinks/SignupLink';
 import ErrorElement from './ErrorElement';
 import SignUp from './routes/root/signup/SignUp';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <Root />,
-      errorElement: <ErrorElement />,
-      children: [
+    [
         {
-          index: true,
-          element: <Index />
+            path: '/',
+            element: <Root />,
+            errorElement: <ErrorElement />,
+            children: [
+                {
+                    index: true,
+                    element: <Index />
+                },
+                {
+                    path: 'list',
+                    element: <Ladder />
+                },
+                {
+                    path: 'references',
+                    element: <References />
+                },
+                {
+                    path: 'level/:levelID',
+                    element: <LevelOverview />
+                },
+                {
+                    path: 'packs',
+                    element: <Packs />
+                },
+                {
+                    path: 'pack/:packID',
+                    element: <PackOverview />
+                },
+                {
+                    path: 'login',
+                    element: <Login />,
+                    action: Login.loginAction,
+                },
+                {
+                    path: 'signup',
+                    element: <SignUp />,
+                },
+                {
+                    path: 'profile/:userID',
+                    element: <Profile />,
+                },
+            ],
         },
         {
-          path: 'list',
-          element: <Ladder />
+            path: '/mod',
+            element: <Mod />,
+            loader: Mod.modLoader,
+            children: [
+                {
+                    index: true,
+                    element: <ModIndex />
+                },
+                {
+                    path: 'queue',
+                    element: <Queue />
+                },
+                {
+                    path: 'packs',
+                    element: <EditPacks />
+                },
+                {
+                    path: 'references',
+                    element: <EditReferences />
+                },
+                {
+                    path: 'createPack',
+                    element: <CreatePack />,
+                },
+                {
+                    path: 'deleteSubmission',
+                    element: <DeleteSubmission />,
+                },
+                {
+                    path: 'promote',
+                    element: <Promote />,
+                },
+                {
+                    path: 'signupLinks',
+                    element: <SignupLink />,
+                },
+            ]
         },
-        {
-          path: 'references',
-          element: <References />
-        },
-        {
-          path: 'level/:levelID',
-          element: <LevelOverview />
-        },
-        {
-          path: 'packs',
-          element: <Packs />
-        },
-        {
-          path: 'pack/:packID',
-          element: <PackOverview />
-        },
-        {
-          path: 'login',
-          element: <Login />,
-          action: Login.loginAction,
-        },
-        {
-          path: 'signup',
-          element: <SignUp />,
-        },
-        {
-          path: 'profile/:userID',
-          element: <Profile />,
-        },
-      ],
-    },
-    {
-      path: '/mod',
-      element: <Mod />,
-      loader: Mod.modLoader,
-      children: [
-        {
-          index: true,
-          element: <ModIndex />
-        },
-        {
-          path: 'queue',
-          element: <Queue />
-        },
-        {
-          path: 'packs',
-          element: <EditPacks />
-        },
-        {
-          path: 'references',
-          element: <EditReferences />
-        },
-        {
-          path: 'createPack',
-          element: <CreatePack />,
-        },
-        {
-          path: 'deleteSubmission',
-          element: <DeleteSubmission />,
-        },
-        {
-          path: 'promote',
-          element: <Promote />,
-        },
-        {
-          path: 'signupLinks',
-          element: <SignupLink />,
-        },
-      ]
-    },
-  ],
+    ],
 );
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 10,  // 10 minutes
-      cacheTime: 1000 * 60 * 15,  // 15 minutes
-      retry: false,
-      keepPreviousData: true,
+    defaultOptions: {
+        queries: {
+            staleTime: 1000 * 60 * 10,  // 10 minutes
+            cacheTime: 1000 * 60 * 15,  // 15 minutes
+            retry: false,
+            keepPreviousData: true,
+        },
     },
-  },
 });
 
 function createRoot() {
-  const root = document.createElement('div');
-  root.id = 'root';
-  document.body.appendChild(root);
-  return root;
+    const root = document.createElement('div');
+    root.id = 'root';
+    document.body.appendChild(root);
+    return root;
 }
 
 const rootElement = document.getElementById('root') || createRoot();
 const root = ReactDOM.createRoot(rootElement);
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+        <ToastContainer theme='dark' position='bottom-right' />
+    </React.StrictMode>
 );

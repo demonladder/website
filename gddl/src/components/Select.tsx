@@ -36,10 +36,10 @@ export default function Select({ options, onChange, zIndex = 1001, id }: Props) 
     }, [id]);
 
     return (
-        <div className='style-input custom-select cursor-pointer' onClick={() => setOpen(prev => !prev)}>
+        <div className='style-input custom-select cursor-pointer select-none' onClick={() => setOpen(prev => !prev)}>
             <div id={id} className='bg-black bg-opacity-20 border-b-2 w-full ps-2'>
                 {value.value}
-                <div className={'selectOptionsWrapper absolute -translate-x-2 translate-y-1 overflow-hidden grid transition-[grid-template-rows'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>
+                <div className={'selectOptionsWrapper absolute -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>
                     <div className='selectOptions min-h-0 bg-gray-700' style={{ zIndex }}>
                         {
                             options.map((o) => <SelectOption option={o} setValue={optionClicked} key={o.value} />)

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApproveSubmission, GetSubmissionQueue, Submission as TSubmission } from '../../../api/submissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submissions';
+import { PrimaryButton } from '../../../components/Button';
 
 type SubmissionMutation = TSubmission & {
     deny: boolean,
@@ -32,7 +33,7 @@ export default function Queue() {
         if (status === 'loading') {
             return <LoadingSpinner />
         } else if (status === 'error') {
-            return <h3>An error ocurred</h3>
+            return <p>An error ocurred</p>
         } else {
             return (
                 <div>
@@ -45,11 +46,11 @@ export default function Queue() {
 
     return (
         <div>
-            <div className='d-flex justify-content-between'>
-                <h3>Submissions</h3>
+            <div className='flex justify-between'>
+                <h3 className='text-2xl mb-3'>Submissions</h3>
                 <div>
                     <button onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>
-                        {(isRefetching && <LoadingSpinner />) || <button className='primary'>Refresh</button>}
+                        {(isRefetching && <LoadingSpinner />) || <PrimaryButton>Refresh</PrimaryButton>}
                     </button>
                 </div>
             </div>

@@ -51,7 +51,7 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
                     <CheckBox checked={filters.exactName} onChange={() => setFilters(prev => ({ ...prev, exactName: !prev.exactName }))} />
                     Exact name search
                 </label>
-                <label className={'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' + (inSession ? '' : ' disabled')}>
+                <label className={'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' + (inSession ? '' : ' text-gray-500 line-through')}>
                     <CheckBox checked={filters.removeCompleted} onChange={() => setFilters(prev => ({ ...prev, removeCompleted: !prev.removeCompleted }))} disabled={!inSession} />
                     Exclude completed
                 </label>

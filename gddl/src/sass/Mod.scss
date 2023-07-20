@@ -20,59 +20,6 @@
     }
 }
 
-#edit-references {
-    .control {
-        display: flex;
-        justify-content: space-between;
-
-        button.save {
-            border: none;
-            background: Colors.$save;
-            opacity: 0;
-            font-weight: bold;
-            padding: 0.25rem 0.5rem;
-
-            &:hover {
-                background: Colors.$save-hover;
-            }
-
-            &:active {
-                background: Colors.$save-active;
-            }
-
-            &.show {
-                opacity: 1;
-            }
-
-            &:disabled {
-                background: Colors.$save-disabled;
-            }
-        }
-    }
-
-    .list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        margin-bottom: 2rem;
-
-        .reference {
-            display: flex;
-            justify-content: space-between;
-
-            > div {
-                display: flex;
-                gap: 0.5rem;
-                align-items: center;
-            }
-
-            h4, p {
-                margin: 0;
-            }
-        }
-    }
-}
-
 #submissionList {
     display: grid;
     gap: 0.5rem;
