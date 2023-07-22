@@ -16,7 +16,7 @@ type Props = {
 
 export default function ChangeItem({ change, remove }: Props) {
     if (!change.Level) {
-        return <></>;
+        return;
     }
 
     let item;

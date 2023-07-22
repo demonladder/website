@@ -11,6 +11,7 @@ export type Submission = {
     Name: string,
     Creator: string,
     Proof: string,
+    Difficulty: string,
 }
 
 export type SubmissionQueueInfo = Submission & {
@@ -45,9 +46,9 @@ export async function GetSubmissions({ levelID, page = 1, chunk = 25 }: { levelI
     return res.data;
 }
 
-export function DeleteSubmission(submission: { levelID: number, userID: number }) {
+export function DeleteSubmission(levelID: number, userID: number) {
     const csrfToken = StorageManager.getCSRF();
-    return instance.delete('/submissions', { withCredentials: true, params: { ...submission, csrfToken } });
+    return instance.delete('/submissions', { withCredentials: true, params: { csrfToken }, data: { levelID, userID } });
 }
 
 export function ApproveSubmission(info: {deny: boolean} & Submission): Promise<void> {

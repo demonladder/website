@@ -37,7 +37,8 @@ export default function Promote() {
                     { key: 2, value: 'Developer' },
                     { key: 3, value: 'Moderator' },
                     { key: 4, value: 'Admin' },
-                    { key: 5, value: 'Owner' },
+                    { key: 5, value: 'Co-Owner' },
+                    { key: 6, value: 'Owner' },
                 ]} id='permissionSelect' onChange={(option) => setPermissionLevel(option.key)} />
                 <PrimaryButton onClick={submit}>Save</PrimaryButton>
             </div>
@@ -49,7 +50,8 @@ export default function Promote() {
                     <li>2. Developer</li>
                     <li>3. Moderator</li>
                     <li>4. Admin</li>
-                    <li>5. Owner</li>
+                    <li>5. Co-Owner</li>
+                    <li>6. Owner</li>
                 </ol>
             </div>
         </div>

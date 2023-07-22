@@ -38,13 +38,13 @@ export default function LevelOverview() {
     let roundedEnjoyment = 'Unrated';
     let standardDeviation = '-';
 
-    if (level.RatingCount > 0) {
+    if (level.RatingCount > 0 && level.Rating !== null) {
         avgRating = level.Rating.toFixed(2);
         roundedRating = ''+Math.round(level.Rating);
         standardDeviation = ''+ToFixed(''+level.Deviation, 2, '0');
     }
 
-    if (level.EnjoymentCount > 0) {
+    if (level.EnjoymentCount > 0 && level.Enjoyment !== null) {
         avgEnjoyment = level.Enjoyment.toFixed(2);
         roundedEnjoyment = ''+Math.round(parseFloat(avgEnjoyment));
     }

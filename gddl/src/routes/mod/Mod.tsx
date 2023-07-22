@@ -38,8 +38,8 @@ function Mod() {
                             <NavButton to='/mod/queue'>Submissions queue</NavButton>
                             <NavButton to='/mod/references'>Edit references</NavButton>
                             <NavButton to='/mod/deleteSubmission'>Delete submission</NavButton>
-                            {/* <NavButton to='/mod/createPack'>Create pack</NavButton> */}
-                            {/* <NavButton to='/mod/packs'>Edit packs</NavButton> */}
+                            <NavButton to='/mod/createPack'>Create pack</NavButton>
+                            <NavButton to='/mod/packs'>Edit packs</NavButton>
                         </div>
                     </div>
                     <div className='col-span-12 md:col-span-6 lg:col-span-9'>

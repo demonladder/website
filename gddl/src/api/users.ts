@@ -39,7 +39,7 @@ async function SearchUser(name: string): Promise<TinyUser[]> {
 }
 
 async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { userID: number, page?: number, sort: string, sortDirection: string}): Promise<UserSubmissions> {
-    return (await instance.get(`/user/submissions?userID=${userID}&page=${page}`, { params: { userID, page, sort, sortDirection}})).data;
+    return (await instance.get(`/user/submissions`, { params: { userID, page, sort, sortDirection, chunk: 16 }})).data;
 }
 
 async function SaveProfile(user: User) {

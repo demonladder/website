@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { RadioButton } from '../../../components/Input';
 
 type Props = {
@@ -9,6 +9,7 @@ export default function SortMenu({ set }: Props) {
     const [sortAscending, setSortAscending] = useState(true);
     const [sorter, setSorter] = useState('LevelID');
     const [show, setShow] = useState(false);
+    const resultsRef = useRef<HTMLDivElement>(null);
     function handleSortMenu(e: any) {
         setSorter(e.target.id);
     }
@@ -21,7 +22,7 @@ export default function SortMenu({ set }: Props) {
     }, [sortAscending, sorter, set]);
 
     function mouseMove(e: MouseEvent) {  // Auto close sort menu when mouse wanders too far
-        const menu = document.querySelector('.sortMenu');
+        const menu = resultsRef.current;
         if (!menu) return;
         const rect = menu.getBoundingClientRect();
         const dist = 100;
@@ -54,7 +55,7 @@ export default function SortMenu({ set }: Props) {
                     </svg>
                 }
             </button>
-            <div className='absolute left-1/2 -translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
+            <div ref={resultsRef} className='absolute left-1/2 -translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
                 <div className='min-h-0 bg-gray-600 w-max'>
                     <div className='p-3 flex flex-col gap-2'>
                         <div className='columns-2'>

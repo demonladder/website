@@ -4,8 +4,8 @@ import instance from "./axios";
 export type Level = {
     ID: number,
     Name: string,
-    Rating: number,
-    Enjoyment: number,
+    Rating: number | null,
+    Enjoyment: number | null,
     Deviation: number,
     RatingCount: number,
     EnjoymentCount: number,

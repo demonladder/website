@@ -3,7 +3,7 @@ import { Reference } from '../../../api/references';
 
 export default function Level({ level }: {level: Reference}) {
     return (
-        <div className='px-2 level-label'>
+        <div className='px-2 level-label h-1/5'>
             <Link to={'/level/' + level.ID} className='m-0 underline'>{level.Name}</Link>
         </div>
     );

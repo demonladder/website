@@ -14,6 +14,6 @@ export function SecondaryButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HT
 
 export function DangerButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
     return (
-        <button {...props} className='bg-button-danger-1 hover:bg-button-danger-2 active:bg-button-danger-3 transition-colors px-2 h-7' />
+        <button {...props} className={'bg-button-danger-1 hover:bg-button-danger-2 active:bg-button-danger-3 transition-colors px-2 h-7' + (props.className ? ' '+props.className : '')} />
     );
 }

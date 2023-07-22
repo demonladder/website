@@ -12,8 +12,8 @@ export default function SubmissionList({ levelID }: Props) {
     const [page, setPage] = useState(0);
 
     const { data: submissionInfo } = useQuery({
-        queryKey: ['submissions', {levelID, page}],
-        queryFn: () => GetSubmissions({levelID, page: page+1, chunk: 10}),
+        queryKey: ['submissions', { levelID, page }],
+        queryFn: () => GetSubmissions({ levelID, page: page+1, chunk: 21 }),
     });
 
     if (submissionInfo === undefined || levelID === 0) {
@@ -23,7 +23,7 @@ export default function SubmissionList({ levelID }: Props) {
     return (
         <div>
             <p className='m-0'>Submissions:</p>
-            <div id='submissionList' className='grid gap-2 grid-cols-1'>
+            <div id='submissionList' className='grid gap-3 grid-cols-3'>
                 {submissionInfo.submissions.map((sub) => <Submission submission={sub} levelID={levelID} />)}
             </div>
             <PageButtons onPageChange={(_page) => setPage(_page)} meta={{ total: submissionInfo.total, limit: submissionInfo.limit, page }} />

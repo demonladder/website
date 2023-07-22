@@ -36,14 +36,14 @@ export default function Header() {
                             <div><NavLink to='/list' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>The Ladder</NavLink></div>
                             <div><NavLink to='/references' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>Reference Demons</NavLink></div>
                             <div><NavLink to='/packs' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>Packs</NavLink></div>
-                            {<button className='text-start fs-5 underline nav-link' onClick={openSubmit}>Submit</button>}
+                            <button className='text-start fs-5 underline nav-link' onClick={openSubmit}>Submit</button>
                             <UserSearchBox setResult={(user) => navigate('/profile/' + user.ID)} id='userSearch' />
                         </div>
                         <ProfileButtons />
                     </div>
                 </div>
             </div>
-            {<SubmitModal show={showModal} onClose={() => setShowModal(false)} />}
+            <SubmitModal show={showModal} onClose={() => setShowModal(false)} />
         </>
     );
 }

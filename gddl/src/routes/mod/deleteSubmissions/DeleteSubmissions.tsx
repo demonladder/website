@@ -8,7 +8,7 @@ export default function DeleteSubmission() {
 
     return (
         <div>
-            <h3 className='mb-3'>Delete Submission</h3>
+            <h3 className='text-2xl mb-3'>Delete Submission</h3>
             <div className='mb-5'>
                 <label htmlFor='deleteSubmissionSearch'>Level:</label>
                 <LevelSearchBox id='deleteSubmissionSearch' setResult={setResult} />

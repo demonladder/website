@@ -119,9 +119,11 @@ export default function EditReferences() {
     const [search, setSearch] = useState<TLevel>();
     function addChange() {
         if (!search) return;
+        if (search.Rating === null) return;
+
         if (changeList.filter(c => c.ID === search.ID && c.Type === 'add').length === 1) return;
 
-        const newChange: Change = {Tier: search.Rating, ID: search.ID, Name: search.Name, Type: ChangeType.Add};
+        const newChange: Change = { Tier: search.Rating, ID: search.ID, Name: search.Name, Type: ChangeType.Add };
         newChange.Tier = tier;
         setChangeList(prev => [...prev, newChange])
     }

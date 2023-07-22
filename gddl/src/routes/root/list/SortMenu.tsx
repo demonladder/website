@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RadioButton } from '../../../components/Input';
+import { useSessionStorage } from '../../../hooks';
 
 type Props = {
     set: (sort: any) => void,
 }
 
 export default function SortMenu({ set }: Props) {
-    const [sortAscending, setSortAscending] = useState(true);
-    const [sorter, setSorter] = useState('ID');
+    const [sortAscending, setSortAscending] = useSessionStorage('search.sortAscending', true);
+    const [sorter, setSorter] = useSessionStorage('search.sorter', 'ID');
     const [show, setShow] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
     function handleSortMenu(e: any) {
         setSorter(e.target.id);
     }
@@ -21,7 +23,7 @@ export default function SortMenu({ set }: Props) {
     }, [sortAscending, sorter, set]);
 
     function mouseMove(e: MouseEvent) {  // Auto close sort menu when mouse wanders too far
-        const menu = document.querySelector('.sortMenu');
+        const menu = menuRef.current;
         if (!menu) return;
         const rect = menu.getBoundingClientRect();
         const dist = 100;
@@ -35,10 +37,10 @@ export default function SortMenu({ set }: Props) {
     }
 
     useEffect(() => {
-        document.addEventListener('mousemove', mouseMove);
+        window.addEventListener('mousemove', mouseMove);
 
         return () => {
-            document.removeEventListener('mousemove', mouseMove);
+            window.removeEventListener('mousemove', mouseMove);
         }
     }, []);
 
@@ -54,7 +56,7 @@ export default function SortMenu({ set }: Props) {
                     </svg>
                 }
             </button>
-            <div className='absolute left-1/2 -translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
+            <div ref={menuRef} className='absolute left-1/2 -translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
                 <div className='min-h-0 bg-gray-600 w-max'>
                     <div className='p-3 flex flex-col gap-2'>
                         <div className='columns-2'>

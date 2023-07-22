@@ -1,6 +1,7 @@
 import { DeleteSubmission, Submission as TSubmission } from '../../../api/submissions';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { DangerButton } from '../../../components/Button';
+import { toast } from 'react-toastify';
 
 type Props = {
     submission: TSubmission,
@@ -10,20 +11,27 @@ type Props = {
 export default function Submission({ submission, levelID }: Props) {
     const queryClient = useQueryClient();
 
-    const mutation = useMutation({
-        mutationFn: DeleteSubmission,
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                predicate: ({ queryKey }: { queryKey: any }) => queryKey[0] === 'submissions' && queryKey[1].levelID === levelID,
-            });
-        }
-    });
+    async function deletePromise() {
+        await DeleteSubmission(levelID, submission.UserID);
+        queryClient.invalidateQueries(['submissions']);
+    }
+
+    function mutate() {
+        toast.promise(deletePromise, {
+            pending: 'Deleting',
+            success: 'Rating deleted',
+            error: 'An error occurred',
+        });
+    }
+
+    const rating = submission.Rating || '0';
+    const enjoyment = submission.Enjoyment || '-1';
 
     return (
         <div className='submission flex'>
-            <DangerButton onClick={() => mutation.mutate({ levelID, userID: submission.UserID })}>X</DangerButton>
-            <p className={'w-1/12 text-center tier-' + submission.Rating}>{submission.Rating}</p>
-            <p className={'w-1/12 text-center enj-' + submission.Enjoyment}>{submission.Enjoyment}</p>
+            <DangerButton className='w-8' onClick={mutate}>X</DangerButton>
+            <p className={'w-12 text-center tier-' + rating}>{submission.Rating || '-'}</p>
+            <p className={'w-12 text-center enj-' + enjoyment}>{(submission.Enjoyment === null) ? '-' : enjoyment}</p>
             <p className='flex-grow ps-2 bg-gray-600'>{submission.Name}</p>
         </div>
     );

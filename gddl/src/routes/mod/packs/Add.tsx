@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Form } from 'react-bootstrap';
 import LevelSearchBox from '../../../components/LevelSearchBox';
 import { Pack } from '../../../api/packs';
 import { uuid } from '../../../functions';
+import { PrimaryButton } from '../../../components/Button';
 
 type Props = {
     pack: Pack,
@@ -26,11 +26,11 @@ export default function Add({ pack, setChangeList }: Props) {
 
     return (
         <div className='mb-5 position-relative'>
-            <Form.Group className='mb-3'>
-                <Form.Label htmlFor='addLevelSearch'>Level:</Form.Label>
+            <div>
+                <label htmlFor='addLevelSearch'>Level:</label>
                 <LevelSearchBox id='addLevelSearch' setResult={setResult} />
-            </Form.Group>
-            <button className='primary' onClick={handleSubmit}>Add level</button>
+            </div>
+            <PrimaryButton onClick={handleSubmit}>Add level</PrimaryButton>
         </div>
     );
 }

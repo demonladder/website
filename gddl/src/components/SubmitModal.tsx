@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import LevelSearchBox from '../components/LevelSearchBox';
 import Modal from '../components/Modal';
 import Select from '../components/Select';
-import { useMutation } from '@tanstack/react-query';
 import { SendSubmission, SubmittableSubmission } from '../api/submissions';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { Level } from '../api/levels';
-import { AxiosError } from 'axios';
 import { Form } from 'react-bootstrap';
 import { NumberInput, TextInput } from './Input';
 import { PrimaryButton, SecondaryButton } from './Button';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 type Props = {
     show: boolean,
@@ -25,36 +24,22 @@ export default function SubmitModal({ show, onClose }: Props) {
     const [device, setDevice] = useState(1);
     const [proof, setProof] = useState('');
 
-    const sendSubmission = useMutation({
-        mutationFn: SendSubmission,
-        onError: (error: AxiosError) => {
-            if (!error.response) return;
-
-            if (error.response.status === 401) {
-                return setResponse('Invalid session');
-            }
-            
-            setResponse((error.response.data as any).message);
-        }
-    });
-
     function submitForm(e: React.FormEvent) {
         e.preventDefault();
         e.stopPropagation();
 
         if (!result) {
-            setResponse('Select a level!');
+            toast.error('Select a level!');
             return;
         }
 
         if (rating && (rating < 1 || rating > 35)) {
-            setResponse('Rating must be between 1 and 35!');
+            toast.error('Rating must be between 1 and 35!');
             return;
         }
 
         if (proof && !proof.match(/(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
-            setResponse('Proof link is invalid!');
-            return;
+            return toast.error('Proof link is invalid!');
         }
 
         const data: SubmittableSubmission = {
@@ -65,17 +50,16 @@ export default function SubmitModal({ show, onClose }: Props) {
             device: device,
             proof: proof,
         };
-        console.log(data);
         
-        sendSubmission.mutate(data);
-    }
-
-    const [responseMessage, setResponseMessage] = useState('');
-    function setResponse(msg: string) {
-        setResponseMessage(msg);
-        // setTimeout(() => {
-        //     setResponseMessage('');
-        // }, 5000);
+        toast.promise(SendSubmission(data), {
+            pending: 'Submitting',
+            success: 'Rating submitted',
+            error: {
+                render({data}) {
+                    return ((data as AxiosError).response?.data as any).error || 'An error occurred';
+                }
+            },
+        });
     }
 
     return (
@@ -125,15 +109,11 @@ export default function SubmitModal({ show, onClose }: Props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <div className='flex justify-between'>
-                    <span className={'txt-danger'} style={{ opacity: responseMessage === '' ? 0 : 1 }} onClick={() => setResponseMessage('')}>{responseMessage}</span>
-                    <div className='flex'>
-                        <SecondaryButton onClick={onClose}>Close</SecondaryButton>
-                        <PrimaryButton type="submit" onClick={submitForm}>
-                            Submit
-                        </PrimaryButton>
-                        <LoadingSpinner isLoading={sendSubmission.isLoading} />
-                    </div>
+                <div className='flex float-right'>
+                    <SecondaryButton onClick={onClose}>Close</SecondaryButton>
+                    <PrimaryButton type="submit" onClick={submitForm}>
+                        Submit
+                    </PrimaryButton>
                 </div>
             </Modal.Footer>
         </Modal>
