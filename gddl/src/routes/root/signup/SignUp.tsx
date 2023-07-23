@@ -1,47 +1,58 @@
-import { useState } from 'react';
-import { AxiosError } from 'axios';
-import { Form, redirect, useActionData, useLocation } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { StorageManager } from '../../../storageManager';
 import instance from '../../../api/axios';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
+import { toast } from 'react-toastify';
 
-function Action({ request }: { request: any }) {
-    // Validate form data
-    return request.formData().then((formData: any) => {
-        const data = Object.fromEntries(formData);
+export default function SignUp() {
+    const navigate = useNavigate();
 
-        if (data.password.length < 7) {
-            return 'Password must be over 6 characters long!';
-        }
-        
-        if (data.password !== data.password2) {
-            return 'Passwords do not match!';
-        }
-        
-        // Make post request
-        return instance.post('/login/signup', { username: data.username, password: data.password, overrideKey: data.key }, { withCredentials: true }).then((res) => {
-            StorageManager.setCSRF(res.data.csrfToken);
-            StorageManager.setUser(res.data.jwt);
-            
-            return redirect('/');
-        }).catch((error: AxiosError) => {
-            if (error.response?.status === 422) {
-                return 'User already exists!';
-            }
-
-            return (error.response?.data as any).error || 'An error ocurred';
-        });
-    });
-}
-
-function SignUp() {
-    const actionResponse: any = useActionData();
+    const usernameRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const password2Ref = useRef<HTMLInputElement>(null);
     
     const url = new URLSearchParams(useLocation().search);
     const overrideKey = url.get('key') || '';
     const [username, setUsername] = useState(url.get('name') || '');
+
+    function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
+
+        const username = usernameRef.current?.value;
+        const password = passwordRef.current?.value;
+        const password2 = password2Ref.current?.value;
+
+        if (!username) {
+            return toast.error('Username cannot be empty!');
+        }
+
+        if (!password || password.length < 7) {
+            return toast.error('Password must be longer than 6 characters!');
+        }
+
+        if (password !== password2) {
+            return toast.error('Passwords must match!');
+        }
+
+        toast.promise(instance.post('/login/signup', { username, password, overrideKey }, { withCredentials: true }), {
+            pending: 'Signing you up...',
+            success: {
+                render({ data: res }) {
+                    if (res !== undefined) {
+                        StorageManager.setCSRF(res.data.csrfToken);
+                        StorageManager.setUser(res.data.jwt);
+                    }
+                    
+                    navigate('/');
+                    return 'Signed in!';
+                }
+            },
+            error: 'An error occurred',
+        });
+    }
 
     return (
         <Container className='bg-gray-800'>
@@ -51,31 +62,23 @@ function SignUp() {
                     <div className='my-6'>
                         <p>Already have your name on the sheet? Contact the mod team to get an alternative sign up link.</p>
                     </div>
-                    <Form method='post' action='/signup'>
+                    <form method='post' action='/signup'>
                         <div className='mb-3'>
                             <label htmlFor='username'>Username</label>
-                            <TextInput id='username' value={username} onChange={(e) => setUsername(e.target.value)} name='username' />
+                            <TextInput ref={usernameRef} id='username' value={username} onChange={(e) => setUsername(e.target.value)} name='username' />
                         </div>
                         <div className='mb-3'>
                             <label htmlFor='password'>Password</label>
-                            <PasswordInput id='password' name='password' />
+                            <PasswordInput ref={passwordRef} id='password' name='password' />
                         </div>
                         <div className='mb-3'>
                             <label htmlFor='confirmPassword'>Confirm password</label>
-                            <PasswordInput id='confirmPassword' name='password2' />
+                            <PasswordInput ref={password2Ref} id='confirmPassword' name='password2' />
                         </div>
-                        <PrimaryButton type='submit' className='w-full'>Sign Up</PrimaryButton>
-                        <input name='key' value={overrideKey} onChange={() => {}} hidden />
-                    </Form>
+                        <PrimaryButton type='submit' onClick={handleSubmit} className='w-full'>Sign Up</PrimaryButton>
+                    </form>
                 </div>
-            </div>
-            <div className='d-flex justify-content-center m-5'>
-                <h3>{(actionResponse && typeof actionResponse === 'string') ? actionResponse : ''}</h3>
             </div>
         </Container>
     );
 }
-
-export default Object.assign(SignUp, {
-    Action,
-});
