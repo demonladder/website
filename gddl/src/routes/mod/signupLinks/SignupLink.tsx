@@ -21,7 +21,7 @@ function Token({ token }: { token: TokenPair }) {
     return (
         <div>
             <b className='mb-0'>{token.UserName}:</b>
-            <p className='text-break cursor-pointer underline' onClick={(e) => linkClick(e)}>{link}</p>
+            <p className='break-words cursor-pointer underline' onClick={(e) => linkClick(e)}>{link}</p>
         </div>
     );
 }

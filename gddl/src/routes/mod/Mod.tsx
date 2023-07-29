@@ -27,8 +27,8 @@ export default function Mod() {
         <div className={StorageManager.getIsRounded() ? 'round' : ''}>
             <Header />
             <Container className='bg-gray-800'>
-                <div className='flex flex-wrap gap-5'>
-                    <div id='mod-menu' className='flex flex-col basis-full lg:basis-96'>
+                <div className='grid grid-cols-12 gap-5'>
+                    <div id='mod-menu' className='col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col'>
                         <Link to='/mod' className='text-4xl'>Dashboard</Link>
                         <hr className='my-2' />
                         <div className='flex flex-col'>
@@ -48,7 +48,7 @@ export default function Mod() {
                             <NavButton to='/mod/packs'>Edit packs</NavButton>
                         </div>
                     </div>
-                    <div className='flex-grow'>
+                    <div className='col-span-12 lg:col-span-8 xl:col-span-9'>
                         <Outlet />
                     </div>
                 </div>
