@@ -62,7 +62,7 @@ export default function SearchBox<T extends ListItem>({ list, update, setResult,
         <div>
             <TextInput id={id} onKeyDown={keyDown} value={search} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} />
             {/* <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 text-white'} style={{ zIndex: 5 }}> */}
-            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 text-white text-base'}>
+            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 round:rounded-b-lg text-white text-base'}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :
                     ((status === 'error' || list.length === 0) ? <div className='px-2 py-1'><p>No results</p></div> :

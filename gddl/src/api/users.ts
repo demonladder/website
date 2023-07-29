@@ -43,8 +43,10 @@ async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { use
 }
 
 async function SaveProfile(user: User) {
+    const csrfToken = StorageManager.getCSRF();
     const res = await instance.put(`/user?userID=${user.ID}`, { user }, {
         withCredentials: true,
+        params: { csrfToken },
     });
     return res.data;
 }

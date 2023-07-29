@@ -50,7 +50,7 @@ export default function Queue() {
                 <h3 className='text-2xl mb-3'>Submissions</h3>
                 <div>
                     <button onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>
-                        {(isRefetching && <LoadingSpinner />) || <PrimaryButton>Refresh</PrimaryButton>}
+                        {(isRefetching && <LoadingSpinner />) || <PrimaryButton className='flex items-center gap-1'>Refresh <i className='bx bx-refresh'></i></PrimaryButton>}
                     </button>
                 </div>
             </div>

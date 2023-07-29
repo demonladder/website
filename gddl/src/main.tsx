@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,7 +13,8 @@ import Login from './routes/root/login/Login';
 import Packs from './routes/root/packs/Packs';
 import Profile from './routes/root/profile/Profile';
 import PackOverview from './routes/root/packs/packOverview/PackOverview';
-import Mod from './routes/mod/Mod';
+const Mod = lazy(() => import('./routes/mod/Mod'));
+import { modLoader as ModLoader } from './routes/mod/Mod';
 import ModIndex from './routes/mod/ModIndex';
 import Queue from './routes/mod/queue/Queue';
 import EditPacks from './routes/mod/packs/EditPacks';
@@ -26,6 +27,8 @@ import ErrorElement from './ErrorElement';
 import SignUp from './routes/root/signup/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddSubmission from './routes/mod/addSubmissions/AddSubmissions';
+import Settings from './routes/root/profile/settings/Settings';
 
 const router = createBrowserRouter(
     [
@@ -68,6 +71,10 @@ const router = createBrowserRouter(
                     element: <SignUp />,
                 },
                 {
+                    path: 'profile/settings',
+                    element: <Settings />,
+                },
+                {
                     path: 'profile/:userID',
                     element: <Profile />,
                 },
@@ -75,8 +82,12 @@ const router = createBrowserRouter(
         },
         {
             path: '/mod',
-            element: <Mod />,
-            loader: Mod.modLoader,
+            element: (
+                <Suspense>
+                    <Mod />
+                </Suspense>
+            ),
+            loader: ModLoader,
             children: [
                 {
                     index: true,
@@ -101,6 +112,10 @@ const router = createBrowserRouter(
                 {
                     path: 'deleteSubmission',
                     element: <DeleteSubmission />,
+                },
+                {
+                    path: 'addSubmission',
+                    element: <AddSubmission />,
                 },
                 {
                     path: 'promote',

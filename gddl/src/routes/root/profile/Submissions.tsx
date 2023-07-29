@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Level, { Grid } from './Level';
+import Level from './Level';
 import { useQuery } from '@tanstack/react-query';
 import { GetUserSubmissions } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -7,6 +7,7 @@ import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
 import { Submission } from '../../../api/submissions';
 import { useLocalStorage } from '../../../hooks';
+import { GridLevel } from '../../../components/GridLevel';
 
 type Props = {
     userID: number,
@@ -78,7 +79,7 @@ function InlineList({ levels }: { levels: Submission[] }) {
 function GridList({ levels }: { levels: Submission[] }) {
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-            {levels.map((p) => <Grid info={p} key={p.LevelID}/>)}
+            {levels.map((p) => <GridLevel info={p} key={p.LevelID}/>)}
         </div>
     );
 }

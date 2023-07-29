@@ -31,7 +31,7 @@ export default function FilterMenu({ filters, setFilters, reset, show }: Props) 
 
     return (
         <div className='grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr'}}>
-            <div className='min-h-0 bg-gray-700'>
+            <div className='min-h-0 bg-gray-700 round:rounded-b-3xl'>
                 <div className='px-7 py-4 flex flex-col gap-4'>
                     <div className='flex justify-between'>
                         <h2 className='text-2xl' style={{color: 'currentColor'}}>Filters</h2>

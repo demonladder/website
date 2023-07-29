@@ -8,6 +8,7 @@ import { useLocalStorage, useSessionStorage } from '../../../hooks';
 import Container from '../../../components/Container';
 import { TextInput } from '../../../components/Input';
 import PageButtons from '../../../components/PageButtons';
+import { GridLevel } from '../../../components/GridLevel';
 
 export type SearchFilters = {
     name: string,
@@ -62,7 +63,7 @@ export default function Ladder() {
         devHigh: '',
         exactName: false,
         removeCompleted: false,
-        removeUnrated: false,
+        removeUnrated: true,
         removeUnratedEnj: false,
         removeRated: false,
         removeRatedEnj: false,
@@ -90,7 +91,7 @@ export default function Ladder() {
             devHigh: '',
             exactName: false,
             removeCompleted: false,
-            removeUnrated: false,
+            removeUnrated: true,
             removeUnratedEnj: false,
             removeRated: false,
             removeRatedEnj: false,
@@ -148,14 +149,14 @@ export default function Ladder() {
         return (
             <div className='level-list'>
                 <Level.Header />
-                {levels.map(l => <Level info={l} key={l.ID} />)}
+                {levels.map(l => <Level info={l} key={l.LevelID} />)}
             </div>
         );
     }
     function Grid({ levels }: { levels: TLevel[] }) {
         return (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-                {levels.map(l => <Level.Grid info={l} key={l.ID} />)}
+                {levels.map(l => <GridLevel info={l} key={l.LevelID} />)}
             </div>
         );
     }

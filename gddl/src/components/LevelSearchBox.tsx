@@ -21,16 +21,12 @@ export default function LevelSearchBox({ setResult, id }: Props) {
         queryFn: () => SearchLevels({ name: search, exact: false, chunk: 5 }),
     });
 
-    const update = (search: string) => {
-        setSearch(search);
-    }
-
     if (data === undefined) return <></>;
     return <SearchBox id={id} list={data && data.levels.map((d) => {
         const l: Level & Label = {
             ...d,
-            label: d.Name + ' by ' + d.Creator,
+            label: d.Name + ' by ' + d.Creator + ` (${d.LevelID})`,
         }
         return l;
-    })} update={update} setResult={setResult} status={status} />
+    })} update={setSearch} setResult={setResult} status={status} />
 }

@@ -4,6 +4,7 @@ export type User = {
     ID: number,
     Name: string,
     Hardest: number,
+    PermissionLevel: number,
 }
 
 export class StorageManager {
@@ -31,9 +32,19 @@ export class StorageManager {
         localStorage.setItem('user', JSON.stringify(parsed));
     }
 
+    static hasPermissions() {
+        return this.getUser()?.PermissionLevel || 0 > 0;
+    }
+
     static deleteSession() {
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
         Cookies.remove('session');
+    }
+
+    static getIsRounded() {
+        const storage = localStorage.getItem('isRounded');
+        if (storage === null) return false;
+        return JSON.parse(storage) === true;
     }
 }

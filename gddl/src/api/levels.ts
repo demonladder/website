@@ -2,15 +2,25 @@ import { StorageManager } from "../storageManager";
 import instance from "./axios";
 
 export type Level = {
-    ID: number,
+    LevelID: number,
     Name: string,
     Rating: number | null,
     Enjoyment: number | null,
+    Difficulty: string,
+    Song: string,
+    Creator: string,
+}
+
+export type FullLevel = {
+    LevelID: number,
+    Name: string,
+    Rating: number,
+    Enjoyment: number,
     Deviation: number,
     RatingCount: number,
     EnjoymentCount: number,
     SubmissionCount: number,
-    Difficulty: number,
+    Difficulty: string,
     Song: string,
     Creator: string,
 }
@@ -34,7 +44,7 @@ export async function SearchLevels(q: Query): Promise<SearchInfo> {
     })).data;
 }
 
-export async function GetLevel(id: number | null): Promise<Level | null> {
+export async function GetLevel(id: number | null): Promise<FullLevel | null> {
     if (id === null) return null;
 
     return (await instance.get(`/level?levelID=${id}&returnPacks=true`)).data;

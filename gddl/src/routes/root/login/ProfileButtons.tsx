@@ -19,10 +19,13 @@ function ProfileButton({ user }: { user: User | null }) {
     }
     
     return (
-        <Link to={`/profile/${user.ID}`} className='flex items-center'>
-            <span className='fs-5'>{user.Name}</span>
-            <img className='ms-3 w-16' src={tierToIcon(user.Hardest)} alt='' />
-        </Link>
+        <div className='flex items-center gap-1'>
+            <Link to='/mod' hidden={!StorageManager.hasPermissions()}><i className='bx bx-shield-quarter text-2xl'></i></Link>
+            <Link to={`/profile/${user.ID}`} className='flex items-center'>
+                <span className='fs-5'>{user.Name}</span>
+                <img className='ms-3 w-16' src={tierToIcon(user.Hardest)} alt='' />
+            </Link>
+        </div>
     );
 }
 

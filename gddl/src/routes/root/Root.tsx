@@ -1,6 +1,7 @@
 import Header from '../../Header';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { StorageManager } from '../../storageManager';
 
 function Root() {
     return (
@@ -12,8 +13,10 @@ function Root() {
                 <meta property='og:url' content='https://gdladder.com' />
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
-            <Header />
-            <Outlet />
+            <div className={StorageManager.getIsRounded() ? 'round' : ''}>
+                <Header />
+                <Outlet />
+            </div>
         </>
     );
 }

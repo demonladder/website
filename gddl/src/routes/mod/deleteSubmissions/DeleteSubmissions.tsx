@@ -13,7 +13,7 @@ export default function DeleteSubmission() {
                 <label htmlFor='deleteSubmissionSearch'>Level:</label>
                 <LevelSearchBox id='deleteSubmissionSearch' setResult={setResult} />
             </div>
-            <SubmissionList levelID={result?.ID || 0} />
+            <SubmissionList levelID={result?.LevelID || 0} />
         </div>
     );
 }

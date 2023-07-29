@@ -13,10 +13,10 @@ function Submission({ submission }: Props) {
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? 'N/A' : submission.Enjoyment;
     return (
-        <Link className='flex bg-gray-500 select-none hover:-translate-y-1 transition-transform' to={'/profile/' + submission.UserID}>
-            <p className={'w-1/6 p-2 text-center tier-' + (submission.Rating ? submission.Rating : '0')}>{submission.Rating || 'N/A'}</p>
+        <Link className='flex select-none hover:-translate-y-1 transition-transform' to={'/profile/' + submission.UserID}>
+            <p className={'w-1/6 p-2 text-center round:rounded-s-md tier-' + (submission.Rating ? submission.Rating : '0')}>{submission.Rating || 'N/A'}</p>
             <p className={'w-1/6 p-2 text-center enj-' + enj}>{enjText}</p>
-            <div className='p-2'>{submission.Name}</div>
+            <div className='p-2 flex-grow bg-gray-500 round:rounded-e-md'>{submission.Name}</div>
         </Link>
     );
 }

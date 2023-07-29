@@ -9,7 +9,7 @@ type Props = {
 export default function SearchResult({ level, setSearch, setID }: Props) {
     function clickHandler() {
         setSearch(level.Name)
-        setID(level.ID);
+        setID(level.LevelID);
     }
 
     return (

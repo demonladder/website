@@ -17,16 +17,18 @@ export default function Submission({ info, approve, remove }: Props) {
     });
 
     return (
-        <div className={`tier-${Math.round(info.ActualRating) || 0} p-3 my-2`}>
+        <div className={`round:rounded-2xl tier-${Math.round(info.ActualRating) || 0} p-3 my-2`}>
             <div className='mb-3'>
                 <Link to={`/level/${info.LevelID}`} className='text-lg font-bold underline'>{levelData?.Name || info.LevelID}</Link>
                 <p>submitted by <a href={`/profile/${info.UserID}`} className='underline' target='_blank' rel='noopener noreferrer'>{info.UserName}</a></p>
+                <p>Submitted at {new Date(info.DateAdded).toUTCString()}</p>
             </div>
-            <div>
+            <div className='mb-3'>
+                <p>{'Submitted rating: ' + (info.Rating || 'None')}</p>
+                <p>{'Actual rating: ' + (levelData?.Rating || 'None')}</p>
+                <p>{'Submitted enjoyment: ' + (info.Enjoyment || 'None')}</p>
                 <p>{'Device: ' + info.Device || 'None'}</p>
                 <p>{'Refresh Rate: ' + (info.RefreshRate || 'None')}</p>
-                <p>{'Rating: ' + (info.Rating || 'None')}</p>
-                <p>{'Enjoyment: ' + (info.Enjoyment || 'None')}</p>
                 <p>Proof: {info.Proof ? <a href={info.Proof} target='_blank' rel='noopener noreferrer'>{info.Proof}</a> : 'None'}</p>
             </div>
             <div className='flex justify-evenly'>

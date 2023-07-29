@@ -13,11 +13,9 @@ interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputEl
     centered?: boolean,
 }
 
-export function NumberInput({ disableSpinner, centered, ...props}: INumberInput) {
-    return (
-        <input {...props} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '')} />
-    );
-}
+export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disableSpinner, centered, ...props}, ref) => (
+    <input {...props} ref={ref} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '')} />
+));
 
 export function CheckBox(props: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
     return (

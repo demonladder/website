@@ -13,10 +13,12 @@ import { AxiosError } from 'axios';
 type Props = {
     show: boolean,
     onClose: () => void,
+    initialLevel?: Level,
+    id?: string,
 }
 
-export default function SubmitModal({ show, onClose }: Props) {
-    const [result, setResult] = useState<Level>();
+export default function SubmitModal({ show, onClose, initialLevel, id }: Props) {
+    const [result, setResult] = useState<Level|null>(initialLevel || null);
 
     const [rating, setRating] = useState<number>();
     const [enjoyment, setEnjoyment] = useState<number>();
@@ -43,7 +45,7 @@ export default function SubmitModal({ show, onClose }: Props) {
         }
 
         const data: SubmittableSubmission = {
-            levelID: result.ID,
+            levelID: result.LevelID,
             rating: rating,
             enjoyment: enjoyment,
             refreshRate: parseInt(refreshRate.match(/([0-9]*)/)?.[0] || ''),
@@ -67,8 +69,8 @@ export default function SubmitModal({ show, onClose }: Props) {
             <Modal.Body>
                 <Form noValidate onSubmit={submitForm} className='position-relative d-flex flex-column gap-2'>
                     <div className='mb-3'>
-                        <label htmlFor='submitLevelSearch'>Level name:</label>
-                        <LevelSearchBox id='submitLevelSearch' setResult={setResult} />
+                        <label htmlFor={id || 'submitLevelSearch'}>Level name:</label>
+                        <LevelSearchBox id={id || 'submitLevelSearch'} setResult={setResult} />
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='submitRating'>Rating:</label>
@@ -109,7 +111,7 @@ export default function SubmitModal({ show, onClose }: Props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <div className='flex float-right'>
+                <div className='flex round:gap-1 float-right'>
                     <SecondaryButton onClick={onClose}>Close</SecondaryButton>
                     <PrimaryButton type="submit" onClick={submitForm}>
                         Submit

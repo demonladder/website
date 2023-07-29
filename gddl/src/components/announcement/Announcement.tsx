@@ -1,6 +1,6 @@
 function Announcement({ children }: { children: React.ReactNode }) {
     return (
-        <div className='bg-gray-800 bg-opacity-90 mb-6 text-center cursor-default px-6 lg:px-24 py-12'>
+        <div className='mb-6 text-center cursor-default px-6 lg:px-24 py-12'>
             {children}
         </div>
     );

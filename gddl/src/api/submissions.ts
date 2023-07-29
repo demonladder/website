@@ -17,6 +17,7 @@ export type Submission = {
 export type SubmissionQueueInfo = Submission & {
     ActualRating: number,
     UserName: string,
+    DateAdded: string,
 }
 
 export type SubmittableSubmission = {
