@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Level from './Level';
+import Level from '../../../components/Level';
 import FilterMenu from './FilterMenu';
 import SortMenu from './SortMenu';
 import { Level as TLevel, SearchLevels } from '../../../api/levels';

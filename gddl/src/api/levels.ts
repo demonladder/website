@@ -1,7 +1,7 @@
 import { StorageManager } from "../storageManager";
 import instance from "./axios";
 
-export type Level = {
+export interface Level {
     LevelID: number,
     Name: string,
     Rating: number | null,

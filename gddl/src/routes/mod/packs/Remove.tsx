@@ -1,33 +1,24 @@
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import LevelSearchBox from '../../../components/LevelSearchBox';
-import { Pack } from '../../../api/packs';
-import { uuid } from '../../../functions';
+import { DangerButton } from '../../../components/Button';
+import WarningBox from '../../../components/message/WarningBox';
 
-type Props = {
-    pack: Pack,
-    setChangeList: (e: any) => void,
-}
-
-export default function Remove({ pack, setChangeList }: Props) {
+export default function Remove() {
     const [result, setResult] = useState(null);
     
-    function handleSubmit() {
-        setChangeList((prev: any) => [...prev, {
-            type: 'remove',
-            level: result || { ID: '-1', Name: 'null' },
-            pack,
-            ID: uuid(),
-        }]);    
+    function handleSubmit() {  
+        console.log(result);
     }
 
     return (
         <div className='mb-5 position-relative'>
+            <WarningBox text={'Doesn\'t work yet'} />
             <Form.Group className='mb-3'>
                 <Form.Label htmlFor='removeLevelSearch'>Level:</Form.Label>
                 <LevelSearchBox id='removeLevelSearch' setResult={setResult} />
             </Form.Group>
-            <button className='danger' onClick={handleSubmit}>Remove level</button>
+            <DangerButton onClick={handleSubmit}>Remove level</DangerButton>
         </div>
     );
 }

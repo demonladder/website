@@ -1,5 +1,5 @@
-import IDButton from '../../../components/IDButton';
-import { Level as TLevel } from '../../../api/levels';
+import IDButton from './IDButton';
+import { Level as TLevel } from '../api/levels';
 import { Link } from 'react-router-dom';
 
 type Props = {
@@ -22,7 +22,7 @@ function Header() {
 
 function Level({ info }: Props) {
     const roundedTier = info.Rating !== null ? Math.round(info.Rating) : 0;
-    const roundedEnjoyment = info.Enjoyment !== null ? Math.round(info.Enjoyment) : 0;
+    const roundedEnjoyment = info.Enjoyment !== null ? Math.round(info.Enjoyment) : -1;
     
     const tierClass = 'tier-' + roundedTier;
     const enjoymentClass = 'enj-' + roundedEnjoyment;

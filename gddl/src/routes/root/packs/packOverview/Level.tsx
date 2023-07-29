@@ -25,12 +25,12 @@ function Level({ info }: Props) {
     return (
         <div className='grid grid-cols-12 h-12 ps-2 text-xl'>
             <h4 className='col-span-10 md:col-span-7 lg:col-span-6 xl:col-span-4 self-center'>
-                <Link to={'/level/' + info.ID} className='underline'>{info.Name}</Link>
+                <Link to={'/level/' + info.LevelID} className='underline'>{info.Name}</Link>
             </h4>
 
             <div className='col-span-3 xl:col-span-2 hidden md:inline-block self-center'><p>{info.Creator}</p></div>
             <div className='col-span-3 hidden xl:block self-center'><p>{info.Song}</p></div>
-            <div className='col-span-2 xl:col-span-2 hidden lg:block self-center'><IDButton className='id-button underline' id={info.ID} /></div>
+            <div className='col-span-2 xl:col-span-2 hidden lg:block self-center'><IDButton className='id-button underline' id={info.LevelID} /></div>
             <div className={`col-span-2 lg:col-span-1 flex justify-center tier-${roundedTier}`}><p className='self-center'>{roundedTier}</p></div>
         </div>
     );

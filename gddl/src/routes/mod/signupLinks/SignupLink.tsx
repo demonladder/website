@@ -20,8 +20,8 @@ function Token({ token }: { token: TokenPair }) {
 
     return (
         <div>
-            <b className='mb-0'>{token.UserName}:</b>
-            <p className='break-words cursor-pointer underline' onClick={(e) => linkClick(e)}>{link}</p>
+            <b className='block'>{token.UserName}:</b>
+            <p className='break-words cursor-pointer inline underline' onClick={linkClick}>{link}</p>
         </div>
     );
 }
@@ -32,7 +32,7 @@ export default function SignupLink() {
     const { data: tokens } = useQuery({
         queryKey: ['signupTokens'],
         queryFn: GetSignupTokens,
-        staleTime: 10000,
+        staleTime: 10000, // 10 seconds
     });
 
     const queryClient = useQueryClient();

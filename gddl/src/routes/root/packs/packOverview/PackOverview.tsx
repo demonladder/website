@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { GetPack } from '../../../../api/packs';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
-import Level from './Level';
 import Container from '../../../../components/Container';
+import Level from '../../../../components/Level';
 
 export default function PackOverview() {
     const packID = parseInt(''+useParams().packID) || 0;
@@ -39,7 +39,7 @@ export default function PackOverview() {
             <div className='level-list my-3 mb-5'>
                 <Level.Header />
                 {pack.Levels.filter((lvl) => !lvl.EX).map((l) => (
-                    <Level info={l} key={l.ID} />
+                    <Level info={l} key={l.LevelID} />
                 ))}
             </div>
             {exLevels.length > 0 && <>
@@ -47,7 +47,7 @@ export default function PackOverview() {
                 <div className='level-list'>
                     <Level.Header />
                     {exLevels.map((l) => (
-                        <Level info={l} key={l.ID} />
+                        <Level info={l} key={l.LevelID} />
                     ))}
                 </div></>
             }

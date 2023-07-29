@@ -1,34 +1,34 @@
 import { useState } from 'react';
 import LevelSearchBox from '../../../components/LevelSearchBox';
-import { Pack } from '../../../api/packs';
-import { uuid } from '../../../functions';
 import { PrimaryButton } from '../../../components/Button';
+import PackSearchBox from '../../../components/PackSearchBox';
+import { toast } from 'react-toastify';
+import WarningBox from '../../../components/message/WarningBox';
 
-type Props = {
-    pack: Pack,
-    setChangeList: (e: any) => void,
-}
-
-export default function Add({ pack, setChangeList }: Props) {
-    const [result, setResult] = useState(null);
+export default function Add() {
+    const [packResult, setPackResult] = useState(null);
+    const [levelResult, setLevelResult] = useState(null);
     
     function handleSubmit() {
-        setChangeList((prev: any) => [
-            ...prev,
-            {
-                type: 'add',
-                level: result || { ID: '-1', Name: 'null' },
-                pack,
-                ID: uuid()
-            }
-        ]);    
+        if (packResult === null) {
+            return toast.error('Select a pack!');
+        }
+        
+        if (levelResult === null) {
+            return toast.error('Select a level!');
+        }
     }
 
     return (
-        <div className='mb-5 position-relative'>
+        <div>
+            <WarningBox text={'Doesn\'t work yet'} />
+            <div className='mb-4'>
+                <label htmlFor='editPacksSearch' className='me-3 mb-0 align-self-center'>Choose pack to edit</label>
+                <PackSearchBox id='editPacksSearch' setResult={setPackResult} />
+            </div>
             <div>
                 <label htmlFor='addLevelSearch'>Level:</label>
-                <LevelSearchBox id='addLevelSearch' setResult={setResult} />
+                <LevelSearchBox id='addLevelSearch' setResult={setLevelResult} />
             </div>
             <PrimaryButton onClick={handleSubmit}>Add level</PrimaryButton>
         </div>

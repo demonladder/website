@@ -19,8 +19,6 @@ export default function PageButtons({ onPageChange, meta }: Props) {
     if (meta.total <= meta.limit) return; // If there is only a single page, return nothing
 
     const maxPages = Math.ceil(meta.total / meta.limit);
-    console.log(maxPages);
-    
 
     return (
         <div className='mt-3 flex gap-3 justify-center items-center'>

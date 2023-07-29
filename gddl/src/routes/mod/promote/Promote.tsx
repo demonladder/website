@@ -33,7 +33,7 @@ export default function Promote() {
                 <label htmlFor='permissionLevel' className='block'>Permission level:</label>
                 <Select options={[
                     { key: 0, value: 'No permissions' },
-                    { key: 1, value: 'List heler' },
+                    { key: 1, value: 'List helper' },
                     { key: 2, value: 'Developer' },
                     { key: 3, value: 'Moderator' },
                     { key: 4, value: 'Admin' },
@@ -50,7 +50,7 @@ export default function Promote() {
                     <li>2. Developer</li>
                     <li>3. Moderator</li>
                     <li>4. Admin</li>
-                    <li>5. Co-Owner</li>
+                    <li>5. Co-owner</li>
                     <li>6. Owner</li>
                 </ol>
             </div>

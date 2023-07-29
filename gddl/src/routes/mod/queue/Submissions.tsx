@@ -21,7 +21,7 @@ export default function Submission({ info, approve, remove }: Props) {
             <div className='mb-3'>
                 <Link to={`/level/${info.LevelID}`} className='text-lg font-bold underline'>{levelData?.Name || info.LevelID}</Link>
                 <p>submitted by <a href={`/profile/${info.UserID}`} className='underline' target='_blank' rel='noopener noreferrer'>{info.UserName}</a></p>
-                <p>Submitted at {new Date(info.DateAdded).toUTCString()}</p>
+                <p>Submitted at {info.DateAdded + ' UTC'}</p>
             </div>
             <div className='mb-3'>
                 <p>{'Submitted rating: ' + (info.Rating || 'None')}</p>

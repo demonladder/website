@@ -1,7 +1,9 @@
+import WarningBox from "../../../components/message/WarningBox";
+
 export default function Move() {
     return (
         <div>
-            <h3>Move level</h3>
+            <WarningBox text={'Doesn\'t work yet'} />
         </div>
     );
 }

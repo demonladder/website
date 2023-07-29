@@ -29,6 +29,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddSubmission from './routes/mod/addSubmissions/AddSubmissions';
 import Settings from './routes/root/profile/settings/Settings';
+import Add from './routes/mod/packs/Add';
+import Remove from './routes/mod/packs/Remove';
+import Move from './routes/mod/packs/Move';
 
 const router = createBrowserRouter(
     [
@@ -99,7 +102,21 @@ const router = createBrowserRouter(
                 },
                 {
                     path: 'packs',
-                    element: <EditPacks />
+                    element: <EditPacks />,
+                    children: [
+                        {
+                            path: 'add',
+                            element: <Add />,
+                        },
+                        {
+                            path: 'remove',
+                            element: <Remove />,
+                        },
+                        {
+                            path: 'move',
+                            element: <Move />,
+                        },
+                    ]
                 },
                 {
                     path: 'references',

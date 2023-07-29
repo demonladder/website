@@ -12,7 +12,7 @@ type ListItem = {
 export default function SearchBox<T extends ListItem>({ list, update, setResult, status, id, placeholder = 'Search...' }: {
     list: T[],
     update: (a: string) => void,
-    setResult: (result: T) => void,
+    setResult: (result: T|null) => void,
     status: string,
     id?: string,
     placeholder?: string,

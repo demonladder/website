@@ -10,6 +10,7 @@ export type Submission = {
     Device: string,
     Name: string,
     Creator: string,
+    Song: string,
     Proof: string,
     Difficulty: string,
 }

@@ -7,11 +7,13 @@ export type Pack = {
 };
 
 export type PackLevel = {
-    ID: number,
+    LevelID: number,
     Name: string,
     Creator: string,
     Song: string,
     Rating: number,
+    Enjoyment: number,
+    Difficulty: string,
     EX: number,
 };
 

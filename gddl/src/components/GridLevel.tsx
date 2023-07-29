@@ -22,7 +22,7 @@ export function GridLevel({ info }: GridProps) {
     const enjoyment = info.Enjoyment !== null ? Math.round(info.Enjoyment) : -1;
     
     return (
-        <div className={'relative cursor-pointer p-2 pb-10 round:rounded-xl tier-' + rating} onClick={handleClick}>
+        <div className={'relative cursor-pointer p-2 pb-10 hover:brightness-90 round:rounded-xl tier-' + rating} onClick={handleClick}>
             <b className='text-xl'>{info.Name}</b>
             <div className='flex justify-between text-lg'>
                 <div>

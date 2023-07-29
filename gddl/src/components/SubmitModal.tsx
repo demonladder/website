@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
-import LevelSearchBox from '../components/LevelSearchBox';
 import Modal from '../components/Modal';
 import Select from '../components/Select';
 import { SendSubmission, SubmittableSubmission } from '../api/submissions';
-import { Level } from '../api/levels';
-import { Form } from 'react-bootstrap';
 import { NumberInput, TextInput } from './Input';
 import { PrimaryButton, SecondaryButton } from './Button';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
+import { FullLevel } from '../api/levels';
 
 type Props = {
     show: boolean,
     onClose: () => void,
-    initialLevel?: Level,
-    id?: string,
+    level: FullLevel,
 }
 
-export default function SubmitModal({ show, onClose, initialLevel, id }: Props) {
-    const [result, setResult] = useState<Level|null>(initialLevel || null);
-
+export default function SubmitModal({ show, onClose, level }: Props) {
     const [rating, setRating] = useState<number>();
     const [enjoyment, setEnjoyment] = useState<number>();
     const [refreshRate, setRefreshRate] = useState('');
@@ -30,14 +25,13 @@ export default function SubmitModal({ show, onClose, initialLevel, id }: Props) 
         e.preventDefault();
         e.stopPropagation();
 
-        if (!result) {
-            toast.error('Select a level!');
-            return;
-        }
-
         if (rating && (rating < 1 || rating > 35)) {
             toast.error('Rating must be between 1 and 35!');
             return;
+        }
+
+        if (rating === undefined && enjoyment === undefined) {
+            return toast.error('Rating enjoyment can\'t both be empty!');
         }
 
         if (proof && !proof.match(/(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
@@ -45,7 +39,7 @@ export default function SubmitModal({ show, onClose, initialLevel, id }: Props) 
         }
 
         const data: SubmittableSubmission = {
-            levelID: result.LevelID,
+            levelID: level.LevelID,
             rating: rating,
             enjoyment: enjoyment,
             refreshRate: parseInt(refreshRate.match(/([0-9]*)/)?.[0] || ''),
@@ -65,18 +59,14 @@ export default function SubmitModal({ show, onClose, initialLevel, id }: Props) 
     }
 
     return (
-        <Modal title='Submit rating' show={show}>
+        <Modal title='Submit rating' show={show} onClose={onClose}>
             <Modal.Body>
-                <Form noValidate onSubmit={submitForm} className='position-relative d-flex flex-column gap-2'>
-                    <div className='mb-3'>
-                        <label htmlFor={id || 'submitLevelSearch'}>Level name:</label>
-                        <LevelSearchBox id={id || 'submitLevelSearch'} setResult={setResult} />
-                    </div>
-                    <div className='mb-3'>
+                <div className='flex flex-col gap-3'>
+                    <div>
                         <label htmlFor='submitRating'>Rating:</label>
                         <NumberInput id='submitRating' value={rating} onChange={(e: any) => setRating(e.target.value)} />
                     </div>
-                    <div className='mb-3' style={{height: '52px'}}>
+                    <div style={{height: '52px'}}>
                         <label htmlFor='submitEnjoyment'>Enjoyment:</label>
                         <Select id='submitEnjoyment' options={[
                             { key: -1, value: '-' },
@@ -93,11 +83,11 @@ export default function SubmitModal({ show, onClose, initialLevel, id }: Props) 
                             { key: 10, value: '10 Masterpiece' }
                         ]} onChange={(option) => setEnjoyment(option.key)} zIndex={1030} />
                     </div>
-                    <div className='mb-3'>
+                    <div>
                         <label htmlFor='submitRefreshRate'>Refresh rate:</label>
                         <NumberInput id='submitRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} />
                     </div>
-                    <div className='mb-3' style={{height: '52px'}}>
+                    <div style={{height: '52px'}}>
                         <label>Device:</label>
                         <Select id='submitDevice' options={[
                             { key: 1, value: 'PC' },
@@ -108,14 +98,12 @@ export default function SubmitModal({ show, onClose, initialLevel, id }: Props) 
                         <label htmlFor='submitProof'>Proof:</label>
                         <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value)} />
                     </div>
-                </Form>
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <div className='flex round:gap-1 float-right'>
                     <SecondaryButton onClick={onClose}>Close</SecondaryButton>
-                    <PrimaryButton type="submit" onClick={submitForm}>
-                        Submit
-                    </PrimaryButton>
+                    <PrimaryButton onClick={submitForm}>Submit</PrimaryButton>
                 </div>
             </Modal.Footer>
         </Modal>
