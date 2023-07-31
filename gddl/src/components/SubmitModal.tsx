@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default function SubmitModal({ show, onClose, level }: Props) {
-    const [rating, setRating] = useState<number>();
+    const [rating, setRating] = useState<string>('');
     const [enjoyment, setEnjoyment] = useState<number>();
     const [refreshRate, setRefreshRate] = useState('');
     const [device, setDevice] = useState(1);
@@ -25,7 +25,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
         e.preventDefault();
         e.stopPropagation();
 
-        if (rating && (rating < 1 || rating > 35)) {
+        if (rating && (parseInt(rating) < 1 || parseInt(rating) > 35)) {
             toast.error('Rating must be between 1 and 35!');
             return;
         }
@@ -40,7 +40,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
 
         const data: SubmittableSubmission = {
             levelID: level.LevelID,
-            rating: rating,
+            rating: parseInt(rating),
             enjoyment: enjoyment,
             refreshRate: parseInt(refreshRate.match(/([0-9]*)/)?.[0] || ''),
             device: device,
@@ -64,7 +64,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                 <div className='flex flex-col gap-3'>
                     <div>
                         <label htmlFor='submitRating'>Rating:</label>
-                        <NumberInput id='submitRating' value={rating} onChange={(e: any) => setRating(e.target.value)} />
+                        <NumberInput id='submitRating' value={rating} onChange={(e) => setRating(e.target.value)} />
                     </div>
                     <div style={{height: '52px'}}>
                         <label htmlFor='submitEnjoyment'>Enjoyment:</label>

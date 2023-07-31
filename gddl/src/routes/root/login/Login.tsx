@@ -25,8 +25,6 @@ async function loginAction({ request }: {request: any}) {
                 if (StorageManager.getUser()?.PermissionLevel || 0 > 0) {
                     if (Notification.permission === 'default') {
                         Notification.requestPermission();
-                    } else if (Notification.permission === 'granted') {
-                        new Notification('Logged in');
                     }
                 }
             }

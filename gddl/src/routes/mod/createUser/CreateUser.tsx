@@ -1,0 +1,35 @@
+import { useRef } from 'react';
+import { PrimaryButton } from '../../../components/Button';
+import { TextInput } from '../../../components/Input';
+import { toast } from 'react-toastify';
+import instance from '../../../api/axios';
+import { StorageManager } from '../../../storageManager';
+
+export default function CreateUser() {
+    const nameRef = useRef<HTMLInputElement>(null);
+
+    function submit() {
+        if (nameRef.current === null) {
+            return toast.error('An error occurred');
+        }
+
+        if (!nameRef.current.value) {
+            return toast.error('Name can\'t be empty');
+        }
+
+        const csrfToken = StorageManager.getCSRF();
+        toast.promise(instance.post('/user/create', { username: nameRef.current.value }, { withCredentials: true, params: { csrfToken }}), {
+            pending: 'Creating user...',
+            success: 'User created!',
+            error: 'An error occurred',
+        });
+    }
+
+    return (
+        <div>
+            <h3 className='text-2xl mb-3'>Create User</h3>
+            <TextInput ref={nameRef} placeholder='Username...' />
+            <PrimaryButton onClick={submit}>Add</PrimaryButton>
+        </div>
+    );
+}

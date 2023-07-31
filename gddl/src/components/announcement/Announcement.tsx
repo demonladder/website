@@ -14,7 +14,7 @@ function Title({ children }: { children: React.ReactNode }) {
 
 function Body({ children }: { children: React.ReactNode }) {
     return (
-        <p className='fs-5'>{children}</p>
+        <p className='text-lg'>{children}</p>
     );
 }
 

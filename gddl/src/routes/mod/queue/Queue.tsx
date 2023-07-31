@@ -49,9 +49,7 @@ export default function Queue() {
             <div className='flex justify-between'>
                 <h3 className='text-2xl mb-3'>Submissions</h3>
                 <div>
-                    <button onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>
-                        {(isRefetching && <LoadingSpinner />) || <PrimaryButton className='flex items-center gap-1'>Refresh <i className='bx bx-refresh'></i></PrimaryButton>}
-                    </button>
+                    {(isRefetching && <LoadingSpinner />) || <PrimaryButton className='flex items-center gap-1' onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>Refresh <i className='bx bx-refresh'></i></PrimaryButton>}
                 </div>
             </div>
             <Content />

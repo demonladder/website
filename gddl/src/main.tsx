@@ -33,6 +33,7 @@ import Add from './routes/mod/packs/Add';
 import Remove from './routes/mod/packs/Remove';
 import Move from './routes/mod/packs/Move';
 import EditSubmission from './routes/mod/editSubmissions/EditSubmissions';
+import CreateUser from './routes/mod/createUser/CreateUser';
 
 const router = createBrowserRouter(
     [
@@ -136,6 +137,10 @@ const router = createBrowserRouter(
                         {
                             path: 'promote',
                             element: <Promote />,
+                        },
+                        {
+                            path: 'createUser',
+                            element: <CreateUser />,
                         },
                         {
                             path: 'signupLinks',
