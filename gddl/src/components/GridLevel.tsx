@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import DemonLogo from "./DemonLogo";
+import { StorageManager } from "../storageManager";
 
 interface GridProps {
     info: {
@@ -31,7 +32,7 @@ export function GridLevel({ info }: GridProps) {
                 </div>
                 <img className='max-w-[96px]' src={DemonLogo(info.Difficulty)} />
             </div>
-            <div className={'absolute flex items-end bottom-0 left-0 w-12 h-12 enj-' + enjoyment} style={{borderRadius: '0 3rem 0 0.75rem'}}>
+            <div className={'absolute flex items-end bottom-0 left-0 w-12 h-12 enj-' + enjoyment} style={{borderRadius: StorageManager.getIsRounded() ? '0 3rem 0 0.75rem' : '0 3rem 0 0'}}>
                 <b className='p-2 ps-3'>{info.Enjoyment !== null ? enjoyment : '-'}</b>
             </div>
         </div>

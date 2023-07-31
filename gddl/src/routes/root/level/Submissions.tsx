@@ -22,10 +22,10 @@ function Submission({ submission }: Props) {
 }
 
 export default function Submissions({ levelID }: { levelID: number }) {
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const { data: submissions, status } = useQuery({
         queryKey: ['submissions', { levelID, page }],
-        queryFn: () => GetSubmissions({ levelID, chunk: 24, page: page+1 }),
+        queryFn: () => GetSubmissions({ levelID, chunk: 24, page }),
     });
 
     if (status === 'loading') {

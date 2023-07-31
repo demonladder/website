@@ -103,13 +103,13 @@ export default function LevelOverview() {
                     </div>
                     <div className='col-span-12 lg:col-span-9 xl:col-span-8 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
                         <b>Song name</b>
-                        <p className='text-2xl'>{level.Song}</p>
+                        <p className='text-2xl break-all'>{level.Song}</p>
                     </div>
-                    <div className='col-span-6 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
+                    <div className='col-span-12 sm:col-span-6 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
                         <b>Ratings</b>
                         <p className='text-2xl'>{level.RatingCount}</p>
                     </div>
-                    <div className='col-span-6 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
+                    <div className='col-span-12 sm:col-span-6 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
                         <b>Enjoyments</b>
                         <p className='text-2xl'>{level.EnjoymentCount}</p>
                     </div>

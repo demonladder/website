@@ -1,3 +1,4 @@
+import { StorageManager } from '../storageManager';
 import instance from './axios';
 
 export type Reference = {
@@ -20,10 +21,11 @@ export type Change = {
 }
 
 export function ChangeReferences(changes: Change[]) {
-    const csrfToken = localStorage.getItem('csrf');
+    const csrfToken = StorageManager.getCSRF();
 
-    return instance.post('/references', { csrfToken, changes: changes.map((c) => { return { ID: c.ID, Type: c.Type, Tier: c.Tier }})}, {
-        withCredentials: true
+    return instance.post('/references', { changes: changes.map((c) => { return { ID: c.ID, Type: c.Type, Tier: c.Tier }})}, {
+        withCredentials: true,
+        params: { csrfToken },
     });
 }
 

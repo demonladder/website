@@ -39,7 +39,7 @@ export type SearchFilters = {
 
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
-    const [pageIndex, setPageIndex] = useState(0);
+    const [pageIndex, setPageIndex] = useState(1);
 
     //
     // Filter levels
@@ -104,7 +104,7 @@ export default function Ladder() {
         const joined: any = {
             ...filters,
             ...sorter,
-            page: pageIndex+1,
+            page: pageIndex,
         };
         const q: any = {};
         for (let p of Object.keys(joined)) {
@@ -129,10 +129,6 @@ export default function Ladder() {
         queryKey: ['search', q],
         queryFn: () => SearchLevels(q),
     });
-
-    useEffect(() => {  // Watch for changes in search and filters
-        setPageIndex(0);  // Reset index to page 1
-    }, [filters]);
 
 
 
@@ -187,7 +183,7 @@ export default function Ladder() {
             <h1 className='text-4xl mb-2'>The Ladder</h1>
             <div className='flex items-center gap-1'>
                 <div className='relative flex-grow group'>
-                    <TextInput placeholder='Search level name...' value={filters.name} onChange={(e) => { setFilters(prev => ({ ...prev, name: e.target.value })); setPageIndex(0) }} />
+                    <TextInput placeholder='Search level name...' value={filters.name} onChange={(e) => { setFilters(prev => ({ ...prev, name: e.target.value })); setPageIndex(1) }} />
                     <button className='absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity' onClick={() => setFilters(prev => ({ ...prev, name: '' }))}>
                         <svg width='16' height='16' stroke='currentColor' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
                             <path strokeWidth='2' strokeLinecap='round' d='M4 4l22 22M4 26l22 -22' />
@@ -217,7 +213,7 @@ export default function Ladder() {
             <div className='my-4'>
                 <Content />
             </div>
-            {searchData && <PageButtons onPageChange={setPageIndex} meta={{ limit: searchData.limit, total: searchData.total, page: pageIndex }} />}
+            {searchData && <PageButtons onPageChange={setPageIndex} meta={{ ...searchData, page: pageIndex }} />}
         </Container>
     );
 }

@@ -1,16 +1,16 @@
 import { Form, redirect, useActionData } from 'react-router-dom';
-import serverIP from '../../../serverIP';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { StorageManager } from '../../../storageManager';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
+import instance from '../../../api/axios';
 
 async function loginAction({ request }: {request: any}) {
     const data = await request.formData();
 
     try {
-        const response = await axios.post(`${serverIP}/login`, {
+        const response = await instance.post('/login', {
             username: data.get('username'),
             password: data.get('password')
         }, {
@@ -20,6 +20,17 @@ async function loginAction({ request }: {request: any}) {
         if (response.status === 200) {
             StorageManager.setCSRF(response.data.csrfToken);
             StorageManager.setUser(response.data.jwt);
+
+            if (Notification) {
+                if (StorageManager.getUser()?.PermissionLevel || 0 > 0) {
+                    if (Notification.permission === 'default') {
+                        Notification.requestPermission();
+                    } else if (Notification.permission === 'granted') {
+                        new Notification('Logged in');
+                    }
+                }
+            }
+
             return redirect('/');
         }
     } catch (err) {

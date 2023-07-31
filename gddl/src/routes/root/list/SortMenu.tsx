@@ -100,6 +100,10 @@ export default function SortMenu({ set }: Props) {
                                 <RadioButton id='EnjoymentCount' name='sort' checked={sorter ==='EnjoymentCount'} onChange={handleSortMenu} />
                                 Enjoyment count
                             </label>
+                            <label htmlFor='Deviation' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='Deviation' name='sort' checked={sorter ==='Deviation'} onChange={handleSortMenu} />
+                                Deviation
+                            </label>
                         </div>
                     </div>
                 </div>

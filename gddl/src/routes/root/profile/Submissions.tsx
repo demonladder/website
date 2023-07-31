@@ -20,13 +20,13 @@ enum EListType {
 }
 
 export default function Submissions({ userID }: Props) {
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [sort, setSort] = useState<{ sort: string, sortDirection: string}>({ sort: 'LevelID', sortDirection: 'asc'});
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
 
     const { status, data } = useQuery({
         queryKey: ['user/submissions', { userID, page, ...sort }],
-        queryFn: () => GetUserSubmissions({ userID, page: page+1, ...sort }),
+        queryFn: () => GetUserSubmissions({ userID, page, ...sort }),
     });
 
     if (status === 'loading') {

@@ -1,3 +1,4 @@
+import { StorageManager } from "../storageManager";
 import instance from "./axios";
 
 export type Pack = {
@@ -42,4 +43,10 @@ export async function GetPack(packID: number): Promise<Pack> {
 export async function SearchPacks(name: string): Promise<PackInfo> {
     const res = await instance.get('/packs', { params: { chunk: 5, name, }});
     return res.data;
+}
+
+export async function CreatePacks(name: string, description: string): Promise<void> {
+    const csrfToken = StorageManager.getCSRF();
+
+    return await instance.post('/packs/create', { name, description }, { withCredentials: true, params: { csrfToken }});
 }

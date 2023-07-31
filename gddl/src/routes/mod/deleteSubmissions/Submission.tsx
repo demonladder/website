@@ -14,6 +14,7 @@ export default function Submission({ submission, levelID }: Props) {
     async function deletePromise() {
         await DeleteSubmission(levelID, submission.UserID);
         queryClient.invalidateQueries(['submissions']);
+        queryClient.invalidateQueries(['level', submission.LevelID]);
     }
 
     function mutate() {
@@ -30,9 +31,9 @@ export default function Submission({ submission, levelID }: Props) {
     return (
         <div className='submission flex'>
             <DangerButton className='w-8' onClick={mutate}>X</DangerButton>
-            <p className={'w-12 text-center tier-' + rating}>{submission.Rating || '-'}</p>
-            <p className={'w-12 text-center enj-' + enjoyment}>{(submission.Enjoyment === null) ? '-' : enjoyment}</p>
-            <p className='flex-grow ps-2 bg-gray-600'>{submission.Name}</p>
+            <p className={'basis-10 text-center tier-' + rating}>{submission.Rating || '-'}</p>
+            <p className={'basis-10 text-center enj-' + enjoyment}>{(submission.Enjoyment === null) ? '-' : enjoyment}</p>
+            <p className='flex-grow ps-2 bg-gray-600 round:rounded-e'>{submission.Name}</p>
         </div>
     );
 }

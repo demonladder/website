@@ -47,4 +47,10 @@ export class StorageManager {
         if (storage === null) return false;
         return JSON.parse(storage) === true;
     }
+
+    static wantsNotifs() {
+        const storage = localStorage.getItem('receiveNotifs');
+        if (storage === null) return false;
+        return JSON.parse(storage) === true;
+    }
 }

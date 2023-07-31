@@ -2,8 +2,20 @@ import Header from '../../Header';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { StorageManager } from '../../storageManager';
+import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket';
+import serverIP from '../../serverIP';
 
 function Root() {
+    useWebSocket(serverIP.wsServerIP, {
+        onMessage: (event) => {
+            if (event.data === 'userSubmission') {
+                if (StorageManager.hasPermissions() && Notification.permission === 'granted' && StorageManager.wantsNotifs()) {
+                    new Notification('New submission');
+                }
+            }
+        }
+    });
+
     return (
         <>
             <Helmet>

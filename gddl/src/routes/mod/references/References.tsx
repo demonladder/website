@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRef, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Change, ChangeReferences, ChangeType, GetReferences } from '../../../api/references';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import LevelSearchBox from '../../../components/LevelSearchBox';
@@ -7,6 +7,7 @@ import { Level as TLevel } from '../../../api/levels';
 import { ToFixed } from '../../../functions';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { NumberInput } from '../../../components/Input';
+import { toast } from 'react-toastify';
 
 type Reference = {
     Tier: number,
@@ -59,7 +60,7 @@ export default function EditReferences() {
 
         return (
             <>
-                <div className='divider-lg'></div>
+                <div className='divider my-3'></div>
                 <div className='flex flex-col gap-1 mb-8'>
                     {
                         data.filter((l) => l.Tier === tier).map(l => <Level data={l} remove={() => {
@@ -85,8 +86,8 @@ export default function EditReferences() {
         const roundedTier = Math.round(data.Rating);
 
         return (
-            <div className='grid grid-cols-12 gap-2'>
-                <div className='flex justify-between items-center col-span-11'>
+            <div className='flex gap-2'>
+                <div className='grow flex justify-between items-center'>
                     <div className='flex gap-2 items-center'>
                         <DangerButton onClick={remove}>X</DangerButton>
                         <div className='name'>
@@ -95,7 +96,7 @@ export default function EditReferences() {
                     </div>
                     <p>{data.ID}</p>
                 </div>
-                <div className={'flex col-span-1 justify-center tier-' + roundedTier}>
+                <div className={'basis-16 flex justify-center tier-' + roundedTier}>
                     <p className='self-center'>{ToFixed(''+data.Rating, 2, '-')}</p>
                 </div>
             </div>
@@ -104,16 +105,19 @@ export default function EditReferences() {
 
     const queryClient = useQueryClient();
 
-    const mutateReferences = useMutation({
-        mutationFn: ChangeReferences,
-        onSuccess: () => {
-            setChangeList([]);
-            queryClient.invalidateQueries(['editReferences']);
-        }
-    });
-
+    const loadingRef = useRef(false);
     function save() {
-        mutateReferences.mutate(changeList);
+        if (!loadingRef.current) {
+            loadingRef.current = true;
+            toast.promise(ChangeReferences(changeList).then(() => {
+                setChangeList([]);
+                queryClient.invalidateQueries(['editReferences']);
+            }).finally(() => loadingRef.current = false), {
+                pending: 'Saving...',
+                success: 'Saved',
+                error: 'An error occurred',
+            });
+        }
     }
 
     const [search, setSearch] = useState<TLevel>();
@@ -136,7 +140,7 @@ export default function EditReferences() {
                     <label className='me-2' htmlFor='editReferenceTierInput'>Edit tier:</label>
                     <NumberInput id='editReferenceTierInput' min='0' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
                 </div>
-                <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} disabled={mutateReferences.isLoading} onClick={save}>Save changes</PrimaryButton>
+                <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} onClick={save}>Save changes</PrimaryButton>
             </div>
             <div className='position-relative'>
                 <label htmlFor='editReferenceLevelInput'>Level:</label>

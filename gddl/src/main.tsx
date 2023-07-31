@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ import Login from './routes/root/login/Login';
 import Packs from './routes/root/packs/Packs';
 import Profile from './routes/root/profile/Profile';
 import PackOverview from './routes/root/packs/packOverview/PackOverview';
-const Mod = lazy(() => import('./routes/mod/Mod'));
+import Mod from './routes/mod/Mod';
 import { modLoader as ModLoader } from './routes/mod/Mod';
 import ModIndex from './routes/mod/ModIndex';
 import Queue from './routes/mod/queue/Queue';
@@ -32,6 +32,7 @@ import Settings from './routes/root/profile/settings/Settings';
 import Add from './routes/mod/packs/Add';
 import Remove from './routes/mod/packs/Remove';
 import Move from './routes/mod/packs/Move';
+import EditSubmission from './routes/mod/editSubmissions/EditSubmissions';
 
 const router = createBrowserRouter(
     [
@@ -81,68 +82,68 @@ const router = createBrowserRouter(
                     path: 'profile/:userID',
                     element: <Profile />,
                 },
-            ],
-        },
-        {
-            path: '/mod',
-            element: (
-                <Suspense>
-                    <Mod />
-                </Suspense>
-            ),
-            loader: ModLoader,
-            children: [
                 {
-                    index: true,
-                    element: <ModIndex />
-                },
-                {
-                    path: 'queue',
-                    element: <Queue />
-                },
-                {
-                    path: 'packs',
-                    element: <EditPacks />,
+                    path: '/mod',
+                    element: <Mod />,
+                    loader: ModLoader,
                     children: [
                         {
-                            path: 'add',
-                            element: <Add />,
+                            index: true,
+                            element: <ModIndex />
                         },
                         {
-                            path: 'remove',
-                            element: <Remove />,
+                            path: 'queue',
+                            element: <Queue />
                         },
                         {
-                            path: 'move',
-                            element: <Move />,
+                            path: 'packs',
+                            element: <EditPacks />,
+                            children: [
+                                {
+                                    path: 'add',
+                                    element: <Add />,
+                                },
+                                {
+                                    path: 'remove',
+                                    element: <Remove />,
+                                },
+                                {
+                                    path: 'move',
+                                    element: <Move />,
+                                },
+                            ]
+                        },
+                        {
+                            path: 'references',
+                            element: <EditReferences />
+                        },
+                        {
+                            path: 'createPack',
+                            element: <CreatePack />,
+                        },
+                        {
+                            path: 'addSubmission',
+                            element: <AddSubmission />,
+                        },
+                        {
+                            path: 'editSubmission',
+                            element: <EditSubmission />,
+                        },
+                        {
+                            path: 'deleteSubmission',
+                            element: <DeleteSubmission />,
+                        },
+                        {
+                            path: 'promote',
+                            element: <Promote />,
+                        },
+                        {
+                            path: 'signupLinks',
+                            element: <SignupLink />,
                         },
                     ]
                 },
-                {
-                    path: 'references',
-                    element: <EditReferences />
-                },
-                {
-                    path: 'createPack',
-                    element: <CreatePack />,
-                },
-                {
-                    path: 'deleteSubmission',
-                    element: <DeleteSubmission />,
-                },
-                {
-                    path: 'addSubmission',
-                    element: <AddSubmission />,
-                },
-                {
-                    path: 'promote',
-                    element: <Promote />,
-                },
-                {
-                    path: 'signupLinks',
-                    element: <SignupLink />,
-                },
-            ]
+            ],
         },
     ],
 );
