@@ -24,6 +24,7 @@ export default function Header() {
                         <div><NavLink to='/references' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>Reference Demons</NavLink></div>
                         <div><NavLink to='/packs' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>Packs</NavLink></div>
                         <UserSearchBox setResult={(user) => navigate('/profile/' + user.ID)} id='userSearch' />
+                        <NavLink to='/settings'><i className='bx bxs-cog text-2xl'></i></NavLink>
                     </div>
                     <ProfileButtons />
                 </div>

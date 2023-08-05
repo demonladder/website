@@ -1,14 +1,13 @@
 import { Link, NavLink, Outlet, redirect } from 'react-router-dom';
-import serverIP from '../../serverIP';
-import axios from 'axios';
 import { StorageManager } from '../../storageManager';
 import Container from '../../components/Container';
+import instance from '../../api/axios';
 
 export async function modLoader() {
     if (!StorageManager.hasSession()) return redirect('/');
 
     const csrfToken = StorageManager.getCSRF();
-    return axios.get(serverIP.serverIP + '/isMod', { withCredentials: true, params: { csrfToken } }).then(() => {
+    return instance.get('/isMod', { withCredentials: true, params: { csrfToken } }).then(() => {
         return null;
     }).catch(() => {
         return redirect('/');

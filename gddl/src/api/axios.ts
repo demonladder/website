@@ -1,8 +1,7 @@
 import axios from 'axios';
-import serverIP from '../serverIP';
 
 const instance = axios.create({
-    baseURL: serverIP.serverIP,
+    baseURL: import.meta.env.VITE_SERVER_URL,
     timeout: 10000,
 });
 

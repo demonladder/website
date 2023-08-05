@@ -5,7 +5,7 @@ import UserSearchBox from '../../../components/UserSearchBox';
 import { User } from '../../../api/users';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
-import { PrimaryButton } from '../../../components/Button';
+import { DangerButton, PrimaryButton } from '../../../components/Button';
 import instance from '../../../api/axios';
 import { toast } from 'react-toastify';
 import { StorageManager } from '../../../storageManager';
@@ -13,8 +13,12 @@ import { AxiosError } from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function AddSubmission() {
+    const [key, setKey] = useState(1);
+
     const [levelResult, setLevelResult] = useState<Level>();
+    const [invalidLevel, setInvalidLevel] = useState(false);
     const [userResult, setUserResult] = useState<User>();
+    const [invalidUser, setInvalidUser] = useState(false);
     const ratingRef = useRef<HTMLInputElement>(null);
     const enjoymentRef = useRef<HTMLInputElement>(null);
     const proofRef = useRef<HTMLInputElement>(null);
@@ -24,22 +28,31 @@ export default function AddSubmission() {
     const queryClient = useQueryClient();
 
     function submit() {
-        // Validate
-        if (!levelResult) {
-            return toast.error('You must select a level!');
-        }
-        if (!userResult) {
-            return toast.error('You must select a user!');
-        }
+        setInvalidLevel(false);
+        setInvalidUser(false);
 
         if (ratingRef.current === null || enjoymentRef.current === null || refreshRef.current === null || proofRef.current === null) {
             return toast.error('An error occurred');
         }
 
-        if ((Math.round(levelResult.Rating || 0) >= 20 || levelResult.Difficulty === 'Extreme') && !proofRef.current.value) {
-            return toast.error('Proof is required!');
+        // Validate
+        if (!levelResult || !userResult) {
+            if (!levelResult) {
+                setInvalidLevel(true);
+                toast.error('You must select a level!');
+            }
+            if (!userResult) {
+                setInvalidUser(true);
+                toast.error('You must select a user!');
+            }
+            
+            return;
         }
 
+        if ((Math.round(levelResult.Rating || 0) >= 20 || levelResult.Difficulty === 'Extreme') && !proofRef.current.value) {
+            toast.error('Proof is required!');
+        }
+        
         // Send
         toast.promise(
         instance.post('/submit/mod', {
@@ -47,7 +60,7 @@ export default function AddSubmission() {
             userID: userResult.ID,
             rating: parseInt(ratingRef.current.value),
             enjoyment: parseInt(enjoymentRef.current.value),
-            refreshRate: refreshRef.current.value,
+            refreshRate: parseInt(refreshRef.current.value),
             device,
             proof: proofRef.current.value,
         }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => {
@@ -68,17 +81,21 @@ export default function AddSubmission() {
         });
     }
 
+    function clear() {
+        setKey(prev => prev+1);
+    }
+
     return (
-        <div>
+        <div key={'addSubmission_' + key}>
             <h3 className='text-2xl mb-3'>Add Submission</h3>
             <div className='flex flex-col gap-4'>
                 <div>
                     <label htmlFor='addSubmissionSearch'>Level:</label>
-                    <LevelSearchBox id='addSubmissionSearch' setResult={setLevelResult} />
+                    <LevelSearchBox id='addSubmissionSearch' setResult={setLevelResult} invalid={invalidLevel} />
                 </div>
                 <div>
                     <label htmlFor='addSubmissionUserSearch'>User:</label>
-                    <UserSearchBox id='addSubmissionUserSearch' setResult={setUserResult} />
+                    <UserSearchBox id='addSubmissionUserSearch' setResult={setUserResult} invalid={invalidUser} />
                 </div>
                 <div>
                     <label htmlFor='addSubmissionTier'>Tier:</label>
@@ -104,7 +121,10 @@ export default function AddSubmission() {
                     <TextInput id='addSubmissionProof' ref={proofRef} />
                 </div>
             </div>
-            <PrimaryButton onClick={submit}>Add</PrimaryButton>
+            <div className='flex justify-between'>
+                <PrimaryButton onClick={submit}>Add</PrimaryButton>
+                <DangerButton onClick={clear}>Clear</DangerButton>
+            </div>
         </div>
     );
 }

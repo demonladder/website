@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import DemonLogo from "./DemonLogo";
 import { StorageManager } from "../storageManager";
+import Copy from "./Copy";
 
 interface GridProps {
     info: {
@@ -23,8 +24,8 @@ export function GridLevel({ info }: GridProps) {
     const enjoyment = info.Enjoyment !== null ? Math.round(info.Enjoyment) : -1;
     
     return (
-        <div className={'relative cursor-pointer p-2 pb-10 hover:brightness-90 round:rounded-xl tier-' + rating} onClick={handleClick}>
-            <b className='text-xl'>{info.Name}</b>
+        <div className={'relative cursor-pointer p-2 pb-10 border border-white border-opacity-0 hover:border-opacity-100 transition-colors round:rounded-xl tier-' + rating} onClick={handleClick}>
+            <b className='text-xl'><Copy text={''+info.LevelID} /> {info.Name}</b>
             <div className='flex justify-between text-lg'>
                 <div>
                     <p>by {info.Creator}</p>
@@ -32,7 +33,7 @@ export function GridLevel({ info }: GridProps) {
                 </div>
                 <img className='max-w-[96px]' src={DemonLogo(info.Difficulty)} />
             </div>
-            <div className={'absolute flex items-end bottom-0 left-0 w-12 h-12 enj-' + enjoyment} style={{borderRadius: StorageManager.getIsRounded() ? '0 3rem 0 0.75rem' : '0 3rem 0 0'}}>
+            <div className={'absolute flex items-end bottom-[-1px] left-[-1px] w-12 h-12 enj-' + enjoyment} style={{borderRadius: StorageManager.getIsRounded() ? '0 3rem 0 0.75rem' : '0 3rem 0 0'}}>
                 <b className='p-2 ps-3'>{info.Enjoyment !== null ? enjoyment : '-'}</b>
             </div>
         </div>

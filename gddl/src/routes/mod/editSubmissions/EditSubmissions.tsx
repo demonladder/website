@@ -52,7 +52,7 @@ export default function EditSubmission() {
             userID: userResult.UserID,
             rating: parseInt(ratingRef.current.value),
             enjoyment: parseInt(enjoymentRef.current.value),
-            refreshRate: refreshRef.current.value,
+            refreshRate: parseInt(refreshRef.current.value),
             device,
             proof: proofRef.current.value,
             isEdit: true,

@@ -6,9 +6,10 @@ import { SearchUser } from '../api/users';
 type Props = {
     setResult: (e: any) => void,
     id: string,
+    invalid?: boolean,
 }
 
-export default function UserSearchBox({ setResult, id }: Props) {
+export default function UserSearchBox({ setResult, id, invalid = false }: Props) {
     const [search, setSearch] = useState('');
 
     const { status, data: users = [] } = useQuery({
@@ -20,5 +21,5 @@ export default function UserSearchBox({ setResult, id }: Props) {
         setSearch(search);
     }
 
-    return <SearchBox id={id} list={users.map((d) => ({...d, label: d.Name}))} update={update} setResult={setResult} status={status} placeholder='Search user...' />
+    return <SearchBox id={id} list={users.map((d) => ({...d, label: d.Name}))} update={update} setResult={setResult} status={status} placeholder='Search user...' invalid={invalid} />
 }

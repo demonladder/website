@@ -48,6 +48,10 @@ export class StorageManager {
         return JSON.parse(storage) === true;
     }
 
+    static setRounded(state: boolean) {
+        localStorage.setItem('isRounded', JSON.stringify(state));
+    }
+
     static wantsNotifs() {
         const storage = localStorage.getItem('receiveNotifs');
         if (storage === null) return false;

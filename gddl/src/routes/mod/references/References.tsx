@@ -96,7 +96,7 @@ export default function EditReferences() {
                     </div>
                     <p>{data.ID}</p>
                 </div>
-                <div className={'basis-16 flex justify-center tier-' + roundedTier}>
+                <div className={'w-16 flex justify-center tier-' + roundedTier}>
                     <p className='self-center'>{ToFixed(''+data.Rating, 2, '-')}</p>
                 </div>
             </div>
@@ -145,7 +145,7 @@ export default function EditReferences() {
             <div className='position-relative'>
                 <label htmlFor='editReferenceLevelInput'>Level:</label>
                 <div className='flex'>
-                    <LevelSearchBox className='flex-grow' id='editReferenceLevelInput' setResult={s => setSearch(s)} />
+                    <LevelSearchBox id='editReferenceLevelInput' setResult={s => setSearch(s)} />
                     <PrimaryButton onClick={addChange}>Add</PrimaryButton>
                 </div>
             </div>

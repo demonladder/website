@@ -45,3 +45,22 @@ input.no-spinner::-webkit-inner-spin-button {
         background-color: transparent;
     }
 }
+
+.spinner::after {
+    content: ' ';
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 0.17rem solid white;
+    border-color: white transparent white transparent;
+    animation: spinner 1.2s linear infinite;
+}
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

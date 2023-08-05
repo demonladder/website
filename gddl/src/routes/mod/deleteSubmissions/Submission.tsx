@@ -17,7 +17,7 @@ export default function Submission({ submission, levelID }: Props) {
         queryClient.invalidateQueries(['level', submission.LevelID]);
     }
 
-    function mutate() {
+    function deleteSubmission() {
         toast.promise(deletePromise, {
             pending: 'Deleting',
             success: 'Rating deleted',
@@ -26,13 +26,13 @@ export default function Submission({ submission, levelID }: Props) {
     }
 
     const rating = submission.Rating || '0';
-    const enjoyment = submission.Enjoyment || '-1';
+    const enjoyment = submission.Enjoyment !== null ? submission.Enjoyment : '-1';
 
     return (
         <div className='submission flex'>
-            <DangerButton className='w-8' onClick={mutate}>X</DangerButton>
+            <DangerButton className='w-8' onClick={deleteSubmission}>X</DangerButton>
             <p className={'basis-10 text-center tier-' + rating}>{submission.Rating || '-'}</p>
-            <p className={'basis-10 text-center enj-' + enjoyment}>{(submission.Enjoyment === null) ? '-' : enjoyment}</p>
+            <p className={'basis-10 text-center enj-' + enjoyment}>{submission.Enjoyment === null ? '-' : submission.Enjoyment}</p>
             <p className='flex-grow ps-2 bg-gray-600 round:rounded-e'>{submission.Name}</p>
         </div>
     );

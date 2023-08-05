@@ -28,12 +28,13 @@ import SignUp from './routes/root/signup/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddSubmission from './routes/mod/addSubmissions/AddSubmissions';
-import Settings from './routes/root/profile/settings/Settings';
+import ProfileSettings from './routes/root/profile/settings/Settings';
 import Add from './routes/mod/packs/Add';
 import Remove from './routes/mod/packs/Remove';
 import Move from './routes/mod/packs/Move';
 import EditSubmission from './routes/mod/editSubmissions/EditSubmissions';
 import CreateUser from './routes/mod/createUser/CreateUser';
+import Settings from './routes/root/settings/Settings';
 
 const router = createBrowserRouter(
     [
@@ -77,11 +78,15 @@ const router = createBrowserRouter(
                 },
                 {
                     path: 'profile/settings',
-                    element: <Settings />,
+                    element: <ProfileSettings />,
                 },
                 {
                     path: 'profile/:userID',
                     element: <Profile />,
+                },
+                {
+                    path: 'settings',
+                    element: <Settings />,
                 },
                 {
                     path: '/mod',

@@ -7,14 +7,14 @@ import PageButtons from '../../../components/PageButtons';
 import Container from '../../../components/Container';
 
 export default function Packs() {
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     function pageChange(_page: number) {
         setPage(_page);
     }
 
     const { status, data: packs, failureReason } = useQuery({
         queryKey: ['packs', {page}],
-        queryFn: () => GetPacks(page+1),
+        queryFn: () => GetPacks(page),
     });
 
     if (status === 'loading') {

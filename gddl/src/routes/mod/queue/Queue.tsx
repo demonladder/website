@@ -3,6 +3,8 @@ import { ApproveSubmission, GetSubmissionQueue, Submission as TSubmission } from
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submissions';
 import { PrimaryButton } from '../../../components/Button';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 type SubmissionMutation = TSubmission & {
     deny: boolean,
@@ -23,7 +25,19 @@ export default function Queue() {
     });
 
     function approve(info: TSubmission) {
-        approveMutation.mutate({ ...info, deny: false});
+        toast.promise(ApproveSubmission({ ...info, deny: false }).then(() => queryClient.invalidateQueries(['submissionQueue'])), {
+            pending: 'Approving...',
+            success: 'Approved',
+            error: {
+                render({ data }) {
+                    if ((data as AxiosError).response?.status === 409) {
+                        return 'Duplicate entry';
+                    }
+
+                    return 'An error ocurred';
+                }
+            }
+        });
     }
     function deny(info: TSubmission) {
         approveMutation.mutate({ ...info, deny: true});
