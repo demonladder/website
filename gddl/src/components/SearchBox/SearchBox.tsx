@@ -22,7 +22,7 @@ export default function SearchBox({ list, update, setResult, status, id, placeho
     // When the search changes, wait a bit before telling the parent
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     function onChange(e: any) {
-        setResult(null);
+        setResult(undefined);
         setSearch(e.target.value);
         clearTimeout(timer);
         setTimer(setTimeout(() => {
@@ -62,7 +62,7 @@ export default function SearchBox({ list, update, setResult, status, id, placeho
         <div>
             <TextInput id={id} onKeyDown={keyDown} value={search} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} invalid={invalid} />
             {/* <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 text-white'} style={{ zIndex: 5 }}> */}
-            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 round:rounded-b-lg text-white text-base'}>
+            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 round:rounded-b-lg text-white text-base z-10'}>
                 {status === 'loading' ?
                     <LoadingSpinner /> :
                     ((status === 'error' || list.length === 0) ? <div className='px-2 py-1'><p>No results</p></div> :

@@ -1,6 +1,6 @@
 import { Submission } from "./submissions";
 import instance from "./axios";
-import { StorageManager } from "../storageManager";
+import StorageManager from "../utils/storageManager";
 
 type UserSubmissions = {
     total: number,
@@ -20,6 +20,15 @@ export type User = {
     Introduction: string | null,
     AverageEnjoyment: number | null,
     PermissionLevel: number,
+}
+
+export interface EdittableUser {
+    ID: number,
+    Introduction?: string,
+    Favorite?: number,
+    LeastFavorite?: number,
+    MinPref?: number,
+    MaxPref?: number,
 }
 
 export type TinyUser = {
@@ -42,7 +51,7 @@ async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { use
     return (await instance.get(`/user/submissions`, { params: { userID, page, sort, sortDirection, chunk: 16 }})).data;
 }
 
-async function SaveProfile(user: User) {
+async function SaveProfile(user: EdittableUser) {
     const csrfToken = StorageManager.getCSRF();
     const res = await instance.put(`/user?userID=${user.ID}`, { user }, {
         withCredentials: true,

@@ -1,5 +1,5 @@
-import { StorageManager } from "../storageManager";
-import instance from "./axios";
+import storageManager from '../utils/storageManager';
+import instance from './axios';
 
 export interface Level {
     LevelID: number,
@@ -9,6 +9,7 @@ export interface Level {
     Difficulty: string,
     Song: string,
     Creator: string,
+    InPack?: number,
 }
 
 export type FullLevel = {
@@ -37,7 +38,7 @@ type Query = {
 }
 
 export async function SearchLevels(q: Query): Promise<SearchInfo> {
-    const csrfToken = StorageManager.getCSRF() || '';
+    const csrfToken = storageManager.getCSRF() || '';
     return (await instance.get('/level/search', {
         withCredentials: true,
         params: { chunk: 16, ...q, csrfToken },
@@ -52,4 +53,8 @@ export async function GetLevel(id: number | null): Promise<FullLevel | null> {
 
 export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string }[]> {
     return instance.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
+}
+
+export function AddLevelToDatabase(levelID: number) {
+    return instance.post('/level/add', { levelID }, { withCredentials: true, params: { csrfToken: storageManager.getCSRF() }});
 }

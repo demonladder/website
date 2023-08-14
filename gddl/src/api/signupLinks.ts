@@ -1,4 +1,4 @@
-import { StorageManager } from "../storageManager";
+import StorageManager from "../utils/storageManager";
 import instance from "./axios";
 
 export type TokenPair = {

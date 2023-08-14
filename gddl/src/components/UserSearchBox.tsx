@@ -3,13 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import SearchBox from './SearchBox/SearchBox';
 import { SearchUser } from '../api/users';
 
-type Props = {
-    setResult: (e: any) => void,
+interface Props<T> {
+    setResult: (e: T | undefined) => void,
     id: string,
     invalid?: boolean,
 }
 
-export default function UserSearchBox({ setResult, id, invalid = false }: Props) {
+export default function UserSearchBox<T>({ setResult, id, invalid = false }: Props<T>) {
     const [search, setSearch] = useState('');
 
     const { status, data: users = [] } = useQuery({

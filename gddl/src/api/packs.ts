@@ -1,4 +1,4 @@
-import { StorageManager } from "../storageManager";
+import StorageManager from "../utils/storageManager";
 import instance from "./axios";
 
 export type Pack = {
@@ -49,4 +49,16 @@ export async function CreatePacks(name: string, description: string): Promise<vo
     const csrfToken = StorageManager.getCSRF();
 
     return await instance.post('/packs/create', { name, description }, { withCredentials: true, params: { csrfToken }});
+}
+
+export function AddLevelToPack(packID: number, levelID: number) {
+    const csrfToken = StorageManager.getCSRF();
+
+    return instance.post('/packs/edit/add', { packID, levelID }, { withCredentials: true, params: { csrfToken }});
+}
+
+export function RemoveLevelFromPack(packID: number, levelID: number) {
+    const csrfToken = StorageManager.getCSRF();
+
+    return instance.post('/packs/edit/remove', { packID, levelID }, { withCredentials: true, params: { csrfToken }});
 }

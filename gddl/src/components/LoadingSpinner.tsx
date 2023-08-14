@@ -3,8 +3,8 @@ export default function LoadingSpinner({ isLoading = true }) {
 
     return (
         <div className='flex justify-center gap-1'>
+            <i className='bx bxs-hourglass bx-tada'></i>
             Loading
-            <div className='spinner self-center' />
         </div>
     );
 }

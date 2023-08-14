@@ -1,8 +1,0 @@
-<svg width="40" height="38" xmlns="http://www.w3.org/2000/svg" viewBox="-90 -90 180 170">
-  <rect x="-25" y="39" width="50" height="23" fill="#ccd6dd" />
-  <rect x="-25" y="39" width="50" height="8" fill="#9aaab4" />
-  <path class="frame" d="
-    M -80 20 v -90 a 10 10 0 0 1 10 -10 h 140 a 10 10 0 0 1 10 10 v 90 a 10 10 0 0 1 -10 10 h -140 a 10 10 0 0 1 -10 -10
-  " fill="#5dadff" stroke="#ccd6dd" stroke-width="20" />
-  <line x1="-80" y1="70" x2="80" y2="70" stroke="#e1e8ed" stroke-width="20" stroke-linecap="round" />
-</svg>
