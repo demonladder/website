@@ -61,7 +61,7 @@ export default function EditReferences() {
         return (
             <>
                 <div className='divider my-3'></div>
-                <div className='flex flex-col gap-1 mb-8'>
+                <div className='flex flex-col gap-2 mb-8'>
                     {
                         data.filter((l) => l.Tier === tier).map(l => <Level data={l} remove={() => {
                             if (changeList.filter((e) => e.ID === l.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
@@ -90,11 +90,11 @@ export default function EditReferences() {
                 <div className='grow flex justify-between items-center'>
                     <div className='flex gap-2 items-center'>
                         <DangerButton onClick={remove}>X</DangerButton>
-                        <div className='name'>
-                            <h4>{data.Name}</h4>
+                        <div>
+                            <h4 className='break-all'>{data.Name}</h4>
+                            <p>{data.ID}</p>
                         </div>
                     </div>
-                    <p>{data.ID}</p>
                 </div>
                 <div className={'w-16 flex justify-center tier-' + roundedTier}>
                     <p className='self-center'>{toFixed(''+data.Rating, 2, '-')}</p>
@@ -138,7 +138,7 @@ export default function EditReferences() {
             <div className='flex justify-between mb-3'>
                 <div>
                     <label className='me-2' htmlFor='editReferenceTierInput'>Edit tier:</label>
-                    <NumberInput id='editReferenceTierInput' min='0' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
+                    <NumberInput id='editReferenceTierInput' min='1' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
                 </div>
                 <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} onClick={save}>Save changes</PrimaryButton>
             </div>

@@ -12,6 +12,12 @@ export function PrimaryButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HTML
     );
 }
 
+export function InfoButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
+    return (
+        <Generic {...props} className={'text-white from-button-info-1 to-button-info-3 hover:to-button-info-2 active:to-button-info-1' + (props.className ? ' '+props.className : '')} />
+    );
+}
+
 export function SecondaryButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
     return (
         <Generic {...props} className={'from-button-secondary-1 to-button-secondary-3 hover:to-button-secondary-2 active:to-button-secondary-1' + (props.className ? ' '+props.className : '')} />

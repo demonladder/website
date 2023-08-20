@@ -13,7 +13,14 @@ import { GetSubmissions, Submission } from '../../../api/submissions';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
+const deviceOptions: {[key: string]: string} = {
+    '1': 'PC',
+    '2': 'Mobile',
+};
+
 export default function EditSubmission() {
+    const [deviceKey, setDeviceKey] = useState('1');
+
     const [levelResult, setLevelResult] = useState<Level>();
     const [userResult, setUserResult] = useState<Submission>();
     const [page, setPage] = useState<number>(1);
@@ -21,7 +28,6 @@ export default function EditSubmission() {
     const enjoymentRef = useRef<HTMLInputElement>(null);
     const proofRef = useRef<HTMLInputElement>(null);
     const refreshRef = useRef<HTMLInputElement>(null);
-    const [device, setDevice] = useState(1);
 
     const queryClient = useQueryClient();
 
@@ -56,7 +62,7 @@ export default function EditSubmission() {
             rating: parseInt(ratingRef.current.value),
             enjoyment: parseInt(enjoymentRef.current.value),
             refreshRate: parseInt(refreshRef.current.value),
-            device,
+            device: parseInt(deviceKey),
             proof: proofRef.current.value,
             isEdit: true,
         }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => queryClient.invalidateQueries(['submissions', { levelID: levelResult.LevelID }])),
@@ -98,7 +104,7 @@ export default function EditSubmission() {
                 </div>
                 <div>
                     <p className='font-bold'>Submission list</p>
-                    <div className='grid grid-cols-4 gap-2'>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2'>
                         {data?.submissions.map((s) => (
                             <p className={'round:rounded select-none border border-white border-opacity-0 hover:border-opacity-80 transition-colors ps-2 py-1 cursor-pointer ' + (s.UserID === userResult?.UserID ? 'bg-button-primary-1 font-bold' : 'bg-gray-600')} onClick={() => submissionClicked(s)} key={'edit_' + s.UserID + '_' + s.LevelID}>{s.Name}</p>
                         ))}
@@ -121,10 +127,7 @@ export default function EditSubmission() {
                     </div>
                     <div>
                         <label>Device:</label>
-                        <Select id='submitDeviceMod' options={[
-                            { key: 1, value: 'PC' },
-                            { key: 2, value: 'Mobile' }
-                        ]} onChange={(option) => setDevice(option.key)} />
+                    <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
                     </div>
                     <div>
                         <label htmlFor='addSubmissionProof'>Proof:</label>

@@ -29,6 +29,9 @@ export default function Settings() {
     const minPrefRef = useRef<HTMLInputElement>(null);
     const maxPrefRef = useRef<HTMLInputElement>(null);
 
+    // const pfpInputRef = useRef<HTMLInputElement>(null);
+    // const pfpRef = useRef<HTMLImageElement>(null);
+
     useEffect(() => {
         if (data === undefined) return;
 
@@ -64,7 +67,29 @@ export default function Settings() {
             success: 'Saved!',
             error: 'An error occurred',
         });
+
+        // const pfp = pfpInputRef.current?.files?.[0] || undefined;
+
+        // if (pfp) {
+        //     toast.promise(UploadPFP(pfp), {
+        //         pending: 'Uploading pfp...',
+        //         success: 'Updated pfp!',
+        //         error: 'Couldn\'t upload pfp',
+        //     });
+        // }
     }
+
+    // function pfpChange(e: React.ChangeEvent<HTMLInputElement>) {
+    //     const file = e.target.files?.[0];
+
+    //     if (!file) return;
+    //     if (file.size > 512 * 1024) {
+    //         return toast.error('Image too large! Maximum size is 512KB.');
+    //     }
+
+    //     const blob = URL.createObjectURL(file);
+    //     if (pfpRef.current) pfpRef.current.src = blob;
+    // }
 
     if (status === 'loading') {
         return (
@@ -93,6 +118,11 @@ export default function Settings() {
                             <TextArea spellCheck={false} ref={introductionRef} />
                             <p className='text-gray-400 mt-1 text-sm'>Your introduction will be visible to everyone visiting your profile.</p>
                         </FormGroup>
+                        {/* <FormGroup>
+                            <label className='font-bold'>Profile picture</label>
+                            <input className='block' type='file' accept='image/*' ref={pfpInputRef} onChange={(e) => pfpChange(e)} />
+                            <img id='newPFPSetting' className='w-64 rounded-full' ref={pfpRef} alt='' />
+                        </FormGroup> */}
                         <FormGroup>
                             <label className='font-bold'>Favorite level</label>
                             <NumberInput ref={favoriteRef} />

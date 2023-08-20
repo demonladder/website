@@ -6,18 +6,17 @@ export type SelectOption = {
 }
 
 type Props = {
-    options: SelectOption[],
-    onChange: (option: SelectOption) => void,
+    options: {[key: string]: string},
+    activeKey: string,
+    onChange: (option: string) => void,
     zIndex?: number,
     id: string,
 }
 
-export default function Select({ options, onChange, id }: Props) {
+export default function Select({ options, activeKey, onChange, id }: Props) {
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(options[0]);
 
-    function optionClicked(option: SelectOption) {
-        setValue(option);
+    function optionClicked(option: string) {
         onChange(option);
     }
 
@@ -38,11 +37,11 @@ export default function Select({ options, onChange, id }: Props) {
     return (
         <div className='cursor-pointer select-none relative' onClick={() => setOpen(prev => !prev)}>
             <div id={id} className='bg-black bg-opacity-20 border-b-2 w-full ps-2'>
-                {value.value}
+                {options[activeKey]}
                 <div className={'shadow-2xl absolute z-10 -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>
                     <div className='min-h-0 w-40 bg-gray-600 max-h-44 overflow-auto'>
                         {
-                            options.map((o) => <SelectOption option={o} setValue={optionClicked} key={o.value} />)
+                            Object.entries(options).map((o) => <SelectOption option={o} setValue={optionClicked} key={o[0]} />)
                         }
                     </div>
                 </div>
@@ -54,8 +53,8 @@ export default function Select({ options, onChange, id }: Props) {
     );
 }
 
-function SelectOption({ option, setValue }: {option: SelectOption, setValue: (option: SelectOption) => void}) {
+function SelectOption({ option, setValue }: {option: [string, string], setValue: (option: string) => void}) {
     return (
-        <p onClick={() => setValue(option)} className='hover:bg-gray-500 px-2 py-1'>{option.value}</p>
+        <p onClick={() => setValue(option[0])} className='hover:bg-gray-500 px-2 py-1'>{option[1]}</p>
     );
 }

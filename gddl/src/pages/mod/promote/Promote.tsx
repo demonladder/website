@@ -4,10 +4,22 @@ import { PromoteUser, TinyUser } from '../../../api/users';
 import { PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
 import Select from '../../../components/Select';
+import renderToastError from '../../../utils/renderToastError';
+import FormGroup from '../../../components/form/FormGroup';
+
+const permissionOptions: {[key: string]: string} = {
+    '0': 'No permissions',
+    '1': 'List helper',
+    '2': 'Developer',
+    '3': 'Moderator',
+    '4': 'Admin',
+    '5': 'Co-Owner',
+    '6': 'Owner',
+};
 
 export default function Promote() {
     const [result, setResult] = useState<TinyUser>();
-    const [permissionLevel, setPermissionLevel] = useState(0);
+    const [permissionKey, setPermissionKey] = useState('0');
 
     function submit() {
         if (result === undefined || result === null) {
@@ -15,33 +27,26 @@ export default function Promote() {
             return;
         };
 
-        toast.promise(PromoteUser(result.ID, permissionLevel), {
+        toast.promise(PromoteUser(result.ID, parseInt(permissionKey)), {
             pending: 'Saving',
             success: 'Promoted ' + result.Name,
-            error: 'An error occurred',
-        }, { autoClose: false });
+            error: renderToastError,
+        });
     }
 
     return (
         <div>
-            <h3 className='mb-3 text-2xl'>Promote User</h3>
-            <div className='mb-3'>
-                <label htmlFor='promoteUser'>Username:</label>
+            <h3 className='text-2xl'>Promote User</h3>
+            <p className='mb-3'>It's only possible to promote a user up to your own permission level.</p>
+            <FormGroup>
+                <label htmlFor='promoteUser' className='font-bold'>Username:</label>
                 <UserSearchBox<TinyUser> setResult={setResult} id='promoteUser' />
-            </div>
-            <div className='mb-3'>
-                <label htmlFor='permissionLevel' className='block'>Permission level:</label>
-                <Select options={[
-                    { key: 0, value: 'No permissions' },
-                    { key: 1, value: 'List helper' },
-                    { key: 2, value: 'Developer' },
-                    { key: 3, value: 'Moderator' },
-                    { key: 4, value: 'Admin' },
-                    { key: 5, value: 'Co-Owner' },
-                    { key: 6, value: 'Owner' },
-                ]} id='permissionSelect' onChange={(option) => setPermissionLevel(option.key)} />
+            </FormGroup>
+            <FormGroup>
+                <label htmlFor='permissionLevel' className='font-bold'>Permission level:</label>
+                <Select options={permissionOptions} id='permissionSelect' activeKey={permissionKey} onChange={setPermissionKey} />
                 <PrimaryButton onClick={submit}>Save</PrimaryButton>
-            </div>
+            </FormGroup>
         </div>
     );
 }

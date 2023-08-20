@@ -40,7 +40,7 @@ export type SearchFilters = {
 
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
-    const [pageIndex, setPageIndex] = useState(1);
+    const [pageIndex, setPageIndex] = useSessionStorage('search.pageIndex', 1);
 
     //
     // Filter levels

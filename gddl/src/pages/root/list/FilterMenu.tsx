@@ -1,8 +1,9 @@
-import Select, { SelectOption } from '../../../components/Select';
+import Select from '../../../components/Select';
 import FiltersExtended from './FiltersExtended';
 import { NumberInput, TextInput } from '../../../components/Input';
 import { SearchFilters } from './Ladder';
 import { DangerButton } from '../../../components/Button';
+import { useState } from 'react';
 
 type Props = {
     filters: SearchFilters,
@@ -11,7 +12,19 @@ type Props = {
     show: boolean,
 }
 
+const difficultyOptions = {
+    '0': '-',
+    '1': 'Official',
+    '2': 'Easy',
+    '3': 'Medium',
+    '4': 'Hard',
+    '5': 'Insane',
+    '6': 'Extreme',
+};
+
 export default function FilterMenu({ filters, setFilters, reset, show }: Props) {
+    const [difficultyKey, setDifficultyKey] = useState('0');
+
     function onLowTierChange(e: any) {
         let value: string|number = parseFloat(e.target.value);
         
@@ -25,8 +38,9 @@ export default function FilterMenu({ filters, setFilters, reset, show }: Props) 
         setFilters(prev => ({ ...prev, highTier: ''+value }));
     }
 
-    function onDifficultyChange(val: SelectOption) {
-        setFilters(prev => ({ ...prev, difficulty: val.key }));
+    function onDifficultyChange(key: string) {
+        setDifficultyKey(key);
+        setFilters(prev => ({ ...prev, difficulty: parseInt(key) }));
     }
 
     return (
@@ -56,15 +70,7 @@ export default function FilterMenu({ filters, setFilters, reset, show }: Props) 
                         </div>
                         <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2'>
                             <p>Difficulty:</p>
-                            <Select id='filtersDifficulty' options={[
-                                { key: 0, value: '-' },
-                                { key: 1, value: 'Official' },
-                                { key: 2, value: 'Easy' },
-                                { key: 3, value: 'Medium' },
-                                { key: 4, value: 'Hard' },
-                                { key: 5, value: 'Insane' },
-                                { key: 6, value: 'Extreme' }
-                            ]} onChange={onDifficultyChange} />
+                            <Select id='filtersDifficulty' options={difficultyOptions} activeKey={difficultyKey} onChange={onDifficultyChange} />
                         </div>
                         <div className='col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-2'>
                             <p>Creator:</p>

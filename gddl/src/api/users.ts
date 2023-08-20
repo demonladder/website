@@ -60,6 +60,11 @@ async function SaveProfile(user: EdittableUser) {
     return res.data;
 }
 
+export function UploadPFP(pfp: File) {
+    const csrfToken = StorageManager.getCSRF();
+    return instance.put('/user/pfp', pfp, { withCredentials: true, params: { csrfToken } });
+}
+
 async function PromoteUser(userID: number, permissionLevel: number) {
     const csrfToken = StorageManager.getCSRF();
     await instance.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });

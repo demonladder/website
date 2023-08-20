@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Modal from '../components/Modal';
 import Select from '../components/Select';
 import { SendSubmission, SubmittableSubmission } from '../api/submissions';
 import { NumberInput, TextInput } from './Input';
 import { PrimaryButton, SecondaryButton } from './Button';
 import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
 import { FullLevel } from '../api/levels';
+import renderToastError from '../utils/renderToastError';
 
 type Props = {
     show: boolean,
@@ -14,24 +14,49 @@ type Props = {
     level: FullLevel,
 }
 
+const enjoymentOptions: {[key: string]: string} = {
+    '-1': '-',
+    0: '0 Abysmal',
+    1: '1 Appalling',
+    2: '2 Horrible',
+    3: '3 Very bad',
+    4: '4 Bad',
+    5: '5 Average',
+    6: '6 Fine',
+    7: '7 Good',
+    8: '8 Very good',
+    9: '9 Great',
+    10: '10 Masterpiece',
+};
+
+const deviceOptions: {[key: string]: string} = {
+    1: 'PC',
+    2: 'Mobile',
+};
+
 export default function SubmitModal({ show, onClose, level }: Props) {
-    const [rating, setRating] = useState<string>('');
-    const [enjoyment, setEnjoyment] = useState<number>();
+    const ratingRef = useRef<HTMLInputElement>(null);
+    const [enjoymentKey, setEnjoymentKey] = useState('-1');
+    const [deviceKey, setDeviceKey] = useState('1');
     const [refreshRate, setRefreshRate] = useState('');
-    const [device, setDevice] = useState(1);
     const [proof, setProof] = useState('');
 
     function submitForm(e: React.FormEvent) {
         e.preventDefault();
         e.stopPropagation();
 
-        if (rating && (parseInt(rating) < 1 || parseInt(rating) > 35)) {
+        if (!ratingRef.current) return toast.error('An error occurred!');
+
+        const rating = parseInt(ratingRef.current.value);
+        const enjoyment = parseInt(enjoymentKey) === -1 ? undefined : parseInt(enjoymentKey);
+
+        if (rating < 1 || rating > 35) {
             toast.error('Rating must be between 1 and 35!');
             return;
         }
 
-        if (rating === undefined && enjoyment === undefined) {
-            return toast.error('Rating enjoyment can\'t both be empty!');
+        if (isNaN(rating) && (enjoyment === undefined || enjoyment === -1)) {
+            return toast.error('Rating and enjoyment can\'t both be empty!');
         }
 
         if (proof && !proof.match(/(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
@@ -40,21 +65,17 @@ export default function SubmitModal({ show, onClose, level }: Props) {
 
         const data: SubmittableSubmission = {
             levelID: level.LevelID,
-            rating: parseInt(rating),
-            enjoyment: enjoyment,
+            rating,
+            enjoyment,
             refreshRate: parseInt(refreshRate.match(/([0-9]*)/)?.[0] || ''),
-            device: device,
+            device: parseInt(deviceKey),
             proof: proof,
         };
         
         toast.promise(SendSubmission(data), {
             pending: 'Submitting',
             success: 'Rating submitted',
-            error: {
-                render({data}) {
-                    return ((data as AxiosError).response?.data as any).error || 'An error occurred';
-                }
-            },
+            error: renderToastError,
         });
     }
 
@@ -64,24 +85,12 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                 <div className='flex flex-col gap-3'>
                     <div>
                         <label htmlFor='submitRating'>Rating:</label>
-                        <NumberInput id='submitRating' value={rating} onChange={(e) => setRating(e.target.value)} />
+                        <NumberInput id='submitRating' ref={ratingRef} inputMode='numeric' />
+                        <p className='text-sm text-gray-400'>Must be 1-35</p>
                     </div>
                     <div style={{height: '52px'}}>
                         <label htmlFor='submitEnjoyment'>Enjoyment:</label>
-                        <Select id='submitEnjoyment' options={[
-                            { key: -1, value: '-' },
-                            { key: 0, value: '0 Abysmal' },
-                            { key: 1, value: '1 Appalling' },
-                            { key: 2, value: '2 Horrible' },
-                            { key: 3, value: '3 Very bad' },
-                            { key: 4, value: '4 Bad' },
-                            { key: 5, value: '5 Average' },
-                            { key: 6, value: '6 Fine' },
-                            { key: 7, value: '7 Good' },
-                            { key: 8, value: '8 Very good' },
-                            { key: 9, value: '9 Great' },
-                            { key: 10, value: '10 Masterpiece' }
-                        ]} onChange={(option) => setEnjoyment(option.key)} zIndex={1030} />
+                        <Select id='submitEnjoyment' options={enjoymentOptions} activeKey={enjoymentKey} onChange={setEnjoymentKey} zIndex={1030} />
                     </div>
                     <div>
                         <label htmlFor='submitRefreshRate'>Refresh rate:</label>
@@ -89,14 +98,12 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                     </div>
                     <div style={{height: '52px'}}>
                         <label>Device:</label>
-                        <Select id='submitDevice' options={[
-                            { key: 1, value: 'PC' },
-                            { key: 2, value: 'Mobile' }
-                        ]} onChange={(option) => setDevice(option.key)} />
+                        <Select id='submitDevice' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
                     </div>
                     <div>
                         <label htmlFor='submitProof'>Proof:</label>
                         <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value)} />
+                        <p className='text-sm text-gray-400'>Proof is required for extreme demons. Proof must be a link pointing to a video that includes clicks.</p>
                     </div>
                 </div>
             </Modal.Body>
