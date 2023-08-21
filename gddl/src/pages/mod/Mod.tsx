@@ -38,6 +38,7 @@ export default function Mod() {
                         <NavButton to='/mod/signupLinks'>Sign-up links</NavButton>
                         <NavButton to='/mod/promote'>Promote user</NavButton>
                         <NavButton to='/mod/createUser'>Create user</NavButton>
+                        <NavButton to='/mod/deleteUser'>Delete user</NavButton>
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Packs</p>
                         <NavButton to='/mod/createPack'>Create pack</NavButton>

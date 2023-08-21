@@ -70,6 +70,11 @@ async function PromoteUser(userID: number, permissionLevel: number) {
     await instance.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });
 }
 
+export function Delete(id: number) {
+    const csrfToken = StorageManager.getCSRF();
+    return instance.delete('/user?id=' + id, { withCredentials: true, params: { csrfToken }});
+}
+
 export {
     GetUser,
     SearchUser,

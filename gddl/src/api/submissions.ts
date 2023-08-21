@@ -37,7 +37,14 @@ type SubmissionInfo = {
     submissions: Submission[],
 }
 
-export async function GetSubmissionQueue(): Promise<SubmissionQueueInfo[]> {
+interface PendingSubmissionInfo {
+    total: number,
+    limit: number,
+    page: number,
+    submissions: SubmissionQueueInfo[],
+}
+
+export async function GetSubmissionQueue(): Promise<PendingSubmissionInfo> {
     const csrfToken = StorageManager.getCSRF();
     const res = await instance.get('/submissions/pending', { withCredentials: true, params: { csrfToken } });
     return res.data;

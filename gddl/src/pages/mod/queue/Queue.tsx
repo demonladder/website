@@ -51,8 +51,9 @@ export default function Queue() {
         } else {
             return (
                 <div>
-                    {queue.map((s) => <Submission info={s} approve={approve} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
-                    {queue.length === 0 && <h5>Queue empty :D</h5>}
+                    {queue.submissions.map((s) => <Submission info={s} approve={approve} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
+                    {queue.total === 0 && <h5>Queue empty :D</h5>}
+                    {queue.total > 5 && <p className='font-bold text-lg text-center my-3'>+ {queue.total - 5} more</p>}
                 </div>
             );
         }

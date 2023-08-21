@@ -47,7 +47,7 @@ export default function Submission({ info, approve, remove }: Props) {
                 </div>
                 <div>
                     <span className='font-bold'>Proof: </span>
-                    <span>{info.Proof ? <a href={info.Proof} target='_blank' rel='noopener noreferrer'>{info.Proof}</a> : 'None'}</span>
+                    <span className='break-all'>{info.Proof ? <a href={info.Proof} target='_blank' rel='noopener noreferrer'>{info.Proof}</a> : 'None'}</span>
                 </div>
             </div>
             <div className='flex justify-evenly'>

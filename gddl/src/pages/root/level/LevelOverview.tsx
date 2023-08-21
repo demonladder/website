@@ -12,13 +12,14 @@ import Container from '../../../components/Container';
 import SubmitModal from '../../../components/SubmitModal';
 import StorageManager from '../../../utils/storageManager';
 import toFixed from '../../../utils/toFixed';
+import { AxiosError } from 'axios';
 
 export default function LevelOverview() {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
     const levelID = parseInt(''+useParams().levelID) || 0;
-    const { status, data: level } = useQuery({
+    const { status, data: level, error } = useQuery({
         queryKey: ['level', levelID],
         queryFn: () => GetLevel(levelID),
     });
@@ -26,6 +27,18 @@ export default function LevelOverview() {
     if (status === 'loading'){
         return <Container><LoadingSpinner /></Container>;
     } else if (status === 'error') {
+        const err = error as AxiosError;
+
+        if (err) {
+            if (err.response?.status === 404) {
+                return (
+                    <Container>
+                        <h1 className='text-4xl'>404: Level was not found!</h1>
+                    </Container>
+                );
+            }
+        }
+
         return (
             <Container>
                 <h1 className='text-4xl'>An error ocurred</h1>

@@ -36,6 +36,8 @@ import EditSubmission from './pages/mod/editSubmissions/EditSubmissions';
 import CreateUser from './pages/mod/createUser/CreateUser';
 import Settings from './pages/root/settings/Settings';
 import AddLevel from './pages/mod/addLevel/AddLevel';
+import About from './pages/root/about/About';
+import DeleteUser from './pages/mod/deleteUser/DeleteUser';
 
 const router = createBrowserRouter(
     [
@@ -46,27 +48,31 @@ const router = createBrowserRouter(
             children: [
                 {
                     index: true,
-                    element: <Index />
+                    element: <Index />,
                 },
                 {
                     path: 'list',
-                    element: <Ladder />
+                    element: <Ladder />,
                 },
                 {
                     path: 'references',
-                    element: <References />
-                },
-                {
-                    path: 'level/:levelID',
-                    element: <LevelOverview />
+                    element: <References />,
                 },
                 {
                     path: 'packs',
-                    element: <Packs />
+                    element: <Packs />,
+                },
+                {
+                    path: 'about',
+                    element: <About />,
+                },
+                {
+                    path: 'level/:levelID',
+                    element: <LevelOverview />,
                 },
                 {
                     path: 'pack/:packID',
-                    element: <PackOverview />
+                    element: <PackOverview />,
                 },
                 {
                     path: 'login',
@@ -146,6 +152,10 @@ const router = createBrowserRouter(
                         {
                             path: 'createUser',
                             element: <CreateUser />,
+                        },
+                        {
+                            path: 'deleteUser',
+                            element: <DeleteUser />,
                         },
                         {
                             path: 'signupLinks',
