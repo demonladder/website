@@ -31,6 +31,7 @@ export default function Index() {
                                     <li>+ Changed how pack icons attach to the pack name</li>
                                     <li>+ Proof is now only required for extreme demons</li>
                                     <li>+ It's now possible to see if a submission was done on mobile (Only in level overview for now)</li>
+                                    <li>+ Added "Pack level" filter</li>
                                 </ul>
                             </li>
                         </ul>

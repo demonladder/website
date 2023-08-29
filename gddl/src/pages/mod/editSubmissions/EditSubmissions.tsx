@@ -1,17 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
-import LevelSearchBox from '../../../components/LevelSearchBox';
-import { Level } from '../../../api/levels';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { PrimaryButton } from '../../../components/Button';
 import instance from '../../../api/axios';
 import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/storageManager';
-import { AxiosError } from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetSubmissions, Submission } from '../../../api/submissions';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import useLevelSearch from '../../../hooks/useLevelSearch';
+import renderToastError from '../../../utils/renderToastError';
 
 const deviceOptions: {[key: string]: string} = {
     '1': 'PC',
@@ -22,7 +21,8 @@ export default function EditSubmission() {
     const [deviceKey, setDeviceKey] = useState('1');
     const [isMutating, setIsMutating] = useState(false);
 
-    const [levelResult, setLevelResult] = useState<Level>();
+    const { activeLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch' });
+
     const [userResult, setUserResult] = useState<Submission>();
     const [page, setPage] = useState<number>(1);
     const ratingRef = useRef<HTMLInputElement>(null);
@@ -33,18 +33,18 @@ export default function EditSubmission() {
     const queryClient = useQueryClient();
 
     const { status, data } = useQuery({
-        queryKey: ['submissions', { levelID: levelResult?.LevelID, page }],
-        queryFn: () => GetSubmissions({ levelID: levelResult?.LevelID || 0, chunk: 24, page: page }),
+        queryKey: ['submissions', { levelID: activeLevel?.LevelID, page }],
+        queryFn: () => GetSubmissions({ levelID: activeLevel?.LevelID || 0, chunk: 24, page: page }),
     });
 
     useEffect(() => {
         setPage(1);
         setUserResult(undefined);
-    }, [levelResult]);
+    }, [activeLevel]);
 
     function submit() {
         // Validate
-        if (!levelResult) {
+        if (!activeLevel) {
             return toast.error('You must select a level!');
         }
         if (!userResult) {
@@ -59,7 +59,7 @@ export default function EditSubmission() {
         setIsMutating(true);
         toast.promise(
         instance.post('/submit/mod', {
-            levelID: levelResult.LevelID,
+            levelID: activeLevel.LevelID,
             userID: userResult.UserID,
             rating: parseInt(ratingRef.current.value),
             enjoyment: parseInt(enjoymentRef.current.value),
@@ -67,18 +67,11 @@ export default function EditSubmission() {
             device: parseInt(deviceKey),
             proof: proofRef.current.value,
             isEdit: true,
-        }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => queryClient.invalidateQueries(['submissions', { levelID: levelResult.LevelID }])).finally(() => setIsMutating(false)),
+        }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => queryClient.invalidateQueries(['submissions', { levelID: activeLevel.LevelID }])).finally(() => setIsMutating(false)),
         {
             pending: 'Editing',
             success: 'Edited submission',
-            error: {
-                render({ data }: { data?: AxiosError|undefined }) {
-                    if (data?.response?.status && data.response.status < 500) {
-                        return 'Error, check formatting';
-                    }
-                    return 'An error occurred';
-                }
-            }
+            error: renderToastError,
         });
     }
 
@@ -102,7 +95,7 @@ export default function EditSubmission() {
             <div className='flex flex-col gap-4'>
                 <div>
                     <label htmlFor='addSubmissionSearch'>Level:</label>
-                    <LevelSearchBox id='addSubmissionSearch' setResult={setLevelResult} />
+                    {SearchBox}
                 </div>
                 <div>
                     <p className='font-bold'>Submission list</p>

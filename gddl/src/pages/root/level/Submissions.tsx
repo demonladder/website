@@ -45,22 +45,22 @@ export default function Submissions({ levelID }: { levelID: number }) {
         queryFn: () => GetSubmissions({ levelID, chunk: 24, page }),
     });
 
-    if (status === 'loading') {
-        return <LoadingSpinner />
-    }
-
-    if (submissions === undefined) {
-        return <p className='mb-0'>This level does not have any submissions</p>
-    }
-
     return (
         <section className='my-4'>
             <h2 className='text-3xl'>Submissions</h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
-                {submissions.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
-                {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
-            </div>
-            <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
+            {status === 'loading'
+                ? <LoadingSpinner />
+                : (submissions === undefined
+                    ? <p className='mb-0'>This level does not have any submissions</p>
+                    : <>
+                        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
+                            {submissions.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
+                            {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
+                        </div>
+                        <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
+                    </>
+                )
+            }
         </section>
     );
 }

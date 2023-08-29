@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { SubmissionQueueInfo } from '../../../api/submissions';
 import { useQuery } from '@tanstack/react-query';
-import { GetLevel } from '../../../api/levels';
+import { GetShortLevel } from '../../../api/levels';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import toFixed from '../../../utils/toFixed';
 
@@ -14,7 +14,7 @@ type Props = {
 export default function Submission({ info, approve, remove }: Props) {
     const { data: levelData } = useQuery({
         queryKey: ['levels', info.LevelID],
-        queryFn: () => GetLevel(info.LevelID),
+        queryFn: () => GetShortLevel(info.LevelID),
     });
 
     return (

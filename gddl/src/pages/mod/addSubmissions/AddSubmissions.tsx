@@ -1,6 +1,4 @@
 import { useState, useRef } from 'react';
-import LevelSearchBox from '../../../components/LevelSearchBox';
-import { Level } from '../../../api/levels';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { User } from '../../../api/users';
 import { NumberInput, TextInput } from '../../../components/Input';
@@ -12,6 +10,7 @@ import StorageManager from '../../../utils/storageManager';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
+import useLevelSearch from '../../../hooks/useLevelSearch';
 
 const deviceOptions: {[key: string]: string} = {
     '1': 'PC',
@@ -23,8 +22,6 @@ export default function AddSubmission() {
     const [deviceKey, setDeviceKey] = useState('1');
     const [isMutating, setIsMutating] = useState(false);
 
-    const [levelResult, setLevelResult] = useState<Level>();
-    const [invalidLevel, setInvalidLevel] = useState(false);
     const [userResult, setUserResult] = useState<User|null>();
     const [invalidUser, setInvalidUser] = useState(false);
     const ratingRef = useRef<HTMLInputElement>(null);
@@ -34,8 +31,9 @@ export default function AddSubmission() {
 
     const queryClient = useQueryClient();
 
+    const { activeLevel, markInvalid: markInvalidLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch' });
+
     function submit() {
-        setInvalidLevel(false);
         setInvalidUser(false);
 
         if (ratingRef.current === null || enjoymentRef.current === null || proofRef.current === null) {
@@ -43,9 +41,9 @@ export default function AddSubmission() {
         }
 
         // Validate
-        if (!levelResult || !userResult) {
-            if (!levelResult) {
-                setInvalidLevel(true);
+        if (!activeLevel || !userResult) {
+            if (!activeLevel) {
+                markInvalidLevel();
                 toast.error('You must select a level!');
             }
             if (!userResult) {
@@ -56,7 +54,7 @@ export default function AddSubmission() {
             return;
         }
         
-        if ((levelResult.Difficulty === 'Extreme') && !proofRef.current.value) {
+        if ((activeLevel.Difficulty === 'Extreme') && !proofRef.current.value) {
             return toast.error('Proof is required!');
         }
         
@@ -64,7 +62,7 @@ export default function AddSubmission() {
         setIsMutating(true);
         toast.promise(
             instance.post('/submit/mod', {
-                levelID: levelResult.LevelID,
+                levelID: activeLevel.LevelID,
                 userID: userResult.ID,
                 rating: parseInt(ratingRef.current.value),
                 enjoyment: parseInt(enjoymentRef.current.value),
@@ -73,11 +71,11 @@ export default function AddSubmission() {
                 proof: proofRef.current.value,
             }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => {
                 queryClient.invalidateQueries(['submissions']);
-                queryClient.invalidateQueries(['level', levelResult.LevelID]);
+                queryClient.invalidateQueries(['level', activeLevel.LevelID]);
             }).finally(() => setIsMutating(false)),
             {
                 pending: 'Adding...',
-                success: `Added submission for ${levelResult.Name}!`,
+                success: `Added submission for ${activeLevel.Name}!`,
                 error: renderToastError,
             }
         );
@@ -94,7 +92,7 @@ export default function AddSubmission() {
             <div className='flex flex-col gap-4'>
                 <div>
                     <label htmlFor='addSubmissionSearch'>Level:</label>
-                    <LevelSearchBox id='addSubmissionSearch' setResult={setLevelResult} invalid={invalidLevel} />
+                    {SearchBox}
                 </div>
                 <div>
                     <label htmlFor='addSubmissionUserSearch'>User:</label>

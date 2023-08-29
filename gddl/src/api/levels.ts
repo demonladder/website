@@ -48,7 +48,12 @@ export async function SearchLevels(q: Query): Promise<SearchInfo> {
 export async function GetLevel(id: number | null): Promise<FullLevel | null> {
     if (id === null) return null;
 
-    return (await instance.get(`/level?levelID=${id}&returnPacks=true`)).data;
+    return (await instance.get(`/level?levelID=${id}`)).data;
+}
+export async function GetShortLevel(id: number | null): Promise<FullLevel | null> {
+    if (id === null) return null;
+
+    return (await instance.get(`/level/short?levelID=${id}`)).data;
 }
 
 export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string, IconName: string }[]> {

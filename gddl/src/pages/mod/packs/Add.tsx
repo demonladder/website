@@ -1,31 +1,27 @@
 import { useState } from 'react';
-import LevelSearchBox from '../../../components/LevelSearchBox';
 import { PrimaryButton } from '../../../components/Button';
 import PackSearchBox from '../../../components/PackSearchBox';
 import { toast } from 'react-toastify';
 import { AddLevelToPack, Pack } from '../../../api/packs';
-import { Level } from '../../../api/levels';
 import { AxiosError } from 'axios';
+import useLevelSearch from '../../../hooks/useLevelSearch';
 
 export default function Add() {
     const [packResult, setPackResult] = useState<Pack>();
-    const [levelResult, setLevelResult] = useState<Level>();
 
-    const [levelInvalid, setLevelInvalid] = useState(false);
+    const { activeLevel, markInvalid, SearchBox} = useLevelSearch({ ID: 'packAddLevelSearch' })
     
     function handleSubmit() {
-        setLevelInvalid(false);
-
         if (packResult === undefined) {
             return toast.error('Select a pack!');
         }
         
-        if (levelResult === undefined) {
-            setLevelInvalid(true);
+        if (activeLevel === undefined) {
+            markInvalid();
             return toast.error('Select a level!');
         }
 
-        toast.promise(AddLevelToPack(packResult.ID, levelResult.LevelID), {
+        toast.promise(AddLevelToPack(packResult.ID, activeLevel.LevelID), {
             pending: 'Adding...',
             success: 'Added level to pack!',
             error: {
@@ -47,8 +43,8 @@ export default function Add() {
                 <PackSearchBox id='editPacksSearch' setResult={setPackResult} />
             </div>
             <div>
-                <label htmlFor='addLevelSearch'>Level</label>
-                <LevelSearchBox id='addLevelSearch' setResult={setLevelResult} invalid={levelInvalid} />
+                <label htmlFor='packAddLevelSearch'>Level</label>
+                {SearchBox}
             </div>
             <PrimaryButton onClick={handleSubmit}>Add level</PrimaryButton>
         </div>

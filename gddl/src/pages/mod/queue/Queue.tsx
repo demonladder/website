@@ -4,14 +4,15 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submissions';
 import { PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
+import renderToastError from '../../../utils/renderToastError';
+import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 
 type SubmissionMutation = TSubmission & {
     deny: boolean,
 }
 
 export default function Queue() {
-    const { status, isRefetching, data: queue } = useQuery({
+    const { status, isFetching, data: queue } = useQuery({
         queryKey: ['submissionQueue'],
         queryFn: GetSubmissionQueue,
     });
@@ -25,18 +26,10 @@ export default function Queue() {
     });
 
     function approve(info: TSubmission) {
-        toast.promise(ApproveSubmission({ ...info, deny: false }).then(() => queryClient.invalidateQueries(['submissionQueue'])), {
+        toast.promise(ApproveSubmission({ ...info, deny: false }).then(() => {queryClient.invalidateQueries(['submissionQueue']); queryClient.invalidateQueries(['stats'])}), {
             pending: 'Approving...',
-            success: 'Approved',
-            error: {
-                render({ data }) {
-                    if ((data as AxiosError).response?.status === 409) {
-                        return 'Duplicate entry';
-                    }
-
-                    return 'An error ocurred';
-                }
-            }
+            success: 'Approved!',
+            error: renderToastError,
         });
     }
     function deny(info: TSubmission) {
@@ -61,10 +54,11 @@ export default function Queue() {
 
     return (
         <div>
+            <FloatingLoadingSpinner isLoading={isFetching} />
             <div className='flex justify-between'>
                 <h3 className='text-2xl mb-3'>Submissions</h3>
                 <div>
-                    {(isRefetching && <LoadingSpinner />) || <PrimaryButton className='flex items-center gap-1' onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isRefetching}>Refresh <i className='bx bx-refresh'></i></PrimaryButton>}
+                    <PrimaryButton className='flex items-center gap-1' onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isFetching}>Refresh <i className='bx bx-refresh'></i></PrimaryButton>
                 </div>
             </div>
             <Content />

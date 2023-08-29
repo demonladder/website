@@ -1,19 +1,17 @@
-import { useState } from 'react';
-import LevelSearchBox from '../../../components/LevelSearchBox';
-import { Level } from '../../../api/levels';
 import SubmissionList from './SubmissionList';
+import useLevelSearch from '../../../hooks/useLevelSearch';
 
 export default function DeleteSubmission() {
-    const [result, setResult] = useState<Level>();
+    const { activeLevel, SearchBox } = useLevelSearch({ ID: 'deleteSubmissionSearch' });
 
     return (
         <div>
             <h3 className='text-2xl mb-3'>Delete Submission</h3>
             <div className='mb-5'>
                 <label htmlFor='deleteSubmissionSearch'>Level:</label>
-                <LevelSearchBox id='deleteSubmissionSearch' setResult={setResult} />
+                {SearchBox}
             </div>
-            <SubmissionList levelID={result?.LevelID || 0} />
+            <SubmissionList levelID={activeLevel?.LevelID || 0} />
         </div>
     );
 }

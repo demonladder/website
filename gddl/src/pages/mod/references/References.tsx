@@ -2,12 +2,11 @@ import { useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Change, ChangeReferences, ChangeType, GetReferences } from '../../../api/references';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import LevelSearchBox from '../../../components/LevelSearchBox';
-import { Level as TLevel } from '../../../api/levels';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { NumberInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
 import toFixed from '../../../utils/toFixed';
+import useLevelSearch from '../../../hooks/useLevelSearch';
 
 type Reference = {
     Tier: number,
@@ -36,7 +35,7 @@ function ChangeLevel({ data, remove }: ChangeLevelProps) {
             <div className='flex gap-2 items-center'>
                 <DangerButton onClick={remove}>X</DangerButton>
                 <div className='name'>
-                    <h4>{data.Name}</h4>
+                    <h4 className='break-word'>{data.Name}</h4>
                     <p>{action + preposition + targetTier}</p>
                 </div>
             </div>
@@ -120,14 +119,14 @@ export default function EditReferences() {
         }
     }
 
-    const [search, setSearch] = useState<TLevel>();
+    const { activeLevel, SearchBox } = useLevelSearch({ ID: 'editReferenceLevelInput' });
     function addChange() {
-        if (!search) return;
-        if (search.Rating === null) return;
+        if (!activeLevel) return;
+        if (activeLevel.Rating === null) return;
 
-        if (changeList.filter(c => c.ID === search.LevelID && c.Type === 'add').length === 1) return;
+        if (changeList.filter(c => c.ID === activeLevel.LevelID && c.Type === 'add').length === 1) return;
 
-        const newChange: Change = { Tier: search.Rating, ID: search.LevelID, Name: search.Name, Type: ChangeType.Add };
+        const newChange: Change = { Tier: activeLevel.Rating, ID: activeLevel.LevelID, Name: activeLevel.Name, Type: ChangeType.Add };
         newChange.Tier = tier;
         setChangeList(prev => [...prev, newChange])
     }
@@ -145,7 +144,7 @@ export default function EditReferences() {
             <div className='position-relative'>
                 <label htmlFor='editReferenceLevelInput'>Level:</label>
                 <div className='flex'>
-                    <LevelSearchBox id='editReferenceLevelInput' setResult={s => setSearch(s)} />
+                    {SearchBox}
                     <PrimaryButton onClick={addChange}>Add</PrimaryButton>
                 </div>
             </div>

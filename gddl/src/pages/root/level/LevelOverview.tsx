@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import DemonLogo, { DifficultyToImgSrc } from '../../../components/DemonLogo';
 import { Helmet } from 'react-helmet';
 import { GetLevel } from '../../../api/levels';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import IDButton from '../../../components/IDButton';
 import Packs from './Packs';
 import Submissions from './Submissions';
@@ -13,6 +12,7 @@ import SubmitModal from '../../../components/SubmitModal';
 import StorageManager from '../../../utils/storageManager';
 import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
+import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 
 export default function LevelOverview() {
     const [showModal, setShowModal] = useState(false);
@@ -25,7 +25,7 @@ export default function LevelOverview() {
     });
 
     if (status === 'loading'){
-        return <Container><LoadingSpinner /></Container>;
+        return <Container><FloatingLoadingSpinner /></Container>;
     } else if (status === 'error') {
         const err = error as AxiosError;
 
