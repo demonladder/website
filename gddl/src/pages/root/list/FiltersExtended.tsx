@@ -71,6 +71,10 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
                     <CheckBox checked={filters.removeRatedEnj} onChange={() => setFilters(prev => ({ ...prev, removeRatedEnj: !prev.removeRatedEnj }))} />
                     Exclude rated enjoyment
                 </label>
+                <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
+                    <CheckBox checked={filters.inPack} onChange={() => setFilters(prev => ({ ...prev, inPack: !prev.inPack }))} />
+                    Pack level
+                </label>
             </div>
         </div>
     );

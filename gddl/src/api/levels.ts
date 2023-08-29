@@ -51,7 +51,7 @@ export async function GetLevel(id: number | null): Promise<FullLevel | null> {
     return (await instance.get(`/level?levelID=${id}&returnPacks=true`)).data;
 }
 
-export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string }[]> {
+export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string, IconName: string }[]> {
     return instance.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
 }
 

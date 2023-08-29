@@ -37,10 +37,7 @@ export default function SignupLink() {
 
     const queryClient = useQueryClient();
     const genToken = useMutation({
-        mutationFn: async (context: string) => {
-            await SignupToken(context);
-            queryClient.invalidateQueries(['signupTokens']);
-        },
+        mutationFn: async (context: string) => SignupToken(context).then(() => queryClient.invalidateQueries(['signupTokens'])),
     });
 
     function newLink() {
@@ -56,9 +53,9 @@ export default function SignupLink() {
             <div className='mb-4'>
                 <label htmlFor='tokenReceiver'>User:</label>
                 <UserSearchBox setResult={setResult} id='tokenReceiver' />
-                <PrimaryButton onClick={newLink}>Generate</PrimaryButton>
+                <PrimaryButton onClick={newLink} disabled={genToken.isLoading}>Generate</PrimaryButton>
             </div>
-            {genToken.isLoading && <LoadingSpinner />}
+            <LoadingSpinner isLoading={genToken.isLoading} />
             <div className='flex flex-col gap-4'>
                 {(tokens !== undefined) ?
                     tokens.map((token) => <Token token={token} key={token.Token} />) :

@@ -38,7 +38,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
     const ratingRef = useRef<HTMLInputElement>(null);
     const [enjoymentKey, setEnjoymentKey] = useState('-1');
     const [deviceKey, setDeviceKey] = useState('1');
-    const [refreshRate, setRefreshRate] = useState('');
+    const [refreshRate, setRefreshRate] = useState<number>();
     const [proof, setProof] = useState('');
 
     function submitForm(e: React.FormEvent) {
@@ -67,9 +67,9 @@ export default function SubmitModal({ show, onClose, level }: Props) {
             levelID: level.LevelID,
             rating,
             enjoyment,
-            refreshRate: parseInt(refreshRate.match(/([0-9]*)/)?.[0] || ''),
+            refreshRate,
             device: parseInt(deviceKey),
-            proof: proof,
+            proof,
         };
         
         toast.promise(SendSubmission(data), {
@@ -94,7 +94,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                     </div>
                     <div>
                         <label htmlFor='submitRefreshRate'>Refresh rate:</label>
-                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} />
+                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value.trim()))} />
                     </div>
                     <div style={{height: '52px'}}>
                         <label>Device:</label>
@@ -102,8 +102,8 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                     </div>
                     <div>
                         <label htmlFor='submitProof'>Proof:</label>
-                        <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value)} />
-                        <p className='text-sm text-gray-400'>Proof is required for extreme demons. Proof must be a link pointing to a video that includes clicks.</p>
+                        <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value.trim())} />
+                        <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
                     </div>
                 </div>
             </Modal.Body>

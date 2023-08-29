@@ -27,7 +27,7 @@ export default function Header() {
                         <div><NavLink to='/about' className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline'}>About</NavLink></div>
                         <NavLink to='/settings'><i className='bx bxs-cog text-2xl'></i></NavLink>
                     </nav>
-                    <div className='flex items-center gap-4'>
+                    <div className='flex max-sm:flex-col sm:items-center gap-4'>
                         <UserSearchBox<User> setResult={(user) => user && navigate('/profile/' + user.ID)} id='userSearch' />
                         <ProfileButtons />
                     </div>

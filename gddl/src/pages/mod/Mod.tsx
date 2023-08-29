@@ -49,10 +49,13 @@ export default function Mod() {
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Levels</p>
                         <NavButton to='/mod/addLevel'>Add level</NavButton>
+                        <div className='divider my-3'></div>
+                        <p className='text-gray-400 text-sm ps-3'>Settings</p>
+                        <NavButton to='/mod/siteSettings'>Site settings</NavButton>
                     </div>
                 </div>
                 <div className='col-span-12 lg:col-span-8 xl:col-span-9'>
-                    <div className='bg-gray-700 p-4 round:rounded-xl'>
+                    <div className='bg-gray-700 p-4 round:rounded-xl relative'>
                         <Outlet />
                     </div>
                 </div>

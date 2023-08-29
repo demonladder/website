@@ -43,9 +43,23 @@ export default {
                         3: '#8e0000',
                     },
                 },
+                permission: {
+                    0: 'white',
+                    1: '#92ffa3',
+                    2: '#cf9cff',
+                    3: '#71ffcb',
+                    4: '#efa51c',
+                    5: '#efa51c',
+                    6: '#ffef01',
+                },
             },
         },
     },
+    safelist: [
+        {
+            pattern: /permission-[0-9]/,
+        },
+    ],
     plugins: [
         plugin(function({ addVariant }) {
             addVariant('round', '.round &');

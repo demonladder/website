@@ -81,7 +81,7 @@ export default function Profile() {
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
             <section className='flex justify-between flex-wrap items-center'>
-                <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.Name} <ProfileTypeIcon user={userData} /></h1>
+                <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.Name} <ProfileTypeIcon permissionLevel={userData.PermissionLevel} /></h1>
                 <div className='flex gap-2'>
                     <SecondaryButton onClick={() => navigate('/profile/settings')} className={ownPage ? 'flex items-center gap-1' : ''} hidden={!ownPage}>Edit <i className='bx bx-cog'></i></SecondaryButton>
                     <SecondaryButton onClick={logout} hidden={!ownPage}>Log out</SecondaryButton>

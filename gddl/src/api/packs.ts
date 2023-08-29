@@ -4,6 +4,8 @@ import instance from "./axios";
 export type Pack = {
     ID: number,
     Name: string,
+    Description: string,
+    IconName: string,
     Levels: PackLevel[],
 };
 
@@ -21,6 +23,7 @@ export type PackLevel = {
 export type PackShell = {
     ID: number,
     Name: string,
+    IconName: string,
 };
 
 export type PackInfo = {

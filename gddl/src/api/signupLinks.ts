@@ -13,6 +13,6 @@ export async function SignupToken(username: string): Promise<void> {
 
 export async function GetSignupTokens(): Promise<TokenPair[]> {
     const csrfToken = StorageManager.getCSRF();
-    const res = await instance.get('/signupTokens', { withCredentials: true, params: { csrfToken } });
+    const res = await instance.get('/signupToken', { withCredentials: true, params: { csrfToken } });
     return res.data;
 }

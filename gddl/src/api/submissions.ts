@@ -67,6 +67,6 @@ export function ApproveSubmission(info: {deny: boolean} & Submission): Promise<v
 
 export async function SendSubmission(submission: SubmittableSubmission) {
     const csrfToken = StorageManager.getCSRF();
-    const res = await instance.post('/submit', { submission }, { withCredentials: true, params: { csrfToken } });
+    const res = await instance.post('/submit', { ...submission }, { withCredentials: true, params: { csrfToken } });
     return res.data;
 }

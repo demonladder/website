@@ -5,6 +5,7 @@ import { GetPacks } from '../../../api/packs';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PageButtons from '../../../components/PageButtons';
 import Container from '../../../components/Container';
+import UserLink from '../../../components/UserLink';
 
 export default function Packs() {
     const [page, setPage] = useState(1);
@@ -36,7 +37,8 @@ export default function Packs() {
 
     return (
         <Container className='bg-gray-800'>
-            <h1 className='text-4xl mb-1'>Packs</h1>
+            <h1 className='text-4xl'>Packs</h1>
+            <p className='mb-4'>The pack icons were created by <UserLink userID={138} /> (@cadregadev)</p>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
                 {packs.packs.map((p) => <div className='text-center' key={p.ID}><PackRef pack={p} key={p.ID} /></div>)}
             </div>

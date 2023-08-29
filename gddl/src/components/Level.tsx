@@ -30,7 +30,7 @@ function Level({ info }: Props) {
     return (
         <div className='grid grid-cols-12 ps-2 min-h-[48px] text-xl'>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center'>
-                <Link to={'/level/' + info.LevelID} className='underline text-break whitespace-pre-wrap'>{info.Name}</Link>
+                <Link to={'/level/' + info.LevelID} className='underline break-all whitespace-pre-wrap'>{info.Name}</Link>
             </h4>
 
             <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{info.Creator}</p></div>

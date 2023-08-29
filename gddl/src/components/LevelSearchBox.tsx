@@ -16,12 +16,11 @@ type Label = {
 export default function LevelSearchBox({ setResult, id, invalid = false }: Props) {
     const [search, setSearch] = useState('');
 
-    const { status, data } = useQuery({
+    const { status, data = {levels:[]} } = useQuery({
         queryKey: ['level/search', search],
         queryFn: () => SearchLevels({ name: search, exact: false, chunk: 5 }),
     });
 
-    if (data === undefined) return;
     return (
         <SearchBox id={id} list={data && data.levels.map((d) => {
             const l: Level & Label = {

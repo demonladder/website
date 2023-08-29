@@ -13,7 +13,7 @@ export default function ProfileButtons() {
 }
 
 function ProfileButton({ user }: { user: User | null }) {
-    if (user === null) return;
+    if (user === null) return (<LoginButton />);
     
     return (
         <div className='flex items-center gap-1'>

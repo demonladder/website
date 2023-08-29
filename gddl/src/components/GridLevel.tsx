@@ -25,7 +25,9 @@ export function GridLevel({ info }: GridProps) {
 
     function handleProofClick(e: React.MouseEvent) {
         e.stopPropagation();
-        window.open(info.Proof, '_blank')
+        if (!info.Proof) return;
+        
+        window.open(info.Proof.startsWith('https://') ? info.Proof : `https://${info.Proof}`, '_blank')
     }
 
     const rating = info.Rating !== null ? Math.round(info.Rating) : 0;

@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 
 function Generic(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
     return (
-        <button {...props} className={'round:rounded bg-gradient-to-b px-2 min-h-[1.75rem]' + (props.className ? ' '+props.className : '')} />
+        <button {...props} className={'round:rounded disabled:brightness-75 bg-gradient-to-b px-2 min-h-[1.75rem]' + (props.className ? ' '+props.className : '')} />
     );
 }
 

@@ -75,6 +75,16 @@ export function Delete(id: number) {
     return instance.delete('/user?id=' + id, { withCredentials: true, params: { csrfToken }});
 }
 
+export interface StaffMember {
+    ID: number,
+    Name: string,
+    PermissionLevel: number,
+}
+
+export function GetStaff(): Promise<StaffMember[]> {
+    return instance.get('/user/staff').then(res => res.data);
+}
+
 export {
     GetUser,
     SearchUser,

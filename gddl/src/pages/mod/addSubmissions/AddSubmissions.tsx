@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/storageManager';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
+import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 
 const deviceOptions: {[key: string]: string} = {
     '1': 'PC',
@@ -20,6 +21,7 @@ const deviceOptions: {[key: string]: string} = {
 export default function AddSubmission() {
     const [key, setKey] = useState(1);
     const [deviceKey, setDeviceKey] = useState('1');
+    const [isMutating, setIsMutating] = useState(false);
 
     const [levelResult, setLevelResult] = useState<Level>();
     const [invalidLevel, setInvalidLevel] = useState(false);
@@ -28,7 +30,7 @@ export default function AddSubmission() {
     const ratingRef = useRef<HTMLInputElement>(null);
     const enjoymentRef = useRef<HTMLInputElement>(null);
     const proofRef = useRef<HTMLInputElement>(null);
-    const refreshRef = useRef<HTMLInputElement>(null);
+    const [refreshRate, setRefreshRate] = useState<number>();
 
     const queryClient = useQueryClient();
 
@@ -36,7 +38,7 @@ export default function AddSubmission() {
         setInvalidLevel(false);
         setInvalidUser(false);
 
-        if (ratingRef.current === null || enjoymentRef.current === null || refreshRef.current === null || proofRef.current === null) {
+        if (ratingRef.current === null || enjoymentRef.current === null || proofRef.current === null) {
             return toast.error('An error occurred');
         }
 
@@ -59,22 +61,23 @@ export default function AddSubmission() {
         }
         
         // Send
+        setIsMutating(true);
         toast.promise(
             instance.post('/submit/mod', {
                 levelID: levelResult.LevelID,
                 userID: userResult.ID,
                 rating: parseInt(ratingRef.current.value),
                 enjoyment: parseInt(enjoymentRef.current.value),
-                refreshRate: parseInt(refreshRef.current.value),
+                refreshRate,
                 device: parseInt(deviceKey),
                 proof: proofRef.current.value,
             }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => {
                 queryClient.invalidateQueries(['submissions']);
                 queryClient.invalidateQueries(['level', levelResult.LevelID]);
-            }),
+            }).finally(() => setIsMutating(false)),
             {
-                pending: 'Adding',
-                success: 'Added submission',
+                pending: 'Adding...',
+                success: `Added submission for ${levelResult.Name}!`,
                 error: renderToastError,
             }
         );
@@ -86,6 +89,7 @@ export default function AddSubmission() {
 
     return (
         <div key={'addSubmission_' + key}>
+            <FloatingLoadingSpinner isLoading={isMutating} />
             <h3 className='text-2xl mb-3'>Add Submission</h3>
             <div className='flex flex-col gap-4'>
                 <div>
@@ -106,7 +110,7 @@ export default function AddSubmission() {
                 </div>
                 <div>
                     <label htmlFor='addSubmissionRefreshRate'>Refresh rate:</label>
-                    <NumberInput id='addSubmissionRefreshRate' ref={refreshRef} />
+                    <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} />
                     <p className='text-sm text-gray-400'>Defaults to 60 if empty</p>
                 </div>
                 <div>
@@ -120,7 +124,7 @@ export default function AddSubmission() {
                 </div>
             </div>
             <div className='flex justify-between mt-3'>
-                <PrimaryButton onClick={submit}>Add</PrimaryButton>
+                <PrimaryButton onClick={submit} disabled={isMutating}>Add</PrimaryButton>
                 <DangerButton onClick={clear}>Clear</DangerButton>
             </div>
         </div>

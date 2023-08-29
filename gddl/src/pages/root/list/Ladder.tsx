@@ -29,6 +29,7 @@ export type SearchFilters = {
     devLow: string,
     devHigh: string,
     exactName: boolean,
+    inPack: boolean,
     removeCompleted: boolean,
     removeUnrated: boolean,
     removeUnratedEnj: boolean,
@@ -38,6 +39,34 @@ export type SearchFilters = {
     IDHigh: string,
 }
 
+const resetObj = {
+    name: '',
+    lowTier: '',
+    highTier: '',
+    enjLow: '',
+    enjHigh: '',
+    difficulty: 0,
+    creator: '',
+    song: '',
+
+    //Extended
+    subLowCount: '',
+    subHighCount: '',
+    enjLowCount: '',
+    enjHighCount: '',
+    devLow: '',
+    devHigh: '',
+    exactName: false,
+    inPack: false,
+    removeCompleted: false,
+    removeUnrated: true,
+    removeUnratedEnj: false,
+    removeRated: false,
+    removeRatedEnj: false,
+    IDLow: '',
+    IDHigh: '',
+};
+
 export default function Ladder() {
     const [sorter, setSorter] = useState({});
     const [pageIndex, setPageIndex] = useSessionStorage('search.pageIndex', 1);
@@ -45,60 +74,12 @@ export default function Ladder() {
     //
     // Filter levels
     //
-    const [filters, setFilters] = useSessionStorage<SearchFilters>('search.filters', {
-        name: '',
-        lowTier: '',
-        highTier: '',
-        enjLow: '',
-        enjHigh: '',
-        difficulty: 0,
-        creator: '',
-        song: '',
-    
-        //Extended
-        subLowCount: '',
-        subHighCount: '',
-        enjLowCount: '',
-        enjHighCount: '',
-        devLow: '',
-        devHigh: '',
-        exactName: false,
-        removeCompleted: false,
-        removeUnrated: true,
-        removeUnratedEnj: false,
-        removeRated: false,
-        removeRatedEnj: false,
-        IDLow: '',
-        IDHigh: '',
-    });
+    const [filters, setFilters] = useSessionStorage<SearchFilters>('search.filters', {...resetObj});
     const [q, setQ] = useSessionStorage('searchQuery', generateQ());
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
 
     function resetFilters() {
-        setFilters({
-            name: '',
-            lowTier: '',
-            highTier: '',
-            enjLow: '',
-            enjHigh: '',
-            difficulty: 0,
-            creator: '',
-            song: '',
-            subLowCount: '',
-            subHighCount: '',
-            enjLowCount: '',
-            enjHighCount: '',
-            devLow: '',
-            devHigh: '',
-            exactName: false,
-            removeCompleted: false,
-            removeUnrated: true,
-            removeUnratedEnj: false,
-            removeRated: false,
-            removeRatedEnj: false,
-            IDLow: '',
-            IDHigh: '',
-        });
+        setFilters({...resetObj});
     }
 
     function generateQ() {

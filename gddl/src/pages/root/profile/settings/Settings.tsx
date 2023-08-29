@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetUser, SaveProfile } from '../../../../api/users';
 import Container from '../../../../components/Container';
@@ -9,11 +9,14 @@ import TextArea from '../../../../components/input/TextArea';
 import FormGroup from '../../../../components/form/FormGroup';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import { toast } from 'react-toastify';
+import renderToastError from '../../../../utils/renderToastError';
+import FloatingLoadingSpinner from '../../../../components/FloatingLoadingSpinner';
 
 export default function Settings() {
     const hasSession = storageManager.hasSession();
     const userID = storageManager.getUser()?.ID;
 
+    const [isMutating, setIsMutating] = useState(false);
     const queryClient = useQueryClient();
 
     const { data, status } = useQuery({
@@ -62,10 +65,11 @@ export default function Settings() {
             MaxPref: parseInt(maxPrefRef.current.value),
         };
 
-        toast.promise(SaveProfile(newUser).then(() => queryClient.invalidateQueries(['user', userID])), {
+        setIsMutating(true);
+        toast.promise(SaveProfile(newUser).then(() => queryClient.invalidateQueries(['user', userID])).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Saved!',
-            error: 'An error occurred',
+            error: renderToastError,
         });
 
         // const pfp = pfpInputRef.current?.files?.[0] || undefined;
@@ -107,6 +111,7 @@ export default function Settings() {
 
     return (
         <Container>
+            <FloatingLoadingSpinner isLoading={isMutating} />
             <section>
                 <h1 className='text-4xl'>Profile settings</h1>
             </section>
@@ -142,7 +147,7 @@ export default function Settings() {
                             </div>
                             <p className='text-gray-400 mt-1 text-sm'>You can leave the lower- or upper bound blank if you like.</p>
                         </FormGroup>
-                        <PrimaryButton type='submit' onClick={onSave}>Save</PrimaryButton>
+                        <PrimaryButton type='submit' onClick={onSave} disabled={isMutating}>Save</PrimaryButton>
                     </form>
                 </section>
             }

@@ -35,8 +35,16 @@ export default function PackOverview() {
                 <meta property='og:url' content={`https://gdladder.com/pack/${packID}`} />
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
-            <h1 className='text-4xl'>{pack.Name}</h1>
-            <div className='level-list my-3 mb-5'>
+            <div className='flex gap-2 mb-4'>
+                <div>
+                    {pack.IconName && <img src={'/packIcons/' + pack.IconName} style={{minWidth: '64px'}} />}
+                </div>
+                <div>
+                    <h1 className='text-4xl mb-1'>{pack.Name}</h1>
+                    <p>{pack.Description}</p>
+                </div>
+            </div>
+            <div className='level-list my-3 mb-8'>
                 <Level.Header />
                 {pack.Levels.filter((lvl) => !lvl.EX).map((l) => (
                     <Level info={l} key={l.LevelID} />

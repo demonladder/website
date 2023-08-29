@@ -38,6 +38,8 @@ import Settings from './pages/root/settings/Settings';
 import AddLevel from './pages/mod/addLevel/AddLevel';
 import About from './pages/root/about/About';
 import DeleteUser from './pages/mod/deleteUser/DeleteUser';
+import Staff from './pages/root/staff/Staff';
+import SiteSettings from './pages/mod/siteSettings/SiteSettings';
 
 const router = createBrowserRouter(
     [
@@ -65,6 +67,10 @@ const router = createBrowserRouter(
                 {
                     path: 'about',
                     element: <About />,
+                },
+                {
+                    path: 'staff',
+                    element: <Staff />,
                 },
                 {
                     path: 'level/:levelID',
@@ -164,6 +170,10 @@ const router = createBrowserRouter(
                         {
                             path: 'addLevel',
                             element: <AddLevel />,
+                        },
+                        {
+                            path: 'siteSettings',
+                            element: <SiteSettings />,
                         },
                     ]
                 },

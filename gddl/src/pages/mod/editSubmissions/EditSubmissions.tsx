@@ -20,6 +20,7 @@ const deviceOptions: {[key: string]: string} = {
 
 export default function EditSubmission() {
     const [deviceKey, setDeviceKey] = useState('1');
+    const [isMutating, setIsMutating] = useState(false);
 
     const [levelResult, setLevelResult] = useState<Level>();
     const [userResult, setUserResult] = useState<Submission>();
@@ -27,7 +28,7 @@ export default function EditSubmission() {
     const ratingRef = useRef<HTMLInputElement>(null);
     const enjoymentRef = useRef<HTMLInputElement>(null);
     const proofRef = useRef<HTMLInputElement>(null);
-    const refreshRef = useRef<HTMLInputElement>(null);
+    const [refreshRate, setRefreshRate] = useState<number>();
 
     const queryClient = useQueryClient();
 
@@ -50,22 +51,23 @@ export default function EditSubmission() {
             return toast.error('You must select a user!');
         }
 
-        if (ratingRef.current === null || enjoymentRef.current === null || refreshRef.current === null || proofRef.current === null) {
+        if (ratingRef.current === null || enjoymentRef.current === null || proofRef.current === null) {
             return toast.error('An error occurred');
         }
 
         // Send
+        setIsMutating(true);
         toast.promise(
         instance.post('/submit/mod', {
             levelID: levelResult.LevelID,
             userID: userResult.UserID,
             rating: parseInt(ratingRef.current.value),
             enjoyment: parseInt(enjoymentRef.current.value),
-            refreshRate: parseInt(refreshRef.current.value),
+            refreshRate,
             device: parseInt(deviceKey),
             proof: proofRef.current.value,
             isEdit: true,
-        }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => queryClient.invalidateQueries(['submissions', { levelID: levelResult.LevelID }])),
+        }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => queryClient.invalidateQueries(['submissions', { levelID: levelResult.LevelID }])).finally(() => setIsMutating(false)),
         {
             pending: 'Editing',
             success: 'Edited submission',
@@ -83,7 +85,7 @@ export default function EditSubmission() {
     function submissionClicked(s: Submission) {
         if (ratingRef.current !== null) ratingRef.current.value = ''+s.Rating;
         if (enjoymentRef.current !== null) enjoymentRef.current.value = ''+s.Enjoyment;
-        if (refreshRef.current !== null) refreshRef.current.value = ''+s.RefreshRate;
+        setRefreshRate(s.RefreshRate);
         if (proofRef.current !== null) proofRef.current.value = s.Proof;
         setUserResult(s);
     }
@@ -123,7 +125,7 @@ export default function EditSubmission() {
                     </div>
                     <div>
                         <label htmlFor='addSubmissionRefreshRate'>Refresh rate:</label>
-                        <NumberInput id='addSubmissionRefreshRate' ref={refreshRef} />
+                        <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} />
                     </div>
                     <div>
                         <label>Device:</label>
@@ -132,9 +134,7 @@ export default function EditSubmission() {
                     <div>
                         <label htmlFor='addSubmissionProof'>Proof:</label>
                         <TextInput id='addSubmissionProof' ref={proofRef} />
-                    </div>
-                    <div>
-                        <PrimaryButton onClick={submit}>Edit</PrimaryButton>
+                        <PrimaryButton onClick={submit} disabled={isMutating}>Edit</PrimaryButton>
                     </div>
                 </div>
             </div>
