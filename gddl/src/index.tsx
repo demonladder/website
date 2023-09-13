@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -15,31 +15,34 @@ import Profile from './pages/root/profile/Profile';
 import PackOverview from './pages/root/packs/packOverview/PackOverview';
 import Mod from './pages/mod/Mod';
 import { modLoader as ModLoader } from './pages/mod/Mod';
-import ModIndex from './pages/mod/ModIndex';
-import Queue from './pages/mod/queue/Queue';
-import EditPacks from './pages/mod/packs/EditPacks';
-import EditReferences from './pages/mod/references/References';
-import CreatePack from './pages/mod/pack/CreatePack';
-import DeleteSubmission from './pages/mod/deleteSubmissions/DeleteSubmissions';
-import Promote from './pages/mod/promote/Promote';
-import SignupLink from './pages/mod/signupLinks/SignupLink';
+const ModIndex = lazy(() => import('./pages/mod/ModIndex'));
+const Queue = lazy(() => import('./pages/mod/queue/Queue'));
+const EditPacks = lazy(() => import('./pages/mod/packs/EditPacks'));
+const EditReferences = lazy(() => import('./pages/mod/references/References'));
+const CreatePack = lazy(() => import('./pages/mod/pack/CreatePack'));
+const DeleteSubmission = lazy(() => import('./pages/mod/deleteSubmissions/DeleteSubmissions'));
+const Promote = lazy(() => import('./pages/mod/promote/Promote'));
+const SignupLink = lazy(() => import('./pages/mod/signupLinks/SignupLink'));
+const AddSubmission = lazy(() => import('./pages/mod/addSubmissions/AddSubmissions'));
+const Add = lazy(() => import('./pages/mod/packs/Add'));
+const Remove = lazy(() => import('./pages/mod/packs/Remove'));
+const Move = lazy(() => import('./pages/mod/packs/Move'));
+const EditSubmission = lazy(() => import('./pages/mod/editSubmissions/EditSubmissions'));
+const CreateUser = lazy(() => import('./pages/mod/createUser/CreateUser'));
+const AddLevel = lazy(() => import('./pages/mod/addLevel/AddLevel'));
+const DeleteUser = lazy(() => import('./pages/mod/deleteUser/DeleteUser'));
+const SiteSettings = lazy(() => import('./pages/mod/siteSettings/SiteSettings'));
 import ErrorElement from './components/ErrorElement';
 import SignUp from './pages/root/signup/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AddSubmission from './pages/mod/addSubmissions/AddSubmissions';
 import ProfileSettings from './pages/root/profile/settings/Settings';
-import Add from './pages/mod/packs/Add';
-import Remove from './pages/mod/packs/Remove';
-import Move from './pages/mod/packs/Move';
-import EditSubmission from './pages/mod/editSubmissions/EditSubmissions';
-import CreateUser from './pages/mod/createUser/CreateUser';
 import Settings from './pages/root/settings/Settings';
-import AddLevel from './pages/mod/addLevel/AddLevel';
 import About from './pages/root/about/About';
-import DeleteUser from './pages/mod/deleteUser/DeleteUser';
 import Staff from './pages/root/staff/Staff';
-import SiteSettings from './pages/mod/siteSettings/SiteSettings';
+import axios from 'axios';
+import instance from './api/axios';
+import storageManager from './utils/storageManager';
 
 const router = createBrowserRouter(
     [
@@ -198,6 +201,26 @@ function createRoot() {
     root.id = 'root';
     document.body.appendChild(root);
     return root;
+}
+
+window.onload = () => {
+    const fragment = new URLSearchParams(window.location.hash.replace('#', ''));
+    const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
+
+    if (!accessToken) return;
+
+    axios.get('https://discord.com/api/users/@me', {
+        headers: {
+            Authorization: `${tokenType} ${accessToken}`,
+        },
+    }).then((response) => {
+        const csrfToken = storageManager.getCSRF();
+
+        instance.post('/discord/connect', response.data, {
+            withCredentials: true,
+            params: { csrfToken },
+        }).then(() => location.replace('/'));
+    });
 }
 
 const rootElement = document.getElementById('root') || createRoot();

@@ -59,6 +59,10 @@ export default function SubmitModal({ show, onClose, level }: Props) {
             return toast.error('Rating and enjoyment can\'t both be empty!');
         }
 
+        if (refreshRate && refreshRate < 30) {
+            return toast.error('Refresh rate has to be at least 30!');
+        }
+
         if (proof && !proof.match(/(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
             return toast.error('Proof link is invalid!');
         }
@@ -79,6 +83,13 @@ export default function SubmitModal({ show, onClose, level }: Props) {
         });
     }
 
+    function handleFPSChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const newVal = e.target.value.trim();
+        if (isNaN(parseInt(newVal))) return;
+
+        setRefreshRate(parseInt(newVal));
+    }
+
     return (
         <Modal title='Submit rating' show={show} onClose={onClose}>
             <Modal.Body>
@@ -94,7 +105,8 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                     </div>
                     <div>
                         <label htmlFor='submitRefreshRate'>Refresh rate:</label>
-                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value.trim()))} />
+                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={handleFPSChange} />
+                        <p className='text-sm text-gray-400'>At least 30fps</p>
                     </div>
                     <div style={{height: '52px'}}>
                         <label>Device:</label>

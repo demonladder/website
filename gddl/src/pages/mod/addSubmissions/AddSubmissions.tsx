@@ -69,13 +69,19 @@ export default function AddSubmission() {
                 refreshRate,
                 device: parseInt(deviceKey),
                 proof: proofRef.current.value,
-            }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => {
+            }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then((res) => {
                 queryClient.invalidateQueries(['submissions']);
                 queryClient.invalidateQueries(['level', activeLevel.LevelID]);
+
+                return res.data;
             }).finally(() => setIsMutating(false)),
             {
-                pending: 'Adding...',
-                success: `Added submission for ${activeLevel.Name}!`,
+                pending: 'Sending...',
+                success: {
+                    render({data}) {
+                        return `${data} for ${activeLevel.Name}!`
+                    }
+                },
                 error: renderToastError,
             }
         );

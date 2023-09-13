@@ -54,14 +54,27 @@ export async function CreatePacks(name: string, description: string): Promise<vo
     return await instance.post('/packs/create', { name, description }, { withCredentials: true, params: { csrfToken }});
 }
 
-export function AddLevelToPack(packID: number, levelID: number) {
+export function AddLevelToPack(packID: number, levelID: number, isEX: boolean) {
     const csrfToken = StorageManager.getCSRF();
 
-    return instance.post('/packs/edit/add', { packID, levelID }, { withCredentials: true, params: { csrfToken }});
+    return instance.post('/packs/edit', { packID, levelID, isEX }, { withCredentials: true, params: { csrfToken }});
 }
 
 export function RemoveLevelFromPack(packID: number, levelID: number) {
     const csrfToken = StorageManager.getCSRF();
 
-    return instance.post('/packs/edit/remove', { packID, levelID }, { withCredentials: true, params: { csrfToken }});
+    return instance.delete('/packs/edit', { withCredentials: true, params: { csrfToken, packID, levelID }});
+}
+
+export interface Leader {
+    UserID: number,
+    Name: string,
+    Sum: number,
+    AccentColor: number,
+    DiscordID: string,
+    Avatar: string,
+}
+
+export function GetPackLeaders(): Promise<Leader[]> {
+    return instance.get('/packs/leaders').then(res => res.data);
 }

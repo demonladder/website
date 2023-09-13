@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 
 function Generic(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
     return (
@@ -27,5 +27,17 @@ export function SecondaryButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HT
 export function DangerButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
     return (
         <Generic {...props} className={'text-white from-button-danger-1 to-button-danger-3 hover:to-button-danger-2 active:to-button-danger-1' + (props.className ? ' '+props.className : '')} />
+    );
+}
+
+export function DiscordButton(props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
+    return (
+        <button {...props} style={{ borderRadius: '3px', padding: '7px 16px' }} className={'text-white bg-button-discord-primary hover:bg-button-discord-hover active:bg-button-discord-active transition-colors' + (props.className ? ' '+props.className : '')} />
+    );
+}
+
+export function DiscordLink(props: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>) {
+    return (
+        <a {...props} style={{ borderRadius: '3px', padding: '7px 16px' }} className={'text-white bg-button-discord-primary hover:bg-button-discord-hover active:bg-button-discord-active transition-colors inline-block my-1' + (props.className ? ' '+props.className : '')} />
     );
 }

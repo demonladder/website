@@ -3,18 +3,20 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetUser, SaveProfile } from '../../../../api/users';
 import Container from '../../../../components/Container';
 import { NumberInput } from '../../../../components/Input';
-import storageManager from '../../../../utils/storageManager';
-import { PrimaryButton } from '../../../../components/Button';
+import StorageManager from '../../../../utils/storageManager';
+import { DiscordLink, PrimaryButton } from '../../../../components/Button';
 import TextArea from '../../../../components/input/TextArea';
 import FormGroup from '../../../../components/form/FormGroup';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../../components/FloatingLoadingSpinner';
+import DiscordUser from '../../../../components/DiscordUser';
+import { LoginButton } from '../../login/ProfileButtons';
 
 export default function Settings() {
-    const hasSession = storageManager.hasSession();
-    const userID = storageManager.getUser()?.ID;
+    const hasSession = StorageManager.hasSession();
+    const userID = StorageManager.getUser()?.ID;
 
     const [isMutating, setIsMutating] = useState(false);
     const queryClient = useQueryClient();
@@ -31,9 +33,6 @@ export default function Settings() {
 
     const minPrefRef = useRef<HTMLInputElement>(null);
     const maxPrefRef = useRef<HTMLInputElement>(null);
-
-    // const pfpInputRef = useRef<HTMLInputElement>(null);
-    // const pfpRef = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
         if (data === undefined) return;
@@ -71,29 +70,9 @@ export default function Settings() {
             success: 'Saved!',
             error: renderToastError,
         });
-
-        // const pfp = pfpInputRef.current?.files?.[0] || undefined;
-
-        // if (pfp) {
-        //     toast.promise(UploadPFP(pfp), {
-        //         pending: 'Uploading pfp...',
-        //         success: 'Updated pfp!',
-        //         error: 'Couldn\'t upload pfp',
-        //     });
-        // }
     }
 
-    // function pfpChange(e: React.ChangeEvent<HTMLInputElement>) {
-    //     const file = e.target.files?.[0];
-
-    //     if (!file) return;
-    //     if (file.size > 512 * 1024) {
-    //         return toast.error('Image too large! Maximum size is 512KB.');
-    //     }
-
-    //     const blob = URL.createObjectURL(file);
-    //     if (pfpRef.current) pfpRef.current.src = blob;
-    // }
+    if (!userID) return;
 
     if (status === 'loading') {
         return (
@@ -115,19 +94,28 @@ export default function Settings() {
             <section>
                 <h1 className='text-4xl'>Profile settings</h1>
             </section>
+            {!hasSession &&
+                <>
+                    <p>You shouldn't be here</p>
+                    <LoginButton />
+                </>
+            }
             {hasSession &&
                 <section className='mt-4'>
+                    
                     <form>
-                        <FormGroup>
-                            <label className='font-bold block mb-1'>Introduction</label>
-                            <TextArea spellCheck={false} ref={introductionRef} />
-                            <p className='text-gray-400 mt-1 text-sm'>Your introduction will be visible to everyone visiting your profile.</p>
-                        </FormGroup>
-                        {/* <FormGroup>
-                            <label className='font-bold'>Profile picture</label>
-                            <input className='block' type='file' accept='image/*' ref={pfpInputRef} onChange={(e) => pfpChange(e)} />
-                            <img id='newPFPSetting' className='w-64 rounded-full' ref={pfpRef} alt='' />
-                        </FormGroup> */}
+                        <div className='grid xl:grid-cols-7 gap-4'>
+                            <div className='xl:col-span-2 bg-gray-700 round:rounded-lg px-4 py-2'>
+                                <DiscordUser userID={userID} />
+                                <DiscordLink href={import.meta.env.VITE_DISCORD_OAUTH}>{'Connect'} your Discord account</DiscordLink>
+                                <p className='text-sm text-gray-400'>By connecting your account, GDDL will store both your usernames, your pfp and your accent color!</p>
+                            </div>
+                            <div className='xl:col-span-5'>
+                                <label className='font-bold block mb-1'>Introduction</label>
+                                <TextArea spellCheck={false} ref={introductionRef} />
+                                <p className='text-gray-400 mt-1 text-sm'>Your introduction will be visible to everyone visiting your profile.</p>
+                            </div>
+                        </div>
                         <FormGroup>
                             <label className='font-bold'>Favorite level</label>
                             <NumberInput ref={favoriteRef} />

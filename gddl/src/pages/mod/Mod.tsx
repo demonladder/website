@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet, redirect } from 'react-router-dom';
 import StorageManager from '../../utils/storageManager';
 import Container from '../../components/Container';
 import instance from '../../api/axios';
+import { Suspense } from 'react';
 
 export async function modLoader() {
     if (!StorageManager.hasSession()) return redirect('/');
@@ -56,7 +57,9 @@ export default function Mod() {
                 </div>
                 <div className='col-span-12 lg:col-span-8 xl:col-span-9'>
                     <div className='bg-gray-700 p-4 round:rounded-xl relative'>
-                        <Outlet />
+                        <Suspense fallback={<p>Loading...</p>}>
+                            <Outlet />
+                        </Suspense>
                     </div>
                 </div>
             </div>

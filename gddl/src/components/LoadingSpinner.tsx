@@ -1,5 +1,5 @@
 export default function LoadingSpinner({ isLoading = true }) {
-    if (!isLoading) return <></>;
+    if (!isLoading) return;
 
     return (
         <div className='flex justify-center gap-1'>

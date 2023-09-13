@@ -6,15 +6,18 @@ import renderToastError from '../../../utils/renderToastError';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { Delete, User } from '../../../api/users';
 import Modal from '../../../components/Modal';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function DeleteUser() {
     const [user, setUser] = useState<User>();
     const [showConfirm, setShowConfirm] = useState(false);
 
+    const queryClient = useQueryClient();
+
     function submit() {
         if (user === undefined) return toast.error('Select a user first!');
 
-        toast.promise(Delete(user.ID).then(() => setShowConfirm(false)), {
+        toast.promise(Delete(user.ID).then(() => queryClient.invalidateQueries(['user'])).finally(() => setShowConfirm(false)), {
             pending: 'Deleting user...',
             success: `Deleted ${user.Name}!`,
             error: renderToastError,

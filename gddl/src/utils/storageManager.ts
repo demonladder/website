@@ -47,8 +47,16 @@ export default {
         if (storage === null) return false;
         return JSON.parse(storage) === true;
     },
-
     setRounded(state: boolean) {
         localStorage.setItem('isRounded', JSON.stringify(state));
+    },
+
+    getUseExperimental() {
+        const storage = localStorage.getItem('useExperimental');
+        if (storage === null) return false;
+        return JSON.parse(storage) === true;
+    },
+    setUseExperimental(state: boolean) {
+        localStorage.setItem('useExperimental', JSON.stringify(state));
     },
 }

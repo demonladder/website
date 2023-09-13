@@ -5,6 +5,11 @@ interface Stats {
     PendingSubmissions: number,
     Users: number,
     Packs: number,
+    DataLogs: {
+        levelSearches: number,
+        ratingsSubmitted: number,
+        starbotRatingsSubmitted: number,
+    }[],
 }
 
 export function GetStats(): Promise<Stats> {

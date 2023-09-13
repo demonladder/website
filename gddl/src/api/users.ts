@@ -20,6 +20,8 @@ export type User = {
     Introduction: string | null,
     AverageEnjoyment: number | null,
     PermissionLevel: number,
+    Avatar: string,
+    DiscordID: string,
 }
 
 export interface EdittableUser {
@@ -35,6 +37,15 @@ export type TinyUser = {
     ID: number,
     Name: string,
     PermissionLevel: number,
+}
+
+export interface DiscordUser {
+    GDDLID: number
+    ID: string
+    Name: string
+    Username: string
+    Avatar: string
+    AccentColor: number
 }
 
 async function GetUser(userID: number): Promise<User> {
@@ -60,11 +71,6 @@ async function SaveProfile(user: EdittableUser) {
     return res.data;
 }
 
-export function UploadPFP(pfp: File) {
-    const csrfToken = StorageManager.getCSRF();
-    return instance.put('/user/pfp', pfp, { withCredentials: true, params: { csrfToken } });
-}
-
 async function PromoteUser(userID: number, permissionLevel: number) {
     const csrfToken = StorageManager.getCSRF();
     await instance.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });
@@ -83,6 +89,10 @@ export interface StaffMember {
 
 export function GetStaff(): Promise<StaffMember[]> {
     return instance.get('/user/staff').then(res => res.data);
+}
+
+export function GetDiscordUser(userID: number): Promise<DiscordUser> {
+    return instance.get('/user/discord', { params: { userID } }).then(res => res.data);
 }
 
 export {

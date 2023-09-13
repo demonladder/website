@@ -42,6 +42,11 @@ export default {
                         2: '#9b0000',
                         3: '#8e0000',
                     },
+                    discord: {
+                        primary: '#5865f2',
+                        hover: '#4752c4',
+                        active: '#3c45a5',
+                    },
                 },
                 permission: {
                     0: 'white',

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import bg from '../../assets/bg-1920x1080.jpg';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
 
@@ -7,7 +6,7 @@ export default function Index() {
     return (
         <>
             <div className='absolute -z-10 w-full top-6'>
-                <img src={bg} className='w-full h-[30rem] object-cover brightness-50' alt='' />
+                <img src='/assets/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' />
             </div>
             <main>
                 <Container className='bg-opacity-90'>
@@ -24,7 +23,25 @@ export default function Index() {
                         <h2 className='text-4xl text-center'>Changelog</h2>
                         <ul>
                             <li className='mb-4'>
-                                <h3 className='text-xl'>29th of August, 0:45 UTC:</h3>
+                                <h3 className='text-xl'>12th of September:</h3>
+                                <ul>
+                                    <li>+ Relased Discord account linking. Currently only displays your Discord pfp instead of a demon face.</li>
+                                </ul>
+                            </li>
+                            <li className='mb-4'>
+                                <h3 className='text-xl'>4th of September [EXPERIMENTAL]:</h3>
+                                <ul>
+                                    <li>+ Added Discord account linking in <Link to='/profile/settings'>profile settings</Link></li>
+                                </ul>
+                            </li>
+                            <li className='mb-4'>
+                                <h3 className='text-xl'>29th of August:</h3>
+                                <ul>
+                                    <li>+ Added experimental feature toggle under <Link to='/settings'>/settings</Link></li>
+                                </ul>
+                            </li>
+                            <li className='mb-4'>
+                                <h3 className='text-xl'>29th of Augus:</h3>
                                 <ul>
                                     <li>+ Added changelogs</li>
                                     <li>+ Added <Link to='/staff'>/staff</Link></li>

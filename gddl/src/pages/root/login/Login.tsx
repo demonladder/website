@@ -5,12 +5,13 @@ import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
 import instance from '../../../api/axios';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function Login() {
     const nameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ export default function Login() {
             return;
         }
 
+        setIsLoading(true);
         instance.post('/login', {
             username: nameRef.current.value,
             password: passwordRef.current.value,
@@ -33,6 +35,8 @@ export default function Login() {
             }
         }).catch((error: AxiosError) => {
             toast.error((error.response?.data as any)?.error || 'An error occurred!');
+        }).finally(() => {
+            setIsLoading(false);
         });
     }
 
@@ -49,7 +53,7 @@ export default function Login() {
                         <label htmlFor='loginPassword'>Password</label>
                         <PasswordInput ref={passwordRef} id='loginPassword' name='password' />
                     </div>
-                    <PrimaryButton onClick={submit} className='w-full'>Login</PrimaryButton>
+                    <PrimaryButton onClick={submit} className='w-full' disabled={isLoading}>Login</PrimaryButton>
                 </div>
             </div>
         </Container>

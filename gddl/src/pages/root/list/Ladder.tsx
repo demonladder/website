@@ -106,6 +106,10 @@ export default function Ladder() {
             clearTimeout(timer);
         }
     }, [filters, pageIndex, sorter]);
+
+    useEffect(() => {
+        setPageIndex(1);
+    }, [filters]);
     
     const { status: searchStatus, data: searchData } = useQuery({
         queryKey: ['search', q],

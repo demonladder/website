@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { PrimaryButton } from '../../../components/Button';
 import PackSearchBox from '../../../components/PackSearchBox';
 import { toast } from 'react-toastify';
 import { AddLevelToPack, Pack } from '../../../api/packs';
-import { AxiosError } from 'axios';
 import useLevelSearch from '../../../hooks/useLevelSearch';
+import FormGroup from '../../../components/form/FormGroup';
+import { CheckBox } from '../../../components/Input';
+import renderToastError from '../../../utils/renderToastError';
 
 export default function Add() {
     const [packResult, setPackResult] = useState<Pack>();
 
     const { activeLevel, markInvalid, SearchBox} = useLevelSearch({ ID: 'packAddLevelSearch' })
+    const EXRef = useRef<HTMLInputElement>(null);
     
-    function handleSubmit() {
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+        if (EXRef.current === null) return toast.error('An error occurred');
+
         if (packResult === undefined) {
             return toast.error('Select a pack!');
         }
@@ -21,32 +28,27 @@ export default function Add() {
             return toast.error('Select a level!');
         }
 
-        toast.promise(AddLevelToPack(packResult.ID, activeLevel.LevelID), {
+        toast.promise(AddLevelToPack(packResult.ID, activeLevel.LevelID, EXRef.current?.checked), {
             pending: 'Adding...',
             success: 'Added level to pack!',
-            error: {
-                render({ data }: { data?: AxiosError | undefined }) {
-                    if (data?.response && data.response.data && (data.response.data as any).error) {
-                        return (data.response.data as any).error;
-                    }
-                    
-                    return 'An error occurred';
-                }
-            }
+            error: renderToastError,
         });
     }
 
     return (
-        <div>
-            <div className='mb-4'>
+        <form>
+            <FormGroup>
                 <label htmlFor='editPacksSearch' className='me-3 mb-0 align-self-center'>Choose pack</label>
                 <PackSearchBox id='editPacksSearch' setResult={setPackResult} />
-            </div>
-            <div>
+            </FormGroup>
+            <FormGroup>
                 <label htmlFor='packAddLevelSearch'>Level</label>
                 {SearchBox}
-            </div>
-            <PrimaryButton onClick={handleSubmit}>Add level</PrimaryButton>
-        </div>
+            </FormGroup>
+            <FormGroup>
+                <label className='flex items-center gap-2 select-none cursor-pointer'><CheckBox ref={EXRef} /> Is EX level</label>
+            </FormGroup>
+            <PrimaryButton type='submit' onClick={handleSubmit}>Add level</PrimaryButton>
+        </form>
     );
 }
