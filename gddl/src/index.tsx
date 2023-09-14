@@ -43,6 +43,7 @@ import Staff from './pages/root/staff/Staff';
 import axios from 'axios';
 import instance from './api/axios';
 import storageManager from './utils/storageManager';
+import UserBans from './pages/mod/userBans/UserBans';
 
 const router = createBrowserRouter(
     [
@@ -165,6 +166,10 @@ const router = createBrowserRouter(
                         {
                             path: 'deleteUser',
                             element: <DeleteUser />,
+                        },
+                        {
+                            path: 'userBans',
+                            element: <UserBans />,
                         },
                         {
                             path: 'signupLinks',
