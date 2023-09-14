@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 
 function BanRecord({ record }: { record: IBanRecord }) {
-    const duration = (new Date(record.BanStop).getTime() - new Date(record.BanStart).getTime()) / (1000 * 60 * 60);
+    const duration = (new Date(record.BanStop).getTime() - new Date(record.BanStart).getTime()) / (1000 * 60 * 60 * 24);
     const isActive = new Date(record.BanStop).getTime() > new Date().getTime();
 
     const [isLoading, setIsloading] = useState(false);
