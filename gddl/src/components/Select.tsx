@@ -35,7 +35,7 @@ export default function Select({ options, activeKey, onChange, id }: Props) {
     }, [id]);
 
     return (
-        <div className='cursor-pointer select-none relative w-40' onClick={() => setOpen(prev => !prev)}>
+        <div className='cursor-pointer select-none relative' onClick={() => setOpen(prev => !prev)}>
             <div id={id} className='bg-black bg-opacity-20 border-b-2 w-full ps-2'>
                 {options[activeKey]}
                 <div className={'shadow-2xl absolute z-10 -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows]'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>

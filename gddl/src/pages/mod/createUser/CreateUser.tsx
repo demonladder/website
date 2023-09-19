@@ -18,7 +18,7 @@ export default function CreateUser() {
         }
 
         const csrfToken = StorageManager.getCSRF();
-        toast.promise(instance.post('/user/create', { username: nameRef.current.value }, { withCredentials: true, params: { csrfToken }}), {
+        toast.promise(instance.post('/user', { username: nameRef.current.value }, { withCredentials: true, params: { csrfToken }}), {
             pending: 'Creating user...',
             success: 'User created!',
             error: 'An error occurred',

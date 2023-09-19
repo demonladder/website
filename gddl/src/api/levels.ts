@@ -61,5 +61,5 @@ export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: stri
 }
 
 export function AddLevelToDatabase(levelID: number) {
-    return instance.post('/level/add', { levelID }, { withCredentials: true, params: { csrfToken: storageManager.getCSRF() }});
+    return instance.post('/level', { levelID }, { withCredentials: true, params: { csrfToken: storageManager.getCSRF() }});
 }

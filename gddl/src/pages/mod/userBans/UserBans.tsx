@@ -109,7 +109,7 @@ export default function UserBans() {
                     <div className='mb-8'>
                         <form>
                             <h4 className='text-xl'>Create new ban:</h4>
-                            <div className='mb-2 flex gap-2'>
+                            <div className='mb-2'>
                                 <label htmlFor='banDurationSelect'>Select duration:</label>
                                 {durationSelect.Select}
                             </div>
