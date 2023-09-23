@@ -56,7 +56,7 @@ export async function GetShortLevel(id: number | null): Promise<FullLevel | null
     return (await APIClient.get(`/level/short?levelID=${id}`)).data;
 }
 
-export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string, IconName: string }[]> {
+export function GetLevelPacks(levelID: number): Promise<{ ID: number, CategoryID: number, Name: string, IconName: string }[]> {
     return APIClient.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
 }
 
