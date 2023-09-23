@@ -25,7 +25,7 @@ export default function Settings() {
     return (
         <Container>
             <h1 className='text-4xl'>Settings</h1>
-            <p className='mb-4'>There's not much here yet, but have a cookie <span className='inline-block'><img width='32px' src='/assets/oreo.jpg' /></span></p>
+            <p className='mb-4'>There's not much here yet, but have a cookie <span className='inline-block'><img width='32px' src='/assets/images/oreo.jpg' /></span></p>
             <form className='text-lg'>
                 <FormGroup>
                     <label className='flex items-center gap-2'>

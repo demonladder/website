@@ -13,7 +13,7 @@ type Props = {
 }
 
 const difficultyOptions = {
-    '0': '-',
+    '0': 'Any',
     '1': 'Official',
     '2': 'Easy',
     '3': 'Medium',

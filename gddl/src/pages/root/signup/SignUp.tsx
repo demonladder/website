@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import StorageManager from '../../../utils/storageManager';
-import instance from '../../../api/axios';
+import APIClient from '../../../api/axios';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
@@ -40,7 +40,7 @@ export default function SignUp() {
             return toast.error('Passwords must match!');
         }
 
-        toast.promise(instance.post('/login/signup', {
+        toast.promise(APIClient.post('/login/signup', {
             username,
             password,
             overrideKey

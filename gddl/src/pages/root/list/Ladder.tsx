@@ -59,7 +59,7 @@ const resetObj = {
     exactName: false,
     inPack: false,
     removeCompleted: false,
-    removeUnrated: true,
+    removeUnrated: false,
     removeUnratedEnj: false,
     removeRated: false,
     removeRatedEnj: false,

@@ -3,18 +3,23 @@ import { useQuery } from '@tanstack/react-query';
 import { Level, SearchLevels } from '../api/levels';
 import SearchBox from '../components/SearchBox/SearchBox';
 
-interface Props {
-    ID: string,
+interface LevelSearchOptions {
+    inPack?: boolean
 }
 
-export default function useLevelSearch({ ID }: Props) {
+interface Props {
+    ID: string,
+    options?: LevelSearchOptions,
+}
+
+export default function useLevelSearch({ ID, options = {} }: Props) {
     const [search, setSearch] = useState('');
     const [activeLevel, setActiveLevel] = useState<Level>();
     const [isInvalid, setIsInvalid] = useState(false);
 
     const { data, status } = useQuery({
         queryKey: ['levelSearch', search],
-        queryFn: () => SearchLevels({ name: search, exact: false, chunk: 5 }),
+        queryFn: () => SearchLevels({ ...options, name: search, exact: false, chunk: 5 }),
     });
 
     useEffect(() => {

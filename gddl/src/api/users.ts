@@ -1,5 +1,5 @@
 import { Submission } from "./submissions";
-import instance from "./axios";
+import APIClient from "./axios";
 import StorageManager from "../utils/storageManager";
 
 type UserSubmissions = {
@@ -49,22 +49,22 @@ export interface DiscordUser {
 }
 
 async function GetUser(userID: number): Promise<User> {
-    const res = await instance.get(`/user?userID=${userID}`);
+    const res = await APIClient.get(`/user?userID=${userID}`);
     return res.data;
 }
 
 async function SearchUser(name: string): Promise<TinyUser[]> {
-    const res = await instance.get(`/user/search`, { params: { name, chunk: 5, } });
+    const res = await APIClient.get(`/user/search`, { params: { name, chunk: 5, } });
     return res.data;
 }
 
 async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { userID: number, page?: number, sort: string, sortDirection: string}): Promise<UserSubmissions> {
-    return (await instance.get(`/user/submissions`, { params: { userID, page, sort, sortDirection, chunk: 16 }})).data;
+    return (await APIClient.get(`/user/submissions`, { params: { userID, page, sort, sortDirection, chunk: 16 }})).data;
 }
 
 async function SaveProfile(user: EdittableUser) {
     const csrfToken = StorageManager.getCSRF();
-    const res = await instance.put(`/user?userID=${user.ID}`, { user }, {
+    const res = await APIClient.put(`/user?userID=${user.ID}`, { user }, {
         withCredentials: true,
         params: { csrfToken },
     });
@@ -73,12 +73,12 @@ async function SaveProfile(user: EdittableUser) {
 
 async function PromoteUser(userID: number, permissionLevel: number) {
     const csrfToken = StorageManager.getCSRF();
-    await instance.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });
+    await APIClient.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });
 }
 
 export function Delete(id: number) {
     const csrfToken = StorageManager.getCSRF();
-    return instance.delete('/user?id=' + id, { withCredentials: true, params: { csrfToken }});
+    return APIClient.delete('/user?id=' + id, { withCredentials: true, params: { csrfToken }});
 }
 
 export interface StaffMember {
@@ -88,11 +88,11 @@ export interface StaffMember {
 }
 
 export function GetStaff(): Promise<StaffMember[]> {
-    return instance.get('/user/staff').then(res => res.data);
+    return APIClient.get('/user/staff').then(res => res.data);
 }
 
 export function GetDiscordUser(userID: number): Promise<DiscordUser> {
-    return instance.get('/user/discord', { params: { userID } }).then(res => res.data);
+    return APIClient.get('/user/discord', { params: { userID } }).then(res => res.data);
 }
 
 export {

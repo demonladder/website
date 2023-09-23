@@ -1,5 +1,5 @@
 import storageManager from '../utils/storageManager';
-import instance from './axios';
+import APIClient from './axios';
 
 export interface Level {
     LevelID: number,
@@ -39,7 +39,7 @@ type Query = {
 
 export async function SearchLevels(q: Query): Promise<SearchInfo> {
     const csrfToken = storageManager.getCSRF() || '';
-    return (await instance.get('/level/search', {
+    return (await APIClient.get('/level/search', {
         withCredentials: true,
         params: { chunk: 16, ...q, csrfToken },
     })).data;
@@ -48,18 +48,18 @@ export async function SearchLevels(q: Query): Promise<SearchInfo> {
 export async function GetLevel(id: number | null): Promise<FullLevel | null> {
     if (id === null) return null;
 
-    return (await instance.get(`/level?levelID=${id}`)).data;
+    return (await APIClient.get(`/level?levelID=${id}`)).data;
 }
 export async function GetShortLevel(id: number | null): Promise<FullLevel | null> {
     if (id === null) return null;
 
-    return (await instance.get(`/level/short?levelID=${id}`)).data;
+    return (await APIClient.get(`/level/short?levelID=${id}`)).data;
 }
 
 export function GetLevelPacks(levelID: number): Promise<{ ID: number, Name: string, IconName: string }[]> {
-    return instance.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
+    return APIClient.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
 }
 
 export function AddLevelToDatabase(levelID: number) {
-    return instance.post('/level', { levelID }, { withCredentials: true, params: { csrfToken: storageManager.getCSRF() }});
+    return APIClient.post('/level', { levelID }, { withCredentials: true, params: { csrfToken: storageManager.getCSRF() }});
 }

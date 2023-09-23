@@ -1,4 +1,4 @@
-import instance from '../../../api/axios';
+import APIClient from '../../../api/axios';
 import storageManager from '../../../utils/storageManager';
 
 export interface BanRecord {
@@ -16,16 +16,16 @@ export async function GetBanHistory(userID: number | undefined): Promise<BanReco
     }
 
     const csrfToken = storageManager.getCSRF();
-    const res = await instance.get('/user/ban', { withCredentials: true, params: { userID, csrfToken } });
+    const res = await APIClient.get('/user/ban', { withCredentials: true, params: { userID, csrfToken } });
     return res.data;
 }
 
 export function BanUser(userID: number, duration: number, reason?: string) {
     const csrfToken = storageManager.getCSRF();
-    return instance.post('/user/ban', { userID, duration: duration * 7 * 24 * 60 * 60, reason, csrfToken }, { withCredentials: true });  // Client uses weeks, api uses seconds
+    return APIClient.post('/user/ban', { userID, duration: duration * 7 * 24 * 60 * 60, reason, csrfToken }, { withCredentials: true });  // Client uses weeks, api uses seconds
 }
 
 export function RevokeBan(banID: number) {
     const csrfToken = storageManager.getCSRF();
-    return instance.delete('/user/ban/revoke', { withCredentials: true, params: { banID, csrfToken }});
+    return APIClient.delete('/user/ban/revoke', { withCredentials: true, params: { banID, csrfToken }});
 }

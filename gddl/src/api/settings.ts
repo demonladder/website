@@ -1,5 +1,5 @@
 import storageManager from "../utils/storageManager";
-import instance from "./axios";
+import APIClient from "./axios";
 
 interface SiteSettings {
     isQueueEditLocked: boolean,
@@ -9,12 +9,12 @@ interface SiteSettings {
 }
 
 export function GetSiteSettings(): Promise<SiteSettings> {
-    return instance.get('/siteSettings').then(res => res.data);
+    return APIClient.get('/siteSettings').then(res => res.data);
 }
 
 export function SaveSiteSettings(settings: SiteSettings): Promise<void> {
     const csrfToken = storageManager.getCSRF();
-    return instance.post('/siteSettings', {
+    return APIClient.post('/siteSettings', {
         queueEditLock: settings.isQueueEditLocked,
         submissionLock: settings.isSubmissionLocked,
         accountCreationLock: settings.isAccountCreationLocked,

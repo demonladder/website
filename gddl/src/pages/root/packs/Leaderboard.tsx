@@ -22,7 +22,7 @@ function Contestant({ data, leader }: { data: Leader, leader: Leader | undefined
                 {data.Avatar &&
                     <img src={pfp} className='rounded-full w-10 -ms-12'/>
                 }
-                <span className='absolute right-2 top-1/2 -translate-y-1/2' style={{ color: `rgb(${brightness})` }}>{data.Name}</span>
+                <span className='absolute right-2 top-1/2 -translate-y-1/2' style={{ color: `rgb(${brightness}, ${brightness}, ${brightness})` }}>{data.Name}</span>
                 <span className='absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full'>{data.Sum}%</span>
             </Link>
         </div>
@@ -44,6 +44,7 @@ export default function Leaderboard() {
     return (
         <section className='mt-4'>
             <h2 className='text-3xl'>Leaderboard</h2>
+            <p>The current top 25:</p>
             <LoadingSpinner isLoading={isLoading || isFetching} />
             <div className='pe-8'>
                 {sorted && sorted.map((contestant) => (<Contestant data={contestant} leader={leader} key={'leader_' + contestant.UserID} />))}

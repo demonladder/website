@@ -6,7 +6,7 @@ export default function Index() {
     return (
         <>
             <div className='absolute -z-10 w-full top-6'>
-                <img src='/assets/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' />
+                <img src='/assets/images/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' />
             </div>
             <main>
                 <Container className='bg-opacity-90'>
@@ -22,6 +22,13 @@ export default function Index() {
                     <section>
                         <h2 className='text-4xl text-center'>Changelog</h2>
                         <ul>
+                            <li className='mb-4'>
+                                <h3 className='text-xl'>24th of September:</h3>
+                                <ul>
+                                    <li>+ The layout of the pack overview is now organised like the landing page of the sheet.</li>
+                                    <li>+ Levels with no ratings now show up by default.</li>
+                                </ul>
+                            </li>
                             <li className='mb-4'>
                                 <h3 className='text-xl'>12th of September:</h3>
                                 <ul>
@@ -41,7 +48,7 @@ export default function Index() {
                                 </ul>
                             </li>
                             <li className='mb-4'>
-                                <h3 className='text-xl'>29th of Augus:</h3>
+                                <h3 className='text-xl'>29th of August:</h3>
                                 <ul>
                                     <li>+ Added changelogs</li>
                                     <li>+ Added <Link to='/staff'>/staff</Link></li>

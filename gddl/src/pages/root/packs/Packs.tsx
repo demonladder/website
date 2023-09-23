@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PackRef from '../../../components/PackRef';
 import { useQuery } from '@tanstack/react-query';
 import { GetPacks } from '../../../api/packs';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -7,6 +6,7 @@ import PageButtons from '../../../components/PageButtons';
 import Container from '../../../components/Container';
 import UserLink from '../../../components/UserLink';
 import Leaderboard from './Leaderboard';
+import Category from './Category';
 
 export default function Packs() {
     const [page, setPage] = useState(1);
@@ -15,7 +15,7 @@ export default function Packs() {
     }
 
     const { status, data: packs, failureReason } = useQuery({
-        queryKey: ['packs', {page}],
+        queryKey: ['packs', { page }],
         queryFn: () => GetPacks(page),
     });
 
@@ -40,10 +40,10 @@ export default function Packs() {
         <Container>
             <section>
                 <h1 className='text-4xl'>Packs</h1>
-                <p className='mb-4'>The pack icons were created by <UserLink userID={138} /> (@cadregadev)</p>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
-                    {packs.packs.map((p) => <div className='text-center' key={p.ID}><PackRef pack={p} key={p.ID} /></div>)}
-                </div>
+                <p className='mb-8'>The pack icons were created by <UserLink userID={138} /> (@cadregadev)</p>
+                {packs.categories.map((c) => (
+                    <Category category={c} packs={packs.packs.filter((p) => p.CategoryID == c.ID)} key={'packCategory_' + c.Name} />
+                ))}
                 <PageButtons onPageChange={pageChange} meta={{...packs, page}} />
             </section>
             <Leaderboard />

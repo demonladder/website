@@ -8,7 +8,7 @@ import renderToastError from '../../../utils/renderToastError';
 
 export default function Remove() {
     const [packResult, setPackResult] = useState<Pack>();
-    const { activeLevel, markInvalid, SearchBox } = useLevelSearch({ ID: 'packRemoveLevelSearch'});
+    const { activeLevel, markInvalid, SearchBox } = useLevelSearch({ ID: 'packRemoveLevelSearch', options: { inPack: true } });
     
     function handleSubmit() {
         if (packResult === undefined) {

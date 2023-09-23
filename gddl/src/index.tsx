@@ -41,9 +41,10 @@ import Settings from './pages/root/settings/Settings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
 import axios from 'axios';
-import instance from './api/axios';
+import APIClient from './api/axios';
 import storageManager from './utils/storageManager';
 import UserBans from './pages/mod/userBans/UserBans';
+import DeletePack from './pages/mod/pack/DeletePack';
 
 const router = createBrowserRouter(
     [
@@ -144,6 +145,10 @@ const router = createBrowserRouter(
                             element: <CreatePack />,
                         },
                         {
+                            path: 'deletePack',
+                            element: <DeletePack />,
+                        },
+                        {
                             path: 'addSubmission',
                             element: <AddSubmission />,
                         },
@@ -221,7 +226,7 @@ window.onload = () => {
     }).then((response) => {
         const csrfToken = storageManager.getCSRF();
 
-        instance.post('/discord/connect', response.data, {
+        APIClient.post('/discord/connect', response.data, {
             withCredentials: true,
             params: { csrfToken },
         }).then(() => location.replace('/'));

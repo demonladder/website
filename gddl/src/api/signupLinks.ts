@@ -1,5 +1,5 @@
 import StorageManager from "../utils/storageManager";
-import instance from "./axios";
+import APIClient from "./axios";
 
 export type TokenPair = {
     Token: string,
@@ -8,11 +8,11 @@ export type TokenPair = {
 
 export async function SignupToken(username: string): Promise<void> {
     const csrfToken = StorageManager.getCSRF();
-    await instance.post('/signupToken', { username }, { withCredentials: true, params: { csrfToken } });
+    await APIClient.post('/signupToken', { username }, { withCredentials: true, params: { csrfToken } });
 }
 
 export async function GetSignupTokens(): Promise<TokenPair[]> {
     const csrfToken = StorageManager.getCSRF();
-    const res = await instance.get('/signupToken', { withCredentials: true, params: { csrfToken } });
+    const res = await APIClient.get('/signupToken', { withCredentials: true, params: { csrfToken } });
     return res.data;
 }

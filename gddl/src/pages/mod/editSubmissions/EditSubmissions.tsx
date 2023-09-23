@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { PrimaryButton } from '../../../components/Button';
-import instance from '../../../api/axios';
+import APIClient from '../../../api/axios';
 import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/storageManager';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -58,7 +58,7 @@ export default function EditSubmission() {
         // Send
         setIsMutating(true);
         toast.promise(
-        instance.post('/submit/mod', {
+        APIClient.post('/submit/mod', {
             levelID: activeLevel.LevelID,
             userID: userResult.UserID,
             rating: parseInt(ratingRef.current.value),

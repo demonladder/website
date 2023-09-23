@@ -4,7 +4,7 @@ import { User } from '../../../api/users';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
-import instance from '../../../api/axios';
+import APIClient from '../../../api/axios';
 import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/storageManager';
 import { useQueryClient } from '@tanstack/react-query';
@@ -61,7 +61,7 @@ export default function AddSubmission() {
         // Send
         setIsMutating(true);
         toast.promise(
-            instance.post('/submit/mod', {
+            APIClient.post('/submit/mod', {
                 levelID: activeLevel.LevelID,
                 userID: userResult.ID,
                 rating: parseInt(ratingRef.current.value),

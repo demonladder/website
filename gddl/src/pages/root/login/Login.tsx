@@ -4,7 +4,7 @@ import StorageManager from '../../../utils/storageManager';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
-import instance from '../../../api/axios';
+import APIClient from '../../../api/axios';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -21,7 +21,7 @@ export default function Login() {
         }
 
         setIsLoading(true);
-        instance.post('/login', {
+        APIClient.post('/login', {
             username: nameRef.current.value,
             password: passwordRef.current.value,
         }, {

@@ -10,7 +10,7 @@ export default function EditPacks() {
     return (
         <div id='edit-packs'>
             <div className='mb-4'>
-                <h3 className='text-2xl'>Edit packs</h3>
+                <h3 className='text-2xl'>Edit pack levels</h3>
                 {/* <p>Select an edit to perform. Once done, click the save button to push the changes.</p> */}
             </div>
             <div className='border-b grid grid-cols-3'>

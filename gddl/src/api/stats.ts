@@ -1,4 +1,4 @@
-import instance from './axios';
+import APIClient from './axios';
 
 interface Stats {
     Submissions: number,
@@ -13,5 +13,5 @@ interface Stats {
 }
 
 export function GetStats(): Promise<Stats> {
-    return instance.get('/stats').then((res) => res.data);
+    return APIClient.get('/stats').then((res) => res.data);
 }
