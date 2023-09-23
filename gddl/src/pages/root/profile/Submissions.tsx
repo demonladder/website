@@ -1,5 +1,4 @@
 import { useState } from 'react';
-//import Level from './Level';
 import { useQuery } from '@tanstack/react-query';
 import { GetUserSubmissions } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -9,6 +8,7 @@ import { Submission } from '../../../api/submissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
+import useSessionStorage from '../../../hooks/useSessionStorage';
 
 type Props = {
     userID: number,
@@ -20,7 +20,7 @@ enum EListType {
 }
 
 export default function Submissions({ userID }: Props) {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useSessionStorage('profilePageIndex_' + userID, 1);
     const [sort, setSort] = useState<{ sort: string, sortDirection: string}>({ sort: 'LevelID', sortDirection: 'asc'});
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
 

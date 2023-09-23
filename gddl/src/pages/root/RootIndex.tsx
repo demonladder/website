@@ -27,6 +27,7 @@ export default function Index() {
                                 <ul>
                                     <li>+ The layout of the pack overview is now organised like the landing page of the sheet.</li>
                                     <li>+ Levels with no ratings now show up by default.</li>
+                                    <li>+ The page index for user submissions now persists when clicking off.</li>
                                 </ul>
                             </li>
                             <li className='mb-4'>
