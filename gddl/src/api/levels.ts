@@ -1,5 +1,6 @@
-import storageManager from '../utils/storageManager';
+import storageManager from '../utils/StorageManager';
 import APIClient from './axios';
+import { PackShell } from './packs';
 
 export interface Level {
     LevelID: number,
@@ -9,7 +10,8 @@ export interface Level {
     Difficulty: string,
     Song: string,
     Creator: string,
-    InPack?: number,
+    InPack?: 0 | 1,
+    Completed?: 0 | 1;
 }
 
 export type FullLevel = {
@@ -56,7 +58,7 @@ export async function GetShortLevel(id: number | null): Promise<FullLevel | null
     return (await APIClient.get(`/level/short?levelID=${id}`)).data;
 }
 
-export function GetLevelPacks(levelID: number): Promise<{ ID: number, CategoryID: number, Name: string, IconName: string }[]> {
+export function GetLevelPacks(levelID: number): Promise<PackShell[]> {
     return APIClient.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
 }
 

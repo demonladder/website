@@ -1,5 +1,6 @@
-import { CategoryResponse, PackShell } from '../../../api/packs';
-import PackRef from '../../../components/PackRef';
+import { PackShell } from '../../../api/packs';
+import CategoryResponse from '../../../api/packs/responses/Category';
+import PackRef from '../../../components/PackRef/PackRef';
 
 interface Props {
     category: CategoryResponse

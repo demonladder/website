@@ -1,23 +1,17 @@
-import StorageManager from "../utils/storageManager";
-import APIClient from "./axios";
+import StorageManager from '../utils/StorageManager';
+import APIClient from './axios';
+import CategoryResponse from './packs/responses/Category';
 
-export type Pack = {
-    ID: number,
-    Name: string,
-    Description: string,
-    IconName: string,
-    Levels: PackLevel[],
-};
-
-export type PackLevel = {
-    LevelID: number,
-    Name: string,
-    Creator: string,
-    Song: string,
-    Rating: number,
-    Enjoyment: number,
-    Difficulty: string,
-    EX: number,
+export interface PackLevel {
+    LevelID: number;
+    Name: string;
+    Rating: number | null;
+    Enjoyment: number | null;
+    Difficulty: string;
+    Song: string;
+    Creator: string;
+    EX: 0 | 1;
+    Completed: 0 | 1;
 };
 
 export type PackShell = {
@@ -25,34 +19,23 @@ export type PackShell = {
     CategoryID: number,
     Name: string,
     IconName: string,
+    LevelCount: number;
+    AverageEnjoyment: number;
+    MedianTier: number;
 };
 
-export interface CategoryResponse {
-    ID: number
-    Name: string
-    Description: string
-}
-
 export type PackInfo = {
-    total: number
-    limit: number
-    page: number
     packs: PackShell[]
     categories: CategoryResponse[]
 };
 
-export async function GetPacks(page: number): Promise<PackInfo> {
-    const res = await APIClient.get('/packs', { params: { chunk: 100, page, }});
+export async function GetPacks(): Promise<PackInfo> {
+    const res = await APIClient.get('/packs');
     return res.data;
 };
 
-export async function GetPack(packID: number): Promise<Pack> {
-    const res = await APIClient.get('/pack', { params: { packID }});
-    return {...res.data, ID: packID};
-}
-
-export async function SearchPacks(name: string): Promise<PackInfo> {
-    const res = await APIClient.get('/packs', { params: { chunk: 5, name, }});
+export async function SearchPacks(name: string): Promise<PackShell[]> {
+    const res = await APIClient.get('/packs/search', { params: { chunk: 5, name, }});
     return res.data;
 }
 
