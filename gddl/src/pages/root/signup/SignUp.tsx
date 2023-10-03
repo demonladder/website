@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import APIClient from '../../../api/axios';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';

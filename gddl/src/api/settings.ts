@@ -1,4 +1,4 @@
-import storageManager from "../utils/storageManager";
+import storageManager from "../utils/StorageManager";
 import APIClient from "./axios";
 
 interface SiteSettings {

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import DemonLogo from './DemonLogo';
-import StorageManager from '../utils/storageManager';
+import StorageManager from '../utils/StorageManager';
 import Copy from './Copy';
 
 interface GridProps {

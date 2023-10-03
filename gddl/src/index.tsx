@@ -42,7 +42,7 @@ import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
 import axios from 'axios';
 import APIClient from './api/axios';
-import storageManager from './utils/storageManager';
+import storageManager from './utils/StorageManager';
 import UserBans from './pages/mod/userBans/UserBans';
 import DeletePack from './pages/mod/pack/DeletePack';
 

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { PrimaryButton } from '../../../components/Button';
 import Container from '../../../components/Container';
 import { CheckBox } from '../../../components/Input';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import FormGroup from '../../../components/form/FormGroup';
 
 export default function Settings() {

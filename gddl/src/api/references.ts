@@ -1,4 +1,4 @@
-import StorageManager from '../utils/storageManager';
+import StorageManager from '../utils/StorageManager';
 import APIClient from './axios';
 
 export type Reference = {

@@ -4,7 +4,7 @@ import { GetUser } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet';
 import Submissions from './Submissions';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
 import { AxiosError } from 'axios';

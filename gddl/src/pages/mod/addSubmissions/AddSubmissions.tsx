@@ -6,7 +6,7 @@ import Select from '../../../components/Select';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import APIClient from '../../../api/axios';
 import { toast } from 'react-toastify';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';

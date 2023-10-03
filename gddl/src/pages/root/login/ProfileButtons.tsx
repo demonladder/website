@@ -1,6 +1,6 @@
 import DemonLogo from '../../../components/DemonLogo';
 import { Link } from 'react-router-dom';
-import StorageManager, { User } from '../../../utils/storageManager';
+import StorageManager, { User } from '../../../utils/StorageManager';
 import { useQuery } from '@tanstack/react-query';
 import { GetUser } from '../../../api/users';
 

@@ -3,7 +3,7 @@ import { PrimaryButton } from '../../../components/Button';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
 import APIClient from '../../../api/axios';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 
 export default function CreateUser() {
     const nameRef = useRef<HTMLInputElement>(null);

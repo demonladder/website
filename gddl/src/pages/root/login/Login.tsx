@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';

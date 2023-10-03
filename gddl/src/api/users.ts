@@ -1,6 +1,6 @@
 import { Submission } from "./submissions";
 import APIClient from "./axios";
-import StorageManager from "../utils/storageManager";
+import StorageManager from "../utils/StorageManager";
 
 type UserSubmissions = {
     total: number,

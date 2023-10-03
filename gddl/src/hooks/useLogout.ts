@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import StorageManager from '../utils/storageManager';
+import StorageManager from '../utils/StorageManager';
 
 export default function useLogout() {
     const navigate = useNavigate();

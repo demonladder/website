@@ -4,7 +4,7 @@ import Select from '../../../components/Select';
 import { PrimaryButton } from '../../../components/Button';
 import APIClient from '../../../api/axios';
 import { toast } from 'react-toastify';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetSubmissions, Submission } from '../../../api/submissions';
 import PageButtons from '../../../components/PageButtons';

@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetUser, SaveProfile } from '../../../../api/users';
 import Container from '../../../../components/Container';
 import { NumberInput } from '../../../../components/Input';
-import StorageManager from '../../../../utils/storageManager';
+import StorageManager from '../../../../utils/StorageManager';
 import { DiscordLink, PrimaryButton } from '../../../../components/Button';
 import TextArea from '../../../../components/input/TextArea';
 import FormGroup from '../../../../components/form/FormGroup';

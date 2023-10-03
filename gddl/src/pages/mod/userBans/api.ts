@@ -1,5 +1,5 @@
 import APIClient from '../../../api/axios';
-import storageManager from '../../../utils/storageManager';
+import storageManager from '../../../utils/StorageManager';
 
 export interface BanRecord {
     BanID: number

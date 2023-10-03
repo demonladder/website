@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, redirect } from 'react-router-dom';
-import StorageManager from '../../utils/storageManager';
+import StorageManager from '../../utils/StorageManager';
 import Container from '../../components/Container';
 import APIClient from '../../api/axios';
 import { Suspense } from 'react';

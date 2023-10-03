@@ -9,7 +9,7 @@ import Packs from './Packs';
 import Submissions from './Submissions';
 import Container from '../../../components/Container';
 import SubmitModal from '../../../components/SubmitModal';
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';

@@ -1,7 +1,7 @@
 import Header from '../../layouts/Header';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import StorageManager from '../../utils/storageManager';
+import StorageManager from '../../utils/StorageManager';
 
 function Root() {
     return (
