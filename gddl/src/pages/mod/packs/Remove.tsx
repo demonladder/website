@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { DangerButton } from '../../../components/Button';
 import PackSearchBox from '../../../components/PackSearchBox';
-import { Pack, RemoveLevelFromPack } from '../../../api/packs';
+import { RemoveLevelFromPack } from '../../../api/packs';
+import PackResponse from '../../../api/pack/responses/PackResponse';
 import { toast } from 'react-toastify';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
 
 export default function Remove() {
-    const [packResult, setPackResult] = useState<Pack>();
+    const [packResult, setPackResult] = useState<PackResponse>();
     const { activeLevel, markInvalid, SearchBox } = useLevelSearch({ ID: 'packRemoveLevelSearch', options: { inPack: true } });
     
     function handleSubmit() {

@@ -1,10 +1,10 @@
 import { CloseButton } from 'react-bootstrap';
 import { Level } from '../../../api/levels';
-import { Pack } from '../../../api/packs';
+import PackResponse from '../../../api/pack/responses/PackResponse';
 
 export type PackChange = {
     Level: Level,
-    Pack: Pack,
+    Pack: PackResponse,
     Type: string,
     ID: any,
 }

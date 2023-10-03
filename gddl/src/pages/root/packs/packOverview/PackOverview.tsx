@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
-import { GetPack } from '../../../../api/packs';
+import { GetSinglePack } from '../../../../api/pack/requests/GetSinglePack';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import Container from '../../../../components/Container';
 import Level from '../../../../components/Level';
@@ -10,7 +10,7 @@ export default function PackOverview() {
     const packID = parseInt(''+useParams().packID) || 0;
     const { status, data: pack } = useQuery({
         queryKey: ['packs', packID],
-        queryFn: () => GetPack(packID),
+        queryFn: () => GetSinglePack(packID),
     });
 
     if (status === 'loading') {

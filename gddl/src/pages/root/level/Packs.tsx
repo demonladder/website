@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { GetLevelPacks } from '../../../api/levels';
-import PackRef from '../../../components/PackRef';
+import PackRef from '../../../components/PackRef/PackRef';
 
 type Props = {
     levelID: number,

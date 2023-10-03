@@ -2,14 +2,15 @@ import { useState, useRef } from 'react';
 import { PrimaryButton } from '../../../components/Button';
 import PackSearchBox from '../../../components/PackSearchBox';
 import { toast } from 'react-toastify';
-import { AddLevelToPack, Pack } from '../../../api/packs';
+import { AddLevelToPack } from '../../../api/packs';
+import PackResponse from '../../../api/pack/responses/PackResponse';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import FormGroup from '../../../components/form/FormGroup';
 import { CheckBox } from '../../../components/Input';
 import renderToastError from '../../../utils/renderToastError';
 
 export default function Add() {
-    const [packResult, setPackResult] = useState<Pack>();
+    const [packResult, setPackResult] = useState<PackResponse>();
 
     const { activeLevel, markInvalid, SearchBox} = useLevelSearch({ ID: 'packAddLevelSearch' })
     const EXRef = useRef<HTMLInputElement>(null);

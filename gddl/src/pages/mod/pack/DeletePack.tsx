@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
-import { Pack } from '../../../api/packs';
 import PackSearchBox from '../../../components/PackSearchBox';
 import Modal from '../../../components/Modal';
 import DeletePackRequest from '../../../api/pack/requests/DeletePackRequest';
+import PackResponse from '../../../api/pack/responses/PackResponse';
 
 export default function DeletePack() {
-    const [packResult, setPackResult] = useState<Pack>();
+    const [packResult, setPackResult] = useState<PackResponse>();
     const [showConfirm, setShowConfirm] = useState(false);
 
     function submit() {

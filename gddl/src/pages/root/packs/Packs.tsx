@@ -1,22 +1,15 @@
-import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetPacks } from '../../../api/packs';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import PageButtons from '../../../components/PageButtons';
 import Container from '../../../components/Container';
 import UserLink from '../../../components/UserLink';
 import Leaderboard from './Leaderboard';
 import Category from './Category';
 
 export default function Packs() {
-    const [page, setPage] = useState(1);
-    function pageChange(_page: number) {
-        setPage(_page);
-    }
-
     const { status, data: packs, failureReason } = useQuery({
-        queryKey: ['packs', { page }],
-        queryFn: () => GetPacks(page),
+        queryKey: ['packs'],
+        queryFn: GetPacks,
     });
 
     if (status === 'loading') {
@@ -26,15 +19,13 @@ export default function Packs() {
             </Container>
         );
     } else if (status === 'error') {
-        const code = failureReason ? (failureReason as any).code : 'UNKNOWN';
+        const code = (failureReason as any)?.code || 'UNKNOWN';
         return (
             <Container>
-                <h1>{(code === 'ERR_NETWORK' && 'Could not connect to the server') || 'An error ocurred'}</h1>
+                <h1>{code === 'ERR_NETWORK' ? 'Could not connect to the server' : 'An error ocurred'}</h1>
             </Container>
         )
     }
-
-    packs.packs.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
     return (
         <Container>
@@ -44,7 +35,6 @@ export default function Packs() {
                 {packs.categories.map((c) => (
                     <Category category={c} packs={packs.packs.filter((p) => p.CategoryID == c.ID)} key={'packCategory_' + c.Name} />
                 ))}
-                <PageButtons onPageChange={pageChange} meta={{...packs, page}} />
             </section>
             <Leaderboard />
         </Container>
