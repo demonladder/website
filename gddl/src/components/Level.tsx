@@ -26,9 +26,10 @@ function Level({ info }: Props) {
     
     const tierClass = 'tier-' + roundedTier;
     const enjoymentClass = 'enj-' + roundedEnjoyment;
+    const completed = info.Completed === 1;
 
     return (
-        <div className='grid grid-cols-12 ps-2 min-h-[48px] text-xl'>
+        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + (completed ? ' text-green-400 font-bold' : '')}>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center'>
                 <Link to={'/level/' + info.LevelID} className='underline break-all whitespace-pre-wrap'>{info.Name}</Link>
             </h4>

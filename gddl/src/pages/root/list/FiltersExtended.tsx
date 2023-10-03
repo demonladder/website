@@ -1,4 +1,4 @@
-import StorageManager from '../../../utils/storageManager';
+import StorageManager from '../../../utils/StorageManager';
 import { CheckBox, NumberInput } from '../../../components/Input';
 import { SearchFilters } from './Ladder';
 
