@@ -61,9 +61,9 @@ export interface Leader {
     UserID: number,
     Name: string,
     Sum: number,
-    AccentColor: number,
+    AccentColor: number | null,
     DiscordID: string,
-    Avatar: string,
+    Avatar: string | null,
 }
 
 export function GetPackLeaders(): Promise<Leader[]> {
