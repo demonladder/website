@@ -74,16 +74,16 @@ const router = createBrowserRouter(
                     element: <About />,
                 },
                 {
+                    path: 'pack/:packID',
+                    element: <PackOverview />,
+                },
+                {
                     path: 'staff',
                     element: <Staff />,
                 },
                 {
                     path: 'level/:levelID',
                     element: <LevelOverview />,
-                },
-                {
-                    path: 'pack/:packID',
-                    element: <PackOverview />,
                 },
                 {
                     path: 'login',
