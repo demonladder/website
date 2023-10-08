@@ -1,4 +1,4 @@
-import Header from '../../layouts/Header';
+import Header from '../../layouts/header/Header';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import StorageManager from '../../utils/StorageManager';

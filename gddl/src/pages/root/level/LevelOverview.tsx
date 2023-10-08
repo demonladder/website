@@ -13,6 +13,7 @@ import StorageManager from '../../../utils/StorageManager';
 import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
+import { PrimaryButton } from '../../../components/Button';
 
 export default function LevelOverview() {
     const [showModal, setShowModal] = useState(false);
@@ -83,7 +84,7 @@ export default function LevelOverview() {
             </Helmet>
             <section>
                 <div className='mb-1'>
-                    <h1 className='text-4xl font-bold'>{level.Name} <button onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}><i className='bx bx-list-plus'></i></button></h1>
+                    <h1 className='text-4xl font-bold'>{level.Name} <PrimaryButton className='text-lg' onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}>Submit <i className='bx bx-list-plus'></i></PrimaryButton></h1>
                     <p className='text-2xl'>by <span className='cursor-pointer' onClick={creatorClicked}>{level.Creator}</span></p>
                 </div>
                 <div className='grid grid-cols-12 gap-4 p-4 bg-gray-700 round:rounded-xl text-xl'>
