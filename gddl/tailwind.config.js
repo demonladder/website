@@ -13,6 +13,12 @@ export default {
             colors: {
                 primary: '#EFA51C',
                 secondary: '#1a1a1a',
+                header: {
+                    200: '#ffc530',
+                    300: '#ffb52c',
+                    400: '#EFA51C',
+                    500: '#df950c',
+                },
                 gray: {
                     500: '#4d4d4d',
                     600: '#454545',
