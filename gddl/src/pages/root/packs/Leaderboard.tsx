@@ -10,11 +10,14 @@ function Contestant({ data, leader }: { data: Leader, leader: Leader | undefined
     const width = data.Sum * 100 / leader.Sum;
     const pfp = `https://cdn.discordapp.com/avatars/${data?.DiscordID}/${data?.Avatar}.png`;
 
-    const red = data.AccentColor >> 16;
-    const green = (data.AccentColor >> 8) & 0xff;
-    const blue = data.AccentColor & 0xff;
+    const profileColor = data.AccentColor || 0;
+    
+    const red = profileColor >> 16;
+    const green = (profileColor >> 8) & 0xff;
+    const blue = profileColor & 0xff;
 
     const brightness = 255 - Math.sqrt(0.299*red**2 + 0.587*green**2 + 0.114*blue**2);
+    const textCol = brightness < 128 ? 0 : 255;
 
     return (
         <div className='mt-[2px] max-md:text-xs'>
@@ -22,7 +25,7 @@ function Contestant({ data, leader }: { data: Leader, leader: Leader | undefined
                 {data.Avatar &&
                     <img src={pfp} className='rounded-full w-10 -ms-12'/>
                 }
-                <span className='absolute right-2 top-1/2 -translate-y-1/2' style={{ color: `rgb(${brightness}, ${brightness}, ${brightness})` }}>{data.Name}</span>
+                <span className='absolute right-2 top-1/2 -translate-y-1/2' style={{ color: `rgb(${textCol}, ${textCol}, ${textCol})` }}>{data.Name}</span>
                 <span className='absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full'>{data.Sum}%</span>
             </Link>
         </div>
