@@ -24,9 +24,16 @@ export default function useUserSearch({ ID, onUserSelect }: Props) {
         setIsInvalid(false);
     }, [search, activeUser]);
 
+    function clear() {
+        setSearch('');
+        setSearchQuery('');
+        setActiveUser(undefined);
+    }
+
     return {
         activeUser,
         setQuery: setSearch,
+        clear,
         markInvalid: () => setIsInvalid(true),
         SearchBox: (<SearchBox search={search} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
             ...d,

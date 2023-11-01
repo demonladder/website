@@ -44,9 +44,16 @@ export default function useLevelSearch({ ID, options = {} }: Props) {
         setActiveLevel(defaultData);
     }, [defaultData]);
 
+    function clear() {
+        setSearch('');
+        setSearchQuery('');
+        setActiveLevel(undefined);
+    }
+
     return {
         activeLevel,
         setQuery: setSearch,
+        clear,
         markInvalid: () => setIsInvalid(true),
         SearchBox: (<SearchBox search={search} onSearchChange={setSearch} id={ID} list={data?.levels.map((d) => ({
             ...d,

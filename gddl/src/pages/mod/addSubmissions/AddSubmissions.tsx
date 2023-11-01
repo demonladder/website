@@ -28,7 +28,7 @@ export default function AddSubmission() {
 
     const queryClient = useQueryClient();
 
-    const { activeLevel, markInvalid: markInvalidLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch' });
+    const { activeLevel, markInvalid: markInvalidLevel, SearchBox, clear: clearActiveLevel } = useLevelSearch({ ID: 'addSubmissionSearch' });
     const userSearch = useUserSearch({
         ID: 'addSubmissionUserSearch',
     });
@@ -86,6 +86,8 @@ export default function AddSubmission() {
 
     function clear() {
         setKey(prev => prev+1);
+        clearActiveLevel();
+        userSearch.clear();
     }
 
     return (
