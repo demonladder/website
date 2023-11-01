@@ -25,8 +25,8 @@ export default function Queue() {
         }
     });
 
-    function approve(info: TSubmission) {
-        toast.promise(ApproveSubmission({ ...info, deny: false }).then(() => {queryClient.invalidateQueries(['submissionQueue']); queryClient.invalidateQueries(['stats'])}), {
+    function approve(info: TSubmission, onlyEnjoyment = false) {
+        toast.promise(ApproveSubmission({ ...info, deny: false, onlyEnjoyment }).then(() => {queryClient.invalidateQueries(['submissionQueue']); queryClient.invalidateQueries(['stats'])}), {
             pending: 'Approving...',
             success: 'Approved!',
             error: renderToastError,

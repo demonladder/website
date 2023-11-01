@@ -15,6 +15,8 @@ export type User = {
     Hardest: number | null,
     Favorite: number | null,
     LeastFavorite: number | null,
+    FavoriteLevels: number[],
+    LeastFavoriteLevels: number[],
     MinPref: number | null,
     MaxPref: number | null,
     Introduction: string | null,
@@ -25,10 +27,9 @@ export type User = {
 }
 
 export interface EdittableUser {
-    ID: number,
     Introduction?: string,
-    Favorite?: number,
-    LeastFavorite?: number,
+    FavoriteLevels?: string,
+    LeastFavoriteLevels?: string,
     MinPref?: number,
     MaxPref?: number,
 }
@@ -48,30 +49,37 @@ export interface DiscordUser {
     AccentColor: number
 }
 
-async function GetUser(userID: number): Promise<User> {
-    const res = await APIClient.get(`/user?userID=${userID}`);
-    return res.data;
+export async function GetUser(userID: number): Promise<User> {
+    const res = (await APIClient.get(`/user?userID=${userID}`)).data as User;
+
+    const user: User = {
+        ...res,
+        FavoriteLevels: res.Favorite?.toString().split(',').map((v: string) => parseInt(v)).slice(0, 2) || [],
+        LeastFavoriteLevels: res.LeastFavorite?.toString().split(',').map((v: string) => parseInt(v)).slice(0, 2) || [],
+    };
+
+    return user;
 }
 
-async function SearchUser(name: string): Promise<TinyUser[]> {
+export async function SearchUser(name: string): Promise<TinyUser[]> {
     const res = await APIClient.get(`/user/search`, { params: { name, chunk: 5, } });
     return res.data;
 }
 
-async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { userID: number, page?: number, sort: string, sortDirection: string}): Promise<UserSubmissions> {
+export async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { userID: number, page?: number, sort: string, sortDirection: string}): Promise<UserSubmissions> {
     return (await APIClient.get(`/user/submissions`, { params: { userID, page, sort, sortDirection, chunk: 16 }})).data;
 }
 
-async function SaveProfile(user: EdittableUser) {
+export async function SaveProfile(user: EdittableUser) {
     const csrfToken = StorageManager.getCSRF();
-    const res = await APIClient.put(`/user?userID=${user.ID}`, { user }, {
+    
+    return (await APIClient.put('/user', user, {
         withCredentials: true,
         params: { csrfToken },
-    });
-    return res.data;
+    })).data;
 }
 
-async function PromoteUser(userID: number, permissionLevel: number) {
+export async function PromoteUser(userID: number, permissionLevel: number) {
     const csrfToken = StorageManager.getCSRF();
     await APIClient.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });
 }
@@ -93,12 +101,4 @@ export function GetStaff(): Promise<StaffMember[]> {
 
 export function GetDiscordUser(userID: number): Promise<DiscordUser> {
     return APIClient.get('/user/discord', { params: { userID } }).then(res => res.data);
-}
-
-export {
-    GetUser,
-    SearchUser,
-    GetUserSubmissions,
-    SaveProfile,
-    PromoteUser,
 }

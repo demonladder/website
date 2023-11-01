@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
 
@@ -18,7 +18,7 @@ export default function Index() {
                 <Container className='bg-opacity-90'>
                     <Announcement.DiscordLink />
                 </Container>
-                <Container className='bg-opacity-90'>
+                {/* <Container className='bg-opacity-90'>
                     <section>
                         <h2 className='text-4xl text-center'>Changelog</h2>
                         <ul>
@@ -61,7 +61,7 @@ export default function Index() {
                             </li>
                         </ul>
                     </section>
-                </Container>
+                </Container> */}
             </main>
         </>
     );

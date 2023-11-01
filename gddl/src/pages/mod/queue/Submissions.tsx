@@ -7,7 +7,7 @@ import toFixed from '../../../utils/toFixed';
 
 type Props = {
     info: SubmissionQueueInfo,
-    approve: (submission: SubmissionQueueInfo) => void,
+    approve: (submission: SubmissionQueueInfo, onlyEnjoyment?: boolean) => void,
     remove: (submission: SubmissionQueueInfo) => void,
 }
 
@@ -55,8 +55,9 @@ export default function Submission({ info, approve, remove }: Props) {
                     </span>
                 </div>
             </div>
-            <div className='flex justify-evenly'>
+            <div className='flex justify-evenly max-md:flex-col'>
                 <PrimaryButton className='px-3' onClick={() => approve(info)}>Approve</PrimaryButton>
+                <PrimaryButton className='px-3' onClick={() => approve(info, true)}>Only enjoyment</PrimaryButton>
                 <DangerButton className='px-3' onClick={() => remove(info)}>Delete</DangerButton>
             </div>
         </div>

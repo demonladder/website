@@ -3,7 +3,8 @@ import { PackLevel } from '../../packs';
 export default interface PackResponse {
     ID: number;
     Name: string;
-    Description: string;
+    Description: string | null;
     IconName: string;
-    Levels: PackLevel[];
+    Levels: (PackLevel & { Path?: string })[];
+    RoleID: string | null;
 };

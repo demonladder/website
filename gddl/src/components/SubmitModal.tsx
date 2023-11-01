@@ -14,22 +14,22 @@ type Props = {
     level: FullLevel,
 }
 
-const enjoymentOptions: {[key: string]: string} = {
+const enjoymentOptions = {
     '-1': '-',
     0: '0 Abysmal',
     1: '1 Appalling',
     2: '2 Horrible',
-    3: '3 Very bad',
-    4: '4 Bad',
+    3: '3 Bad',
+    4: '4 Subpar',
     5: '5 Average',
     6: '6 Fine',
     7: '7 Good',
-    8: '8 Very good',
-    9: '9 Great',
+    8: '8 Great',
+    9: '9 Amazing',
     10: '10 Masterpiece',
 };
 
-const deviceOptions: {[key: string]: string} = {
+const deviceOptions = {
     1: 'PC',
     2: 'Mobile',
 };

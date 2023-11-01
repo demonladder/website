@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from '../components/SearchBox/SearchBox';
-import { SearchUser, User } from '../api/users';
+import { SearchUser, TinyUser } from '../api/users';
 
 interface Props {
     ID: string,
+    onUserSelect?: (user: TinyUser) => void;
 }
 
-export default function useUserSearch({ ID }: Props) {
+export default function useUserSearch({ ID, onUserSelect }: Props) {
     const [search, setSearch] = useState('');
-    const [activeUser, setActiveUser] = useState<User>();
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const [activeUser, setActiveUser] = useState<TinyUser>();
     const [isInvalid, setIsInvalid] = useState(false);
 
     const { data, status } = useQuery({
-        queryKey: ['userSearch', search],
-        queryFn: () => SearchUser(search),
+        queryKey: ['userSearch', searchQuery],
+        queryFn: () => SearchUser(searchQuery),
     });
 
     useEffect(() => {
@@ -23,10 +26,11 @@ export default function useUserSearch({ ID }: Props) {
 
     return {
         activeUser,
+        setQuery: setSearch,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox id={ID} list={data?.map((d) => ({
+        SearchBox: (<SearchBox search={search} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
             ...d,
             label: d.Name,
-        })) || []} update={setSearch} setResult={setActiveUser} status={status} invalid={isInvalid} />)
+        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => {setActiveUser(user); user && onUserSelect && onUserSelect(user);}} status={status} invalid={isInvalid} />)
     }
 }

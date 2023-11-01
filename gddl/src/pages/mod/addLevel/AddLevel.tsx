@@ -23,6 +23,10 @@ export default function AddLevel() {
     // input type="number" is stupid when it comes to onChange so I used a text input with custom validation:
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const newVal = e.target.value.trim();
+        if (newVal === '') {
+            setInput('');
+            return;
+        }
         if (isNaN(parseInt(newVal))) return;
 
         setInput(newVal);

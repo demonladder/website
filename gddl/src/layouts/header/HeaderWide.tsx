@@ -1,12 +1,17 @@
 import ProfileButtons from '../../pages/root/login/ProfileButtons';
 import { Link, useNavigate } from 'react-router-dom';
-import UserSearchBox from '../../components/UserSearchBox';
-import { User } from '../../api/users';
 import HeaderRoutes from './HeaderRoutes';
 import NavItem from './NavItem';
+import useUserSearch from '../../hooks/useUserSearch';
 
 export default function HeaderWide() {
     const navigate = useNavigate();
+    const userSearch = useUserSearch({
+        ID: 'userSearchWide',
+        onUserSelect: (user) => {
+            navigate('/profile/' + user.ID);
+        },
+    });
 
     return (
         <header className='bg-primary text-black'>
@@ -20,7 +25,7 @@ export default function HeaderWide() {
                     ))}
                 </div>
                 <div className='ms-auto flex items-center gap-4'>
-                    <UserSearchBox<User> setResult={(user) => user && navigate('/profile/' + user.ID)} id='userSearch' />
+                    {userSearch.SearchBox}
                     <ProfileButtons />
                 </div>
             </nav>

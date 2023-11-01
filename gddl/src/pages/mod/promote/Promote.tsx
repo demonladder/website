@@ -40,7 +40,7 @@ export default function Promote() {
             <p className='mb-3'>It's only possible to promote a user up to your own permission level.</p>
             <FormGroup>
                 <label htmlFor='promoteUser' className='font-bold'>Username:</label>
-                <UserSearchBox<TinyUser> setResult={setResult} id='promoteUser' />
+                <UserSearchBox setResult={setResult} id='promoteUser' />
             </FormGroup>
             <FormGroup>
                 <label htmlFor='permissionLevel' className='font-bold'>Permission level:</label>

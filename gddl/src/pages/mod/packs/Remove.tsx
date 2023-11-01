@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { DangerButton } from '../../../components/Button';
 import PackSearchBox from '../../../components/PackSearchBox';
-import { RemoveLevelFromPack } from '../../../api/packs';
-import PackResponse from '../../../api/pack/responses/PackResponse';
+import { PackShell, RemoveLevelFromPack } from '../../../api/packs';
 import { toast } from 'react-toastify';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
 
 export default function Remove() {
-    const [packResult, setPackResult] = useState<PackResponse>();
+    const [packResult, setPackResult] = useState<PackShell>();
     const { activeLevel, markInvalid, SearchBox } = useLevelSearch({ ID: 'packRemoveLevelSearch', options: { inPack: true } });
     
     function handleSubmit() {
@@ -21,7 +20,7 @@ export default function Remove() {
             return toast.error('Select a level!');
         }
 
-        toast.promise(RemoveLevelFromPack(packResult.ID, activeLevel.LevelID), {
+        void toast.promise(RemoveLevelFromPack(packResult.ID, activeLevel.LevelID), {
             pending: 'Removing...',
             success: 'Removed level from pack!',
             error: renderToastError,

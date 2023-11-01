@@ -14,12 +14,13 @@ import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { PrimaryButton } from '../../../components/Button';
+import TagBox from './TagBox';
 
 export default function LevelOverview() {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
-    const levelID = parseInt(''+useParams().levelID) || 0;
+    const levelID = parseInt(useParams().levelID || '0');
     const { status, data: level, error } = useQuery({
         queryKey: ['level', levelID],
         queryFn: () => GetLevel(levelID),
@@ -57,17 +58,17 @@ export default function LevelOverview() {
 
     if (level.RatingCount > 0 && level.Rating !== null) {
         avgRating = level.Rating.toFixed(2);
-        roundedRating = ''+Math.round(level.Rating);
-        standardDeviation = ''+toFixed(''+level.Deviation, 2, '0');
+        roundedRating = Math.round(level.Rating).toString();
+        standardDeviation = ''+toFixed((level.Deviation || 0).toString(), 2, '0');
     }
 
     if (level.EnjoymentCount > 0 && level.Enjoyment !== null) {
         avgEnjoyment = level.Enjoyment.toFixed(2);
-        roundedEnjoyment = ''+Math.round(parseFloat(avgEnjoyment));
+        roundedEnjoyment = Math.round(parseFloat(avgEnjoyment)).toString();
     }
 
     function creatorClicked() {
-        const stored = JSON.parse(sessionStorage.getItem('search.filters') || '{}');
+        const stored = JSON.parse(sessionStorage.getItem('search.filters') || '{}') as object;
         sessionStorage.setItem('search.filters', JSON.stringify({ ...stored, creator: level?.Creator || '' }));
         navigate('/list');
     }
@@ -129,6 +130,9 @@ export default function LevelOverview() {
                     </div>
                 </div>
             </section>
+            {StorageManager.getUseExperimental() &&
+                <TagBox level={level} />
+            }
             <Submissions levelID={levelID} />
             <Packs levelID={levelID} />
             <SubmitModal show={showModal} onClose={() => setShowModal(false)} level={level} />

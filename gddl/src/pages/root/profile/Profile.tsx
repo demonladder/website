@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { GetUser } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -13,11 +13,11 @@ import Tracker from './Tracker';
 import { SecondaryButton } from '../../../components/Button';
 import useLogout from '../../../hooks/useLogout';
 import toFixed from '../../../utils/toFixed';
+import LevelResolvableText from './LevelResolvableText';
 
 export default function Profile() {
     const userID = parseInt(''+useParams().userID) || 0;
     const logout = useLogout();
-    const navigate = useNavigate();
     
     const { status, data: userData, error } = useQuery({
         queryKey: ['user', userID],
@@ -73,7 +73,7 @@ export default function Profile() {
     const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordID}/${userData.Avatar}.png`;
     
     return (
-        <Container key={userID} className=''>
+        <Container key={userID}>
             <Helmet>
                 <title>{'GDDL - ' + userData.Name}</title>
                 <meta property='og:type' content='website' />
@@ -85,7 +85,6 @@ export default function Profile() {
             <section className='flex justify-between flex-wrap items-center'>
                 <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.Avatar && <img className='inline w-16 rounded-full' src={pfp} />} {userData.Name} <ProfileTypeIcon permissionLevel={userData.PermissionLevel} /></h1>
                 <div className='flex gap-2'>
-                    <SecondaryButton onClick={() => navigate('/profile/settings')} className={ownPage ? 'flex items-center gap-1' : ''} hidden={!ownPage}>Edit <i className='bx bx-cog'></i></SecondaryButton>
                     <SecondaryButton onClick={logout} hidden={!ownPage}>Log out</SecondaryButton>
                 </div>
             </section>
@@ -96,8 +95,18 @@ export default function Profile() {
                 </div>
                 <div className='p-3 bg-gray-700 round:rounded-e-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3'>
                     <LevelTracker levelID={userData.Hardest} title='Hardest' />
-                    <LevelTracker levelID={userData.Favorite} title='Favorite' />
-                    <LevelTracker levelID={userData.LeastFavorite} title='Least favorite' />
+                    <Tracker>
+                        <p>Favorites</p>
+                        <div>
+                            {userData.FavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.FavoriteLevels.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
+                        </div>
+                    </Tracker>
+                    <Tracker>
+                        <p>Least favorites</p>
+                        <div>
+                            {userData.LeastFavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.LeastFavoriteLevels.length - 1 === i} key={`userLeastFavorites_${userData.ID}_${i}`} />))}
+                        </div>
+                    </Tracker>
                     <Tracker>
                         <p>Tier preference:</p>
                         <p>{calcPref()}</p>

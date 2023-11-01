@@ -60,9 +60,9 @@ export function DeleteSubmission(levelID: number, userID: number) {
     return APIClient.delete('/submissions', { withCredentials: true, params: { csrfToken }, data: { levelID, userID } });
 }
 
-export function ApproveSubmission(info: {deny: boolean} & Submission): Promise<void> {
+export function ApproveSubmission(info: { deny: boolean, onlyEnjoyment?: boolean } & Submission): Promise<void> {
     const csrfToken = StorageManager.getCSRF();
-    return APIClient.put('/submissions/approve', { levelID: info.LevelID, userID: info.UserID, deny: info.deny }, { withCredentials: true, params: { csrfToken } });
+    return APIClient.put('/submissions/approve', { levelID: info.LevelID, userID: info.UserID, deny: info.deny, onlyEnjoyment: info.onlyEnjoyment }, { withCredentials: true, params: { csrfToken } });
 }
 
 export async function SendSubmission(submission: SubmittableSubmission) {

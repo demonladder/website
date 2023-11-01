@@ -36,8 +36,8 @@ import ErrorElement from './components/ErrorElement';
 import SignUp from './pages/root/signup/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProfileSettings from './pages/root/profile/settings/Settings';
-import Settings from './pages/root/settings/Settings';
+import ProfileSettings from './pages/root/settings/profile/ProfileSettings';
+import ClientSiteSettings from './pages/root/settings/SiteSettings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
 import axios from 'axios';
@@ -45,6 +45,9 @@ import APIClient from './api/axios';
 import storageManager from './utils/StorageManager';
 import UserBans from './pages/mod/userBans/UserBans';
 import DeletePack from './pages/mod/pack/DeletePack';
+import EditPack from './pages/mod/pack/EditPack';
+import Settings from './pages/root/settings/Settings';
+import CrossroadPack from './pages/root/packs/packOverview/CrossroadPack';
 
 const router = createBrowserRouter(
     [
@@ -72,6 +75,10 @@ const router = createBrowserRouter(
                 {
                     path: 'about',
                     element: <About />,
+                },
+                {
+                    path: 'pack/78',
+                    element: <CrossroadPack />,
                 },
                 {
                     path: 'pack/:packID',
@@ -104,6 +111,16 @@ const router = createBrowserRouter(
                 {
                     path: 'settings',
                     element: <Settings />,
+                    children: [
+                        {
+                            path: 'site',
+                            element: <ClientSiteSettings />,
+                        },
+                        {
+                            path: 'profile',
+                            element: <ProfileSettings />,
+                        },
+                    ]
                 },
                 {
                     path: '/mod',
@@ -147,6 +164,10 @@ const router = createBrowserRouter(
                         {
                             path: 'deletePack',
                             element: <DeletePack />,
+                        },
+                        {
+                            path: 'editPack',
+                            element: <EditPack />,
                         },
                         {
                             path: 'addSubmission',
@@ -217,7 +238,7 @@ window.onload = () => {
     const fragment = new URLSearchParams(window.location.hash.replace('#', ''));
     const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 
-    if (!accessToken) return;
+    if (!accessToken || !tokenType) return;
 
     axios.get('https://discord.com/api/users/@me', {
         headers: {
@@ -229,7 +250,11 @@ window.onload = () => {
         APIClient.post('/discord/connect', response.data, {
             withCredentials: true,
             params: { csrfToken },
-        }).then(() => location.replace('/'));
+        }).then(() => location.replace('/')).catch((err) => {
+            if (err) return;
+        });
+    }).catch((err) => {
+        if (err) return;
     });
 }
 

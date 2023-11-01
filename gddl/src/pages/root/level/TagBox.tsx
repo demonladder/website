@@ -1,0 +1,72 @@
+import { useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { FullLevel } from '../../../api/levels';
+import { LevelTagRequest, TagSubmission } from '../../../api/level/requests/LevelTagRequest';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import Select from '../../../components/Select';
+import { SendTagVoteRequest } from '../../../api/level/requests/SendTagVoteRequest';
+import { toast } from 'react-toastify'
+import renderToastError from '../../../utils/renderToastError';
+import { GetTags } from '../../../api/level/requests/GetTags';
+import { GetTagEligibility } from '../../../api/level/requests/GetTagEligibility';
+
+export default function TagBox({ level }: { level: FullLevel }) {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const queryClient = useQueryClient();
+    const { data: levelTags } = useQuery({
+        queryKey: ['level', 'tags', level.LevelID],
+        queryFn: () => LevelTagRequest(level.LevelID),
+    });
+    const { data: tags, status: tagStatus } = useQuery({
+        queryKey: ['tags'],
+        queryFn: GetTags,
+    });
+    const { data: voteMeta } = useQuery({
+        queryKey: ['level', 'tags', level.LevelID, 'eligible'],
+        queryFn: () => GetTagEligibility(level.LevelID),
+    });
+
+    function onVoteChange(key: string) {
+        if (isLoading) return;
+        if (parseInt(key) === 0) return;
+
+        toast.promise(SendTagVoteRequest(level.LevelID, parseInt(key)), {
+            pending: 'Sending...',
+            success: 'Sent',
+            error: renderToastError,
+        }).then(() => {
+            void queryClient.invalidateQueries(['level', 'tags', level.LevelID]);
+        }).finally(() => {
+            setIsLoading(false);
+        });
+    }
+    
+    const isContentLoading = levelTags === undefined || tagStatus === 'loading';
+    return (
+        <section className='my-2 px-4 py-3 bg-gray-700 round:rounded-xl text-xl flex justify-between gap-y-4 max-lg:flex-col'>
+            <div className='flex max-lg:flex-col'>
+                <span className='me-2 lg:self-center'>Top 3 tags:</span>
+                <div className='flex gap-2 max-md:flex-col'>
+                    {levelTags?.map((t, i) => <Tag submission={t} key={`tagSubmission_${level.LevelID}_${i}`} />)}
+                </div>
+                {isContentLoading && (<LoadingSpinner />)}
+                {levelTags?.length === 0 && (<span>None</span>)}
+            </div>
+            {(voteMeta?.eligible === true && tags !== undefined) &&
+                <div className='md:self-center w-40'>
+                    <Select options={tags} activeKey='0' id='voteTag' onChange={onVoteChange} />
+                </div>
+            }
+        </section>
+    );
+}
+
+function Tag({ submission }: { submission: TagSubmission }) {
+    return (
+        <div className='bg-gray-600 px-2 py-1 round:rounded'>
+            <span>{submission.Name} </span>
+            <span>{Math.round(submission.Percent * 100)}%</span>
+        </div>
+    );
+}

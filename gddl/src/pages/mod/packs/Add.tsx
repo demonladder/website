@@ -2,15 +2,14 @@ import { useState, useRef } from 'react';
 import { PrimaryButton } from '../../../components/Button';
 import PackSearchBox from '../../../components/PackSearchBox';
 import { toast } from 'react-toastify';
-import { AddLevelToPack } from '../../../api/packs';
-import PackResponse from '../../../api/pack/responses/PackResponse';
+import { AddLevelToPack, PackShell } from '../../../api/packs';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import FormGroup from '../../../components/form/FormGroup';
 import { CheckBox } from '../../../components/Input';
 import renderToastError from '../../../utils/renderToastError';
 
 export default function Add() {
-    const [packResult, setPackResult] = useState<PackResponse>();
+    const [packResult, setPackResult] = useState<PackShell>();
 
     const { activeLevel, markInvalid, SearchBox} = useLevelSearch({ ID: 'packAddLevelSearch' })
     const EXRef = useRef<HTMLInputElement>(null);
@@ -29,7 +28,7 @@ export default function Add() {
             return toast.error('Select a level!');
         }
 
-        toast.promise(AddLevelToPack(packResult.ID, activeLevel.LevelID, EXRef.current?.checked), {
+        void toast.promise(AddLevelToPack(packResult.ID, activeLevel.LevelID, EXRef.current?.checked), {
             pending: 'Adding...',
             success: 'Added level to pack!',
             error: renderToastError,

@@ -13,8 +13,8 @@ export default function NavItem({ route, size }: Props) {
             {size === 'wide'
                 ? (
                     <div className='opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all absolute z-10 w-max py-2 shadow-lg bg-header-200'>
-                        {route.subroutes.map((subRoute) => (
-                            <div>
+                        {route.subroutes.map((subRoute, i) => (
+                            <div key={`subNavItem_${i}`}>
                                 <NavLink to={subRoute.to} className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline mx-2'}>{subRoute.name}</NavLink>
                             </div>
                         ))}
@@ -22,8 +22,8 @@ export default function NavItem({ route, size }: Props) {
                 )
                 : (
                     <div>
-                        {route.subroutes.map((subRoute) => (
-                            <div>
+                        {route.subroutes.map((subRoute, i ) => (
+                            <div key={`subNavItem_${i}`}>
                                 <NavLink to={subRoute.to} className={({ isActive }) => (isActive ? 'font-bold ' : '') + 'underline ms-4'}>{subRoute.name}</NavLink>
                             </div>
                         ))}

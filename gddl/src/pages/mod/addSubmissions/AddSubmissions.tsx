@@ -1,6 +1,4 @@
 import { useState, useRef } from 'react';
-import UserSearchBox from '../../../components/UserSearchBox';
-import { User } from '../../../api/users';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
@@ -11,8 +9,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
+import useUserSearch from '../../../hooks/useUserSearch';
 
-const deviceOptions: {[key: string]: string} = {
+const deviceOptions = {
     '1': 'PC',
     '2': 'Mobile',
 };
@@ -22,8 +21,6 @@ export default function AddSubmission() {
     const [deviceKey, setDeviceKey] = useState('1');
     const [isMutating, setIsMutating] = useState(false);
 
-    const [userResult, setUserResult] = useState<User|null>();
-    const [invalidUser, setInvalidUser] = useState(false);
     const ratingRef = useRef<HTMLInputElement>(null);
     const enjoymentRef = useRef<HTMLInputElement>(null);
     const proofRef = useRef<HTMLInputElement>(null);
@@ -32,53 +29,53 @@ export default function AddSubmission() {
     const queryClient = useQueryClient();
 
     const { activeLevel, markInvalid: markInvalidLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch' });
+    const userSearch = useUserSearch({
+        ID: 'addSubmissionUserSearch',
+    });
 
     function submit() {
-        setInvalidUser(false);
-
         if (ratingRef.current === null || enjoymentRef.current === null || proofRef.current === null) {
             return toast.error('An error occurred');
         }
 
         // Validate
-        if (!activeLevel || !userResult) {
+        if (!activeLevel || !userSearch.activeUser) {
             if (!activeLevel) {
                 markInvalidLevel();
                 toast.error('You must select a level!');
             }
-            if (!userResult) {
-                setInvalidUser(true);
+            if (!userSearch.activeUser) {
+                userSearch.markInvalid();
                 toast.error('You must select a user!');
             }
             
             return;
         }
         
-        if ((activeLevel.Difficulty === 'Extreme') && !proofRef.current.value) {
-            return toast.error('Proof is required!');
-        }
-        
         // Send
         setIsMutating(true);
-        toast.promise(
+        void toast.promise(
             APIClient.post('/submit/mod', {
                 levelID: activeLevel.LevelID,
-                userID: userResult.ID,
+                userID: userSearch.activeUser.ID,
                 rating: parseInt(ratingRef.current.value),
                 enjoyment: parseInt(enjoymentRef.current.value),
                 refreshRate,
                 device: parseInt(deviceKey),
                 proof: proofRef.current.value,
-            }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then((res) => {
-                queryClient.invalidateQueries(['submissions']);
-                queryClient.invalidateQueries(['level', activeLevel.LevelID]);
+            }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then((res): string => {
+                void queryClient.invalidateQueries(['submissions']);
+                void queryClient.invalidateQueries(['level', activeLevel.LevelID]);
 
-                return res.data;
+                return res.data as string;
             }).finally(() => setIsMutating(false)),
             {
                 pending: 'Sending...',
                 success: {
                     render({data}) {
+                        if (data === undefined) {
+                            return 'Erm, this is not supposed to appear, contact Diversion';
+                        }
                         return `${data} for ${activeLevel.Name}!`
                     }
                 },
@@ -92,7 +89,7 @@ export default function AddSubmission() {
     }
 
     return (
-        <div key={'addSubmission_' + key}>
+        <div key={`addSubmission_${key}`}>
             <FloatingLoadingSpinner isLoading={isMutating} />
             <h3 className='text-2xl mb-3'>Add Submission</h3>
             <div className='flex flex-col gap-4'>
@@ -102,7 +99,7 @@ export default function AddSubmission() {
                 </div>
                 <div>
                     <label htmlFor='addSubmissionUserSearch'>User:</label>
-                    <UserSearchBox id='addSubmissionUserSearch' setResult={setUserResult} invalid={invalidUser} />
+                    {userSearch.SearchBox}
                 </div>
                 <div>
                     <label htmlFor='addSubmissionTier'>Tier:</label>

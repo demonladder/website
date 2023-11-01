@@ -1,4 +1,4 @@
-export default function DemonLogo({ diff }: { diff: number|string }) {
+export default function DemonLogo({ diff }: { diff?: number | string }) {
     switch (diff) {
         default:
         case 'Easy':

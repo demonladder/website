@@ -1,8 +1,9 @@
-import { Link, NavLink, Outlet, redirect } from 'react-router-dom';
+import { Link, Outlet, redirect } from 'react-router-dom';
 import StorageManager from '../../utils/StorageManager';
 import Container from '../../components/Container';
 import APIClient from '../../api/axios';
 import { Suspense } from 'react';
+import { NavButton } from '../../components/ui/NavButton';
 
 export async function modLoader() {
     if (!StorageManager.hasSession()) return redirect('/');
@@ -15,15 +16,9 @@ export async function modLoader() {
     });
 }
 
-function NavButton({ to, end = false, children }: { to: string, end?: boolean, children: React.ReactNode }) {
-    return (
-        <NavLink to={to} end={end} className={({isActive}) => (isActive ? 'bg-gray-600' : 'hover:bg-gray-700') + ' px-3 py-2 round:rounded-lg transition-colors'}>{children}</NavLink>
-    );
-}
-
 export default function Mod() {
     return (
-        <Container className='bg-gray-800'>
+        <Container>
             <div className='grid grid-cols-12 gap-5'>
                 <div id='mod-menu' className='col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col'>
                     <Link to='/mod' className='text-4xl'>Dashboard</Link>
@@ -43,9 +38,10 @@ export default function Mod() {
                         <NavButton to='/mod/userBans'>Bans</NavButton>
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Packs</p>
-                        <NavButton to='/mod/createPack'>Create pack</NavButton>
-                        <NavButton to='/mod/deletePack'>Delete pack</NavButton>
-                        <NavButton to='/mod/packs'>Edit pack levels</NavButton>
+                        {/* <NavButton to='/mod/createPack'>Create pack</NavButton> */}
+                        {/* <NavButton to='/mod/deletePack'>Delete pack</NavButton> */}
+                        <NavButton to='/mod/editPack'>Packs</NavButton>
+                        {/* <NavButton to='/mod/packs'>Edit pack levels</NavButton> */}
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>References</p>
                         <NavButton to='/mod/references'>Edit references</NavButton>

@@ -8,6 +8,10 @@ import { PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
+export function validateUsername(name: string): boolean {
+    return name.match(/[a-zA-Z0-9\._\s]*/)?.[0] === name;
+}
+
 export default function SignUp() {
     const navigate = useNavigate();
 
@@ -30,7 +34,7 @@ export default function SignUp() {
 
         if (!username) return toast.error('Username cannot be empty!');
         if (username.length < 3 || username.length > 30) return toast.error('Name must be between 3 and 30 characters long!');
-        if (username.match(/[a-zA-Z0-9\._\s]*/)?.[0] !== username) return toast.error('Name contains banned characters!');
+        if (!validateUsername(username)) return toast.error('Name contains banned characters!');
 
         if (!password || password.length < 7) {
             return toast.error('Password must be longer than 6 characters!');

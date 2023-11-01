@@ -37,8 +37,8 @@ function Level({ info }: Props) {
             <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{info.Creator}</p></div>
             <div className='col-span-3 hidden xl:block self-center'><p className='cursor-default'>{info.Song}</p></div>
             <div className='col-span-2 hidden lg:flex justify-center self-center'><IDButton id={info.LevelID} /></div>
-            <div className={`col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='self-center cursor-default'>{info.Rating !== null ? roundedTier : 'N/A'}</p></div>
-            <div className={`col-span-2 lg:col-span-1 flex justify-center ${enjoymentClass}`}><p className='self-center cursor-default'>{info.Enjoyment !== null ? roundedEnjoyment : 'N/A'}</p></div>
+            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{info.Rating !== null ? roundedTier : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{info.Rating !== null ? info.Rating.toFixed(2) : 'N/A'}</p></div>
+            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${enjoymentClass}`}><p className='group-hover:hidden self-center cursor-default'>{info.Enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{info.Enjoyment !== null ? info.Enjoyment.toFixed(2) : 'N/A'}</p></div>
         </div>
     );
 }

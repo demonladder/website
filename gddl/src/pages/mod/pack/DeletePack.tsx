@@ -4,21 +4,24 @@ import { toast } from 'react-toastify';
 import PackSearchBox from '../../../components/PackSearchBox';
 import Modal from '../../../components/Modal';
 import DeletePackRequest from '../../../api/pack/requests/DeletePackRequest';
-import PackResponse from '../../../api/pack/responses/PackResponse';
+import { PackShell } from '../../../api/packs';
 
 export default function DeletePack() {
-    const [packResult, setPackResult] = useState<PackResponse>();
+    const [packResult, setPackResult] = useState<PackShell>();
     const [showConfirm, setShowConfirm] = useState(false);
 
-    function submit() {
+    function submit(): void {
         if (!packResult) {
-            return toast.error('Name can\'t be empty');
+            toast.error('Name can\'t be empty');
+            return;
         }
 
         toast.promise(DeletePackRequest(packResult.ID), {
             pending: 'Deleting...',
             success: 'Deleted ' + packResult.Name,
             error: 'An error occurred',
+        }).catch((err) => {
+            if (err) return;
         });
     }
 

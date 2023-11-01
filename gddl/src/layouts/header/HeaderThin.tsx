@@ -1,14 +1,19 @@
 import { useState } from 'react';
 import ProfileButtons from '../../pages/root/login/ProfileButtons';
 import { Link, useNavigate } from 'react-router-dom';
-import UserSearchBox from '../../components/UserSearchBox';
-import { User } from '../../api/users';
 import HeaderRoutes from './HeaderRoutes';
 import NavItem from './NavItem';
+import useUserSearch from '../../hooks/useUserSearch';
 
 export default function HeaderThin() {
     const [navOpen, setNavOpen] = useState(false);
     const navigate = useNavigate();
+    const userSearch = useUserSearch({
+        ID: 'userSearchThin',
+        onUserSelect: (user) => {
+            navigate('/profile/' + user.ID);
+        },
+    });
 
     return (
         <header className='bg-primary text-black flex items-center justify-between flex-wrap gap-x-8 px-16 py-8'>
@@ -24,12 +29,12 @@ export default function HeaderThin() {
                 <nav className='min-h-0 flex flex-col justify-between'>
                     <div className='flex flex-col gap-x-3 gap-y-1 text-xl'>
                         {HeaderRoutes.map((route, i) => (
-                            <NavItem route={route} size={'thin'} key={'headerRoute_' + i} />
+                            <NavItem route={route} size={'thin'} key={`headerRoute_${i}`} />
                         ))}
                     </div>
                     <div className='flex max-sm:flex-col sm:items-center gap-4'>
                         <div className='my-4'>
-                            <UserSearchBox<User> setResult={(user) => user && navigate('/profile/' + user.ID)} id='userSearch' />
+                            {userSearch.SearchBox}
                         </div>
                         <ProfileButtons />
                     </div>

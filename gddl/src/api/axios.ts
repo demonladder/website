@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const APIClient = axios.create({
-    baseURL: import.meta.env.VITE_SERVER_URL,
+    baseURL: import.meta.env.VITE_SERVER_URL as string,
     timeout: 10000,
 });
 

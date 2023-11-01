@@ -27,7 +27,7 @@ const HeaderRoutes: Route[] = [
             },
             {
                 name: (<span>Settings <i className='bx bxs-cog text-2xl' /></span>),
-                to: '/settings',
+                to: '/settings/site',
                 subroutes: [],
             },
         ],

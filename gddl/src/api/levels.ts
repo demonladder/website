@@ -19,7 +19,7 @@ export type FullLevel = {
     Name: string,
     Rating: number,
     Enjoyment: number,
-    Deviation: number,
+    Deviation: number | null,
     RatingCount: number,
     EnjoymentCount: number,
     SubmissionCount: number,
@@ -35,31 +35,27 @@ type SearchInfo = {
     levels: Level[],
 }
 
-type Query = {
-
-}
-
-export async function SearchLevels(q: Query): Promise<SearchInfo> {
+export function SearchLevels(q: object): Promise<SearchInfo> {
     const csrfToken = storageManager.getCSRF() || '';
-    return (await APIClient.get('/level/search', {
+    return APIClient.get('/level/search', {
         withCredentials: true,
         params: { chunk: 16, ...q, csrfToken },
-    })).data;
+    }).then((res) => res.data as SearchInfo);
 }
 
 export async function GetLevel(id: number | null): Promise<FullLevel | null> {
     if (id === null) return null;
 
-    return (await APIClient.get(`/level?levelID=${id}`)).data;
+    return (await APIClient.get(`/level?levelID=${id}`)).data as FullLevel | null;
 }
 export async function GetShortLevel(id: number | null): Promise<FullLevel | null> {
     if (id === null) return null;
 
-    return (await APIClient.get(`/level/short?levelID=${id}`)).data;
+    return (await APIClient.get(`/level/short?levelID=${id}`)).data as FullLevel | null;
 }
 
 export function GetLevelPacks(levelID: number): Promise<PackShell[]> {
-    return APIClient.get(`/level/packs?levelID=${levelID}`).then(res => res.data);
+    return APIClient.get(`/level/packs?levelID=${levelID}`).then(res => res.data as PackShell[]);
 }
 
 export function AddLevelToDatabase(levelID: number) {

@@ -25,7 +25,7 @@ export default function About() {
             <section className='mb-8'>
                 <h2 className='text-3xl text-primary mb-3'>The mechanism</h2>
                 <p className='mb-1'>With the official system in mind, each demon difficulty is split into 5 tiers, with the exception of Extreme Demons being split into 15 tiers. Tiers are then named from Tier 1 to Tier 35, with Tier 35 being the hardest.</p>
-                <p>Tiers are determined by user ratings. This means the list is community-driven, one thing that is loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level. The system has been running well since launch, and we have collected over <span className='text-primary font-bold'>60,000 ratings</span> for over <span className='text-primary font-bold'>6,000 demons</span> covering over 9/10 demons in the game.</p>
+                <p>Tiers are determined by user ratings. This means the list is community-driven, one thing that is loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level. The system has been running well since launch, and we have collected over <span className='text-primary font-bold'>70,000 ratings</span> for over <span className='text-primary font-bold'>6,500 demons</span> covering over 19/20 demons in the game.</p>
             </section>
             <section className='mb-8'>
                 <h2 className='text-3xl text-primary mb-3'>How to rate</h2>
