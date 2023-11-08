@@ -6,7 +6,7 @@ export type SelectOption = {
 }
 
 type Props = {
-    options: {[key: string]: string},
+    options: {[key: string]: string} | { key: string, value: string }[],
     activeKey: string,
     onChange: (option: string) => void,
     zIndex?: number,
@@ -37,11 +37,15 @@ export default function Select({ options, activeKey, onChange, id }: Props) {
     return (
         <div className='cursor-pointer select-none relative' onClick={() => setOpen(prev => !prev)}>
             <div id={id} className='bg-black bg-opacity-20 border-b-2 w-full ps-2'>
-                {options[activeKey]}
+                {!Array.isArray(options)
+                    ? options[activeKey]
+                    : options.find((o) => o.key === activeKey)?.value
+                }
                 <div className={'shadow-2xl absolute z-10 -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows]'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>
                     <div className='min-h-0 w-40 bg-gray-600 max-h-44 overflow-auto'>
-                        {
-                            Object.entries(options).map((o) => <SelectOption option={o} setValue={optionClicked} key={o[0]} />)
+                        {!Array.isArray(options)
+                            ? Object.entries(options).map((o) => <SelectOption option={o} setValue={optionClicked} key={o[0] + '_0'} />)
+                            : options.map((o) => <SelectOption option={[o.key, o.value]} setValue={optionClicked} key={o.key + '_1'} />)
                         }
                     </div>
                 </div>
