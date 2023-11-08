@@ -17,7 +17,6 @@ export default function TagInfoModal() {
                     <p>Tags describe the general skillsets that are present in this level.</p>
                     <p>You may vote on tags once you have an approved rating on this level.</p>
                     <p>The percent next to each tag shows the percent of voters who believe the tag applies to this level.</p>
-                    <p><i>[stuff about tags here]</i></p>
                     <div className='divider my-4'></div>
                 </Modal.Body>
                 <Modal.Footer>
