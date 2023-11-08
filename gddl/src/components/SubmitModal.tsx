@@ -7,6 +7,7 @@ import { PrimaryButton, SecondaryButton } from './Button';
 import { toast } from 'react-toastify';
 import { FullLevel } from '../api/levels';
 import renderToastError from '../utils/renderToastError';
+import StorageManager from '../utils/StorageManager';
 
 type Props = {
     show: boolean,
@@ -38,7 +39,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
     const ratingRef = useRef<HTMLInputElement>(null);
     const [enjoymentKey, setEnjoymentKey] = useState('-1');
     const [deviceKey, setDeviceKey] = useState('1');
-    const [refreshRate, setRefreshRate] = useState<number>();
+    const [refreshRate, setRefreshRate] = useState<number>(StorageManager.getSettings().submission.defaultRefreshRate);
     const [proof, setProof] = useState('');
 
     function submitForm(e: React.FormEvent) {

@@ -6,10 +6,11 @@ export default function Settings() {
     return (
         <Container>
             <div className='flex'>
-                <div>{/*Extra div is required the nested div doesn't shrink*/}
+                <div>{/*Extra div is required so the nested div doesn't shrink*/}
                     <div className='flex flex-col w-80'>
                         <NavButton to='/settings/site'>Site settings</NavButton>
                         <NavButton to='/settings/profile'>Profile settings</NavButton>
+                        <NavButton to='/settings/submission'>Submission settings</NavButton>
                     </div>
                 </div>
                 <div className='mx-4 shrink'>

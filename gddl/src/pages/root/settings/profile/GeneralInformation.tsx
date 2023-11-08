@@ -67,7 +67,7 @@ export default function GeneralInformation() {
 
         const newUser = {
             Name: nameRef.current.value,
-            Introduction: introductionRef.current.value,
+            Introduction: introductionRef.current.value || null,
             FavoriteLevels: [
                 favoriteLevelSearch1.activeLevel?.LevelID,
                 favoriteLevelSearch2.activeLevel?.LevelID,

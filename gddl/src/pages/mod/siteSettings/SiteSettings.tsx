@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { PrimaryButton } from '../../../components/Button';
+import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { CheckBox } from '../../../components/Input';
 import FormGroup from '../../../components/form/FormGroup';
 import { GetSiteSettings, SaveSiteSettings } from '../../../api/settings';
@@ -7,6 +7,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
+import BotStatus from './BotStatus';
+import { DeactivateBotRequest } from '../../../api/bot/requests/DeactivateBotRequest';
+import { ActivateBotRequest } from '../../../api/bot/requests/ActivateBotRequest';
 
 export default function SiteSettings() {
     const queueEditLock = useRef<HTMLInputElement>(null);
@@ -48,6 +51,28 @@ export default function SiteSettings() {
         });
     }
 
+    const [botMutating, setBotMutating] = useState(false);
+    function startBot() {
+        if (botMutating) return;
+
+        setBotMutating(true);
+        ActivateBotRequest().then(() => {
+            queryClient.invalidateQueries(['botStatus']);
+        }).finally(() => {
+            setBotMutating(false);
+        });
+    }
+    function stopBot() {
+        if (botMutating) return;
+
+        setBotMutating(true);
+        DeactivateBotRequest().then(() => {
+            queryClient.invalidateQueries(['botStatus']);
+        }).finally(() => {
+            setBotMutating(false);
+        });
+    }
+
     const isFetching = status === 'loading' || fetchStatus === 'fetching';
 
     return (
@@ -86,6 +111,13 @@ export default function SiteSettings() {
                 </FormGroup>
                 <PrimaryButton type='submit' onClick={handleSubmit} disabled={isMutating || isFetching}>Save</PrimaryButton>
             </form>
+            <div className='my-4 divider'></div>
+            <h3 className='text-2xl'>Bot settings</h3>
+            <p>Bot status: <BotStatus /></p>
+            <div className='mt-1 flex gap-2'>
+                <PrimaryButton onClick={startBot}>Activate</PrimaryButton>
+                <DangerButton onClick={stopBot}>Deactivate</DangerButton>
+            </div>
         </div>
     );
 }

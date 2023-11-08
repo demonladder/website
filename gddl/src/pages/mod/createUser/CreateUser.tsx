@@ -28,7 +28,7 @@ export default function CreateUser() {
     return (
         <div>
             <h3 className='text-2xl'>Create User</h3>
-            <p className='mb-3'>Originally used to manually add first time users onto the site. Now users can just create an account.</p>
+            <p className='mb-3'>Meant for adding bulk submission users with no existing accounts.</p>
             <TextInput ref={nameRef} placeholder='Username...' />
             <PrimaryButton onClick={submit}>Add</PrimaryButton>
         </div>

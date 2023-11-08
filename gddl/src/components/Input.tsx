@@ -11,10 +11,11 @@ export const PasswordInput = forwardRef<HTMLInputElement, DetailedHTMLProps<Inpu
 interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     disableSpinner?: boolean,
     centered?: boolean,
+    invalid?: boolean,
 }
 
-export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disableSpinner, centered, ...props}, ref) => (
-    <input {...props} ref={ref} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '')} />
+export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disableSpinner, centered, invalid = false, ...props}, ref) => (
+    <input {...props} ref={ref} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />
 ));
 
 interface ICheckboxProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {};

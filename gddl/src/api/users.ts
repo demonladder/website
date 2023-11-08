@@ -27,11 +27,11 @@ export type User = {
 }
 
 export interface EdittableUser {
-    Introduction?: string,
+    Introduction?: string | null,
     FavoriteLevels?: string,
     LeastFavoriteLevels?: string,
-    MinPref?: number,
-    MaxPref?: number,
+    MinPref?: number | null,
+    MaxPref?: number | null,
 }
 
 export type TinyUser = {
@@ -66,8 +66,8 @@ export async function SearchUser(name: string): Promise<TinyUser[]> {
     return res.data;
 }
 
-export async function GetUserSubmissions({userID, page = 1, sort, sortDirection}: { userID: number, page?: number, sort: string, sortDirection: string}): Promise<UserSubmissions> {
-    return (await APIClient.get(`/user/submissions`, { params: { userID, page, sort, sortDirection, chunk: 16 }})).data;
+export async function GetUserSubmissions({userID, page = 1, name, sort, sortDirection}: { userID: number, page?: number, name?: string, sort: string, sortDirection: string}): Promise<UserSubmissions> {
+    return (await APIClient.get(`/user/submissions`, { params: { userID, page, name, sort, sortDirection, chunk: 16 }})).data;
 }
 
 export async function SaveProfile(user: EdittableUser) {
