@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import renderToastError from '../../../utils/renderToastError';
 import { GetTags } from '../../../api/level/requests/GetTags';
 import { GetTagEligibility } from '../../../api/level/requests/GetTagEligibility';
+import TagInfoModal from './TagInfoModal';
 
 export default function TagBox({ level }: { level: FullLevel }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +47,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
     return (
         <section className='my-2 px-4 py-3 bg-gray-700 round:rounded-xl text-xl flex justify-between gap-y-4 max-lg:flex-col'>
             <div className='flex max-lg:flex-col'>
-                <span className='me-2 lg:self-center'>Top 3 tags:</span>
+                <span className='me-2 lg:self-center'><TagInfoModal /> Top 3 tags:</span>
                 <div className='flex gap-2 max-md:flex-col'>
                     {levelTags?.map((t, i) => <Tag submission={t} key={`tagSubmission_${level.LevelID}_${i}`} />)}
                 </div>
@@ -64,9 +65,12 @@ export default function TagBox({ level }: { level: FullLevel }) {
 
 function Tag({ submission }: { submission: TagSubmission }) {
     return (
-        <div className='bg-gray-600 px-2 py-1 round:rounded'>
+        <div className='bg-gray-600 px-2 group round:rounded-lg relative border-gray-600 border hover:border-white'>
             <span>{submission.Name} </span>
             <span>{Math.round(submission.Percent * 100)}%</span>
+            {submission.Description &&
+                <div className='absolute w-52 hidden group-hover:block left-1/2 top-full -translate-x-1/2 translate-y-1 bg-gray-500 round:rounded shadow-lg px-2 py-1'>{submission.Description}</div>
+            }
         </div>
     );
 }

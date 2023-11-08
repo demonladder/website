@@ -48,6 +48,8 @@ import DeletePack from './pages/mod/pack/DeletePack';
 import EditPack from './pages/mod/pack/EditPack';
 import Settings from './pages/root/settings/Settings';
 import CrossroadPack from './pages/root/packs/packOverview/CrossroadPack';
+import EditTags from './pages/mod/editTags/EditTags';
+import SubmissionSettings from './pages/root/settings/submissions/SubmissionSettings';
 
 const router = createBrowserRouter(
     [
@@ -119,6 +121,10 @@ const router = createBrowserRouter(
                         {
                             path: 'profile',
                             element: <ProfileSettings />,
+                        },
+                        {
+                            path: 'submission',
+                            element: <SubmissionSettings />,
                         },
                     ]
                 },
@@ -204,6 +210,10 @@ const router = createBrowserRouter(
                         {
                             path: 'addLevel',
                             element: <AddLevel />,
+                        },
+                        {
+                            path: 'editTags',
+                            element: <EditTags />
                         },
                         {
                             path: 'siteSettings',
