@@ -67,7 +67,7 @@ export default function ProfileSettings() {
                         <div className='col-span-9'>
                             <GeneralInformation />
                         </div>
-                        <div className='xl:col-span-3 round:rounded-lg px-4 py-2'>
+                        <div className='col-span-3 round:rounded-lg px-4 py-2'>
                             <p className='mb-2 text-lg'>Profile image</p>
                             <div className='mb-2'>
                                 <DiscordProfilePicture userID={userID} />
