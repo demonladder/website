@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { RadioButton } from '../../../components/Input';
+import useSessionStorage from '../../../hooks/useSessionStorage';
 
 type Props = {
     set: (sort: any) => void,
 }
 
 export default function SortMenu({ set }: Props) {
-    const [sortAscending, setSortAscending] = useState(true);
-    const [sorter, setSorter] = useState('LevelID');
+    const [sortAscending, setSortAscending] = useSessionStorage('profileSortAscending', true);
+    const [sorter, setSorter] = useSessionStorage('profileSort', 'LevelID');
     const [show, setShow] = useState(false);
     const resultsRef = useRef<HTMLDivElement>(null);
     function handleSortMenu(e: any) {
@@ -87,9 +88,17 @@ export default function SortMenu({ set }: Props) {
                                 <RadioButton id='Rating' name='sort' checked={sorter ==='Rating'} onChange={handleSortMenu} />
                                 Rating
                             </label>
+                            <label htmlFor='ActualRating' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='ActualRating' name='sort' checked={sorter ==='ActualRating'} onChange={handleSortMenu} />
+                                Actual rating
+                            </label>
                             <label htmlFor='Enjoyment' className='flex items-center gap-2 select-none'>
                                 <RadioButton id='Enjoyment' name='sort' checked={sorter ==='Enjoyment'} onChange={handleSortMenu} />
                                 Enjoyment
+                            </label>
+                            <label htmlFor='ActualEnjoyment' className='flex items-center gap-2 select-none'>
+                                <RadioButton id='ActualEnjoyment' name='sort' checked={sorter ==='ActualEnjoyment'} onChange={handleSortMenu} />
+                                Actual enjoyment
                             </label>
                         </div>
                     </div>
