@@ -98,12 +98,18 @@ export default function Profile() {
                     <Tracker>
                         <p>Favorites</p>
                         <div>
+                            {userData.FavoriteLevels.length === 0 &&
+                                <p>None</p>
+                            }
                             {userData.FavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.FavoriteLevels.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
                         </div>
                     </Tracker>
                     <Tracker>
                         <p>Least favorites</p>
                         <div>
+                            {userData.LeastFavoriteLevels.length === 0 &&
+                                <p>None</p>
+                            }
                             {userData.LeastFavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.LeastFavoriteLevels.length - 1 === i} key={`userLeastFavorites_${userData.ID}_${i}`} />))}
                         </div>
                     </Tracker>
