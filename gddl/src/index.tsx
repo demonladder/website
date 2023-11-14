@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -50,6 +50,9 @@ import Settings from './pages/root/settings/Settings';
 import CrossroadPack from './pages/root/packs/packOverview/CrossroadPack';
 import EditTags from './pages/mod/editTags/EditTags';
 import SubmissionSettings from './pages/root/settings/submissions/SubmissionSettings';
+import Notifications from './pages/root/notifications/Notifications';
+import { sessionLoader } from './utils/sessionLoader';
+const Game = lazy(() => import('./pages/root/game/Game'));
 
 const router = createBrowserRouter(
     [
@@ -109,6 +112,15 @@ const router = createBrowserRouter(
                 {
                     path: 'profile/:userID',
                     element: <Profile />,
+                },
+                {
+                    path: 'notifications',
+                    loader: sessionLoader,
+                    element: <Notifications />,
+                },
+                {
+                    path: 'game',
+                    element: <Suspense><Game /></Suspense>,
                 },
                 {
                     path: 'settings',
