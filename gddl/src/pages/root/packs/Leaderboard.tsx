@@ -23,7 +23,7 @@ function Contestant({ data, leader }: { data: Leader, leader: Leader | undefined
         <div className='mt-[2px] max-md:text-xs'>
             <Link to={`/profile/${data.UserID}`} style={{ width: width + '%', backgroundColor: `#${data.AccentColor?.toString(16)}` }} className='inline-block relative h-10 bg-gray-500'>
                 {data.Avatar &&
-                    <img src={pfp} className='rounded-full w-10 -ms-12'/>
+                    <object data={pfp} type='image/png' className='rounded-full w-10 -ms-12' />
                 }
                 <span className='absolute right-2 top-1/2 -translate-y-1/2' style={{ color: `rgb(${textCol}, ${textCol}, ${textCol})` }}>{data.Name}</span>
                 <span className='absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full'>{data.Sum}%</span>

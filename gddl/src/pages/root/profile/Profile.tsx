@@ -83,7 +83,8 @@ export default function Profile() {
                 <meta property='og:description' content='The project to improve demon difficulties' />
             </Helmet>
             <section className='flex justify-between flex-wrap items-center'>
-                <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.Avatar && <img className='inline w-16 rounded-full' src={pfp} />} {userData.Name} <ProfileTypeIcon permissionLevel={userData.PermissionLevel} /></h1>
+                <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.Avatar &&
+                    <object data={pfp} type='image/png' className='inline w-16 rounded-full' />} {userData.Name} <ProfileTypeIcon permissionLevel={userData.PermissionLevel} /></h1>
                 <div className='flex gap-2'>
                     <SecondaryButton onClick={logout} hidden={!ownPage}>Log out</SecondaryButton>
                 </div>

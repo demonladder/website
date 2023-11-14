@@ -1,14 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApproveSubmission, GetSubmissionQueue, Submission as TSubmission } from '../../../api/submissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import Submission from './Submissions';
+import Submission from './Submission';
 import { PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 
-type SubmissionMutation = TSubmission & {
-    deny: boolean,
+interface SubmissionMutation extends TSubmission {
+    deny: boolean;
+    reason?: string;
 }
 
 export default function Queue() {
@@ -32,8 +33,8 @@ export default function Queue() {
             error: renderToastError,
         });
     }
-    function deny(info: TSubmission) {
-        approveMutation.mutate({ ...info, deny: true});
+    function deny(info: TSubmission, reason?: string) {
+        approveMutation.mutate({ ...info, deny: true, reason });
     }
 
     function Content() {

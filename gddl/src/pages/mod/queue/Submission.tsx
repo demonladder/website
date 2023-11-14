@@ -1,17 +1,22 @@
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SubmissionQueueInfo } from '../../../api/submissions';
 import { useQuery } from '@tanstack/react-query';
 import { GetShortLevel } from '../../../api/levels';
-import { DangerButton, PrimaryButton } from '../../../components/Button';
+import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
 import toFixed from '../../../utils/toFixed';
+import Modal from '../../../components/Modal';
+import { TextInput } from '../../../components/Input';
 
 type Props = {
     info: SubmissionQueueInfo,
     approve: (submission: SubmissionQueueInfo, onlyEnjoyment?: boolean) => void,
-    remove: (submission: SubmissionQueueInfo) => void,
+    remove: (submission: SubmissionQueueInfo, reason?: string) => void,
 }
 
 export default function Submission({ info, approve, remove }: Props) {
+    const [showDenyReason, setShowDenyReason] = useState(false);
+    const reasonRef = useRef<HTMLInputElement>(null);
     const { data: levelData } = useQuery({
         queryKey: ['levels', info.LevelID],
         queryFn: () => GetShortLevel(info.LevelID),
@@ -58,8 +63,20 @@ export default function Submission({ info, approve, remove }: Props) {
             <div className='flex justify-evenly max-md:flex-col'>
                 <PrimaryButton className='px-3' onClick={() => approve(info)}>Approve</PrimaryButton>
                 <PrimaryButton className='px-3' onClick={() => approve(info, true)}>Only enjoyment</PrimaryButton>
-                <DangerButton className='px-3' onClick={() => remove(info)}>Delete</DangerButton>
+                <DangerButton className='px-3' onClick={() => setShowDenyReason(true)}>Delete</DangerButton>
             </div>
+            <Modal title='Deny reason' show={showDenyReason} onClose={() => setShowDenyReason(false)}>
+                <Modal.Body>
+                    <TextInput ref={reasonRef} placeholder='Reason...' />
+                    <p className='text-sm text-gray-400 w-96'>Optional</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <div className='flex gap-2 justify-end'>
+                        <SecondaryButton onClick={() => setShowDenyReason(false)}>Close</SecondaryButton>
+                        <DangerButton onClick={() => { remove(info, reasonRef.current?.value || undefined); setShowDenyReason(false); }}>Deny</DangerButton>
+                    </div>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

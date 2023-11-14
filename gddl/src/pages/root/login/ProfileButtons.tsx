@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import StorageManager, { User } from '../../../utils/StorageManager';
 import { useQuery } from '@tanstack/react-query';
 import { GetUser } from '../../../api/users';
-import Notifications from '../../../components/ui/Notifications';
+import NotificationButton from '../../../components/ui/Notifications';
 
 export default function ProfileButtons() {
     if (!StorageManager.hasSession()) {
@@ -30,7 +30,7 @@ function ProfileButton({ user }: { user: User | null }) {
             {StorageManager.hasPermissions() &&
                 <Link to='/mod'><i className='bx bx-shield-quarter text-2xl'></i></Link>
             }
-            <Notifications />
+            <NotificationButton />
             <Link to={`/profile/${user.ID}`} className='flex items-center'>
                 <span className='fs-5'>{user.Name}</span>
                 <div className='ms-3 w-16'>

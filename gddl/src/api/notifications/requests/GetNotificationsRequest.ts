@@ -17,9 +17,15 @@ export interface NotificationResponse {
     ReadAt: Date | null;
 }
 
-export function GetNotifications(): Promise<NotificationResponse[]> {
+export type UnreadFilter = 'all' | 'unread';
+
+interface Options {
+    allOrUnread?: UnreadFilter;
+}
+
+export function GetNotifications(options?: Options): Promise<NotificationResponse[]> {
     const csrfToken = StorageManager.getCSRF();
-    return APIClient.get('/notifications', { withCredentials: true, params: { csrfToken } }).then((res) => {
+    return APIClient.get('/notifications', { withCredentials: true, params: { csrfToken, ...options } }).then((res) => {
         const data: NotificationsRaw[] = res.data;
 
         return data.map((notif) => ({

@@ -10,6 +10,9 @@ export default function LevelResolvableText({ levelID, isLast }: { levelID: numb
 
     if (data === undefined || data === null) return;
     return (
-        <Link to={'/level/' + levelID} className='underline'>{data.Name}{!isLast && ' & '}</Link>
+        <span>
+            <Link to={'/level/' + levelID} className='underline'>{data.Name}</Link>
+            {!isLast && ' & '}
+        </span>
     );
 }
