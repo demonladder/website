@@ -130,7 +130,7 @@ export default function SiteSettings() {
                 </div>
                 <div className='mt-4'>
                     <SecondaryButton onClick={updateCommands}>Update commands</SecondaryButton>
-                    <p className='text-sm text-gray-400'>Sends the current structure of all the bots commands to Discord so the data refreshes in the Discord client</p>
+                    <p className='text-sm text-gray-400'>Sends the current structure of all the bot's commands to Discord so the data refreshes in the Discord client</p>
                 </div>
             </div>
         </div>

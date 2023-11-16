@@ -96,5 +96,14 @@ export default {
             ...generateDefaultSettings(),
             ...setting,
         }));
+    },
+
+    getHighlightCompleted() {
+        const storage = localStorage.getItem('highlightCompleted');
+        if (storage === null) return false;
+        return JSON.parse(storage) === true;
+    },
+    setHighlightCompleted(state: boolean) {
+        localStorage.setItem('highlightCompleted', JSON.stringify(state));
     }
 }
