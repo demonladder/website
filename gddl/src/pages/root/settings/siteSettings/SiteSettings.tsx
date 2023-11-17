@@ -1,15 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { PrimaryButton } from '../../../components/Button';
-import { CheckBox } from '../../../components/Input';
-import StorageManager from '../../../utils/StorageManager';
-import FormGroup from '../../../components/form/FormGroup';
+import { PrimaryButton } from '../../../../components/Button';
+import { CheckBox } from '../../../../components/Input';
+import StorageManager from '../../../../utils/StorageManager';
+import FormGroup from '../../../../components/form/FormGroup';
 
 export default function ClientSiteSettings() {
     const roundedRef = useRef<HTMLInputElement>(null);
+    const highlightRef = useRef<HTMLInputElement>(null);
     const experimentalRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (roundedRef.current) roundedRef.current.checked = StorageManager.getIsRounded();
+        if (highlightRef.current) highlightRef.current.checked = StorageManager.getHighlightCompleted();
         if (experimentalRef.current) experimentalRef.current.checked = StorageManager.getUseExperimental();
     }, []);
     
@@ -17,6 +19,7 @@ export default function ClientSiteSettings() {
         e.preventDefault();
 
         if (roundedRef.current) StorageManager.setRounded(roundedRef.current.checked);
+        if (highlightRef.current) StorageManager.setHighlightCompleted(highlightRef.current.checked);
         if (experimentalRef.current) StorageManager.setUseExperimental(experimentalRef.current.checked);
         location.reload();
     }
@@ -32,6 +35,13 @@ export default function ClientSiteSettings() {
                         Rounded corners
                     </label>
                     <p className='text-gray-400 text-sm'>Gives pretty much everything round corners.</p>
+                </FormGroup>
+                <FormGroup>
+                    <label className='flex items-center gap-2'>
+                        <CheckBox ref={highlightRef} />
+                        Highlight completed levels
+                    </label>
+                    <p className='text-gray-400 text-sm'>Adds a checkmark and green background to levels in list view.</p>
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2'>

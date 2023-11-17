@@ -32,7 +32,7 @@ import SignUp from './pages/root/signup/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProfileSettings from './pages/root/settings/profile/ProfileSettings';
-import ClientSiteSettings from './pages/root/settings/SiteSettings';
+import ClientSiteSettings from './pages/root/settings/siteSettings/SiteSettings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
 import axios from 'axios';

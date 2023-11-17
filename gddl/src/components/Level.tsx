@@ -1,6 +1,7 @@
 import IDButton from './IDButton';
 import { Level as TLevel } from '../api/levels';
 import { Link } from 'react-router-dom';
+import StorageManager from '../utils/StorageManager';
 
 type Props = {
     isHeader?: boolean,
@@ -32,9 +33,12 @@ function Level({ info }: Props) {
     const completed = info.Completed === 1;
 
     return (
-        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + (completed ? ' text-green-400 font-bold' : '')}>
-            <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center'>
-                <Link to={'/level/' + info.LevelID} className='underline break-all whitespace-pre-wrap'>{info.Name}</Link>
+        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 font-bold' : ' bg-gray-700')}>
+            <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
+                {completed && StorageManager.getHighlightCompleted() &&
+                    <img src='/assets/images/yes tick.webp' className='w-8 me-2' alt='' />
+                }
+                <Link to={'/level/' + info.LevelID} className='self-center underline break-all whitespace-pre-wrap'>{info.Name}</Link>
             </h4>
 
             <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{info.Creator}</p></div>
