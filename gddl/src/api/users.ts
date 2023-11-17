@@ -1,6 +1,5 @@
-import { Submission } from "./submissions";
-import APIClient from "./axios";
-import StorageManager from "../utils/StorageManager";
+import { Submission } from './submissions';
+import APIClient from './APIClient';
 
 type UserSubmissions = {
     total: number,
@@ -71,22 +70,15 @@ export async function GetUserSubmissions({userID, page = 1, name, sort, sortDire
 }
 
 export async function SaveProfile(user: EdittableUser) {
-    const csrfToken = StorageManager.getCSRF();
-    
-    return (await APIClient.put('/user', user, {
-        withCredentials: true,
-        params: { csrfToken },
-    })).data;
+    return (await APIClient.put('/user', user)).data;
 }
 
 export async function PromoteUser(userID: number, permissionLevel: number) {
-    const csrfToken = StorageManager.getCSRF();
-    await APIClient.put('/user/promote', { userID, permissionLevel }, { withCredentials: true, params: { csrfToken } });
+    await APIClient.put('/user/promote', { userID, permissionLevel });
 }
 
 export function Delete(id: number) {
-    const csrfToken = StorageManager.getCSRF();
-    return APIClient.delete('/user?id=' + id, { withCredentials: true, params: { csrfToken }});
+    return APIClient.delete('/user?id=' + id);
 }
 
 export interface StaffMember {

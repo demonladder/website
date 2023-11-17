@@ -1,6 +1,5 @@
-import storageManager from '../utils/StorageManager';
-import APIClient from './axios';
-import { PackShell } from './packs';
+import APIClient from './APIClient';
+import { PackShell } from './packs/types/PackShell';
 
 export interface Level {
     LevelID: number,
@@ -36,10 +35,8 @@ type SearchInfo = {
 }
 
 export function SearchLevels(q: object): Promise<SearchInfo> {
-    const csrfToken = storageManager.getCSRF() || '';
     return APIClient.get('/level/search', {
-        withCredentials: true,
-        params: { chunk: 16, ...q, csrfToken },
+        params: { chunk: 16, ...q },
     }).then((res) => res.data as SearchInfo);
 }
 
@@ -59,5 +56,5 @@ export function GetLevelPacks(levelID: number): Promise<PackShell[]> {
 }
 
 export function AddLevelToDatabase(levelID: number) {
-    return APIClient.post('/level', { levelID }, { withCredentials: true, params: { csrfToken: storageManager.getCSRF() }});
+    return APIClient.post('/level', { levelID });
 }

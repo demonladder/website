@@ -17,16 +17,11 @@ import Mod from './pages/mod/Mod';
 import { modLoader as ModLoader } from './pages/mod/Mod';
 const ModIndex = lazy(() => import('./pages/mod/ModIndex'));
 const Queue = lazy(() => import('./pages/mod/queue/Queue'));
-const EditPacks = lazy(() => import('./pages/mod/packs/EditPacks'));
 const EditReferences = lazy(() => import('./pages/mod/references/References'));
-const CreatePack = lazy(() => import('./pages/mod/pack/CreatePack'));
 const DeleteSubmission = lazy(() => import('./pages/mod/deleteSubmissions/DeleteSubmissions'));
 const Promote = lazy(() => import('./pages/mod/promote/Promote'));
 const SignupLink = lazy(() => import('./pages/mod/signupLinks/SignupLink'));
 const AddSubmission = lazy(() => import('./pages/mod/addSubmissions/AddSubmissions'));
-const Add = lazy(() => import('./pages/mod/packs/Add'));
-const Remove = lazy(() => import('./pages/mod/packs/Remove'));
-const Move = lazy(() => import('./pages/mod/packs/Move'));
 const EditSubmission = lazy(() => import('./pages/mod/editSubmissions/EditSubmissions'));
 const CreateUser = lazy(() => import('./pages/mod/createUser/CreateUser'));
 const AddLevel = lazy(() => import('./pages/mod/addLevel/AddLevel'));
@@ -41,10 +36,8 @@ import ClientSiteSettings from './pages/root/settings/SiteSettings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
 import axios from 'axios';
-import APIClient from './api/axios';
-import storageManager from './utils/StorageManager';
+import APIClient from './api/APIClient';
 import UserBans from './pages/mod/userBans/UserBans';
-import DeletePack from './pages/mod/pack/DeletePack';
 import EditPack from './pages/mod/pack/EditPack';
 import Settings from './pages/root/settings/Settings';
 import CrossroadPack from './pages/root/packs/packOverview/CrossroadPack';
@@ -154,34 +147,8 @@ const router = createBrowserRouter(
                             element: <Queue />
                         },
                         {
-                            path: 'packs',
-                            element: <EditPacks />,
-                            children: [
-                                {
-                                    path: 'add',
-                                    element: <Add />,
-                                },
-                                {
-                                    path: 'remove',
-                                    element: <Remove />,
-                                },
-                                {
-                                    path: 'move',
-                                    element: <Move />,
-                                },
-                            ]
-                        },
-                        {
                             path: 'references',
                             element: <EditReferences />
-                        },
-                        {
-                            path: 'createPack',
-                            element: <CreatePack />,
-                        },
-                        {
-                            path: 'deletePack',
-                            element: <DeletePack />,
                         },
                         {
                             path: 'editPack',
@@ -267,12 +234,7 @@ window.onload = () => {
             Authorization: `${tokenType} ${accessToken}`,
         },
     }).then((response) => {
-        const csrfToken = storageManager.getCSRF();
-
-        APIClient.post('/discord/connect', response.data, {
-            withCredentials: true,
-            params: { csrfToken },
-        }).then(() => location.replace('/')).catch((err) => {
+        APIClient.post('/discord/connect', response.data).then(() => location.replace('/')).catch((err) => {
             if (err) return;
         });
     }).catch((err) => {

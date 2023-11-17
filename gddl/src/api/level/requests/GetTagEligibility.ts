@@ -1,5 +1,4 @@
-import StorageManager from '../../../utils/StorageManager';
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 
 interface Response {
     eligible: boolean;
@@ -7,6 +6,5 @@ interface Response {
 }
 
 export function GetTagEligibility(levelID: number): Promise<Response> {
-    const csrfToken = StorageManager.getCSRF();
-    return APIClient.get('/level/tags/eligible', { withCredentials: true, params: { levelID, csrfToken } }).then((res) => res.data as Response);
+    return APIClient.get('/level/tags/eligible', { params: { levelID } }).then((res) => res.data);
 }

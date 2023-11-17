@@ -2,9 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { PrimaryButton } from '../../../components/Button';
-import APIClient from '../../../api/axios';
+import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
-import StorageManager from '../../../utils/StorageManager';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetSubmissions, Submission } from '../../../api/submissions';
 import PageButtons from '../../../components/PageButtons';
@@ -67,7 +66,7 @@ export default function EditSubmission() {
             device: parseInt(deviceKey),
             proof: proofRef.current.value,
             isEdit: true,
-        }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then(() => queryClient.invalidateQueries(['submissions', { levelID: activeLevel.LevelID }])).finally(() => setIsMutating(false)),
+        }).then(() => queryClient.invalidateQueries(['submissions', { levelID: activeLevel.LevelID }])).finally(() => setIsMutating(false)),
         {
             pending: 'Editing',
             success: 'Edited submission',

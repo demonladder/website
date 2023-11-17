@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { PackShell, SearchPacks } from '../api/packs';
+import { PackShell } from '../api/packs/types/PackShell';
+import { SearchPacks } from '../api/packs/requests/SearchPacks';
 import SearchBox from './SearchBox/SearchBox';
 
 type Props = {

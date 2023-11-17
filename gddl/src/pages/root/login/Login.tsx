@@ -4,7 +4,7 @@ import StorageManager from '../../../utils/StorageManager';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
-import APIClient from '../../../api/axios';
+import APIClient from '../../../api/APIClient';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -28,8 +28,7 @@ export default function Login() {
             withCredentials: true,
         }).then((response) => {
             if (response.status === 200) {
-                StorageManager.setCSRF(response.data.csrfToken);
-                StorageManager.setUser(response.data.jwt);
+                StorageManager.setUser(response.data.accessToken);
     
                 return navigate('/');
             }

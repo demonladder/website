@@ -1,7 +1,5 @@
-import StorageManager from '../../../utils/StorageManager';
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 
 export function ActivateBotRequest() {
-    const csrfToken = StorageManager.getCSRF();
-    return APIClient.post('/bot/activate', { csrfToken }, { withCredentials: true });
+    return APIClient.post('/bot/activate');
 }

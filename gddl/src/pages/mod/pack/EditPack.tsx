@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetSinglePack } from '../../../api/pack/requests/GetSinglePack';
 import TextArea from '../../../components/input/TextArea';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
-import { PackLevel } from '../../../api/packs';
+import { PackLevel } from '../../../api/packs/types/PackLevel';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
@@ -153,6 +153,9 @@ export default function EditPack() {
     function createPack() {
         if (isLoading) return;
 
+        if (searchQuery.trim().length === 0) {
+            return toast.error('Name can\'t be empty');
+        }
         const request = CreatePackRequest(searchQuery);
         request.then(() => {
             setChangeList([]);

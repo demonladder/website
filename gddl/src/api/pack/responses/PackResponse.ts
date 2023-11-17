@@ -1,4 +1,4 @@
-import { PackLevel } from '../../packs';
+import { PackLevel } from '../../packs/types/PackLevel';
 
 export default interface PackResponse {
     ID: number;

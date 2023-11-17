@@ -1,15 +1,14 @@
 import { Link, Outlet, redirect } from 'react-router-dom';
 import StorageManager from '../../utils/StorageManager';
 import Container from '../../components/Container';
-import APIClient from '../../api/axios';
+import APIClient from '../../api/APIClient';
 import { Suspense } from 'react';
 import { NavButton } from '../../components/ui/NavButton';
 
 export async function modLoader() {
     if (!StorageManager.hasSession()) return redirect('/');
 
-    const csrfToken = StorageManager.getCSRF();
-    return APIClient.get('/isMod', { withCredentials: true, params: { csrfToken } }).then(() => {
+    return APIClient.get('/isMod').then(() => {
         return null;
     }).catch(() => {
         return redirect('/');

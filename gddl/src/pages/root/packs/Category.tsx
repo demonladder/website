@@ -1,4 +1,4 @@
-import { PackShell } from '../../../api/packs';
+import { PackShell } from '../../../api/packs/types/PackShell';
 import CategoryResponse from '../../../api/packs/responses/Category';
 import PackRef from '../../../components/PackRef/PackRef';
 

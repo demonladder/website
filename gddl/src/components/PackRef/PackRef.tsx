@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PackShell } from '../../api/packs';
+import { PackShell } from '../../api/packs/types/PackShell';
 import PackIcon from '../PackIcon';
 import HoverMenu from './HoverMenu';
 

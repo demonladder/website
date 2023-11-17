@@ -2,9 +2,8 @@ import { useState, useRef } from 'react';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
-import APIClient from '../../../api/axios';
+import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
-import StorageManager from '../../../utils/StorageManager';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
@@ -63,7 +62,7 @@ export default function AddSubmission() {
                 refreshRate,
                 device: parseInt(deviceKey),
                 proof: proofRef.current.value,
-            }, { params: { csrfToken: StorageManager.getCSRF() }, withCredentials: true }).then((res): string => {
+            }).then((res): string => {
                 void queryClient.invalidateQueries(['submissions']);
                 void queryClient.invalidateQueries(['level', activeLevel.LevelID]);
 

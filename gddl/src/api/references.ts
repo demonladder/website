@@ -1,5 +1,4 @@
-import StorageManager from '../utils/StorageManager';
-import APIClient from './axios';
+import APIClient from './APIClient';
 
 export type Reference = {
     Tier: number,
@@ -21,12 +20,7 @@ export type Change = {
 }
 
 export function ChangeReferences(changes: Change[]) {
-    const csrfToken = StorageManager.getCSRF();
-
-    return APIClient.post('/references', { changes: changes.map((c) => { return { ID: c.ID, Type: c.Type, Tier: c.Tier }})}, {
-        withCredentials: true,
-        params: { csrfToken },
-    });
+    return APIClient.post('/references', { changes: changes.map((c) => ({ ID: c.ID, Type: c.Type, Tier: c.Tier })) });
 }
 
 export async function GetReferences(): Promise<Reference[]> {

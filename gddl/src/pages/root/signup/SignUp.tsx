@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import StorageManager from '../../../utils/StorageManager';
-import APIClient from '../../../api/axios';
+import APIClient from '../../../api/APIClient';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
@@ -50,7 +50,6 @@ export default function SignUp() {
             overrideKey
         }, { withCredentials: true }).then((response) => {
             if (response.status === 200) {
-                StorageManager.setCSRF(response.data.csrfToken);
                 StorageManager.setUser(response.data.jwt);
 
                 navigate('/');

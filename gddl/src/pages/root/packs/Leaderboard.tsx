@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetPackLeaders, Leader } from '../../../api/packs';
+import { GetPackLeaders } from '../../../api/packs/requests/GetPackLeaders';
+import { Leader } from '../../../api/packs/types/Leader';
 import StorageManager from '../../../utils/StorageManager';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { Link } from 'react-router-dom';

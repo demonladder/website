@@ -1,4 +1,4 @@
-import { PackShell } from '../api/packs';
+import { PackShell } from '../api/packs/types/PackShell';
 
 interface Props {
     pack: PackShell,

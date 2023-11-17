@@ -1,4 +1,4 @@
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 
 interface BotStatus {
     status: 'Online' | 'Offline';

@@ -1,4 +1,4 @@
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 import { Tag } from '../../types/level/Tag';
 
 export interface TagSubmission extends Tag {

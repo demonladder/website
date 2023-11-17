@@ -1,8 +1,5 @@
-import StorageManager from '../../../utils/StorageManager';
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 
 export function DeleteTag(tagID: number) {
-    const csrfToken = StorageManager.getCSRF();
-
-    return APIClient.delete('/tags', { withCredentials: true, params: { tagID, csrfToken } });
+    return APIClient.delete('/tags', { params: { tagID } });
 }

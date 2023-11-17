@@ -1,7 +1,5 @@
-import StorageManager from '../../../utils/StorageManager';
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 
 export async function CreatePackRequest(name: string){
-    const csrfToken = StorageManager.getCSRF();
-    return await APIClient.post('/packs/create', { name }, { withCredentials: true, params: { csrfToken }});
+    return await APIClient.post('/packs/create', { name });
 }

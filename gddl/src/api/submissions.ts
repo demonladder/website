@@ -1,5 +1,4 @@
-import StorageManager from '../utils/StorageManager';
-import APIClient from './axios';
+import APIClient from './APIClient';
 
 export type Submission = {
     LevelID: number,
@@ -45,8 +44,7 @@ interface PendingSubmissionInfo {
 }
 
 export async function GetSubmissionQueue(): Promise<PendingSubmissionInfo> {
-    const csrfToken = StorageManager.getCSRF();
-    const res = await APIClient.get('/submissions/pending', { withCredentials: true, params: { csrfToken } });
+    const res = await APIClient.get('/submissions/pending');
     return res.data;
 }
 
@@ -56,17 +54,14 @@ export async function GetSubmissions({ levelID, page = 1, chunk = 25 }: { levelI
 }
 
 export function DeleteSubmission(levelID: number, userID: number) {
-    const csrfToken = StorageManager.getCSRF();
-    return APIClient.delete('/submissions', { withCredentials: true, params: { csrfToken }, data: { levelID, userID } });
+    return APIClient.delete('/submissions', { data: { levelID, userID } });
 }
 
 export function ApproveSubmission(info: { deny: boolean, reason?: string, onlyEnjoyment?: boolean } & Submission): Promise<void> {
-    const csrfToken = StorageManager.getCSRF();
-    return APIClient.put('/submissions/approve', { levelID: info.LevelID, userID: info.UserID, deny: info.deny, onlyEnjoyment: info.onlyEnjoyment, reason: info.reason }, { withCredentials: true, params: { csrfToken } });
+    return APIClient.put('/submissions/approve', { levelID: info.LevelID, userID: info.UserID, deny: info.deny, onlyEnjoyment: info.onlyEnjoyment, reason: info.reason });
 }
 
 export async function SendSubmission(submission: SubmittableSubmission) {
-    const csrfToken = StorageManager.getCSRF();
-    const res = await APIClient.post('/submit', { ...submission }, { withCredentials: true, params: { csrfToken } });
+    const res = await APIClient.post('/submit', { ...submission });
     return res.data;
 }

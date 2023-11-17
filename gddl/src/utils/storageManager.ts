@@ -26,12 +26,8 @@ export default {
         return JSON.parse(''+localStorage.getItem('user'));
     },
 
-    setCSRF(csrfToken: string) {
-        localStorage.setItem('accessToken', csrfToken);
-    },
-
-    getCSRF() {
-        return localStorage.getItem('accessToken');
+    getToken() {
+        return localStorage.getItem('token');
     },
 
     hasSession() {
@@ -44,6 +40,7 @@ export default {
         delete parsed.iat;
         delete parsed.exp;
         localStorage.setItem('user', JSON.stringify(parsed));
+        localStorage.setItem('token', jwt);
     },
 
     hasPermissions() {

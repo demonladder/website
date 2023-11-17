@@ -1,5 +1,4 @@
-import StorageManager from '../../../utils/StorageManager';
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 
 interface NotificationsRaw {
     ID: string;
@@ -24,8 +23,7 @@ interface Options {
 }
 
 export function GetNotifications(options?: Options): Promise<NotificationResponse[]> {
-    const csrfToken = StorageManager.getCSRF();
-    return APIClient.get('/notifications', { withCredentials: true, params: { csrfToken, ...options } }).then((res) => {
+    return APIClient.get('/notifications', { params: { ...options } }).then((res) => {
         const data: NotificationsRaw[] = res.data;
 
         return data.map((notif) => ({

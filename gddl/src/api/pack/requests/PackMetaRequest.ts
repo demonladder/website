@@ -1,9 +1,7 @@
-import StorageManager from '../../../utils/StorageManager';
-import APIClient from '../../axios';
+import APIClient from '../../APIClient';
 import PackMetaResponse from '../responses/PackMetaResponse';
 
 export default async function PackMetaRequest(packID: number): Promise<PackMetaResponse> {
-    const csrfToken = StorageManager.getCSRF();
-    const res = await APIClient.get('/pack/meta', { params: { packID, csrfToken }, withCredentials: true });
+    const res = await APIClient.get('/pack/meta', { params: { packID } });
     return res.data;
 }

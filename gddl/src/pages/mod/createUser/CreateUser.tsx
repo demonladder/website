@@ -2,8 +2,7 @@ import { useRef } from 'react';
 import { PrimaryButton } from '../../../components/Button';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
-import APIClient from '../../../api/axios';
-import StorageManager from '../../../utils/StorageManager';
+import APIClient from '../../../api/APIClient';
 
 export default function CreateUser() {
     const nameRef = useRef<HTMLInputElement>(null);
@@ -17,8 +16,7 @@ export default function CreateUser() {
             return toast.error('Name can\'t be empty');
         }
 
-        const csrfToken = StorageManager.getCSRF();
-        toast.promise(APIClient.post('/user', { username: nameRef.current.value }, { withCredentials: true, params: { csrfToken }}), {
+        toast.promise(APIClient.post('/user', { username: nameRef.current.value }), {
             pending: 'Creating user...',
             success: 'User created!',
             error: 'An error occurred',
