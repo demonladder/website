@@ -47,10 +47,10 @@ export default function SignUp() {
         toast.promise(APIClient.post('/login/signup', {
             username,
             password,
-            overrideKey
+            overrideKey,
         }, { withCredentials: true }).then((response) => {
             if (response.status === 200) {
-                StorageManager.setUser(response.data.jwt);
+                StorageManager.setUser(response.data);
 
                 navigate('/');
             }

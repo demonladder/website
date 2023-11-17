@@ -28,7 +28,7 @@ export default function Login() {
             withCredentials: true,
         }).then((response) => {
             if (response.status === 200) {
-                StorageManager.setUser(response.data.accessToken);
+                StorageManager.setUser(response.data);
     
                 return navigate('/');
             }
