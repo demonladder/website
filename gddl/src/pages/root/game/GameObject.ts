@@ -12,14 +12,13 @@ export default class GameObject extends Hitbox {
     }
 
     inHitbox(other: GameObject) {
-        const posA = P5.Vector.add(this.position, this.hitboxOffset);
-        const posB = P5.Vector.add(other.position, other.hitboxOffset);
-        
+        if (Math.abs(this.position.x - other.position.x) > 3) return;
+
         return (
-            posA.x + this.hitboxWidth > posB.x &&
-            posA.x < posB.x + other.hitboxWidth &&  // This object is to the left of the other object
-            posA.y >= posB.y - other.hitboxHeight &&
-            posA.y - this.hitboxHeight < posB.y
+            this.position.x + this.hitboxOffset.x + this.hitboxWidth > other.position.x + other.hitboxOffset.x &&
+            this.position.x + this.hitboxOffset.x < other.position.x + other.hitboxOffset.x + other.hitboxWidth &&  // This object is to the left of the other object
+            this.position.y + this.hitboxOffset.y >= other.position.y + other.hitboxOffset.y - other.hitboxHeight &&
+            this.position.y + this.hitboxOffset.y - this.hitboxHeight < other.position.y + other.hitboxOffset.y
         );
     }
 
@@ -32,5 +31,6 @@ export default class GameObject extends Hitbox {
         p5.rect((this.position.x + this.hitboxOffset.x)*c, p5.height - (this.position.y + this.hitboxOffset.y)*c, this.hitboxWidth*c, this.hitboxHeight*c);
     }
 
+    update(_p5: P5) {}
     draw(_p5: P5) {}
 }

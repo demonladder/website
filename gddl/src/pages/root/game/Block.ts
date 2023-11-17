@@ -1,7 +1,8 @@
 import P5 from 'p5';
-import { pixelsPerBlock } from './constants';
+import { camOffset, pixelsPerBlock } from './constants';
 import GameObject from './GameObject';
 import GameState from './GameState';
+import { player } from './Game';
 
 export default class Block extends GameObject {
     constructor(x?: number, y?: number) {
@@ -13,6 +14,9 @@ export default class Block extends GameObject {
     }
 
     draw(p5: P5) {
+        if (this.position.x < player.position.x - camOffset - 1) return;
+        if (this.position.x > player.position.x + (p5.width/pixelsPerBlock - camOffset)) return;
+
         p5.strokeWeight(2);
         p5.fill(0);
         p5.stroke(255);

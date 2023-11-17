@@ -6,11 +6,13 @@ import GameObject from './GameObject';
 import GameState from './GameState';
 import createLevel2 from './levels/Level2';
 
+export const player = new Player();
 export default function Game() {
-    const player = new Player();
     const sceneObjects: GameObject[] = [];
 
     let lastObject = new GameObject();
+    
+    let startTime = 0;
     
     function setup(p5: P5, parent: Element) {
         p5.frameRate(60);
@@ -26,6 +28,8 @@ export default function Game() {
                 lastObject = o;
             }
         });
+
+        startTime = p5.millis();
     }
 
     function draw(p5: P5) {
@@ -42,14 +46,16 @@ export default function Game() {
         for (let x = minX; x < maxX; x++) {
             p5.line((x - player.position.x + camOffset)*pixelsPerBlock, 0, (x - player.position.x + camOffset)*pixelsPerBlock, p5.height);
         }
+
+        sceneObjects.forEach((o) => {
+            o.update(p5);
+        });
         
         player.translateCanvas(p5);
         sceneObjects.forEach((o) => {
-            if (o.position.x < minX) return;
-            if (o.position.x > maxX) return;
-
             o.draw(p5);
         });
+        player.unTranslateCanvas(p5);
 
         // Check colissions
         for (const obj of sceneObjects) {
@@ -58,20 +64,23 @@ export default function Game() {
             if (player.inHitbox(obj)) {
                 player.isDead = true;
                 p5.noLoop();
+
                 break;
             }
         }
 
-        player.unTranslateCanvas(p5);
-
         const percent = player.position.x / (lastObject.position.x + 5) * 100;
-        p5.strokeWeight(3);
-        p5.stroke(255);
-        p5.fill(0);
+        p5.strokeWeight(5);
+        p5.stroke(0);
+        p5.fill(255);
         p5.textSize(60);
         const text = `${percent.toFixed(2)}%`;
         p5.text(text, 640 - p5.textWidth(text)/2, 50);
-        if (percent > 100) p5.noLoop();
+        if (percent > 100) {
+            p5.text((p5.millis() - startTime > 33200) ? 'You fail' : 'You win', 0, 50);
+
+            p5.noLoop();
+        }
     }
 
     function mousePressed() {
@@ -87,6 +96,7 @@ export default function Game() {
             case 'r': {
                 player.reset();
                 p5.loop();
+                startTime = p5.millis();
                 break;
             }
             case 'h': {

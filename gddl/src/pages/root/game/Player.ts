@@ -68,11 +68,11 @@ export default class Player extends GameObject {
         p5.translate((this.position.x - camOffset) * pixelsPerBlock, 0);
     }
 
-    draw(p5: P5) {
+    update(p5: P5) {
         this.velocity.y = (p5.mouseIsPressed ? 1 : -1) * this.speed;
-
+    
         if (!this.isDead) this.position.add(this.velocity.copy().div(60));
-
+    
         let hasCollided = false;
         if (this.position.y < this.radius) {
             hasCollided = true;
@@ -82,7 +82,9 @@ export default class Player extends GameObject {
             this.position.y = p5.height/pixelsPerBlock - this.radius;
         }
         if (hasCollided) this.trail.addPoint();
+    }
 
+    draw(p5: P5) {
         // Draw player
         this.trail.draw(p5);
         p5.noFill();
