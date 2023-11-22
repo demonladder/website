@@ -45,6 +45,7 @@ import EditTags from './pages/mod/editTags/EditTags';
 import SubmissionSettings from './pages/root/settings/submissions/SubmissionSettings';
 import Notifications from './pages/root/notifications/Notifications';
 import { sessionLoader } from './utils/sessionLoader';
+import StorageManager from './utils/StorageManager';
 const Game = lazy(() => import('./pages/root/game/Game'));
 
 const router = createBrowserRouter(
@@ -125,10 +126,12 @@ const router = createBrowserRouter(
                         },
                         {
                             path: 'profile',
+                            loader: sessionLoader,
                             element: <ProfileSettings />,
                         },
                         {
                             path: 'submission',
+                            loader: sessionLoader,
                             element: <SubmissionSettings />,
                         },
                     ]
@@ -242,8 +245,28 @@ window.onload = () => {
     });
 }
 
+// Close context menu if the user clicks anywhere not on it
+function closeContext(e: MouseEvent) {
+    const menu = document.getElementById('profileSubmissionContext');
+    if (menu === null) return;
+
+    if ((e.target as HTMLDivElement).offsetParent != menu) {
+        menu.classList.remove('visible');
+        e.preventDefault();
+    }
+}
+function closeContextScroll() {
+    const menu = document.getElementById('profileSubmissionContext');
+    if (menu === null) return;
+
+    menu.classList.remove('visible');
+}
+document.addEventListener('click', closeContext);
+document.addEventListener('scroll', closeContextScroll);
+
 const rootElement = document.getElementById('root') || createRoot();
 const root = ReactDOM.createRoot(rootElement);
+StorageManager.getIsRounded() && rootElement.classList.add('round');
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
@@ -251,5 +274,9 @@ root.render(
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
         <ToastContainer theme='dark' position='bottom-right' />
+		<div id='profileSubmissionContext' className='fixed w-36 z-50 hidden bg-gray-900 text-white round:rounded shadow-2xl cursor-pointer'>
+			<div className='my-1 px-2 py-1 hover:bg-gray-700'>Info</div>
+			<div className='my-1 px-2 py-1 hover:bg-red-600'>Delete</div>
+		</div>
     </React.StrictMode>
 );

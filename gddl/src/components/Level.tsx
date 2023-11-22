@@ -9,6 +9,7 @@ type Props = {
         ActualRating?: number;
         ActualEnjoyment?: number;
     },
+    onContextMenu?: React.MouseEventHandler;
 }
 
 function Header() {
@@ -24,7 +25,7 @@ function Header() {
     );
 }
 
-function Level({ info }: Props) {
+function Level({ info, onContextMenu }: Props) {
     const roundedTier = info.Rating !== null ? Math.round(info.Rating) : 0;
     const roundedEnjoyment = info.Enjoyment !== null ? Math.round(info.Enjoyment) : -1;
     
@@ -33,7 +34,7 @@ function Level({ info }: Props) {
     const completed = info.Completed === 1;
 
     return (
-        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 font-bold' : ' bg-gray-700')}>
+        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 font-bold' : ' bg-gray-700')} onContextMenu={onContextMenu}>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
                     <img src='/assets/images/yes tick.webp' className='w-8 me-2' alt='' />

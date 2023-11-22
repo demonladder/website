@@ -64,8 +64,16 @@ export default function TagBox({ level }: { level: FullLevel }) {
 }
 
 function Tag({ submission }: { submission: TagSubmission }) {
+    const queryClient = useQueryClient();
+
+    function handleClick() {
+        SendTagVoteRequest(submission.LevelID, submission.TagID).then(() => {
+            queryClient.invalidateQueries(['level', 'tags', submission.LevelID]);
+        })
+    }
+
     return (
-        <div className='bg-gray-600 px-2 group round:rounded-lg relative border-gray-600 border hover:border-white'>
+        <div onClick={handleClick} className={'px-2 group round:rounded-lg relative border ' + (submission.HasVoted ? 'bg-blue-600 bg-opacity-25 border-blue-400' : 'bg-gray-600 border-gray-600 hover:border-white transition-colors')}>
             <span>{submission.Name} </span>
             <span>{Math.round(submission.Percent * 100)}%</span>
             {submission.Description &&

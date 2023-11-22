@@ -1,7 +1,6 @@
 import Header from '../../layouts/header/Header';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import StorageManager from '../../utils/StorageManager';
 
 function Root() {
     return (
@@ -10,7 +9,7 @@ function Root() {
                 <title>GD Demon Ladder</title>
             </Helmet>
             <Header />
-            <main className={StorageManager.getIsRounded() ? 'round' : ''}>
+            <main>
                 <Outlet />
             </main>
         </>
