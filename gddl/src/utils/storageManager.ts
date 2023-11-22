@@ -1,10 +1,10 @@
-import Cookies from 'js-cookie';
-
 export type User = {
     ID: number,
     Name: string,
     Hardest: number,
     PermissionLevel: number,
+    iat: number,  // Issued at
+    exp: number,  // Expires at
 }
 
 interface Settings {
@@ -31,14 +31,16 @@ export default {
     },
 
     hasSession() {
-        return Cookies.get('session') !== undefined;
+        const user = this.getUser();
+
+        if (user === null) return false;
+
+        return Date.now() < user.exp * 1000;
     },
 
     setUser(jwt: string) {
         const payload = jwt.split('.')[1];
         const parsed = JSON.parse(atob(payload));
-        delete parsed.iat;
-        delete parsed.exp;
         localStorage.setItem('user', JSON.stringify(parsed));
         localStorage.setItem('token', jwt);
     },
@@ -50,7 +52,7 @@ export default {
     deleteSession() {
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
-        Cookies.remove('session');
+        localStorage.removeItem('token');
     },
 
     getIsRounded() {

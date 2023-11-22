@@ -2,6 +2,7 @@
 *.crt
 *.key
 sslcert
+.VSCodeCounter
 
 # Logs
 logs

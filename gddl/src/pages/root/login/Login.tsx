@@ -7,11 +7,14 @@ import { PrimaryButton } from '../../../components/Button';
 import APIClient from '../../../api/APIClient';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Login() {
     const nameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const queryClient = useQueryClient();
 
     const navigate = useNavigate();
 
@@ -24,12 +27,11 @@ export default function Login() {
         APIClient.post('/login', {
             username: nameRef.current.value,
             password: passwordRef.current.value,
-        }, {
-            withCredentials: true,
         }).then((response) => {
             if (response.status === 200) {
                 StorageManager.setUser(response.data);
     
+                queryClient.invalidateQueries(['search']);
                 return navigate('/');
             }
         }).catch((error: AxiosError) => {
@@ -53,6 +55,7 @@ export default function Login() {
                         <PasswordInput ref={passwordRef} id='loginPassword' name='password' />
                     </div>
                     <PrimaryButton onClick={submit} className='w-full' disabled={isLoading}>Login</PrimaryButton>
+                    <LoadingSpinner isLoading={isLoading} />
                 </div>
             </div>
         </Container>
