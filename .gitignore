@@ -3,6 +3,7 @@
 *.key
 sslcert
 .VSCodeCounter
+build/
 
 # Logs
 logs
