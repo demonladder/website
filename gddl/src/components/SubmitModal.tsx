@@ -38,7 +38,7 @@ const deviceOptions = {
 export default function SubmitModal({ show, onClose, level }: Props) {
     const ratingRef = useRef<HTMLInputElement>(null);
     const [enjoymentKey, setEnjoymentKey] = useState('-1');
-    const [deviceKey, setDeviceKey] = useState('1');
+    const [deviceKey, setDeviceKey] = useState(StorageManager.getSettings().submission.defaultDevice);
     const [refreshRate, setRefreshRate] = useState<number>(StorageManager.getSettings().submission.defaultRefreshRate);
     const [proof, setProof] = useState('');
 
@@ -76,7 +76,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
             device: parseInt(deviceKey),
             proof,
         };
-        
+
         toast.promise(SendSubmission(data), {
             pending: 'Submitting',
             success: 'Rating submitted',
@@ -100,7 +100,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                         <NumberInput id='submitRating' ref={ratingRef} inputMode='numeric' />
                         <p className='text-sm text-gray-400'>Must be 1-35</p>
                     </div>
-                    <div style={{height: '52px'}}>
+                    <div style={{ height: '52px' }}>
                         <label htmlFor='submitEnjoyment'>Enjoyment:</label>
                         <Select id='submitEnjoyment' options={enjoymentOptions} activeKey={enjoymentKey} onChange={setEnjoymentKey} zIndex={1030} />
                     </div>
@@ -109,7 +109,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                         <NumberInput id='submitRefreshRate' value={refreshRate} onChange={handleFPSChange} />
                         <p className='text-sm text-gray-400'>At least 30fps</p>
                     </div>
-                    <div style={{height: '52px'}}>
+                    <div style={{ height: '52px' }}>
                         <label>Device:</label>
                         <Select id='submitDevice' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
                     </div>

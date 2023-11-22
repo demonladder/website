@@ -1,3 +1,5 @@
+import { merge } from 'lodash';
+
 export type User = {
     ID: number,
     Name: string,
@@ -10,20 +12,29 @@ export type User = {
 interface Settings {
     submission: {
         defaultRefreshRate: number,
+        defaultDevice: string,
     },
 }
+
+type RecursivePartial<T> = {
+    [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object | undefined ? RecursivePartial<T[P]> :
+    T[P];
+};
 
 function generateDefaultSettings(): Settings {
     return {
         submission: {
             defaultRefreshRate: 60,
+            defaultDevice: '1',
         },
     };
 }
 
 export default {
     getUser(): User | null {
-        return JSON.parse(''+localStorage.getItem('user'));
+        return JSON.parse('' + localStorage.getItem('user'));
     },
 
     getToken() {
@@ -74,27 +85,28 @@ export default {
     },
 
     getSettings(): Settings {
+        const defaulSettings = generateDefaultSettings();
         const storage = localStorage.getItem('settings');
+
         if (storage === null) {
             // Create settings
-            const defaulSettings = generateDefaultSettings();
             localStorage.setItem('settings', JSON.stringify(defaulSettings));
 
             return defaulSettings;
         };
 
         // Merge default with stored in case new settings get added
-        return {
-            ...generateDefaultSettings(),
-            ...JSON.parse(storage),
-        };
+        return merge(
+            defaulSettings,
+            JSON.parse(storage),
+        );
     },
 
-    setSetting(setting: Partial<Settings>) {
-        localStorage.setItem('settings', JSON.stringify({
-            ...generateDefaultSettings(),
-            ...setting,
-        }));
+    setSetting(setting: RecursivePartial<Settings>) {
+        localStorage.setItem('settings', JSON.stringify(merge(
+            this.getSettings(),
+            setting,
+        )));
     },
 
     getHighlightCompleted() {

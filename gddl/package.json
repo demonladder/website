@@ -16,6 +16,7 @@
     "axios": "^1.4.0",
     "chart.js": "^4.4.0",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-chartjs-2": "^5.2.0",
@@ -28,6 +29,7 @@
     "sass": "^1.63.6"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/react-helmet": "^6.1.6",

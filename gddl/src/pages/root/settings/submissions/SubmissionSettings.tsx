@@ -1,14 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NumberInput } from '../../../../components/Input';
 import StorageManager from '../../../../utils/StorageManager';
+import Select from '../../../../components/Select';
+
+const deviceOptions = {
+    1: 'PC',
+    2: 'Mobile',
+};
 
 export default function SubmissionSettings() {
-    const [defaultFPS, setDefaultFPS] = useState(StorageManager.getSettings().submission.defaultRefreshRate.toString());
+    const [defaultFPS, setDefaultFPS] = useState(StorageManager.getSettings().submission.defaultRefreshRate);
+    const [defaultDevice, setDefaultDevice] = useState(StorageManager.getSettings().submission.defaultDevice || '1');
     const [FPSInvalid, setFPSInvalid] = useState(false);
+
+    useEffect(() => {
+        StorageManager.setSetting({
+            submission: {
+                defaultDevice,
+            },
+        });
+    }, [defaultDevice]);
 
     function updateFPS(e: React.ChangeEvent<HTMLInputElement>) {
         const parsed = parseInt(e.target.value) as number;
-        setDefaultFPS(e.target.value);
+        setDefaultFPS(parsed);
         setFPSInvalid(false);
 
         if (!isNaN(parsed) && parsed >= 30) {
@@ -29,6 +44,11 @@ export default function SubmissionSettings() {
                 <label htmlFor='defaultRefreshRateInput'><b>Default refresh rate</b></label>
                 <NumberInput id='defaultRefreshRateInput' value={defaultFPS} onChange={updateFPS} invalid={FPSInvalid} />
                 <p className='text-gray-400 text-sm'>This value will be used for every submission you send if you don't explicitly type the fps on the submission form</p>
+            </div>
+            <div>
+                <label htmlFor='defaultRefreshRateInput'><b>Default device</b></label>
+                <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice} onChange={setDefaultDevice} />
+                <p className='text-gray-400 text-sm'>The default device for all your submissions</p>
             </div>
         </main>
     );
