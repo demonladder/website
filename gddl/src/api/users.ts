@@ -88,7 +88,14 @@ export interface StaffMember {
 }
 
 export function GetStaff(): Promise<StaffMember[]> {
-    return APIClient.get('/user/staff').then(res => res.data);
+    return APIClient.get('/user/staff').then(res => [
+        ...res.data,
+        {
+            ID: 1406,
+            Name: 'Diversion',
+            PermissionLevel: 4,
+        },
+    ]);
 }
 
 export function GetDiscordUser(userID: number): Promise<DiscordUser> {

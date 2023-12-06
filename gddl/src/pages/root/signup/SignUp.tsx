@@ -73,10 +73,12 @@ export default function SignUp() {
         <Container className='bg-gray-800'>
             <div className='flex justify-center'>
                 <div className='w-11/12 md:w-1/2 lg:w-2/6'>
-                    <h1 className='text-4xl'>Sign Up</h1>
-                    <div className='my-6'>
-                        <p>Already have your name on the site? Contact the staff <a className='text-blue-500 font-bold underline' href='https://discord.gg/gddl' target='_blank' rel='noopener noreferrer'>in our discord</a> to get an alternative sign up link.</p>
-                    </div>
+                    <h1 className='text-4xl mb-4'>Sign Up</h1>
+                    {url.get('name') === null &&
+                        <div className='my-6'>
+                            <p>Already have your name on the site? Contact the staff <a className='text-blue-500 font-bold underline' href='https://discord.gg/gddl' target='_blank' rel='noopener noreferrer'>in our discord</a> to get an alternative sign up link.</p>
+                        </div>
+                    }
                     <form method='post' action='/signup'>
                         <div className='mb-3'>
                             <label htmlFor='username'>Username</label>

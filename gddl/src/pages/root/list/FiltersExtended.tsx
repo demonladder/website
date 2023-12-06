@@ -1,5 +1,6 @@
 import StorageManager from '../../../utils/StorageManager';
-import { CheckBox, NumberInput } from '../../../components/Input';
+import { NumberInput } from '../../../components/Input';
+import CheckBox from '../../../components/input/CheckBox';
 import { SearchFilters } from './Ladder';
 
 type Props = {

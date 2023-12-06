@@ -60,7 +60,7 @@ export default function Submissions({ userID }: Props) {
 
     const submissions = data?.submissions;
 
-    if (submissions === undefined || data === undefined || submissions.length === 0) {
+    if (submissions === undefined || data === undefined) {
         return;
     }
 
@@ -81,13 +81,16 @@ export default function Submissions({ userID }: Props) {
                         </svg>
                     </button>
                 </div>
-                <div className='w-60'>
+                <div className='max-md:w-full md:w-60'>
                     <TextInput onChange={(e) => setNameFilter(e.target.value)} placeholder='Filter by name...' />
                 </div>
             </div>
             {listType === 'inline' ?
                 <InlineList levels={submissions} userID={userID} /> :
                 <GridList levels={submissions} />
+            }
+            {submissions.length === 0 &&
+                <p>No levels</p>
             }
             <PageButtons onPageChange={setPage} meta={{ ...data, page }} />
         </div>

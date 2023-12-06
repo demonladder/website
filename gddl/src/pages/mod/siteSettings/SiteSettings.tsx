@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
-import { CheckBox } from '../../../components/Input';
+import CheckBox from '../../../components/input/CheckBox';
 import FormGroup from '../../../components/form/FormGroup';
 import { GetSiteSettings, SaveSiteSettings } from '../../../api/settings';
 import { useQuery, useQueryClient } from '@tanstack/react-query';

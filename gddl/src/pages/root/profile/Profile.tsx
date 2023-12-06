@@ -90,14 +90,14 @@ export default function Profile() {
                 </div>
             </section>
             <section className='flex max-sm:flex-col'>
-                <div className='bg-gray-950 round:rounded-s-xl p-3 w-full sm:w-1/3'>
+                <div className='bg-gray-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full sm:w-1/3'>
                     <p><b>Introduction:</b></p>
                     <p className='border-b-2 h-20 overflow-auto'>{userData.Introduction}</p>
                 </div>
-                <div className='p-3 bg-gray-700 round:rounded-e-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3'>
+                <div className='p-3 bg-gray-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3 max-md:gap-y-2'>
                     <LevelTracker levelID={userData.Hardest} title='Hardest' />
                     <Tracker>
-                        <p>Favorites</p>
+                        <b>Favorites:</b>
                         <div>
                             {userData.FavoriteLevels.length === 0 &&
                                 <p>None</p>
@@ -106,7 +106,7 @@ export default function Profile() {
                         </div>
                     </Tracker>
                     <Tracker>
-                        <p>Least favorites</p>
+                        <b>Least favorites:</b>
                         <div>
                             {userData.LeastFavoriteLevels.length === 0 &&
                                 <p>None</p>
@@ -115,11 +115,11 @@ export default function Profile() {
                         </div>
                     </Tracker>
                     <Tracker>
-                        <p>Tier preference:</p>
+                        <b>Tier preference:</b>
                         <p>{calcPref()}</p>
                     </Tracker>
                     <Tracker>
-                        <p>Average enjoyment:</p>
+                        <b>Average enjoyment:</b>
                         <p>{toFixed(''+userData.AverageEnjoyment, 1, '-')}</p>
                     </Tracker>
                 </div>

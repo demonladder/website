@@ -13,8 +13,9 @@ import StorageManager from '../../../utils/StorageManager';
 import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton, SecondaryButton } from '../../../components/Button';
 import TagBox from './TagBox';
+import { onSubscribe } from './onSubscribe';
 
 export default function LevelOverview() {
     const [showModal, setShowModal] = useState(false);
@@ -84,8 +85,17 @@ export default function LevelOverview() {
                 <meta property='og:image' content={DifficultyToImgSrc(level.Difficulty)} />
             </Helmet>
             <section>
-                <div className='mb-1'>
-                    <h1 className='text-4xl font-bold'>{level.Name} <PrimaryButton className='text-lg' onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}>Submit <i className='bx bx-list-plus'></i></PrimaryButton></h1>
+                <div>
+                    <h1 className='text-4xl font-bold'>{level.Name}&nbsp;
+                        {StorageManager.hasSession() &&
+                            <span className='inline-block'>
+                                <div className='flex gap-2'>
+                                    <PrimaryButton className='text-lg' onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}>Submit <i className='bx bx-list-plus'></i></PrimaryButton>
+                                    <SecondaryButton className='text-lg' onClick={() => onSubscribe(levelID)}>Subscribe</SecondaryButton>
+                                </div>
+                            </span>
+                        }
+                    </h1>
                     <p className='text-2xl'>by <span className='cursor-pointer' onClick={creatorClicked}>{level.Creator}</span></p>
                 </div>
                 <div className='grid grid-cols-12 gap-4 p-4 bg-gray-700 round:rounded-xl text-xl'>

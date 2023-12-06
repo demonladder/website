@@ -37,7 +37,7 @@ function Level({ info, onContextMenu }: Props) {
         <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 font-bold' : ' bg-gray-700')} onContextMenu={onContextMenu}>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
-                    <img src='/assets/images/yes tick.webp' className='w-8 me-2' alt='' />
+                    <img src='/assets/images/yes tick.webp' className='w-8 h-8 self-center me-2' alt='' />
                 }
                 <Link to={'/level/' + info.LevelID} className='self-center underline break-all whitespace-pre-wrap'>{info.Name}</Link>
             </h4>

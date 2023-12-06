@@ -18,7 +18,7 @@ export default function LevelTracker({ levelID, title }: Props) {
     if (status === 'loading') {
         return (
             <Tracker>
-                <p>{title}:</p>
+                <b>{title}:</b>
                 <Link to={'/level/' + levelID} className='link-disable'><LoadingSpinner /></Link>
             </Tracker>);
     }
@@ -26,7 +26,7 @@ export default function LevelTracker({ levelID, title }: Props) {
     if (!data || levelID === null) {
         return (
             <Tracker>
-                <p>{title}:</p>
+                <b>{title}:</b>
                 <p className='link-disable text-gray-400'>None</p>
             </Tracker>
         );
@@ -34,7 +34,7 @@ export default function LevelTracker({ levelID, title }: Props) {
 
     return (
         <Tracker>
-            <p>{title}:</p>
+            <b>{title}:</b>
             <Link to={'/level/' + levelID} className='underline'>{data.Name}</Link>
         </Tracker>
     );

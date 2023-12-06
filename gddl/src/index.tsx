@@ -118,6 +118,7 @@ const router = createBrowserRouter(
                 },
                 {
                     path: 'settings',
+                    //loader: sessionLoader,
                     element: <Settings />,
                     children: [
                         {
@@ -126,12 +127,10 @@ const router = createBrowserRouter(
                         },
                         {
                             path: 'profile',
-                            loader: sessionLoader,
                             element: <ProfileSettings />,
                         },
                         {
                             path: 'submission',
-                            loader: sessionLoader,
                             element: <SubmissionSettings />,
                         },
                     ]
@@ -252,7 +251,6 @@ function closeContext(e: MouseEvent) {
 
     if ((e.target as HTMLDivElement).offsetParent != menu) {
         menu.classList.remove('visible');
-        e.preventDefault();
     }
 }
 function closeContextScroll() {

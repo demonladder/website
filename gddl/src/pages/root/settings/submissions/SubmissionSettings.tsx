@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { NumberInput } from '../../../../components/Input';
 import StorageManager from '../../../../utils/StorageManager';
 import Select from '../../../../components/Select';
+import Notifications from './Notifications';
 
 const deviceOptions = {
     1: 'PC',
@@ -50,6 +51,9 @@ export default function SubmissionSettings() {
                 <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice} onChange={setDefaultDevice} />
                 <p className='text-gray-400 text-sm'>The default device for all your submissions</p>
             </div>
+            {StorageManager.getUseExperimental() &&
+                <Notifications />
+            }
         </main>
     );
 }
