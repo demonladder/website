@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetUserSubmissions } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
-import { Submission } from '../../../api/submissions';
+import { DeleteSubmission, Submission } from '../../../api/submissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
@@ -13,6 +13,8 @@ import { TextInput } from '../../../components/Input';
 import StorageManager from '../../../utils/StorageManager';
 import MenuContext from '../../../components/ui/MenuContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import renderToastError from '../../../utils/renderToastError';
 
 type Props = {
     userID: number,
@@ -104,9 +106,11 @@ function InlineList({ levels, userID }: { levels: Submission[], userID: number }
     const menuRef = useRef<HTMLDivElement>(null);
 
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     function openContext(e: React.MouseEvent, levelID: number) {
         if (userID !== StorageManager.getUser()?.ID) return;
+        
 
         e.preventDefault();
 
@@ -126,25 +130,45 @@ function InlineList({ levels, userID }: { levels: Submission[], userID: number }
             }
         }
 
+        function closeOnScroll() {
+            setRightClicked(false);
+        }
+
         document.addEventListener('click', close);
+        document.addEventListener('scroll', closeOnScroll);
 
         return () => {
             document.removeEventListener('click', close);
+            document.removeEventListener('scroll', closeOnScroll);
         }
     }, []);
+
+    function deleteSubmission(levelID?: number) {
+        if (levelID === undefined) return;
+        
+        toast.promise(DeleteSubmission(levelID, userID).then(() => {
+            queryClient.invalidateQueries(['level', clickedID]);
+            queryClient.invalidateQueries(['user/submissions', { userID }]);
+            setRightClicked(false);
+        }), {
+            pending: 'Deleting...',
+            success: 'Deleted your submission for ' + levels.find((l) => l.LevelID === clickedID)?.Name || clickedID?.toString(),
+            error: renderToastError,
+        });
+    }
 
     return (
         <>
             <div className='level-list'>
                 <Level.Header />
                 {levels.map((p) => (
-                    <Level isHeader={false} info={p} key={p.LevelID} onContextMenu={(e) => openContext(e, p.LevelID)} />
+                    <Level isHeader={false} info={p} key={'submission_' + p.LevelID + '_' + p.UserID} onContextMenu={(e) => openContext(e, p.LevelID)} />
                 ))}
             </div>
             {rightClicked &&
                 <MenuContext ref={menuRef} point={point} data={[
                     { text: 'Info', onClick: () => navigate(`/level/${clickedID}`) },
-                    { text: 'Delete', danger: true }
+                    { text: 'Delete', danger: true, onClick: () => deleteSubmission(clickedID) }
                 ]} />
             }
         </>

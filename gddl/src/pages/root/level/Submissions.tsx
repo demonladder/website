@@ -4,6 +4,7 @@ import { GetSubmissions, Submission as TSubmission } from '../../../api/submissi
 import { Link } from 'react-router-dom';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import RefreshRateIcon from './RefreshRateIcon';
 
 type Props = {
     submission: TSubmission,
@@ -17,13 +18,19 @@ function Submission({ submission }: Props) {
 
     const hasWidgets = submission.Proof || submission.Device === 'Mobile';
 
+    const title: string[] = [
+        `Sent at: ${new Date(submission.DateAdded + 'z').toLocaleString()}`,
+        `Last changed at: ${new Date(submission.DateChanged + 'z').toLocaleString()}`,
+        `${submission.RefreshRate}fps`,
+    ];
+
     return (
-        <div className='flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
+        <div title={title.join('\n')} className='flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
             <Link className={'w-1/6 p-2 text-center round:rounded-s-md tier-' + (submission.Rating ? submission.Rating : '0')} to={linkDestination}>{submission.Rating || 'N/A'}</Link>
             <Link className={'w-1/6 p-2 text-center enj-' + enj} to={linkDestination}>{enjText}</Link>
-            <Link className={'p-2 flex-grow bg-gray-500' + (hasWidgets ? '' : ' round:rounded-e-md')} to={linkDestination}>{submission.Name}</Link>
+            <Link className='p-2 flex-grow bg-gray-500' to={linkDestination}>{submission.Name}</Link>
             {hasWidgets &&
-                <span className='text-lg flex gap-1 items-center bg-gray-500 round:rounded-e-md pe-2'>
+                <span className='text-lg flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&
                         <i className='bx bx-mobile-alt' />
                     }
@@ -34,6 +41,7 @@ function Submission({ submission }: Props) {
                     }
                 </span>
             }
+            <RefreshRateIcon refreshRate={submission.RefreshRate} />
         </div>
     );
 }

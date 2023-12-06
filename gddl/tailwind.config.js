@@ -63,12 +63,23 @@ export default {
                     5: '#efa51c',
                     6: '#ffef01',
                 },
+                refreshRate: {
+                    60: '#5d5d5d',
+                    75: '#ff9900',
+                    120: '#ffff00',
+                    144: '#00ff00',
+                    240: '#00ffff',
+                    360: '#000000',
+                }
             },
         },
     },
     safelist: [
         {
             pattern: /permission-[0-9]/,
+        },
+        {
+            pattern: /refreshRate-.*/,
         },
     ],
     plugins: [

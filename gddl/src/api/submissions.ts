@@ -12,6 +12,8 @@ export type Submission = {
     Song: string,
     Proof: string,
     Difficulty: string,
+    DateAdded: string;  // In UTC
+    DateChanged: string;  // In UTC
 }
 
 export type SubmissionQueueInfo = Submission & {
