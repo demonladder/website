@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
@@ -9,6 +9,7 @@ import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import useUserSearch from '../../../hooks/useUserSearch';
+import { Level } from '../../../api/levels';
 
 const deviceOptions = {
     '1': 'PC',
@@ -20,10 +21,10 @@ export default function AddSubmission() {
     const [deviceKey, setDeviceKey] = useState('1');
     const [isMutating, setIsMutating] = useState(false);
 
-    const ratingRef = useRef<HTMLInputElement>(null);
-    const enjoymentRef = useRef<HTMLInputElement>(null);
-    const proofRef = useRef<HTMLInputElement>(null);
-    const [refreshRate, setRefreshRate] = useState<number>();
+    const [rating, setRating] = useState<number>();
+    const [enjoyment, setEnjoyment] = useState<number>();
+    const [proof, setProof] = useState('');
+    const [refreshRate, setRefreshRate] = useState<number>(60);
 
     const queryClient = useQueryClient();
 
@@ -33,10 +34,6 @@ export default function AddSubmission() {
     });
 
     function submit() {
-        if (ratingRef.current === null || enjoymentRef.current === null || proofRef.current === null) {
-            return toast.error('An error occurred');
-        }
-
         // Validate
         if (!activeLevel || !userSearch.activeUser) {
             if (!activeLevel) {
@@ -47,21 +44,21 @@ export default function AddSubmission() {
                 userSearch.markInvalid();
                 toast.error('You must select a user!');
             }
-            
+
             return;
         }
-        
+
         // Send
         setIsMutating(true);
         void toast.promise(
             APIClient.post('/submit/mod', {
                 levelID: activeLevel.LevelID,
                 userID: userSearch.activeUser.ID,
-                rating: parseInt(ratingRef.current.value),
-                enjoyment: parseInt(enjoymentRef.current.value),
+                rating: rating,
+                enjoyment: enjoyment,
                 refreshRate,
                 device: parseInt(deviceKey),
-                proof: proofRef.current.value,
+                proof,
             }).then((res): string => {
                 void queryClient.invalidateQueries(['submissions']);
                 void queryClient.invalidateQueries(['level', activeLevel.LevelID]);
@@ -71,9 +68,9 @@ export default function AddSubmission() {
             {
                 pending: 'Sending...',
                 success: {
-                    render({data}) {
+                    render({ data }) {
                         if (data === undefined) {
-                            return 'Erm, this is not supposed to appear, contact Diversion';
+                            return 'Erm, this is not supposed to appear';
                         }
                         return `${data} for ${activeLevel.Name}!`
                     }
@@ -84,10 +81,14 @@ export default function AddSubmission() {
     }
 
     function clear() {
-        setKey(prev => prev+1);
+        setKey(prev => prev + 1);
         clearActiveLevel();
         userSearch.clear();
     }
+
+    const tierValid = validateTier(rating);
+    const enjoymentValid = validateEnjoyment(enjoyment);
+    const validOverride = tierValid || enjoymentValid;
 
     return (
         <div key={`addSubmission_${key}`}>
@@ -104,15 +105,15 @@ export default function AddSubmission() {
                 </div>
                 <div>
                     <label htmlFor='addSubmissionTier'>Tier:</label>
-                    <NumberInput id='addSubmissionTier' ref={ratingRef} />
+                    <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} invalid={!(tierValid || validOverride)} />
                 </div>
                 <div>
                     <label htmlFor='addSubmissionEnjoyment'>Enjoyment:</label>
-                    <NumberInput id='addSubmissionEnjoyment' ref={enjoymentRef} />
+                    <NumberInput id='addSubmissionEnjoyment' value={enjoyment} onChange={(e) => setEnjoyment(parseInt(e.target.value))} invalid={!(enjoymentValid || validOverride)} />
                 </div>
                 <div>
                     <label htmlFor='addSubmissionRefreshRate'>Refresh rate:</label>
-                    <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} />
+                    <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} invalid={!validateRefreshRate(refreshRate)} />
                     <p className='text-sm text-gray-400'>Defaults to 60 if empty</p>
                 </div>
                 <div>
@@ -121,7 +122,7 @@ export default function AddSubmission() {
                 </div>
                 <div>
                     <label htmlFor='addSubmissionProof'>Proof:</label>
-                    <TextInput id='addSubmissionProof' ref={proofRef} />
+                    <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} invalid={!validateProof(proof, activeLevel)} />
                     <p className='text-sm text-gray-400'>Has to be a link</p>
                 </div>
             </div>
@@ -131,4 +132,22 @@ export default function AddSubmission() {
             </div>
         </div>
     );
+}
+
+function validateTier(tier?: number) {
+    if (tier === undefined) return false;
+    return !isNaN(tier) && tier >= 1 && tier <= 35;
+}
+
+function validateEnjoyment(enjoyment?: number) {
+    if (enjoyment === undefined) return false;
+    return !isNaN(enjoyment) && enjoyment >= 0 && enjoyment <= 10;
+}
+
+function validateRefreshRate(FPS: number) {
+    return FPS >= 30;
+}
+
+function validateProof(proof: string, level?: Level) {
+    return !(level?.Difficulty === 'Extreme' && proof.length === 0);
 }

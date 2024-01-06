@@ -18,7 +18,7 @@ function Modal({ title, show, children, onClose }: Props) {
 
     return (
         <div ref={wrapperRef} onClick={(e) => handleClose(e)} className={'fixed z-30 inset-0 w-full h-full transition-colors ' + (show ? 'bg-black bg-opacity-40 ' : 'pointer-events-none')}>
-            <div className={'max-w-lg min-w-[314px] absolute left-1/2 -translate-x-1/2 bg-gray-600 text-white p-4 top-5 opacity-0 transition-opacity' + (show ? ' opacity-100 pointer-events-auto' : '')}>
+            <div className={'max-w-lg min-w-[314px] max-h-full overflow-y-auto top-5 absolute left-1/2 -translate-x-1/2 bg-gray-600 text-white p-4 opacity-0 transition-opacity' + (show ? ' opacity-100 pointer-events-auto' : '')}>
                 <div>
                     <h1 className='font-bold text-2xl'>{title}</h1>
                 </div>

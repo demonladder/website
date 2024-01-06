@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { GetStats } from '../../api/stats';
-import UserLink from '../../components/UserLink';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartData } from 'chart.js';
 import { Line } from 'react-chartjs-2';
@@ -71,11 +70,13 @@ export default function ModIndex() {
         <div>
             <h3 className='text-2xl mb-3'>Overview</h3>
             <p className='mb-8'>What should I even write here?</p>
-            <p className='mb-1'>Have some statistics ig. Total submissions is now excluding the user, <UserLink userID={872} />.</p>
+            <p className='mb-1'>Have some statistics ig.</p>
             <div className='grid gap-4 grid-cols-1 lg:grid-cols-3 mb-4'>
                 <StatisticTracker value={stats?.PendingSubmissions} label='Pending submissions' />
                 <StatisticTracker value={stats?.Submissions} label='Submissions' />
                 <StatisticTracker value={stats?.Users} label='Users' />
+                <StatisticTracker value={stats?.Warns} label='Warnings in the past 24h' />
+                <StatisticTracker value={stats?.Errors} label='Errors in the past 24h' />
             </div>
             <Line data={levelSearches} />
             <br />

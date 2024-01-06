@@ -17,21 +17,10 @@ const HeaderRoutes: Route[] = [
         subroutes: [],
     },
     {
-        name: 'About',
-        to: '/about',
-        subroutes: [
-            {
-                name: 'Staff',
-                to: '/staff',
-                subroutes: [],
-            },
-            {
-                name: (<span>Settings <i className='bx bxs-cog text-2xl' /></span>),
-                to: '/settings/site',
-                subroutes: [],
-            },
-        ],
-    }
+        name: (<span><i className='bx bxs-cog text-2xl' /></span>),
+        to: '/settings/site',
+        subroutes: [],
+    },
 ];
 
 export default HeaderRoutes;

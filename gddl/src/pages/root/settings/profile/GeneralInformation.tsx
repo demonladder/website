@@ -28,6 +28,8 @@ export default function GeneralInformation() {
     const [invalidName, setInvalidName] = useState(false);
     const introductionRef = useRef<HTMLTextAreaElement>(null);
 
+    const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.Hardest } });
+
     const favoriteLevelSearch1 = useLevelSearch({ ID: 'profileFavorite1', options: { defaultLevel: data?.FavoriteLevels[0] } });
     const favoriteLevelSearch2 = useLevelSearch({ ID: 'profileFavorite2', options: { defaultLevel: data?.FavoriteLevels[1] } });
     
@@ -68,6 +70,7 @@ export default function GeneralInformation() {
         const newUser = {
             Name: nameRef.current.value,
             Introduction: introductionRef.current.value || null,
+            Hardest: hardestSearch.activeLevel?.LevelID,
             FavoriteLevels: [
                 favoriteLevelSearch1.activeLevel?.LevelID,
                 favoriteLevelSearch2.activeLevel?.LevelID,
@@ -110,6 +113,12 @@ export default function GeneralInformation() {
                 <p className='text-gray-400 mt-1 text-sm'>Your introduction is visible to everyone visiting your profile.</p>
             </FormGroup>
             <FormGroup>
+                <label className='font-bold block mb-1'>Hardest level</label>
+                <div className='mb-2'>
+                    {hardestSearch.SearchBox}
+                </div>
+            </FormGroup>
+            <FormGroup>
                 <label className='font-bold block mb-1'>Favorite levels</label>
                 <div className='mb-2'>
                     {favoriteLevelSearch1.SearchBox}
@@ -134,7 +143,6 @@ export default function GeneralInformation() {
                     <p>to</p>
                     <NumberInput ref={maxPrefRef} />
                 </div>
-                <p className='text-gray-400 mt-1 text-sm'>You can leave the lower- or upper bound blank if you like.</p>
             </FormGroup>
             <PrimaryButton type='submit' onClick={onSave} disabled={isMutating}>Update</PrimaryButton>
         </form>

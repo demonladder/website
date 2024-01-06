@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetUserSubmissions } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -11,10 +11,12 @@ import Level from '../../../components/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import { TextInput } from '../../../components/Input';
 import StorageManager from '../../../utils/StorageManager';
-import MenuContext from '../../../components/ui/MenuContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
+import Modal from '../../../components/Modal';
+import { DangerButton, SecondaryButton } from '../../../components/Button';
+import { useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 
 type Props = {
     userID: number,
@@ -34,10 +36,10 @@ export default function Submissions({ userID }: Props) {
     const [sort, setSort] = useState<{ sort: string, sortDirection: string }>({ sort: 'LevelID', sortDirection: 'asc' });
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
     const [nameFilter, setNameFilter] = useState('');
-    const [query, setQuery] = useState<Query>();
+    const [query, setQuery] = useState<Query>({ name: '' });
 
     const { status, data } = useQuery({
-        queryKey: ['user/submissions', { userID, page, ...query, ...sort }],
+        queryKey: ['user', userID, 'submissions', { page, ...query, ...sort }],
         queryFn: () => GetUserSubmissions({ userID, page, ...query, ...sort }),
     });
 
@@ -100,59 +102,40 @@ export default function Submissions({ userID }: Props) {
 }
 
 function InlineList({ levels, userID }: { levels: Submission[], userID: number }) {
-    const [rightClicked, setRightClicked] = useState(false);
-    const [clickedID, setClickedID] = useState<number>();
-    const [point, setPoint] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
-    const menuRef = useRef<HTMLDivElement>(null);
+    const [clickedSubmission, setClickedSubmission] = useState<Submission>();
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    function openContext(e: React.MouseEvent, levelID: number) {
+    const { createMenu } = useContextMenu();
+
+    function openContext(e: React.MouseEvent, submission: Submission) {
         if (userID !== StorageManager.getUser()?.ID) return;
-        
 
         e.preventDefault();
 
-        setRightClicked(true);
-        setClickedID(levelID);
-        setPoint({
+        setClickedSubmission(submission);
+        createMenu({
             x: e.clientX,
             y: e.clientY,
-        });
+            buttons: [
+                { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
+                { text: 'Link', onClick: () => window.open(submission.Proof, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
+                { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) },
+            ],
+        })
     }
-
-    useEffect(() => {
-        function close(e: MouseEvent) {
-            // Only close if the event target wasn't the context menu
-            if ((e.target as HTMLDivElement).offsetParent != menuRef.current) {
-                setRightClicked(false);
-            }
-        }
-
-        function closeOnScroll() {
-            setRightClicked(false);
-        }
-
-        document.addEventListener('click', close);
-        document.addEventListener('scroll', closeOnScroll);
-
-        return () => {
-            document.removeEventListener('click', close);
-            document.removeEventListener('scroll', closeOnScroll);
-        }
-    }, []);
 
     function deleteSubmission(levelID?: number) {
         if (levelID === undefined) return;
         
         toast.promise(DeleteSubmission(levelID, userID).then(() => {
-            queryClient.invalidateQueries(['level', clickedID]);
+            queryClient.invalidateQueries(['level', levelID]);
             queryClient.invalidateQueries(['user/submissions', { userID }]);
-            setRightClicked(false);
         }), {
             pending: 'Deleting...',
-            success: 'Deleted your submission for ' + levels.find((l) => l.LevelID === clickedID)?.Name || clickedID?.toString(),
+            success: 'Deleted your submission for ' + levels.find((l) => l.LevelID === levelID)?.Name || `(${levelID})`,
             error: renderToastError,
         });
     }
@@ -162,14 +145,21 @@ function InlineList({ levels, userID }: { levels: Submission[], userID: number }
             <div className='level-list'>
                 <Level.Header />
                 {levels.map((p) => (
-                    <Level isHeader={false} info={p} key={'submission_' + p.LevelID + '_' + p.UserID} onContextMenu={(e) => openContext(e, p.LevelID)} />
+                    <Level isHeader={false} info={p} key={'submission_' + p.LevelID + '_' + p.UserID} onContextMenu={(e) => openContext(e, p)} />
                 ))}
             </div>
-            {rightClicked &&
-                <MenuContext ref={menuRef} point={point} data={[
-                    { text: 'Info', onClick: () => navigate(`/level/${clickedID}`) },
-                    { text: 'Delete', danger: true, onClick: () => deleteSubmission(clickedID) }
-                ]} />
+            {showDeleteModal && clickedSubmission &&
+                <Modal title='Delete submission' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+                    <Modal.Body>
+                        <p>Are you sure you want to delete your submission for {clickedSubmission.Name}? (ID: {clickedSubmission.LevelID})</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <div className='flex place-content-end gap-2'>
+                            <SecondaryButton onClick={() => setShowDeleteModal(false)}>Close</SecondaryButton>
+                            <DangerButton onClick={() => deleteSubmission(clickedSubmission.LevelID)}>Delete</DangerButton>
+                        </div>
+                    </Modal.Footer>
+                </Modal>
             }
         </>
     );

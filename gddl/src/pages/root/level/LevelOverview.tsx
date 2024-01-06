@@ -13,9 +13,9 @@ import StorageManager from '../../../utils/StorageManager';
 import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
-import { PrimaryButton, SecondaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/Button';
 import TagBox from './TagBox';
-import { onSubscribe } from './onSubscribe';
+//import { onSubscribe } from './onSubscribe';
 
 export default function LevelOverview() {
     const [showModal, setShowModal] = useState(false);
@@ -86,12 +86,12 @@ export default function LevelOverview() {
             </Helmet>
             <section>
                 <div>
-                    <h1 className='text-4xl font-bold'>{level.Name}&nbsp;
+                    <h1 className='text-4xl font-bold flex items-center'>{level.Name}&nbsp;
                         {StorageManager.hasSession() &&
                             <span className='inline-block'>
                                 <div className='flex gap-2'>
                                     <PrimaryButton className='text-lg' onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}>Submit <i className='bx bx-list-plus'></i></PrimaryButton>
-                                    <SecondaryButton className='text-lg' onClick={() => onSubscribe(levelID)}>Subscribe</SecondaryButton>
+                                    {/* <SecondaryButton className='text-lg' onClick={() => onSubscribe(levelID)}>Subscribe</SecondaryButton> */}
                                 </div>
                             </span>
                         }
@@ -125,24 +125,26 @@ export default function LevelOverview() {
                             <b>Difficulty</b>
                             <p className='text-2xl'>{level.Difficulty + ' Demon'}</p>
                         </div>
-                        <div className='col-span-12 lg:col-span-9 xl:col-span-8 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
+                        <div className='col-span-12 lg:col-span-9 xl:col-span-6 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
                             <b>Song name</b>
                             <p className='text-2xl break-all'>{level.Song}</p>
                         </div>
-                        <div className='col-span-12 sm:col-span-6 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
+                        <div className='col-span-12 lg:col-span-4 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
+                            <b>Length</b>
+                            <p className='text-2xl'>{level.Length}</p>
+                        </div>
+                        <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
                             <b>Ratings</b>
                             <p className='text-2xl'>{level.RatingCount}</p>
                         </div>
-                        <div className='col-span-12 sm:col-span-6 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
+                        <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
                             <b>Enjoyments</b>
                             <p className='text-2xl'>{level.EnjoymentCount}</p>
                         </div>
                     </div>
                 </div>
             </section>
-            {StorageManager.getUseExperimental() &&
-                <TagBox level={level} />
-            }
+            <TagBox level={level} />
             <Submissions levelID={levelID} />
             <Packs levelID={levelID} />
             <SubmitModal show={showModal} onClose={() => setShowModal(false)} level={level} />

@@ -7,7 +7,7 @@ import { TinyUser } from '../../../api/users';
 import { PrimaryButton } from '../../../components/Button';
 
 function Token({ token }: { token: TokenPair }) {
-    const link = 'https://gdladder.com/signup?key=' + token.Token + '&name=' + token.UserName;
+    const link = 'https://gdladder.com/signup?key=' + token.Token + '&name=' + token.Name;
 
     function linkClick(e: any) {
         navigator.clipboard.writeText(link);
@@ -20,7 +20,7 @@ function Token({ token }: { token: TokenPair }) {
 
     return (
         <div>
-            <b className='block'>{token.UserName}:</b>
+            <b className='block'>{token.Name}:</b>
             <p className='break-words cursor-pointer inline underline' onClick={linkClick}>{link}</p>
         </div>
     );
@@ -37,13 +37,13 @@ export default function SignupLink() {
 
     const queryClient = useQueryClient();
     const genToken = useMutation({
-        mutationFn: async (context: string) => SignupToken(context).then(() => queryClient.invalidateQueries(['signupTokens'])),
+        mutationFn: async (context: number) => SignupToken(context).then(() => queryClient.invalidateQueries(['signupTokens'])),
     });
 
     function newLink() {
         if (result === undefined) return;
         
-        genToken.mutate(result.Name);
+        genToken.mutate(result.ID);
     }
 
     return (

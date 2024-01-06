@@ -24,7 +24,6 @@ export default function Mod() {
                         <NavButton to='/mod/queue'>Submissions queue</NavButton>
                         <NavButton to='/mod/addSubmission'>Add submission</NavButton>
                         <NavButton to='/mod/editSubmission'>Edit submission</NavButton>
-                        <NavButton to='/mod/deleteSubmission'>Delete submission</NavButton>
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Users</p>
                         <NavButton to='/mod/signupLinks'>Sign-up links</NavButton>
@@ -45,6 +44,7 @@ export default function Mod() {
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Settings</p>
                         <NavButton to='/mod/siteSettings'>Site settings</NavButton>
+                        <NavButton to='/mod/debugging'>Debugging</NavButton>
                     </div>
                 </div>
                 <div className='col-span-12 lg:col-span-8 xl:col-span-9'>

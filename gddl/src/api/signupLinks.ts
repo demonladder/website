@@ -2,11 +2,12 @@ import APIClient from './APIClient';
 
 export type TokenPair = {
     Token: string,
-    UserName: string,
+    Name: string,
+    Expiration: string;
 }
 
-export async function SignupToken(username: string): Promise<void> {
-    await APIClient.post('/signupToken', { username });
+export async function SignupToken(userID: number): Promise<void> {
+    await APIClient.post('/signupToken', { userID });
 }
 
 export async function GetSignupTokens(): Promise<TokenPair[]> {

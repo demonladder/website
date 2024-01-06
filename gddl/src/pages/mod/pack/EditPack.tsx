@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetSinglePack } from '../../../api/pack/requests/GetSinglePack';
-import TextArea from '../../../components/input/TextArea';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { PackLevel } from '../../../api/packs/types/PackLevel';
 import useSessionStorage from '../../../hooks/useSessionStorage';
@@ -10,11 +9,11 @@ import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
 import { Change } from './types/Change';
 import { SavePackChangesRequest } from '../../../api/packs/requests/SavePackChangesRequest';
-import { SavePackDescriptionRequest } from '../../../api/packs/requests/SavePackDescriptionRequest';
 import usePackSearch from '../../../hooks/usePackSearch';
 import { CreatePackRequest } from '../../../api/pack/requests/CreatePackRequest';
 import DeletePackRequest from '../../../api/pack/requests/DeletePackRequest';
 import { TextInput } from '../../../components/Input';
+import Meta from './Meta';
 
 function checkChangeEquality(change1: Change, change2: Change): boolean {
     return change1.LevelID === change2.LevelID && change1.PackID === change2.PackID && change1.Type === change2.Type;
@@ -28,8 +27,6 @@ export default function EditPack() {
     } = usePackSearch({ ID: 'editPacksSearch' });
     const addLevelSearch = useLevelSearch({ ID: 'editPacksAddSearch' });
     const [changeList, setChangeList] = useSessionStorage<Change[]>('editPackChangeList', []);
-    const [description, setDescription] = useState('');
-    const [roleID, setRoleID] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [levelFilter, setLevelFilter] = useState('');
 
@@ -39,12 +36,6 @@ export default function EditPack() {
         queryFn: () => GetSinglePack(packResult?.ID || 0),
         enabled: packResult !== undefined,
     });
-    useEffect(() => {
-        if (!data) return;
-
-        setDescription(data.Description || '');
-        setRoleID(data.RoleID || '');
-    }, [data]);
 
     function getIndividualPacks() {
         const uniquePacks = changeList.reduce((acc: number[], cur) => {
@@ -112,29 +103,10 @@ export default function EditPack() {
     }
 
     function saveChanges() {
+        if (packResult === undefined) return;
         if (isLoading) return;
 
-        const request = SavePackChangesRequest(changeList);
-        request.then(() => {
-            setChangeList([]);
-            queryClient.invalidateQueries(['packs']);
-            queryClient.invalidateQueries(['packSearch']);
-        }).finally(() => {
-            setIsLoading(false);
-        });
-    
-        void toast.promise(request, {
-            pending: 'Saving...',
-            success: 'Saved',
-            error: renderToastError,
-        });
-    }
-
-    function saveMetaData() {
-        if (isLoading) return;
-        if (!packResult) return;
-
-        const request = SavePackDescriptionRequest(packResult.ID, description, roleID);
+        const request = SavePackChangesRequest(packResult.ID, changeList);
         request.then(() => {
             setChangeList([]);
             queryClient.invalidateQueries(['packs']);
@@ -202,15 +174,7 @@ export default function EditPack() {
             </div>
             {hasContent &&
                 <div>
-                    <div className='mb-2'>
-                        <p>Description:</p>
-                        <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
-                    </div>
-                    <div className='mb-4'>
-                        <p>Role ID:</p>
-                        <TextInput value={roleID} onChange={(e) => setRoleID(e.target.value)} />
-                        <PrimaryButton onClick={saveMetaData}>Save</PrimaryButton>
-                    </div>
+                    <Meta packID={packResult.ID} />
                     <div className='mb-6'>
                         <div className='divider my-4'></div>
                         <h3 className='text-xl'>Levels:</h3>

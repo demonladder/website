@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/Button';
 import CheckBox from '../../../components/input/CheckBox';
 import FormGroup from '../../../components/form/FormGroup';
 import { GetSiteSettings, SaveSiteSettings } from '../../../api/settings';
@@ -7,10 +7,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import BotStatus from './BotStatus';
-import { DeactivateBotRequest } from '../../../api/bot/requests/DeactivateBotRequest';
-import { ActivateBotRequest } from '../../../api/bot/requests/ActivateBotRequest';
-import { UpdateBotCommandsRequest } from '../../../api/bot/requests/UpdateBotCommandsRequest';
+import AutoAccepter from './AutoAccepter';
 
 export default function SiteSettings() {
     const queueEditLock = useRef<HTMLInputElement>(null);
@@ -38,7 +35,7 @@ export default function SiteSettings() {
     function handleSubmit(e: React.MouseEvent) {
         e.preventDefault();
         if (queueEditLock.current === null || submissionLock.current === null || accountCreationLock.current === null || userSettingLock.current === null) return toast.error('An error occurred!');
-        
+
         setIsMutating(true);
         toast.promise(SaveSiteSettings({
             isQueueEditLocked: queueEditLock.current.checked,
@@ -49,36 +46,6 @@ export default function SiteSettings() {
             pending: 'Saving...',
             success: 'Settings saved!',
             error: renderToastError,
-        });
-    }
-
-    const [botMutating, setBotMutating] = useState(false);
-    function startBot() {
-        if (botMutating) return;
-
-        setBotMutating(true);
-        ActivateBotRequest().then(() => {
-            queryClient.invalidateQueries(['botStatus']);
-        }).finally(() => {
-            setBotMutating(false);
-        });
-    }
-    function stopBot() {
-        if (botMutating) return;
-
-        setBotMutating(true);
-        DeactivateBotRequest().then(() => {
-            queryClient.invalidateQueries(['botStatus']);
-        }).finally(() => {
-            setBotMutating(false);
-        });
-    }
-    function updateCommands() {
-        if (botMutating) return;
-
-        setBotMutating(true);
-        UpdateBotCommandsRequest().finally(() => {
-            setBotMutating(false);
         });
     }
 
@@ -121,18 +88,7 @@ export default function SiteSettings() {
                 <PrimaryButton type='submit' onClick={handleSubmit} disabled={isMutating || isFetching}>Save</PrimaryButton>
             </form>
             <div className='my-4 divider'></div>
-            <div>
-                <h3 className='text-2xl'>Bot settings</h3>
-                <p>Bot status: <BotStatus /></p>
-                <div className='mt-1 flex gap-2'>
-                    <PrimaryButton onClick={startBot}>Activate</PrimaryButton>
-                    <DangerButton onClick={stopBot}>Deactivate</DangerButton>
-                </div>
-                <div className='mt-4'>
-                    <SecondaryButton onClick={updateCommands}>Update commands</SecondaryButton>
-                    <p className='text-sm text-gray-400'>Sends the current structure of all the bot's commands to Discord so the data refreshes in the Discord client</p>
-                </div>
-            </div>
+            <AutoAccepter />
         </div>
     );
 }

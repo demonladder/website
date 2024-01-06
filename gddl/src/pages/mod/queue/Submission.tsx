@@ -31,24 +31,18 @@ export default function Submission({ info, approve, remove }: Props) {
             </div>
             <div className='mb-3'>
                 <div className='mb-2'>
-                    <span className='font-bold'>Actual rating: </span>
-                    <span>{toFixed(''+levelData?.Rating, 2, 'None')}</span>
-                </div>
-                <div>
-                    <span className='font-bold'>Submitted rating: </span>
-                    <span>{info.Rating || 'None'}</span>
+                    <p><b>Length:</b> {levelData?.Length}</p>
                 </div>
                 <div className='mb-2'>
-                    <span className='font-bold'>Submitted enjoyment: </span>
-                    <span>{info.Enjoyment !== null ? info.Enjoyment : 'None'}</span>
-                </div>
-                <div>
-                    <span className='font-bold'>Device: </span>
-                    <span>{info.Device || 'None'}</span>
+                    <p><b>Actual rating:</b> {toFixed(''+levelData?.Rating, 2, 'None')}</p>
                 </div>
                 <div className='mb-2'>
-                    <span className='font-bold'>Refresh rate: </span>
-                    <span>{info.RefreshRate || 'None'}</span>
+                    <p><b>Submitted rating:</b> {info.Rating || 'None'}</p>
+                    <p><b>Submitted enjoyment:</b> {info.Enjoyment !== null ? info.Enjoyment : 'None'}</p>
+                </div>
+                <div className='mb-2'>
+                    <p><b>Device:</b> {info.Device || 'None'}</p>
+                    <p><b>Refresh rate:</b> {info.RefreshRate || 'None'}</p>
                 </div>
                 <div>
                     <span className='font-bold'>Proof: </span>
@@ -60,10 +54,10 @@ export default function Submission({ info, approve, remove }: Props) {
                     </span>
                 </div>
             </div>
-            <div className='flex justify-evenly max-md:flex-col'>
+            <div className='flex justify-evenly max-md:flex-col max-md:gap-2'>
                 <PrimaryButton className='px-3' onClick={() => approve(info)}>Approve</PrimaryButton>
                 <PrimaryButton className='px-3' onClick={() => approve(info, true)}>Only enjoyment</PrimaryButton>
-                <DangerButton className='px-3' onClick={() => setShowDenyReason(true)}>Delete</DangerButton>
+                <DangerButton className='px-3' onClick={() => setShowDenyReason(true)}>Deny</DangerButton>
             </div>
             <Modal title='Deny reason' show={showDenyReason} onClose={() => setShowDenyReason(false)}>
                 <Modal.Body>

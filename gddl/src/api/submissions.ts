@@ -3,8 +3,8 @@ import APIClient from './APIClient';
 export type Submission = {
     LevelID: number,
     UserID: number,
-    Rating: number,
-    Enjoyment: number,
+    Rating: number | null,
+    Enjoyment: number | null,
     RefreshRate: number,
     Device: string,
     Name: string,
@@ -40,13 +40,11 @@ type SubmissionInfo = {
 
 interface PendingSubmissionInfo {
     total: number,
-    limit: number,
-    page: number,
     submissions: SubmissionQueueInfo[],
 }
 
-export async function GetSubmissionQueue(): Promise<PendingSubmissionInfo> {
-    const res = await APIClient.get('/submissions/pending');
+export async function GetSubmissionQueue(proofFilter: string): Promise<PendingSubmissionInfo> {
+    const res = await APIClient.get('/submissions/pending', { params: { proofFilter }});
     return res.data;
 }
 

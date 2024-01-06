@@ -51,9 +51,7 @@ export default function SubmissionSettings() {
                 <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice} onChange={setDefaultDevice} />
                 <p className='text-gray-400 text-sm'>The default device for all your submissions</p>
             </div>
-            {StorageManager.getUseExperimental() &&
-                <Notifications />
-            }
+            <Notifications />
         </main>
     );
 }

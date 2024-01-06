@@ -1,5 +1,5 @@
 import APIClient from '../../APIClient';
 
-export function SavePackDescriptionRequest(packID: number, description: string, roleID: string) {
-    return APIClient.post('/pack/meta', { packID, description, roleID });
+export function SavePackMetaRequest(packID: number, description: string, categoryID: number, roleID: string) {
+    return APIClient.post('/pack/meta', { packID, description, categoryID, roleID });
 }

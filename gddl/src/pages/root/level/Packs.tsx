@@ -8,7 +8,7 @@ type Props = {
 
 export default function Packs({ levelID }: Props) {
     const { data: packs } = useQuery({
-        queryKey: ['level/packs', levelID],
+        queryKey: ['level', levelID, 'packs'],
         queryFn: () => GetLevelPacks(levelID),
     });
 

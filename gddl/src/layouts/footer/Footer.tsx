@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 export default function Footer() {
     return (
         <footer className='bg-gray-950 py-10'>
-            <div className='mx-auto container grid grid-cols-6 gap-8'>
-                <div className='col-span-2'>
+            <div className='mx-auto container grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 max-lg:px-10 gap-8'>
+                <div className='lg:col-span-2'>
                     <b>Our socials:</b>
                     <ul className='text-2xl flex gap-2'>
                         <li>
@@ -18,7 +18,7 @@ export default function Footer() {
                         </li>
                     </ul>
                 </div>
-                <div className='col-span-1'>
+                <div>
                     <h2 className='mb-2 font-bold'>GDDL</h2>
                     <ul className='flex flex-col gap-1'>
                         <li>
@@ -29,7 +29,7 @@ export default function Footer() {
                         </li>
                     </ul>
                 </div>
-                <div className='col-span-1'>
+                <div>
                     <h2 className='mb-2 font-bold'>Contact</h2>
                     <ul className='flex flex-col gap-1'>
                         <li>
@@ -37,7 +37,7 @@ export default function Footer() {
                         </li>
                     </ul>
                 </div>
-                <div className='col-span-1'>
+                <div>
                     <h2 className='mb-2 font-bold'>API</h2>
                     <ul className='flex flex-col gap-1'>
                         <li>

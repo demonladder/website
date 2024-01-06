@@ -8,6 +8,9 @@ import { toast } from 'react-toastify';
 import { FullLevel } from '../api/levels';
 import renderToastError from '../utils/renderToastError';
 import StorageManager from '../utils/StorageManager';
+import { validateIntChange, validateIntInputChange } from '../utils/validators/validateIntChange';
+import { useQueryClient } from '@tanstack/react-query';
+import WarningBox from './message/WarningBox';
 
 type Props = {
     show: boolean,
@@ -39,8 +42,10 @@ export default function SubmitModal({ show, onClose, level }: Props) {
     const ratingRef = useRef<HTMLInputElement>(null);
     const [enjoymentKey, setEnjoymentKey] = useState('-1');
     const [deviceKey, setDeviceKey] = useState(StorageManager.getSettings().submission.defaultDevice);
-    const [refreshRate, setRefreshRate] = useState<number>(StorageManager.getSettings().submission.defaultRefreshRate);
+    const [refreshRate, setRefreshRate] = useState(StorageManager.getSettings().submission.defaultRefreshRate.toString());
     const [proof, setProof] = useState('');
+
+    const queryClient = useQueryClient();
 
     function submitForm(e: React.FormEvent) {
         e.preventDefault();
@@ -48,19 +53,19 @@ export default function SubmitModal({ show, onClose, level }: Props) {
 
         if (!ratingRef.current) return toast.error('An error occurred!');
 
-        const rating = parseInt(ratingRef.current.value);
+        const rating = validateIntChange(ratingRef.current.value);
         const enjoyment = parseInt(enjoymentKey) === -1 ? undefined : parseInt(enjoymentKey);
 
-        if (rating < 1 || rating > 35) {
-            toast.error('Rating must be between 1 and 35!');
-            return;
-        }
-
-        if (isNaN(rating) && (enjoyment === undefined || enjoyment === -1)) {
+        if (rating !== undefined) {
+            if (rating < 1 || rating > 35) {
+                toast.error('Rating must be between 1 and 35!');
+                return;
+            }
+        } else if (enjoyment === undefined || enjoyment === -1) {
             return toast.error('Rating and enjoyment can\'t both be empty!');
         }
 
-        if (refreshRate && refreshRate < 30) {
+        if (parseInt(refreshRate) < 30) {
             return toast.error('Refresh rate has to be at least 30!');
         }
 
@@ -72,31 +77,51 @@ export default function SubmitModal({ show, onClose, level }: Props) {
             levelID: level.LevelID,
             rating,
             enjoyment,
-            refreshRate,
+            refreshRate: parseInt(refreshRate),
             device: parseInt(deviceKey),
-            proof,
+            proof: proof.length > 0 ? proof : undefined,
         };
 
-        toast.promise(SendSubmission(data), {
+        toast.promise(SendSubmission(data).then((data) => {
+            if (data?.wasAuto) {
+                queryClient.invalidateQueries(['level', level.LevelID]);
+                queryClient.invalidateQueries(['notifications']);
+            }
+
+            onClose();
+            return data;
+        }), {
             pending: 'Submitting',
-            success: 'Rating submitted',
+            success: {
+                render: ({ data }) => data.wasAuto ? 'Rating accepted' : 'Rating submitted',
+            },
             error: renderToastError,
         });
     }
 
-    function handleFPSChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const newVal = e.target.value.trim();
-        if (isNaN(parseInt(newVal))) return;
+    function onBlur(e: React.FocusEvent<HTMLInputElement>) {
+        const newVal = validateIntChange(e.target.value);
+        if (newVal === undefined) {
+            setRefreshRate(StorageManager.getSettings().submission.defaultRefreshRate.toString());
+            return;
+        }
 
-        setRefreshRate(parseInt(newVal));
+        setRefreshRate(newVal.toString());
+    }
+
+    function FPSChange(e: React.ChangeEvent<HTMLInputElement>) {
+        validateIntInputChange(e, setRefreshRate);
     }
 
     return (
         <Modal title='Submit rating' show={show} onClose={onClose}>
             <Modal.Body>
                 <div className='flex flex-col gap-3'>
+                    {level.Length === 'Platformer' &&
+                        <WarningBox text={'Platformer submissions are currently restricted; your tier rating will be ignored, but you\'re welcome to submit your enjoyment for the time being!'} />
+                    }
                     <div>
-                        <label htmlFor='submitRating'>Rating:</label>
+                        <label htmlFor='submitRating'>Tier:</label>
                         <NumberInput id='submitRating' ref={ratingRef} inputMode='numeric' />
                         <p className='text-sm text-gray-400'>Must be 1-35</p>
                     </div>
@@ -106,7 +131,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                     </div>
                     <div>
                         <label htmlFor='submitRefreshRate'>Refresh rate:</label>
-                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={handleFPSChange} />
+                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={FPSChange} onBlur={onBlur} />
                         <p className='text-sm text-gray-400'>At least 30fps</p>
                     </div>
                     <div style={{ height: '52px' }}>

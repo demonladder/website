@@ -3,19 +3,38 @@ import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Footer from '../../layouts/footer/Footer';
 
-function Root() {
+// function getBrowserName() {
+//     const browserInfo = navigator.userAgent;
+    
+//     if (browserInfo.includes('Opera') || browserInfo.includes('Opr')) {
+//         return 'Opera';
+//     } else if (browserInfo.includes('Edg')) {
+//         return 'Edge';
+//     } else if (browserInfo.includes('Chrome')) {
+//         return 'Chrome';
+//     } else if (browserInfo.includes('Safari')) {
+//         return 'Safari';
+//     } else if (browserInfo.includes('Firefox')) {
+//         return 'Firefox'
+//     }
+    
+//     return 'unknown';
+// }
+
+export default function Root() {
     return (
-        <div className='flex flex-col'>
+        <div className='relative flex flex-col'>
             <Helmet>
                 <title>GD Demon Ladder</title>
             </Helmet>
             <Header />
-            <main className='flex-grow'>
+            <main className='flex-grow over'>
                 <Outlet />
             </main>
             <Footer />
+            {/* {getBrowserName() === 'Firefox' &&
+                <div className='snow' />
+            } */}
         </div>
     );
 }
-
-export default Root;

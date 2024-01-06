@@ -5,6 +5,8 @@ interface Stats {
     PendingSubmissions: number,
     Users: number,
     Packs: number,
+    Warns: number,
+    Errors: number,
     DataLogs: {
         levelSearches: number,
         ratingsSubmitted: number,

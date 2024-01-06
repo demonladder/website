@@ -3,7 +3,7 @@ export type PackShell = {
     CategoryID: number;
     Name: string;
     IconName: string;
-    LevelCount: number;
-    AverageEnjoyment: number;
-    MedianTier: number;
+    LevelCount: number | null;
+    AverageEnjoyment: number | null;
+    MedianTier: number | null;
 };

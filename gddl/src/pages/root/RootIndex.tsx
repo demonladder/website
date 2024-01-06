@@ -1,14 +1,30 @@
-//import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
+import { PrimaryButton } from '../../components/Button';
+import StorageManager from '../../utils/StorageManager';
 
 export default function Index() {
+    const navigate = useNavigate();
+
     return (
         <>
             <div className='absolute -z-10 w-full top-6'>
                 <img src='/assets/images/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' />
             </div>
             <main>
+                {StorageManager.getUseExperimental() &&
+                    <Container className='bg-opacity-90'>
+                        <Announcement>
+                            <Announcement.Title>Our platformer list</Announcement.Title>
+                            <Announcement.Body>
+                                <p>As there currently aren't enough platformer levels to put them into tiers, we have created this temporary ranking of all the platformer demons. The position of each level is decided by our community until we're able to generalise the levels into tiers.</p>
+                                <br />
+                                <PrimaryButton onClick={() => navigate('/platformerList')}>Go to the list</PrimaryButton>
+                            </Announcement.Body>
+                        </Announcement>
+                    </Container>
+                }
                 <Container className='bg-opacity-90'>
                     <Announcement>
                         <Announcement.Title>The project to improve demon difficulties</Announcement.Title>

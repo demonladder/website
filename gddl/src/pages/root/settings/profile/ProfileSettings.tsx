@@ -63,11 +63,11 @@ export default function ProfileSettings() {
             }
             {hasSession && userID &&
                 <section>
-                    <div className='grid grid-cols-12 gap-2'>
-                        <div className='col-span-9'>
+                    <div className='flex max-md:flex-col-reverse gap-2'>
+                        <div className='md:w-2/3'>
                             <GeneralInformation />
                         </div>
-                        <div className='col-span-3 round:rounded-lg px-4 py-2'>
+                        <div className='md:w-1/3 round:rounded-lg md:px-4 py-2'>
                             <p className='mb-2 text-lg'>Profile image</p>
                             <div className='mb-2'>
                                 <DiscordProfilePicture userID={userID} />

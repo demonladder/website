@@ -18,7 +18,6 @@ import { modLoader as ModLoader } from './pages/mod/Mod';
 const ModIndex = lazy(() => import('./pages/mod/ModIndex'));
 const Queue = lazy(() => import('./pages/mod/queue/Queue'));
 const EditReferences = lazy(() => import('./pages/mod/references/References'));
-const DeleteSubmission = lazy(() => import('./pages/mod/deleteSubmissions/DeleteSubmissions'));
 const Promote = lazy(() => import('./pages/mod/promote/Promote'));
 const SignupLink = lazy(() => import('./pages/mod/signupLinks/SignupLink'));
 const AddSubmission = lazy(() => import('./pages/mod/addSubmissions/AddSubmissions'));
@@ -46,6 +45,9 @@ import SubmissionSettings from './pages/root/settings/submissions/SubmissionSett
 import Notifications from './pages/root/notifications/Notifications';
 import { sessionLoader } from './utils/sessionLoader';
 import StorageManager from './utils/StorageManager';
+import Debugging from './pages/mod/debugging/Debugging';
+import PlatformerList from './pages/root/platformerList/PlatformerList';
+import MenuContextProvider from './components/ui/menuContext/MenuContextContainer';
 const Game = lazy(() => import('./pages/root/game/Game'));
 
 const router = createBrowserRouter(
@@ -62,6 +64,10 @@ const router = createBrowserRouter(
                 {
                     path: 'list',
                     element: <Ladder />,
+                },
+                {
+                    path: 'platformerList',
+                    element: <PlatformerList />,
                 },
                 {
                     path: 'references',
@@ -165,10 +171,6 @@ const router = createBrowserRouter(
                             element: <EditSubmission />,
                         },
                         {
-                            path: 'deleteSubmission',
-                            element: <DeleteSubmission />,
-                        },
-                        {
                             path: 'promote',
                             element: <Promote />,
                         },
@@ -199,6 +201,10 @@ const router = createBrowserRouter(
                         {
                             path: 'siteSettings',
                             element: <SiteSettings />,
+                        },
+                        {
+                            path: 'debugging',
+                            element: <Debugging />,
                         },
                     ]
                 },
@@ -244,37 +250,17 @@ window.onload = () => {
     });
 }
 
-// Close context menu if the user clicks anywhere not on it
-function closeContext(e: MouseEvent) {
-    const menu = document.getElementById('profileSubmissionContext');
-    if (menu === null) return;
-
-    if ((e.target as HTMLDivElement).offsetParent != menu) {
-        menu.classList.remove('visible');
-    }
-}
-function closeContextScroll() {
-    const menu = document.getElementById('profileSubmissionContext');
-    if (menu === null) return;
-
-    menu.classList.remove('visible');
-}
-document.addEventListener('click', closeContext);
-document.addEventListener('scroll', closeContextScroll);
-
 const rootElement = document.getElementById('root') || createRoot();
 const root = ReactDOM.createRoot(rootElement);
 StorageManager.getIsRounded() && rootElement.classList.add('round');
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-            <ReactQueryDevtools initialIsOpen={false} />
+            <MenuContextProvider>
+                <RouterProvider router={router} />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </MenuContextProvider>
         </QueryClientProvider>
         <ToastContainer theme='dark' position='bottom-right' />
-		<div id='profileSubmissionContext' className='fixed w-36 z-50 hidden bg-gray-900 text-white round:rounded shadow-2xl cursor-pointer'>
-			<div className='my-1 px-2 py-1 hover:bg-gray-700'>Info</div>
-			<div className='my-1 px-2 py-1 hover:bg-red-600'>Delete</div>
-		</div>
     </React.StrictMode>
 );

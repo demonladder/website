@@ -1,4 +1,5 @@
 @use './sass/Colors';
+@use './sass/Snowflake';
 
 @tailwind base;
 @tailwind components;
@@ -71,4 +72,8 @@ input.no-spinner::-webkit-inner-spin-button {
 
 .visible {
     display: block;
+}
+
+label:has(> input[type=checkbox]:disabled) {
+    @apply text-gray-400 line-through;
 }
