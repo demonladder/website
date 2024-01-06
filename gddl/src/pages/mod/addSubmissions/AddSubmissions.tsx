@@ -58,7 +58,7 @@ export default function AddSubmission() {
                 enjoyment: enjoyment,
                 refreshRate,
                 device: parseInt(deviceKey),
-                proof,
+                proof: proof.length > 0 ? proof : undefined,
             }).then((res): string => {
                 void queryClient.invalidateQueries(['submissions']);
                 void queryClient.invalidateQueries(['level', activeLevel.LevelID]);
