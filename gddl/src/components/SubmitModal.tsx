@@ -11,6 +11,9 @@ import StorageManager from '../utils/StorageManager';
 import { validateIntChange, validateIntInputChange } from '../utils/validators/validateIntChange';
 import { useQueryClient } from '@tanstack/react-query';
 import WarningBox from './message/WarningBox';
+import { validateLink } from '../utils/validators/validateLink';
+import CheckBox from './input/CheckBox';
+import useUserSearch from '../hooks/useUserSearch';
 
 type Props = {
     show: boolean,
@@ -44,6 +47,9 @@ export default function SubmitModal({ show, onClose, level }: Props) {
     const [deviceKey, setDeviceKey] = useState(StorageManager.getSettings().submission.defaultDevice);
     const [refreshRate, setRefreshRate] = useState(StorageManager.getSettings().submission.defaultRefreshRate.toString());
     const [proof, setProof] = useState('');
+    const [wasSolo, setWasSolo] = useState(true);
+
+    const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });
 
     const queryClient = useQueryClient();
 
@@ -65,12 +71,16 @@ export default function SubmitModal({ show, onClose, level }: Props) {
             return toast.error('Rating and enjoyment can\'t both be empty!');
         }
 
-        if (parseInt(refreshRate) < 30) {
-            return toast.error('Refresh rate has to be at least 30!');
+        if (parseInt(refreshRate) < MINIMUM_REFRESH_RATE) {
+            return toast.error(`Refresh rate has to be at least ${MINIMUM_REFRESH_RATE}!`);
         }
 
-        if (proof && !proof.match(/(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/)) {
+        if (proof && !validateLink(proof)) {
             return toast.error('Proof link is invalid!');
+        }
+
+        if (level.Difficulty === 'Extreme' && !proof) {
+            return toast.error('No proof provided!');
         }
 
         const data: SubmittableSubmission = {
@@ -121,28 +131,43 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                         <WarningBox text={'Platformer submissions are currently restricted; your tier rating will be ignored, but you\'re welcome to submit your enjoyment for the time being!'} />
                     }
                     <div>
-                        <label htmlFor='submitRating'>Tier:</label>
+                        <label htmlFor='submitRating'>Tier</label>
                         <NumberInput id='submitRating' ref={ratingRef} inputMode='numeric' />
                         <p className='text-sm text-gray-400'>Must be 1-35</p>
                     </div>
                     <div style={{ height: '52px' }}>
-                        <label htmlFor='submitEnjoyment'>Enjoyment:</label>
+                        <label htmlFor='submitEnjoyment'>Enjoyment</label>
                         <Select id='submitEnjoyment' options={enjoymentOptions} activeKey={enjoymentKey} onChange={setEnjoymentKey} zIndex={1030} />
                     </div>
                     <div>
-                        <label htmlFor='submitRefreshRate'>Refresh rate:</label>
-                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={FPSChange} onBlur={onBlur} />
-                        <p className='text-sm text-gray-400'>At least 30fps</p>
+                        <label htmlFor='submitRefreshRate'>FPS</label>
+                        <NumberInput id='submitRefreshRate' value={refreshRate} onChange={FPSChange} onBlur={onBlur} invalid={parseInt(refreshRate) < MINIMUM_REFRESH_RATE} />
+                        <p className='text-sm text-gray-400'>At least {MINIMUM_REFRESH_RATE}fps</p>
                     </div>
                     <div style={{ height: '52px' }}>
-                        <label>Device:</label>
+                        <label>Device</label>
                         <Select id='submitDevice' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
                     </div>
                     <div>
-                        <label htmlFor='submitProof'>Proof:</label>
-                        <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value.trim())} />
+                        <label htmlFor='submitProof'>Proof</label>
+                        <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value.trim())} invalid={(level.Difficulty === 'Extreme' && !validateLink(proof)) || (proof !== '' && !validateLink(proof))} />
                         <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
                     </div>
+                    {level.IsTwoPlayer &&
+                        <div>
+                            <label className='flex items-center gap-2 mb-2'>
+                                <CheckBox checked={wasSolo} onChange={(e) => setWasSolo(e.target.checked)} />
+                                Solo completion
+                            </label>
+                            {!wasSolo && (
+                                <div>
+                                    <p>The second player:</p>
+                                    {secondPlayerSearch.SearchBox}
+                                    <p className='text-sm text-gray-400'>If the person you beat this level with doesn't have an account, leave this blank</p>
+                                </div>
+                            )}
+                        </div>
+                    }
                 </div>
             </Modal.Body>
             <Modal.Footer>

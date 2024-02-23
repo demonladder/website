@@ -61,7 +61,7 @@ export default function References() {
         {
             name: 'Extreme Demons',
             minTier: 21,
-            maxTier: 35,
+            maxTier: 40,
         },
     ];
     

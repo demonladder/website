@@ -37,6 +37,8 @@ export type SearchFilters = {
     removeRatedEnj: boolean,
     IDLow: string,
     IDHigh: string,
+    twoPlayer: string,
+    length: string,
 }
 
 const resetObj = {
@@ -65,6 +67,8 @@ const resetObj = {
     removeRatedEnj: false,
     IDLow: '',
     IDHigh: '',
+    twoPlayer: 'any',
+    length: '0',
 };
 
 export default function Ladder() {
@@ -74,12 +78,12 @@ export default function Ladder() {
     //
     // Filter levels
     //
-    const [filters, setFilters] = useSessionStorage<SearchFilters>('search.filters', {...resetObj});
+    const [filters, setFilters] = useSessionStorage<SearchFilters>('search.filters', { ...resetObj });
     const [q, setQ] = useSessionStorage('searchQuery', generateQ());
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
 
     function resetFilters() {
-        setFilters({...resetObj});
+        setFilters({ ...resetObj });
     }
 
     function generateQ() {
@@ -106,7 +110,7 @@ export default function Ladder() {
             clearTimeout(timer);
         }
     }, [filters, pageIndex, sorter]);
-    
+
     const { status: searchStatus, data: searchData } = useQuery({
         queryKey: ['search', q],
         queryFn: () => SearchLevels(q),
@@ -114,7 +118,7 @@ export default function Ladder() {
 
     useEffect(() => {
         if (searchData) {
-            if (searchData.total < (pageIndex-1) * searchData.limit) {
+            if (searchData.total < (pageIndex - 1) * searchData.limit) {
                 setPageIndex(1);
             }
         }
@@ -149,12 +153,12 @@ export default function Ladder() {
 
     function Content() {
         const levels = searchData?.levels;
-        switch(searchStatus) {
+        switch (searchStatus) {
             default:
             case 'loading': {
                 if (!levels) return;
                 if (listView) return <List levels={levels} />
-                else          return <Grid levels={levels} />
+                else return <Grid levels={levels} />
             }
             case 'error': {
                 return <h2>An error ocurred!</h2>
@@ -162,11 +166,11 @@ export default function Ladder() {
             case 'success': {
                 if (!levels) return;
                 if (listView) return <List levels={levels} />;
-                else          return <Grid levels={levels} />;
+                else return <Grid levels={levels} />;
             }
         }
     }
-    
+
     //{searchStatus === 'loading' && <LoadingSpinner />}
     return (
         <Container className='bg-gray-800'>
@@ -182,19 +186,19 @@ export default function Ladder() {
                 </div>
                 <button className='bg-white text-black w-7 h-7 grid place-items-center' onClick={() => setShowFilters((prev: boolean) => !prev)}>
                     <svg xmlns='http://www.w3.org/2000/svg' width='16px' height='16px' fill='currentColor' viewBox='0 0 16 16'>
-                        <path d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z'/>
+                        <path d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z' />
                     </svg>
                 </button>
                 <SortMenu set={setSorter} />
                 <div className='flex items-center text-black'>
                     <button className={'w-7 h-7 grid place-items-center ' + (listView ? 'bg-gray-950 text-white' : 'bg-white')} onClick={onViewList}>
                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' stroke='currentColor' viewBox='0 0 16 16'>
-                            <path fillRule='evenodd' d='M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z'/>
+                            <path fillRule='evenodd' d='M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z' />
                         </svg>
                     </button>
                     <button className={'w-7 h-7 grid place-items-center ' + (!listView ? 'bg-gray-950 text-white' : 'bg-white')} onClick={onViewGrid}>
                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
-                            <path d='M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z'/>
+                            <path d='M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z' />
                         </svg>
                     </button>
                 </div>

@@ -13,11 +13,11 @@ export default function Packs({ levelID }: Props) {
     });
 
     return (
-        <section>
+        <section className='mt-4'>
             <h2 className='text-3xl'>Packs</h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
+            {packs?.length === 0 && <p className='mb-0'>This level is not part of any packs</p>}
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 text-center max-md:text-sm'>
                 {packs?.map((p) => <PackRef pack={p} key={p.ID} />)}
-                {packs?.length === 0 && <p className='mb-0'>This level is not part of any packs</p>}
             </div>
         </section>
     );

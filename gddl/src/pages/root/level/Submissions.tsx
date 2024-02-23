@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
+import { FullLevel } from '../../../api/levels';
 
 type Props = {
     submission: TSubmission,
@@ -12,7 +13,7 @@ type Props = {
 
 function Submission({ submission }: Props) {
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
-    const enjText = submission.Enjoyment == null ? 'N/A' : submission.Enjoyment;
+    const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
 
     const linkDestination = '/profile/' + submission.UserID;
 
@@ -25,12 +26,12 @@ function Submission({ submission }: Props) {
     ];
 
     return (
-        <div title={title.join('\n')} className='flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
-            <Link className={'w-1/6 p-2 text-center round:rounded-s-md tier-' + (submission.Rating ? submission.Rating : '0')} to={linkDestination}>{submission.Rating || 'N/A'}</Link>
-            <Link className={'w-1/6 p-2 text-center enj-' + enj} to={linkDestination}>{enjText}</Link>
+        <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
+            <Link className={'w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-' + (submission.Rating ? submission.Rating : '0')} to={linkDestination}>{submission.Rating || '-'}</Link>
+            <Link className={'w-[40px] lg:w-1/6 p-2 text-center enj-' + enj} to={linkDestination}>{enjText}</Link>
             <Link className='p-2 flex-grow bg-gray-500' to={linkDestination}>{submission.Name}</Link>
             {hasWidgets &&
-                <span className='text-lg flex gap-1 items-center bg-gray-500 pe-2'>
+                <span className='flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&
                         <i className='bx bx-mobile-alt' />
                     }
@@ -46,29 +47,31 @@ function Submission({ submission }: Props) {
     );
 }
 
-export default function Submissions({ levelID }: { levelID: number }) {
+export default function Submissions({ level }: { level: FullLevel }) {
     const [page, setPage] = useState(1);
     const { data: submissions, status } = useQuery({
-        queryKey: ['level', levelID, 'submissions', { page }],
-        queryFn: () => GetSubmissions({ levelID, chunk: 24, page }),
+        queryKey: ['level', level.LevelID, 'submissions', { page }],
+        queryFn: () => GetSubmissions({ levelID: level.LevelID, chunk: 24, page }),
     });
 
     return (
         <section className='my-4'>
-            <h2 className='text-3xl'>Submissions</h2>
-            {status === 'loading'
-                ? <LoadingSpinner />
-                : (submissions === undefined
-                    ? <p className='mb-0'>This level does not have any submissions</p>
-                    : <>
-                        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
-                            {submissions.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
-                            {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
-                        </div>
-                        <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
-                    </>
-                )
-            }
+            <h2 className='text-3xl'>{level.SubmissionCount} Submission{level.SubmissionCount !== 1 ? 's' : ''}</h2>
+            <div>
+                {status === 'loading'
+                    ? <LoadingSpinner />
+                    : (submissions === undefined
+                        ? <p className='mb-0'>This level does not have any submissions</p>
+                        : <>
+                            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
+                                {submissions.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
+                                {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
+                            </div>
+                            <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
+                        </>
+                    )
+                }
+            </div>
         </section>
     );
 }

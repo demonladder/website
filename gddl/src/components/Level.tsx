@@ -28,7 +28,7 @@ function Header() {
 function Level({ info, onContextMenu }: Props) {
     const roundedTier = info.Rating !== null ? Math.round(info.Rating) : 0;
     const roundedEnjoyment = info.Enjoyment !== null ? Math.round(info.Enjoyment) : -1;
-    
+
     const tierClass = 'tier-' + roundedTier;
     const enjoymentClass = 'enj-' + roundedEnjoyment;
     const completed = info.Completed === 1;
@@ -37,9 +37,9 @@ function Level({ info, onContextMenu }: Props) {
         <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 font-bold' : ' bg-gray-700')} onContextMenu={onContextMenu}>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
-                    <img src='/assets/images/yes tick.webp' className='w-8 h-8 self-center me-2' alt='' />
+                    <img src='/assets/images/yes tick.webp' className='max-md:w-6 max-md:h-6 w-8 h-8 self-center me-2' alt='' />
                 }
-                <Link to={'/level/' + info.LevelID} className='self-center underline break-all whitespace-pre-wrap'>{info.Name}</Link>
+                <Link to={'/level/' + info.LevelID} className='self-center underline break-all whitespace-pre-wrap max-md:text-sm'>{info.Name}</Link>
             </h4>
 
             <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{info.Creator}</p></div>

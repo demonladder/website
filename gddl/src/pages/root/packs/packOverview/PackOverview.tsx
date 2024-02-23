@@ -7,6 +7,7 @@ import Container from '../../../../components/Container';
 import Level from '../../../../components/Level';
 import useLevelView from '../../../../hooks/useLevelView';
 import { GridLevel } from '../../../../components/GridLevel';
+import Leaderboard from '../Leaderboard';
 
 export default function PackOverview() {
     const packID = parseInt(''+useParams().packID) || 0;
@@ -89,6 +90,7 @@ export default function PackOverview() {
                     )
                 }
             </>}
+            <Leaderboard packID={packID} />
         </Container>
     );
 }

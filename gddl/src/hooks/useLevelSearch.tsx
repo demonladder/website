@@ -41,7 +41,10 @@ export default function useLevelSearch({ ID, options = {} }: Props) {
         
         if (ref.current) ref.current.value = defaultData?.Name;
         setSearch(defaultData?.Name);
-        setActiveLevel(defaultData);
+        setActiveLevel({
+            ...defaultData,
+            Song: defaultData.SongName,
+        });
     }, [defaultData]);
 
     function clear() {

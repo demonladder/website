@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.scss';
+import ms from 'ms';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -48,6 +49,7 @@ import StorageManager from './utils/StorageManager';
 import Debugging from './pages/mod/debugging/Debugging';
 import PlatformerList from './pages/root/platformerList/PlatformerList';
 import MenuContextProvider from './components/ui/menuContext/MenuContextContainer';
+import Logs from './pages/mod/siteLogs/Logs';
 const Game = lazy(() => import('./pages/root/game/Game'));
 
 const router = createBrowserRouter(
@@ -206,6 +208,10 @@ const router = createBrowserRouter(
                             path: 'debugging',
                             element: <Debugging />,
                         },
+                        {
+                            path: 'logs',
+                            element: <Logs />,
+                        },
                     ]
                 },
             ],
@@ -216,8 +222,8 @@ const router = createBrowserRouter(
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            staleTime: 1000 * 60 * 10,  // 10 minutes
-            cacheTime: 1000 * 60 * 15,  // 15 minutes
+            staleTime: ms('2h'),
+            cacheTime: ms('2h') + ms('5m'),
             retry: false,
             keepPreviousData: true,
         },

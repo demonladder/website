@@ -17,7 +17,6 @@ const deviceOptions = {
 };
 
 export default function AddSubmission() {
-    const [key, setKey] = useState(1);
     const [deviceKey, setDeviceKey] = useState('1');
     const [isMutating, setIsMutating] = useState(false);
 
@@ -48,18 +47,20 @@ export default function AddSubmission() {
             return;
         }
 
+        const submission = {
+            levelID: activeLevel.LevelID,
+            userID: userSearch.activeUser.ID,
+            rating: rating,
+            enjoyment: enjoyment,
+            refreshRate,
+            device: parseInt(deviceKey),
+            proof: proof.length > 0 ? proof : undefined,
+        };
+
         // Send
         setIsMutating(true);
         void toast.promise(
-            APIClient.post('/submit/mod', {
-                levelID: activeLevel.LevelID,
-                userID: userSearch.activeUser.ID,
-                rating: rating,
-                enjoyment: enjoyment,
-                refreshRate,
-                device: parseInt(deviceKey),
-                proof: proof.length > 0 ? proof : undefined,
-            }).then((res): string => {
+            APIClient.post('/submit/mod', submission).then((res): string => {
                 void queryClient.invalidateQueries(['submissions']);
                 void queryClient.invalidateQueries(['level', activeLevel.LevelID]);
 
@@ -81,9 +82,15 @@ export default function AddSubmission() {
     }
 
     function clear() {
-        setKey(prev => prev + 1);
+        setRating(NaN);
+        setEnjoyment(NaN);
+        setRefreshRate(60);
+        setDeviceKey('1');
+        setProof('');
         clearActiveLevel();
+        markInvalidLevel();
         userSearch.clear();
+        userSearch.markInvalid();
     }
 
     const tierValid = validateTier(rating);
@@ -91,7 +98,7 @@ export default function AddSubmission() {
     const validOverride = tierValid || enjoymentValid;
 
     return (
-        <div key={`addSubmission_${key}`}>
+        <div>
             <FloatingLoadingSpinner isLoading={isMutating} />
             <h3 className='text-2xl mb-3'>Add Submission</h3>
             <div className='flex flex-col gap-4'>

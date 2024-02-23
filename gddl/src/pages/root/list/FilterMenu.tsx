@@ -13,29 +13,39 @@ type Props = {
 }
 
 const difficultyOptions = {
-    '0': 'Any',
-    '1': 'Official',
-    '2': 'Easy',
-    '3': 'Medium',
-    '4': 'Hard',
-    '5': 'Insane',
-    '6': 'Extreme',
+    '-1': 'Any',
+    '0': 'Official',
+    '1': 'Easy',
+    '2': 'Medium',
+    '3': 'Hard',
+    '4': 'Insane',
+    '5': 'Extreme',
+};
+
+const lengthOptions = {
+    0: 'Any',
+    1: 'Tiny',
+    2: 'Short',
+    3: 'Medium',
+    4: 'Long',
+    5: 'XL',
+    6: 'Platformer',
 };
 
 export default function FilterMenu({ filters, setFilters, reset, show }: Props) {
     const [difficultyKey, setDifficultyKey] = useState('0');
 
     function onLowTierChange(e: any) {
-        let value: string|number = parseFloat(e.target.value);
-        
+        let value: string | number = parseFloat(e.target.value);
+
         if (isNaN(value)) value = '';
-        setFilters(prev => ({ ...prev, lowTier: ''+value }));
+        setFilters(prev => ({ ...prev, lowTier: '' + value }));
     }
     function onHighTierChange(e: any) {
-        let value: string|number = parseFloat(e.target.value);
-        
+        let value: string | number = parseFloat(e.target.value);
+
         if (isNaN(value)) value = '';
-        setFilters(prev => ({ ...prev, highTier: ''+value }));
+        setFilters(prev => ({ ...prev, highTier: '' + value }));
     }
 
     function onDifficultyChange(key: string) {
@@ -44,11 +54,11 @@ export default function FilterMenu({ filters, setFilters, reset, show }: Props) 
     }
 
     return (
-        <div className='grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr'}}>
+        <div className='grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
             <div className='min-h-0 bg-gray-700 round:rounded-b-3xl'>
                 <div className='px-7 py-4 flex flex-col gap-4'>
                     <div className='flex justify-between'>
-                        <h2 className='text-2xl' style={{color: 'currentColor'}}>Filters</h2>
+                        <h2 className='text-2xl' style={{ color: 'currentColor' }}>Filters</h2>
                         <DangerButton onClick={reset}>Reset</DangerButton>
                     </div>
                     <div className='grid grid-cols-12 gap-4 gap-y-2'>
@@ -79,6 +89,10 @@ export default function FilterMenu({ filters, setFilters, reset, show }: Props) 
                         <div className='col-span-12 lg:col-span-7 xl:col-span-4'>
                             <p>Song:</p>
                             <TextInput value={filters.song} onChange={(e) => setFilters(prev => ({ ...prev, song: e.target.value }))} />
+                        </div>
+                        <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
+                            <p className='form-label m-0'>Length:</p>
+                            <Select activeKey={filters.length} onChange={(key) => setFilters(prev => ({ ...prev, length: key }))} options={lengthOptions} id='lengthSelectOptions' />
                         </div>
                     </div>
                     <div className='divider my-3'></div>

@@ -3,6 +3,6 @@ export interface Leader {
     Name: string;
     Sum: number;
     AccentColor: number | null;
-    DiscordID: string;
+    DiscordID: string | null;
     Avatar: string | null;
 }

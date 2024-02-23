@@ -38,7 +38,7 @@ export default function TagInfoModal() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className='flex round:gap-1 float-right'>
+                    <div className='flex round:gap-1 float-right mb-4'>
                         <SecondaryButton onClick={() => setVisible(false)}>Close</SecondaryButton>
                     </div>
                 </Modal.Footer>

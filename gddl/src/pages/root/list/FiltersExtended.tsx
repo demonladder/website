@@ -2,11 +2,18 @@ import StorageManager from '../../../utils/StorageManager';
 import { NumberInput } from '../../../components/Input';
 import CheckBox from '../../../components/input/CheckBox';
 import { SearchFilters } from './Ladder';
+import Select from '../../../components/Select';
 
 type Props = {
     filters: SearchFilters,
     setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>,
 }
+
+const twoPlayerOptions = {
+    any: 'Any',
+    no: 'No two player',
+    only: 'Only two player',
+};
 
 export default function FiltersExtended({ filters, setFilters }: Props) {
     const inSession = StorageManager.hasSession();
@@ -45,6 +52,10 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
                         <p className='m-0 mx-2'>to</p>
                         <NumberInput className='num-lg' value={filters.IDHigh} min='1' max='500000000' onChange={(e) => setFilters(prev => ({ ...prev, IDHigh: e.target.value }))} />
                     </div>
+                </div>
+                <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
+                    <p className='form-label m-0'>Two player:</p>
+                    <Select activeKey={filters.twoPlayer} onChange={(key) => setFilters(prev => ({ ...prev, twoPlayer: key }))} options={twoPlayerOptions} id='twoPlayerSelectOptions' />
                 </div>
             </div>
             <div className='grid grid-cols-12'>

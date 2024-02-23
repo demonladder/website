@@ -5,10 +5,11 @@ import { SearchUser, TinyUser } from '../api/users';
 
 interface Props {
     ID: string,
+    maxUsersOnList?: number,
     onUserSelect?: (user: TinyUser) => void;
 }
 
-export default function useUserSearch({ ID, onUserSelect }: Props) {
+export default function useUserSearch({ ID, maxUsersOnList, onUserSelect }: Props) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -16,8 +17,8 @@ export default function useUserSearch({ ID, onUserSelect }: Props) {
     const [isInvalid, setIsInvalid] = useState(false);
 
     const { data, status } = useQuery({
-        queryKey: ['userSearch', searchQuery],
-        queryFn: () => SearchUser(searchQuery),
+        queryKey: ['userSearch', searchQuery, { maxUsersOnList }],
+        queryFn: () => SearchUser(searchQuery, maxUsersOnList),
     });
 
     useEffect(() => {
@@ -38,6 +39,6 @@ export default function useUserSearch({ ID, onUserSelect }: Props) {
         SearchBox: (<SearchBox search={search} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
             ...d,
             label: d.Name,
-        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => {setActiveUser(user); user && onUserSelect && onUserSelect(user);}} status={status} invalid={isInvalid} />)
+        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => { setActiveUser(user); user && onUserSelect && onUserSelect(user); }} status={status} invalid={isInvalid} />)
     }
 }

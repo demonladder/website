@@ -45,6 +45,7 @@ export default function Mod() {
                         <p className='text-gray-400 text-sm ps-3'>Settings</p>
                         <NavButton to='/mod/siteSettings'>Site settings</NavButton>
                         <NavButton to='/mod/debugging'>Debugging</NavButton>
+                        <NavButton to='/mod/logs'>Logs</NavButton>
                     </div>
                 </div>
                 <div className='col-span-12 lg:col-span-8 xl:col-span-9'>

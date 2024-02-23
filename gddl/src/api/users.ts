@@ -14,15 +14,23 @@ export type User = {
     Hardest: number | null,
     Favorite: number | null,
     LeastFavorite: number | null,
-    FavoriteLevels: number[],
-    LeastFavoriteLevels: number[],
     MinPref: number | null,
     MaxPref: number | null,
     Introduction: string | null,
     AverageEnjoyment: number | null,
     PermissionLevel: number,
+    TotalSubmissions: number,
     Avatar: string,
     DiscordID: string,
+    FavoriteLevels: number[],
+    LeastFavoriteLevels: number[],
+    PendingSubmissionCount: number,
+    CompletedPacks: (
+        {
+            PackID: number,
+            IconName: string,
+        }
+    )[];
 }
 
 export interface EdittableUser {
@@ -60,8 +68,8 @@ export async function GetUser(userID: number): Promise<User> {
     return user;
 }
 
-export async function SearchUser(name: string): Promise<TinyUser[]> {
-    const res = await APIClient.get(`/user/search`, { params: { name, chunk: 5, } });
+export async function SearchUser(name: string, chunk = 5): Promise<TinyUser[]> {
+    const res = await APIClient.get(`/user/search`, { params: { name, chunk } });
     return res.data;
 }
 

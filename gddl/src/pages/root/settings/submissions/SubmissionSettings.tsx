@@ -42,12 +42,12 @@ export default function SubmissionSettings() {
         <main>
             <h2 className='text-3xl mb-4'>Submission settings</h2>
             <div>
-                <label htmlFor='defaultRefreshRateInput'><b>Default refresh rate</b></label>
+                <label htmlFor='defaultRefreshRateInput'><b>Default FPS</b></label>
                 <NumberInput id='defaultRefreshRateInput' value={defaultFPS} onChange={updateFPS} invalid={FPSInvalid} />
                 <p className='text-gray-400 text-sm'>This value will be used for every submission you send if you don't explicitly type the fps on the submission form</p>
             </div>
             <div>
-                <label htmlFor='defaultRefreshRateInput'><b>Default device</b></label>
+                <label htmlFor='submitDevice'><b>Default device</b></label>
                 <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice} onChange={setDefaultDevice} />
                 <p className='text-gray-400 text-sm'>The default device for all your submissions</p>
             </div>

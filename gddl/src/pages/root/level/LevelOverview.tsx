@@ -15,10 +15,11 @@ import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { PrimaryButton } from '../../../components/Button';
 import TagBox from './TagBox';
-//import { onSubscribe } from './onSubscribe';
+import RatingGraph from './RatingGraph';
 
 export default function LevelOverview() {
     const [showModal, setShowModal] = useState(false);
+    const [showTwoPlayerStats, _setShowTwoPlayerStats] = useState(false);
     const navigate = useNavigate();
 
     const levelID = parseInt(useParams().levelID || '0');
@@ -27,7 +28,7 @@ export default function LevelOverview() {
         queryFn: () => GetLevel(levelID),
     });
 
-    if (status === 'loading'){
+    if (status === 'loading') {
         return <Container><FloatingLoadingSpinner /></Container>;
     } else if (status === 'error') {
         const err = error as AxiosError;
@@ -48,7 +49,7 @@ export default function LevelOverview() {
             </Container>
         )
     }
-    
+
     if (level === null) return null;
 
     let avgRating = '-';
@@ -57,10 +58,15 @@ export default function LevelOverview() {
     let roundedEnjoyment = 'Unrated';
     let standardDeviation = '-';
 
-    if (level.RatingCount > 0 && level.Rating !== null) {
-        avgRating = level.Rating.toFixed(2);
-        roundedRating = Math.round(level.Rating).toString();
-        standardDeviation = ''+toFixed((level.Deviation || 0).toString(), 2, '0');
+    if (level.RatingCount > 0) {
+        const rating = showTwoPlayerStats ? level.TwoPlayerRating : level.Rating;
+        const deviation = showTwoPlayerStats ? level.TwoPlayerDeviation : level.Deviation;
+
+        if (rating !== null) {
+            avgRating = rating.toFixed(2);
+            roundedRating = Math.round(rating).toString();
+            standardDeviation = toFixed((deviation ?? 0).toString(), 2, '0');
+        }
     }
 
     if (level.EnjoymentCount > 0 && level.Enjoyment !== null) {
@@ -74,78 +80,86 @@ export default function LevelOverview() {
         navigate('/list');
     }
 
+    // function toggleShowTwoPlayerStats() {
+    //     if (!level?.IsTwoPlayer) return;
+
+    //     setShowTwoPlayerStats((prev) => !prev);
+    // }
+
     return (
         <Container>
             <Helmet>
-                <title>{`GDDL - ${level.Name}`}</title>
+                <title>{`${level.Name}`}</title>
                 <meta property='og:type' content='website' />
                 <meta property='og:url' content='https://gdladder.com/' />
                 <meta property='og:title' content={level.Name} />
                 <meta property='og:description' content={`Tier ${avgRating || '-'}, enjoyment ${avgEnjoyment || '-'}\nby ${level.Creator}`} />
                 <meta property='og:image' content={DifficultyToImgSrc(level.Difficulty)} />
             </Helmet>
-            <section>
-                <div>
-                    <h1 className='text-4xl font-bold flex items-center'>{level.Name}&nbsp;
-                        {StorageManager.hasSession() &&
-                            <span className='inline-block'>
-                                <div className='flex gap-2'>
-                                    <PrimaryButton className='text-lg' onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}>Submit <i className='bx bx-list-plus'></i></PrimaryButton>
-                                    {/* <SecondaryButton className='text-lg' onClick={() => onSubscribe(levelID)}>Subscribe</SecondaryButton> */}
-                                </div>
-                            </span>
-                        }
-                    </h1>
-                    <p className='text-2xl'>by <span className='cursor-pointer' onClick={creatorClicked}>{level.Creator}</span></p>
-                </div>
-                <div className='grid grid-cols-12 gap-4 p-4 bg-gray-700 round:rounded-xl text-xl'>
-                    <div className='col-span-12 md:col-span-4 lg:col-span-2'>
+            <div className='mb-1'>
+                <h1 className='text-2xl md:text-4xl font-bold flex items-center break-all'>{level.Name}&nbsp;
+                </h1>
+                <p className='text-xl md:text-2xl'>by <span className='cursor-pointer' onClick={creatorClicked}>{level.Creator}</span></p>
+            </div>
+            <div className='grid grid-cols-12 gap-2'>
+                <div className='col-span-9 grid grid-cols-12 gap-4 p-4 bg-gray-700 round:rounded-xl'>
+                    <div className='col-span-12 md:col-span-4 xl:col-span-3'>
                         <DemonLogo diff={level.Difficulty} />
+                        <div className='flex text-center'>
+                            <p className={'w-1/2 py-2 tier-' + (level.Rating !== null ? roundedRating : '0')}>
+                                <span className='text-xl font-bold'>{roundedRating}</span>
+                                <br />
+                                <span>[{avgRating}]</span>
+                            </p>
+                            <p className={'w-1/2 py-2 enj-' + (level.Enjoyment !== null ? roundedEnjoyment : '-1')}>
+                                <span className='text-xl font-bold'>{roundedEnjoyment}</span>
+                                <br />
+                                <span>[{avgEnjoyment}]</span>
+                            </p>
+                        </div>
+                        {StorageManager.hasSession() &&
+                            <PrimaryButton className='text-lg w-full' onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}>Submit rating <i className='bx bx-list-plus' /></PrimaryButton>
+                        }
                     </div>
-                    <div className='col-span-12 md:col-span-8 lg:col-span-10 grid grid-cols-12 gap-3'>
-                        <div className='col-span-6 lg:col-span-3 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b className='block'>ID</b>
-                            <div>
-                                <IDButton className='text-2xl text-left' id={level.LevelID} />
-                            </div>
+                    <div className='col-span-12 xl:col-span-9 flex flex-col justify-between'>
+                        <div>
+                            <p className='text-2xl xl:mb-2'>Description</p>
+                            <p className='text-lg'>{level.Description || <i>No description</i>}</p>
                         </div>
-                        <div className='col-span-6 lg:col-span-3 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b>Tier</b>
-                            <p className='text-2xl'>{roundedRating} [{avgRating}]</p>
+                        <div className='bg-gray-600 p-2 round:rounded-lg mt-4'>
+                            <p className='text-lg'>
+                                {level.SongName}
+                                {level.SongID > 0 &&
+                                    <a href={`https://www.newgrounds.com/audio/listen/${level.SongID}`} target='_blank' rel='noopener noreferrer' className='float-right me-1 text-2xl'><i className='bx bx-link-external' /></a>
+                                }
+                            </p>
+                            <p className='text-base'>by {level.SongAuthor}</p>
+                            {level.SongID > 0 &&
+                                <p className='mt-2 text-xs'><span className='text-gray-300'>Song ID:</span> {level.SongID} <span className='ms-2 text-gray-300'>Size:</span> {level.SongSize}</p>
+                            }
                         </div>
-                        <div className='col-span-12 sm:col-span-5 lg:col-span-3 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b>Enjoyment</b>
-                            <p className='text-2xl'>{roundedEnjoyment} [{avgEnjoyment}]</p>
-                        </div>
-                        <div className='col-span-12 sm:col-span-7 lg:col-span-3 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center cursor-help' title='The standard deviation of ratings. The higher the value, the more diverse the ratings.'>
-                            <b>Deviation</b>
-                            <p className='text-2xl'>{standardDeviation}</p>
-                        </div>
-                        <div className='col-span-12 lg:col-span-3 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b>Difficulty</b>
-                            <p className='text-2xl'>{level.Difficulty + ' Demon'}</p>
-                        </div>
-                        <div className='col-span-12 lg:col-span-9 xl:col-span-6 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b>Song name</b>
-                            <p className='text-2xl break-all'>{level.Song}</p>
-                        </div>
-                        <div className='col-span-12 lg:col-span-4 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b>Length</b>
-                            <p className='text-2xl'>{level.Length}</p>
-                        </div>
-                        <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b>Ratings</b>
-                            <p className='text-2xl'>{level.RatingCount}</p>
-                        </div>
-                        <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2 bg-gray-500 round:rounded-lg p-2 flex flex-col justify-center'>
-                            <b>Enjoyments</b>
-                            <p className='text-2xl'>{level.EnjoymentCount}</p>
-                        </div>
+                        <ul className='md:text-lg flex flex-col gap-1'>
+                            <li className='flex justify-between'>
+                                <p>Level ID:</p>
+                                <IDButton className='font-bold' id={level.LevelID} />
+                            </li>
+                            <li className='flex justify-between'>
+                                <p>Standard deviation:</p>
+                                <b>{standardDeviation}</b>
+                            </li>
+                            <li className='flex justify-between'>
+                                <p>Length:</p>
+                                <b>{level.Length}</b>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </section>
-            <TagBox level={level} />
-            <Submissions levelID={levelID} />
+                <div className='col-span-3'>
+                    <TagBox level={level} />
+                </div>
+            </div>
+            <Submissions level={level} />
+            <RatingGraph levelID={level.LevelID} />
             <Packs levelID={levelID} />
             <SubmitModal show={showModal} onClose={() => setShowModal(false)} level={level} />
         </Container>

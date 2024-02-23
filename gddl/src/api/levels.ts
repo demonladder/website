@@ -16,16 +16,23 @@ export interface Level {
 export type FullLevel = {
     LevelID: number,
     Name: string,
-    Rating: number,
-    Enjoyment: number,
+    Rating: number | null,
+    TwoPlayerRating: number | null,
+    Enjoyment: number | null,
     Deviation: number | null,
+    TwoPlayerDeviation: number | null,
     RatingCount: number,
     EnjoymentCount: number,
     SubmissionCount: number,
+    Description: string,
     Difficulty: string,
     Length: 'Tiny' | 'Short' | 'Medium' | 'Long' | 'XL' | 'Platformer';
-    Song: string,
+    SongID: number,
+    SongName: string,
+    SongAuthor: string,
+    SongSize: string,
     Creator: string,
+    IsTwoPlayer: boolean,
 }
 
 interface ShortLevel {
@@ -72,6 +79,7 @@ export async function GetLevel(ID: number | null): Promise<FullLevel | null> {
     return {
         ...response,
         Length: lengthIndexToLength((response.Length as unknown) as number),
+        IsTwoPlayer: ((response.IsTwoPlayer as unknown) as 0 | 1) === 1,
     }
 }
 
