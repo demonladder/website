@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { RadioButton } from '../../../components/Input';
-import useSessionStorage from '../../../hooks/useSessionStorage';
+import useLocalStorage from '../../../hooks/useLocalStorage';
 
 type Props = {
     set: (sort: any) => void,
 }
 
 export default function SortMenu({ set }: Props) {
-    const [sortAscending, setSortAscending] = useSessionStorage('profileSortAscending', true);
-    const [sorter, setSorter] = useSessionStorage('profileSort', 'LevelID');
+    const [sortAscending, setSortAscending] = useLocalStorage('profileSortAscending', true);
+    const [sorter, setSorter] = useLocalStorage('profileSort', 'LevelID');
     const [show, setShow] = useState(false);
     const resultsRef = useRef<HTMLDivElement>(null);
     function handleSortMenu(e: any) {
