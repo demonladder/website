@@ -103,6 +103,10 @@ export default function Profile() {
                 <div className='p-3 bg-gray-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3 max-md:gap-y-2'>
                     <LevelTracker levelID={userData.Hardest} title='Hardest' />
                     <Tracker>
+                        <b>Tier preference:</b>
+                        <p>{calcPref()}</p>
+                    </Tracker>
+                    <Tracker>
                         <b>Favorites:</b>
                         <div>
                             {userData.FavoriteLevels.length === 0 &&
@@ -111,6 +115,7 @@ export default function Profile() {
                             {userData.FavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.FavoriteLevels.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
                         </div>
                     </Tracker>
+                    <div></div>
                     <Tracker>
                         <b>Least favorites:</b>
                         <div>
@@ -121,23 +126,27 @@ export default function Profile() {
                         </div>
                     </Tracker>
                     <Tracker>
-                        <b>Tier preference:</b>
-                        <p>{calcPref()}</p>
-                    </Tracker>
-                    <Tracker>
-                        <b>Average enjoyment:</b>
-                        <p>{toFixed('' + userData.AverageEnjoyment, 1, '-')}</p>
-                    </Tracker>
-                    <Tracker>
-                        <b>Total submisisons:</b>
+                        <b>Total submissisons:</b>
                         <p>{userData.TotalSubmissions}</p>
                     </Tracker>
+                    <div className='hidden lg:block'>
+                        <Tracker>
+                            <b>Average enjoyment:</b>
+                            <p>{toFixed('' + userData.AverageEnjoyment, 1, '-')}</p>
+                        </Tracker>
+                    </div>
                     <Link to='/pendingSubmissions'>
                         <Tracker>
-                            <b>Pending submisisons:</b>
+                            <b>Pending submissisons:</b>
                             <p>{userData.PendingSubmissionCount}</p>
                         </Tracker>
                     </Link>
+                    <div className='lg:hidden'>
+                        <Tracker>
+                            <b>Average enjoyment:</b>
+                            <p>{toFixed('' + userData.AverageEnjoyment, 1, '-')}</p>
+                        </Tracker>
+                    </div>
                 </div>
             </section>
             <Submissions userID={userID} />
