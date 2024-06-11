@@ -2,8 +2,8 @@ import { Route } from './types/Route';
 
 const HeaderRoutes: Route[] = [
     {
-        name: 'The Ladder',
-        to: '/list',
+        name: 'Search',
+        to: '/search',
         subroutes: [],
     },
     {

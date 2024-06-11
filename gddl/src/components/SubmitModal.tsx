@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
 import Select from '../components/Select';
 import { SendSubmission, SubmittableSubmission } from '../api/submissions';
@@ -9,11 +9,12 @@ import { FullLevel } from '../api/levels';
 import renderToastError from '../utils/renderToastError';
 import StorageManager from '../utils/StorageManager';
 import { validateIntChange, validateIntInputChange } from '../utils/validators/validateIntChange';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import WarningBox from './message/WarningBox';
 import { validateLink } from '../utils/validators/validateLink';
 import CheckBox from './input/CheckBox';
 import useUserSearch from '../hooks/useUserSearch';
+import GetSingleSubmission from '../api/submissions/requests/GetSingleSubmission';
 
 type Props = {
     show: boolean,
@@ -41,13 +42,44 @@ const deviceOptions = {
     2: 'Mobile',
 };
 
+const acceptedHosts: string[] = [
+    'www.youtube.com',
+    'm.youtube.com',
+    'youtube.com',
+    'youtu.be',
+    'www.twitch.tv',
+    'twitch.tv',
+    'www.bilibili.com',
+    'm.bilibili.com',
+    'bilibili.com',
+    'drive.google.com',
+];
+
 export default function SubmitModal({ show, onClose, level }: Props) {
-    const ratingRef = useRef<HTMLInputElement>(null);
+    const [tier, setTier] = useState<string>('');
     const [enjoymentKey, setEnjoymentKey] = useState('-1');
     const [deviceKey, setDeviceKey] = useState(StorageManager.getSettings().submission.defaultDevice);
     const [refreshRate, setRefreshRate] = useState(StorageManager.getSettings().submission.defaultRefreshRate.toString());
     const [proof, setProof] = useState('');
     const [wasSolo, setWasSolo] = useState(true);
+
+    const { data: userSubmission } = useQuery({
+        queryKey: ['submission', level.ID, StorageManager.getUser()?.ID],
+        queryFn: () => GetSingleSubmission(level.ID, StorageManager.getUser()?.ID),
+        enabled: StorageManager.getUser() !== null,
+    });
+
+    useEffect(() => {
+        if (userSubmission === undefined) return;
+
+        if (userSubmission.Rating !== null) setTier(userSubmission.Rating.toString());
+        if (userSubmission.Enjoyment !== null) setEnjoymentKey(userSubmission.Enjoyment.toString());
+        if (userSubmission.RefreshRate !== null) setRefreshRate(userSubmission.RefreshRate.toString());
+        if (userSubmission.Device !== null) setDeviceKey(userSubmission.Device === 'Mobile' ? '2' : '1');
+        if (userSubmission.Proof !== null) setProof(userSubmission.Proof.toString());
+        if (userSubmission.IsSolo !== null) setWasSolo(userSubmission.IsSolo === 1);
+        if (userSubmission.SecondPlayerName !== null) secondPlayerSearch.setQuery(userSubmission.SecondPlayerName);
+    }, [userSubmission]);
 
     const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });
 
@@ -57,9 +89,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!ratingRef.current) return toast.error('An error occurred!');
-
-        const rating = validateIntChange(ratingRef.current.value);
+        const rating = validateIntChange(tier);
         const enjoyment = parseInt(enjoymentKey) === -1 ? undefined : parseInt(enjoymentKey);
 
         if (rating !== undefined) {
@@ -79,22 +109,24 @@ export default function SubmitModal({ show, onClose, level }: Props) {
             return toast.error('Proof link is invalid!');
         }
 
-        if (level.Difficulty === 'Extreme' && !proof) {
+        if (level.Meta.Difficulty === 'Extreme' && !proof) {
             return toast.error('No proof provided!');
         }
 
         const data: SubmittableSubmission = {
-            levelID: level.LevelID,
+            levelID: level.ID,
             rating,
             enjoyment,
             refreshRate: parseInt(refreshRate),
             device: parseInt(deviceKey),
             proof: proof.length > 0 ? proof : undefined,
+            isSolo: wasSolo,
+            secondPlayerID: secondPlayerSearch.activeUser?.ID,
         };
 
         toast.promise(SendSubmission(data).then((data) => {
             if (data?.wasAuto) {
-                queryClient.invalidateQueries(['level', level.LevelID]);
+                queryClient.invalidateQueries(['level', level.ID]);
                 queryClient.invalidateQueries(['notifications']);
             }
 
@@ -123,21 +155,48 @@ export default function SubmitModal({ show, onClose, level }: Props) {
         validateIntInputChange(e, setRefreshRate);
     }
 
+    function ratingChange(e: React.ChangeEvent<HTMLInputElement>) {
+        validateIntInputChange(e, setTier);
+    }
+
+    function onProofChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const newValue = e.target.value.trim();
+        if (newValue === '') {
+            setProof('');
+            return;
+        }
+
+        try {
+            const url = new URL(newValue);
+
+            if (!acceptedHosts.includes(url.host)) {
+                toast.error('Invalid url');
+            } else {
+                setProof(newValue);
+            }
+        } catch (err) {
+            toast.error('Invalid url');
+        }
+    }
+
+    const tierEnjoymentInvalid = tier === '' && enjoymentKey === '-1';
+
     return (
         <Modal title='Submit rating' show={show} onClose={onClose}>
             <Modal.Body>
+                <p className='my-3'>Make sure to read our guidelines <a href='/about#guidelines' className='text-blue-500' target='_blank'>here</a></p>
                 <div className='flex flex-col gap-3'>
-                    {level.Length === 'Platformer' &&
+                    {level.Meta.Length === 'Platformer' &&
                         <WarningBox text={'Platformer submissions are currently restricted; your tier rating will be ignored, but you\'re welcome to submit your enjoyment for the time being!'} />
                     }
                     <div>
                         <label htmlFor='submitRating'>Tier</label>
-                        <NumberInput id='submitRating' ref={ratingRef} inputMode='numeric' />
+                        <NumberInput id='submitRating' value={tier} onChange={ratingChange} inputMode='numeric' invalid={tierEnjoymentInvalid} />
                         <p className='text-sm text-gray-400'>Must be 1-35</p>
                     </div>
                     <div style={{ height: '52px' }}>
                         <label htmlFor='submitEnjoyment'>Enjoyment</label>
-                        <Select id='submitEnjoyment' options={enjoymentOptions} activeKey={enjoymentKey} onChange={setEnjoymentKey} zIndex={1030} />
+                        <Select id='submitEnjoyment' options={enjoymentOptions} activeKey={enjoymentKey} onChange={setEnjoymentKey} invalid={tierEnjoymentInvalid} zIndex={1030} />
                     </div>
                     <div>
                         <label htmlFor='submitRefreshRate'>FPS</label>
@@ -149,11 +208,11 @@ export default function SubmitModal({ show, onClose, level }: Props) {
                         <Select id='submitDevice' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
                     </div>
                     <div>
-                        <label htmlFor='submitProof'>Proof</label>
-                        <TextInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value.trim())} invalid={(level.Difficulty === 'Extreme' && !validateLink(proof)) || (proof !== '' && !validateLink(proof))} />
+                        <label htmlFor='submitProof'>Proof <a href='/about#proof' target='_blank'><i className='bx bx-info-circle' /></a></label>
+                        <TextInput id='submitProof' value={proof} onChange={onProofChange} invalid={(level.Meta.Difficulty === 'Extreme' && !validateLink(proof)) || (proof !== '' && !validateLink(proof))} />
                         <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
                     </div>
-                    {level.IsTwoPlayer &&
+                    {level.Meta.IsTwoPlayer &&
                         <div>
                             <label className='flex items-center gap-2 mb-2'>
                                 <CheckBox checked={wasSolo} onChange={(e) => setWasSolo(e.target.checked)} />

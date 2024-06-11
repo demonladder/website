@@ -31,12 +31,17 @@ export default function useUserSearch({ ID, maxUsersOnList, onUserSelect }: Prop
         setActiveUser(undefined);
     }
 
+    function setQuery(value: string) {
+        setSearch(value);
+        setSearchQuery(value);
+    }
+
     return {
         activeUser,
-        setQuery: setSearch,
+        setQuery,
         clear,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox search={search} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
+        SearchBox: (<SearchBox search={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
             ...d,
             label: d.Name,
         })) || []} onDelayedChange={setSearchQuery} setResult={(user) => { setActiveUser(user); user && onUserSelect && onUserSelect(user); }} status={status} invalid={isInvalid} />)

@@ -2,10 +2,20 @@ import { useNavigate } from 'react-router-dom';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
 import { PrimaryButton } from '../../components/Button';
-import StorageManager from '../../utils/StorageManager';
+import IndexStats from './IndexStats';
+import Markdown from 'react-markdown';
+import { useQuery } from '@tanstack/react-query';
+import APIClient from '../../api/APIClient';
+import markdownComponents from '../../utils/markdownComponents';
+import NewLabel from '../../components/NewLabel';
 
 export default function Index() {
     const navigate = useNavigate();
+
+    const { data: markdown } = useQuery<string>({
+        queryKey: ['changelogs'],
+        queryFn: () => APIClient.get('/changelogs').then((res) => res.data),
+    });
 
     return (
         <>
@@ -13,71 +23,35 @@ export default function Index() {
                 <img src='/assets/images/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' />
             </div>
             <main>
-                {StorageManager.getUseExperimental() &&
-                    <Container className='bg-opacity-90'>
-                        <Announcement>
-                            <Announcement.Title>Our platformer list</Announcement.Title>
-                            <Announcement.Body>
-                                <p>As there currently aren't enough platformer levels to put them into tiers, we have created this temporary ranking of all the platformer demons. The position of each level is decided by our community until we're able to generalise the levels into tiers.</p>
-                                <br />
-                                <PrimaryButton onClick={() => navigate('/platformerList')}>Go to the list</PrimaryButton>
-                            </Announcement.Body>
-                        </Announcement>
-                    </Container>
-                }
+                <Container className='bg-opacity-90'>
+                    <Announcement>
+                        <Announcement.Title>Our platformer list <NewLabel ID='platformerList' /></Announcement.Title>
+                        <Announcement.Body>
+                            <p>As there currently aren't enough platformer levels to put them into tiers, we have created this temporary ranking of all the platformer demons. The position of each level is decided by our community until we're able to generalise the levels into tiers.</p>
+                            <br />
+                            <PrimaryButton onClick={() => navigate('/platformerList')}>Go to the list</PrimaryButton>
+                        </Announcement.Body>
+                    </Announcement>
+                </Container>
                 <Container className='bg-opacity-90'>
                     <Announcement>
                         <Announcement.Title>The project to improve demon difficulties</Announcement.Title>
-                        <Announcement.Body>The addition of demon difficulties in 2.1 was great. However, it isn't enough! With levels with varying skillsets, sometimes only 5 different categories isn't enough to differentiate an easier level in this category to another. Compare Cataclysm to Bloodlust, DeCode to The Nightmare, Windy Landscape to ICDX… argh (pain misery despair)! 5 demon difficulties just isn't enough. This project divides all demons into 35 tiers, based on difficulty. Here, the community votes are gathered to determine the tiers of every single demon and the results are published right here for everyone to see, making it easier to find your perfect demon to beat or compare a certain demon to another.</Announcement.Body>
+                        <Announcement.Body>
+                            The addition of demon difficulties in 2.1 was great. However, it isn't enough! With levels with varying skillsets, sometimes only 5 different categories isn't enough to differentiate an easier level in this category to another. Compare Cataclysm to Bloodlust, DeCode to The Nightmare, Windy Landscape to ICDX… argh (pain misery despair)! 5 demon difficulties just isn't enough. This project divides all demons into 35 tiers, based on difficulty. Here, the community votes are gathered to determine the tiers of every single demon and the results are published right here for everyone to see, making it easier to find your perfect demon to beat or compare a certain demon to another.
+                            <br />
+                            <br />
+                            <PrimaryButton onClick={() => navigate('/about')}>Learn more</PrimaryButton>
+                        </Announcement.Body>
                     </Announcement>
                 </Container>
                 <Container className='bg-opacity-90'>
                     <Announcement.DiscordLink />
                 </Container>
-                {/* <Container className='bg-opacity-90'>
-                    <section>
-                        <h2 className='text-4xl text-center'>Changelog</h2>
-                        <ul>
-                            <li className='mb-4'>
-                                <h3 className='text-xl'>24th of September:</h3>
-                                <ul>
-                                    <li>+ The layout of the pack overview is now organised like the landing page of the sheet.</li>
-                                    <li>+ Levels with no ratings now show up by default.</li>
-                                    <li>+ The page index for user submissions now persists when clicking off.</li>
-                                </ul>
-                            </li>
-                            <li className='mb-4'>
-                                <h3 className='text-xl'>12th of September:</h3>
-                                <ul>
-                                    <li>+ Relased Discord account linking. Currently only displays your Discord pfp instead of a demon face.</li>
-                                </ul>
-                            </li>
-                            <li className='mb-4'>
-                                <h3 className='text-xl'>4th of September [EXPERIMENTAL]:</h3>
-                                <ul>
-                                    <li>+ Added Discord account linking in <Link to='/profile/settings'>profile settings</Link></li>
-                                </ul>
-                            </li>
-                            <li className='mb-4'>
-                                <h3 className='text-xl'>29th of August:</h3>
-                                <ul>
-                                    <li>+ Added experimental feature toggle under <Link to='/settings'>/settings</Link></li>
-                                </ul>
-                            </li>
-                            <li className='mb-4'>
-                                <h3 className='text-xl'>29th of August:</h3>
-                                <ul>
-                                    <li>+ Added changelogs</li>
-                                    <li>+ Added <Link to='/staff'>/staff</Link></li>
-                                    <li>+ Changed how pack icons attach to the pack name</li>
-                                    <li>+ Proof is now only required for extreme demons</li>
-                                    <li>+ It's now possible to see if a submission was done on mobile (Only in level overview for now)</li>
-                                    <li>+ Added "Pack level" filter</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </section>
-                </Container> */}
+                <IndexStats />
+                <Container>
+                    <p><NewLabel ID='changelogs' /></p>
+                    <Markdown children={markdown} components={markdownComponents} />
+                </Container>
             </main>
         </>
     );

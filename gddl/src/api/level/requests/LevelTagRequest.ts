@@ -7,17 +7,13 @@ export interface TagSubmission extends Tag {
     HasVoted: boolean;
 }
 
-export async function LevelTagRequest(levelID: number): Promise<TagSubmission[]> {
-    return await APIClient.get('/level/tags', { params: { levelID } }).then((res) => {
-        const data = res.data as (Omit<TagSubmission, 'HasVoted'> & { HasVoted: 0|1 })[]
+export interface TopTags {
+    TagID: number;
+    ReactCount: number;
+    HasVoted: 0 | 1;
+    Tag: Omit<Tag, 'TagID'> & { ID: number };
+}
 
-        return data.map((tag) => ({
-            LevelID: levelID,
-            TagID: tag.TagID,
-            Name: tag.Name,
-            Description: tag.Description,
-            Percent: tag.Percent,
-            HasVoted: tag.HasVoted === 1,
-        }));
-    });
+export async function LevelTagRequest(levelID: number): Promise<TopTags[]> {
+    return await APIClient.get('/level/tags', { params: { levelID } }).then((res) => res.data);
 }

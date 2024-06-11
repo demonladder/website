@@ -29,6 +29,8 @@ export type SubmittableSubmission = {
     refreshRate?: number,
     device?: number,
     proof?: string,
+    isSolo?: boolean,
+    secondPlayerID?: number,
 }
 
 type SubmissionInfo = {
@@ -44,7 +46,7 @@ interface PendingSubmissionInfo {
 }
 
 export async function GetSubmissionQueue(proofFilter: string): Promise<PendingSubmissionInfo> {
-    const res = await APIClient.get('/submissions/pending', { params: { proofFilter }});
+    const res = await APIClient.get('/submissions/pending', { params: { proofFilter } });
     return res.data;
 }
 
@@ -57,8 +59,12 @@ export function DeleteSubmission(levelID: number, userID: number) {
     return APIClient.delete('/submissions', { data: { levelID, userID } });
 }
 
-export function ApproveSubmission(info: { deny: boolean, reason?: string, onlyEnjoyment?: boolean } & Submission): Promise<void> {
-    return APIClient.put('/submissions/approve', { levelID: info.LevelID, userID: info.UserID, deny: info.deny, onlyEnjoyment: info.onlyEnjoyment, reason: info.reason });
+export function ApproveSubmission(info: { onlyEnjoyment?: boolean } & Submission): Promise<void> {
+    return APIClient.put('/v2/submissions/approve', { levelID: info.LevelID, userID: info.UserID, onlyEnjoyment: info.onlyEnjoyment });
+}
+
+export function DenySubmission(info: { reason?: string } & Submission): Promise<void> {
+    return APIClient.delete('/v2/submissions/deny', { params: { levelID: info.LevelID, userID: info.UserID, reason: info.reason } });
 }
 
 export async function SendSubmission(submission: SubmittableSubmission) {

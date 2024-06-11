@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApproveSubmission, GetSubmissionQueue, Submission as TSubmission } from '../../../api/submissions';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ApproveSubmission, DenySubmission, GetSubmissionQueue, Submission as TSubmission } from '../../../api/submissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submission';
 import { PrimaryButton } from '../../../components/Button';
@@ -9,16 +9,11 @@ import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import Select from '../../../components/Select';
 import { useState } from 'react';
 
-interface SubmissionMutation extends TSubmission {
-    deny: boolean;
-    reason?: string;
-}
-
 const proofFilterOptions = {
     all: 'All',
     extremes: 'Extremes only',
-    'no-extremes': 'No extremes',
-    'no-proof': 'No proof',
+    noExtremes: 'No extremes',
+    noProof: 'No proof',
 };
 
 export default function Queue() {
@@ -30,22 +25,26 @@ export default function Queue() {
     });
 
     const queryClient = useQueryClient();
-    const approveMutation = useMutation({
-        mutationFn: async (info: SubmissionMutation) => {
-            await ApproveSubmission(info);
-            return await queryClient.invalidateQueries(['submissionQueue']);
-        }
-    });
+
+    function invalidateQueries() {
+        queryClient.invalidateQueries(['submissionQueue']);
+        queryClient.invalidateQueries(['stats']);
+        queryClient.invalidateQueries(['staffLeaderboard']);
+    }
 
     function approve(info: TSubmission, onlyEnjoyment = false) {
-        toast.promise(ApproveSubmission({ ...info, deny: false, onlyEnjoyment }).then(() => { queryClient.invalidateQueries(['submissionQueue']); queryClient.invalidateQueries(['stats']) }), {
+        toast.promise(ApproveSubmission({ ...info, onlyEnjoyment }).then(invalidateQueries), {
             pending: 'Approving...',
             success: 'Approved!',
             error: renderToastError,
         });
     }
     function deny(info: TSubmission, reason?: string) {
-        approveMutation.mutate({ ...info, deny: true, reason });
+        toast.promise(DenySubmission({ ...info, reason }).then(invalidateQueries), {
+            pending: 'Denying...',
+            success: 'Denied!',
+            error: renderToastError,
+        });
     }
 
     function Content() {
@@ -74,7 +73,7 @@ export default function Queue() {
                 </div>
             </div>
             <div className='flex gap-2'>
-                <p>Proof filtering</p>
+                <p>Filtering</p>
                 <div className='w-40'>
                     <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
                 </div>

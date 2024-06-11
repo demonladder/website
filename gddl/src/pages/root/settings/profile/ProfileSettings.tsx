@@ -65,7 +65,7 @@ export default function ProfileSettings() {
                 <section>
                     <div className='flex max-md:flex-col-reverse gap-2'>
                         <div className='md:w-2/3'>
-                            <GeneralInformation />
+                            <GeneralInformation userID={userID} />
                         </div>
                         <div className='md:w-1/3 round:rounded-lg md:px-4 py-2'>
                             <p className='mb-2 text-lg'>Profile image</p>

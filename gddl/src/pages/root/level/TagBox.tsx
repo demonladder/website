@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/levels';
-import { LevelTagRequest, TagSubmission } from '../../../api/level/requests/LevelTagRequest';
+import { LevelTagRequest, TopTags } from '../../../api/level/requests/LevelTagRequest';
 import Select from '../../../components/Select';
 import { SendTagVoteRequest } from '../../../api/level/requests/SendTagVoteRequest';
 import { toast } from 'react-toastify';
@@ -9,30 +9,31 @@ import { GetTags } from '../../../api/level/requests/GetTags';
 import { GetTagEligibility } from '../../../api/level/requests/GetTagEligibility';
 import TagInfoModal from './TagInfoModal';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import { KeyboardAccessibility } from '../../../utils/KeyboardAccessibility';
 
 export default function TagBox({ level }: { level: FullLevel }) {
     const [isLoading, setIsLoading] = useState(false);
 
     const queryClient = useQueryClient();
     const { data: levelTags } = useQuery({
-        queryKey: ['level', level.LevelID, 'tags'],
-        queryFn: () => LevelTagRequest(level.LevelID),
+        queryKey: ['level', level.ID, 'tags'],
+        queryFn: () => LevelTagRequest(level.ID),
     });
     const { data: tags, status: tagStatus, fetchStatus: tagFetchStatus } = useQuery({
         queryKey: ['tags'],
         queryFn: GetTags,
     });
     const { data: voteMeta } = useQuery({
-        queryKey: ['level', level.LevelID, 'tags', 'eligible'],
-        queryFn: () => GetTagEligibility(level.LevelID),
+        queryKey: ['level', level.ID, 'tags', 'eligible'],
+        queryFn: () => GetTagEligibility(level.ID),
     });
 
     function onVoteChange(key: string) {
         if (isLoading) return;
         if (parseInt(key) === 0) return;
 
-        SendTagVoteRequest(level.LevelID, parseInt(key)).then(() => {
-            queryClient.invalidateQueries(['level', level.LevelID, 'tags']);
+        SendTagVoteRequest(level.ID, parseInt(key)).then(() => {
+            queryClient.invalidateQueries(['level', level.ID, 'tags']);
         }).catch(() => {
             toast.error('An error occurred');
         }).finally(() => {
@@ -54,10 +55,10 @@ export default function TagBox({ level }: { level: FullLevel }) {
         <div className='text-xl h-full bg-gray-700 p-4 round:rounded-xl flex flex-col justify-between'>
             <div>
                 <h3 className='mb-2'><TagInfoModal /> Top skillsets:</h3>
-                <div className='flex flex-col gap-2 max-md:flex-col text-lg'>
+                <div className='flex max-sm:flex-col lg:flex-col md:mb-2 gap-2 text-lg'>
                     {!isContentLoading &&
                         <>
-                            {tagsToDisplay.map((t, i) => (<Tag submission={t} eligible={voteMeta?.eligible} key={`tagSubmission_${level.LevelID}_${i}`} />))}
+                            {tagsToDisplay.map((t, i) => (<Tag levelID={level.ID} submission={t} eligible={voteMeta?.eligible} key={`tagSubmission_${level.ID}_${i}`} />))}
                             {levelTags?.length === 0 && (<span>None yet</span>)}
                         </>
                     }
@@ -73,23 +74,23 @@ export default function TagBox({ level }: { level: FullLevel }) {
     );
 }
 
-function Tag({ submission, eligible = false }: { submission: TagSubmission, eligible?: boolean }) {
+function Tag({ levelID, submission, eligible = false }: { levelID: number, submission: TopTags, eligible?: boolean }) {
     const queryClient = useQueryClient();
 
     function handleClick() {
         if (!eligible) return;
 
-        SendTagVoteRequest(submission.LevelID, submission.TagID).then(() => {
-            queryClient.invalidateQueries(['level', submission.LevelID, 'tags']);
+        SendTagVoteRequest(levelID, submission.TagID).then(() => {
+            queryClient.invalidateQueries(['level', levelID, 'tags']);
         });
     }
 
     return (
-        <div onClick={handleClick} className={(eligible ? 'cursor-pointer ' : '') + 'px-2 py-1 group round:rounded-lg select-none relative border ' + (submission.HasVoted ? 'bg-blue-600 bg-opacity-25 border-blue-400' : 'bg-gray-600 border-gray-600 hover:border-white transition-colors')}>
-            <span>{submission.Name} </span>
-            <span>{Math.round(submission.Percent * 100)}%</span>
-            {submission.Description &&
-                <div className='absolute z-10 w-56 hidden group-hover:block left-1/2 top-full -translate-x-1/2 translate-y-1 bg-gray-500 border border-gray-400 round:rounded-lg shadow-lg px-2 py-1'>{submission.Description}</div>
+        <div onClick={handleClick} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} tabIndex={0} className={(eligible ? 'cursor-pointer ' : '') + 'px-2 py-1 group round:rounded-lg select-none relative border ' + (submission.HasVoted ? 'bg-blue-600 bg-opacity-25 border-blue-400' : 'bg-gray-600 border-gray-600 hover:border-white transition-colors')}>
+            <span>{submission.Tag.Name} </span>
+            <span>{submission.ReactCount}</span>
+            {submission.Tag.Description &&
+                <div className='absolute z-10 w-56 hidden group-hover:block left-1/2 top-full -translate-x-1/2 translate-y-1 bg-gray-500 border border-gray-400 round:rounded-lg shadow-lg px-2 py-1'>{submission.Tag.Description}</div>
             }
         </div>
     );

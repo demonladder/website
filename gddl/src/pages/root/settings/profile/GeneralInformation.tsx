@@ -9,18 +9,16 @@ import FormGroup from '../../../../components/form/FormGroup';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import useLevelSearch from '../../../../hooks/useLevelSearch';
-import { validateUsername } from '../../signup/SignUp';
 
-export default function GeneralInformation() {
+export default function GeneralInformation({ userID }: { userID: number }) {
     const hasSession = StorageManager.hasSession();
-    const userID = StorageManager.getUser()?.ID;
 
     const [isMutating, setIsMutating] = useState(false);
     const queryClient = useQueryClient();
 
     const { data, status } = useQuery({
         queryKey: ['user', userID],
-        queryFn: () => GetUser(userID || 0),
+        queryFn: () => GetUser(userID),
         enabled: hasSession,
     });
 
@@ -28,11 +26,11 @@ export default function GeneralInformation() {
     const [invalidName, setInvalidName] = useState(false);
     const introductionRef = useRef<HTMLTextAreaElement>(null);
 
-    const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.Hardest } });
+    const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.HardestID } });
 
     const favoriteLevelSearch1 = useLevelSearch({ ID: 'profileFavorite1', options: { defaultLevel: data?.FavoriteLevels[0] } });
     const favoriteLevelSearch2 = useLevelSearch({ ID: 'profileFavorite2', options: { defaultLevel: data?.FavoriteLevels[1] } });
-    
+
     const leastFavoriteLevelSearch2 = useLevelSearch({ ID: 'profileLeastFavorite2', options: { defaultLevel: data?.LeastFavoriteLevels[1] } });
     const leastFavoriteLevelSearch1 = useLevelSearch({ ID: 'profileLeastFavorite1', options: { defaultLevel: data?.LeastFavoriteLevels[0] } });
 
@@ -41,13 +39,13 @@ export default function GeneralInformation() {
 
     useEffect(() => {
         if (data === undefined) return;
-        
+
         if (nameRef.current) nameRef.current.value = data.Name;
-        if (introductionRef.current && data.Introduction) introductionRef.current.value = ''+data.Introduction;
-        if (minPrefRef.current && data.MinPref) minPrefRef.current.value = ''+data.MinPref;
-        if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = ''+data.MaxPref;
+        if (introductionRef.current && data.Introduction) introductionRef.current.value = '' + data.Introduction;
+        if (minPrefRef.current && data.MinPref) minPrefRef.current.value = '' + data.MinPref;
+        if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = '' + data.MaxPref;
     }, [data]);
-    
+
     function onSave(e: React.MouseEvent) {
         e.preventDefault();
         if (isMutating) return;
@@ -59,32 +57,24 @@ export default function GeneralInformation() {
         if (!maxPrefRef.current) return;
         if (!nameRef.current) return;
 
-        if (!validateUsername(nameRef.current.value)) {
-            // Username is invalid
-            setInvalidName(true);
-
-            toast.error('Invalid name');
-            return;
-        }
-
         const newUser = {
-            Name: nameRef.current.value,
-            Introduction: introductionRef.current.value || null,
-            Hardest: hardestSearch.activeLevel?.LevelID,
-            FavoriteLevels: [
-                favoriteLevelSearch1.activeLevel?.LevelID,
-                favoriteLevelSearch2.activeLevel?.LevelID,
+            name: nameRef.current.value,
+            introduction: introductionRef.current.value || null,
+            hardest: hardestSearch.activeLevel?.ID,
+            favoriteLevels: [
+                favoriteLevelSearch1.activeLevel?.ID,
+                favoriteLevelSearch2.activeLevel?.ID,
             ].filter((v) => v !== undefined).join(','),
-            LeastFavoriteLevels: [
-                leastFavoriteLevelSearch1.activeLevel?.LevelID,
-                leastFavoriteLevelSearch2.activeLevel?.LevelID,
+            leastFavoriteLevels: [
+                leastFavoriteLevelSearch1.activeLevel?.ID,
+                leastFavoriteLevelSearch2.activeLevel?.ID,
             ].filter((v) => v !== undefined).join(','),
-            MinPref: parseInt(minPrefRef.current.value) || undefined,
-            MaxPref: parseInt(maxPrefRef.current.value) || undefined,
+            minPref: parseInt(minPrefRef.current.value) || null,
+            maxPref: parseInt(maxPrefRef.current.value) || null,
         };
 
         setIsMutating(true);
-        toast.promise(SaveProfile(newUser).then(() => queryClient.invalidateQueries(['user', userID])).finally(() => setIsMutating(false)), {
+        toast.promise(SaveProfile(userID, newUser).then(() => queryClient.invalidateQueries(['user', userID])).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Saved!',
             error: renderToastError,

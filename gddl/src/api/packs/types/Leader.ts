@@ -2,7 +2,7 @@ export interface Leader {
     UserID: number;
     Name: string;
     Sum: number;
-    AccentColor: number | null;
+    AccentColor: string | null;
     DiscordID: string | null;
     Avatar: string | null;
 }

@@ -1,6 +1,6 @@
 import Header from '../../layouts/header/Header';
 import { Outlet } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Footer from '../../layouts/footer/Footer';
 
 // function getBrowserName() {

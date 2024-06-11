@@ -1,4 +1,5 @@
 import { DetailedHTMLProps, InputHTMLAttributes, forwardRef } from 'react';
+import { preventNonNumericals } from '../utils/validators/preventNonNumericals';
 
 export const TextInput = forwardRef<HTMLInputElement, DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & { invalid?: boolean }>(({ invalid = false, ...props }, ref) => (
     <input {...props} ref={ref} type='text' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />
@@ -15,7 +16,7 @@ interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputEl
 }
 
 export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disableSpinner, centered, invalid = false, ...props}, ref) => (
-    <input {...props} ref={ref} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />
+    <input {...props} ref={ref} type='number' onKeyDown={preventNonNumericals} className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />
 ));
 
 export interface ICheckboxProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {};

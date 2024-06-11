@@ -2,29 +2,32 @@ import DemonLogo from '../../../components/DemonLogo';
 import { Link } from 'react-router-dom';
 import StorageManager, { User } from '../../../utils/StorageManager';
 import { useQuery } from '@tanstack/react-query';
-import { GetUser } from '../../../api/users';
+import { GetDiscordUser, GetUser } from '../../../api/users';
 import NotificationButton from '../../../components/ui/Notifications';
 
 export default function ProfileButtons() {
     if (!StorageManager.hasSession()) {
-        localStorage.removeItem('csrf');
-        
         return <LoginButton />
     }
-    
+
     return <ProfileButton user={StorageManager.getUser()} />;
 }
 
 function ProfileButton({ user }: { user: User | null }) {
     if (user === null) return (<LoginButton />);
 
-    const { data } = useQuery({
+    const { data: discordData } = useQuery({
+        queryKey: ['user', user.ID, 'discord'],
+        queryFn: () => GetDiscordUser(user.ID),
+    });
+
+    const { data: userData } = useQuery({
         queryKey: ['user', user.ID],
         queryFn: () => GetUser(user.ID),
     });
 
-    const pfp = `https://cdn.discordapp.com/avatars/${data?.DiscordID}/${data?.Avatar}.png`;
-    
+    const pfp = `https://cdn.discordapp.com/avatars/${discordData?.ID}/${discordData?.Avatar}.png`;
+
     return (
         <div className='flex items-center gap-1'>
             {StorageManager.hasPermissions() &&
@@ -34,9 +37,9 @@ function ProfileButton({ user }: { user: User | null }) {
             <Link to={`/profile/${user.ID}`} className='flex items-center'>
                 <span className='fs-5'>{user.Name}</span>
                 <div className='ms-3 w-16'>
-                    {data?.Avatar
+                    {discordData?.Avatar
                         ? <img src={pfp || ''} className='rounded-full' />
-                        : <DemonLogo diff={user.Hardest} />
+                        : <DemonLogo diff={userData?.Hardest.Meta.Difficulty} />
                     }
                 </div>
             </Link>

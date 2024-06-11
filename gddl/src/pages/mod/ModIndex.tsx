@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetStats } from '../../api/stats';
+import { GetHealthStats, GetStats } from '../../api/stats';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartData } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import StaffLeaderboard from './StaffLeaderboard';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -29,13 +30,17 @@ export default function ModIndex() {
         queryKey: ['stats'],
         queryFn: GetStats,
     });
+    const { data: healthStats } = useQuery({
+        queryKey: ['stats', 'health'],
+        queryFn: GetHealthStats,
+    });
 
     const levelSearches: ChartData<'line'> = {
-        labels: stats?.DataLogs.map((_n, i) => (i+1)*5 + ' min'),
+        labels: healthStats?.dataLogs.map((_n, i) => (i+1)*5 + ' min ago'),
         datasets: [
             {
                 label: 'Level searches in the last hour',
-                data: stats?.DataLogs.map((stat) => stat.levelSearches) || [],
+                data: healthStats?.dataLogs.map((stat) => stat.levelSearches) || [],
                 borderColor: '#ffffff90',
                 pointBorderColor: '#00000000',
                 pointBackgroundColor: '#ffffff',
@@ -45,11 +50,11 @@ export default function ModIndex() {
     };
 
     const submissions: ChartData<'line'> = {
-        labels: stats?.DataLogs.map((_n, i) => (i+1)*5 + ' min'),
+        labels: healthStats?.dataLogs.map((_n, i) => (i+1)*5 + ' min ago'),
         datasets: [
             {
                 label: 'Site submissions in the last hour',
-                data: stats?.DataLogs.map((stat) => stat.ratingsSubmitted) || [],
+                data: healthStats?.dataLogs.map((stat) => stat.ratingsSubmitted) || [],
                 borderColor: '#00ff0090',
                 pointBorderColor: '#00000000',
                 pointBackgroundColor: '#00ff00',
@@ -57,7 +62,7 @@ export default function ModIndex() {
             },
             {
                 label: 'Starbot submissions in the last hour',
-                data: stats?.DataLogs.map((stat) => stat.starbotRatingsSubmitted) || [],
+                data: healthStats?.dataLogs.map((stat) => stat.starbotRatingsSubmitted) || [],
                 borderColor: '#ffef0190',
                 pointBorderColor: '#00000000',
                 pointBackgroundColor: '#ffef01',
@@ -72,15 +77,16 @@ export default function ModIndex() {
             <p className='mb-8'>What should I even write here?</p>
             <p className='mb-1'>Have some statistics ig.</p>
             <div className='grid gap-4 grid-cols-1 lg:grid-cols-3 mb-4'>
-                <StatisticTracker value={stats?.PendingSubmissions} label='Pending submissions' />
-                <StatisticTracker value={stats?.Submissions} label='Submissions' />
-                <StatisticTracker value={stats?.Users} label='Users' />
-                <StatisticTracker value={stats?.Warns} label='Warnings in the past 24h' />
-                <StatisticTracker value={stats?.Errors} label='Errors in the past 24h' />
+                <StatisticTracker value={stats?.pendingSubmissions} label='Pending submissions' />
+                <StatisticTracker value={stats?.submissions} label='Submissions' />
+                <StatisticTracker value={stats?.users} label='Users' />
+                <StatisticTracker value={healthStats?.warns} label='Warnings in the past 24h' />
+                <StatisticTracker value={healthStats?.errors} label='Errors in the past 24h' />
             </div>
             <Line data={levelSearches} />
             <br />
             <Line data={submissions} />
+            <StaffLeaderboard />
         </div>
     );
 }

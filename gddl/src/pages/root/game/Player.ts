@@ -3,6 +3,7 @@ import Trail from './Trail';
 import { camOffset, pixelsPerBlock } from './constants';
 import GameObject from './GameObject';
 import GameState from './GameState';
+import { keysPressed } from './Game';
 
 enum Speed {
     Half = 8.37,
@@ -29,7 +30,7 @@ export default class Player extends GameObject {
         super(0, 6);
 
         this.speed = Speed.Normal,
-        this.velocity = new P5.Vector(this.speed, 0);
+            this.velocity = new P5.Vector(this.speed, 0);
         this.prevMouseDown = false;
         this.isDead = false;
 
@@ -46,7 +47,7 @@ export default class Player extends GameObject {
     reset() {
         this.position.set(0, 6);
         this.speed = Speed.Normal,
-        this.velocity = new P5.Vector(this.speed, 0);
+            this.velocity = new P5.Vector(this.speed, 0);
         this.trail = new Trail(this);
         this.isDead = false;
     }
@@ -69,17 +70,17 @@ export default class Player extends GameObject {
     }
 
     update(p5: P5) {
-        this.velocity.y = (p5.mouseIsPressed ? 1 : -1) * this.speed;
-    
+        this.velocity.y = ((p5.mouseIsPressed || keysPressed[' '] === true) ? 1 : -1) * this.speed;
+
         if (!this.isDead) this.position.add(this.velocity.copy().div(60));
-    
+
         let hasCollided = false;
         if (this.position.y < this.radius) {
             hasCollided = true;
             this.position.y = this.radius;
-        } else if (this.position.y >= p5.height/pixelsPerBlock - this.radius) {
+        } else if (this.position.y >= p5.height / pixelsPerBlock - this.radius) {
             hasCollided = true;
-            this.position.y = p5.height/pixelsPerBlock - this.radius;
+            this.position.y = p5.height / pixelsPerBlock - this.radius;
         }
         if (hasCollided) this.trail.addPoint();
     }
@@ -88,7 +89,7 @@ export default class Player extends GameObject {
         // Draw player
         this.trail.draw(p5);
         p5.noFill();
-        p5.circle(this.position.x * pixelsPerBlock, p5.height - this.position.y * pixelsPerBlock, this.radius * pixelsPerBlock * 2 );
+        p5.circle(this.position.x * pixelsPerBlock, p5.height - this.position.y * pixelsPerBlock, this.radius * pixelsPerBlock * 2);
 
         if (GameState.showHitboxes) {
             this.drawHitbox(p5);

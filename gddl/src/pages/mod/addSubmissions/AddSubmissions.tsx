@@ -9,7 +9,7 @@ import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import useUserSearch from '../../../hooks/useUserSearch';
-import { Level } from '../../../api/levels';
+import { FullLevel } from '../../../api/levels';
 
 const deviceOptions = {
     '1': 'PC',
@@ -48,7 +48,7 @@ export default function AddSubmission() {
         }
 
         const submission = {
-            levelID: activeLevel.LevelID,
+            levelID: activeLevel.ID,
             userID: userSearch.activeUser.ID,
             rating: rating,
             enjoyment: enjoyment,
@@ -62,7 +62,7 @@ export default function AddSubmission() {
         void toast.promise(
             APIClient.post('/submit/mod', submission).then((res): string => {
                 void queryClient.invalidateQueries(['submissions']);
-                void queryClient.invalidateQueries(['level', activeLevel.LevelID]);
+                void queryClient.invalidateQueries(['level', activeLevel.ID]);
 
                 return res.data as string;
             }).finally(() => setIsMutating(false)),
@@ -73,7 +73,7 @@ export default function AddSubmission() {
                         if (data === undefined) {
                             return 'Erm, this is not supposed to appear';
                         }
-                        return `${data} for ${activeLevel.Name}!`
+                        return `${data} for ${activeLevel.Meta.Name}!`
                     }
                 },
                 error: renderToastError,
@@ -155,6 +155,6 @@ function validateRefreshRate(FPS: number) {
     return FPS >= 30;
 }
 
-function validateProof(proof: string, level?: Level) {
-    return !(level?.Difficulty === 'Extreme' && proof.length === 0);
+function validateProof(proof: string, level?: FullLevel) {
+    return !(level?.Meta.Difficulty === 'Extreme' && proof.length === 0);
 }

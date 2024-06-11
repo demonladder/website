@@ -7,12 +7,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from './pages/root/Root';
 import Index from './pages/root/RootIndex';
-import Ladder from './pages/root/list/Ladder';
+import Search from './pages/root/search/Search';
 import References from './pages/root/references/References';
 import LevelOverview from './pages/root/level/LevelOverview';
 import Login from './pages/root/login/Login';
 import Packs from './pages/root/packs/Packs';
-import Profile from './pages/root/profile/Profile';
+import Profile, { profileLoader } from './pages/root/profile/Profile';
 import PackOverview from './pages/root/packs/packOverview/PackOverview';
 import Mod from './pages/mod/Mod';
 import { modLoader as ModLoader } from './pages/mod/Mod';
@@ -51,6 +51,10 @@ import PlatformerList from './pages/root/platformerList/PlatformerList';
 import MenuContextProvider from './components/ui/menuContext/MenuContextContainer';
 import Logs from './pages/mod/siteLogs/Logs';
 const Game = lazy(() => import('./pages/root/game/Game'));
+import List from './pages/root/list/List';
+import EditLevel from './pages/mod/editLevel/EditLevel';
+import { HelmetProvider } from 'react-helmet-async';
+import ProfilePendingSubmissions from './pages/root/profile/pendingSubmissions/ProfilePendingSubmissions';
 
 const router = createBrowserRouter(
     [
@@ -64,8 +68,8 @@ const router = createBrowserRouter(
                     element: <Index />,
                 },
                 {
-                    path: 'list',
-                    element: <Ladder />,
+                    path: 'search',
+                    element: <Search />,
                 },
                 {
                     path: 'platformerList',
@@ -108,12 +112,20 @@ const router = createBrowserRouter(
                     element: <SignUp />,
                 },
                 {
+                    path: 'profile',
+                    loader: profileLoader,
+                },
+                {
                     path: 'profile/settings',
                     element: <ProfileSettings />,
                 },
                 {
                     path: 'profile/:userID',
                     element: <Profile />,
+                },
+                {
+                    path: 'profile/:userID/pendingSubmissions',
+                    element: <ProfilePendingSubmissions />,
                 },
                 {
                     path: 'notifications',
@@ -141,7 +153,11 @@ const router = createBrowserRouter(
                             path: 'submission',
                             element: <SubmissionSettings />,
                         },
-                    ]
+                    ],
+                },
+                {
+                    path: 'list/:listID',
+                    element: <List />,
                 },
                 {
                     path: '/mod',
@@ -195,6 +211,10 @@ const router = createBrowserRouter(
                         {
                             path: 'addLevel',
                             element: <AddLevel />,
+                        },
+                        {
+                            path: 'editLevel',
+                            element: <EditLevel />,
                         },
                         {
                             path: 'editTags',
@@ -262,10 +282,12 @@ StorageManager.getIsRounded() && rootElement.classList.add('round');
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <MenuContextProvider>
-                <RouterProvider router={router} />
-                <ReactQueryDevtools initialIsOpen={false} />
-            </MenuContextProvider>
+            <HelmetProvider>
+                <MenuContextProvider>
+                    <RouterProvider router={router} />
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </MenuContextProvider>
+            </HelmetProvider>
         </QueryClientProvider>
         <ToastContainer theme='dark' position='bottom-right' />
     </React.StrictMode>

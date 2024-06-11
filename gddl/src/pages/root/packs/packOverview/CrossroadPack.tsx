@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { GetSinglePack } from '../../../../api/pack/requests/GetSinglePack';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import Container from '../../../../components/Container';
@@ -57,12 +57,12 @@ export default function CrossroadPack() {
                             ? (<div className='level-list mb-8'>
                                 <Level.Header />
                                 {pack.Levels.filter((lvl) => lvl.Path === t).sort((a, b) => (a.Rating || 0) - (b.Rating || 0)).map((l) => (
-                                    <Level info={l} key={l.LevelID} />
+                                    <Level ID={l.LevelID} rating={l.Rating} enjoyment={l.Enjoyment} name={l.Name} creator={l.Creator} songName={l.Song} key={l.LevelID} />
                                 ))}
                             </div>)
                             : (<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8'>
                                 {pack.Levels.filter((lvl) => lvl.Path === t).sort((a, b) => (a.Rating || 0) - (b.Rating || 0)).map((l) => (
-                                    <GridLevel info={l} />
+                                    <GridLevel ID={l.LevelID} rating={l.Rating} enjoyment={l.Enjoyment} name={l.Name} creator={l.Creator} difficulty={l.Difficulty} inPack={false} key={l.LevelID} />
                                 ))}
                             </div>)
                         }

@@ -52,9 +52,9 @@ export default function Submissions({ userID }: Props) {
     }
 
     return (
-        <div className='mt-3'>
+        <div className='mt-6'>
             <div className='flex items-center gap-2 mb-2 flex-wrap'>
-                <h2 className='text-3xl'>Submissions</h2>
+                <h2 className='text-3xl' id='submissions'>Submissions</h2>
                 <SortMenu set={setSort} />
                 <div className='flex items-center text-black'>
                     <button className={'w-7 h-7 grid place-items-center ' + (listType === EListType.inline ? 'bg-gray-950 text-white' : 'bg-white')} onClick={() => setListType(EListType.inline)}>
@@ -84,7 +84,7 @@ export default function Submissions({ userID }: Props) {
     );
 }
 
-function InlineList({ levels, userID }: { levels: Submission[], userID: number }) {
+function InlineList({ levels, userID }: { levels: (Submission & { ActualRating?: number, ActualEnjoyment?: number })[], userID: number }) {
     const [clickedSubmission, setClickedSubmission] = useState<Submission>();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -104,6 +104,7 @@ function InlineList({ levels, userID }: { levels: Submission[], userID: number }
             y: e.clientY,
             buttons: [
                 { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
+                { text: 'Add to list', onClick: () => navigate(`/level/${submission.LevelID}`) },
                 { text: 'View proof', onClick: () => window.open(submission.Proof, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
                 { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) },
             ],
@@ -128,7 +129,7 @@ function InlineList({ levels, userID }: { levels: Submission[], userID: number }
             <div className='level-list'>
                 <Level.Header />
                 {levels.map((p) => (
-                    <Level isHeader={false} info={p} key={'submission_' + p.LevelID + '_' + p.UserID} onContextMenu={(e) => openContext(e, p)} />
+                    <Level ID={p.LevelID} rating={p.Rating} actualRating={p.ActualRating} enjoyment={p.Enjoyment} actualEnjoyment={p.ActualEnjoyment} name={p.Name} creator={p.Creator} songName={p.Song} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />
                 ))}
             </div>
             {showDeleteModal && clickedSubmission &&
@@ -151,7 +152,7 @@ function InlineList({ levels, userID }: { levels: Submission[], userID: number }
 function GridList({ levels }: { levels: Submission[] }) {
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-            {levels.map((p) => <GridLevel info={p} key={p.LevelID} />)}
+            {levels.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Name} creator={p.Creator} difficulty={p.Difficulty} inPack={false} key={p.LevelID} />)}
         </div>
     );
 }

@@ -1,14 +1,17 @@
 import IDButton from './IDButton';
-import { Level as TLevel } from '../api/levels';
 import { Link } from 'react-router-dom';
 import StorageManager from '../utils/StorageManager';
 
-type Props = {
-    isHeader?: boolean,
-    info: TLevel & {
-        ActualRating?: number;
-        ActualEnjoyment?: number;
-    },
+interface Props {
+    ID: number;
+    rating: number | null;
+    actualRating?: number;
+    enjoyment: number | null;
+    actualEnjoyment?: number;
+    completed?: boolean;
+    name: string;
+    creator: string;
+    songName: string;
     onContextMenu?: React.MouseEventHandler;
 }
 
@@ -25,13 +28,12 @@ function Header() {
     );
 }
 
-function Level({ info, onContextMenu }: Props) {
-    const roundedTier = info.Rating !== null ? Math.round(info.Rating) : 0;
-    const roundedEnjoyment = info.Enjoyment !== null ? Math.round(info.Enjoyment) : -1;
+function Level({ ID, rating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu }: Props) {
+    const roundedTier = rating !== null ? Math.round(rating) : 0;
+    const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
     const tierClass = 'tier-' + roundedTier;
     const enjoymentClass = 'enj-' + roundedEnjoyment;
-    const completed = info.Completed === 1;
 
     return (
         <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 font-bold' : ' bg-gray-700')} onContextMenu={onContextMenu}>
@@ -39,14 +41,14 @@ function Level({ info, onContextMenu }: Props) {
                 {completed && StorageManager.getHighlightCompleted() &&
                     <img src='/assets/images/yes tick.webp' className='max-md:w-6 max-md:h-6 w-8 h-8 self-center me-2' alt='' />
                 }
-                <Link to={'/level/' + info.LevelID} className='self-center underline break-all whitespace-pre-wrap max-md:text-sm'>{info.Name}</Link>
+                <Link to={'/level/' + ID} className='self-center underline break-all whitespace-pre-wrap max-md:text-sm'>{name}</Link>
             </h4>
 
-            <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{info.Creator}</p></div>
-            <div className='col-span-3 hidden xl:block self-center'><p className='cursor-default'>{info.Song}</p></div>
-            <div className='col-span-2 hidden lg:flex justify-center self-center'><IDButton id={info.LevelID} /></div>
-            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{info.Rating !== null ? roundedTier : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{info.Rating !== null ? (info.ActualRating || info.Rating).toFixed(2) : 'N/A'}</p></div>
-            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${enjoymentClass}`}><p className='group-hover:hidden self-center cursor-default'>{info.Enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{info.Enjoyment !== null ? (info.ActualEnjoyment !== undefined ? info.ActualEnjoyment : info.Enjoyment).toFixed(2) : 'N/A'}</p></div>
+            <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{creator}</p></div>
+            <div className='col-span-3 hidden xl:block self-center'><p className='cursor-default'>{songName}</p></div>
+            <div className='col-span-2 hidden lg:flex justify-center self-center'><IDButton id={ID} /></div>
+            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{rating !== null ? roundedTier : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualRating ?? rating)?.toFixed(2) ?? 'N/A'}</p></div>
+            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${enjoymentClass}`}><p className='group-hover:hidden self-center cursor-default'>{enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualEnjoyment ?? enjoyment)?.toFixed(2) ?? 'N/A'}</p></div>
         </div>
     );
 }

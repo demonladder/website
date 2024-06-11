@@ -76,13 +76,13 @@ export default function EditPack() {
 
         // Level must not be in pack
         const addResult = addLevelSearch.activeLevel;
-        if (data?.Levels.find((l) => l.LevelID === addResult.LevelID)) return;
+        if (data?.Levels.find((l) => l.LevelID === addResult.ID)) return;
 
         const newChange: Change = {
             PackID: packResult.ID,
             PackName: packResult.Name,
-            LevelID: addResult.LevelID,
-            LevelName: addResult.Name,
+            LevelID: addResult.ID,
+            LevelName: addResult.Meta.Name,
             Type: 'add',
             EX,
         }

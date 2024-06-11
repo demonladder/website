@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { GetLevel, Level, SearchLevels } from '../api/levels';
+import { FullLevel, GetLevel, SearchLevels } from '../api/levels';
 import SearchBox from '../components/SearchBox/SearchBox';
 
 interface LevelSearchOptions {
@@ -11,14 +11,15 @@ interface LevelSearchOptions {
 interface Props {
     ID: string,
     ref?: React.Ref<HTMLInputElement>,
+    required?: boolean;
     options?: LevelSearchOptions,
 }
 
-export default function useLevelSearch({ ID, options = {} }: Props) {
+export default function useLevelSearch({ ID, required = false, options = {} }: Props) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const [activeLevel, setActiveLevel] = useState<Level>();
+    const [activeLevel, setActiveLevel] = useState<FullLevel>();
     const [isInvalid, setIsInvalid] = useState(false);
     const ref = useRef<HTMLInputElement>(null);
 
@@ -39,12 +40,9 @@ export default function useLevelSearch({ ID, options = {} }: Props) {
     useEffect(() => {
         if (!defaultData) return;
         
-        if (ref.current) ref.current.value = defaultData?.Name;
-        setSearch(defaultData?.Name);
-        setActiveLevel({
-            ...defaultData,
-            Song: defaultData.SongName,
-        });
+        if (ref.current) ref.current.value = defaultData?.Meta.Name;
+        setSearch(defaultData?.Meta.Name);
+        setActiveLevel(defaultData);
     }, [defaultData]);
 
     function clear() {
@@ -53,14 +51,16 @@ export default function useLevelSearch({ ID, options = {} }: Props) {
         setActiveLevel(undefined);
     }
 
+    function setQuery(query: string) {
+        setSearch(query);
+        setSearchQuery(query);
+    }
+
     return {
         activeLevel,
-        setQuery: setSearch,
+        setQuery,
         clear,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox search={search} onSearchChange={setSearch} id={ID} list={data?.levels.map((d) => ({
-            ...d,
-            label: d.Name + ' by ' + d.Creator + ` (${d.LevelID})`,
-        })) || []} onDelayedChange={setSearchQuery} setResult={setActiveLevel} status={status} invalid={isInvalid} placeholder={defaultData?.Name} />),
+        SearchBox: (<SearchBox search={search} getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Creator}`} getName={(r) => r.Meta.Name} onSearchChange={setSearch} id={ID} list={data?.levels || []} onDelayedChange={setSearchQuery} setResult={setActiveLevel} status={status} invalid={isInvalid || (required && !activeLevel)} placeholder={defaultData?.Meta.Name} />),
     }
 }

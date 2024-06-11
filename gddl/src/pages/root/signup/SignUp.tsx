@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 
 export function validateUsername(name: string): boolean {
-    return name.length >= 3 && name.match(/[a-zA-Z0-9\._\s]*/)?.[0] === name;
+    return name.length >= 3 && name.match(/[a-zA-Z0-9\._]*/)?.[0] === name;
 }
 
 export default function SignUp() {

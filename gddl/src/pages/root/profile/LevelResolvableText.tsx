@@ -11,7 +11,7 @@ export default function LevelResolvableText({ levelID, isLast }: { levelID: numb
     if (data === undefined || data === null) return;
     return (
         <span>
-            <Link to={'/level/' + levelID} className='underline'>{data.Name}</Link>
+            <Link to={'/level/' + levelID} className='underline'>{data.Meta.Name}</Link>
             {!isLast && ' & '}
         </span>
     );

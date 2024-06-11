@@ -17,18 +17,27 @@ export default function RatingGraph({ levelID }: Props) {
     const maxCount = ratingData.reduce((acc, cur) => acc + cur.Count, 0);
 
     return (
-        <section className='mt-4'>
+        <section className='mt-6'>
             <h2 className='text-3xl mb-1'>Rating spread</h2>
-            <div className='grid gap-2' style={{ gridTemplateColumns: '1fr 17fr' }}>
-                {ratingData.map((d) => (
-                    <>
-                        <p>{`Tier ${d.Rating}`}</p>
-                        <div className={'relative tier-' + d.Rating} style={{ width: `${d.Count / maxCount * 100}%`, height: '100%' }}>
-                            <span className='absolute left-full translate-x-2 text-white w-max'>{d.Count} ({(d.Count / maxCount * 100).toFixed(2)}%)</span>
-                        </div>
-                    </>
-                ))}
-            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Tier</th>
+                        <th className='w-full'>Percentage</th>
+                    </tr>
+                    {ratingData.map((d) => (
+                        <tr key={d.Rating}>
+                            <td>
+                                <p className='pe-2 whitespace-nowrap'>{`Tier ${d.Rating}`}</p>
+                            </td>
+                            <td className='flex items-center'>
+                                <span className={'inline-block h-6 tier-' + d.Rating} style={{ width: `${d.Count / maxCount * 100}%` }} />
+                                <span className='ms-4 text-white'>{d.Count} ({(d.Count / maxCount * 100).toFixed(2)}%)</span>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </section>
     );
 }

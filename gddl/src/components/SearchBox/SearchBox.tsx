@@ -13,27 +13,22 @@ interface Props<T> {
     id?: string;
     placeholder?: string;
     invalid?: boolean;
-}
-
-interface BaseType {
-    label: string;
-    Name: string;
+    getLabel: (result: T) => string;
+    getName: (result: T) => string;
 }
 
 
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox<T extends BaseType>({ search, onSearchChange, list, onDelayedChange, setResult, status, id, placeholder = 'Search...', invalid = false }: Props<T>) {
+export default function SearchBox<T>({ search, onSearchChange, list, getLabel, getName, onDelayedChange, setResult, status, id, placeholder = 'Search...', invalid = false }: Props<T>) {
     const [visible, setVisible] = useState(false);  // State of the search results
 
     // When the search changes, wait a bit before telling the parent
     const [timer, setTimer] = useState<NodeJS.Timeout>();
     function onChange(e: React.ChangeEvent<HTMLInputElement>) {
         setResult(undefined);
-        console.log('Search box has changed');
-        
-        
+
         onSearchChange(e.target.value);
         clearTimeout(timer);
         setTimer(setTimeout(() => {
@@ -44,7 +39,7 @@ export default function SearchBox<T extends BaseType>({ search, onSearchChange, 
     useEffect(() => {
         function onClick(e: MouseEvent) {
             if (id === undefined) return;
-    
+
             if (e.target !== document.getElementById(id)) {
                 setVisible(false);
             }
@@ -59,7 +54,7 @@ export default function SearchBox<T extends BaseType>({ search, onSearchChange, 
 
     // When the user clicks a result, set search state and pass the clicked result to parent
     function handleClick(r: T) {
-        onSearchChange(r.Name);
+        onSearchChange(getName(r));
         setResult(r);
     }
 
@@ -68,7 +63,7 @@ export default function SearchBox<T extends BaseType>({ search, onSearchChange, 
             handleClick(list[0]);
         }
     }
-    
+
     return (
         <div>
             <TextInput value={search} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} invalid={invalid} />
@@ -78,7 +73,7 @@ export default function SearchBox<T extends BaseType>({ search, onSearchChange, 
                     ? <LoadingSpinner />
                     : ((status === 'error' || list.length === 0)
                         ? <div className='px-2 py-1'><p>No results</p></div>
-                        : list.map(r => <SearchResult msg={r.label} onClick={() => handleClick(r)} key={r.label} />))
+                        : list.map(r => <SearchResult msg={getLabel(r)} onClick={() => handleClick(r)} key={getLabel(r)} />))
                 }
             </div>
         </div>

@@ -40,6 +40,7 @@ export default function Mod() {
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Levels</p>
                         <NavButton to='/mod/addLevel'>Add/update level</NavButton>
+                        <NavButton to='/mod/editLevel'>Edit level</NavButton>
                         <NavButton to='/mod/editTags'>Edit tags</NavButton>
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Settings</p>

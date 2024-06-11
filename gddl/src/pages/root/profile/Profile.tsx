@@ -1,8 +1,8 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, redirect, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { GetUser } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Submissions from './Submissions';
 import StorageManager from '../../../utils/StorageManager';
 import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
@@ -14,6 +14,14 @@ import { SecondaryButton } from '../../../components/Button';
 import useLogout from '../../../hooks/useLogout';
 import toFixed from '../../../utils/toFixed';
 import LevelResolvableText from './LevelResolvableText';
+import Rankings from './Rankings';
+import Lists from './Lists';
+
+export function profileLoader() {
+    if (StorageManager.hasSession()) return redirect(`/profile/${StorageManager.getUser()?.ID}`);
+
+    return redirect('/signup');
+}
 
 export default function Profile() {
     const userID = parseInt('' + useParams().userID) || 0;
@@ -70,21 +78,18 @@ export default function Profile() {
         return minPref + ' to ' + maxPref;
     }
 
-    const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordID}/${userData.Avatar}.png`;
+    const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png`;
 
     return (
         <Container key={userID}>
             <Helmet>
                 <title>{'GDDL - ' + userData.Name}</title>
-                <meta property='og:type' content='website' />
-                <meta property='og:site_name' content='GD Demon Ladder' />
                 <meta property='og:title' content={userData.Name} />
-                <meta property='og:url' content={`https://gdladder.com/profile/${userData.ID}`} />
-                <meta property='og:description' content='The project to improve demon difficulties' />
+                <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
             </Helmet>
             <section className='flex justify-between flex-wrap items-center'>
-                <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.Avatar &&
-                    <object data={pfp} type='image/png' className='inline w-16 rounded-full' />} {userData.Name} <ProfileTypeIcon permissionLevel={userData.PermissionLevel} />
+                <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.DiscordData?.Avatar &&
+                    <object data={pfp} type='image/png' className='inline w-16 rounded-full' />} {userData.Name} <ProfileTypeIcon permissionLevel={userData.RoleIDs} />
                     <span>
                         {userData.CompletedPacks.map((p) => (
                             <Link to={`/pack/${p.PackID}`}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1' width={34} height={34} /></Link>
@@ -101,7 +106,7 @@ export default function Profile() {
                     <p className='border-b-2 h-24 overflow-auto'>{userData.Introduction}</p>
                 </div>
                 <div className='p-3 bg-gray-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3 max-md:gap-y-2'>
-                    <LevelTracker levelID={userData.Hardest} title='Hardest' />
+                    <LevelTracker levelID={userData.HardestID} title='Hardest' />
                     <Tracker>
                         <b>Tier preference:</b>
                         <p>{calcPref()}</p>
@@ -115,7 +120,6 @@ export default function Profile() {
                             {userData.FavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.FavoriteLevels.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
                         </div>
                     </Tracker>
-                    <div></div>
                     <Tracker>
                         <b>Least favorites:</b>
                         <div>
@@ -126,7 +130,7 @@ export default function Profile() {
                         </div>
                     </Tracker>
                     <Tracker>
-                        <b>Total submissisons:</b>
+                        <b>Total submissions:</b>
                         <p>{userData.TotalSubmissions}</p>
                     </Tracker>
                     <div className='hidden lg:block'>
@@ -135,9 +139,9 @@ export default function Profile() {
                             <p>{toFixed('' + userData.AverageEnjoyment, 1, '-')}</p>
                         </Tracker>
                     </div>
-                    <Link to='/pendingSubmissions'>
+                    <Link to='pendingSubmissions'>
                         <Tracker>
-                            <b>Pending submissisons:</b>
+                            <b>Pending submissions:</b>
                             <p>{userData.PendingSubmissionCount}</p>
                         </Tracker>
                     </Link>
@@ -150,6 +154,8 @@ export default function Profile() {
                 </div>
             </section>
             <Submissions userID={userID} />
+            <Lists userID={userID} />
+            <Rankings userID={userID} />
         </Container>
     );
 }

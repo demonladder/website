@@ -81,6 +81,9 @@ export default {
         {
             pattern: /refreshRate-.*/,
         },
+        {
+            pattern: /max-h-[0-9]*/,
+        },
     ],
     plugins: [
         plugin(function({ addVariant }) {

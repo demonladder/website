@@ -11,7 +11,7 @@ function LeaderboardEntry({ data, highestScore }: { data: Leader, highestScore?:
     const width = data.Sum * 100 / highestScore;
     const pfp = `https://cdn.discordapp.com/avatars/${data?.DiscordID}/${data?.Avatar}.png`;
 
-    const profileColor = data.AccentColor || 0;
+    const profileColor = parseInt(''+data.AccentColor) || 0;
 
     const red = profileColor >> 16;
     const green = (profileColor >> 8) & 0xff;
@@ -22,11 +22,11 @@ function LeaderboardEntry({ data, highestScore }: { data: Leader, highestScore?:
 
     return (
         <div className='mt-[2px] max-md:text-xs'>
-            <Link to={`/profile/${data.UserID}`} style={{ width: width + '%', backgroundColor: `#${data.AccentColor?.toString(16)}` }} className='inline-block relative h-10 bg-gray-500'>
+            <Link to={`/profile/${data.UserID}`} style={{ width: width + '%', backgroundColor: `#${profileColor.toString(16)}` }} className='inline-block relative h-10 bg-gray-500'>
                 {data.Avatar &&
                     <object data={pfp} type='image/png' className='rounded-full w-10 -ms-12' />
                 }
-                <span className='absolute right-2 top-1/2 -translate-y-1/2 w-11/12 overflow-hidden' style={{ color: `rgb(${textCol}, ${textCol}, ${textCol})` }}>{data.Name}</span>
+                <span className='absolute right-2 top-1/2 -translate-y-1/2 overflow-hidden' style={{ color: `rgb(${textCol}, ${textCol}, ${textCol})` }}>{data.Name}</span>
                 <span className='absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full'>{data.Sum}%</span>
             </Link>
         </div>

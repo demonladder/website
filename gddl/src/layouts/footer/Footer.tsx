@@ -25,6 +25,9 @@ export default function Footer() {
                             <Link to='/about'>About</Link>
                         </li>
                         <li>
+                            <a href='/about#guidelines'>Rating guidelines</a>
+                        </li>
+                        <li>
                             <Link to='/staff'>Staff</Link>
                         </li>
                     </ul>

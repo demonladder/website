@@ -33,8 +33,8 @@ export default function EditSubmission() {
     const queryClient = useQueryClient();
 
     const { status, data } = useQuery({
-        queryKey: ['submissions', { levelID: activeLevel?.LevelID, page }],
-        queryFn: () => GetSubmissions({ levelID: activeLevel?.LevelID || 0, chunk: 24, page }),
+        queryKey: ['submissions', { levelID: activeLevel?.ID, page }],
+        queryFn: () => GetSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page }),
     });
 
     useEffect(() => {
@@ -61,7 +61,7 @@ export default function EditSubmission() {
         setIsMutating(true);
         toast.promise(
             APIClient.post('/submit/mod', {
-                levelID: activeLevel.LevelID,
+                levelID: activeLevel.ID,
                 userID: userResult.UserID,
                 rating: validateIntChange(ratingRef.current.value),
                 enjoyment: validateIntChange(enjoymentRef.current.value),
@@ -69,7 +69,7 @@ export default function EditSubmission() {
                 device: parseInt(deviceKey),
                 proof: proof !== '' ? proof : undefined,
                 isEdit: true,
-            }).then(() => queryClient.invalidateQueries(['submissions', { levelID: activeLevel.LevelID }])).finally(() => setIsMutating(false)),
+            }).then(() => queryClient.invalidateQueries(['submissions', { levelID: activeLevel.ID }])).finally(() => setIsMutating(false)),
             {
                 pending: 'Editing',
                 success: 'Edited submission',
@@ -95,9 +95,9 @@ export default function EditSubmission() {
         }
 
         setIsMutating(true);
-        const request = DeleteSubmission(activeLevel.LevelID, userResult.UserID).then(() => {
+        const request = DeleteSubmission(activeLevel.ID, userResult.UserID).then(() => {
             queryClient.invalidateQueries(['submissions']);
-            queryClient.invalidateQueries(['level', activeLevel.LevelID]);
+            queryClient.invalidateQueries(['level', activeLevel.ID]);
         }).finally(() => setIsMutating(false));
 
         toast.promise(request, {

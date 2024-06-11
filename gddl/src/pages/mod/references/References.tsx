@@ -124,9 +124,9 @@ export default function EditReferences() {
         if (!activeLevel) return;
         if (activeLevel.Rating === null) return;
 
-        if (changeList.filter(c => c.ID === activeLevel.LevelID && c.Type === 'add').length === 1) return;
+        if (changeList.filter(c => c.ID === activeLevel.ID && c.Type === 'add').length === 1) return;
 
-        const newChange: Change = { Tier: activeLevel.Rating, ID: activeLevel.LevelID, Name: activeLevel.Name, Type: ChangeType.Add };
+        const newChange: Change = { Tier: activeLevel.Rating, ID: activeLevel.ID, Name: activeLevel.Meta.Name, Type: ChangeType.Add };
         newChange.Tier = tier;
         setChangeList(prev => [...prev, newChange])
     }

@@ -34,13 +34,13 @@ export default function AddLevel() {
 
     return (
         <div>
-            <h3 className='text-2xl'>Add Level</h3>
+            <h3 className='text-2xl'>Sync Level</h3>
             <p className='mb-3'>Here you can add levels that don't yet exist in the GDDL database or update existing levels. Click the button to sync the level, creator, difficulty and song to the GD database.</p>
             <div className='mb-2'>
                 <label htmlFor='addLevelInput' className='font-bold block mb-1'>Level ID</label>
                 <TextInput value={input} onChange={handleChange} id='addLevelInput' />
             </div>
-            <PrimaryButton onClick={submit}>Add / update</PrimaryButton>
+            <PrimaryButton onClick={submit}>Sync</PrimaryButton>
         </div>
     );
 }

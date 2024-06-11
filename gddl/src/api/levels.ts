@@ -13,26 +13,36 @@ export interface Level {
     Completed?: 0 | 1;
 }
 
-export type FullLevel = {
-    LevelID: number,
-    Name: string,
-    Rating: number | null,
-    TwoPlayerRating: number | null,
-    Enjoyment: number | null,
-    Deviation: number | null,
-    TwoPlayerDeviation: number | null,
-    RatingCount: number,
-    EnjoymentCount: number,
-    SubmissionCount: number,
-    Description: string,
-    Difficulty: string,
+export interface Meta {
+    ID: number;
+    Name: string;
+    Creator: string;
+    Description: string;
+    SongID: number;
     Length: 'Tiny' | 'Short' | 'Medium' | 'Long' | 'XL' | 'Platformer';
-    SongID: number,
-    SongName: string,
-    SongAuthor: string,
-    SongSize: string,
-    Creator: string,
-    IsTwoPlayer: boolean,
+    IsTwoPlayer: boolean;
+    Difficulty: string;
+    Song: {
+        ID: number;
+        Name: string;
+        Author: string;
+        Size: string;
+    };
+}
+
+export interface FullLevel {
+    ID: number;
+    Rating: number | null;
+    Enjoyment: number | null;
+    Deviation: number | null;
+    RatingCount: number;
+    EnjoymentCount: number;
+    SubmissionCount: number;
+    TwoPlayerRating: number | null;
+    TwoPlayerDeviation: number | null;
+    DefaultRating: number | null;
+    Showcase: string | null;
+    Meta: Meta;
 }
 
 interface ShortLevel {
@@ -47,7 +57,10 @@ type SearchInfo = {
     total: number,
     limit: number,
     page: number,
-    levels: Level[],
+    levels: (FullLevel & {
+        Completed: 0 | 1;
+        InPack: 0 | 1;
+    })[],
 }
 
 function lengthIndexToLength(index: number) {
@@ -71,16 +84,15 @@ export function SearchLevels(q: object): Promise<SearchInfo> {
 export async function GetLevel(ID: number | null): Promise<FullLevel | null> {
     if (ID === null) return null;
 
-    const response = (await APIClient.get(`/level?levelID=${ID}`)).data as FullLevel | null;
+    const response = (await APIClient.get(`/v2/levels/${ID}`)).data as FullLevel | null;
     if (response === null) {
         return null;
     }
 
-    return {
-        ...response,
-        Length: lengthIndexToLength((response.Length as unknown) as number),
-        IsTwoPlayer: ((response.IsTwoPlayer as unknown) as 0 | 1) === 1,
-    }
+    response.Meta.Length = lengthIndexToLength((response.Meta.Length as unknown) as number);
+    response.Meta.IsTwoPlayer = ((response.Meta.IsTwoPlayer as unknown) as 0 | 1) === 1;
+
+    return response;
 }
 
 export async function GetShortLevel(ID: number | null): Promise<ShortLevel | null> {

@@ -9,7 +9,7 @@ const APIClient = axios.create({
 APIClient.interceptors.request.use((config) => {
     const token = StorageManager.getToken();
     if (token) {
-        config.headers.Authorization = `Bearer ${StorageManager.getToken()}`;
+        config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;

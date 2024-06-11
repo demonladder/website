@@ -35,7 +35,7 @@ export default function LevelTracker({ levelID, title }: Props) {
     return (
         <Tracker>
             <b>{title}:</b>
-            <Link to={'/level/' + levelID} className='underline'>{data.Name}</Link>
+            <Link to={'/level/' + levelID} className='underline'>{data.Meta.Name}</Link>
         </Tracker>
     );
 }

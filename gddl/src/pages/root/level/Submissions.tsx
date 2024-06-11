@@ -50,12 +50,12 @@ function Submission({ submission }: Props) {
 export default function Submissions({ level }: { level: FullLevel }) {
     const [page, setPage] = useState(1);
     const { data: submissions, status } = useQuery({
-        queryKey: ['level', level.LevelID, 'submissions', { page }],
-        queryFn: () => GetSubmissions({ levelID: level.LevelID, chunk: 24, page }),
+        queryKey: ['level', level.ID, 'submissions', { page }],
+        queryFn: () => GetSubmissions({ levelID: level.ID, chunk: 24, page }),
     });
 
     return (
-        <section className='my-4'>
+        <section className='mt-6'>
             <h2 className='text-3xl'>{level.SubmissionCount} Submission{level.SubmissionCount !== 1 ? 's' : ''}</h2>
             <div>
                 {status === 'loading'

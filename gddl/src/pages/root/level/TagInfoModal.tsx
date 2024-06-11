@@ -29,7 +29,7 @@ export default function TagInfoModal() {
                         <h4 className='text-xl font-bold'>Available skillsets:</h4>
                         <ul>{
                             data?.map((t) => (
-                                <li className='mb-3'>
+                                <li className='mb-3' key={t.TagID}>
                                     <h5 className='text-lg'>{t.Name}</h5>
                                     <p className='text-base'>{t.Description}</p>
                                 </li>
