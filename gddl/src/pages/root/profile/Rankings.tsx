@@ -61,10 +61,10 @@ export default function Rankings({ userID }: Props) {
             <table className='gap-2 my-2 text-xl block'>
                 <tbody className='block'>
                     {data === undefined
-                        ? (<LoadingSpinner />)
+                        ? (<tr><td><LoadingSpinner /></td></tr>)
                         : <>
                             <Rank count={Object.values(data).reduce((acc, cur) => acc + cur.Count, 0)} total={Object.values(data).reduce((acc, cur) => acc + cur.Total, 0)} />
-                            {Object.keys(data).map((key) => (<Rank tier={key} count={data[key].Count} total={data[key].Total} />))}
+                            {Object.keys(data).map((key) => (<Rank tier={key} count={data[key].Count} total={data[key].Total} key={key} />))}
                         </>
                     }
                 </tbody>

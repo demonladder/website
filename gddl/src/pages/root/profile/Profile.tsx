@@ -92,7 +92,7 @@ export default function Profile() {
                     <object data={pfp} type='image/png' className='inline w-16 rounded-full' />} {userData.Name} <ProfileTypeIcon permissionLevel={userData.RoleIDs} />
                     <span>
                         {userData.CompletedPacks.map((p) => (
-                            <Link to={`/pack/${p.PackID}`}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1' width={34} height={34} /></Link>
+                            <Link to={`/pack/${p.PackID}`} key={p.PackID}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1' width={34} height={34} /></Link>
                         ))}
                     </span>
                 </h1>
