@@ -141,7 +141,7 @@ export default function LevelOverview() {
                     <div className='col-span-12 xl:col-span-9 flex flex-col justify-between'>
                         <div className='md:hidden xl:block'>
                             <p className='text-2xl xl:mb-2'>Description</p>
-                            <p className='text-lg'>{level.Meta.Description || <i>No description</i>}</p>
+                            <p className='text-lg break-all'>{level.Meta.Description || <i>No description</i>}</p>
                         </div>
                         <div className='bg-gray-600 p-2 round:rounded-lg mt-4'>
                             <p className='text-lg'>

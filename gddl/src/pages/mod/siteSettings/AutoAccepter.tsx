@@ -8,6 +8,7 @@ import CheckBox from '../../../components/input/CheckBox';
 import SaveAutoAcceptSettings from '../../../api/siteSettings/SaveAutoAcceptSettings';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { toast } from 'react-toastify';
+import renderToastError from '../../../utils/renderToastError';
 
 export default function AutoAccepter() {
     const [enabled, setEnabled] = useState(true);
@@ -32,16 +33,20 @@ export default function AutoAccepter() {
         if (status === 'loading') return;
         if (maxTier === undefined || maxDeviation === undefined) return;
 
-        await SaveAutoAcceptSettings({
-            enabled,
-            maxTier,
-            maxDeviation,
-        }).then(() => {
-            queryClient.invalidateQueries(['siteSettings', 'autoAccept']);
-            toast.success('Saved');
-        }).catch(() => {
-            toast.error('An error occurred');
-        });
+        await toast.promise(
+            SaveAutoAcceptSettings({
+                enabled,
+                maxTier,
+                maxDeviation,
+            }).then(() => {
+                queryClient.invalidateQueries(['siteSettings', 'autoAccept']);
+            }),
+            {
+                pending: 'Saving...',
+                success: 'Saved',
+                error: renderToastError,
+            },
+        );
     });
 
     return (

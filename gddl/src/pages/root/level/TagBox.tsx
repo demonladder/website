@@ -55,14 +55,15 @@ export default function TagBox({ level }: { level: FullLevel }) {
         <div className='text-xl h-full bg-gray-700 p-4 round:rounded-xl flex flex-col justify-between'>
             <div>
                 <h3 className='mb-2'><TagInfoModal /> Top skillsets:</h3>
-                <div className='flex max-sm:flex-col lg:flex-col md:mb-2 gap-2 text-lg'>
-                    {!isContentLoading &&
-                        <>
+                <div className='flex max-sm:flex-col lg:flex-col gap-2 text-lg'>
+                    {!isContentLoading
+                        ? <>
                             {tagsToDisplay.map((t, i) => (<Tag levelID={level.ID} submission={t} eligible={voteMeta?.eligible} key={`tagSubmission_${level.ID}_${i}`} />))}
                             {levelTags?.length === 0 && (<span>None yet</span>)}
                         </>
+                        : <span className='mt-4 text-xl'><LoadingSpinner isLoading={isContentLoading} /></span>
                     }
-                    <span className='mt-4 text-xl'><LoadingSpinner isLoading={isContentLoading} /></span>
+                    
                 </div>
             </div>
             {(!isContentLoading && voteMeta?.eligible === true && tags !== undefined) &&
