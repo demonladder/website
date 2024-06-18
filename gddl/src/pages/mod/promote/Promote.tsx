@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import UserSearchBox from '../../../components/UserSearchBox';
-import { PromoteUser, TinyUser } from '../../../api/users';
+import { TinyUser } from '../../../api/types/TinyUser';
 import { PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
 import Select from '../../../components/Select';
 import renderToastError from '../../../utils/renderToastError';
 import FormGroup from '../../../components/form/FormGroup';
+import PromoteUser from '../../../api/user/PromoteUser';
 
 const permissionOptions: {[key: string]: string} = {
     '0': 'No permissions',

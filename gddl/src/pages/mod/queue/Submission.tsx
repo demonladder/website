@@ -54,11 +54,12 @@ export default function Submission({ info, approve, remove }: Props) {
                     </span>
                 </div>
             </div>
-            <div className='flex justify-evenly max-md:flex-col max-md:gap-2'>
+            <div className='flex justify-evenly max-md:flex-col max-md:gap-4'>
                 <PrimaryButton className='px-3' onClick={() => approve(info)}>Approve</PrimaryButton>
                 <PrimaryButton className='px-3' onClick={() => approve(info, true)}>Only enjoyment</PrimaryButton>
                 <DangerButton className='px-3' onClick={() => setShowDenyReason(true)}>Deny</DangerButton>
-            </div>
+                <DangerButton className='px-3'>Launch user into space</DangerButton>
+                </div>
             <Modal title='Deny reason' show={showDenyReason} onClose={() => setShowDenyReason(false)}>
                 <Modal.Body>
                     <TextInput ref={reasonRef} placeholder='Reason...' />

@@ -7,7 +7,7 @@ interface GridProps {
     ID: number;
     rating: number | null;
     enjoyment: number | null;
-    proof?: string;
+    proof?: string | null;
     name: string;
     creator: string;
     difficulty: string;

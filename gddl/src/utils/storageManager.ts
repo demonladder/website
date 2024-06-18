@@ -4,7 +4,7 @@ export type User = {
     ID: number,
     Name: string,
     Hardest: number,
-    PermissionLevel: number,
+    Permissions: number,
     iat: number,  // Issued at
     exp: number,  // Expires at
 }
@@ -57,7 +57,7 @@ export default {
     },
 
     hasPermissions() {
-        return this.getUser()?.PermissionLevel || 0 > 0;
+        return (this.getUser()?.Permissions ?? 0) > 0;
     },
 
     deleteSession() {

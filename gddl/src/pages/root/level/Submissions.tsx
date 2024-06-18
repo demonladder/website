@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { GetSubmissions, Submission as TSubmission } from '../../../api/submissions';
+import { GetLevelSubmissions } from '../../../api/submissions';
 import { Link } from 'react-router-dom';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/levels';
+import { Submission as ISubmission } from '../../../api/submissions/responses/GetLevelSubmissionsResponse';
 
 type Props = {
-    submission: TSubmission,
+    submission: ISubmission,
 }
 
 function Submission({ submission }: Props) {
@@ -29,7 +30,7 @@ function Submission({ submission }: Props) {
         <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
             <Link className={'w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-' + (submission.Rating ? submission.Rating : '0')} to={linkDestination}>{submission.Rating || '-'}</Link>
             <Link className={'w-[40px] lg:w-1/6 p-2 text-center enj-' + enj} to={linkDestination}>{enjText}</Link>
-            <Link className='p-2 flex-grow bg-gray-500' to={linkDestination}>{submission.Name}</Link>
+            <Link className='p-2 flex-grow bg-gray-500' to={linkDestination}>{submission.User.Name}</Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&
@@ -51,7 +52,7 @@ export default function Submissions({ level }: { level: FullLevel }) {
     const [page, setPage] = useState(1);
     const { data: submissions, status } = useQuery({
         queryKey: ['level', level.ID, 'submissions', { page }],
-        queryFn: () => GetSubmissions({ levelID: level.ID, chunk: 24, page }),
+        queryFn: () => GetLevelSubmissions({ levelID: level.ID, chunk: 24, page }),
     });
 
     return (

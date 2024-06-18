@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetUser, SaveProfile } from '../../../../api/users';
 import { NumberInput, TextInput } from '../../../../components/Input';
 import StorageManager from '../../../../utils/StorageManager';
 import { PrimaryButton } from '../../../../components/Button';
@@ -9,18 +7,15 @@ import FormGroup from '../../../../components/form/FormGroup';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import useLevelSearch from '../../../../hooks/useLevelSearch';
+import useUserQuery from '../../../../hooks/queries/useUserQuery';
+import SaveProfile from '../../../../api/user/EdittableUser';
 
 export default function GeneralInformation({ userID }: { userID: number }) {
     const hasSession = StorageManager.hasSession();
 
     const [isMutating, setIsMutating] = useState(false);
-    const queryClient = useQueryClient();
 
-    const { data, status } = useQuery({
-        queryKey: ['user', userID],
-        queryFn: () => GetUser(userID),
-        enabled: hasSession,
-    });
+    const { data, status, invalidate: invalidateUser } = useUserQuery(userID, { enabled: hasSession });
 
     const nameRef = useRef<HTMLInputElement>(null);
     const [invalidName, setInvalidName] = useState(false);
@@ -74,7 +69,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         };
 
         setIsMutating(true);
-        toast.promise(SaveProfile(userID, newUser).then(() => queryClient.invalidateQueries(['user', userID])).finally(() => setIsMutating(false)), {
+        toast.promise(SaveProfile(userID, newUser).then(invalidateUser).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Saved!',
             error: renderToastError,

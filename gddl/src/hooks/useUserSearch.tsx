@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from '../components/SearchBox/SearchBox';
-import { SearchUser, TinyUser } from '../api/users';
+import { TinyUser } from '../api/types/TinyUser';
+import { SearchUser } from '../api/user/SearchUser';
 
 interface Props {
     ID: string,

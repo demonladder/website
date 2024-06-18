@@ -54,7 +54,6 @@ const Game = lazy(() => import('./pages/root/game/Game'));
 import List from './pages/root/list/List';
 import EditLevel from './pages/mod/editLevel/EditLevel';
 import { HelmetProvider } from 'react-helmet-async';
-import ProfilePendingSubmissions from './pages/root/profile/pendingSubmissions/ProfilePendingSubmissions';
 
 const router = createBrowserRouter(
     [
@@ -122,10 +121,6 @@ const router = createBrowserRouter(
                 {
                     path: 'profile/:userID',
                     element: <Profile />,
-                },
-                {
-                    path: 'profile/:userID/pendingSubmissions',
-                    element: <ProfilePendingSubmissions />,
                 },
                 {
                     path: 'notifications',

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetDiscordUser } from '../api/users';
+import { GetDiscordUser } from '../api/user/GetDiscordUser';
 import DemonLogo from './DemonLogo';
 import StorageManager from '../utils/StorageManager';
 

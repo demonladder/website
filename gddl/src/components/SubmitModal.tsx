@@ -77,8 +77,8 @@ export default function SubmitModal({ show, onClose, level }: Props) {
         if (userSubmission.RefreshRate !== null) setRefreshRate(userSubmission.RefreshRate.toString());
         if (userSubmission.Device !== null) setDeviceKey(userSubmission.Device === 'Mobile' ? '2' : '1');
         if (userSubmission.Proof !== null) setProof(userSubmission.Proof.toString());
-        if (userSubmission.IsSolo !== null) setWasSolo(userSubmission.IsSolo === 1);
-        if (userSubmission.SecondPlayerName !== null) secondPlayerSearch.setQuery(userSubmission.SecondPlayerName);
+        if (userSubmission.IsSolo !== null) setWasSolo(userSubmission.IsSolo);
+        if (userSubmission.SecondaryUser) secondPlayerSearch.setQuery(userSubmission.SecondaryUser.Name);
     }, [userSubmission]);
 
     const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });

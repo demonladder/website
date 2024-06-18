@@ -1,30 +1,28 @@
 import DemonLogo from '../../../components/DemonLogo';
 import { Link } from 'react-router-dom';
-import StorageManager, { User } from '../../../utils/StorageManager';
+import StorageManager from '../../../utils/StorageManager';
 import { useQuery } from '@tanstack/react-query';
-import { GetDiscordUser, GetUser } from '../../../api/users';
+import { GetDiscordUser } from '../../../api/user/GetDiscordUser';
 import NotificationButton from '../../../components/ui/Notifications';
+import useUserQuery from '../../../hooks/queries/useUserQuery';
 
 export default function ProfileButtons() {
-    if (!StorageManager.hasSession()) {
+    const user = StorageManager.getUser();
+
+    if (!StorageManager.hasSession() || !user) {
         return <LoginButton />
     }
 
-    return <ProfileButton user={StorageManager.getUser()} />;
+    return <ProfileButton userID={user.ID} username={user.Name} />;
 }
 
-function ProfileButton({ user }: { user: User | null }) {
-    if (user === null) return (<LoginButton />);
-
+function ProfileButton({ userID, username }: { userID: number, username: string }) {
     const { data: discordData } = useQuery({
-        queryKey: ['user', user.ID, 'discord'],
-        queryFn: () => GetDiscordUser(user.ID),
+        queryKey: ['user', userID, 'discord'],
+        queryFn: () => GetDiscordUser(userID),
     });
 
-    const { data: userData } = useQuery({
-        queryKey: ['user', user.ID],
-        queryFn: () => GetUser(user.ID),
-    });
+    const { data: userData } = useUserQuery(userID);
 
     const pfp = `https://cdn.discordapp.com/avatars/${discordData?.ID}/${discordData?.Avatar}.png`;
 
@@ -34,8 +32,8 @@ function ProfileButton({ user }: { user: User | null }) {
                 <Link to='/mod'><i className='bx bx-shield-quarter text-2xl'></i></Link>
             }
             <NotificationButton />
-            <Link to={`/profile/${user.ID}`} className='flex items-center'>
-                <span className='fs-5'>{user.Name}</span>
+            <Link to={`/profile/${userID}`} className='flex items-center'>
+                <span className='fs-5'>{username}</span>
                 <div className='ms-3 w-16'>
                     {discordData?.Avatar
                         ? <img src={pfp || ''} className='rounded-full' />

@@ -1,6 +1,4 @@
 import { Link, redirect, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { GetUser } from '../../../api/users';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
 import Submissions from './Submissions';
@@ -16,6 +14,8 @@ import toFixed from '../../../utils/toFixed';
 import LevelResolvableText from './LevelResolvableText';
 import Rankings from './Rankings';
 import Lists from './Lists';
+import PendingSubmissions from './PendingSubmissions';
+import useUserQuery from '../../../hooks/queries/useUserQuery';
 
 export function profileLoader() {
     if (StorageManager.hasSession()) return redirect(`/profile/${StorageManager.getUser()?.ID}`);
@@ -27,10 +27,7 @@ export default function Profile() {
     const userID = parseInt('' + useParams().userID) || 0;
     const logout = useLogout();
 
-    const { status, data: userData, error } = useQuery({
-        queryKey: ['user', userID],
-        queryFn: () => GetUser(userID),
-    });
+    const { status, data: userData, error } = useUserQuery(userID);
 
     if (status === 'loading') {
         return (
@@ -89,7 +86,7 @@ export default function Profile() {
             </Helmet>
             <section className='flex justify-between flex-wrap items-center'>
                 <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.DiscordData?.Avatar &&
-                    <object data={pfp} type='image/png' className='inline w-16 rounded-full' />} {userData.Name} <ProfileTypeIcon permissionLevel={userData.RoleIDs} />
+                    <object data={pfp} type='image/png' className='inline w-16 rounded-full' />} {userData.Name} <ProfileTypeIcon roles={userData.Roles} />
                     <span>
                         {userData.CompletedPacks.map((p) => (
                             <Link to={`/pack/${p.PackID}`} key={p.PackID}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1' width={34} height={34} /></Link>
@@ -139,12 +136,12 @@ export default function Profile() {
                             <p>{toFixed('' + userData.AverageEnjoyment, 1, '-')}</p>
                         </Tracker>
                     </div>
-                    <Link to='pendingSubmissions'>
+                    <a href='#pendingSubmissions'>
                         <Tracker>
                             <b>Pending submissions:</b>
                             <p>{userData.PendingSubmissionCount}</p>
                         </Tracker>
-                    </Link>
+                    </a>
                     <div className='lg:hidden'>
                         <Tracker>
                             <b>Average enjoyment:</b>
@@ -154,6 +151,7 @@ export default function Profile() {
                 </div>
             </section>
             <Submissions userID={userID} />
+            <PendingSubmissions userID={userID} />
             <Lists userID={userID} />
             <Rankings userID={userID} />
         </Container>

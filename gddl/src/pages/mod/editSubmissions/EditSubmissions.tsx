@@ -5,7 +5,7 @@ import { DangerButton, PrimaryButton } from '../../../components/Button';
 import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { DeleteSubmission, GetSubmissions, Submission } from '../../../api/submissions';
+import { DeleteSubmission, GetLevelSubmissions, Submission } from '../../../api/submissions';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
@@ -34,7 +34,7 @@ export default function EditSubmission() {
 
     const { status, data } = useQuery({
         queryKey: ['submissions', { levelID: activeLevel?.ID, page }],
-        queryFn: () => GetSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page }),
+        queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page }),
     });
 
     useEffect(() => {

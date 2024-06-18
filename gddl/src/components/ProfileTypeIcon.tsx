@@ -1,11 +1,11 @@
-export default function ProfileTypeIcon({ permissionLevel }: { permissionLevel: number }) {
-    switch(permissionLevel) {
-        case 2: return <span className='m-0 cursor-help' title='List Helper' role='img' aria-label='Role icon'>📝</span>;
-        case 3: return <span className='m-0 cursor-help' title='Developer' role='img' aria-label='Role icon'>🖥️</span>;
-        case 4: return <span className='m-0 cursor-help' title='Moderator' role='img' aria-label='Role icon'>🔰</span>;
-        case 5: return <span className='m-0 cursor-help' title='Admin' role='img' aria-label='Role icon'>🛡️</span>;
-        case 6: return <span className='m-0 cursor-help' title='Co-Owner' role='img' aria-label='Role icon'>🎖️</span>;
-        case 7: return <span className='m-0 cursor-help' title='Owner' role='img' aria-label='Role icon'>⭐</span>;
-        default: return;
-    }
+import Role from '../api/types/Role';
+
+export default function ProfileTypeIcon({ roles }: { roles: Role[] }) {
+    const topRole = roles.sort((a, b) => a.Order - b.Order)[0];
+
+    if (!topRole || !topRole.Icon) return;
+
+    return (
+        <span className='m-0 cursor-help' title={topRole.Name} role='img' aria-label='Role icon'>{topRole.Icon}</span>
+    );
 }

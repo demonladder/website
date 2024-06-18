@@ -4,6 +4,8 @@ import CheckBox from '../../../components/input/CheckBox';
 import { SearchFilters } from './Search';
 import Select from '../../../components/Select';
 import NewLabel from '../../../components/NewLabel';
+import { useQuery } from '@tanstack/react-query';
+import { GetTags } from '../../../api/level/requests/GetTags';
 
 type Props = {
     filters: SearchFilters,
@@ -35,6 +37,11 @@ const updateOptions = {
 
 export default function FiltersExtended({ filters, setFilters }: Props) {
     const inSession = StorageManager.hasSession();
+
+    const { data: tags } = useQuery({
+        queryKey: ['tags'],
+        queryFn: GetTags,
+    });
 
     return (
         <div className='flex flex-col gap-3'>
@@ -73,11 +80,15 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Two player:</p>
-                    <Select activeKey={filters.twoPlayer} options={twoPlayerOptions} onChange={(key) => setFilters(prev => ({ ...prev, twoPlayer: key }))} id='twoPlayerSelectOptions' />
+                    <Select height='20' activeKey={filters.twoPlayer} options={twoPlayerOptions} onChange={(key) => setFilters(prev => ({ ...prev, twoPlayer: key }))} id='twoPlayerSelectOptions' />
                 </div>
                 <div className='col-span-2'>
                     <p>Update <NewLabel ID='updateFilter' /></p>
-                    <Select height='24' activeKey={filters.update} options={updateOptions} onChange={(key) => setFilters(prev => ({ ...prev, update: key }))} id='updateSelectOptions' />
+                    <Select height='20' activeKey={filters.update} options={updateOptions} onChange={(key) => setFilters(prev => ({ ...prev, update: key }))} id='updateSelectOptions' />
+                </div>
+                <div className='col-span-2'>
+                    <p>Top skillset <NewLabel ID='skillsetFilter' /></p>
+                    <Select height='20' activeKey={filters.skillset.toString()} options={[...(tags ?? []).map((t) => ({ key: t.TagID.toString(), value: t.Name })), { key: '0', value: 'Any' }]} onChange={(key) => setFilters(prev => ({ ...prev, skillset: parseInt(key) }))} id='skillsetSelectOptions' />
                 </div>
             </div>
             <div className='grid grid-cols-12'>

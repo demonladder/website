@@ -4,9 +4,10 @@ import { toast } from 'react-toastify';
 import WarningBox from '../../../components/message/WarningBox';
 import renderToastError from '../../../utils/renderToastError';
 import UserSearchBox from '../../../components/UserSearchBox';
-import { Delete, TinyUser } from '../../../api/users';
+import { TinyUser } from '../../../api/types/TinyUser';
 import Modal from '../../../components/Modal';
 import { useQueryClient } from '@tanstack/react-query';
+import DeleteUserRequest from '../../../api/user/Delete';
 
 export default function DeleteUser() {
     const [user, setUser] = useState<TinyUser>();
@@ -17,7 +18,7 @@ export default function DeleteUser() {
     function submit() {
         if (user === undefined) return toast.error('Select a user first!');
 
-        void toast.promise(Delete(user.ID).then(() => queryClient.invalidateQueries(['user'])).finally(() => setShowConfirm(false)), {
+        void toast.promise(DeleteUserRequest(user.ID).then(() => queryClient.invalidateQueries(['user'])).finally(() => setShowConfirm(false)), {
             pending: 'Deleting user...',
             success: `Deleted ${user.Name}!`,
             error: renderToastError,

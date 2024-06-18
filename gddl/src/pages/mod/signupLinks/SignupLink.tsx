@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetSignupTokens, SignupToken, TokenPair } from '../../../api/signupLinks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserSearchBox from '../../../components/UserSearchBox';
-import { TinyUser } from '../../../api/users';
+import { TinyUser } from '../../../api/types/TinyUser';
 import { PrimaryButton } from '../../../components/Button';
 
 function Token({ token }: { token: TokenPair }) {

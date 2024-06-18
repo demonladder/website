@@ -1,4 +1,4 @@
-import APIClient from '../../APIClient';
+import APIClient from '../APIClient';
 
 export function UpdateSubmissionSettings(bitField: BitField, DMTierLimit: number) {
     return APIClient.put('/notifications/wants', { bitField: bitField.get(), DMTierLimit });

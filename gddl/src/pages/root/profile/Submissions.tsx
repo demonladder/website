@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetUserSubmissions } from '../../../api/users';
+import { GetUserSubmissions, UserSubmission } from '../../../api/user/GetUserSubmissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
-import { DeleteSubmission, Submission } from '../../../api/submissions';
+import { DeleteSubmission } from '../../../api/submissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
@@ -84,8 +84,8 @@ export default function Submissions({ userID }: Props) {
     );
 }
 
-function InlineList({ levels, userID }: { levels: (Submission & { ActualRating?: number, ActualEnjoyment?: number })[], userID: number }) {
-    const [clickedSubmission, setClickedSubmission] = useState<Submission>();
+function InlineList({ levels, userID }: { levels: (UserSubmission)[], userID: number }) {
+    const [clickedSubmission, setClickedSubmission] = useState<UserSubmission>();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const navigate = useNavigate();
@@ -93,7 +93,7 @@ function InlineList({ levels, userID }: { levels: (Submission & { ActualRating?:
 
     const { createMenu } = useContextMenu();
 
-    function openContext(e: React.MouseEvent, submission: Submission) {
+    function openContext(e: React.MouseEvent, submission: UserSubmission) {
         if (userID !== StorageManager.getUser()?.ID) return;
 
         e.preventDefault();
@@ -105,7 +105,7 @@ function InlineList({ levels, userID }: { levels: (Submission & { ActualRating?:
             buttons: [
                 { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
                 { text: 'Add to list', onClick: () => navigate(`/level/${submission.LevelID}`) },
-                { text: 'View proof', onClick: () => window.open(submission.Proof, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
+                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
                 { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) },
             ],
         })
@@ -116,10 +116,11 @@ function InlineList({ levels, userID }: { levels: (Submission & { ActualRating?:
 
         toast.promise(DeleteSubmission(levelID, userID).then(() => {
             queryClient.invalidateQueries(['level', levelID]);
-            queryClient.invalidateQueries(['user/submissions', { userID }]);
+            queryClient.invalidateQueries(['user', userID, 'submissions']);
+            setShowDeleteModal(false);
         }), {
             pending: 'Deleting...',
-            success: 'Deleted your submission for ' + levels.find((l) => l.LevelID === levelID)?.Name || `(${levelID})`,
+            success: 'Deleted your submission for ' + levels.find((l) => l.LevelID === levelID)?.Level.Meta.Name || `(${levelID})`,
             error: renderToastError,
         });
     }
@@ -129,13 +130,13 @@ function InlineList({ levels, userID }: { levels: (Submission & { ActualRating?:
             <div className='level-list'>
                 <Level.Header />
                 {levels.map((p) => (
-                    <Level ID={p.LevelID} rating={p.Rating} actualRating={p.ActualRating} enjoyment={p.Enjoyment} actualEnjoyment={p.ActualEnjoyment} name={p.Name} creator={p.Creator} songName={p.Song} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />
+                    <Level ID={p.LevelID} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Rating} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />
                 ))}
             </div>
             {showDeleteModal && clickedSubmission &&
                 <Modal title='Delete submission' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                     <Modal.Body>
-                        <p>Are you sure you want to delete your submission for {clickedSubmission.Name}? (ID: {clickedSubmission.LevelID})</p>
+                        <p>Are you sure you want to delete your submission for {clickedSubmission.Level.Meta.Name}? (ID: {clickedSubmission.LevelID})</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <div className='flex place-content-end gap-2'>
@@ -149,10 +150,10 @@ function InlineList({ levels, userID }: { levels: (Submission & { ActualRating?:
     );
 }
 
-function GridList({ levels }: { levels: Submission[] }) {
+function GridList({ levels }: { levels: UserSubmission[] }) {
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-            {levels.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Name} creator={p.Creator} difficulty={p.Difficulty} inPack={false} key={p.LevelID} />)}
+            {levels.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} difficulty={p.Level.Meta.Difficulty} inPack={false} key={p.LevelID} />)}
         </div>
     );
 }

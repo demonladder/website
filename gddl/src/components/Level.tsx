@@ -5,9 +5,9 @@ import StorageManager from '../utils/StorageManager';
 interface Props {
     ID: number;
     rating: number | null;
-    actualRating?: number;
+    actualRating?: number | null;
     enjoyment: number | null;
-    actualEnjoyment?: number;
+    actualEnjoyment?: number | null;
     completed?: boolean;
     name: string;
     creator: string;

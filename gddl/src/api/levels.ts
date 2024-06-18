@@ -84,7 +84,7 @@ export function SearchLevels(q: object): Promise<SearchInfo> {
 export async function GetLevel(ID: number | null): Promise<FullLevel | null> {
     if (ID === null) return null;
 
-    const response = (await APIClient.get(`/v2/levels/${ID}`)).data as FullLevel | null;
+    const response = (await APIClient.get(`/v2/level/${ID}`)).data as FullLevel | null;
     if (response === null) {
         return null;
     }
