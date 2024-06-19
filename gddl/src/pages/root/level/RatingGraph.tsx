@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import GetSpread from '../../../api/level/requests/submissions/GetSpread';
+import GetSpread from '../../../api/level/submissions/GetSpread';
 
 interface Props {
     levelID: number;

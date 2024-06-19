@@ -1,5 +1,5 @@
 import APIClient from './APIClient';
-import { FullLevel } from './levels';
+import { FullLevel } from './types/compounds/FullLevel';
 
 interface Stats {
     users: number;

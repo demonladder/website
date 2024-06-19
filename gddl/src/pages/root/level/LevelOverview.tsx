@@ -16,7 +16,7 @@ import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { PrimaryButton } from '../../../components/Button';
 import TagBox from './TagBox';
 import RatingGraph from './RatingGraph';
-import { TagEligibility } from '../../../api/level/requests/GetTagEligibility';
+import { TagEligibility } from '../../../api/level/GetTagEligibility';
 import Showcase from './Showcase';
 import ExternalLinks from './ExternalLinks';
 import AddLevelToListModal from '../../../components/modals/AddLevelToListModal';

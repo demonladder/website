@@ -97,6 +97,5 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
                 </Link>
             </div>
         </li>
-
     );
 }

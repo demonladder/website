@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApproveSubmission, DenySubmission, GetSubmissionQueue, Submission as TSubmission } from '../../../api/submissions';
+import { ApproveSubmission, DenySubmission } from '../../../api/submissions';
+import { GetSubmissionQueue } from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submission';
 import { PrimaryButton } from '../../../components/Button';
@@ -8,6 +9,8 @@ import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import Select from '../../../components/Select';
 import { useState } from 'react';
+import TSubmission from '../../../api/types/Submission';
+import PageButtons from '../../../components/PageButtons';
 
 const proofFilterOptions = {
     all: 'All',
@@ -16,12 +19,21 @@ const proofFilterOptions = {
     noProof: 'No proof',
 };
 
+const limitOptions = {
+    5: '5',
+    15: '15',
+    30: '30',
+    50: '50',
+};
+
 export default function Queue() {
     const [proofFilter, setProofFilter] = useState('all');
+    const [limit, setLimit] = useState('5');
+    const [page, setPage] = useState(1);
 
     const { status, isFetching, data: queue } = useQuery({
-        queryKey: ['submissionQueue', proofFilter],
-        queryFn: () => GetSubmissionQueue(proofFilter),
+        queryKey: ['submissionQueue', { limit, page, proofFilter }],
+        queryFn: () => GetSubmissionQueue(proofFilter, parseInt(limit), page),
     });
 
     const queryClient = useQueryClient();
@@ -55,9 +67,9 @@ export default function Queue() {
         } else {
             return (
                 <div>
-                    {queue.submissions.map((s) => <Submission info={s} approve={approve} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
+                    {queue.submissions.map((s) => <Submission submission={s} approve={approve} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
                     {queue.total === 0 && <h5>Queue empty :D</h5>}
-                    {queue.total > 5 && <p className='font-bold text-lg text-center my-3'>+ {queue.total - 5} more</p>}
+                    {queue.total > parseInt(limit) && <p className='font-bold text-lg text-center my-3'>+ {queue.total - parseInt(limit)} more</p>}
                 </div>
             );
         }
@@ -72,13 +84,22 @@ export default function Queue() {
                     <PrimaryButton className='flex items-center gap-1' onClick={() => queryClient.invalidateQueries(['submissionQueue'])} disabled={isFetching}>Refresh <i className='bx bx-refresh'></i></PrimaryButton>
                 </div>
             </div>
-            <div className='flex gap-2'>
-                <p>Filtering</p>
-                <div className='w-40'>
-                    <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
+            <div className='flex gap-4 max-lg:flex-col'>
+                <div className='flex gap-2'>
+                    <p>Filtering</p>
+                    <div className='w-40'>
+                        <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
+                    </div>
+                </div>
+                <div className='flex gap-2'>
+                    <p>Submission amount</p>
+                    <div className='w-40'>
+                        <Select id='submissionQueueLimit' options={limitOptions} activeKey={limit} onChange={setLimit} />
+                    </div>
                 </div>
             </div>
             <Content />
+            <PageButtons meta={{ limit: parseInt(limit), page, total: queue?.total ?? 0 }} onPageChange={(p) => setPage(p)} />
         </div>
     );
 }

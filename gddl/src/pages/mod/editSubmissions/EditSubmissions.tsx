@@ -5,12 +5,13 @@ import { DangerButton, PrimaryButton } from '../../../components/Button';
 import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { DeleteSubmission, GetLevelSubmissions, Submission } from '../../../api/submissions';
+import { DeleteSubmission, GetLevelSubmissions } from '../../../api/submissions';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
 import { validateIntChange } from '../../../utils/validators/validateIntChange';
+import Submission from '../../../api/types/Submission';
 
 const deviceOptions: { [key: string]: string } = {
     '1': 'PC',
@@ -82,7 +83,7 @@ export default function EditSubmission() {
         if (ratingRef.current !== null) ratingRef.current.value = '' + s.Rating;
         if (enjoymentRef.current !== null) enjoymentRef.current.value = '' + s.Enjoyment;
         setRefreshRate(s.RefreshRate);
-        if (proofRef.current !== null) proofRef.current.value = s.Proof;
+        if (proofRef.current !== null) proofRef.current.value = s.Proof ?? '';
         setUserResult(s);
     }
 
@@ -126,7 +127,7 @@ export default function EditSubmission() {
                     <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2'>
                         {data?.submissions.map((s) => (
                             <button className={'flex ps-1 border border-white border-opacity-0 hover:border-opacity-80 transition-colors select-none round:rounded ' + (s.UserID === userResult?.UserID ? 'bg-button-primary-1 font-bold' : 'bg-gray-600')} onClick={() => submissionClicked(s)} key={'edit_' + s.UserID + '_' + s.LevelID}>
-                                <p className='grow text-start self-center'>{s.Name}</p>
+                                <p className='grow text-start self-center'>{s.User.Name}</p>
                                 <p className={'w-8 py-1 tier-' + (s.Rating !== null ? Math.round(s.Rating) : 0)}>{s.Rating || '-'}</p>
                                 <p className={'w-8 py-1 enj-' + (s.Enjoyment !== null ? Math.round(s.Enjoyment) : -1)}>{s.Enjoyment !== null ? s.Enjoyment : '-'}</p>
                             </button>

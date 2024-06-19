@@ -1,12 +1,20 @@
 import { Link } from 'react-router-dom';
-import { PackShell } from '../../api/packs/types/PackShell';
 import PackIcon from '../PackIcon';
 import HoverMenu from './HoverMenu';
+import Pack from '../../api/types/Pack';
+import PackMeta from '../../api/types/PackMeta';
 
-export default function PackRef({ pack }: { pack: PackShell }) {
+interface Props {
+    pack: Pack;
+    meta: PackMeta | null;
+}
+
+export default function PackRef({ pack, meta }: Props) {
     return (
         <Link to={`/pack/${pack.ID}`} className='block relative group px-4 py-2 bg-gray-500 round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
-            <HoverMenu pack={pack} />
+            {meta !== null &&
+                <HoverMenu averageEnjoyment={meta.AverageEnjoyment} levelCount={meta.LevelCount} medianTier={meta.MedianTier} />
+            }
             <PackIcon pack={pack} className='inline me-4' />
             {pack.Name}
             <PackIcon pack={pack} className='inline ms-4' />

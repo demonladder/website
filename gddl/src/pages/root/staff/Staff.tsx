@@ -31,7 +31,7 @@ function List({ data, permissionLevel }: { data?: StaffMember[], permissionLevel
         <div className='p-4 round:rounded-lg mb-2 grid grid-cols-2 lg:grid-cols-4 gap-8'>
             <span className='max-lg:hidden'></span>
             <div className={'text-right break-words text-permission-' + permissionLevel}>
-                <h3 className='text-3xl font-bold'>{titles[permissionLevel]} <ProfileTypeIcon roles={} permissionLevel={permissionLevel} /></h3>
+                <h3 className='text-3xl font-bold'>{titles[permissionLevel]} <ProfileTypeIcon roles={[]} /></h3>
                 <p>{descriptions[permissionLevel] || 'Description'}</p>
             </div>
             <ul>

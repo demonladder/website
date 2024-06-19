@@ -5,7 +5,7 @@ import { SearchFilters } from './Search';
 import Select from '../../../components/Select';
 import NewLabel from '../../../components/NewLabel';
 import { useQuery } from '@tanstack/react-query';
-import { GetTags } from '../../../api/level/requests/GetTags';
+import { GetTags } from '../../../api/level/GetTags';
 
 type Props = {
     filters: SearchFilters,

@@ -7,7 +7,7 @@ export default interface Level {
     EnjoymentCount: number;
     SubmissionCount: number;
     TwoPlayerRating: number | null;
-    TwoPlayerEnjoyment: number | null;
+    TwoPlayerDeviation: number | null;
     DefaultRating: number | null;
     Showcase: string | null;
     Popularity: number | null;

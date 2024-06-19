@@ -57,6 +57,9 @@ export default function AddLevelToListModal({ show, onClose, userID, levelID }: 
                         <ListItem userID={userID} levelID={levelID} list={list} key={list.ID} />
                     ))}
                 </ol>
+                {lists?.length === 0 &&
+                    <p>You don't have any lists yet.</p>
+                }
                 <LoadingSpinner isLoading={status === 'loading'} />
             </>
             }</Modal.Body>

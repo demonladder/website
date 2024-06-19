@@ -1,7 +1,14 @@
 import APIClient from '../../APIClient';
-import { PackInfo } from '../responses/PackInfo';
+import Pack from '../../types/Pack';
+import PackCategory from '../../types/PackCategory';
+import PackMeta from '../../types/PackMeta';
 
-export async function GetPacks(): Promise<PackInfo> {
-    const res = await APIClient.get('/packs');
+export interface GetPacksResponse {
+    packs: (Pack & { Meta: PackMeta | null })[];
+    categories: PackCategory[];
+}
+
+export async function GetPacks(): Promise<GetPacksResponse> {
+    const res = await APIClient.get('/v2/packs');
     return res.data;
 }

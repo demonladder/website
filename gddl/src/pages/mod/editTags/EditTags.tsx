@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetTags } from '../../../api/level/requests/GetTags';
+import { GetTags } from '../../../api/level/GetTags';
 import { Tag } from '../../../api/types/level/Tag';
 import { useRef, useState } from 'react';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -26,6 +26,13 @@ export default function EditTags() {
     });
 
     function onTagSelect(tag: Tag) {
+        if (selectedTag?.TagID === tag.TagID) {
+            setSelectedTag(undefined);
+            if (nameRef.current) nameRef.current.value = '';
+            if (descriptionRef.current) descriptionRef.current.value = '';
+            return;
+        }
+
         setSelectedTag(tag);
 
         if (nameRef.current) nameRef.current.value = tag.Name;
@@ -53,7 +60,7 @@ export default function EditTags() {
     function onCreate() {
         if (isMutating) return;
         setIsMutating(true);
-        
+
         if (!nameRef.current || !descriptionRef.current) return;
         toast.promise(CreateTag(nameRef.current.value, descriptionRef.current.value).then(() => {
             queryClient.invalidateQueries(['tags']);
@@ -98,7 +105,7 @@ export default function EditTags() {
             <p>Select tag:</p>
             <LoadingSpinner isLoading={tags === undefined} />
             <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2'>
-                {tags?.map((t) => (<TagItem tag={t} selected={t === selectedTag} onSelect={onTagSelect} />))}
+                {tags?.map((t) => (<TagItem dragLocked={false} tag={t} selected={t === selectedTag} onSelect={onTagSelect} />))}
             </div>
             <div className='mt-4'>
                 <div className='mb-2'>
@@ -110,9 +117,11 @@ export default function EditTags() {
                     <TextInput ref={descriptionRef} />
                     <p className='text-gray-400 text-sm'>Short description that is visible in the tooltip</p>
                 </div>
-                <PrimaryButton onClick={onSave}>Save</PrimaryButton>
-                <SecondaryButton onClick={onCreate} className='mx-3'>Create</SecondaryButton>
-                <DangerButton onClick={openConfirmModal}>Delete</DangerButton>
+                {selectedTag
+                    ? <PrimaryButton onClick={onSave}>Save</PrimaryButton>
+                    : <SecondaryButton onClick={onCreate}>Create</SecondaryButton>
+                }
+                <DangerButton className='ms-2' onClick={openConfirmModal}>Delete</DangerButton>
             </div>
             <Modal title='Are you sure?' show={showConfirm} onClose={() => setShowConfirm(false)}>
                 <Modal.Body>
@@ -132,10 +141,39 @@ export default function EditTags() {
     );
 }
 
-function TagItem({ tag, selected, onSelect }: { tag: Tag, selected: boolean, onSelect(tag: Tag): void }) {
+function TagItem({ dragLocked, tag, selected, onSelect }: { dragLocked: boolean, tag: Tag, selected: boolean, onSelect(tag: Tag): void }) {
+    const [isDragged, setIsDragged] = useState(false);
+    const [dragOver, setDragOver] = useState(false);
+    const itemRef = useRef<HTMLLIElement>(null);
+
+    function dragStopHandler() {
+        setIsDragged(false);
+        console.log('stop ' + tag.Name);
+    }
+
+    function dragStartHandler(e: React.DragEvent) {
+        //e.preventDefault();
+
+        setDragOver(true);
+        console.log('start ' + tag.Name);
+    }
+    function dragEnterHandler(e: React.DragEvent) {
+        e.preventDefault();
+
+        console.log('enter ' + tag.Name);
+    }
+    function dragLeaveHandler(e: React.DragEvent) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        e.dataTransfer.dropEffect = 'move';
+        setDragOver(false);
+        console.log('leave ' + tag.Name);
+    }
+
     return (
-        <div className={(selected ? 'bg-blue-600' : 'bg-gray-500') + ' cursor-pointer p-1 text-center round:rounded'} onClick={() => onSelect(tag)}>
-            <p>{tag.Name}</p>
+        <div draggable={true} onDragEnd={dragStopHandler} onDragStart={dragStartHandler} onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onClick={() => onSelect(tag)} className={(selected ? 'bg-blue-600' : 'bg-gray-500') + ' cursor-pointer p-1 text-center round:rounded'}>
+            <p className='select-none'>{tag.Name}</p>
         </div>
     );
 }

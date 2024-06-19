@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PrimaryButton } from '../../../components/Button';
 import { NumberInput } from '../../../components/Input';
-import GetAutoAcceptSettings from '../../../api/siteSettings/GetAutoAcceptSettings';
+import GetAutoAcceptSettings from '../../../api/settings/autoAccept/GetAutoAcceptSettings';
 import { useEffect, useState } from 'react';
 import { validateIntChange } from '../../../utils/validators/validateIntChange';
 import CheckBox from '../../../components/input/CheckBox';
-import SaveAutoAcceptSettings from '../../../api/siteSettings/SaveAutoAcceptSettings';
+import SaveAutoAcceptSettings from '../../../api/settings/autoAccept/SaveAutoAcceptSettings';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';

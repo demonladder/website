@@ -5,7 +5,7 @@ import { SendSubmission, SubmittableSubmission } from '../api/submissions';
 import { NumberInput, TextInput } from './Input';
 import { PrimaryButton, SecondaryButton } from './Button';
 import { toast } from 'react-toastify';
-import { FullLevel } from '../api/levels';
+import { FullLevel } from '../api/types/compounds/FullLevel';
 import renderToastError from '../utils/renderToastError';
 import StorageManager from '../utils/StorageManager';
 import { validateIntChange, validateIntInputChange } from '../utils/validators/validateIntChange';

@@ -1,10 +1,10 @@
 import APIClient from '../APIClient';
 import Level from '../types/Level';
-import Meta from '../types/Meta';
+import LevelMeta from '../types/LevelMeta';
 import Song from '../types/Song';
 import Submission from '../types/Submission';
 
-export type UserPendingSubmission = Submission & { Level: Level & { Meta: Meta & { Song: Song; }; }; };
+export type UserPendingSubmission = Submission & { Level: Level & { Meta: LevelMeta & { Song: Song; }; }; };
 type GetUserPendingSubmissionsResponse = UserPendingSubmission[];
 
 export async function GetUserPendingSubmissions(userID: number): Promise<GetUserPendingSubmissionsResponse> {

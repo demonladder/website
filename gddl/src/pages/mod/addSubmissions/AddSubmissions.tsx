@@ -9,7 +9,7 @@ import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import useUserSearch from '../../../hooks/useUserSearch';
-import { FullLevel } from '../../../api/levels';
+import { FullLevel } from '../../../api/types/compounds/FullLevel';
 
 const deviceOptions = {
     '1': 'PC',

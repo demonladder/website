@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { FullLevel, GetLevel, SearchLevels } from '../api/levels';
+import { GetLevel } from '../api/levels';
+import { SearchLevels } from '../api/level/SearchLevels';
+import { FullLevel } from '../api/types/compounds/FullLevel';
 import SearchBox from '../components/SearchBox/SearchBox';
 
 interface LevelSearchOptions {

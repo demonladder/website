@@ -1,10 +1,10 @@
-import { PackShell } from '../../../api/packs/types/PackShell';
 import CategoryResponse from '../../../api/packs/responses/Category';
 import PackRef from '../../../components/PackRef/PackRef';
+import { GetPacksResponse } from '../../../api/packs/requests/GetPacks';
 
 interface Props {
-    category: CategoryResponse
-    packs: PackShell[]
+    category: CategoryResponse;
+    packs: GetPacksResponse['packs'];
 }
 
 export default function Category({ category, packs }: Props) {
@@ -16,7 +16,7 @@ export default function Category({ category, packs }: Props) {
             <p className='mb-0'>{category.Description}</p>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-center'>
                 {packs.map((p) => (
-                    <PackRef pack={p} key={category.Name + p.Name} />
+                    <PackRef pack={p} meta={p.Meta} key={category.Name + p.Name} />
                 ))}
             </div>
         </div>

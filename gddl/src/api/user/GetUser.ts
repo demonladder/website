@@ -1,13 +1,13 @@
 import APIClient from '../APIClient';
 import DiscordUserData from '../types/DiscordUserData';
 import Level from '../types/Level';
-import Meta from '../types/Meta';
+import LevelMeta from '../types/LevelMeta';
 import Role from '../types/Role';
 import Song from '../types/Song';
 import User from '../types/User';
 
 type DTOResponse = User & {
-    Hardest: Level & { Meta: Meta & { Song: Song } },
+    Hardest: Level & { Meta: LevelMeta & { Song: Song } },
     DiscordData: DiscordUserData | null,
     CompletedPacks: { PackID: number, IconName: string }[],
     PendingSubmissionCount: number,

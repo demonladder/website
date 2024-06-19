@@ -1,4 +1,4 @@
-import APIClient from '../../APIClient';
+import APIClient from '../APIClient';
 
 interface Tag {
     TagID: number;

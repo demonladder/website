@@ -1,4 +1,4 @@
-import APIClient from '../APIClient';
+import APIClient from '../../APIClient';
 import { AutoAcceptSettings } from './AutoAcceptSettings';
 
 export default async function GetAutoAcceptSettings(): Promise<AutoAcceptSettings> {

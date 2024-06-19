@@ -1,4 +1,4 @@
-import { FullLevel } from '../../../api/levels';
+import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import NewLabel from '../../../components/NewLabel';
 
 interface Props {

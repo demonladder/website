@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { FullLevel } from '../../../api/levels';
+import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import axios from 'axios';
 import NewLabel from '../../../components/NewLabel';
 

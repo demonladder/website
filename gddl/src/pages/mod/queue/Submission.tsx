@@ -1,65 +1,59 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { SubmissionQueueInfo } from '../../../api/submissions';
-import { useQuery } from '@tanstack/react-query';
-import { GetShortLevel } from '../../../api/levels';
 import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
-import toFixed from '../../../utils/toFixed';
 import Modal from '../../../components/Modal';
 import { TextInput } from '../../../components/Input';
+import TSubmission from '../../../api/types/Submission';
+import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
 
-type Props = {
-    info: SubmissionQueueInfo,
-    approve: (submission: SubmissionQueueInfo, onlyEnjoyment?: boolean) => void,
-    remove: (submission: SubmissionQueueInfo, reason?: string) => void,
+interface Props {
+    submission: QueueSubmission;
+    approve: (submission: TSubmission, onlyEnjoyment?: boolean) => void;
+    remove: (submission: TSubmission, reason?: string) => void;
 }
 
-export default function Submission({ info, approve, remove }: Props) {
+export default function Submission({ submission, approve, remove }: Props) {
     const [showDenyReason, setShowDenyReason] = useState(false);
     const reasonRef = useRef<HTMLInputElement>(null);
-    const { data: levelData } = useQuery({
-        queryKey: ['levels', info.LevelID],
-        queryFn: () => GetShortLevel(info.LevelID),
-    });
 
     return (
-        <div className={`round:rounded-2xl tier-${Math.round(info.ActualRating) || 0} p-3 my-2 text-lg`}>
+        <div className={`round:rounded-2xl tier-${submission.Level.Rating?.toFixed(0) || 0} p-3 my-2 text-lg`}>
             <div className='mb-3'>
-                <Link to={`/level/${info.LevelID}`} className='text-2xl font-bold underline'>{levelData?.Name || info.LevelID} <span className='text-lg font-normal'>by {info.Creator}</span></Link>
-                <p>Submitted by <a href={`/profile/${info.UserID}`} className='font-bold underline' target='_blank' rel='noopener noreferrer'>{info.UserName}</a></p>
-                <p>Submitted at {info.DateAdded + ' UTC'}</p>
+                <Link to={`/level/${submission.LevelID}`} className='text-2xl font-bold underline'>{submission.Level.Meta.Name} <span className='text-lg font-normal'>by {submission.Level.Meta.Creator}</span></Link>
+                <p>Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold underline' target='_blank' rel='noopener noreferrer'>{submission.User.Name}</a></p>
+                <p>Submitted at {submission.DateAdded + ' UTC'}</p>
             </div>
             <div className='mb-3'>
                 <div className='mb-2'>
-                    <p><b>Length:</b> {levelData?.Length}</p>
+                    <p><b>Length:</b> {submission.Level.Meta.Length}</p>
                 </div>
                 <div className='mb-2'>
-                    <p><b>Actual rating:</b> {toFixed(''+levelData?.Rating, 2, 'None')}</p>
+                    <p><b>Actual rating:</b> {submission.Level.Rating?.toFixed(2) ?? 'None'}</p>
                 </div>
                 <div className='mb-2'>
-                    <p><b>Submitted rating:</b> {info.Rating || 'None'}</p>
-                    <p><b>Submitted enjoyment:</b> {info.Enjoyment !== null ? info.Enjoyment : 'None'}</p>
+                    <p><b>Submitted rating:</b> {submission.Rating || 'None'}</p>
+                    <p><b>Submitted enjoyment:</b> {submission.Enjoyment !== null ? submission.Enjoyment : 'None'}</p>
                 </div>
                 <div className='mb-2'>
-                    <p><b>Device:</b> {info.Device || 'None'}</p>
-                    <p><b>Refresh rate:</b> {info.RefreshRate || 'None'}</p>
+                    <p><b>Device:</b> {submission.Device || 'None'}</p>
+                    <p><b>Refresh rate:</b> {submission.RefreshRate || 'None'}</p>
                 </div>
                 <div>
                     <span className='font-bold'>Proof: </span>
                     <span className='break-all'>
-                        {info.Proof
-                            ? <a href={info.Proof.startsWith('https') ? info.Proof : 'https://' + info.Proof} target='_blank' rel='noopener noreferrer'>{info.Proof}</a>
+                        {submission.Proof
+                            ? <a href={submission.Proof.startsWith('https') ? submission.Proof : 'https://' + submission.Proof} target='_blank' rel='noopener noreferrer'>{submission.Proof}</a>
                             : 'None'
                         }
                     </span>
                 </div>
             </div>
             <div className='flex justify-evenly max-md:flex-col max-md:gap-4'>
-                <PrimaryButton className='px-3' onClick={() => approve(info)}>Approve</PrimaryButton>
-                <PrimaryButton className='px-3' onClick={() => approve(info, true)}>Only enjoyment</PrimaryButton>
-                <DangerButton className='px-3' onClick={() => setShowDenyReason(true)}>Deny</DangerButton>
-                <DangerButton className='px-3'>Launch user into space</DangerButton>
-                </div>
+                <PrimaryButton className='px-3 py-2' onClick={() => approve(submission)}>Approve</PrimaryButton>
+                <PrimaryButton className='px-3 py-2' onClick={() => approve(submission, true)}>Only enjoyment</PrimaryButton>
+                <DangerButton className='px-3 py-2' onClick={() => setShowDenyReason(true)}>Deny</DangerButton>
+                <DangerButton className='px-3 py-2'>Launch user into space</DangerButton>
+            </div>
             <Modal title='Deny reason' show={showDenyReason} onClose={() => setShowDenyReason(false)}>
                 <Modal.Body>
                     <TextInput ref={reasonRef} placeholder='Reason...' />
@@ -68,7 +62,7 @@ export default function Submission({ info, approve, remove }: Props) {
                 <Modal.Footer>
                     <div className='flex gap-2 justify-end'>
                         <SecondaryButton onClick={() => setShowDenyReason(false)}>Close</SecondaryButton>
-                        <DangerButton onClick={() => { remove(info, reasonRef.current?.value || undefined); setShowDenyReason(false); }}>Deny</DangerButton>
+                        <DangerButton onClick={() => { remove(submission, reasonRef.current?.value || undefined); setShowDenyReason(false); }}>Deny</DangerButton>
                     </div>
                 </Modal.Footer>
             </Modal>

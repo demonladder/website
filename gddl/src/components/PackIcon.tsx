@@ -1,7 +1,7 @@
-import { PackShell } from '../api/packs/types/PackShell';
+import Pack from '../api/types/Pack';
 
 interface Props {
-    pack: PackShell,
+    pack: Pack,
     className?: string,
 }
 

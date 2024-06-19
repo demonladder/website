@@ -2,12 +2,6 @@ import APIClient from './APIClient';
 import GetLevelSubmissionsResponse from './submissions/responses/GetLevelSubmissionsResponse';
 import Submission from './types/Submission';
 
-export type SubmissionQueueInfo = Submission & {
-    ActualRating: number,
-    UserName: string,
-    DateAdded: string,
-}
-
 export type SubmittableSubmission = {
     levelID: number,
     rating?: number,
@@ -20,16 +14,6 @@ export type SubmittableSubmission = {
 }
 
 
-
-interface PendingSubmissionInfo {
-    total: number,
-    submissions: SubmissionQueueInfo[],
-}
-
-export async function GetSubmissionQueue(proofFilter: string): Promise<PendingSubmissionInfo> {
-    const res = await APIClient.get('/submissions/pending', { params: { proofFilter } });
-    return res.data;
-}
 
 export async function GetLevelSubmissions({ levelID, page = 1, chunk = 25 }: { levelID: number, page?: number, chunk?: number }): Promise<GetLevelSubmissionsResponse> {
     const res = await APIClient.get(`/v2/level/${levelID}/submissions`, { params: { page, chunk } });

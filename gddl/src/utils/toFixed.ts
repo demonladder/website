@@ -1,5 +1,5 @@
-export default function toFixed(f: string, d: number, def: string): string {
-    if (isNaN(parseFloat(f))) return def;
+export default function toFixed<T>(float: string, digits: number, def: T): string | T {
+    if (isNaN(parseFloat(float))) return def;
     
-    return parseFloat(f).toFixed(d);
+    return parseFloat(float).toFixed(digits);
 }

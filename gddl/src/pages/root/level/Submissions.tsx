@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
-import { FullLevel } from '../../../api/levels';
+import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import { Submission as ISubmission } from '../../../api/submissions/responses/GetLevelSubmissionsResponse';
 
 type Props = {
