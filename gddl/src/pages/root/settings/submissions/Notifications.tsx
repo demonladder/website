@@ -4,11 +4,11 @@ import { PrimaryButton } from '../../../../components/Button';
 import StorageManager from '../../../../utils/StorageManager';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { BitField, UpdateSubmissionSettings } from '../../../../api/user/UpdateWants';
+import UpdateSubmissionSettings, { BitField } from '../../../../api/user/UpdateWants';
 import renderToastError from '../../../../utils/renderToastError';
 import { NumberInput } from '../../../../components/Input';
 import { validateIntInputChange } from '../../../../utils/validators/validateIntChange';
-import { GetWants } from '../../../../api/user/GetWants';
+import GetWants from '../../../../api/user/GetWants';
 
 enum NotificationsBitField {
     Accept = 2 ** 0,

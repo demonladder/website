@@ -11,7 +11,7 @@ type SearchInfo = {
     })[];
 };
 
-export async function SearchLevels(q: object): Promise<SearchInfo> {
+export default async function SearchLevels(q: object): Promise<SearchInfo> {
     const res = await APIClient.get<SearchInfo>('/level/search', {
         params: { chunk: 16, ...q },
     });

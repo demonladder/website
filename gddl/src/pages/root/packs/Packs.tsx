@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetPacks } from '../../../api/packs/requests/GetPacks';
+import GetPacks from '../../../api/packs/requests/GetPacks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Container from '../../../components/Container';
 import UserLink from '../../../components/UserLink';

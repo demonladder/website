@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetBotStatusRequest } from '../../../api/bot/requests/GetBotStatusRequest';
+import GetBotStatusRequest from '../../../api/bot/GetBotStatusRequest';
 
 export default function BotStatus() {
     const { data} = useQuery({

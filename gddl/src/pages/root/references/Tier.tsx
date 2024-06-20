@@ -1,5 +1,5 @@
 import Level from './Level';
-import { Reference } from '../../../api/references';
+import { Reference } from '../../../api/references/GetReferences';
 
 type Props = {
     references: Reference[],

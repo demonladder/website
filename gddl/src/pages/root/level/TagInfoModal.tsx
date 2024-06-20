@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from '../../../components/Modal';
 import { SecondaryButton } from '../../../components/Button';
 import { useQuery } from '@tanstack/react-query';
-import { GetTags } from '../../../api/level/GetTags';
+import GetTags from '../../../api/level/GetTags';
 
 export default function TagInfoModal() {
     const [visible, setVisible] = useState(false);

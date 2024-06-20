@@ -1,15 +1,15 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetTags } from '../../../api/level/GetTags';
+import GetTags from '../../../api/level/GetTags';
 import { Tag } from '../../../api/types/level/Tag';
 import { useRef, useState } from 'react';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { TextInput } from '../../../components/Input';
 import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
-import { SaveTag } from '../../../api/tags/requests/SaveTag';
+import SaveTag from '../../../api/tags/SaveTag';
 import renderToastError from '../../../utils/renderToastError';
-import { CreateTag } from '../../../api/tags/requests/CreateTag';
-import { DeleteTag } from '../../../api/tags/requests/DeleteTag';
+import CreateTag from '../../../api/tags/CreateTag';
+import DeleteTag from '../../../api/tags/DeleteTag';
 import Modal from '../../../components/Modal';
 
 export default function EditTags() {

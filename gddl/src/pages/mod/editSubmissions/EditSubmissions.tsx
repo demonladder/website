@@ -5,13 +5,14 @@ import { DangerButton, PrimaryButton } from '../../../components/Button';
 import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { DeleteSubmission, GetLevelSubmissions } from '../../../api/submissions';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
 import { validateIntChange } from '../../../utils/validators/validateIntChange';
 import Submission from '../../../api/types/Submission';
+import GetLevelSubmissions from '../../../api/submissions/GetLevelSubmissions';
+import DeleteSubmission from '../../../api/submissions/DeleteSubmission';
 
 const deviceOptions: { [key: string]: string } = {
     '1': 'PC',

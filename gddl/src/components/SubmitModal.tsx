@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../components/Modal';
 import Select from '../components/Select';
-import { SendSubmission, SubmittableSubmission } from '../api/submissions';
+import SendSubmission, { SubmittableSubmission } from '../api/submissions/SendSubmission';
 import { NumberInput, TextInput } from './Input';
 import { PrimaryButton, SecondaryButton } from './Button';
 import { toast } from 'react-toastify';
@@ -14,7 +14,7 @@ import WarningBox from './message/WarningBox';
 import { validateLink } from '../utils/validators/validateLink';
 import CheckBox from './input/CheckBox';
 import useUserSearch from '../hooks/useUserSearch';
-import GetSingleSubmission from '../api/submissions/requests/GetSingleSubmission';
+import GetSingleSubmission from '../api/submissions/GetSingleSubmission';
 
 type Props = {
     show: boolean,

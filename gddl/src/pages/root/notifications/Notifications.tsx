@@ -1,11 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Container from '../../../components/Container';
-import { GetNotifications, NotificationResponse, UnreadFilter } from '../../../api/notifications/requests/GetNotificationsRequest';
-import { MarkReadNotifications } from '../../../api/notifications/requests/MarkReadNotifications';
+import GetNotifications, { NotificationResponse, UnreadFilter } from '../../../api/notifications/GetNotificationsRequest';
+import MarkReadNotifications from '../../../api/notifications/MarkReadNotifications';
 import { useState } from 'react';
 import { SecondaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
-import { MarkAllReadRequest } from '../../../api/notifications/requests/MarkAllReadRequest';
+import MarkAllReadRequest from '../../../api/notifications/MarkAllReadRequest';
 import renderToastError from '../../../utils/renderToastError';
 
 export default function Notifications() {

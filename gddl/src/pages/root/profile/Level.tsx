@@ -1,4 +1,4 @@
-import { Submission } from '../../../api/submissions';
+import { Submission } from '../../../api/submissions/SendSubmission';
 import { Link } from 'react-router-dom';
 
 type Props = {

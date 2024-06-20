@@ -1,6 +1,7 @@
 import { useState} from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetSignupTokens, SignupToken, TokenPair } from '../../../api/signupLinks';
+import GetSignupTokens, { TokenPair } from '../../../api/signupToken/GetSignupTokens';
+import SignupToken from '../../../api/signupToken/SignupToken';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/types/TinyUser';

@@ -20,8 +20,8 @@ type UserResponse = Omit<DTOResponse, 'Favorite' | 'LeastFavorite'> & {
     LeastFavoriteLevels: number[],
 }
 
-export async function GetUser(userID: number): Promise<UserResponse> {
-    const res = (await APIClient.get(`/user/${userID}`)).data as DTOResponse;
+export default async function GetUser(userID: number): Promise<UserResponse> {
+    const res = (await APIClient.get<DTOResponse>(`/user/${userID}`)).data;
 
     const user: UserResponse = {
         ...res,

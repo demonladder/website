@@ -6,7 +6,7 @@ interface PackLeaderResponse {
     aroundYou?: Leader[];
 }
 
-export function GetPackLeaders(packID?: number): Promise<PackLeaderResponse> {
-    if (packID !== undefined) return APIClient.get(`/pack/${packID}/leaders`).then(res => res.data);
-    return APIClient.get('/packs/leaders').then(res => res.data);
+export default async function GetPackLeaders(packID?: number): Promise<PackLeaderResponse> {
+    if (packID !== undefined) return await APIClient.get(`/pack/${packID}/leaders`).then((res) => res.data);
+    return await APIClient.get('/packs/leaders').then((res) => res.data);
 }

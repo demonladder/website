@@ -8,7 +8,7 @@ export interface GetPacksResponse {
     categories: PackCategory[];
 }
 
-export async function GetPacks(): Promise<GetPacksResponse> {
+export default async function GetPacks(): Promise<GetPacksResponse> {
     const res = await APIClient.get('/v2/packs');
     return res.data;
 }

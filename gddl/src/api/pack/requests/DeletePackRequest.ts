@@ -1,5 +1,5 @@
 import APIClient from '../../APIClient';
 
-export default function DeletePackRequest(packID: number) {
-    return APIClient.delete('/pack', { params: { packID } });
+export default async function DeletePackRequest(packID: number) {
+    await APIClient.delete('/pack', { params: { packID } });
 }

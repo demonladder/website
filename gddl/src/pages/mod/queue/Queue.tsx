@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApproveSubmission, DenySubmission } from '../../../api/submissions';
-import { GetSubmissionQueue } from '../../../api/pendingSubmissions/GetSubmissionQueue';
+import DenySubmission from '../../../api/submissions/DenySubmission';
+import ApproveSubmission from '../../../api/submissions/ApproveSubmission';
+import GetSubmissionQueue from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submission';
 import { PrimaryButton } from '../../../components/Button';
@@ -45,14 +46,14 @@ export default function Queue() {
     }
 
     function approve(info: TSubmission, onlyEnjoyment = false) {
-        toast.promise(ApproveSubmission({ ...info, onlyEnjoyment }).then(invalidateQueries), {
+        toast.promise(ApproveSubmission(info.LevelID, info.UserID, onlyEnjoyment).then(invalidateQueries), {
             pending: 'Approving...',
             success: 'Approved!',
             error: renderToastError,
         });
     }
     function deny(info: TSubmission, reason?: string) {
-        toast.promise(DenySubmission({ ...info, reason }).then(invalidateQueries), {
+        toast.promise(DenySubmission(info.LevelID, info.UserID, reason).then(invalidateQueries), {
             pending: 'Denying...',
             success: 'Denied!',
             error: renderToastError,

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetHealthStats, GetStats } from '../../api/stats';
+import GetStats from '../../api/stats/GetStats';
+import GetHealthStats from '../../api/stats/GetHealthStats';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ChartData } from 'chart.js';
 import { Line } from 'react-chartjs-2';

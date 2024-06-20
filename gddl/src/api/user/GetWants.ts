@@ -5,7 +5,7 @@ interface WantData {
     DMTierLimit?: number;
 }
 
-export async function GetWants(): Promise<WantData> {
-    const res = await APIClient.get('/notifications/wants');
+export default async function GetWants() {
+    const res = await APIClient.get<WantData>('/notifications/wants');
     return res.data;
 }

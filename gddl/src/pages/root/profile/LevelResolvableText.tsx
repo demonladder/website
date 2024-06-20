@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetLevel } from "../../../api/levels";
+import GetLevel from '../../../api/level/GetLevel';
 import { Link } from "react-router-dom";
 
 export default function LevelResolvableText({ levelID, isLast }: { levelID: number, isLast: boolean }) {

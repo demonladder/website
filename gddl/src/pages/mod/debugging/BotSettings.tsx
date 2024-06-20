@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
 import { useQueryClient } from '@tanstack/react-query';
 import BotStatus from './BotStatus';
-import { DeactivateBotRequest } from '../../../api/bot/requests/DeactivateBotRequest';
-import { ActivateBotRequest } from '../../../api/bot/requests/ActivateBotRequest';
-import { UpdateBotCommandsRequest } from '../../../api/bot/requests/UpdateBotCommandsRequest';
+import DeactivateBotRequest from '../../../api/bot/DeactivateBotRequest';
+import ActivateBotRequest from '../../../api/bot/ActivateBotRequest';
+import UpdateBotCommandsRequest from '../../../api/bot/UpdateBotCommandsRequest';
 
 export function BotSettings() {
     const [botMutating, setBotMutating] = useState(false);

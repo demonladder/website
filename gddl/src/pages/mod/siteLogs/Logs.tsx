@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Select from '../../../components/Select';
 import { useQuery } from '@tanstack/react-query';
-import GetLogs from '../../../api/siteLogs/requests/GetLogs';
+import GetLogs from '../../../api/siteLogs/GetLogs';
 import Log from './Log';
 import { TextInput } from '../../../components/Input';
 import PageButtons from '../../../components/PageButtons';

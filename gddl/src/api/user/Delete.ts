@@ -1,5 +1,5 @@
 import APIClient from '../APIClient';
 
-export default function DeleteUserRequest(ID: number) {
-    return APIClient.delete(`/user/${ID}`);
+export default async function DeleteUserRequest(ID: number) {
+    await APIClient.delete(`/user/${ID}`);
 }

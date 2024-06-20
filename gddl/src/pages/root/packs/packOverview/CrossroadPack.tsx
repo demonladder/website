@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { GetSinglePack } from '../../../../api/pack/requests/GetSinglePack';
+import GetSinglePack from '../../../../api/pack/requests/GetSinglePack';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import Container from '../../../../components/Container';
 import Level from '../../../../components/Level';

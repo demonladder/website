@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetSinglePack } from '../../../api/pack/requests/GetSinglePack';
+import GetSinglePack from '../../../api/pack/requests/GetSinglePack';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { PackLevel } from '../../../api/packs/types/PackLevel';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
 import { Change } from './types/Change';
-import { SavePackChangesRequest } from '../../../api/packs/requests/SavePackChangesRequest';
+import SavePackChangesRequest from '../../../api/packs/requests/SavePackChangesRequest';
 import usePackSearch from '../../../hooks/usePackSearch';
-import { CreatePackRequest } from '../../../api/pack/requests/CreatePackRequest';
+import CreatePackRequest from '../../../api/pack/requests/CreatePackRequest';
 import DeletePackRequest from '../../../api/pack/requests/DeletePackRequest';
 import { TextInput } from '../../../components/Input';
 import Meta from './Meta';
@@ -106,8 +106,7 @@ export default function EditPack() {
         if (packResult === undefined) return;
         if (isLoading) return;
 
-        const request = SavePackChangesRequest(packResult.ID, changeList);
-        request.then(() => {
+        const request = SavePackChangesRequest(packResult.ID, changeList).then(() => {
             setChangeList([]);
             queryClient.invalidateQueries(['packs']);
             queryClient.invalidateQueries(['packSearch']);
@@ -128,8 +127,7 @@ export default function EditPack() {
         if (searchQuery.trim().length === 0) {
             return toast.error('Name can\'t be empty');
         }
-        const request = CreatePackRequest(searchQuery);
-        request.then(() => {
+        const request = CreatePackRequest(searchQuery).then(() => {
             setChangeList([]);
             queryClient.invalidateQueries(['packs']);
             queryClient.invalidateQueries(['packSearch']);

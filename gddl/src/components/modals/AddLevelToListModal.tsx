@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PrimaryButton, SecondaryButton } from '../Button';
 import Modal from '../Modal';
-import { GetUserLists } from '../../api/v2/user';
-import { List } from '../../pages/root/list/List';
+import GetUserLists from '../../api/v2/user/user';
+import List from '../../api/types/compounds/List';
 import LoadingSpinner from '../LoadingSpinner';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';

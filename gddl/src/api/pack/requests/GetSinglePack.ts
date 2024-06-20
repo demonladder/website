@@ -1,7 +1,7 @@
 import PackResponse from '../responses/PackResponse';
 import APIClient from '../../APIClient';
 
-export async function GetSinglePack(packID: number): Promise<PackResponse> {
-    const res = await APIClient.get('/pack', { params: { packID } });
-    return { ...res.data, ID: packID };
+export default async function GetSinglePack(packID: number) {
+    const res = await APIClient.get<PackResponse>('/pack', { params: { packID } });
+    return res.data;
 }

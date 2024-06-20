@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { GetLevel } from '../../../api/levels';
+import GetLevel from '../../../api/level/GetLevel';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Tracker from './Tracker';
 

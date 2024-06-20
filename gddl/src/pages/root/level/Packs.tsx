@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { GetLevelPacks } from '../../../api/level/GetLevelPacks';
+import GetLevelPacks from '../../../api/level/GetLevelPacks';
 import PackRef from '../../../components/PackRef/PackRef';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 

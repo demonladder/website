@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import GetStaffLeaderboard, { StaffLeaderboardRecord } from '../../api/GetStaffLeaderboard';
+import GetStaffLeaderboard, { StaffLeaderboardRecord } from '../../api/staffLeaderboard/GetStaffLeaderboard';
 import pluralS from '../../utils/pluralS';
 
 function StaffLeaderboardEntry({ data, highestScore }: { data: StaffLeaderboardRecord, highestScore?: number }) {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PrimaryButton } from '../../../components/Button';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
-import { AddLevelToDatabase } from '../../../api/levels';
+import AddLevelToDatabase from '../../../api/level/AddLevelToDatabase';
 import renderToastError from '../../../utils/renderToastError';
 
 export default function AddLevel() {

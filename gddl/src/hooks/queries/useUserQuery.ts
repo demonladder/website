@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetUser } from '../../api/user/GetUser';
+import GetUser from '../../api/user/GetUser';
 
 export default function useUserQuery(userID: number, options?: { enabled?: boolean }) {
     const queryClient = useQueryClient();

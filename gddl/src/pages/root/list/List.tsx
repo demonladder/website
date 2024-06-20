@@ -6,7 +6,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import ListLevel from './ListLevel';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
-import User from '../../../api/v2/user';
+import GetList from '../../../api/v2/list/GetList';
 
 interface Meta {
     ID: number;
@@ -41,24 +41,6 @@ export interface IListLevel {
     AddedAt: string;
     UpdatedAt: string;
     Level: Omit<Level, "RatingCount" | "EnjoymentCount" | "SubmissionCount">;
-}
-
-export interface List {
-    ID: number;
-    Name: string;
-    Description: string | null;
-    Type: number;
-    AverageTier: number | null;
-    MedianTier: number | null;
-    OwnerID: number;
-    CreatedAt: string;
-    UpdatedAt: string;
-    Levels: IListLevel[];
-    Owner: User;
-}
-
-function GetList(listID: number): Promise<List> {
-    return APIClient.get(`/v2/list/${listID}`).then((res) => res.data);
 }
 
 export default function List() {

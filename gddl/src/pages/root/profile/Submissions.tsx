@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetUserSubmissions, UserSubmission } from '../../../api/user/GetUserSubmissions';
+import GetUserSubmissions, { UserSubmission } from '../../../api/user/GetUserSubmissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
-import { DeleteSubmission } from '../../../api/submissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
@@ -18,6 +17,7 @@ import Modal from '../../../components/Modal';
 import { DangerButton, SecondaryButton } from '../../../components/Button';
 import { useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 import useLateValue from '../../../hooks/useLateValue';
+import DeleteSubmission from '../../../api/submissions/DeleteSubmission';
 
 type Props = {
     userID: number,

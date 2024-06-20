@@ -9,5 +9,5 @@ export interface EdittableUser {
 }
 
 export default async function SaveProfile(userID: number, user: EdittableUser) {
-    return (await APIClient.put(`/user/${userID}`, user)).data;
+    await APIClient.put(`/user/${userID}`, user);
 }

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { GetReferences, Reference } from '../../../api/references';
+import GetReferences, { Reference } from '../../../api/references/GetReferences';
 import Difficulty from './Difficulty';
 
 export type Tier = {

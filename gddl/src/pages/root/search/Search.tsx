@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Level from '../../../components/Level';
 import FilterMenu from './FilterMenu';
 import SortMenu from './SortMenu';
-import { SearchLevels } from '../../../api/level/SearchLevels';
+import SearchLevels from '../../../api/level/SearchLevels';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import { useQuery } from '@tanstack/react-query';
 import Container from '../../../components/Container';

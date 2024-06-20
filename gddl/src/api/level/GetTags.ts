@@ -6,6 +6,7 @@ interface Tag {
     Description: string | null;
 }
 
-export function GetTags(): Promise<Tag[]> {
-    return APIClient.get('/tags').then((res) => res.data);
+export default async function GetTags() {
+    const res = await APIClient.get<Tag[]>('/tags');
+    return res.data;
 }

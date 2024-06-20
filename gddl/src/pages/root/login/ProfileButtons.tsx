@@ -2,7 +2,7 @@ import DemonLogo from '../../../components/DemonLogo';
 import { Link } from 'react-router-dom';
 import StorageManager from '../../../utils/StorageManager';
 import { useQuery } from '@tanstack/react-query';
-import { GetDiscordUser } from '../../../api/user/GetDiscordUser';
+import GetDiscordUser from '../../../api/user/GetDiscordUser';
 import NotificationButton from '../../../components/ui/Notifications';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from '../components/SearchBox/SearchBox';
 import { PackShell } from '../api/packs/types/PackShell';
-import { SearchPacks } from '../api/packs/requests/SearchPacks';
+import SearchPacks from '../api/packs/requests/SearchPacks';
 
 interface Props {
     ID: string,

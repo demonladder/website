@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { DeletePendingSubmission } from '../../../api/submissions';
-import { GetUserPendingSubmissions, UserPendingSubmission } from '../../../api/user/GetUserPendingSubmissions';
+import DeletePendingSubmission from '../../../api/submissions/DeletePendingSubmission';
+import GetUserPendingSubmissions, { UserPendingSubmission } from '../../../api/user/GetUserPendingSubmissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';

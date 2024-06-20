@@ -5,10 +5,10 @@ import { TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import TextArea from '../../../components/input/TextArea';
 import renderToastError from '../../../utils/renderToastError';
-import { SavePackMetaRequest } from '../../../api/packs/requests/SavePackDescriptionRequest';
+import SavePackMetaRequest from '../../../api/packs/requests/SavePackDescriptionRequest';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { GetSinglePack } from '../../../api/pack/requests/GetSinglePack';
-import { GetPacks } from '../../../api/packs/requests/GetPacks';
+import GetSinglePack from '../../../api/pack/requests/GetSinglePack';
+import GetPacks from '../../../api/packs/requests/GetPacks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
 interface Props {
@@ -44,8 +44,7 @@ export default function Meta({ packID }: Props) {
         if (isLoading) return;
         setIsLoading(true);
 
-        const request = SavePackMetaRequest(packID, description, categoryKey, roleID);
-        request.then(() => {
+        const request = SavePackMetaRequest(packID, description, categoryKey, roleID).then(() => {
             queryClient.invalidateQueries(['packs']);
             queryClient.invalidateQueries(['packSearch']);
         }).finally(() => {

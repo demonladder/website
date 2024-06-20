@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import DemonLogo from '../../../components/DemonLogo';
-import { IListLevel, List } from './List';
+import { IListLevel } from './List';
+import List from '../../../api/types/compounds/List';
 import { useRef, useState } from 'react';
 import StorageManager from '../../../utils/StorageManager';
 

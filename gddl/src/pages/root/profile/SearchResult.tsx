@@ -1,4 +1,4 @@
-import { Level } from '../../../api/levels';
+import { Level } from '../../../api/level/AddLevelToDatabase';
 
 type Props = {
     level: Level,

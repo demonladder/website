@@ -11,10 +11,11 @@ interface SpreadResponse {
     }[];
 }
 
-export default function GetSpread(levelID: number): Promise<SpreadResponse> {
-    return APIClient.get('/level/submissions/spread', {
+export default async function GetSpread(levelID: number) {
+    const res = await APIClient.get<SpreadResponse>('/level/submissions/spread', {
         params: {
             levelID,
         },
-    }).then(res => res.data);
+    });
+    return res.data;
 }

@@ -1,29 +1,24 @@
 import APIClient from '../APIClient';
 
-export function UpdateSubmissionSettings(bitField: BitField, DMTierLimit: number) {
-    return APIClient.put('/notifications/wants', { bitField: bitField.get(), DMTierLimit });
+export default async function UpdateSubmissionSettings(bitField: BitField, DMTierLimit: number) {
+    await APIClient.put('/notifications/wants', { bitField: bitField.bits, DMTierLimit });
 }
 
-// export function UpdateSubmissionSettings(bitField: BitField, DMTierLimit: number) {
-//     return APIClient.put('/notifications/wants', { bitField: bitField.get(), DMTierLimit });
-// }
-
 export class BitField {
-    private bits: number;
-
-    constructor(bits: number) {
-        this.bits = bits;
-    }
-
-    get() {
+    private _bits: number;
+    get bits(): number {
         return this.bits;
     }
 
+    constructor(bits: number) {
+        this._bits = bits;
+    }
+
     add(bit: number) {
-        this.bits = this.bits | bit;
+        this._bits = this._bits | bit;
     }
 
     remove(bit: number) {
-        this.bits = this.bits - (this.bits & bit);
+        this._bits = this._bits - (this._bits & bit);
     }
 }

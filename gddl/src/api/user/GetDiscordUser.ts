@@ -1,7 +1,7 @@
 import APIClient from '../APIClient';
 import DiscordUserData from '../types/DiscordUserData';
 
-export async function GetDiscordUser(userID: number): Promise<DiscordUserData> {
-    const res = await APIClient.get(`/user/${userID}/discord`);
+export default async function GetDiscordUser(userID: number) {
+    const res = await APIClient.get<DiscordUserData>(`/user/${userID}/discord`);
     return res.data;
 }

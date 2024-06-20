@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
-import { LevelTagRequest, TopTags } from '../../../api/level/LevelTagRequest';
+import LevelTagRequest, { TopTags } from '../../../api/level/tags/LevelTagRequest';
 import Select from '../../../components/Select';
-import { SendTagVoteRequest } from '../../../api/level/SendTagVoteRequest';
+import SendTagVoteRequest from '../../../api/level/tags/SendTagVoteRequest';
 import { toast } from 'react-toastify';
-import { GetTags } from '../../../api/level/GetTags';
-import { GetTagEligibility } from '../../../api/level/GetTagEligibility';
+import GetTags from '../../../api/level/GetTags';
+import GetTagEligibility from '../../../api/level/tags/GetTagEligibility';
 import TagInfoModal from './TagInfoModal';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { KeyboardAccessibility } from '../../../utils/KeyboardAccessibility';

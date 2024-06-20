@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Change, ChangeReferences, ChangeType, GetReferences } from '../../../api/references';
+import GetReferences from '../../../api/references/GetReferences';
+import ChangeReferences, { Change, ChangeType } from '../../../api/references/ChangeReferences';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { NumberInput } from '../../../components/Input';

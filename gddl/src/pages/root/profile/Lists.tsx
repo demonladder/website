@@ -8,10 +8,11 @@ import Modal from '../../../components/Modal';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import { GetUserLists } from '../../../api/v2/user';
-import { CreateList, DeleteList } from '../../../api/v2/list';
+import GetUserLists from '../../../api/v2/user/user';
+import DeleteList from '../../../api/v2/list/DeleteList';
+import CreateList from '../../../api/v2/list/CreateList';
 import { useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
-import { List } from '../list/List';
+import List from '../../../api/types/List';
 
 interface Props {
     userID: number;
@@ -22,7 +23,7 @@ export default function Lists({ userID }: Props) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
-    const [clickedList, setClickedList] = useState<Omit<List, 'Levels'>>();
+    const [clickedList, setClickedList] = useState<List>();
     const [showDeleteListModal, setShowDeleteListModal] = useState(false);
     const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ export default function Lists({ userID }: Props) {
 
     const { createMenu } = useContextMenu();
 
-    const openContext = useCallback((e: React.MouseEvent, list: Omit<List, 'Levels'>) => {
+    const openContext = useCallback((e: React.MouseEvent, list: List) => {
         if (userID !== StorageManager.getUser()?.ID) return;
 
         e.preventDefault();

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LogResponse from '../../../api/siteLogs/responses/LogResponse';
+import LogResponse from '../../../api/types/LogResponse';
 
 function removeStack(payload: Record<string, any> & { stack?: string }) {
     const filtered: Record<string, any> = {};
