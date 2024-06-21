@@ -1,12 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
 import Container from '../../../components/Container';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import APIClient from '../../../api/APIClient';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import ListLevel from './ListLevel';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
-import GetList from '../../../api/v2/list/GetList';
+import GetList from '../../../api/list/GetList';
+import MoveListLevel from '../../../api/list/MoveListLevel';
 
 interface Meta {
     ID: number;
@@ -65,7 +65,7 @@ export default function List() {
         setIsDragLocked(true);
     
         toast.promise(
-            APIClient.put(`/v2/list/${listID}/moveLevel`, { levelID: oldID, newPosition }).then(() => queryClient.invalidateQueries(['list', listID])).finally(() => setIsDragLocked(false)),
+            MoveListLevel(list.ID, oldID, newPosition).then(() => queryClient.invalidateQueries(['list', listID])).finally(() => setIsDragLocked(false)),
             {
                 success: 'Moved level',
                 pending: 'Moving...',

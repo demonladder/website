@@ -8,9 +8,9 @@ import Modal from '../../../components/Modal';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import GetUserLists from '../../../api/v2/user/user';
-import DeleteList from '../../../api/v2/list/DeleteList';
-import CreateList from '../../../api/v2/list/CreateList';
+import GetUserLists from '../../../api/user/GetUserLists';
+import DeleteList from '../../../api/list/DeleteList';
+import CreateList from '../../../api/list/CreateList';
 import { useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 import List from '../../../api/types/List';
 

@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PrimaryButton, SecondaryButton } from '../Button';
 import Modal from '../Modal';
-import GetUserLists from '../../api/v2/user/user';
-import List from '../../api/types/compounds/List';
+import GetUserLists from '../../api/user/GetUserLists';
+import List from '../../api/types/List';
 import LoadingSpinner from '../LoadingSpinner';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
-import APIClient from '../../api/APIClient';
+import AddLevelToList from '../../api/list/AddLevelToList';
 
 interface Props {
     show: boolean;
@@ -16,11 +16,7 @@ interface Props {
     levelID: number;
 }
 
-async function AddLevelToList(levelID: number, listID: number) {
-    await APIClient.post(`/v2/list/${listID}/add`, { levelID });
-}
-
-function ListItem({ userID, levelID, list }: { userID: number, levelID: number, list: Omit<List, 'Levels'> }) {
+function ListItem({ userID, levelID, list }: { userID: number, levelID: number, list: List }) {
     const queryClient = useQueryClient();
 
     const onSubmit = useCallback(() => {
