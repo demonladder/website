@@ -37,7 +37,7 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
                 <div className='ms-3 w-16'>
                     {discordData?.Avatar
                         ? <img src={pfp || ''} className='rounded-full' />
-                        : <DemonLogo diff={userData?.Hardest.Meta.Difficulty} />
+                        : <DemonLogo diff={userData?.Hardest?.Meta.Difficulty} />
                     }
                 </div>
             </Link>

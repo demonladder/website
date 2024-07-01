@@ -7,7 +7,7 @@ import Song from '../types/Song';
 import User from '../types/User';
 
 type DTOResponse = User & {
-    Hardest: Level & { Meta: LevelMeta & { Song: Song } },
+    Hardest?: Level & { Meta: LevelMeta & { Song: Song } },
     DiscordData: DiscordUserData | null,
     CompletedPacks: { PackID: number, IconName: string }[],
     PendingSubmissionCount: number,
