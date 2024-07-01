@@ -5,7 +5,7 @@ import LevelTagRequest, { TopTags } from '../../../api/level/tags/LevelTagReques
 import Select from '../../../components/Select';
 import SendTagVoteRequest from '../../../api/level/tags/SendTagVoteRequest';
 import { toast } from 'react-toastify';
-import GetTags from '../../../api/level/GetTags';
+import GetTags from '../../../api/tags/GetTags';
 import GetTagEligibility from '../../../api/level/tags/GetTagEligibility';
 import TagInfoModal from './TagInfoModal';
 import LoadingSpinner from '../../../components/LoadingSpinner';

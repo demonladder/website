@@ -5,7 +5,8 @@ import { SearchFilters } from './Search';
 import Select from '../../../components/Select';
 import NewLabel from '../../../components/NewLabel';
 import { useQuery } from '@tanstack/react-query';
-import GetTags from '../../../api/level/GetTags';
+import GetTags from '../../../api/tags/GetTags';
+import { useCallback } from 'react';
 
 type Props = {
     filters: SearchFilters,
@@ -20,19 +21,19 @@ const twoPlayerOptions = {
 
 const updateOptions = {
     any: 'Any',
-    '1.0': '1.0',
-    '1.1': '1.1',
-    '1.2': '1.2',
-    '1.3': '1.3',
-    '1.4': '1.4',
-    '1.5': '1.5',
-    '1.6': '1.6',
-    '1.7': '1.7',
-    '1.8': '1.8',
-    '1.9': '1.9',
-    '2.0': '2.0',
-    '2.1': '2.1',
-    '2.2': '2.2',
+    '0-1729': '1.0',
+    '1729-9228': '1.1',
+    '9228-63099': '1.2',
+    '63099-120716': '1.3',
+    '120716-184402': '1.4',
+    '184402-418434': '1.5',
+    '418434-826013': '1.6',
+    '826013-1619692': '1.7',
+    '1619692-2808696': '1.8',
+    '2808696-11007009': '1.9',
+    '11007009-28355990': '2.0',
+    '28355990-97452273': '2.1',
+    '97452273-1000000000': '2.2',
 };
 
 export default function FiltersExtended({ filters, setFilters }: Props) {
@@ -42,6 +43,16 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
         queryKey: ['tags'],
         queryFn: GetTags,
     });
+
+    const onUpdateChange = useCallback((key: string) => {
+        if (key !== 'any') {
+            const lowID = key.split('-')[0];
+            const highID = key.split('-')[1];
+            setFilters(prev => ({ ...prev, update: key, IDLow: lowID, IDHigh: highID }));
+        } else {
+            setFilters(prev => ({ ...prev, update: key, IDLow: '', IDHigh: '' }));
+        }
+    }, [setFilters]);
 
     return (
         <div className='flex flex-col gap-3'>
@@ -84,11 +95,11 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
                 </div>
                 <div className='col-span-2'>
                     <p>Update <NewLabel ID='updateFilter' /></p>
-                    <Select height='20' activeKey={filters.update} options={updateOptions} onChange={(key) => setFilters(prev => ({ ...prev, update: key }))} id='updateSelectOptions' />
+                    <Select height='20' activeKey={filters.update} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
                 </div>
                 <div className='col-span-2'>
                     <p>Top skillset <NewLabel ID='skillsetFilter' /></p>
-                    <Select height='20' activeKey={filters.skillset.toString()} options={[...(tags ?? []).map((t) => ({ key: t.TagID.toString(), value: t.Name })), { key: '0', value: 'Any' }]} onChange={(key) => setFilters(prev => ({ ...prev, skillset: parseInt(key) }))} id='skillsetSelectOptions' />
+                    <Select height='20' activeKey={filters.skillset.toString()} options={[...(tags ?? []).map((t) => ({ key: t.ID.toString(), value: t.Name })), { key: '0', value: 'Any' }]} onChange={(key) => setFilters(prev => ({ ...prev, skillset: parseInt(key) }))} id='skillsetSelectOptions' />
                 </div>
             </div>
             <div className='grid grid-cols-12'>

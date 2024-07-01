@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import { NavButton } from '../../components/ui/NavButton';
 
 export async function modLoader() {
-    return APIClient.get('/isMod').then(() => {
+    return APIClient.get('/isStaff').then(() => {
         return null;
     }).catch(() => {
         return redirect('/');
@@ -17,7 +17,8 @@ export default function Mod() {
         <Container>
             <div className='grid grid-cols-12 gap-5'>
                 <div id='mod-menu' className='col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col'>
-                    <Link to='/mod' className='text-4xl'>Dashboard</Link>
+                    <Link to='/mod' className='text-4xl mb-2'>Dashboard</Link>
+                    <NavButton to='/mod/roles'>Roles</NavButton>
                     <hr className='my-2' />
                     <div className='flex flex-col select-none'>
                         <p className='text-gray-400 text-sm ps-3'>Submissions</p>
@@ -27,7 +28,6 @@ export default function Mod() {
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Users</p>
                         <NavButton to='/mod/signupLinks'>Sign-up links</NavButton>
-                        <NavButton to='/mod/promote'>Promote user</NavButton>
                         <NavButton to='/mod/createUser'>Create user</NavButton>
                         <NavButton to='/mod/deleteUser'>Delete user</NavButton>
                         <NavButton to='/mod/userBans'>Bans</NavButton>

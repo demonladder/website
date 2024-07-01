@@ -8,7 +8,6 @@ import IDButton from '../../../components/IDButton';
 import Packs from './Packs';
 import Submissions from './Submissions';
 import Container from '../../../components/Container';
-import SubmitModal from '../../../components/SubmitModal';
 import StorageManager from '../../../utils/StorageManager';
 import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
@@ -19,13 +18,15 @@ import RatingGraph from './RatingGraph';
 import { TagEligibility } from '../../../api/level/tags/GetTagEligibility';
 import Showcase from './Showcase';
 import ExternalLinks from './ExternalLinks';
-import AddLevelToListModal from '../../../components/modals/AddLevelToListModal';
+import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
+import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 
 export default function LevelOverview() {
-    const [showModal, setShowModal] = useState(false);
-    const [showAddLevelToListModal, setShowAddLevelToListModal] = useState(false);
     const [showTwoPlayerStats, _setShowTwoPlayerStats] = useState(false);
     const navigate = useNavigate();
+
+    const openAddListLevelModal = useAddListLevelModal();
+    const openSubmitModal = useSubmitModal();
 
     const levelID = parseInt(useParams().levelID || '0');
     const { status, data: level, error } = useQuery({
@@ -127,10 +128,11 @@ export default function LevelOverview() {
                                 <span>[{avgEnjoyment}]</span>
                             </p>
                         </div>
-                        {StorageManager.hasSession() &&
+                        {StorageManager.hasSession() && user &&
                             <>
-                                <PrimaryButton className='text-lg w-full' onClick={() => setShowModal(true)} hidden={!StorageManager.hasSession()}>{voteMeta?.eligible ? 'Edit' : 'Submit'} rating <i className='bx bx-list-plus' /></PrimaryButton>
-                                <PrimaryButton className='text-lg w-full' onClick={() => setShowAddLevelToListModal(true)}>Add to list</PrimaryButton>
+                                <PrimaryButton className='text-lg w-full' onClick={() => openSubmitModal(level)} hidden={!StorageManager.hasSession()}>{voteMeta?.eligible ? 'Edit' : 'Submit'} rating <i className='bx bx-list-plus' /></PrimaryButton>
+                                {/* <PrimaryButton className='text-lg w-full' onClick={() => setShowAddLevelToListModal(true)}>Add to list</PrimaryButton> */}
+                                <PrimaryButton className='text-lg w-full' onClick={() => openAddListLevelModal(user.ID, levelID)}>Add to list</PrimaryButton>
                             </>
                         }
                     </div>
@@ -180,8 +182,6 @@ export default function LevelOverview() {
             <Packs levelID={levelID} />
             <Showcase level={level} />
             <ExternalLinks level={level} />
-            <SubmitModal show={showModal} onClose={() => setShowModal(false)} level={level} />
-            {user && <AddLevelToListModal show={showAddLevelToListModal} onClose={() => setShowAddLevelToListModal(false)} userID={user.ID} levelID={levelID} />}
         </Container>
     );
 }

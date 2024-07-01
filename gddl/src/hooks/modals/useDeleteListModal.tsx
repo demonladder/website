@@ -1,0 +1,18 @@
+import List from '../../api/types/List';
+import DeleteListModal from '../../components/modals/DeleteListModal';
+import useModal from './useModal';
+
+export default function useDeleteListModal() {
+    const { createModal, closeModal } = useModal();
+
+    function open(list: List) {
+        const ID = `deleteList-${list.ID}`;
+
+        createModal(
+            ID,
+            <DeleteListModal list={list} onClose={() => closeModal(ID)} />,
+        );
+    }
+
+    return open;
+}

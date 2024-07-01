@@ -7,7 +7,7 @@ export default async function UpdateSubmissionSettings(bitField: BitField, DMTie
 export class BitField {
     private _bits: number;
     get bits(): number {
-        return this.bits;
+        return this._bits;
     }
 
     constructor(bits: number) {

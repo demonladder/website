@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
-interface ButtonData {
+export interface ButtonData {
     text: string;
     onClick?: React.MouseEventHandler;
     type?: 'info' | 'danger';

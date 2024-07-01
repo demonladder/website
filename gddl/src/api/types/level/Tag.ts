@@ -1,5 +1,6 @@
 export interface Tag {
-    TagID: number;
+    ID: number;
     Name: string;
     Description: string | null;
+    Ordering: number;
 }

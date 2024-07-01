@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetTags from '../../../api/level/GetTags';
+import GetTags from '../../../api/tags/GetTags';
 import { Tag } from '../../../api/types/level/Tag';
 import { useRef, useState } from 'react';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -9,15 +9,16 @@ import { toast } from 'react-toastify';
 import SaveTag from '../../../api/tags/SaveTag';
 import renderToastError from '../../../utils/renderToastError';
 import CreateTag from '../../../api/tags/CreateTag';
-import DeleteTag from '../../../api/tags/DeleteTag';
-import Modal from '../../../components/Modal';
+import useDeleteTagModal from '../../../hooks/modals/useDeleteTagModal';
+import ReorderTag from '../../../api/tags/ReorderTag';
 
 export default function EditTags() {
     const [isMutating, setIsMutating] = useState(false);
     const [selectedTag, setSelectedTag] = useState<Tag>();
     const nameRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
-    const [showConfirm, setShowConfirm] = useState(false);
+
+    const openDeleteTagModal = useDeleteTagModal();
 
     const queryClient = useQueryClient();
     const { data: tags } = useQuery({
@@ -25,8 +26,8 @@ export default function EditTags() {
         queryFn: GetTags,
     });
 
-    function onTagSelect(tag: Tag) {
-        if (selectedTag?.TagID === tag.TagID) {
+    function onTagSelect(tag?: Tag) {
+        if (tag === undefined || selectedTag?.ID === tag.ID) {
             setSelectedTag(undefined);
             if (nameRef.current) nameRef.current.value = '';
             if (descriptionRef.current) descriptionRef.current.value = '';
@@ -48,7 +49,7 @@ export default function EditTags() {
         if (!nameRef.current || !descriptionRef.current) return;
 
         setIsMutating(true);
-        toast.promise(SaveTag({ TagID: selectedTag.TagID, Name: nameRef.current.value, Description: descriptionRef.current.value }).then(() => {
+        toast.promise(SaveTag(selectedTag, nameRef.current.value, descriptionRef.current.value).then(() => {
             queryClient.invalidateQueries(['tags']);
         }).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
@@ -73,30 +74,13 @@ export default function EditTags() {
         });
     }
 
-    function openConfirmModal() {
+    function onDelete() {
         if (selectedTag === undefined) {
             toast.error('No tag selected');
             return;
         }
 
-        setShowConfirm(true);
-    }
-
-    function onDelete() {
-        if (isMutating) return;
-        if (selectedTag === undefined) return;
-        setIsMutating(true);
-
-        toast.promise(DeleteTag(selectedTag.TagID).then(() => {
-            queryClient.invalidateQueries(['tags']);
-        }).finally(() => {
-            setIsMutating(false);
-            setShowConfirm(false);
-        }), {
-            pending: 'Deleting...',
-            success: 'Deleted tag',
-            error: renderToastError,
-        });
+        openDeleteTagModal(selectedTag);
     }
 
     return (
@@ -121,59 +105,64 @@ export default function EditTags() {
                     ? <PrimaryButton onClick={onSave}>Save</PrimaryButton>
                     : <SecondaryButton onClick={onCreate}>Create</SecondaryButton>
                 }
-                <DangerButton className='ms-2' onClick={openConfirmModal}>Delete</DangerButton>
+                <DangerButton className='ms-2' onClick={onDelete}>Delete</DangerButton>
             </div>
-            <Modal title='Are you sure?' show={showConfirm} onClose={() => setShowConfirm(false)}>
-                <Modal.Body>
-                    <div className='my-6'>
-                        <p>This is an irreversible action!</p>
-                        <p>All tag submissions using this tag will be deleted!</p>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <div className='flex float-right round:gap-1'>
-                        <PrimaryButton onClick={() => setShowConfirm(false)}>Cancel</PrimaryButton>
-                        <DangerButton onClick={onDelete}>Confirm</DangerButton>
-                    </div>
-                </Modal.Footer>
-            </Modal>
         </div>
     );
 }
 
-function TagItem({ dragLocked, tag, selected, onSelect }: { dragLocked: boolean, tag: Tag, selected: boolean, onSelect(tag: Tag): void }) {
-    const [isDragged, setIsDragged] = useState(false);
+function TagItem({ dragLocked, tag, selected, onSelect }: { dragLocked: boolean, tag: Tag, selected: boolean, onSelect(tag?: Tag): void }) {
+    const [isBeingDragged, setIsBeingDragged] = useState(false);
     const [dragOver, setDragOver] = useState(false);
-    const itemRef = useRef<HTMLLIElement>(null);
 
-    function dragStopHandler() {
-        setIsDragged(false);
-        console.log('stop ' + tag.Name);
-    }
+    const queryClient = useQueryClient();
 
     function dragStartHandler(e: React.DragEvent) {
-        //e.preventDefault();
+        if (dragLocked) {
+            e.preventDefault();
+            return;
+        }
 
-        setDragOver(true);
-        console.log('start ' + tag.Name);
+        setIsBeingDragged(true);
+        e.dataTransfer.setData('text/plain', tag.ID.toString());
+        e.stopPropagation();
     }
-    function dragEnterHandler(e: React.DragEvent) {
-        e.preventDefault();
+    function dragStopHandler() {
+        setIsBeingDragged(false);
+    }
 
-        console.log('enter ' + tag.Name);
+    function dragOverHandler(e: React.DragEvent) {
+        if (isBeingDragged) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        setDragOver(true);
     }
     function dragLeaveHandler(e: React.DragEvent) {
         e.preventDefault();
-        e.stopPropagation();
-
-        e.dataTransfer.dropEffect = 'move';
         setDragOver(false);
-        console.log('leave ' + tag.Name);
+    }
+
+    function dropHandler(e: React.DragEvent<HTMLDivElement>) {
+        setDragOver(false);
+
+        const droppedID = parseInt(e.dataTransfer.getData('text/plain'));
+        const request = ReorderTag(droppedID, tag.Ordering).then(() => {
+            queryClient.invalidateQueries(['tags']);
+            onSelect();
+        });
+
+        toast.promise(request, {
+            pending: 'Reordering...',
+            success: 'Reordered',
+            error: renderToastError,
+        });
     }
 
     return (
-        <div draggable={true} onDragEnd={dragStopHandler} onDragStart={dragStartHandler} onDragEnter={dragEnterHandler} onDragLeave={dragLeaveHandler} onClick={() => onSelect(tag)} className={(selected ? 'bg-blue-600' : 'bg-gray-500') + ' cursor-pointer p-1 text-center round:rounded'}>
-            <p className='select-none'>{tag.Name}</p>
+        <div draggable={true} onDrop={dropHandler} onDragEnd={dragStopHandler} onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDragLeave={dragLeaveHandler} className={`${isBeingDragged ? 'opacity-0' : ''} ${dragOver ? 'opacity-50' : ''}`}>
+            <div onClick={() => onSelect(tag)} className={`${selected ? 'bg-blue-600' : 'bg-gray-500'} cursor-grab p-1 text-center round:rounded`}>
+                <p className='select-none'>{tag.Name}</p>
+            </div>
         </div>
     );
 }

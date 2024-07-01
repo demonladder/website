@@ -15,5 +15,5 @@ export interface TopTags {
 }
 
 export default async function LevelTagRequest(levelID: number) {
-    return await APIClient.get<TopTags[]>('/level/tags', { params: { levelID } }).then((res) => res.data);
+    return await APIClient.get<TopTags[]>(`/level/${levelID}/tags`).then((res) => res.data);
 }

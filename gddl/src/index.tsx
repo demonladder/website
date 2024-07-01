@@ -19,7 +19,6 @@ import { modLoader as ModLoader } from './pages/mod/Mod';
 const ModIndex = lazy(() => import('./pages/mod/ModIndex'));
 const Queue = lazy(() => import('./pages/mod/queue/Queue'));
 const EditReferences = lazy(() => import('./pages/mod/references/References'));
-const Promote = lazy(() => import('./pages/mod/promote/Promote'));
 const SignupLink = lazy(() => import('./pages/mod/signupLinks/SignupLink'));
 const AddSubmission = lazy(() => import('./pages/mod/addSubmissions/AddSubmissions'));
 const EditSubmission = lazy(() => import('./pages/mod/editSubmissions/EditSubmissions'));
@@ -54,6 +53,9 @@ const Game = lazy(() => import('./pages/root/game/Game'));
 import List from './pages/root/list/List';
 import EditLevel from './pages/mod/editLevel/EditLevel';
 import { HelmetProvider } from 'react-helmet-async';
+import ModalProvider from './context/ModalProvider';
+import Roles from './pages/mod/roles/Roles';
+import EditRole from './pages/mod/roles/EditRole';
 
 const router = createBrowserRouter(
     [
@@ -184,10 +186,6 @@ const router = createBrowserRouter(
                             element: <EditSubmission />,
                         },
                         {
-                            path: 'promote',
-                            element: <Promote />,
-                        },
-                        {
                             path: 'createUser',
                             element: <CreateUser />,
                         },
@@ -226,6 +224,14 @@ const router = createBrowserRouter(
                         {
                             path: 'logs',
                             element: <Logs />,
+                        },
+                        {
+                            path: 'roles',
+                            element: <Roles />,
+                        },
+                        {
+                            path: 'roles/:roleID',
+                            element: <EditRole />,
                         },
                     ]
                 },
@@ -279,8 +285,10 @@ root.render(
         <QueryClientProvider client={queryClient}>
             <HelmetProvider>
                 <MenuContextProvider>
-                    <RouterProvider router={router} />
-                    <ReactQueryDevtools initialIsOpen={false} />
+                    <ModalProvider>
+                        <RouterProvider router={router} />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </ModalProvider>
                 </MenuContextProvider>
             </HelmetProvider>
         </QueryClientProvider>

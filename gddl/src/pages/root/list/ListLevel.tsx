@@ -80,20 +80,20 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
                     }
                 </div>
                 <Link to={`/level/${listLevel.LevelID}`} className='col-span-11 flex grow bg-gray-700 hover:bg-gray-600'>
-                    <div className='w-3/12 lg:w-1/12 p-2 self-center'>
+                    <div className='w-2/12 lg:w-1/12 p-2 self-center'>
                         <DemonLogo diff={listLevel.Level.Meta.Difficulty} />
                     </div>
                     <div className='self-center text-sm lg:text-xl mx-6'>
-                        <h3 className='text-2xl font-bold break-all whitespace-pre-wrap'>{listLevel.Level.Meta.Name}</h3>
+                        <h3 className='lg:text-2xl font-bold break-all whitespace-pre-wrap'>{listLevel.Level.Meta.Name}</h3>
                         <p className='text-gray-300'><i>{listLevel.Level.Meta.Creator}</i></p>
                     </div>
-                    <div className={'ms-auto w-10 lg:w-32 lg:h-32 grid place-items-center group ' + ratingClass}>
-                        <p className='text-3xl group-hover:hidden '>{listLevel.Level.Rating !== null ? roundedRating : 'N/A'}</p>
-                        <p className='text-3xl hidden group-hover:block '>{listLevel.Level.Rating !== null ? fixedRating : 'N/A'}</p>
+                    <div className={'ms-auto w-8 lg:w-32 lg:h-32 grid place-items-center group ' + ratingClass}>
+                        <p className='lg:text-3xl group-hover:hidden '>{listLevel.Level.Rating !== null ? roundedRating : 'N/A'}</p>
+                        <p className='lg:text-3xl hidden group-hover:block '>{listLevel.Level.Rating !== null ? fixedRating : 'N/A'}</p>
                     </div>
-                    <div className={'w-10 lg:w-32 lg:h-32 grid place-items-center group ' + enjoymentClass}>
-                        <p className='text-3xl group-hover:hidden '>{listLevel.Level.Enjoyment !== null ? roundedEnjoyment : 'N/A'}</p>
-                        <p className='text-3xl hidden group-hover:block '>{listLevel.Level.Enjoyment !== null ? fixedEnjoyment : 'N/A'}</p>
+                    <div className={'w-8 lg:w-32 lg:h-32 grid place-items-center group ' + enjoymentClass}>
+                        <p className='lg:text-3xl group-hover:hidden '>{listLevel.Level.Enjoyment !== null ? roundedEnjoyment : 'N/A'}</p>
+                        <p className='lg:text-3xl hidden group-hover:block '>{listLevel.Level.Enjoyment !== null ? fixedEnjoyment : 'N/A'}</p>
                     </div>
                 </Link>
             </div>

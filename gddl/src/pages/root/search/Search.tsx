@@ -144,7 +144,7 @@ export default function Search() {
         return (
             <div className='level-list'>
                 <Level.Header />
-                {levels.map((l) => <Level ID={l.ID} rating={l.Rating} enjoyment={l.Enjoyment} name={l.Meta.Name} creator={l.Meta.Creator} songName={l.Meta.Song.Name} completed={l.Completed === 1} key={l.ID} />)}
+                {levels.map((l) => <Level ID={l.ID} rating={l.Rating} defaultRating={l.DefaultRating} enjoyment={l.Enjoyment} name={l.Meta.Name} creator={l.Meta.Creator} songName={l.Meta.Song.Name} completed={l.Completed === 1} key={l.ID} />)}
             </div>
         );
     }

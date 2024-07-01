@@ -12,6 +12,7 @@ APIClient.interceptors.request.use((config) => {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
+    config.headers['X-Access-Token'] = import.meta.env.VITE_ACCESS_TOKEN as string;
     return config;
 });
 

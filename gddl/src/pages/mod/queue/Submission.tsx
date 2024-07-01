@@ -5,16 +5,19 @@ import Modal from '../../../components/Modal';
 import { TextInput } from '../../../components/Input';
 import TSubmission from '../../../api/types/Submission';
 import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
+import { toast } from 'react-toastify';
+import { useApproveClicked } from './useApproveClicked';
 
 interface Props {
     submission: QueueSubmission;
-    approve: (submission: TSubmission, onlyEnjoyment?: boolean) => void;
     remove: (submission: TSubmission, reason?: string) => void;
 }
 
-export default function Submission({ submission, approve, remove }: Props) {
+export default function Submission({ submission, remove }: Props) {
     const [showDenyReason, setShowDenyReason] = useState(false);
     const reasonRef = useRef<HTMLInputElement>(null);
+
+    const approveSubmission = useApproveClicked();
 
     return (
         <div className={`round:rounded-2xl tier-${submission.Level.Rating?.toFixed(0) || 0} p-3 my-2 text-lg`}>
@@ -49,10 +52,10 @@ export default function Submission({ submission, approve, remove }: Props) {
                 </div>
             </div>
             <div className='flex justify-evenly max-md:flex-col max-md:gap-4'>
-                <PrimaryButton className='px-3 py-2' onClick={() => approve(submission)}>Approve</PrimaryButton>
-                <PrimaryButton className='px-3 py-2' onClick={() => approve(submission, true)}>Only enjoyment</PrimaryButton>
+                <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.LevelID, submission.UserID)}>Approve</PrimaryButton>
+                <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.LevelID, submission.UserID, true)}>Only enjoyment</PrimaryButton>
                 <DangerButton className='px-3 py-2' onClick={() => setShowDenyReason(true)}>Deny</DangerButton>
-                <DangerButton className='px-3 py-2'>Launch user into space</DangerButton>
+                <DangerButton className='px-3 py-2' onClick={() => toast.error('Not implemented yet :(')}>Launch user into space</DangerButton>
             </div>
             <Modal title='Deny reason' show={showDenyReason} onClose={() => setShowDenyReason(false)}>
                 <Modal.Body>

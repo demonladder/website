@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import useLevelSearch from '../../../../hooks/useLevelSearch';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';
-import SaveProfile from '../../../../api/user/EdittableUser';
+import SaveProfile from '../../../../api/user/SaveProfile';
 
 export default function GeneralInformation({ userID }: { userID: number }) {
     const hasSession = StorageManager.hasSession();

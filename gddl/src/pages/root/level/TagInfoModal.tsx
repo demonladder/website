@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from '../../../components/Modal';
 import { SecondaryButton } from '../../../components/Button';
 import { useQuery } from '@tanstack/react-query';
-import GetTags from '../../../api/level/GetTags';
+import GetTags from '../../../api/tags/GetTags';
 
 export default function TagInfoModal() {
     const [visible, setVisible] = useState(false);
@@ -29,7 +29,7 @@ export default function TagInfoModal() {
                         <h4 className='text-xl font-bold'>Available skillsets:</h4>
                         <ul>{
                             data?.map((t) => (
-                                <li className='mb-3' key={t.TagID}>
+                                <li className='mb-3' key={t.ID}>
                                     <h5 className='text-lg'>{t.Name}</h5>
                                     <p className='text-base'>{t.Description}</p>
                                 </li>

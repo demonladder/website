@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import Modal from '../components/Modal';
-import Select from '../components/Select';
-import SendSubmission, { SubmittableSubmission } from '../api/submissions/SendSubmission';
-import { NumberInput, TextInput } from './Input';
-import { PrimaryButton, SecondaryButton } from './Button';
+import Modal from '../Modal';
+import Select from '../Select';
+import SendSubmission, { SubmittableSubmission } from '../../api/submissions/SendSubmission';
+import { NumberInput, TextInput } from '../Input';
+import { PrimaryButton, SecondaryButton } from '../Button';
 import { toast } from 'react-toastify';
-import { FullLevel } from '../api/types/compounds/FullLevel';
-import renderToastError from '../utils/renderToastError';
-import StorageManager from '../utils/StorageManager';
-import { validateIntChange, validateIntInputChange } from '../utils/validators/validateIntChange';
+import { FullLevel } from '../../api/types/compounds/FullLevel';
+import renderToastError from '../../utils/renderToastError';
+import StorageManager from '../../utils/StorageManager';
+import { validateIntChange, validateIntInputChange } from '../../utils/validators/validateIntChange';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import WarningBox from './message/WarningBox';
-import { validateLink } from '../utils/validators/validateLink';
-import CheckBox from './input/CheckBox';
-import useUserSearch from '../hooks/useUserSearch';
-import GetSingleSubmission from '../api/submissions/GetSingleSubmission';
+import WarningBox from '../message/WarningBox';
+import { validateLink } from '../../utils/validators/validateLink';
+import CheckBox from '../input/CheckBox';
+import useUserSearch from '../../hooks/useUserSearch';
+import GetSingleSubmission from '../../api/submissions/GetSingleSubmission';
 
-type Props = {
-    show: boolean,
-    onClose: () => void,
-    level: FullLevel,
+interface Props {
+    level: FullLevel;
+    onClose: () => void;
 }
 
 const enjoymentOptions = {
@@ -55,7 +54,7 @@ const acceptedHosts: string[] = [
     'drive.google.com',
 ];
 
-export default function SubmitModal({ show, onClose, level }: Props) {
+export default function SubmitModal({ onClose, level }: Props) {
     const [tier, setTier] = useState<string>('');
     const [enjoymentKey, setEnjoymentKey] = useState('-1');
     const [deviceKey, setDeviceKey] = useState(StorageManager.getSettings().submission.defaultDevice);
@@ -182,7 +181,7 @@ export default function SubmitModal({ show, onClose, level }: Props) {
     const tierEnjoymentInvalid = tier === '' && enjoymentKey === '-1';
 
     return (
-        <Modal title='Submit rating' show={show} onClose={onClose}>
+        <Modal title='Submit rating' show={true} onClose={onClose}>
             <Modal.Body>
                 <p className='my-3'>Make sure to read our guidelines <a href='/about#guidelines' className='text-blue-500' target='_blank'>here</a></p>
                 <div className='flex flex-col gap-3'>

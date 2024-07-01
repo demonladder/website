@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import DenySubmission from '../../../api/submissions/DenySubmission';
-import ApproveSubmission from '../../../api/submissions/ApproveSubmission';
 import GetSubmissionQueue from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submission';
@@ -45,13 +44,6 @@ export default function Queue() {
         queryClient.invalidateQueries(['staffLeaderboard']);
     }
 
-    function approve(info: TSubmission, onlyEnjoyment = false) {
-        toast.promise(ApproveSubmission(info.LevelID, info.UserID, onlyEnjoyment).then(invalidateQueries), {
-            pending: 'Approving...',
-            success: 'Approved!',
-            error: renderToastError,
-        });
-    }
     function deny(info: TSubmission, reason?: string) {
         toast.promise(DenySubmission(info.LevelID, info.UserID, reason).then(invalidateQueries), {
             pending: 'Denying...',
@@ -68,7 +60,7 @@ export default function Queue() {
         } else {
             return (
                 <div>
-                    {queue.submissions.map((s) => <Submission submission={s} approve={approve} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
+                    {queue.submissions.map((s) => <Submission submission={s} remove={deny} key={s.LevelID + '_' + s.UserID} />)}
                     {queue.total === 0 && <h5>Queue empty :D</h5>}
                     {queue.total > parseInt(limit) && <p className='font-bold text-lg text-center my-3'>+ {queue.total - parseInt(limit)} more</p>}
                 </div>

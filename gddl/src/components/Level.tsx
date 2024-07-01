@@ -5,6 +5,7 @@ import StorageManager from '../utils/StorageManager';
 interface Props {
     ID: number;
     rating: number | null;
+    defaultRating?: number | null;
     actualRating?: number | null;
     enjoyment: number | null;
     actualEnjoyment?: number | null;
@@ -28,8 +29,8 @@ function Header() {
     );
 }
 
-function Level({ ID, rating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu }: Props) {
-    const roundedTier = rating !== null ? Math.round(rating) : 0;
+function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu }: Props) {
+    const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
     const tierClass = 'tier-' + roundedTier;
@@ -47,7 +48,7 @@ function Level({ ID, rating, actualRating, enjoyment, actualEnjoyment, name, cre
             <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{creator}</p></div>
             <div className='col-span-3 hidden xl:block self-center'><p className='cursor-default'>{songName}</p></div>
             <div className='col-span-2 hidden lg:flex justify-center self-center'><IDButton id={ID} /></div>
-            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{rating !== null ? roundedTier : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualRating ?? rating)?.toFixed(2) ?? 'N/A'}</p></div>
+            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{rating !== null ? roundedTier : (defaultRating ?? 'N/A')}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualRating ?? rating)?.toFixed(2) ?? 'N/A'}</p></div>
             <div className={`group col-span-2 lg:col-span-1 flex justify-center ${enjoymentClass}`}><p className='group-hover:hidden self-center cursor-default'>{enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualEnjoyment ?? enjoyment)?.toFixed(2) ?? 'N/A'}</p></div>
         </div>
     );

@@ -9,6 +9,6 @@ export interface GetPacksResponse {
 }
 
 export default async function GetPacks(): Promise<GetPacksResponse> {
-    const res = await APIClient.get('/v2/packs');
+    const res = await APIClient.get('/packs');
     return res.data;
 }

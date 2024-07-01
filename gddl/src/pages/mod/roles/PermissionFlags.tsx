@@ -1,0 +1,13 @@
+export enum PermissionFlags {
+    EDIT_LIST = 1 << 0,
+    PASSWORD_LINKS = 1 << 1,
+    STAFF_DASHBOARD = 1 << 2,
+    BOT_CONTROL = 1 << 3,
+    EXPERIMENTAL = 1 << 4,
+    DELETE_USER = 1 << 5,
+    AUTO_ACCEPT_SETTINGS = 1 << 6,
+    SITE_SETTINGS = 1 << 7,
+    MANAGE_TAGS = 1 << 8,
+    MANAGE_ROLES = 1 << 9,
+    BAN_USERS = 1 << 10,
+}

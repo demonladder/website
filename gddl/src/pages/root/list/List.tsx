@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import GetList from '../../../api/list/GetList';
 import MoveListLevel from '../../../api/list/MoveListLevel';
+import renderToastError from '../../../utils/renderToastError';
 
 interface Meta {
     ID: number;
@@ -69,14 +70,10 @@ export default function List() {
             {
                 success: 'Moved level',
                 pending: 'Moving...',
-                error: {
-                    render: ({ data }) => {
-                        return (data as any)?.error ?? 'An error occurred';
-                    },
-                },
+                error: renderToastError,
             },
         );
-    }, [list, listID]);
+    }, [list, listID, queryClient, setIsDragLocked]);
 
     if (!validListID) {
         return (
@@ -91,7 +88,7 @@ export default function List() {
             {list === undefined
                 ? <h1 className='text-4xl'><LoadingSpinner /></h1>
                 : <>
-                    <h1 className='text-4xl'>{list.Name} <span className='text-base'>by <Link to={`/profile/${list.OwnerID}`} className='text-blue-400'>{list.Owner.Name}</Link></span></h1>
+                    <h1 className='text-4xl'>{list.Name} <span className='text-base'>by <Link to={`/profile/${list.OwnerID}`} className='text-blue-400 underline'>{list.Owner.Name}</Link></span></h1>
                     <h2 className='text-xl'>{list.Description}</h2>
                     <ol className='mt-4'>
                         {list.Levels.map((level) => <ListLevel list={list} listLevel={level} setPosition={setPosition} dragLocked={isDragLocked} key={level.LevelID} />)}

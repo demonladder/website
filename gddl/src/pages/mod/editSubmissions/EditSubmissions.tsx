@@ -35,7 +35,7 @@ export default function EditSubmission() {
     const queryClient = useQueryClient();
 
     const { status, data } = useQuery({
-        queryKey: ['submissions', { levelID: activeLevel?.ID, page }],
+        queryKey: ['level', activeLevel?.ID, 'submissions', { page }],
         queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page }),
     });
 

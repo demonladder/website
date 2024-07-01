@@ -5,15 +5,18 @@ import GetUserPendingSubmissions, { UserPendingSubmission } from '../../../api/u
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
-import StorageManager from '../../../utils/StorageManager';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import Modal from '../../../components/Modal';
 import { DangerButton, SecondaryButton } from '../../../components/Button';
-import { useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
+import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import NewLabel from '../../../components/NewLabel';
+import useUser from '../../../hooks/useUser';
+import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import { useApproveClicked } from '../../mod/queue/useApproveClicked';
+import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 
 type Props = {
     userID: number,
@@ -80,28 +83,34 @@ export default function PendingSubmissions({ userID }: Props) {
 function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userID: number }) {
     const [clickedSubmission, setClickedSubmission] = useState<UserPendingSubmission>();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const openAddListLevelModal = useAddListLevelModal();
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const user = useUser();
 
     const { createMenu } = useContextMenu();
 
-    function openContext(e: React.MouseEvent, submission: UserPendingSubmission) {
-        if (userID !== StorageManager.getUser()?.ID) return;
+    const approveSubmission = useApproveClicked();
 
+    function openContext(e: React.MouseEvent, submission: UserPendingSubmission) {
         e.preventDefault();
 
         setClickedSubmission(submission);
+
+        const buttons: ButtonData[] = [
+            { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
+            { text: 'Add to list', onClick: () => openAddListLevelModal(submission.UserID, submission.LevelID) },
+            { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
+        ];
+        if (user.hasPermission(PermissionFlags.EDIT_LIST)) buttons.push({ text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.LevelID, submission.UserID) });
+        if (user.ID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) });
+
         createMenu({
             x: e.clientX,
             y: e.clientY,
-            buttons: [
-                { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
-                { text: 'Add to list', onClick: () => navigate(`/level/${submission.LevelID}`) },
-                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
-                { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) },
-            ],
-        })
+            buttons,
+        });
     }
 
     function deleteSubmission(levelID?: number) {
