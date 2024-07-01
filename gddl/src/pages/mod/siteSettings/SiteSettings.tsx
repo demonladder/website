@@ -15,6 +15,7 @@ export default function SiteSettings() {
     const submissionLock = useRef<HTMLInputElement>(null);
     const accountCreationLock = useRef<HTMLInputElement>(null);
     const userSettingLock = useRef<HTMLInputElement>(null);
+    const accessTokenEnabled = useRef<HTMLInputElement>(null);
     const [isMutating, setIsMutating] = useState(false);
 
     const queryClient = useQueryClient();
@@ -31,11 +32,12 @@ export default function SiteSettings() {
         if (submissionLock.current !== null) submissionLock.current.checked = data.isSubmissionLocked;
         if (accountCreationLock.current !== null) accountCreationLock.current.checked = data.isAccountCreationLocked;
         if (userSettingLock.current !== null) userSettingLock.current.checked = data.isUserSettingsLocked;
+        if (accessTokenEnabled.current !== null) accessTokenEnabled.current.checked = data.isAccessTokenEnabled;
     }, [data]);
 
     function handleSubmit(e: React.MouseEvent) {
         e.preventDefault();
-        if (queueEditLock.current === null || submissionLock.current === null || accountCreationLock.current === null || userSettingLock.current === null) return toast.error('An error occurred!');
+        if (queueEditLock.current === null || submissionLock.current === null || accountCreationLock.current === null || userSettingLock.current === null || accessTokenEnabled.current === null) return toast.error('An error occurred!');
 
         setIsMutating(true);
         toast.promise(SaveSiteSettings({
@@ -43,6 +45,7 @@ export default function SiteSettings() {
             isSubmissionLocked: submissionLock.current.checked,
             isAccountCreationLocked: accountCreationLock.current.checked,
             isUserSettingsLocked: userSettingLock.current.checked,
+            isAccessTokenEnabled: accessTokenEnabled.current.checked,
         }).then(() => queryClient.invalidateQueries(['siteSettings'])).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Settings saved!',
@@ -85,6 +88,13 @@ export default function SiteSettings() {
                         <label htmlFor='userSettingLock' className='select-none'>Lock user settings</label>
                     </div>
                     <p className='text-sm text-gray-400'>Users won't be able to edit their introduction, tier preferences etc.</p>
+                </FormGroup>
+                <FormGroup>
+                    <div className='flex items-center gap-2'>
+                        <CheckBox id='accessTokenEnabled' ref={accessTokenEnabled} />
+                        <label htmlFor='accessTokenEnabled' className='select-none'>Enable access token requirement</label>
+                    </div>
+                    <p className='text-sm text-gray-400'>If this setting is enabled, only requests from known access token users can use the API.</p>
                 </FormGroup>
                 <PrimaryButton type='submit' onClick={handleSubmit} disabled={isMutating || isFetching}>Save</PrimaryButton>
             </form>

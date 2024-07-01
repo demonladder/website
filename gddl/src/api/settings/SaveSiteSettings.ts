@@ -7,5 +7,6 @@ export default async function SaveSiteSettings(settings: SiteSettings) {
         submissionLock: settings.isSubmissionLocked,
         accountCreationLock: settings.isAccountCreationLocked,
         userSettingLock: settings.isUserSettingsLocked,
+        isAccessTokenEnabled: settings.isAccessTokenEnabled,
     });
 }

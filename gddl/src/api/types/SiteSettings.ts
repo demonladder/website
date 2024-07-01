@@ -3,4 +3,5 @@ export interface SiteSettings {
     isSubmissionLocked: boolean;
     isAccountCreationLocked: boolean;
     isUserSettingsLocked: boolean;
+    isAccessTokenEnabled: boolean;
 }
