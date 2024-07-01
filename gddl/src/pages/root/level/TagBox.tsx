@@ -68,7 +68,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
             </div>
             {(!isContentLoading && voteMeta?.eligible === true && tags !== undefined) &&
                 <div className='md:self-center w-full'>
-                    <Select options={[{ key: '0', value: 'Vote tags' }, ...tags.map((t, i) => ({ key: (i + 1).toString(), value: t.Name })), { key: '-1', value: '-Remove all-' }]} activeKey='0' id='voteTag' onChange={onVoteChange} />
+                    <Select options={[{ key: '0', value: 'Vote tags' }, ...tags.map((t) => ({ key: t.ID.toString(), value: t.Name })), { key: '-1', value: '-Remove all-' }]} activeKey='0' id='voteTag' onChange={onVoteChange} />
                 </div>
             }
         </div>
