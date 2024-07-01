@@ -57,7 +57,7 @@ export default function PackOverview() {
                     <div className='level-list my-3 mb-8'>
                         <Level.Header />
                         {pack.Levels.filter((lvl) => !lvl.EX).map((l) => (
-                            <Level ID={l.LevelID} rating={l.Rating} enjoyment={l.Enjoyment} name={l.Name} creator={l.Creator} songName={l.Song} key={l.LevelID} />
+                            <Level ID={l.LevelID} rating={l.Rating} enjoyment={l.Enjoyment} name={l.Name} creator={l.Creator} songName={l.Song} completed={l.Completed === 1} key={l.LevelID} />
                         ))}
                     </div>
                 )
