@@ -6,24 +6,24 @@ import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import GetStaff, { StaffMember } from '../../../api/user/StaffMember';
 
 const titles: { [key: string]: string } = {
-    1: 'List helpers',
-    2: 'Developers',
-    3: 'Moderators',
-    4: 'Admins',
-    5: 'Co-owners',
+    2: 'List helpers',
+    3: 'Developers',
+    4: 'Moderators',
+    5: 'Admins',
+    7: 'Co-owners',
     6: 'Owner',
 };
 
 const descriptions: { [key: string]: string } = {
-    1: 'The GDDL Helpers. They can approve/reject submissions & GDDL pack submissions.',
-    2: 'The GDDL Developers.',
-    3: 'The GDDL Moderators. They help keep the chatting environment as neat and tolerable as possible.',
-    4: 'The GDDL Admins. They oversee the entirety of the server and bypass restrictions.',
+    2: 'The GDDL Helpers. They can approve/reject submissions & GDDL pack submissions.',
+    3: 'The GDDL Developers.',
+    4: 'The GDDL Moderators. They help keep the chatting environment as neat and tolerable as possible.',
+    5: 'The GDDL Admins. They oversee the entirety of the server and bypass restrictions.',
     6: 'The current owner of GDDL!'
 }
 
 function List({ data, permissionLevel }: { data?: StaffMember[], permissionLevel: number }) {
-    const filtered = data?.filter((s) => s.PermissionLevel === permissionLevel) || [];
+    const filtered = data?.filter((s) => s.Roles.includes(permissionLevel)) ?? [];
 
     if (filtered.length === 0 && data !== undefined) return;
 
