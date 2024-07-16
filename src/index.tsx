@@ -4,7 +4,7 @@ import './styles.scss';
 import ms from 'ms';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
 import Root from './pages/root/Root';
 import Index from './pages/root/RootIndex';
 import Search from './pages/root/search/Search';
@@ -153,6 +153,10 @@ const router = createBrowserRouter(
                             element: <SubmissionSettings />,
                         },
                     ],
+                },
+                {
+                    path: 'list',
+                    loader: () => redirect('/search'),
                 },
                 {
                     path: 'list/:listID',
