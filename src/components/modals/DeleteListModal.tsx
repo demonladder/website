@@ -18,15 +18,16 @@ export default function DeleteListModal({ list, onClose: close }: Props) {
     const deleteList = useCallback((listID?: number) => {
         if (listID === undefined) return;
 
-        toast.promise(DeleteList(listID).then(() => {
-            queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
+        void toast.promise(DeleteList(listID).then(() => {
+            void queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
+            if (window.location.pathname.includes(`/list/${listID}`)) window.location.replace(`/profile/${list.OwnerID}`);
             close();
         }), {
             pending: 'Deleting...',
             success: 'Deleted list!',
             error: renderToastError,
         });
-    }, []);
+    }, [close, list.OwnerID, queryClient]);
 
     return (
         <Modal title='Delete List' show={true} onClose={close}>

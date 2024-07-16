@@ -8,6 +8,9 @@ import { toast } from 'react-toastify';
 import GetList from '../../../api/list/GetList';
 import MoveListLevel from '../../../api/list/MoveListLevel';
 import renderToastError from '../../../utils/renderToastError';
+import { DangerButton } from '../../../components/Button';
+import StorageManager from '../../../utils/StorageManager';
+import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
 
 interface Meta {
     ID: number;
@@ -49,6 +52,8 @@ export default function List() {
     const validListID = !(listID === undefined || !parseInt(listID));
     const [isDragLocked, setIsDragLocked] = useState(false);
 
+    const openDeleteModal = useDeleteListModal();
+
     const queryClient = useQueryClient();
 
     const { data: list } = useQuery({
@@ -65,7 +70,7 @@ export default function List() {
     
         setIsDragLocked(true);
     
-        toast.promise(
+        void toast.promise(
             MoveListLevel(list.ID, oldID, newPosition).then(() => queryClient.invalidateQueries(['list', listID])).finally(() => setIsDragLocked(false)),
             {
                 success: 'Moved level',
@@ -96,6 +101,9 @@ export default function List() {
                     {list.Levels.length === 0 && (
                         <p><i>This list doesn't have any levels yet</i></p>
                     )}
+                    {list.OwnerID === StorageManager.getUser()?.ID &&
+                        <DangerButton onClick={() => openDeleteModal(list)} className='mt-4'>Delete list</DangerButton>
+                    }
                 </>
             }
         </Container>
