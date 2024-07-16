@@ -17,8 +17,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
 
     const { data, status, invalidate: invalidateUser } = useUserQuery(userID, { enabled: hasSession });
 
-    const nameRef = useRef<HTMLInputElement>(null);
-    const [invalidName, setInvalidName] = useState(false);
+    const [name, setName] = useState('');
     const introductionRef = useRef<HTMLTextAreaElement>(null);
 
     const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.HardestID } });
@@ -35,10 +34,10 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     useEffect(() => {
         if (data === undefined) return;
 
-        if (nameRef.current) nameRef.current.value = data.Name;
+        setName(data.Name);
         if (introductionRef.current && data.Introduction) introductionRef.current.value = '' + data.Introduction;
-        if (minPrefRef.current && data.MinPref) minPrefRef.current.value = '' + data.MinPref;
-        if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = '' + data.MaxPref;
+        if (minPrefRef.current && data.MinPref) minPrefRef.current.value = data.MinPref.toString();
+        if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = data.MaxPref.toString();
     }, [data]);
 
     function onSave(e: React.MouseEvent) {
@@ -50,10 +49,9 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         if (!introductionRef.current) return;
         if (!minPrefRef.current) return;
         if (!maxPrefRef.current) return;
-        if (!nameRef.current) return;
 
         const newUser = {
-            name: nameRef.current.value,
+            name: name,
             introduction: introductionRef.current.value || null,
             hardest: hardestSearch.activeLevel?.ID,
             favoriteLevels: [
@@ -69,7 +67,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         };
 
         setIsMutating(true);
-        toast.promise(SaveProfile(userID, newUser).then(invalidateUser).finally(() => setIsMutating(false)), {
+        void toast.promise(SaveProfile(userID, newUser).then(invalidateUser).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Saved!',
             error: renderToastError,
@@ -90,7 +88,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         <form>
             <FormGroup>
                 <label className='font-bold block mb-1'>Your name</label>
-                <TextInput ref={nameRef} onChange={() => setInvalidName(false)} invalid={invalidName} />
+                <TextInput value={name} onChange={(e) => setName(e.target.value)} invalid={!name.match(/^[a-zA-Z0-9._]{0,32}$/)} />
             </FormGroup>
             <FormGroup>
                 <label className='font-bold block mb-1'>Introduction</label>
