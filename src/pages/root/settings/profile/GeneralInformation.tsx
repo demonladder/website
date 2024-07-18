@@ -9,6 +9,8 @@ import renderToastError from '../../../../utils/renderToastError';
 import useLevelSearch from '../../../../hooks/useLevelSearch';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';
 import SaveProfile from '../../../../api/user/SaveProfile';
+import FormInputDescription from '../../../../components/form/FormInputDescription';
+import FormInputLabel from '../../../../components/form/FormInputLabel';
 
 export default function GeneralInformation({ userID }: { userID: number }) {
     const hasSession = StorageManager.hasSession();
@@ -87,22 +89,22 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     return (
         <form>
             <FormGroup>
-                <label className='font-bold block mb-1'>Your name</label>
+                <FormInputLabel>Your name</FormInputLabel>
                 <TextInput value={name} onChange={(e) => setName(e.target.value)} invalid={!name.match(/^[a-zA-Z0-9._]{0,32}$/)} />
             </FormGroup>
             <FormGroup>
-                <label className='font-bold block mb-1'>Introduction</label>
+                <FormInputLabel>Introduction</FormInputLabel>
                 <TextArea spellCheck={false} ref={introductionRef} />
-                <p className='text-gray-400 mt-1 text-sm'>Your introduction is visible to everyone visiting your profile.</p>
+                <FormInputDescription>Your introduction is visible to everyone visiting your profile.</FormInputDescription>
             </FormGroup>
             <FormGroup>
-                <label className='font-bold block mb-1'>Hardest level</label>
+                <FormInputLabel>Hardest level</FormInputLabel>
                 <div className='mb-2'>
                     {hardestSearch.SearchBox}
                 </div>
             </FormGroup>
             <FormGroup>
-                <label className='font-bold block mb-1'>Favorite levels</label>
+                <FormInputLabel>Favorite levels</FormInputLabel>
                 <div className='mb-2'>
                     {favoriteLevelSearch1.SearchBox}
                 </div>
@@ -111,7 +113,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                 </div>
             </FormGroup>
             <FormGroup>
-                <label className='font-bold'>Least favorite level</label>
+                <FormInputLabel>Least favorite level</FormInputLabel>
                 <div className='mb-2'>
                     {leastFavoriteLevelSearch1.SearchBox}
                 </div>
@@ -120,7 +122,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                 </div>
             </FormGroup>
             <FormGroup>
-                <label className='font-bold'>Tier preference</label>
+                <FormInputLabel>Tier preference</FormInputLabel>
                 <div className='flex gap-2'>
                     <NumberInput ref={minPrefRef} />
                     <p>to</p>

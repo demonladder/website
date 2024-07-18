@@ -12,6 +12,6 @@ export type SubmittableSubmission = {
 }
 
 export default async function SendSubmission(submission: SubmittableSubmission) {
-    const res = await APIClient.post('/submit', { ...submission });
+    const res = await APIClient.post<{ wasAuto: boolean }>('/submit', { ...submission });
     return res.data;
 }

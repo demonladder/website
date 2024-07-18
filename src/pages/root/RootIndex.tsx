@@ -12,9 +12,9 @@ import NewLabel from '../../components/NewLabel';
 export default function Index() {
     const navigate = useNavigate();
 
-    const { data: markdown } = useQuery<string>({
+    const { data: markdown } = useQuery({
         queryKey: ['changelogs'],
-        queryFn: () => APIClient.get('/changelogs').then((res) => res.data),
+        queryFn: () => APIClient.get<string>('/changelogs').then((res) => res.data),
     });
 
     return (

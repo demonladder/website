@@ -69,6 +69,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         enabled: StorageManager.getUser() !== null,
     });
 
+    const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });
+
     useEffect(() => {
         if (userSubmission === undefined) return;
 
@@ -79,9 +81,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         if (userSubmission.Proof !== null) setProof(userSubmission.Proof.toString());
         if (userSubmission.IsSolo !== null) setWasSolo(userSubmission.IsSolo);
         if (userSubmission.SecondaryUser) secondPlayerSearch.setQuery(userSubmission.SecondaryUser.Name);
-    }, [userSubmission]);
-
-    const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });
+    }, [userSubmission, secondPlayerSearch]);
 
     const queryClient = useQueryClient();
 
@@ -124,11 +124,10 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             secondPlayerID: secondPlayerSearch.activeUser?.ID,
         };
 
-        toast.promise(SendSubmission(data).then((data) => {
+        void toast.promise(SendSubmission(data).then((data) => {
             if (data?.wasAuto) {
-                queryClient.invalidateQueries(['level', level.ID]);
-                if (userID !== undefined) queryClient.invalidateQueries(['user', userID]);
-                queryClient.invalidateQueries(['notifications']);
+                void queryClient.invalidateQueries(['level', level.ID]);
+                if (userID !== undefined) void queryClient.invalidateQueries(['user', userID]);
             }
 
             onClose();
@@ -136,7 +135,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         }), {
             pending: 'Submitting',
             success: {
-                render: ({ data }) => data.wasAuto ? 'Rating accepted' : 'Rating submitted',
+                render: ({ data }) => data?.wasAuto ? 'Rating accepted' : 'Rating submitted',
             },
             error: renderToastError,
         });
