@@ -3,6 +3,7 @@ import { NumberInput } from '../../../../components/Input';
 import StorageManager from '../../../../utils/StorageManager';
 import Select from '../../../../components/Select';
 import Notifications from './Notifications';
+import DiscordRoles from './DiscordRoles';
 
 const deviceOptions = {
     1: 'PC',
@@ -52,6 +53,7 @@ export default function SubmissionSettings() {
                 <p className='text-gray-400 text-sm'>The default device for all your submissions</p>
             </div>
             <Notifications />
+            <DiscordRoles />
         </main>
     );
 }

@@ -26,7 +26,7 @@ export default function Notifications() {
 
     const [acceptNotifs, setAcceptNotifs] = useState<boolean>(((data?.bitField || 0) & NotificationsBitField.Accept) !== 0);
     const [DMNotifs, setDMNotifs] = useState<boolean>(((data?.bitField || 0) & NotificationsBitField.DMs) !== 0);
-    const [DMTierLimit, setDMTierLimit] = useState('' + (data?.DMTierLimit || 1));
+    const [DMTierLimit, setDMTierLimit] = useState(`${data?.DMTierLimit ?? 1}`);
     const [wantBitField, setWantBitField] = useState<BitField>();
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function Notifications() {
         setWantBitField(new BitField(data.bitField));
         setAcceptNotifs((data.bitField & NotificationsBitField.Accept) !== 0);
         setDMNotifs((data.bitField & NotificationsBitField.DMs) !== 0);
-        if (data.DMTierLimit !== undefined) setDMTierLimit('' + data.DMTierLimit);
+        if (data.DMTierLimit !== undefined) setDMTierLimit(`${data.DMTierLimit}`);
     }, [data]);
 
     function submit() {
@@ -55,7 +55,7 @@ export default function Notifications() {
             ? wantBitField.add(NotificationsBitField.DMs)
             : wantBitField.remove(NotificationsBitField.DMs);
 
-        toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries(['user', user?.ID, 'wants'])), {
+        void toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries(['user', user?.ID, 'wants'])), {
             pending: 'Saving...',
             success: 'Saved',
             error: renderToastError,
@@ -64,7 +64,7 @@ export default function Notifications() {
 
     return (
         <>
-            <div className='divider my-4 text-gray-400'></div>
+            <div className='divider my-8 text-gray-400'></div>
             <b>Notifications</b>
             <div>
                 <label className='flex items-center gap-2 mb-2'>

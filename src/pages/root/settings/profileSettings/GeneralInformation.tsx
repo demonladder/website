@@ -113,7 +113,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                 </div>
             </FormGroup>
             <FormGroup>
-                <FormInputLabel>Least favorite level</FormInputLabel>
+                <FormInputLabel>Least favorite levels</FormInputLabel>
                 <div className='mb-2'>
                     {leastFavoriteLevelSearch1.SearchBox}
                 </div>
