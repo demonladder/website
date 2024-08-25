@@ -25,14 +25,7 @@ export default function About() {
             <section className='mt-8'>
                 <h2 id='mechanism' className='text-3xl text-primary mb-3'>The mechanism</h2>
                 <p className='mb-1'>With the official system in mind, each demon difficulty is split into 5 tiers, with the exception of Extreme Demons being split into 15 tiers. Tiers are then named from Tier 1 to Tier 35, with Tier 35 being the hardest.</p>
-                <p>Tiers are determined by user ratings. This means the list is community-driven, one thing that is loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level. The system has been running well since launch, and we have collected over <span className='text-primary font-bold'>200,000 ratings</span> for over <span className='text-primary font-bold'>7,400 demons</span> covering over 97% of the demons in the game.</p>
-            </section>
-            <section className='mt-8'>
-                <h2 id='howToRate' className='text-3xl text-primary mb-3'>How to rate</h2>
-                <p className='mb-1'>To rate a level, it is required that you are logged in. If you do not have an account, head over to <Link to='/signup' className='text-blue-500'>sign-up</Link> to create an account.</p>
-                <p>If you are logged in and you are viewing the information on a level, there should be a bright blue button under the level's rating that says "Submit <i className='bx bx-list-plus text-xl' />"</p>
-                <p>Click that button, and a pop-up will appear where you can enter your submission.</p>
-                <img className='w-11/12 mx-auto my-2' src='/assets/images/howToRate.png' alt="" />
+                <p>Tiers are determined by user ratings. This means the list is community-driven, one thing that is loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level. The system has been running well since launch, and we have collected over <span className='text-primary font-bold'>240,000 ratings</span> for over <span className='text-primary font-bold'>7,500 demons</span> covering over 95% of the demons in the game.</p>
             </section>
             <section className='mt-8'>
                 <h2 id='guidelines' className='text-3xl text-primary mb-3'>Rating guidelines</h2>
@@ -61,7 +54,7 @@ export default function About() {
                         <p className='mb-1'>4) You do not need to follow others' opinion and rate as what others suggest.</p>
                         <ul>
                             <ListItem>The system is designed to tolerate discrepancies, so differences are accepted.</ListItem>
-                            <ListItem>Plus, it is important to know that players have a split decision. This allows us to see how subjective of a difficult for a level can be.</ListItem>
+                            <ListItem>Plus, it is important to know that players have a split decision. This allows us to see how subjective the difficulty for a level can be.</ListItem>
                             <ListItem>Also, do not rate a level so that the level tier matches what you think. Respect others' opinions.</ListItem>
                         </ul>
                     </li>
@@ -73,6 +66,13 @@ export default function About() {
                         </ul>
                     </li>
                 </ol>
+            </section>
+            <section className='mt-8'>
+                <h2 id='howToRate' className='text-3xl text-primary mb-3'>How to rate</h2>
+                <p className='mb-1'>To rate a level, it is required that you are logged in. If you do not have an account, head over to <Link to='/signup' className='text-blue-500'>sign-up</Link> to create an account.</p>
+                <p>If you are logged in and you are viewing the information on a level, there should be a bright blue button under the level's rating that says "Submit <i className='bx bx-list-plus text-xl' />"</p>
+                <p>Click that button, and a pop-up will appear where you can enter your submission.</p>
+                <img className='w-11/12 mx-auto my-2' src='/assets/images/howToRate.png' alt="" />
             </section>
             <section className='mt-8'>
                 <h2 className='text-3xl text-primary mb-3' id='proof'>Proof</h2>
