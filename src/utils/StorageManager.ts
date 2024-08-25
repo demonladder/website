@@ -93,7 +93,7 @@ export default {
             localStorage.setItem('settings', JSON.stringify(defaulSettings));
 
             return defaulSettings;
-        };
+        }
 
         // Merge default with stored in case new settings get added
         return merge(
@@ -116,5 +116,14 @@ export default {
     },
     setHighlightCompleted(state: boolean) {
         localStorage.setItem('highlightCompleted', JSON.stringify(state));
-    }
+    },
+
+    getUseBackground() {
+        const storage = localStorage.getItem('background');
+        if (storage === null) return false;
+        return JSON.parse(storage) === true;
+    },
+    setUseBackground(state: boolean) {
+        localStorage.setItem('background', JSON.stringify(state));
+    },
 }

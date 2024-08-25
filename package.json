@@ -1,7 +1,7 @@
 {
   "name": "gddl",
   "private": true,
-  "version": "1.10.5",
+  "version": "1.11.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-hook/resize-observer": "^2.0.2",
     "@tanstack/react-query": "^4.29.19",
     "@tanstack/react-query-devtools": "^4.29.19",
     "@types/js-cookie": "^3.0.3",
@@ -20,6 +21,7 @@
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "ms": "^2.1.3",
+    "perlin-simplex": "^0.0.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-chartjs-2": "^5.2.0",

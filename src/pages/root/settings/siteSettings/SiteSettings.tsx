@@ -7,11 +7,13 @@ import FormGroup from '../../../../components/form/FormGroup';
 export default function ClientSiteSettings() {
     const roundedRef = useRef<HTMLInputElement>(null);
     const highlightRef = useRef<HTMLInputElement>(null);
+    const backgroundRef = useRef<HTMLInputElement>(null);
     const experimentalRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (roundedRef.current) roundedRef.current.checked = StorageManager.getIsRounded();
         if (highlightRef.current) highlightRef.current.checked = StorageManager.getHighlightCompleted();
+        if (backgroundRef.current) backgroundRef.current.checked = StorageManager.getUseBackground();
         if (experimentalRef.current) experimentalRef.current.checked = StorageManager.getUseExperimental();
     }, []);
     
@@ -20,6 +22,7 @@ export default function ClientSiteSettings() {
 
         if (roundedRef.current) StorageManager.setRounded(roundedRef.current.checked);
         if (highlightRef.current) StorageManager.setHighlightCompleted(highlightRef.current.checked);
+        if (backgroundRef.current) StorageManager.setUseBackground(backgroundRef.current.checked);
         if (experimentalRef.current) StorageManager.setUseExperimental(experimentalRef.current.checked);
         location.reload();
     }
@@ -45,6 +48,13 @@ export default function ClientSiteSettings() {
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
+                        <CheckBox ref={backgroundRef} />
+                        Background feature
+                    </label>
+                    <p className='text-gray-400 text-sm'>Will lag your device and it doesn't even look that good!</p>
+                </FormGroup>
+                <FormGroup>
+                <label className='flex items-center gap-2'>
                         <CheckBox ref={experimentalRef} />
                         Experimental features
                     </label>
