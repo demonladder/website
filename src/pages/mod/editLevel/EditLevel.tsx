@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PrimaryButton } from '../../../components/Button';
+import { DangerButton, PrimaryButton } from '../../../components/Button';
 import { NumberInput, TextInput } from '../../../components/Input';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import { validateIntInputChange } from '../../../utils/validators/validateIntChange';
@@ -8,6 +8,10 @@ import renderToastError from '../../../utils/renderToastError';
 import UpdateLevel from '../../../api/level/UpdateLevel';
 import useHash from '../../../hooks/useHash';
 import { useMutation } from '@tanstack/react-query';
+import FormGroup from '../../../components/form/FormGroup';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import RecalculateStats from '../../../api/level/RecalculateStats';
+import FormInputLabel from '../../../components/form/FormInputLabel';
 
 export default function EditLevel() {
     const [hash, setHash] = useHash();
@@ -19,7 +23,7 @@ export default function EditLevel() {
         setDefaultRating(activeLevel?.DefaultRating?.toString() ?? '');
         setShowcase(activeLevel?.Showcase ?? '');
         if (activeLevel) setHash(activeLevel.ID.toString());
-    }, [activeLevel?.ID]);
+    }, [activeLevel?.ID, activeLevel, setHash]);
 
     function onShowcase(e: React.ChangeEvent<HTMLInputElement>) {
         setShowcase(e.target.value);
@@ -38,25 +42,47 @@ export default function EditLevel() {
         mutation.mutate([activeLevel.ID, { defaultRating, showcase }]);
     }
 
+    const recalculateMutation = useMutation({
+        mutationFn: () => toast.promise(RecalculateStats(activeLevel?.ID ?? 0), {
+            pending: 'Recalculating...',
+            success: 'Recalculated!',
+            error: renderToastError,
+        }),
+    });
+
     return (
         <div>
             <h3 className='text-2xl mb-3'>Edit Level</h3>
             <div>
-                <p>Level:</p>
+                <FormInputLabel>Level:</FormInputLabel>
                 {SearchBox}
             </div>
             <div className='mt-4'>
                 <div>
-                    <p>Default rating</p>
-                    <NumberInput value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} />
+                    <FormInputLabel>Default rating</FormInputLabel>
+                    <NumberInput value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > 35 || parseInt(defaultRating) < 1} />
                 </div>
                 <div className='mt-1'>
-                    <p>Showcase link</p>
+                    <FormInputLabel>Showcase link</FormInputLabel>
                     <TextInput value={showcase} onChange={onShowcase} />
                 </div>
                 <div>
                     <PrimaryButton onClick={onSubmit} loading={mutation.isLoading}>Save</PrimaryButton>
                 </div>
+            </div>
+            <hr className='my-4' />
+            <div>
+                <FormGroup>
+                    <PrimaryButton onClick={() => recalculateMutation.mutate()} disabled={recalculateMutation.status === 'loading'}>Re-calculate stats</PrimaryButton>
+                    <FormInputDescription>Should only really be used if an error has occurred in the stat calucation which happens when I do a lil oopsie.</FormInputDescription>
+                </FormGroup>
+            </div>
+            <hr className='my-4' />
+            <div>
+                <FormGroup>
+                    <DangerButton>Remove level</DangerButton>
+                    <FormInputDescription>If the level gets unrated or for some other reason shouldn't be included in the GDDL project, click this.</FormInputDescription>
+                </FormGroup>
             </div>
         </div>
     );
