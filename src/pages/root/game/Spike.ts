@@ -12,6 +12,8 @@ export default class Spike extends GameObject {
         this.hitboxOffset.set(0.85/2, 0.7);
     }
 
+    update(_p5: P5): void { }
+
     draw(p5: P5) {
         p5.strokeWeight(2);
         p5.fill(0);

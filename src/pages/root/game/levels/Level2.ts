@@ -11,20 +11,28 @@ export default function createLevel2(p5: P5): GameObject[] {
     const w = 1.45;
     const variance = 6.5;
     for (let i = 0; i < length; i++) {
-        let h = (p5.noise(i / length * 12) - 0.5)*variance + variance;
+        const h = (p5.noise(i / length * 12) - 0.5) * variance + variance;
         //const w = map(i / length, 0, 1, 1.3, 1.3);
 
-        if ((i & 5) === 0) {
-            for (let j = 0; j < 12; j++) {
-                objects.push(new Block(i+beginningOffset, h-w-j));
-                objects.push(new Block(i+beginningOffset, h+w+j));
-            }
-        } else {
-            objects.push(new Block(i+beginningOffset, h-w));
+        // Bottom
+        objects.push(new Block(i + beginningOffset, h - w));
 
-            objects.push(new Block(i+beginningOffset, h+w));
+        // Top
+        objects.push(new Block(i + beginningOffset, h + w));
+
+        // Supports
+        if (i % 5 === 0) {
+            for (let j = 1; j < 10; j++) {
+                const block1 = new Block(i + beginningOffset, h - w - j);
+                if (i !== 0) block1.enabled = false;
+                objects.push(block1);
+
+                const block2 = new Block(i + beginningOffset, h + w + j);
+                if (i !== 0) block2.enabled = false;
+                objects.push(block2);
+            }
         }
     }
-    
+
     return objects;
 }

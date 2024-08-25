@@ -2,7 +2,7 @@ import P5 from 'p5';
 import Hitbox from './Hitbox';
 import { pixelsPerBlock } from './constants';
 
-export default class GameObject extends Hitbox {
+export default abstract class GameObject extends Hitbox {
     position: P5.Vector;
 
     constructor(x?: number, y?: number) {
@@ -12,7 +12,8 @@ export default class GameObject extends Hitbox {
     }
 
     inHitbox(other: GameObject) {
-        if (Math.abs(this.position.x - other.position.x) > 3) return;
+        if (Math.abs(this.position.x - other.position.x) > 3) return false;
+        if (!this.enabled || !other.enabled) return false;
 
         return (
             this.position.x + this.hitboxOffset.x + this.hitboxWidth > other.position.x + other.hitboxOffset.x &&
@@ -31,6 +32,6 @@ export default class GameObject extends Hitbox {
         p5.rect((this.position.x + this.hitboxOffset.x)*c, p5.height - (this.position.y + this.hitboxOffset.y)*c, this.hitboxWidth*c, this.hitboxHeight*c);
     }
 
-    update(_p5: P5) {}
-    draw(_p5: P5) {}
+    abstract update(p5: P5): void;
+    abstract draw(p5: P5): void;
 }

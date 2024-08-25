@@ -6,17 +6,20 @@ import GameObject from './GameObject';
 import GameState from './GameState';
 import createLevel2 from './levels/Level2';
 import { useEffect } from 'react';
+import { PrimaryButton } from '../../../components/Button';
 
 export const keysPressed: Record<string, boolean> = {};
 export const player = new Player();
 export default function Game() {
+    let _p5: P5 | undefined;
     const sceneObjects: GameObject[] = [];
 
-    let lastObject = new GameObject();
+    let lastObject: GameObject;
 
     let startTime = 0;
 
     function setup(p5: P5, parent: Element) {
+        if (!_p5) _p5 = p5;
         p5.frameRate(60);
 
         p5.createCanvas(1280, 720).parent(parent);
@@ -96,9 +99,7 @@ export default function Game() {
     function keyPressed(p5: P5) {
         switch (p5.key) {
             case 'r': {
-                player.reset();
-                p5.loop();
-                startTime = p5.millis();
+                restart(p5);
                 break;
             }
             case 'h': {
@@ -115,6 +116,13 @@ export default function Game() {
                 break;
             }
         }
+    }
+
+    function restart(p5?: P5) {
+        player.reset();
+        if (!p5) return;
+        p5.loop();
+        startTime = p5.millis();
     }
 
     function keyReleased(p5: P5) {
@@ -144,7 +152,9 @@ export default function Game() {
     return (
         <>
             <Sketch className='grid place-items-center my-2 gap-2' setup={setup} draw={draw} mousePressed={mousePressed} mouseReleased={mouseReleased} keyPressed={keyPressed} keyReleased={keyReleased} />
-            <p className='text-center'>R to restart</p>
+            <div className='flex justify-center'>
+                <PrimaryButton onClick={() => restart(_p5)}>R to restart</PrimaryButton>
+            </div>
         </>
     );
 }

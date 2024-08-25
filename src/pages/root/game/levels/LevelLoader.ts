@@ -10,7 +10,7 @@ interface FileObject {
 export default async function loadLevel(levelName: string): Promise<GameObject[]> {
     const objects: GameObject[] = [];
 
-    const file = await import(`./saved/${levelName}.json`);
+    const file = await import(`./saved/${levelName}.json`) as { objects: FileObject[] };
 
     file.objects.forEach((o: FileObject) => {
         switch(o.type) {

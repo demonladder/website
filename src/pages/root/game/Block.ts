@@ -13,6 +13,8 @@ export default class Block extends GameObject {
         this.hitboxOffset.set(0, 1);
     }
 
+    update(_p5: P5): void { }
+
     draw(p5: P5) {
         if (this.position.x < player.position.x - camOffset - 1) return;
         if (this.position.x > player.position.x + (p5.width/pixelsPerBlock - camOffset)) return;
