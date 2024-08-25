@@ -7,6 +7,8 @@ export type SubmittableSubmission = {
     refreshRate?: number,
     device?: number,
     proof?: string,
+    progress: number,
+    attempts?: number,
     isSolo?: boolean,
     secondPlayerID?: number,
 }

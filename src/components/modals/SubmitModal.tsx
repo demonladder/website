@@ -3,7 +3,7 @@ import Modal from '../Modal';
 import Select from '../Select';
 import SendSubmission, { SubmittableSubmission } from '../../api/submissions/SendSubmission';
 import { NumberInput, TextInput } from '../Input';
-import { PrimaryButton, SecondaryButton } from '../Button';
+import { DiscordLink, PrimaryButton, SecondaryButton } from '../Button';
 import { toast } from 'react-toastify';
 import { FullLevel } from '../../api/types/compounds/FullLevel';
 import renderToastError from '../../utils/renderToastError';
@@ -193,6 +193,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         <Modal title='Submit rating' show={true} onClose={onClose}>
             <Modal.Body>
                 <p className='my-3'>Make sure to read our guidelines <a href='/about#guidelines' className='text-blue-500' target='_blank'>here</a></p>
+                <DiscordLink href={import.meta.env.VITE_DISCORD_OAUTH}>Sync to Discord</DiscordLink>
                 <div className='flex flex-col gap-3'>
                     {level.Meta.Length === 'Platformer' &&
                         <WarningBox text={'Platformer submissions are currently restricted; your tier rating will be ignored, but you\'re welcome to submit your enjoyment for the time being!'} />
