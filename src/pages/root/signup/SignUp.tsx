@@ -6,34 +6,32 @@ import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
+import renderToastError from '../../../utils/renderToastError';
+import FormInputDescription from '../../../components/form/FormInputDescription';
 
 export function validateUsername(name: string): boolean {
-    return name.length >= 3 && name.match(/[a-zA-Z0-9\._]*/)?.[0] === name;
+    return name.match(/[a-zA-Z0-9._]{2,32}/)?.[0] === name;
 }
 
 export default function SignUp() {
     const navigate = useNavigate();
 
-    const usernameRef = useRef<HTMLInputElement>(null);
     const [password, setPassword] = useState('');
     const password2Ref = useRef<HTMLInputElement>(null);
-    
+
     const url = new URLSearchParams(useLocation().search);
-    const overrideKey = url.get('key') || '';
+    const overrideKey = url.get('key');
     const [username, setUsername] = useState(url.get('name') || '');
 
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
 
-        if (!usernameRef.current) return;
         if (!password2Ref.current) return;
 
-        const username = usernameRef.current.value.trim();
         const password2 = password2Ref.current.value;
 
         if (!username) return toast.error('Username cannot be empty!');
-        if (username.length < 3 || username.length > 30) return toast.error('Name must be between 3 and 30 characters long!');
+        if (username.length < 3 || username.length > 30) return toast.error('Name must be between 2 and 32 characters long!');
         if (!validateUsername(username)) return toast.error('Name contains banned characters!');
 
         if (!password || password.length < 7) {
@@ -44,28 +42,22 @@ export default function SignUp() {
             return toast.error('Passwords must match!');
         }
 
-        toast.promise(APIClient.post('/login/signup', {
+        void toast.promise(APIClient.post<string>('/login/signup', {
             username,
             password,
             overrideKey,
-        }, { withCredentials: true }).then((response) => {
+        }).then((response) => {
             if (response.status === 200) {
                 StorageManager.setUser(response.data);
 
-                navigate('/');
+                navigate(-1);
             }
 
             return response;
         }), {
             pending: 'Signing you up...',
             success: 'Signed in!',
-            error: {
-                render(error) {
-                    const res = ((error.data as AxiosError).response?.data as any)?.error || 'An error occurred';
-
-                    return res;
-                }
-            },
+            error: renderToastError,
         });
     }
 
@@ -82,12 +74,13 @@ export default function SignUp() {
                     <form method='post' action='/signup'>
                         <div className='mb-3'>
                             <label htmlFor='username'>Username</label>
-                            <TextInput ref={usernameRef} id='username' value={username} onChange={(e) => setUsername(e.target.value)} name='username' />
-                            <p className='text-gray-400 text-sm'>Name must be between 3 and 30 characters. It can only contain the following characters: <code>{'a-Z 0-9 . _'}</code></p>
+                            <TextInput id='username' value={username} onChange={(e) => overrideKey === null && setUsername(e.target.value)} invalid={!validateUsername(username)} name='username' />
+                            <p className='text-gray-400 text-sm'>Name must be between 2 and 32 characters. It can only contain the following characters: <code>{'a-Z 0-9 . _'}</code></p>
                         </div>
                         <div className='mb-3'>
                             <label htmlFor='password'>Password</label>
                             <PasswordInput value={password} onChange={(e) => setPassword(e.target.value.trim())} id='password' name='password' autoComplete='new-password' required />
+                            <FormInputDescription>Passwords must be at least 7 characters long</FormInputDescription>
                         </div>
                         <div className='mb-3'>
                             <label htmlFor='confirmPassword'>Confirm password</label>
