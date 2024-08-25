@@ -44,7 +44,7 @@ export default function Select({ options, activeKey, onChange, invalid = false, 
                     : options.find((o) => o.key === activeKey)?.value
                 }
                 <div className={'shadow-2xl absolute z-10 -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows]'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>
-                    <div className={`min-h-0 w-40 bg-gray-600 max-h-${height ?? '44'} overflow-auto`}>
+                    <div className={`min-h-0 bg-gray-600 max-h-${height ?? '44'} overflow-auto`}>
                         {!Array.isArray(options)
                             ? Object.entries(options).map((o) => <SelectOption option={o} setValue={optionClicked} key={o[0] + '_0'} />)
                             : options.map((o) => <SelectOption option={[o.key, o.value]} setValue={optionClicked} key={o.key + '_1'} />)
