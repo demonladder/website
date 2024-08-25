@@ -1,45 +1,36 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import StorageManager from '../../../utils/StorageManager';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
 import APIClient from '../../../api/APIClient';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { toast } from 'react-toastify';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import renderToastError from '../../../utils/renderToastError';
 
 export default function Login() {
     const nameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const queryClient = useQueryClient();
 
     const navigate = useNavigate();
 
-    function submit() {
-        if (nameRef.current === null || passwordRef.current === null) {
-            return;
-        }
-
-        setIsLoading(true);
-        APIClient.post('/login', {
-            username: nameRef.current.value,
-            password: passwordRef.current.value,
+    const { mutate: submit, isLoading } = useMutation({
+        mutationFn: () => toast.promise(APIClient.post<string>('/login', {
+            username: nameRef.current?.value,
+            password: passwordRef.current?.value,
         }).then((response) => {
             if (response.status === 200) {
                 StorageManager.setUser(response.data);
 
-                queryClient.invalidateQueries(['search']);
                 return navigate('/');
             }
-        }).catch((error: AxiosError) => {
-            toast.error((error.response?.data as any)?.error || 'An error occurred!');
-        }).finally(() => {
-            setIsLoading(false);
-        });
-    }
+        }), {
+            pending: 'Logging in...',
+            success: 'Logged in!',
+            error: renderToastError,
+        }),
+    });
 
     return (
         <Container>
@@ -54,8 +45,7 @@ export default function Login() {
                         <label htmlFor='loginPassword'>Password</label>
                         <PasswordInput ref={passwordRef} id='loginPassword' name='password' />
                     </div>
-                    <PrimaryButton onClick={submit} className='w-full' disabled={isLoading}>Login</PrimaryButton>
-                    <LoadingSpinner isLoading={isLoading} />
+                    <PrimaryButton onClick={() => submit()} className='relative w-full' loading={isLoading}>Log in</PrimaryButton>
                     <div className='mt-8'>
                         <p className='text-center'>
                             <Link to='/signup' className='hover:text-blue-400 underline'>Don't have an account? Register here!</Link>
