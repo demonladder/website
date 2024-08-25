@@ -1,21 +1,39 @@
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
 import Modal from '../../../components/Modal';
 import { TextInput } from '../../../components/Input';
 import TSubmission from '../../../api/types/Submission';
 import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
-import { toast } from 'react-toastify';
 import { useApproveClicked } from './useApproveClicked';
+import Select from '../../../components/Select';
+import FormGroup from '../../../components/form/FormGroup';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import FormInputLabel from '../../../components/form/FormInputLabel';
 
 interface Props {
     submission: QueueSubmission;
     remove: (submission: TSubmission, reason?: string) => void;
 }
 
+const denyReasons = {
+    'missingProof': 'Missing proof',
+    'wrongProof': 'Wrong proof',
+    'inaccessibleProof': 'Inaccessible proof',
+    'noEndscreen': 'No endscreen',
+    'incompleteRun': 'Doesn\'t show the entire run',
+    'missingClicks': 'Missing/incoherent clicks',
+    'hacked': 'Hacked',
+    'fakeAccount': 'Fake account',
+    'custom': 'Other',
+}
+
 export default function Submission({ submission, remove }: Props) {
     const [showDenyReason, setShowDenyReason] = useState(false);
+    const [denyReason, setDenyReason] = useState('custom');
     const reasonRef = useRef<HTMLInputElement>(null);
+
+    const navigate = useNavigate();
 
     const approveSubmission = useApproveClicked();
 
@@ -55,17 +73,27 @@ export default function Submission({ submission, remove }: Props) {
                 <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.LevelID, submission.UserID)}>Approve</PrimaryButton>
                 <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.LevelID, submission.UserID, true)}>Only enjoyment</PrimaryButton>
                 <DangerButton className='px-3 py-2' onClick={() => setShowDenyReason(true)}>Deny</DangerButton>
-                <DangerButton className='px-3 py-2' onClick={() => toast.error('Not implemented yet :(')}>Launch user into space</DangerButton>
+                <DangerButton className='px-3 h- py-2' onClick={() => navigate(`/mod/userBans?userID=${submission.UserID}`)}>Launch user into space</DangerButton>
             </div>
             <Modal title='Deny reason' show={showDenyReason} onClose={() => setShowDenyReason(false)}>
                 <Modal.Body>
-                    <TextInput ref={reasonRef} placeholder='Reason...' />
-                    <p className='text-sm text-gray-400 w-96'>Optional</p>
+                    <FormGroup>
+                        <FormInputLabel>Select a type</FormInputLabel>
+                        <Select id='denyReason' options={denyReasons} activeKey={denyReason} onChange={setDenyReason} height='36' />
+                        <FormInputDescription>Choose a reason for denying the submission.</FormInputDescription>
+                    </FormGroup>
+                    {['custom', 'hacked'].includes(denyReason) &&
+                        <FormGroup>
+                            <FormInputLabel htmlFor='customDenyReason'>Write a reason</FormInputLabel>
+                            <TextInput ref={reasonRef} id='customDenyReason' placeholder='Reason...' />
+                            <FormInputDescription>Optional.</FormInputDescription>
+                        </FormGroup>
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     <div className='flex gap-2 justify-end'>
                         <SecondaryButton onClick={() => setShowDenyReason(false)}>Close</SecondaryButton>
-                        <DangerButton onClick={() => { remove(submission, reasonRef.current?.value || undefined); setShowDenyReason(false); }}>Deny</DangerButton>
+                        <DangerButton onClick={() => { remove(submission, denyReason !== 'custom' ? denyReason : (reasonRef.current?.value || undefined)); setShowDenyReason(false); }}>Deny</DangerButton>
                     </div>
                 </Modal.Footer>
             </Modal>
