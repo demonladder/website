@@ -12,7 +12,7 @@ export default function useHash(): [string, (newHash: string) => void] {
         return () => {
             window.removeEventListener('hashchange', hashChangeHandler);
         };
-    }, []);
+    }, [hashChangeHandler]);
 
     const updateHash = useCallback(
         (newHash: string) => {

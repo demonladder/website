@@ -106,10 +106,10 @@ export default function EditPack() {
         if (packResult === undefined) return;
         if (isLoading) return;
 
-        const request = SavePackChangesRequest(packResult.ID, changeList).then(() => {
+        const request = SavePackChangesRequest(changeList).then(() => {
             setChangeList([]);
-            queryClient.invalidateQueries(['packs']);
-            queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries(['packs']);
+            void queryClient.invalidateQueries(['packSearch']);
         }).finally(() => {
             setIsLoading(false);
         });
@@ -129,8 +129,8 @@ export default function EditPack() {
         }
         const request = CreatePackRequest(searchQuery).then(() => {
             setChangeList([]);
-            queryClient.invalidateQueries(['packs']);
-            queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries(['packs']);
+            void queryClient.invalidateQueries(['packSearch']);
         }).finally(() => {
             setIsLoading(false);
         });
@@ -146,8 +146,8 @@ export default function EditPack() {
         if (!packResult) return;
 
         const request = DeletePackRequest(packResult.ID).then(() => {
-            queryClient.invalidateQueries(['packs']);
-            queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries(['packs']);
+            void queryClient.invalidateQueries(['packSearch']);
         });
 
         void toast.promise(request, {

@@ -11,7 +11,7 @@ type GetLevelSubmissionsResponse = {
     submissions: Submission[],
 }
 
-export default async function GetLevelSubmissions({ levelID, page = 1, chunk = 25 }: { levelID: number; page?: number; chunk?: number; }) {
-    const res = await APIClient.get<GetLevelSubmissionsResponse>(`/level/${levelID}/submissions`, { params: { page, chunk } });
+export default async function GetLevelSubmissions({ levelID, page = 1, chunk = 25, username }: { levelID: number, page?: number, chunk?: number, username?: string }) {
+    const res = await APIClient.get<GetLevelSubmissionsResponse>(`/level/${levelID}/submissions`, { params: { page, chunk, username: username || undefined } });
     return res.data;
 }

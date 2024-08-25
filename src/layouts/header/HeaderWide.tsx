@@ -9,7 +9,7 @@ export default function HeaderWide() {
     const userSearch = useUserSearch({
         ID: 'userSearchWide',
         onUserSelect: (user) => {
-            navigate('/profile/' + user.ID);
+            navigate(`/profile/${user.ID}`);
         },
     });
 
@@ -19,9 +19,9 @@ export default function HeaderWide() {
                 <div className='me-8'>
                     <Link to='/' className='font-bold text-3xl'>GDDLadder</Link>
                 </div>
-                <div className='flex items-center gap-x-3 gap-y-1 text-xl'>
+                <div className='flex items-center gap-x-4 gap-y-1 text-xl'>
                     {HeaderRoutes.map((route, i) => (
-                        <NavItem route={route} size={'wide'} key={'headerRoute_' + i} />
+                        <NavItem route={route} size={'wide'} key={`headerRoute_${i}`} />
                     ))}
                 </div>
                 <div className='ms-auto flex items-center gap-4'>

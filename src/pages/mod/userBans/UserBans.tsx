@@ -19,12 +19,12 @@ function BanRecord({ record }: { record: IBanRecord }) {
         setIsloading(true);
 
         const promise = RevokeBan(record.BanID).then(() => {
-            queryClient.invalidateQueries(['banHistory']);
+            void queryClient.invalidateQueries(['banHistory']);
         }).finally(() => {
             setIsloading(false);
         });
 
-        toast.promise(promise, {
+        void toast.promise(promise, {
             pending: 'Revoking...',
             success: 'Ban revoked!',
             error: renderToastError,
@@ -53,7 +53,9 @@ function BanRecord({ record }: { record: IBanRecord }) {
 }
 
 export default function UserBans() {
-    const user = useUserSearch({ ID: 'banUserSearch' });
+    const userID = new URLSearchParams(window.location.search).get('userID');
+    const user = useUserSearch({ ID: 'banUserSearch', userID: userID ? parseInt(userID) : undefined });
+
     const durationSelect = useSelect({
         ID: 'banDurationSelect',
         options: {
@@ -64,7 +66,7 @@ export default function UserBans() {
             10000: 'Permanent',
         }
     });
-    
+
     const [isLoading, setIsloading] = useState(false);
     const reasonRef = useRef<HTMLInputElement>(null);
     const queryClient = useQueryClient();
@@ -85,12 +87,12 @@ export default function UserBans() {
         setIsloading(true);
 
         const promise = BanUser(user.activeUser.ID, parseInt(durationSelect.activeElement), reasonRef.current.value).then(() => {
-            queryClient.invalidateQueries(['banHistory', user.activeUser?.ID]);
+            void queryClient.invalidateQueries(['banHistory', user.activeUser?.ID]);
         }).finally(() => {
             setIsloading(false);
         });
 
-        toast.promise(promise, {
+        void toast.promise(promise, {
             pending: 'Banning...',
             success: 'User banned!',
             error: renderToastError,
@@ -124,7 +126,7 @@ export default function UserBans() {
                         <h4 className='text-xl'>Ban history:</h4>
                         <div>
                             {data.map((record) => (
-                                <BanRecord record={record} key={user.activeUser?.ID + '_bannedBy_' + record.StaffID} />
+                                <BanRecord record={record} key={record.BanID} />
                             ))}
                             {data.length === 0 &&
                                 <p>Clean record :D</p>

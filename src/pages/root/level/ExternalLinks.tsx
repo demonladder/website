@@ -31,23 +31,23 @@ interface Props {
 export default function ExternalLinks({ level }: Props) {
     const { data: aredl } = useQuery({
         queryKey: ['aredl', level.ID],
-        queryFn: () => axios.get(`https://api.aredl.net/api/aredl/levels/${level.ID}`).then((res) => res.data),
+        queryFn: () => axios.get<{ position: number }>(`https://api.aredl.net/api/aredl/levels/${level.ID}`).then((res) => res.data),
         enabled: level.Meta.Difficulty === 'Extreme',
     });
 
-    const { data: pointercrateData } = useQuery<{ name: string, position: number, level_id: number, publisher: { name: string } }[]>({
+    const { data: pointercrateData } = useQuery({
         queryKey: ['pointercrate', level.ID],
-        queryFn: () => axios.get(`https://pointercrate.com/api/v2/demons?name=${level.Meta.Name}`).then((res) => res.data),
+        queryFn: () => axios.get<{ name: string, position: number, level_id: number, publisher: { name: string } }[]>(`https://pointercrate.com/api/v2/demons?name=${level.Meta.Name}`).then((res) => res.data),
     });
 
     const { data: SFHData } = useQuery({
-        queryKey: ['songfilehub', level.Meta.SongID],
-        queryFn: () => axios.get<SHFResponseDataObject[]>(`https://api.songfilehub.com/songs?songID=${level.Meta.SongID}&states=rated`).then((res) => res.data),
+        queryKey: ['songfilehub', level.ID],
+        queryFn: () => axios.get<SHFResponseDataObject[]>(`https://api.songfilehub.com/songs?levelID=${level.ID}&states=rated`).then((res) => res.data),
     });
- 
+
     const pointercrate = pointercrateData?.find((l) => l.level_id === level.ID)
         ?? pointercrateData?.find((l) => l.publisher.name === level.Meta.Creator)
-        ?? pointercrateData?.find((l) => l.name === level.Meta.Name);
+        ?? pointercrateData?.find((l) => l.name === level.Meta.Name && (l.publisher.name ? l.publisher.name === level.Meta.Creator : true));
 
     return (
         <div className='mt-6'>

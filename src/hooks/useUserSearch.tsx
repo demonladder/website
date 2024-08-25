@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from '../components/SearchBox/SearchBox';
 import { TinyUser } from '../api/types/TinyUser';
 import SearchUser from '../api/user/SearchUser';
+import GetUser from '../api/user/GetUser';
 
 interface Props {
     ID: string,
+    userID?: number,
     maxUsersOnList?: number,
     onUserSelect?: (user: TinyUser) => void;
 }
 
-export default function useUserSearch({ ID, maxUsersOnList, onUserSelect }: Props) {
+export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect }: Props) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -23,21 +25,34 @@ export default function useUserSearch({ ID, maxUsersOnList, onUserSelect }: Prop
     });
 
     useEffect(() => {
+        if (userID !== undefined) {
+            GetUser(userID).then((user) => {
+                setActiveUser({
+                    ID: user.ID,
+                    Name: user.Name,
+                    PermissionLevel: 0,
+                });
+                setSearch(user.Name);
+            }).catch(console.error);
+        }
+    }, [userID]);
+
+    useEffect(() => {
         setIsInvalid(false);
     }, [search, activeUser]);
 
-    function clear() {
+    const clear = useCallback(() => {
         setSearch('');
         setSearchQuery('');
         setActiveUser(undefined);
-    }
+    }, []);
 
-    function setQuery(value: string) {
+    const setQuery = useCallback((value: string) => {
         setSearch(value);
         setSearchQuery(value);
-    }
+    }, []);
 
-    return {
+    const result = useMemo(() => ({
         activeUser,
         setQuery,
         clear,
@@ -45,6 +60,8 @@ export default function useUserSearch({ ID, maxUsersOnList, onUserSelect }: Prop
         SearchBox: (<SearchBox search={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
             ...d,
             label: d.Name,
-        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => { setActiveUser(user); user && onUserSelect && onUserSelect(user); }} status={status} invalid={isInvalid} />)
-    }
+        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => { setActiveUser(user); user && onUserSelect && onUserSelect(user); }} status={status} placeholder='Search user...' invalid={isInvalid} />)
+    }), [activeUser, setQuery, clear, search, data, status, ID, onUserSelect, isInvalid]);
+
+    return result;
 }

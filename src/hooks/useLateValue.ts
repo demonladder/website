@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 
-export default function useLateValue<T>(defaultValue: T, delay: number): [T, T, React.Dispatch<React.SetStateAction<T>>, React.Dispatch<React.SetStateAction<T>>] {
+/**
+ * Holds a value for a certain amount of time before updating it
+ * @param defaultValue The default value
+ * @param delay The delay in milliseconds
+ * @returns The current value, the late value, the setter for the current value, and the setter for the late value
+ */
+export default function useLateValue<T>(defaultValue: T, delay = 500): [T, T, React.Dispatch<React.SetStateAction<T>>, React.Dispatch<React.SetStateAction<T>>] {
     const [value, setValue] = useState(defaultValue);
     const [lateValue, setLateValue] = useState(defaultValue);
 
@@ -12,7 +18,7 @@ export default function useLateValue<T>(defaultValue: T, delay: number): [T, T, 
         return () => {
             clearTimeout(timeout);
         };
-    }, [value]);
+    }, [value, delay]);
 
     return [value, lateValue, setValue, setLateValue];
 }
