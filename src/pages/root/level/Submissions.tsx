@@ -15,21 +15,22 @@ function Submission({ submission }: Props) {
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
 
-    const linkDestination = '/profile/' + submission.UserID;
+    const linkDestination = `/profile/${submission.UserID}`;
 
-    const hasWidgets = submission.Proof || submission.Device === 'Mobile';
+    const hasWidgets = submission.Proof !== null || submission.Device === 'Mobile';
 
     const title: string[] = [];
     title.push(`Sent at: ${new Date(submission.DateAdded).toLocaleString()}`);
     title.push(`Last changed at: ${new Date(submission.DateChanged).toLocaleString()}`);
     title.push(`${submission.RefreshRate}fps`);
+    title.push(`Progress: ${submission.Progress}%`);
     if (submission.Device === 'Mobile') title.push('Completed on mobile');
 
     return (
-        <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
-            <Link className={'w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-' + (submission.Rating ? submission.Rating : '0')} to={linkDestination}>{submission.Rating || '-'}</Link>
-            <Link className={'w-[40px] lg:w-1/6 p-2 text-center enj-' + enj} to={linkDestination}>{enjText}</Link>
-            <Link className='p-2 flex-grow bg-gray-500' to={linkDestination}>{submission.User.Name}</Link>
+        <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-10 hover:border-opacity-100 transition-colors'>
+            <Link className={`w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
+            <Link className={`w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
+            <Link className='p-2 flex-grow ' style={{ backgroundImage: `linear-gradient(to right, #4d4d4d, #4d4d4d ${submission.Progress}%, #0000 ${submission.Progress}%)` }} to={linkDestination}>{submission.User.Name}</Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&

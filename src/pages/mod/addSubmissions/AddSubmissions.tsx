@@ -10,6 +10,8 @@ import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import FormInputDescription from '../../../components/form/FormInputDescription';
 
 const deviceOptions = {
     '1': 'PC',
@@ -60,9 +62,10 @@ export default function AddSubmission() {
         // Send
         setIsMutating(true);
         void toast.promise(
-            APIClient.post('/submit/mod', submission).then((res): string => {
+            APIClient.post(`/user/${submission.userID}/submissions/${activeLevel.ID}`, submission).then((res): string => {
                 void queryClient.invalidateQueries(['submissions']);
                 void queryClient.invalidateQueries(['level', activeLevel.ID]);
+                void queryClient.invalidateQueries(['user', submission.userID]);
 
                 return res.data as string;
             }).finally(() => setIsMutating(false)),
@@ -103,34 +106,34 @@ export default function AddSubmission() {
             <h3 className='text-2xl mb-3'>Add Submission</h3>
             <div className='flex flex-col gap-4'>
                 <div>
-                    <label htmlFor='addSubmissionSearch'>Level:</label>
+                    <FormInputLabel htmlFor='addSubmissionSearch'>Level:</FormInputLabel>
                     {SearchBox}
                 </div>
                 <div>
-                    <label htmlFor='addSubmissionUserSearch'>User:</label>
+                    <FormInputLabel htmlFor='addSubmissionUserSearch'>User:</FormInputLabel>
                     {userSearch.SearchBox}
                 </div>
                 <div>
-                    <label htmlFor='addSubmissionTier'>Tier:</label>
+                    <FormInputLabel htmlFor='addSubmissionTier'>Tier:</FormInputLabel>
                     <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} invalid={!(tierValid || validOverride)} />
                 </div>
                 <div>
-                    <label htmlFor='addSubmissionEnjoyment'>Enjoyment:</label>
+                    <FormInputLabel htmlFor='addSubmissionEnjoyment'>Enjoyment:</FormInputLabel>
                     <NumberInput id='addSubmissionEnjoyment' value={enjoyment} onChange={(e) => setEnjoyment(parseInt(e.target.value))} invalid={!(enjoymentValid || validOverride)} />
                 </div>
                 <div>
-                    <label htmlFor='addSubmissionRefreshRate'>Refresh rate:</label>
+                    <FormInputLabel htmlFor='addSubmissionRefreshRate'>Refresh rate:</FormInputLabel>
                     <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} invalid={!validateRefreshRate(refreshRate)} />
-                    <p className='text-sm text-gray-400'>Defaults to 60 if empty</p>
+                    <FormInputDescription>Defaults to 60 if empty.</FormInputDescription>
                 </div>
                 <div>
-                    <label>Device:</label>
+                    <FormInputLabel>Device:</FormInputLabel>
                     <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
                 </div>
                 <div>
-                    <label htmlFor='addSubmissionProof'>Proof:</label>
+                    <FormInputLabel htmlFor='addSubmissionProof'>Proof:</FormInputLabel>
                     <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} invalid={!validateProof(proof, activeLevel)} />
-                    <p className='text-sm text-gray-400'>Has to be a link</p>
+                    <FormInputDescription>Optional. Has to a valid URL.</FormInputDescription>
                 </div>
             </div>
             <div className='flex justify-between mt-3'>

@@ -15,6 +15,8 @@ import { validateLink } from '../../utils/validators/validateLink';
 import CheckBox from '../input/CheckBox';
 import useUserSearch from '../../hooks/useUserSearch';
 import GetSingleSubmission from '../../api/submissions/GetSingleSubmission';
+import FormInputLabel from '../form/FormInputLabel';
+import FormInputDescription from '../form/FormInputDescription';
 
 interface Props {
     level: FullLevel;
@@ -61,6 +63,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const [deviceKey, setDeviceKey] = useState(StorageManager.getSettings().submission.defaultDevice);
     const [refreshRate, setRefreshRate] = useState(StorageManager.getSettings().submission.defaultRefreshRate.toString());
     const [proof, setProof] = useState('');
+    const [progress, setProgress] = useState('');
+    const [attempts, setAttempts] = useState('');
     const [wasSolo, setWasSolo] = useState(true);
 
     const { data: userSubmission } = useQuery({
@@ -76,10 +80,12 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
 
         if (userSubmission.Rating !== null) setTier(userSubmission.Rating.toString());
         if (userSubmission.Enjoyment !== null) setEnjoymentKey(userSubmission.Enjoyment.toString());
-        if (userSubmission.RefreshRate !== null) setRefreshRate(userSubmission.RefreshRate.toString());
-        if (userSubmission.Device !== null) setDeviceKey(userSubmission.Device === 'Mobile' ? '2' : '1');
+        setRefreshRate(userSubmission.RefreshRate.toString());
+        setDeviceKey(userSubmission.Device === 'Mobile' ? '2' : '1');
         if (userSubmission.Proof !== null) setProof(userSubmission.Proof.toString());
-        if (userSubmission.IsSolo !== null) setWasSolo(userSubmission.IsSolo);
+        setProgress(userSubmission.Progress.toString());
+        if (userSubmission.Attempts !== null) setAttempts(userSubmission.Attempts.toString());
+        setWasSolo(userSubmission.IsSolo);
         if (userSubmission.SecondaryUser) secondPlayerSearch.setQuery(userSubmission.SecondaryUser.Name);
     }, [userSubmission, secondPlayerSearch]);
 
@@ -120,6 +126,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             refreshRate: parseInt(refreshRate),
             device: parseInt(deviceKey),
             proof: proof.length > 0 ? proof : undefined,
+            progress: parseInt(progress) || 100,
+            attempts: parseInt(attempts) || undefined,
             isSolo: wasSolo,
             secondPlayerID: secondPlayerSearch.activeUser?.ID,
         };
@@ -211,6 +219,16 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         <label htmlFor='submitProof'>Proof <a href='/about#proof' target='_blank'><i className='bx bx-info-circle' /></a></label>
                         <TextInput id='submitProof' value={proof} onChange={onProofChange} invalid={(level.Meta.Difficulty === 'Extreme' && !validateLink(proof)) || (proof !== '' && !validateLink(proof))} />
                         <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
+                    </div>
+                    <div>
+                        <FormInputLabel>Percent</FormInputLabel>
+                        <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' />
+                        <FormInputDescription>Optional, defaults to 100. Will not affect ratings or get sent to the queue if under 100.</FormInputDescription>
+                    </div>
+                    <div>
+                        <FormInputLabel>Attempts</FormInputLabel>
+                        <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} placeholder='7649' />
+                        <FormInputDescription>Optional. How many attempts it took you to beat this level.</FormInputDescription>
                     </div>
                     {level.Meta.IsTwoPlayer &&
                         <div>

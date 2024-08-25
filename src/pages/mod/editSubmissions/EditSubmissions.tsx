@@ -12,6 +12,11 @@ import renderToastError from '../../../utils/renderToastError';
 import Submission from '../../../api/types/Submission';
 import GetLevelSubmissions from '../../../api/submissions/GetLevelSubmissions';
 import DeleteSubmission from '../../../api/submissions/DeleteSubmission';
+import useLateValue from '../../../hooks/useLateValue';
+import FormGroup from '../../../components/form/FormGroup';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import { NaNToNull } from '../../../utils/NaNToNull';
 
 const deviceOptions: { [key: string]: string } = {
     '1': 'PC',
@@ -23,19 +28,22 @@ export default function EditSubmission() {
     const [isMutating, setIsMutating] = useState(false);
 
     const { activeLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch' });
+    const [usernameFilter, lateUsernameFilter, setUsernameFilter] = useLateValue('');
 
     const [userResult, setUserResult] = useState<Submission>();
     const [page, setPage] = useState<number>(1);
-    const ratingRef = useRef<HTMLInputElement>(null);
-    const enjoymentRef = useRef<HTMLInputElement>(null);
+    const [rating, setRating] = useState<number | null>();
+    const [enjoyment, setEnjoyment] = useState<number | null>();
     const proofRef = useRef<HTMLInputElement>(null);
     const [refreshRate, setRefreshRate] = useState<number>();
+    const [progress, setProgress] = useState<number>();
+    const [attempts, setAttempts] = useState('');
 
     const queryClient = useQueryClient();
 
     const { status, data } = useQuery({
-        queryKey: ['level', activeLevel?.ID, 'submissions', { page }],
-        queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page }),
+        queryKey: ['level', activeLevel?.ID, 'submissions', { page, username: lateUsernameFilter }],
+        queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page, username: lateUsernameFilter }),
     });
 
     useEffect(() => {
@@ -52,7 +60,7 @@ export default function EditSubmission() {
             return toast.error('You must select a user!');
         }
 
-        if (ratingRef.current === null || enjoymentRef.current === null || proofRef.current === null) {
+        if (rating === null || enjoyment === null || proofRef.current === null) {
             return toast.error('An error occurred');
         }
 
@@ -60,15 +68,17 @@ export default function EditSubmission() {
 
         // Send
         setIsMutating(true);
-        toast.promise(
-            APIClient.patch('/submit/mod', {
+        void toast.promise(
+            APIClient.patch(`/user/${userResult.UserID}/submissions/${activeLevel.ID}`, {
                 levelID: activeLevel.ID,
                 userID: userResult.UserID,
-                rating: parseInt(ratingRef.current.value) || null,
-                enjoyment: !Number.isNaN(parseInt(enjoymentRef.current.value)) ? parseInt(enjoymentRef.current.value) : null,
+                rating: rating || null,
+                enjoyment: enjoyment || null,
                 refreshRate,
                 device: parseInt(deviceKey),
                 proof: proof !== '' ? proof : null,
+                progress,
+                attempts: NaNToNull(parseInt(attempts)),
                 isEdit: true,
             }).then(() => queryClient.invalidateQueries(['level', activeLevel.ID])).finally(() => setIsMutating(false)),
             {
@@ -80,11 +90,13 @@ export default function EditSubmission() {
     }
 
     function submissionClicked(s: Submission) {
-        if (ratingRef.current !== null) ratingRef.current.value = '' + s.Rating;
-        if (enjoymentRef.current !== null) enjoymentRef.current.value = '' + s.Enjoyment;
+        setRating(s.Rating);
+        setEnjoyment(s.Enjoyment);
         setRefreshRate(s.RefreshRate);
         if (proofRef.current !== null) proofRef.current.value = s.Proof ?? '';
         setUserResult(s);
+        setProgress(s.Progress);
+        setAttempts(s.Attempts?.toString() ?? '');
     }
 
     function deleteSubmission() {
@@ -97,14 +109,15 @@ export default function EditSubmission() {
 
         setIsMutating(true);
         const request = DeleteSubmission(activeLevel.ID, userResult.UserID).then(() => {
-            queryClient.invalidateQueries(['submissions']);
-            queryClient.invalidateQueries(['level', activeLevel.ID]);
+            void queryClient.invalidateQueries(['submissions']);
+            void queryClient.invalidateQueries(['level', activeLevel.ID]);
+            setUserResult(undefined);
         }).finally(() => setIsMutating(false));
 
-        toast.promise(request, {
+        void toast.promise(request, {
             pending: 'Deleting',
             success: 'Rating deleted',
-            error: 'An error occurred',
+            error: renderToastError,
         });
     }
 
@@ -119,11 +132,12 @@ export default function EditSubmission() {
             <h3 className='text-2xl mb-3'>Edit Submission</h3>
             <div className='flex flex-col gap-4'>
                 <div>
-                    <label htmlFor='addSubmissionSearch'>Level:</label>
+                    <FormInputLabel htmlFor='addSubmissionSearch'>Level:</FormInputLabel>
                     {SearchBox}
                 </div>
                 <div>
                     <p className='font-bold'>Submission list</p>
+                    <TextInput value={usernameFilter} onChange={(e) => setUsernameFilter(e.target.value)} placeholder='Filter by user name...' />
                     <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2'>
                         {data?.submissions.map((s) => (
                             <button className={'flex ps-1 border border-white border-opacity-0 hover:border-opacity-80 transition-colors select-none round:rounded ' + (s.UserID === userResult?.UserID ? 'bg-button-primary-1 font-bold' : 'bg-gray-600')} onClick={() => submissionClicked(s)} key={'edit_' + s.UserID + '_' + s.LevelID}>
@@ -132,36 +146,51 @@ export default function EditSubmission() {
                                 <p className={'w-8 py-1 enj-' + (s.Enjoyment !== null ? Math.round(s.Enjoyment) : -1)}>{s.Enjoyment !== null ? s.Enjoyment : '-'}</p>
                             </button>
                         ))}
-                        {data.submissions.length === 0 && <p>Select a level first</p>}
+                        {data === undefined && <p>Select a level first</p>}
+                        {data.submissions.length === 0 && <p>No submissions</p>}
                     </div>
                     <PageButtons meta={data} onPageChange={setPage} />
                 </div>
-                <div className={(data?.submissions.length) === 0 || userResult === undefined ? 'hidden' : 'flex flex-col gap-4'}>
+                {(data?.submissions.length) !== 0 && userResult !== undefined &&
                     <div>
-                        <label htmlFor='addSubmissionTier'>Tier:</label>
-                        <NumberInput id='addSubmissionTier' ref={ratingRef} />
+                        <FormGroup>
+                            <FormInputLabel htmlFor='addSubmissionTier'>Tier</FormInputLabel>
+                            <NumberInput id='addSubmissionTier' value={rating ?? ''} onChange={(e) => setRating(NaNToNull(parseInt(e.target.value)))} min='1' max='35' />
+                            <FormInputDescription>Optional unless missing enjoyment</FormInputDescription>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormInputLabel htmlFor='addSubmissionEnjoyment'>Enjoyment</FormInputLabel>
+                            <NumberInput id='addSubmissionEnjoyment' value={enjoyment ?? ''} onChange={(e) => setEnjoyment(NaNToNull(parseInt(e.target.value)))} min='0' max='10' />
+                            <FormInputDescription>Optional unless missing tier</FormInputDescription>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormInputLabel htmlFor='addSubmissionRefreshRate'>Refresh rate</FormInputLabel>
+                            <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} min='30' />
+                            <FormInputDescription>Minimum 30</FormInputDescription>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormInputLabel>Device</FormInputLabel>
+                            <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormInputLabel htmlFor='addSubmissionProof'>Proof</FormInputLabel>
+                            <TextInput id='addSubmissionProof' ref={proofRef} />
+                            <FormInputDescription>Optional</FormInputDescription>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormInputLabel>Progress</FormInputLabel>
+                            <NumberInput value={progress} onChange={(e) => setProgress(parseInt(e.target.value))} min='1' max='100' />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormInputLabel>Attempts</FormInputLabel>
+                            <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} min='1' />
+                        </FormGroup>
+                        <div className='flex gap-2'>
+                            <PrimaryButton onClick={submit} disabled={isMutating}>Edit</PrimaryButton>
+                            <DangerButton onClick={deleteSubmission} disabled={isMutating}>Delete</DangerButton>
+                        </div>
                     </div>
-                    <div>
-                        <label htmlFor='addSubmissionEnjoyment'>Enjoyment:</label>
-                        <NumberInput id='addSubmissionEnjoyment' ref={enjoymentRef} />
-                    </div>
-                    <div>
-                        <label htmlFor='addSubmissionRefreshRate'>Refresh rate:</label>
-                        <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} />
-                    </div>
-                    <div>
-                        <label>Device:</label>
-                        <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
-                    </div>
-                    <div>
-                        <label htmlFor='addSubmissionProof'>Proof:</label>
-                        <TextInput id='addSubmissionProof' ref={proofRef} />
-                    </div>
-                    <div className='flex gap-2'>
-                        <PrimaryButton onClick={submit} disabled={isMutating}>Edit</PrimaryButton>
-                        <DangerButton onClick={deleteSubmission} disabled={isMutating}>Delete</DangerButton>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     );
