@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.scss';
@@ -30,7 +31,7 @@ import ErrorElement from './components/ErrorElement';
 import SignUp from './pages/root/signup/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProfileSettings from './pages/root/settings/profile/ProfileSettings';
+import ProfileSettings from './pages/root/settings/profileSettings/ProfileSettings';
 import ClientSiteSettings from './pages/root/settings/siteSettings/SiteSettings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
@@ -41,7 +42,7 @@ import EditPack from './pages/mod/pack/EditPack';
 import Settings from './pages/root/settings/Settings';
 import CrossroadPack from './pages/root/packs/packOverview/CrossroadPack';
 import EditTags from './pages/mod/editTags/EditTags';
-import SubmissionSettings from './pages/root/settings/submissions/SubmissionSettings';
+import SubmissionSettings from './pages/root/settings/submissionsSettings/SubmissionSettings';
 import Notifications from './pages/root/notifications/Notifications';
 import { sessionLoader } from './utils/sessionLoader';
 import StorageManager from './utils/StorageManager';
@@ -58,6 +59,9 @@ import Roles from './pages/mod/roles/Roles';
 import EditRole from './pages/mod/roles/EditRole';
 import ForgotPassword from './pages/root/forgotPassword/ForgotPassword';
 import Compare from './pages/root/compare/Compare';
+import Generators from './pages/root/generators/Generators';
+import Alphabet from './pages/root/generators/alphabet/Alphabet';
+import Roulette from './pages/root/generators/roulette/Roulette';
 
 const router = createBrowserRouter(
     [
@@ -169,6 +173,20 @@ const router = createBrowserRouter(
                 {
                     path: 'compare',
                     element: <Compare />,
+                },
+                {
+                    path: 'generators',
+                    element: <Generators />,
+                    children: [
+                        {
+                            path: 'alphabet',
+                            element: <Alphabet />,
+                        },
+                        {
+                            path: 'roulette',
+                            element: <Roulette />,
+                        },
+                    ],
                 },
                 {
                     path: '/mod',
