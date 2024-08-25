@@ -1,4 +1,4 @@
-export default interface Submission {
+export default interface PendingSubmission {
     LevelID: number;
     UserID: number;
     Rating: number | null;
@@ -9,7 +9,6 @@ export default interface Submission {
     IsSolo: boolean;
     SecondPlayerID: number | null;
     DateAdded: string;
-    DateChanged: string;
     Progress: number;
     Attempts: number | null;
 }
