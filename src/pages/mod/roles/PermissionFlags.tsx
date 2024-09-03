@@ -10,4 +10,5 @@ export enum PermissionFlags {
     MANAGE_TAGS = 1 << 8,
     MANAGE_ROLES = 1 << 9,
     BAN_USERS = 1 << 10,
+    MANAGE_PACKS = 1 << 11,
 }

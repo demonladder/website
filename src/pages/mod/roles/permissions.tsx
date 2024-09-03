@@ -39,16 +39,10 @@ export const permissions: Permission[] = [
         Flag: PermissionFlags.DELETE_USER,
     },
     {
-        ID: 7,
-        Name: 'Auto accept settings',
-        Description: 'Allows users to change the auto accept settings.',
-        Flag: PermissionFlags.AUTO_ACCEPT_SETTINGS,
-    },
-    {
-        ID: 8,
-        Name: 'Site settings',
-        Description: 'Allows users to change the site settings.',
-        Flag: PermissionFlags.SITE_SETTINGS,
+        ID: 12,
+        Name: 'Manage packs',
+        Description: 'Allows users to create, delete and edit packs.',
+        Flag: PermissionFlags.MANAGE_PACKS,
     },
     {
         ID: 9,
@@ -61,6 +55,18 @@ export const permissions: Permission[] = [
         Name: 'Manage roles',
         Description: 'Allows users to create, delete and edit roles.',
         Flag: PermissionFlags.MANAGE_ROLES,
+    },
+    {
+        ID: 7,
+        Name: 'Auto accept settings',
+        Description: 'Allows users to change the auto accept settings.',
+        Flag: PermissionFlags.AUTO_ACCEPT_SETTINGS,
+    },
+    {
+        ID: 8,
+        Name: 'Site settings',
+        Description: 'Allows users to change the site settings.',
+        Flag: PermissionFlags.SITE_SETTINGS,
     },
     {
         ID: 4,
