@@ -7,9 +7,11 @@ import TextArea from '../../../components/input/TextArea';
 import renderToastError from '../../../utils/renderToastError';
 import SavePackMetaRequest from '../../../api/packs/requests/SavePackDescriptionRequest';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetSinglePack from '../../../api/pack/requests/GetSinglePack';
 import GetPacks from '../../../api/packs/requests/GetPacks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import FormGroup from '../../../components/form/FormGroup';
+import usePack from '../../../hooks/api/usePack';
 
 interface Props {
     packID: number;
@@ -22,10 +24,7 @@ export default function Meta({ packID }: Props) {
     const [isLoading, setIsLoading] = useState(false);
     const queryClient = useQueryClient();
 
-    const { data } = useQuery({
-        queryKey: ['packs', packID],
-        queryFn: () => GetSinglePack(packID),
-    });
+    const { data } = usePack(packID);
 
     const { data: packsData } = useQuery({
         queryKey: ['packs'],
@@ -62,19 +61,19 @@ export default function Meta({ packID }: Props) {
 
     return (
         <>
-            <div className='mb-2'>
-                <p>Description:</p>
-                <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
-            </div>
-            <div className='mb-4'>
-                <p>Category</p>
+            <FormGroup>
+                <FormInputLabel htmlFor='packDescription'>Description</FormInputLabel>
+                <TextArea id='packDescription' value={description} onChange={(e) => setDescription(e.target.value)} />
+            </FormGroup>
+            <FormGroup>
+                <FormInputLabel>Category</FormInputLabel>
                 <Select options={packsData.categories.map((c) => ({ key: c.ID.toString(), value: c.Name }))} activeKey={categoryKey.toString()} onChange={(k) => setCategoryKey(parseInt(k))} id='editPackCategory' />
-            </div>
-            <div className='mb-4'>
-                <p>Role ID:</p>
+            </FormGroup>
+            <FormGroup>
+                <FormInputLabel>Role ID</FormInputLabel>
                 <TextInput value={roleID} onChange={(e) => setRoleID(e.target.value)} />
                 <PrimaryButton onClick={save}>Save</PrimaryButton>
-            </div>
+            </FormGroup>
         </>
     );
 }

@@ -2,10 +2,18 @@ import { Change } from '../../../pages/mod/pack/types/Change';
 import APIClient from '../../APIClient';
 
 export default async function SavePackChangesRequest(changes: Change[]) {
-    await APIClient.post(`/packs/levels`, changes.map((c) => ({
-        LevelID: c.LevelID,
-        PackID: c.PackID,
-        Type: c.Type,
-        EX: c.EX,
-    })));
+    const additions = changes.filter((c) => c.Type === 'add');
+    const removals = changes.filter((c) => c.Type === 'remove');
+
+    if (additions.length > 0) await APIClient.put(`/packs/level/batch`, {
+        changes: additions.map((c) => ({
+            LevelID: c.LevelID,
+            PackID: c.PackID,
+            EX: c.EX,
+        })),
+    });
+
+    for (const removal of removals) {
+        await APIClient.delete(`/packs/${removal.PackID}/levels/${removal.LevelID}`);
+    }
 }

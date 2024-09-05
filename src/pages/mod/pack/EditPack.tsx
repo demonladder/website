@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetSinglePack from '../../../api/pack/requests/GetSinglePack';
+import { useQueryClient } from '@tanstack/react-query';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
-import { PackLevel } from '../../../api/packs/types/PackLevel';
 import useSessionStorage from '../../../hooks/useSessionStorage';
-import useLevelSearch from '../../../hooks/useLevelSearch';
 import renderToastError from '../../../utils/renderToastError';
 import { Change } from './types/Change';
 import SavePackChangesRequest from '../../../api/packs/requests/SavePackChangesRequest';
 import usePackSearch from '../../../hooks/usePackSearch';
 import CreatePackRequest from '../../../api/pack/requests/CreatePackRequest';
 import DeletePackRequest from '../../../api/pack/requests/DeletePackRequest';
-import { TextInput } from '../../../components/Input';
 import Meta from './Meta';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import usePack from '../../../hooks/api/usePack';
+import List from './List';
+import { GetPackLevelsResponse as PackLevel } from '../../../api/pack/requests/GetPackLevels';
 
 function checkChangeEquality(change1: Change, change2: Change): boolean {
     return change1.LevelID === change2.LevelID && change1.PackID === change2.PackID && change1.Type === change2.Type;
@@ -25,15 +25,11 @@ export default function EditPack() {
         searchQuery,
         SearchBox: PackSearchBox,
     } = usePackSearch({ ID: 'editPacksSearch' });
-    const addLevelSearch = useLevelSearch({ ID: 'editPacksAddSearch' });
     const [changeList, setChangeList] = useSessionStorage<Change[]>('editPackChangeList', []);
     const [isLoading, setIsLoading] = useState(false);
-    const [levelFilter, setLevelFilter] = useState('');
 
     const queryClient = useQueryClient();
-    const { data } = useQuery({
-        queryKey: ['packs', packResult?.ID],
-        queryFn: () => GetSinglePack(packResult?.ID || 0),
+    const { data } = usePack(packResult?.ID || 0, {
         enabled: packResult !== undefined,
     });
 
@@ -62,7 +58,7 @@ export default function EditPack() {
         };
 
         // No duplicates
-        if (changeList.find((c) => checkChangeEquality(c, newChange))) return;
+        if (changeList.find((c) => checkChangeEquality(c, newChange))) return toast.error('Level already in changelist');
 
         setChangeList((prev) => [
             ...prev,
@@ -70,19 +66,14 @@ export default function EditPack() {
         ]);
     }
 
-    function addLevel(EX = false) {
+    function addLevel(levelID: number, levelName: string, EX = false) {
         if (packResult === undefined) return;
-        if (addLevelSearch.activeLevel === undefined) return;
-
-        // Level must not be in pack
-        const addResult = addLevelSearch.activeLevel;
-        if (data?.Levels.find((l) => l.LevelID === addResult.ID)) return;
 
         const newChange: Change = {
             PackID: packResult.ID,
             PackName: packResult.Name,
-            LevelID: addResult.ID,
-            LevelName: addResult.Meta.Name,
+            LevelID: levelID,
+            LevelName: levelName,
             Type: 'add',
             EX,
         }
@@ -136,8 +127,8 @@ export default function EditPack() {
         });
     
         void toast.promise(request, {
-            pending: 'Saving...',
-            success: 'Saved',
+            pending: 'Creating...',
+            success: 'Created',
             error: renderToastError,
         });
     }
@@ -162,7 +153,7 @@ export default function EditPack() {
         <div>
             <h3 className='mb-3 text-2xl'>Edit Pack</h3>
             <div className='mb-4'>
-                <label>Pack:</label>
+                <FormInputLabel htmlFor='editPacksSearch'>Search</FormInputLabel>
                 <div className='flex'>
                     <div className='grow'>
                         {PackSearchBox}
@@ -173,28 +164,12 @@ export default function EditPack() {
             {hasContent &&
                 <div>
                     <Meta packID={packResult.ID} />
-                    <div className='mb-6'>
-                        <div className='divider my-4'></div>
-                        <h3 className='text-xl'>Levels:</h3>
-                        <div className='mb-4'>
-                            {addLevelSearch.SearchBox}
-                            <PrimaryButton onClick={() => addLevel()} className='me-2'>Add</PrimaryButton>
-                            <PrimaryButton onClick={() => addLevel(true)}>Add EX</PrimaryButton>
-                        </div>
-                        <div>
-                            <TextInput value={levelFilter} onChange={(e) => setLevelFilter(e.target.value)} placeholder='Filter levels' />
-                            <ul className='grid grid-cols-3 gap-2'>
-                                {data.Levels.filter((l) => levelFilter === '' || l.Name.toLowerCase().startsWith(levelFilter)).map((l) => (
-                                    <Level level={l} onRemove={removeLevel} key={'pack_' + data.ID.toString() + '_' + l.LevelID.toString()}/>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+                    <List packID={packResult.ID} addLevel={addLevel} removeLevel={removeLevel} />
                 </div>
             }
             {changeList.length > 0 &&
                 <div>
-                    <div className='divider my-4'></div>
+                    <div className='divider my-8'></div>
                     <h3 className='text-xl'>Changelog</h3>
                     {getIndividualPacks().map((pack) => (
                         <div className='mb-2' key={`packChange_${pack[0]?.PackID || 0}`}>
@@ -210,7 +185,7 @@ export default function EditPack() {
             }
             {hasContent &&
                 <div>
-                    <div className='divider my-4'></div>
+                    <div className='divider my-8'></div>
                     <DangerButton onClick={deletePack}>Delete pack</DangerButton>
                 </div>
             }
@@ -218,11 +193,11 @@ export default function EditPack() {
     );
 }
 
-function Level({ level, onRemove }: { level: PackLevel, onRemove: (levelID: PackLevel) => void }) {
+export function Level({ level, onRemove }: { level: PackLevel, onRemove: () => void }) {
     return (
         <li>
-            <DangerButton className='me-1' onClick={() => onRemove(level)}>X</DangerButton>
-            <span>{level.Name} {level.EX === 1 && 'EX'}</span>
+            <DangerButton className='me-1' onClick={() => onRemove()}>X</DangerButton>
+            <span>{level.Name} {level.EX === 1 && '[EX]'}</span>
         </li>
     );
 }
