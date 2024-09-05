@@ -62,6 +62,7 @@ import Compare from './pages/root/compare/Compare';
 import Generators from './pages/root/generators/Generators';
 import Alphabet from './pages/root/generators/alphabet/Alphabet';
 import Roulette from './pages/root/generators/roulette/Roulette';
+import BulkSubmit from './pages/root/bulkSubmit/BulkSubmit';
 
 const router = createBrowserRouter(
     [
@@ -187,6 +188,10 @@ const router = createBrowserRouter(
                             element: <Roulette />,
                         },
                     ],
+                },
+                {
+                    path: 'bulkSubmit',
+                    element: <BulkSubmit />,
                 },
                 {
                     path: '/mod',
