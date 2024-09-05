@@ -63,10 +63,12 @@ export default function BulkSubmit() {
                 toast.success('All submissions were successful');
                 setSubmissions('');
             } else {
-                toast.success(`Successfully submitted ${submissions.length - failedSubmissions.length} submissions`);
+                const successAmount = submissions.length - failedSubmissions.length;
+                if (successAmount > 0) toast.success(`Successfully submitted ${successAmount} submissions`);
+                else toast.error('No submissions were successful');
                 // Exclude failed submissions from the list
                 setSubmissions(submissions
-                    .filter((s) => failedSubmissions.some((f) => f.levelID === s.levelID && f.levelName === s.levelName && f.creator === s.creator))
+                    .filter((s) => failedSubmissions.some((f) => f.levelID === s.levelID || (s.levelID === undefined && f.levelName === s.levelName && f.creator === s.creator)))
                     .map((s) => `${s.levelID ?? `${s.levelName} ${s.creator}`} ${s.tier ?? '-'} ${s.enjoyment ?? '-'} ${s.FPS} ${s.device ?? '-'} ${s.videoProof ?? '-'}`)
                     .join('\n')
                 );
