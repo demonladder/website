@@ -58,7 +58,6 @@ import ModalProvider from './context/ModalProvider';
 import Roles from './pages/mod/roles/Roles';
 import EditRole from './pages/mod/roles/EditRole';
 import ForgotPassword from './pages/root/forgotPassword/ForgotPassword';
-import Compare from './pages/root/compare/Compare';
 import Generators from './pages/root/generators/Generators';
 import Alphabet from './pages/root/generators/alphabet/Alphabet';
 import Roulette from './pages/root/generators/roulette/Roulette';
@@ -170,10 +169,6 @@ const router = createBrowserRouter(
                 {
                     path: 'forgotPassword',
                     element: <ForgotPassword />,
-                },
-                {
-                    path: 'compare',
-                    element: <Compare />,
                 },
                 {
                     path: 'generators',
