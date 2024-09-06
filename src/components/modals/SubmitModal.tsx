@@ -66,6 +66,10 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const [progress, setProgress] = useState('');
     const [attempts, setAttempts] = useState('');
     const [wasSolo, setWasSolo] = useState(true);
+    const [randomAttempts] = useState(((x) => {
+        if (!x) x = Math.random() + 4.5;
+        return 15 * x**2 + 200 + (Math.random() * 2 - 1) * x**0.5 * 100;
+    })(level.Rating));
 
     const { data: userSubmission } = useQuery({
         queryKey: ['submission', level.ID, StorageManager.getUser()?.ID],
@@ -227,7 +231,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     </div>
                     <div>
                         <FormInputLabel>Attempts</FormInputLabel>
-                        <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} placeholder='7649' />
+                        <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} placeholder={randomAttempts.toFixed()} />
                         <FormInputDescription>Optional. How many attempts it took you to beat this level.</FormInputDescription>
                     </div>
                     {level.Meta.IsTwoPlayer &&
