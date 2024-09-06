@@ -1,10 +1,10 @@
 import DemonLogo from '../../../components/DemonLogo';
 import { Link } from 'react-router-dom';
 import StorageManager from '../../../utils/StorageManager';
-import { useQuery } from '@tanstack/react-query';
-import GetDiscordUser from '../../../api/user/GetDiscordUser';
 import NotificationButton from '../../../components/ui/Notifications';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
+import useNavbarNotification from '../../../context/NavbarNotification/useNavbarNotification';
+import { useEffect } from 'react';
 
 export default function ProfileButtons() {
     const user = StorageManager.getUser();
@@ -17,14 +17,16 @@ export default function ProfileButtons() {
 }
 
 function ProfileButton({ userID, username }: { userID: number, username: string }) {
-    const { data: discordData } = useQuery({
-        queryKey: ['user', userID, 'discord'],
-        queryFn: () => GetDiscordUser(userID),
-    });
-
     const { data: userData } = useUserQuery(userID);
 
-    const pfp = `https://cdn.discordapp.com/avatars/${discordData?.ID}/${discordData?.Avatar}.png`;
+    const { discordSync } = useNavbarNotification();
+    useEffect(() => {
+        if (userData !== undefined && userData.DiscordData === null) {
+            discordSync();
+        }
+    }, [userData]);
+
+    const pfp = `https://cdn.discordapp.com/avatars/${userData?.DiscordData?.ID}/${userData?.DiscordData?.Avatar}.png`;
 
     return (
         <div className='flex items-center gap-1'>
@@ -35,7 +37,7 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
             <Link to={`/profile/${userID}`} className='flex items-center'>
                 <span className='fs-5'>{username}</span>
                 <div className='ms-3 w-16'>
-                    {discordData?.Avatar
+                    {userData?.DiscordData?.Avatar
                         ? <img src={pfp || ''} className='rounded-full' />
                         : <DemonLogo diff={userData?.Hardest?.Meta.Difficulty} />
                     }

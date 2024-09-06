@@ -6,6 +6,7 @@ import { useCallback, useRef } from 'react';
 import useResizeObserver from '@react-hook/resize-observer';
 import noise3D from '../../utils/noise/noise3D';
 import StorageManager from '../../utils/StorageManager';
+import NavbarNotificationRenderer from '../../context/NavbarNotification/NavbarNotificationRenderer';
 
 // function getBrowserName() {
 //     const browserInfo = navigator.userAgent;
@@ -130,6 +131,7 @@ export default function Root() {
                 <title>GD Demon Ladder</title>
             </Helmet>
             <Header />
+            <NavbarNotificationRenderer />
             <main className='flex-grow over'>
                 <Outlet />
             </main>

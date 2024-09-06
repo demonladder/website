@@ -62,6 +62,7 @@ import Generators from './pages/root/generators/Generators';
 import Alphabet from './pages/root/generators/alphabet/Alphabet';
 import Roulette from './pages/root/generators/roulette/Roulette';
 import BulkSubmit from './pages/root/bulkSubmit/BulkSubmit';
+import NavbarNotificationProvider from './context/NavbarNotification/NavbarNotificationProvider';
 
 const router = createBrowserRouter(
     [
@@ -318,8 +319,10 @@ root.render(
             <HelmetProvider>
                 <MenuContextProvider>
                     <ModalProvider>
-                        <RouterProvider router={router} />
-                        <ReactQueryDevtools initialIsOpen={false} />
+                        <NavbarNotificationProvider>
+                            <RouterProvider router={router} />
+                            <ReactQueryDevtools initialIsOpen={false} />
+                        </NavbarNotificationProvider>
                     </ModalProvider>
                 </MenuContextProvider>
             </HelmetProvider>
