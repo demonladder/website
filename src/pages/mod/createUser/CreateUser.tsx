@@ -3,6 +3,7 @@ import { PrimaryButton } from '../../../components/Button';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
 import APIClient from '../../../api/APIClient';
+import renderToastError from '../../../utils/renderToastError';
 
 export default function CreateUser() {
     const nameRef = useRef<HTMLInputElement>(null);
@@ -16,10 +17,10 @@ export default function CreateUser() {
             return toast.error('Name can\'t be empty');
         }
 
-        toast.promise(APIClient.post('/user', { username: nameRef.current.value }), {
+        toast.promise(APIClient.post('/user', { name: nameRef.current.value }), {
             pending: 'Creating user...',
             success: 'User created!',
-            error: 'An error occurred',
+            error: renderToastError,
         });
     }
 
