@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import GetList from '../../../api/list/GetList';
 import MoveListLevel from '../../../api/list/MoveListLevel';
 import renderToastError from '../../../utils/renderToastError';
-import { DangerButton } from '../../../components/Button';
 import StorageManager from '../../../utils/StorageManager';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
 
@@ -48,8 +47,8 @@ export interface IListLevel {
 }
 
 export default function List() {
-    const { listID } = useParams();
-    const validListID = !(listID === undefined || !parseInt(listID));
+    const listID = parseInt(useParams().listID ?? '');
+    const validListID = !isNaN(listID);
     const [isDragLocked, setIsDragLocked] = useState(false);
 
     const openDeleteModal = useDeleteListModal();
@@ -58,7 +57,7 @@ export default function List() {
 
     const { data: list } = useQuery({
         queryKey: ['list', listID],
-        queryFn: () => GetList(parseInt(listID as unknown as string)),
+        queryFn: () => GetList(listID),
         enabled: validListID,
     });
 

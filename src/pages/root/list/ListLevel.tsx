@@ -4,6 +4,11 @@ import { IListLevel } from './List';
 import List from '../../../api/types/compounds/List';
 import { useRef, useState } from 'react';
 import StorageManager from '../../../utils/StorageManager';
+import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
+import { toast } from 'react-toastify';
+import RemoveLevel from '../../../api/list/RemoveLevel';
+import renderToastError from '../../../utils/renderToastError';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
     list: List;
@@ -16,6 +21,8 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
     const [isDragged, setIsDragged] = useState(false);
     const [dragOver, setDragOver] = useState(false);
     const itemRef = useRef<HTMLLIElement>(null);
+    const { createMenu } = useContextMenu();
+    const queryClient = useQueryClient();
 
     const isListOwner = list.OwnerID === StorageManager.getUser()?.ID;
 
@@ -65,8 +72,33 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
         (e.currentTarget as HTMLLIElement).parentNode?.insertBefore(itemRef.current, (e.currentTarget as HTMLLIElement));
     }
 
+    function onRemoveLevel() {
+        toast.promise(RemoveLevel(list.ID, listLevel.LevelID).then(() => {
+            queryClient.invalidateQueries(['list', list.ID]);
+            queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
+        }), {
+            pending: 'Removing level...',
+            success: 'Level removed',
+            error: renderToastError,
+        });
+    }
+
+    function openContext(e: React.MouseEvent<HTMLLIElement>) {
+        e.preventDefault();
+
+        const buttons: ButtonData[] = [
+            { type: 'danger', text: 'Remove', onClick: onRemoveLevel },
+        ];
+
+        createMenu({
+            x: e.clientX,
+            y: e.clientY,
+            buttons,
+        });
+    }
+
     return (
-        <li ref={itemRef} id={listLevel.LevelID.toString()} draggable={true} onDragStart={dragStartHandler} onDragEnd={dragStopHandler} onDragOver={dragOverHandler} onDragLeave={dragLeaveHandler} onDrop={(e) => dropHandler(e)} className={isDragged ? 'opacity-0' : (dragOver ? 'opacity-50' : '')}>
+        <li ref={itemRef} id={listLevel.LevelID.toString()} draggable={true} onDragStart={dragStartHandler} onDragEnd={dragStopHandler} onDragOver={dragOverHandler} onDragLeave={dragLeaveHandler} onDrop={(e) => dropHandler(e)} className={isDragged ? 'opacity-0' : (dragOver ? 'opacity-50' : '')} onContextMenu={openContext}>
             <div className='grid grid-cols-12 max-xl:gap-2 group/menu'>
                 <div className={`self-center text-center col-span-1 ${isListOwner ? 'cursor-grab' : ''}`}>
                     {isListOwner

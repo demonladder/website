@@ -106,7 +106,7 @@ function InlineList({ levels, userID }: { levels: (UserSubmission)[], userID: nu
             x: e.clientX,
             y: e.clientY,
             buttons,
-        })
+        });
     }
 
     return (
