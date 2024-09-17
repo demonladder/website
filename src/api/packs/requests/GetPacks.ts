@@ -4,7 +4,7 @@ import PackCategory from '../../types/PackCategory';
 import PackMeta from '../../types/PackMeta';
 
 export interface GetPacksResponse {
-    packs: (Pack & { Meta: PackMeta | null })[];
+    packs: (Pack & { Meta: PackMeta | null, Completed: 0 | 1 })[];
     categories: PackCategory[];
 }
 

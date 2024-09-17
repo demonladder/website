@@ -3,7 +3,7 @@ import GetPackLeaders from '../../../api/packs/requests/GetPackLeaders';
 import { Leader } from '../../../api/packs/types/Leader';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { Link } from 'react-router-dom';
-import PackResponse from '../../../api/pack/responses/PackResponse';
+import usePackLevels from '../../../hooks/api/usePackLevels';
 
 function LeaderboardEntry({ data, highestScore }: { data: Leader, highestScore?: number }) {
     if (highestScore === undefined) return (<LoadingSpinner />);
@@ -39,11 +39,9 @@ export default function Leaderboard({ packID }: { packID?: number }) {
         queryFn: () => GetPackLeaders(packID),
     });
 
-    const { data } = useQuery<PackResponse>({
-        queryKey: ['packs', packID],
-    });
+    const { data: levels } = usePackLevels(packID);
 
-    const highestScore = ((data?.Levels.length || 0) * 100) || packLeaders?.leaderboard?.reduce((prev, curr) => {
+    const highestScore = ((levels?.length ?? 0) * 100) || packLeaders?.leaderboard?.reduce((prev, curr) => {
         if (prev < curr.Sum) return curr.Sum;
         return prev;
     }, packLeaders.leaderboard[0].Sum);
