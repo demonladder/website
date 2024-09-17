@@ -107,6 +107,11 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 toast.error('Rating must be between 1 and 35!');
                 return;
             }
+
+            if (rating >= 21 && !proof) {
+                toast.error('Proof is required if you want to rate a level 21 or higher!');
+                return;
+            }
         } else if (enjoyment === undefined || enjoyment === -1) {
             return toast.error('Rating and enjoyment can\'t both be empty!');
         }
