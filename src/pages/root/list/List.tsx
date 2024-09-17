@@ -102,7 +102,7 @@ export default function List() {
                         <p><i>This list doesn't have any levels yet</i></p>
                     )}
                     {list.OwnerID === StorageManager.getUser()?.ID &&
-                        <DangerButton onClick={() => openDeleteModal(list)} className='mt-4'>Delete list</DangerButton>
+                        <button onClick={() => openDeleteModal(list)} className='mt-4 text-red-500 underline-t'>Delete list</button>
                     }
                 </>
             }
