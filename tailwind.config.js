@@ -70,6 +70,9 @@ export default {
                     144: '#00ff00',
                     240: '#00ffff',
                     360: '#000000',
+                },
+                role: {
+                    listHelper: '#9bff99',
                 }
             },
         },

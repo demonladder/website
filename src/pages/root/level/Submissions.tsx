@@ -6,12 +6,17 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import GetLevelSubmissions, { Submission as ISubmission } from '../../../api/submissions/GetLevelSubmissions';
+import useUserPermissions from '../../../hooks/useUserPermissions';
+import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 
 type Props = {
     submission: ISubmission,
 }
 
 function Submission({ submission }: Props) {
+    const permissions = useUserPermissions(submission.User);
+    const isStaff = (permissions & PermissionFlags.STAFF_DASHBOARD) !== 0;
+
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
 
@@ -31,7 +36,7 @@ function Submission({ submission }: Props) {
         <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
             <Link className={`w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
             <Link className={`w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
-            <Link className='p-2 flex-grow bg-gray-500' to={linkDestination}>{submission.User.Name}</Link>
+            <Link className={'p-2 flex-grow bg-gray-500' + (isStaff ? ' text-role-listHelper font-bold' : '')} to={linkDestination}>{submission.User.Name}</Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&
