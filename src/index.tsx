@@ -63,6 +63,7 @@ import Alphabet from './pages/root/generators/alphabet/Alphabet';
 import Roulette from './pages/root/generators/roulette/Roulette';
 import BulkSubmit from './pages/root/bulkSubmit/BulkSubmit';
 import NavbarNotificationProvider from './context/NavbarNotification/NavbarNotificationProvider';
+import TierRoulette from './pages/root/generators/tierRoulette/TierRoulette';
 
 const router = createBrowserRouter(
     [
@@ -182,6 +183,10 @@ const router = createBrowserRouter(
                         {
                             path: 'roulette',
                             element: <Roulette />,
+                        },
+                        {
+                            path: 'tierRoulette',
+                            element: <TierRoulette />,
                         },
                     ],
                 },
