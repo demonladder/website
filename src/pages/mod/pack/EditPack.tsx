@@ -52,7 +52,7 @@ export default function EditPack() {
             PackID: packResult.ID,
             PackName: packResult.Name,
             LevelID: level.LevelID,
-            LevelName: level.Name,
+            LevelName: level.Level.Meta.Name,
             Type: 'remove',
             EX: level.EX === 1,
         };
@@ -197,7 +197,7 @@ export function Level({ level, onRemove }: { level: PackLevel, onRemove: () => v
     return (
         <li>
             <DangerButton className='me-1' onClick={() => onRemove()}>X</DangerButton>
-            <span>{level.Name} {level.EX === 1 && '[EX]'}</span>
+            <span>{level.Level.Meta.Name} {level.EX === 1 && '[EX]'}</span>
         </li>
     );
 }

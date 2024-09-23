@@ -10,5 +10,5 @@ export default function useUserPermissions(user?: User): number {
         .map(Number)
         .map((ID) => roles.find((r) => r.ID === ID)?.PermissionBitField)
         .filter((p) => p !== undefined)
-        .reduce((acc, p) => acc | p, 0);
+        .reduce((acc, p) => (acc as number) | (p as number), 0) as number;  // I literally don't know why tsc can't infer this type
 }

@@ -11,7 +11,7 @@ import GetPackLevels from '../../../../api/pack/requests/GetPackLevels';
 // import GDDLP from './GDDLP';
 
 export default function PackOverview() {
-    const packID = parseInt('' + useParams().packID) || 0;
+    const packID = parseInt(useParams().packID ?? '') || 0;
     const { status, data: pack } = useQuery({
         queryKey: ['packs', packID],
         queryFn: () => GetSinglePack(packID),
@@ -19,7 +19,7 @@ export default function PackOverview() {
     const { status: levelStatus, data: packLevels } = useQuery({
         queryKey: ['packs', packID, 'levels'],
         queryFn: () => GetPackLevels(packID),
-    })
+    });
 
     const [isList, viewButtons] = useLevelView();
 

@@ -6,18 +6,23 @@ import Container from '../../../../components/Container';
 import Level from '../../../../components/Level';
 import useLevelView from '../../../../hooks/useLevelView';
 import { GridLevel } from '../../../../components/GridLevel';
+import GetCrossroadsPackLevels from '../../../../api/pack/requests/GetCrossroadsPackLevels';
 
 export default function CrossroadPack() {
     const { status, data: pack } = useQuery({
         queryKey: ['packs', 78],
         queryFn: () => GetSinglePack(78),
     });
+    const { status: levelStatus, data: packLevels } = useQuery({
+        queryKey: ['packs', 78, 'levels'],
+        queryFn: GetCrossroadsPackLevels,
+    });
 
     const [isList, viewButtons] = useLevelView();
 
-    if (status === 'loading') {
+    if (status === 'loading' || levelStatus === 'loading') {
         return <LoadingSpinner />;
-    } else if (status === 'error') {
+    } else if (status === 'error' || levelStatus === 'error') {
         return (
             <Container className='bg-gray-800'>
                 <h1>An error occurred</h1>
@@ -25,7 +30,7 @@ export default function CrossroadPack() {
         )
     }
 
-    const allTypes = pack.Levels.map((l) => l.Path).filter((t) => t !== undefined) as string[];
+    const allTypes = packLevels.map((l) => l.Path).filter((t) => t !== undefined);
     const types = allTypes.filter((t, i) => allTypes.indexOf(t) === i);
     
     return (
@@ -56,12 +61,12 @@ export default function CrossroadPack() {
                         {isList
                             ? (<div className='level-list mb-8'>
                                 <Level.Header />
-                                {pack.Levels.filter((lvl) => lvl.Path === t).sort((a, b) => (a.Rating || 0) - (b.Rating || 0)).map((l) => (
+                                {packLevels.filter((lvl) => lvl.Path === t).sort((a, b) => (a.Rating || 0) - (b.Rating || 0)).map((l) => (
                                     <Level ID={l.LevelID} rating={l.Rating} enjoyment={l.Enjoyment} name={l.Name} creator={l.Creator} songName={l.Song} key={l.LevelID} />
                                 ))}
                             </div>)
                             : (<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8'>
-                                {pack.Levels.filter((lvl) => lvl.Path === t).sort((a, b) => (a.Rating || 0) - (b.Rating || 0)).map((l) => (
+                                {packLevels.filter((lvl) => lvl.Path === t).sort((a, b) => (a.Rating || 0) - (b.Rating || 0)).map((l) => (
                                     <GridLevel ID={l.LevelID} rating={l.Rating} enjoyment={l.Enjoyment} name={l.Name} creator={l.Creator} difficulty={l.Difficulty} inPack={false} key={l.LevelID} />
                                 ))}
                             </div>)

@@ -33,8 +33,8 @@ export default function List({ addLevel, packID, removeLevel }: Props) {
             </div>
             <div>
                 <ul className='grid grid-cols-3 gap-2'>
-                    {data?.filter((l) => levelFilter === '' || l.Name.toLowerCase().startsWith(levelFilter)).map((l) => (
-                        <Level level={l} onRemove={() => removeLevel(l)} key={'pack_' + packID + '_' + l.LevelID.toString()} />
+                    {data?.filter((l) => levelFilter === '' || l.Level.Meta.Name.toLowerCase().startsWith(levelFilter)).map((l) => (
+                        <Level level={l} onRemove={() => removeLevel(l)} key={`pack_${packID}_${l.LevelID}`} />
                     ))}
                 </ul>
             </div>
