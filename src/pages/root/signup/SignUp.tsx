@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import StorageManager from '../../../utils/StorageManager';
 import APIClient from '../../../api/APIClient';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
@@ -8,6 +7,7 @@ import { PrimaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputDescription from '../../../components/form/FormInputDescription';
+import FormInputLabel from '../../../components/form/FormInputLabel';
 
 export function validateUsername(name: string): boolean {
     return name.match(/[a-zA-Z0-9._]{2,32}/)?.[0] === name;
@@ -48,8 +48,6 @@ export default function SignUp() {
             overrideKey,
         }).then((response) => {
             if (response.status === 200) {
-                StorageManager.setUser(response.data);
-
                 navigate(-1);
             }
 
@@ -73,17 +71,17 @@ export default function SignUp() {
                     }
                     <form method='post' action='/signup'>
                         <div className='mb-3'>
-                            <label htmlFor='username'>Username</label>
+                            <FormInputLabel htmlFor='username'>Username</FormInputLabel>
                             <TextInput id='username' value={username} onChange={(e) => overrideKey === null && setUsername(e.target.value)} invalid={!validateUsername(username)} name='username' />
                             <p className='text-gray-400 text-sm'>Name must be between 2 and 32 characters. It can only contain the following characters: <code>{'a-Z 0-9 . _'}</code></p>
                         </div>
                         <div className='mb-3'>
-                            <label htmlFor='password'>Password</label>
-                            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value.trim())} id='password' name='password' autoComplete='new-password' required />
+                            <FormInputLabel htmlFor='password'>Password</FormInputLabel>
+                            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value.trim())} id='password' name='password' autoComplete='new-password' invalid={password.length < 7} required />
                             <FormInputDescription>Passwords must be at least 7 characters long</FormInputDescription>
                         </div>
                         <div className='mb-3'>
-                            <label htmlFor='confirmPassword'>Confirm password</label>
+                            <FormInputLabel htmlFor='confirmPassword'>Confirm password</FormInputLabel>
                             <PasswordInput ref={password2Ref} id='confirmPassword' name='password2' autoComplete='new-password' required />
                         </div>
                         <PrimaryButton type='submit' onClick={handleSubmit} className='w-full'>Sign Up</PrimaryButton>

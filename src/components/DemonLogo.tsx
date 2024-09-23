@@ -40,9 +40,3 @@ export function DifficultyToImgSrc(diff: string|number) {
             return '/assets/images/demon_logos/exdemon.png';
     }
 }
-
-export function tierToIcon(tier: number) {
-    if (!tier) return <DemonLogo diff={tier} />;
-
-    return <DemonLogo diff={Math.min(Math.floor(tier / 5), 4) + 1} />;
-}

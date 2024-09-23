@@ -1,24 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
-import GetDiscordUser from '../api/user/GetDiscordUser';
 import DemonLogo from './DemonLogo';
-import StorageManager from '../utils/StorageManager';
+import useUser from '../hooks/useUser';
 
-export default function DiscordProfilePicture({ userID }: { userID: number }) {
-    const { data, isError } = useQuery({
-        queryKey: ['discordUser', userID],
-        queryFn: () => GetDiscordUser(userID),
-    });
-
-    if (isError) return;
-    if (data === undefined) return;
-
-    const user = StorageManager.getUser();
+export default function DiscordProfilePicture() {
+    const session = useUser();
 
     return (
         <div>
-            {data !== undefined
-                ? <img src={`https://cdn.discordapp.com/avatars/${data.ID}/${data.Avatar}.png`} className='rounded-full' />
-                : <DemonLogo diff={user?.Hardest} />
+            {session.user?.DiscordData?.ID && session.user?.DiscordData?.Avatar
+                ? <img src={`https://cdn.discordapp.com/avatars/${session.user.DiscordData.ID}/${session.user.DiscordData.Avatar}.png`} className='rounded-full' />
+                : <DemonLogo diff={session.user?.Hardest?.Meta.Difficulty} />
             }
         </div>
     );

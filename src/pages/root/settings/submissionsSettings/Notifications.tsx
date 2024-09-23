@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import CheckBox from '../../../../components/input/CheckBox';
 import { PrimaryButton } from '../../../../components/Button';
-import StorageManager from '../../../../utils/StorageManager';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import UpdateSubmissionSettings, { BitField } from '../../../../api/user/UpdateWants';
@@ -9,6 +8,7 @@ import renderToastError from '../../../../utils/renderToastError';
 import { NumberInput } from '../../../../components/Input';
 import { validateIntInputChange } from '../../../../utils/validators/validateIntChange';
 import GetWants from '../../../../api/user/GetWants';
+import useUser from '../../../../hooks/useUser';
 
 enum NotificationsBitField {
     Accept = 2 ** 0,
@@ -16,11 +16,11 @@ enum NotificationsBitField {
 }
 
 export default function Notifications() {
-    const user = StorageManager.getUser();
+    const session = useUser();
 
     const queryClient = useQueryClient();
     const { data } = useQuery({
-        queryKey: ['user', user?.ID, 'wants'],
+        queryKey: ['user', session.user?.ID, 'wants'],
         queryFn: GetWants,
     });
 
@@ -55,7 +55,7 @@ export default function Notifications() {
             ? wantBitField.add(NotificationsBitField.DMs)
             : wantBitField.remove(NotificationsBitField.DMs);
 
-        void toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries(['user', user?.ID, 'wants'])), {
+        void toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries(['user', session.user?.ID, 'wants'])), {
             pending: 'Saving...',
             success: 'Saved',
             error: renderToastError,
@@ -68,11 +68,11 @@ export default function Notifications() {
             <b>Notifications</b>
             <div>
                 <label className='flex items-center gap-2 mb-2'>
-                    <CheckBox checked={acceptNotifs} onChange={(e) => setAcceptNotifs(e.target.checked)} disabled={user === null} />
+                    <CheckBox checked={acceptNotifs} onChange={(e) => setAcceptNotifs(e.target.checked)} disabled={session.user === undefined} />
                     Receive notifications when your submissions get accepted
                 </label>
                 <label className='flex items-center gap-2 mb-2'>
-                    <CheckBox checked={DMNotifs} onChange={(e) => setDMNotifs(e.target.checked)} disabled={user === null} />
+                    <CheckBox checked={DMNotifs} onChange={(e) => setDMNotifs(e.target.checked)} disabled={session.user === undefined} />
                     Receive DMs on Discord when your submissions get accepted
                 </label>
                 <div className='mb-2'>
@@ -80,7 +80,7 @@ export default function Notifications() {
                     <NumberInput id='submissionSettingsDMTierLimit' value={DMTierLimit} onChange={(e) => validateIntInputChange(e, setDMTierLimit)} />
                     <p className='text-sm text-gray-400'>You will only receive DMs if the level is above the specified tier</p>
                 </div>
-                {user !== null &&
+                {session.user &&
                     <PrimaryButton onClick={submit}>Save</PrimaryButton>
                 }
             </div>

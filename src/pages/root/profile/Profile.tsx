@@ -9,23 +9,23 @@ import { AxiosError } from 'axios';
 import Container from '../../../components/Container';
 import Tracker from './Tracker';
 import { SecondaryButton } from '../../../components/Button';
-import useLogout from '../../../hooks/useLogout';
 import toFixed from '../../../utils/toFixed';
 import LevelResolvableText from './LevelResolvableText';
 import Rankings from './Rankings';
 import Lists from './Lists';
 import PendingSubmissions from './PendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
+import useUser from '../../../hooks/useUser';
 
 export function profileLoader() {
-    if (StorageManager.hasSession()) return redirect(`/profile/${StorageManager.getUser()?.ID}`);
+    if (StorageManager.hasSession()) return redirect(`/profile/${StorageManager.getUser()!.userID}`);
 
     return redirect('/signup');
 }
 
 export default function Profile() {
     const userID = parseInt('' + useParams().userID) || 0;
-    const logout = useLogout();
+    const session = useUser();
 
     const { status, data: userData, error } = useUserQuery(userID);
 
@@ -60,8 +60,7 @@ export default function Profile() {
         );
     }
 
-    const storedUser = StorageManager.getUser();
-    const ownPage = StorageManager.hasSession() && userID === storedUser?.ID;
+    const ownPage = StorageManager.hasSession() && userID === session.user?.ID;
 
     function calcPref() {
         if (userData === undefined) return '-';
@@ -69,10 +68,10 @@ export default function Profile() {
         const { MinPref: minPref, MaxPref: maxPref } = userData;
 
         if (minPref === null && maxPref === null) return '-';
-        if (minPref !== null && maxPref === null) return '>' + (minPref - 1);
-        if (minPref === null && maxPref !== null) return '<' + (maxPref + 1);
+        if (minPref !== null && maxPref === null) return `>${minPref - 1}`;
+        if (minPref === null && maxPref !== null) return `<${maxPref + 1}`;
 
-        return minPref + ' to ' + maxPref;
+        return `${minPref} to ${maxPref}`;
     }
 
     const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png`;
@@ -94,7 +93,7 @@ export default function Profile() {
                     </span>
                 </h1>
                 <div className='flex gap-2'>
-                    <SecondaryButton onClick={logout} hidden={!ownPage}>Log out</SecondaryButton>
+                    <SecondaryButton onClick={session.logout} hidden={!ownPage}>Log out</SecondaryButton>
                 </div>
             </section>
             <section className='flex max-sm:flex-col'>

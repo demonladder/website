@@ -1,11 +1,11 @@
 import axios, { AxiosError } from 'axios';
-import StorageManager from '../utils/StorageManager';
 import ms from 'ms';
 import _ from 'lodash';
 
 const APIClient = axios.create({
     baseURL: import.meta.env.VITE_SERVER_URL,
     timeout: 10000,
+    withCredentials: true,
 });
 
 APIClient.interceptors.request.use((config) => {
@@ -15,34 +15,12 @@ APIClient.interceptors.request.use((config) => {
         controller.abort();
     }
 
-    const token = StorageManager.getToken();
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-
     if (config.url === (import.meta.env.VITE_SERVER_URL) || config.url?.startsWith('/')) {
         config.headers['X-Access-Token'] = import.meta.env.VITE_ACCESS_TOKEN as string;
     }
 
     config.signal = controller.signal;
     return config;
-});
-
-let refreshAuth: Promise<void> | null = null;
-APIClient.interceptors.response.use(undefined, (error: AxiosError) => {
-    if (error.response?.status !== 401) {
-        return Promise.reject(error);
-    }
-
-    if (refreshAuth === null) refreshAuth = axios.post<string>((import.meta.env.VITE_SERVER_URL) + '/login/refresh', { token: StorageManager.getToken() }).then((res) => {
-        StorageManager.setUser(res.data);
-    }).finally(() => refreshAuth = null).catch(() => Promise.reject(error));
-
-    const originalConfig = error.config;
-    delete originalConfig?.headers.Authorization;
-
-    if (!originalConfig) return Promise.reject(error);
-    return refreshAuth.then(() => APIClient.request(originalConfig))
 });
 
 let errorCounter = 0;
@@ -79,7 +57,7 @@ APIClient.interceptors.response.use(undefined, (error: AxiosError) => {
             ...(error.response.data as object),
             error: 'Open a support thread instead of this nonsense',
         };
-    } else if (errorCounter > 3) {
+    } else if (errorCounter >= 3) {
         error.response.data = {
             ...(error.response.data as object),
             error: 'What part of "try again later" do you not understand?',

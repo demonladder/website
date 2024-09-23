@@ -20,10 +20,13 @@ import Showcase from './Showcase';
 import ExternalLinks from './ExternalLinks';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useSubmitModal from '../../../hooks/modals/useSubmitModal';
+import useUser from '../../../hooks/useUser';
 
 export default function LevelOverview() {
     const [showTwoPlayerStats, _setShowTwoPlayerStats] = useState(false);
     const navigate = useNavigate();
+
+    const session = useUser();
 
     const openAddListLevelModal = useAddListLevelModal();
     const openSubmitModal = useSubmitModal();
@@ -95,8 +98,6 @@ export default function LevelOverview() {
     //     setShowTwoPlayerStats((prev) => !prev);
     // }
 
-    const user = StorageManager.getUser();
-
     return (
         <Container>
             <Helmet>
@@ -128,11 +129,11 @@ export default function LevelOverview() {
                                 <span>[{avgEnjoyment}]</span>
                             </p>
                         </div>
-                        {StorageManager.hasSession() && user &&
+                        {StorageManager.hasSession() && session.user &&
                             <>
                                 <PrimaryButton className='text-lg w-full' onClick={() => openSubmitModal(level)} hidden={!StorageManager.hasSession()}>{voteMeta?.eligible ? 'Edit' : 'Submit'} rating <i className='bx bx-list-plus' /></PrimaryButton>
                                 {/* <PrimaryButton className='text-lg w-full' onClick={() => setShowAddLevelToListModal(true)}>Add to list</PrimaryButton> */}
-                                <PrimaryButton className='text-lg w-full' onClick={() => openAddListLevelModal(user.ID, levelID)}>Add to list</PrimaryButton>
+                                <PrimaryButton className='text-lg w-full' onClick={() => openAddListLevelModal(session.user!.ID, levelID)}>Add to list</PrimaryButton>
                             </>
                         }
                     </div>

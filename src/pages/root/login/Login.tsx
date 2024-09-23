@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import StorageManager from '../../../utils/StorageManager';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/Button';
@@ -8,10 +7,12 @@ import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
+import useUser from '../../../hooks/useUser';
 
 export default function Login() {
     const nameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const session = useUser();
 
     const navigate = useNavigate();
 
@@ -19,12 +20,9 @@ export default function Login() {
         mutationFn: () => toast.promise(APIClient.post<string>('/login', {
             username: nameRef.current?.value,
             password: passwordRef.current?.value,
-        }).then((response) => {
-            if (response.status === 200) {
-                StorageManager.setUser(response.data);
-
-                return navigate('/');
-            }
+        }).then(() => {
+            session.login();
+            navigate('/');
         }), {
             pending: 'Logging in...',
             success: 'Logged in!',

@@ -3,12 +3,12 @@ import DemonLogo from '../../../components/DemonLogo';
 import { IListLevel } from './List';
 import List from '../../../api/types/compounds/List';
 import { useRef, useState } from 'react';
-import StorageManager from '../../../utils/StorageManager';
 import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 import { toast } from 'react-toastify';
 import RemoveLevel from '../../../api/list/RemoveLevel';
 import renderToastError from '../../../utils/renderToastError';
 import { useQueryClient } from '@tanstack/react-query';
+import useUser from '../../../hooks/useUser';
 
 interface Props {
     list: List;
@@ -23,16 +23,17 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
     const itemRef = useRef<HTMLLIElement>(null);
     const { createMenu } = useContextMenu();
     const queryClient = useQueryClient();
+    const session = useUser();
 
-    const isListOwner = list.OwnerID === StorageManager.getUser()?.ID;
+    const isListOwner = list.OwnerID === session.user?.ID;
 
     const fixedRating = listLevel.Level.Rating?.toFixed(2);
     const roundedRating = listLevel.Level.Rating !== null ? Math.round(listLevel.Level.Rating) : -1;
-    const ratingClass = 'tier-' + roundedRating;
+    const ratingClass = `tier-${roundedRating}`;
 
     const fixedEnjoyment = listLevel.Level.Enjoyment?.toFixed(2);
     const roundedEnjoyment = listLevel.Level.Enjoyment !== null ? Math.round(listLevel.Level.Enjoyment) : -1;
-    const enjoymentClass = 'enj-' + roundedEnjoyment;
+    const enjoymentClass = `enj-${roundedEnjoyment}`;
 
     function dragStartHandler(e: React.DragEvent<HTMLLIElement>) {
         if (dragLocked || !isListOwner) {
@@ -73,9 +74,9 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
     }
 
     function onRemoveLevel() {
-        toast.promise(RemoveLevel(list.ID, listLevel.LevelID).then(() => {
-            queryClient.invalidateQueries(['list', list.ID]);
-            queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
+        void toast.promise(RemoveLevel(list.ID, listLevel.LevelID).then(() => {
+            void queryClient.invalidateQueries(['list', list.ID]);
+            void queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
         }), {
             pending: 'Removing level...',
             success: 'Level removed',

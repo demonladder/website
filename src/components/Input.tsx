@@ -5,8 +5,8 @@ export const TextInput = forwardRef<HTMLInputElement, DetailedHTMLProps<InputHTM
     <input {...props} ref={ref} type='text' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />
 ));
 
-export const PasswordInput = forwardRef<HTMLInputElement, DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>((props, ref) => (
-    <input {...props} ref={ref} type='password' className='outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' />
+export const PasswordInput = forwardRef<HTMLInputElement, DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & { invalid?: boolean }>(({ invalid = false, ...props }, ref) => (
+    <input {...props} ref={ref} type='password' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />
 ));
 
 interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -19,7 +19,7 @@ export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disable
     <input {...props} ref={ref} type='number' onKeyDown={preventNonNumericals} className={'outline-none rounded-none caret-current border-b-2 border-current bg-black bg-opacity-20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />
 ));
 
-export interface ICheckboxProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {};
+export type ICheckboxProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
 export function RadioButton(props: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
     return (

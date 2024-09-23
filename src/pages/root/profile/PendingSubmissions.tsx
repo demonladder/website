@@ -104,7 +104,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
             { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
         ];
         if (user.hasPermission(PermissionFlags.EDIT_LIST)) buttons.push({ text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.LevelID, submission.UserID) });
-        if (user.ID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) });
+        if (user.user?.ID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) });
 
         createMenu({
             x: e.clientX,

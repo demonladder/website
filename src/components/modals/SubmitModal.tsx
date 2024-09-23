@@ -17,6 +17,7 @@ import useUserSearch from '../../hooks/useUserSearch';
 import GetSingleSubmission from '../../api/submissions/GetSingleSubmission';
 import FormInputLabel from '../form/FormInputLabel';
 import FormInputDescription from '../form/FormInputDescription';
+import useUser from '../../hooks/useUser';
 
 interface Props {
     level: FullLevel;
@@ -71,10 +72,12 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         return 15 * x**2 + 200 + (Math.random() * 2 - 1) * x**0.5 * 100;
     })(level.Rating));
 
+    const session = useUser();
+
     const { data: userSubmission } = useQuery({
-        queryKey: ['submission', level.ID, StorageManager.getUser()?.ID],
-        queryFn: () => GetSingleSubmission(level.ID, StorageManager.getUser()?.ID),
-        enabled: StorageManager.getUser() !== null,
+        queryKey: ['submission', level.ID, session.user?.ID],
+        queryFn: () => GetSingleSubmission(level.ID, session.user?.ID),
+        enabled: session.user !== undefined,
     });
 
     const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });

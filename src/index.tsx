@@ -35,8 +35,6 @@ import ProfileSettings from './pages/root/settings/profileSettings/ProfileSettin
 import ClientSiteSettings from './pages/root/settings/siteSettings/SiteSettings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
-import axios from 'axios';
-import APIClient from './api/APIClient';
 import UserBans from './pages/mod/userBans/UserBans';
 import EditPack from './pages/mod/pack/EditPack';
 import Settings from './pages/root/settings/Settings';
@@ -294,25 +292,6 @@ function createRoot() {
     root.id = 'root';
     document.body.appendChild(root);
     return root;
-}
-
-window.onload = () => {
-    const fragment = new URLSearchParams(window.location.hash.replace('#', ''));
-    const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
-
-    if (!accessToken || !tokenType) return;
-
-    axios.get('https://discord.com/api/users/@me', {
-        headers: {
-            Authorization: `${tokenType} ${accessToken}`,
-        },
-    }).then((response) => {
-        APIClient.post('/discord/connect', response.data).then(() => location.replace('/')).catch((err) => {
-            if (err) return;
-        });
-    }).catch((err) => {
-        if (err) return;
-    });
 }
 
 const rootElement = document.getElementById('root') || createRoot();

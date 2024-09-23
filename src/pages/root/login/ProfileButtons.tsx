@@ -1,45 +1,45 @@
 import DemonLogo from '../../../components/DemonLogo';
 import { Link } from 'react-router-dom';
-import StorageManager from '../../../utils/StorageManager';
 import NotificationButton from '../../../components/ui/Notifications';
-import useUserQuery from '../../../hooks/queries/useUserQuery';
 import useNavbarNotification from '../../../context/NavbarNotification/useNavbarNotification';
 import { useEffect } from 'react';
+import useUser from '../../../hooks/useUser';
+import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 
 export default function ProfileButtons() {
-    const user = StorageManager.getUser();
+    const session = useUser();
 
-    if (!StorageManager.hasSession() || !user) {
+    if (!session.user) {
         return <LoginButton />
     }
 
-    return <ProfileButton userID={user.ID} username={user.Name} />;
+    return <ProfileButton userID={session.user.ID} username={session.user.Name} />;
 }
 
 function ProfileButton({ userID, username }: { userID: number, username: string }) {
-    const { data: userData } = useUserQuery(userID);
+    const session = useUser();
 
     const { discordSync } = useNavbarNotification();
     useEffect(() => {
-        if (userData !== undefined && userData.DiscordData === null) {
+        if (session.user && !session?.user?.DiscordData) {
             discordSync();
         }
-    }, [userData]);
+    }, [session.user, discordSync]);
 
-    const pfp = `https://cdn.discordapp.com/avatars/${userData?.DiscordData?.ID}/${userData?.DiscordData?.Avatar}.png`;
+    const pfp = `https://cdn.discordapp.com/avatars/${session?.user?.DiscordData?.ID}/${session?.user?.DiscordData?.Avatar}.png`;
 
     return (
         <div className='flex items-center gap-1'>
-            {StorageManager.hasPermissions() &&
+            {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
                 <Link to='/mod'><i className='bx bx-shield-quarter text-2xl'></i></Link>
             }
             <NotificationButton />
             <Link to={`/profile/${userID}`} className='flex items-center'>
                 <span className='fs-5'>{username}</span>
                 <div className='ms-3 w-16'>
-                    {userData?.DiscordData?.Avatar
+                    {session?.user?.DiscordData?.Avatar
                         ? <img src={pfp || ''} className='rounded-full' />
-                        : <DemonLogo diff={userData?.Hardest?.Meta.Difficulty} />
+                        : <DemonLogo diff={session?.user?.Hardest?.Meta.Difficulty} />
                     }
                 </div>
             </Link>

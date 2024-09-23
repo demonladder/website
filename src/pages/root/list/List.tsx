@@ -8,8 +8,8 @@ import { toast } from 'react-toastify';
 import GetList from '../../../api/list/GetList';
 import MoveListLevel from '../../../api/list/MoveListLevel';
 import renderToastError from '../../../utils/renderToastError';
-import StorageManager from '../../../utils/StorageManager';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
+import useUser from '../../../hooks/useUser';
 
 interface Meta {
     ID: number;
@@ -52,6 +52,7 @@ export default function List() {
     const [isDragLocked, setIsDragLocked] = useState(false);
 
     const openDeleteModal = useDeleteListModal();
+    const session = useUser();
 
     const queryClient = useQueryClient();
 
@@ -100,7 +101,7 @@ export default function List() {
                     {list.Levels.length === 0 && (
                         <p><i>This list doesn't have any levels yet</i></p>
                     )}
-                    {list.OwnerID === StorageManager.getUser()?.ID &&
+                    {list.OwnerID === session.user?.ID &&
                         <button onClick={() => openDeleteModal(list)} className='mt-4 text-red-500 underline-t'>Delete list</button>
                     }
                 </>

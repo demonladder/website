@@ -1,12 +1,8 @@
 import { merge } from 'lodash';
+import Cookies from 'js-cookie';
 
 export type User = {
-    ID: number,
-    Name: string,
-    Hardest: number,
-    Permissions: number,
-    iat: number,  // Issued at
-    exp: number,  // Expires at
+    userID: number,
 }
 
 interface Settings {
@@ -34,33 +30,18 @@ function generateDefaultSettings(): Settings {
 
 export default {
     getUser(): User | null {
-        return JSON.parse('' + localStorage.getItem('user'));
-    },
-
-    getToken() {
-        return localStorage.getItem('token');
+        const cookie = Cookies.get(import.meta.env.VITE_SESSION_ID_NAME);
+        if (!cookie) return null;
+        return JSON.parse(atob(cookie)) as User;
     },
 
     hasSession() {
-        const user = this.getUser();
-
-        if (user === null) return false;
-
-        return Date.now() < user.exp * 1000;
-    },
-
-    setUser(jwt: string) {
-        const payload = jwt.split('.')[1];
-        const parsed = JSON.parse(atob(payload));
-        localStorage.setItem('user', JSON.stringify(parsed));
-        localStorage.setItem('token', jwt);
-    },
-
-    hasPermissions() {
-        return (this.getUser()?.Permissions ?? 0) > 0;
+        return Cookies.get('gddl.sid') !== undefined;
     },
 
     deleteSession() {
+        Cookies.remove('gddl.sid');
+        Cookies.remove('gddl.sid.sig');
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken');
         localStorage.removeItem('token');
@@ -99,7 +80,7 @@ export default {
         return merge(
             defaulSettings,
             JSON.parse(storage),
-        );
+        ) as Settings;
     },
 
     setSetting(setting: RecursivePartial<Settings>) {
