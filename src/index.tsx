@@ -62,6 +62,7 @@ import Roulette from './pages/root/generators/roulette/Roulette';
 import BulkSubmit from './pages/root/bulkSubmit/BulkSubmit';
 import NavbarNotificationProvider from './context/NavbarNotification/NavbarNotificationProvider';
 import TierRoulette from './pages/root/generators/tierRoulette/TierRoulette';
+import ChangeLogs from './pages/root/changeLogs/ChangeLogs';
 
 const router = createBrowserRouter(
     [
@@ -191,6 +192,10 @@ const router = createBrowserRouter(
                 {
                     path: 'bulkSubmit',
                     element: <BulkSubmit />,
+                },
+                {
+                    path: 'changeLogs',
+                    element: <ChangeLogs />,
                 },
                 {
                     path: '/mod',

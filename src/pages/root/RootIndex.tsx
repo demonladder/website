@@ -3,19 +3,10 @@ import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
 import { PrimaryButton } from '../../components/Button';
 import IndexStats from './IndexStats';
-import Markdown from 'react-markdown';
-import { useQuery } from '@tanstack/react-query';
-import APIClient from '../../api/APIClient';
-import markdownComponents from '../../utils/markdownComponents';
 import NewLabel from '../../components/NewLabel';
 
 export default function Index() {
     const navigate = useNavigate();
-
-    const { data: markdown } = useQuery({
-        queryKey: ['changelogs'],
-        queryFn: () => APIClient.get<string>('/changelogs').then((res) => res.data),
-    });
 
     return (
         <>
@@ -48,10 +39,6 @@ export default function Index() {
                     <Announcement.DiscordLink />
                 </Container>
                 <IndexStats />
-                <Container>
-                    <p><NewLabel ID='changelogs' /></p>
-                    <Markdown children={markdown} components={markdownComponents} />
-                </Container>
             </main>
         </>
     );
