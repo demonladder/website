@@ -63,6 +63,8 @@ import BulkSubmit from './pages/root/bulkSubmit/BulkSubmit';
 import NavbarNotificationProvider from './context/NavbarNotification/NavbarNotificationProvider';
 import TierRoulette from './pages/root/generators/tierRoulette/TierRoulette';
 import ChangeLogs from './pages/root/changeLogs/ChangeLogs';
+import ReverseRoulette from './pages/root/generators/reverseRoulette/ReverseRoulette';
+import Decathlon from './pages/root/generators/decathlon/Decathlon';
 
 const router = createBrowserRouter(
     [
@@ -184,8 +186,16 @@ const router = createBrowserRouter(
                             element: <Roulette />,
                         },
                         {
+                            path: 'reverseRoulette',
+                            element: <ReverseRoulette />,
+                        },
+                        {
                             path: 'tierRoulette',
                             element: <TierRoulette />,
+                        },
+                        {
+                            path: 'decathlon',
+                            element: <Decathlon />,
                         },
                     ],
                 },

@@ -83,6 +83,9 @@ export default function Roulette() {
             </FormGroup>
             <PrimaryButton onClick={submit} loading={generateMutation.isLoading}>Generate</PrimaryButton>
             <List levels={rouletteLevels} progress={progress} setProgress={setProgress} />
+            {rouletteLevels?.length === progress &&
+                <p className='text-center font-bold py-4'>GG, you beat this roulette!!!</p>
+            }
         </div>
     );
 }
@@ -92,9 +95,9 @@ function List({ levels, progress, setProgress }: { levels?: RouletteResponse[] |
 
     return (
         <ol className='mt-4 text-xl'>{levels.slice(0, progress + 1).map((l, i) => (
-            <li className='even:bg-gray-700 p-4' key={l.ID}>
+            <li className='even:bg-gray-700 px-2 py-4' key={l.ID}>
                 <div className='flex'>
-                    <p className='ps-2 py-1 grow'><b>#{i + 1}</b> <Link to={`/level/${l.ID}`} className='underline'>{l.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
+                    <p className='ps-2 py-1 grow'><b>{i + 1}%</b> <Link to={`/level/${l.ID}`} className='underline'>{l.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
                     <p className={`w-20 text-center py-1 tier-${l.Rating.toFixed()}`}>{l.Rating.toFixed()}</p>
                     <p className={`w-20 text-center py-1 enj-${l.Enjoyment.toFixed()}`}>{l.Enjoyment.toFixed()}</p>
                 </div>
