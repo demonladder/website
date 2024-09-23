@@ -18,7 +18,7 @@ export default function IndexStats() {
     return (
         <Container>
             <h2 className='text-4xl'>Stats</h2>
-            <div className='flex gap-8'>
+            <div className='flex gap-8 flex-wrap'>
                 <div>
                     <h3 className='text-2xl mt-2'>Users</h3>
                     <p>Total users: {anyOrLoading(data?.users)}</p>
