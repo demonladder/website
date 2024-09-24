@@ -13,7 +13,7 @@ export default function useUser() {
         return parsedSessionCookie?.userID;
     }, [sessionCookie]);
 
-    const { data } = useQuery({
+    const { data, status } = useQuery({
         queryKey: ['user', userID],
         queryFn: () => GetUser(userID ?? -1),
         enabled: !!userID,
@@ -41,5 +41,6 @@ export default function useUser() {
         hasPermission,
         login,
         logout,
+        loadStatus: status,
     };
 }
