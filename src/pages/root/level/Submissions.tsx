@@ -8,10 +8,17 @@ import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import GetLevelSubmissions, { Submission as ISubmission } from '../../../api/submissions/GetLevelSubmissions';
 import useUserPermissions from '../../../hooks/useUserPermissions';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import Select from '../../../components/Select';
 
 type Props = {
     submission: ISubmission,
 }
+
+const progressFilterOptions = {
+    victors: 'victors',
+    all: 'all',
+    incomplete: 'users with progress',
+};
 
 function Submission({ submission }: Props) {
     const permissions = useUserPermissions(submission.User);
@@ -56,20 +63,27 @@ function Submission({ submission }: Props) {
 
 export default function Submissions({ level }: { level: FullLevel }) {
     const [page, setPage] = useState(1);
+    const [progressFilterKey, setProgressFilterKey] = useState('victors');
     const { data: submissions, status } = useQuery({
-        queryKey: ['level', level.ID, 'submissions', { page }],
-        queryFn: () => GetLevelSubmissions({ levelID: level.ID, chunk: 24, page }),
+        queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey }],
+        queryFn: () => GetLevelSubmissions({ levelID: level.ID, progressFilter: progressFilterKey, chunk: 24, page }),
     });
 
     return (
         <section className='mt-6'>
-            <h2 className='text-3xl'>{level.SubmissionCount} Submission{level.SubmissionCount !== 1 ? 's' : ''}</h2>
+            <h2 className='text-3xl'>{submissions?.total ?? <LoadingSpinner />} Submission{level.SubmissionCount !== 1 ? 's' : ''}</h2>
             <div>
                 {status === 'loading'
                     ? <LoadingSpinner />
                     : (submissions === undefined
                         ? <p className='mb-0'>This level does not have any submissions</p>
                         : <>
+                            <div className='flex'>
+                                <p className='me-1'>Showing</p>
+                                <div className='max-w-xs grow'>
+                                    <Select options={progressFilterOptions} activeKey={progressFilterKey} onChange={setProgressFilterKey} id='submissionsProgressFilter' />
+                                </div>
+                            </div>
                             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
                                 {submissions.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
                                 {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
