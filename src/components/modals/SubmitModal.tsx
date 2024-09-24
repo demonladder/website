@@ -131,6 +131,11 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             return toast.error('No proof provided!');
         }
 
+        const attemptCount = parseInt(attempts);
+        if (!isNaN(attemptCount) && (attemptCount <= 0 || attemptCount.toString() !== attempts)) {
+            return toast.error('Attempt count must be a whole number greater than 0!');
+        }
+
         const data: SubmittableSubmission = {
             levelID: level.ID,
             rating,
@@ -139,7 +144,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             device: parseInt(deviceKey),
             proof: proof.length > 0 ? proof : undefined,
             progress: parseInt(progress) || 100,
-            attempts: parseInt(attempts) || undefined,
+            attempts: attemptCount,
             isSolo: wasSolo,
             secondPlayerID: secondPlayerSearch.activeUser?.ID,
         };
@@ -147,6 +152,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         void toast.promise(SendSubmission(data).then((data) => {
             if (data?.wasAuto) {
                 void queryClient.invalidateQueries(['level', level.ID]);
+                void queryClient.invalidateQueries(['submission', level.ID, userID]);
                 if (userID !== undefined) void queryClient.invalidateQueries(['user', userID]);
             }
 
