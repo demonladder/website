@@ -10,7 +10,7 @@ import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 export default function ProfileButtons() {
     const session = useUser();
 
-    if (session.loadStatus === 'loading') return <InlineLoadingSpinner />;
+    if (session.hasCookie && session.loadStatus === 'loading') return <InlineLoadingSpinner />;
 
     if (!session.user) {
         return <LoginButton />
@@ -29,7 +29,7 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
         }
     }, [session.user, discordSync]);
 
-    const pfp = `https://cdn.discordapp.com/avatars/${session?.user?.DiscordData?.ID}/${session?.user?.DiscordData?.Avatar}.png`;
+    const pfp = `https://cdn.discordapp.com/avatars/${session?.user?.DiscordData?.ID ?? '-'}/${session?.user?.DiscordData?.Avatar ?? '-'}.png`;
 
     return (
         <div className='flex items-center gap-1'>

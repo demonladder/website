@@ -42,5 +42,6 @@ export default function useUser() {
         login,
         logout,
         loadStatus: status,
+        hasCookie: !!sessionCookie,
     };
 }
