@@ -16,7 +16,7 @@ interface Props {
     remove: (submission: TSubmission, reason?: string) => void;
 }
 
-const denyReasons = {
+const denyReasons: Record<string, string> = {
     'missingProof': 'Missing proof',
     'wrongProof': 'Wrong proof',
     'inaccessibleProof': 'Inaccessible proof',
@@ -58,6 +58,7 @@ export default function Submission({ submission, remove }: Props) {
                 <div className='mb-2'>
                     <p><b>Device:</b> {submission.Device || 'None'}</p>
                     <p><b>Refresh rate:</b> {submission.RefreshRate || 'None'}</p>
+                    <p><b>Progress:</b> {submission.Progress ?? 'None'}</p>
                 </div>
                 <div>
                     <span className='font-bold'>Proof: </span>
@@ -93,7 +94,7 @@ export default function Submission({ submission, remove }: Props) {
                 <Modal.Footer>
                     <div className='flex gap-2 justify-end'>
                         <SecondaryButton onClick={() => setShowDenyReason(false)}>Close</SecondaryButton>
-                        <DangerButton onClick={() => { remove(submission, denyReason !== 'custom' ? denyReason : (reasonRef.current?.value || undefined)); setShowDenyReason(false); }}>Deny</DangerButton>
+                        <DangerButton onClick={() => { remove(submission, denyReason !== 'custom' ? denyReasons[denyReason] : (reasonRef.current?.value || undefined)); setShowDenyReason(false); }}>Deny</DangerButton>
                     </div>
                 </Modal.Footer>
             </Modal>
