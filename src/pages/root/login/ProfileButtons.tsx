@@ -5,9 +5,12 @@ import useNavbarNotification from '../../../context/NavbarNotification/useNavbar
 import { useEffect } from 'react';
 import useUser from '../../../hooks/useUser';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 
 export default function ProfileButtons() {
     const session = useUser();
+
+    if (session.loadStatus === 'loading') return <InlineLoadingSpinner />;
 
     if (!session.user) {
         return <LoginButton />
