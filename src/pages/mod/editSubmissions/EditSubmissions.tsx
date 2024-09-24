@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
@@ -34,7 +34,7 @@ export default function EditSubmission() {
     const [page, setPage] = useState<number>(1);
     const [rating, setRating] = useState<number | null>();
     const [enjoyment, setEnjoyment] = useState<number | null>();
-    const proofRef = useRef<HTMLInputElement>(null);
+    const [proof, setProof] = useState('');
     const [refreshRate, setRefreshRate] = useState<number>();
     const [progress, setProgress] = useState<number>();
     const [attempts, setAttempts] = useState('');
@@ -42,8 +42,8 @@ export default function EditSubmission() {
     const queryClient = useQueryClient();
 
     const { status, data } = useQuery({
-        queryKey: ['level', activeLevel?.ID, 'submissions', { page, username: lateUsernameFilter }],
-        queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page, username: lateUsernameFilter }),
+        queryKey: ['level', activeLevel?.ID, 'submissions', { page, username: lateUsernameFilter, progressFilterKey: 'all' }],
+        queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, chunk: 24, page, username: lateUsernameFilter, progressFilter: 'all' }),
     });
 
     useEffect(() => {
@@ -60,11 +60,9 @@ export default function EditSubmission() {
             return toast.error('You must select a user!');
         }
 
-        if (rating === null || enjoyment === null || proofRef.current === null) {
+        if (rating === null || enjoyment === null) {
             return toast.error('An error occurred');
         }
-
-        const proof = proofRef.current.value;
 
         // Send
         setIsMutating(true);
@@ -93,7 +91,7 @@ export default function EditSubmission() {
         setRating(s.Rating);
         setEnjoyment(s.Enjoyment);
         setRefreshRate(s.RefreshRate);
-        if (proofRef.current !== null) proofRef.current.value = s.Proof ?? '';
+        setProof(s.Proof ?? '');
         setUserResult(s);
         setProgress(s.Progress);
         setAttempts(s.Attempts?.toString() ?? '');
@@ -140,10 +138,10 @@ export default function EditSubmission() {
                     <TextInput value={usernameFilter} onChange={(e) => setUsernameFilter(e.target.value)} placeholder='Filter by user name...' />
                     <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2'>
                         {data?.submissions.map((s) => (
-                            <button className={'flex ps-1 border border-white border-opacity-0 hover:border-opacity-80 transition-colors select-none round:rounded ' + (s.UserID === userResult?.UserID ? 'bg-button-primary-1 font-bold' : 'bg-gray-600')} onClick={() => submissionClicked(s)} key={'edit_' + s.UserID + '_' + s.LevelID}>
+                            <button className={'flex ps-1 border border-white border-opacity-0 hover:border-opacity-80 transition-colors select-none round:rounded ' + (s.UserID === userResult?.UserID ? 'bg-button-primary-1 font-bold' : 'bg-gray-600')} onClick={() => submissionClicked(s)} key={`edit_${s.UserID}_${s.LevelID}`}>
                                 <p className='grow text-start self-center'>{s.User.Name}</p>
-                                <p className={'w-8 py-1 tier-' + (s.Rating !== null ? Math.round(s.Rating) : 0)}>{s.Rating || '-'}</p>
-                                <p className={'w-8 py-1 enj-' + (s.Enjoyment !== null ? Math.round(s.Enjoyment) : -1)}>{s.Enjoyment !== null ? s.Enjoyment : '-'}</p>
+                                <p className={`w-8 py-1 tier-${s.Rating !== null ? Math.round(s.Rating) : 0}`}>{s.Rating || '-'}</p>
+                                <p className={`w-8 py-1 enj-${s.Enjoyment !== null ? Math.round(s.Enjoyment) : -1}`}>{s.Enjoyment !== null ? s.Enjoyment : '-'}</p>
                             </button>
                         ))}
                         {data === undefined && <p>Select a level first</p>}
@@ -174,7 +172,7 @@ export default function EditSubmission() {
                         </FormGroup>
                         <FormGroup>
                             <FormInputLabel htmlFor='addSubmissionProof'>Proof</FormInputLabel>
-                            <TextInput id='addSubmissionProof' ref={proofRef} />
+                            <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} />
                             <FormInputDescription>Optional</FormInputDescription>
                         </FormGroup>
                         <FormGroup>
