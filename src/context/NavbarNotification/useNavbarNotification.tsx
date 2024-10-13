@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { useCallback, useContext } from 'react';
 import { NavbarNotificationContext } from './NavbarNotificationContext';
 import useSyncDiscordModal from '../../hooks/modals/useSyncDiscordModal';
 
@@ -46,6 +47,10 @@ function DiscordSyncNotification({ onClose: close }: { onClose: () => void }) {
 export default function useNavbarNotification() {
     const context = useContext(NavbarNotificationContext);
 
+    const discordSync = useCallback(() => {
+        context.addNotification('discord-sync', <DiscordSyncNotification onClose={() => context.removeNotification('discord-sync')} />);
+    }, [context]);
+
     return {
         info: (message: string) => {
             const ID = crypto.randomUUID();
@@ -59,8 +64,6 @@ export default function useNavbarNotification() {
             const ID = crypto.randomUUID();
             context.addNotification(ID, <ErrorNotification message={message} onClose={() => context.removeNotification(ID)} />);
         },
-        discordSync: () => {
-            context.addNotification('discord-sync', <DiscordSyncNotification onClose={() => context.removeNotification('discord-sync')} />);
-        },
+        discordSync,
     };
 }
