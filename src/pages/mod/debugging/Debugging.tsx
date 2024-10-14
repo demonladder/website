@@ -3,6 +3,8 @@ import { DangerButton, SecondaryButton } from '../../../components/Button';
 import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
 import { BotSettings } from './BotSettings';
+import StatisticLineChart from './StatisticLineChart';
+import { Metrics } from '../../../api/stats/GetStatistic';
 
 export default function Debugging() {
     function handleError() {
@@ -38,6 +40,12 @@ export default function Debugging() {
             </div>
             <div className='divider my-4' />
             <BotSettings />
+            <div className='divider my-4' />
+            <h3 className='text-2xl'>Cool graphs</h3>
+            <div className='grid grid-cols-2 gap-4'>
+                <StatisticLineChart metricName={Metrics.REQUESTS} title='Amount of requests' />
+                <StatisticLineChart metricName={Metrics.RESPONSE_TIME} title='Average API response time' />
+            </div>
         </div>
     );
 }
