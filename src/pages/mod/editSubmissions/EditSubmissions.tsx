@@ -26,6 +26,8 @@ const deviceOptions: { [key: string]: string } = {
 export default function EditSubmission() {
     const [deviceKey, setDeviceKey] = useState('1');
     const [isMutating, setIsMutating] = useState(false);
+    const [deleteReason, setDeleteReason] = useState('');
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     const { activeLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch' });
     const [usernameFilter, lateUsernameFilter, setUsernameFilter] = useLateValue('');
@@ -40,6 +42,10 @@ export default function EditSubmission() {
     const [attempts, setAttempts] = useState('');
 
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        setShowDeleteConfirm(false);
+    }, [activeLevel?.ID, userResult?.UserID, usernameFilter]);
 
     const { status, data } = useQuery({
         queryKey: ['level', activeLevel?.ID, 'submissions', { page, username: lateUsernameFilter, progressFilterKey: 'all' }],
@@ -61,7 +67,7 @@ export default function EditSubmission() {
         }
 
         if (rating === null || enjoyment === null) {
-            return toast.error('An error occurred');
+            return toast.error('Either rating or enjoyment is required!');
         }
 
         // Send
@@ -83,7 +89,7 @@ export default function EditSubmission() {
                 pending: 'Editing',
                 success: 'Edited submission',
                 error: renderToastError,
-            }
+            },
         );
     }
 
@@ -106,7 +112,7 @@ export default function EditSubmission() {
         }
 
         setIsMutating(true);
-        const request = DeleteSubmission(activeLevel.ID, userResult.UserID).then(() => {
+        const request = DeleteSubmission(activeLevel.ID, userResult.UserID, deleteReason).then(() => {
             void queryClient.invalidateQueries(['submissions']);
             void queryClient.invalidateQueries(['level', activeLevel.ID]);
             setUserResult(undefined);
@@ -185,8 +191,15 @@ export default function EditSubmission() {
                         </FormGroup>
                         <div className='flex gap-2'>
                             <PrimaryButton onClick={submit} disabled={isMutating}>Edit</PrimaryButton>
-                            <DangerButton onClick={deleteSubmission} disabled={isMutating}>Delete</DangerButton>
+                            <DangerButton onClick={() => setShowDeleteConfirm(true)} disabled={isMutating}>Delete</DangerButton>
                         </div>
+                        {showDeleteConfirm &&
+                            <div className='mt-4'>
+                                <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} placeholder='Delete reason' />
+                                <PrimaryButton onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
+                                <DangerButton onClick={deleteSubmission}>Confirm delete</DangerButton>
+                            </div>
+                        }
                     </div>
                 }
             </div>
