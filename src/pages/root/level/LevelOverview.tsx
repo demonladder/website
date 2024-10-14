@@ -118,7 +118,7 @@ export default function LevelOverview() {
                     <div className='col-span-12 md:col-span-4 xl:col-span-3'>
                         <DemonLogo diff={level.Meta.Difficulty} />
                         <div className='flex text-center'>
-                            <p className={'w-1/2 py-2 tier-' + (displayRating !== null ? Math.round(displayRating) : '0')}>
+                            <p className={`w-1/2 py-2 tier-${displayRating !== null ? Math.round(displayRating) : '0'}`}>
                                 <span className='text-xl font-bold'>{roundedRating}</span>
                                 <br />
                                 <span>[{avgRating}]</span>

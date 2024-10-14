@@ -2,8 +2,8 @@ import APIClient from '../APIClient';
 
 export type SubmittableSubmission = {
     levelID: number,
-    rating?: number,
-    enjoyment?: number,
+    rating: number | null,
+    enjoyment: number | null,
     refreshRate?: number,
     device?: number,
     proof?: string,
