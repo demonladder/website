@@ -1,7 +1,7 @@
 import APIClient from '../APIClient';
 import { NaNToNull } from '../../utils/NaNToNull';
 
-interface AlphabetResponse {
+export interface AlphabetResponse {
     ID: number;
     Name: string;
     Rating: number;
