@@ -58,6 +58,8 @@ const acceptedHosts: string[] = [
     'drive.google.com',
 ];
 
+const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
+
 export default function SubmitModal({ onClose, level, userID }: Props) {
     const [tier, setTier] = useState<string>('');
     const [enjoymentKey, setEnjoymentKey] = useState('-1');
@@ -138,8 +140,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
 
         const data: SubmittableSubmission = {
             levelID: level.ID,
-            rating,
-            enjoyment,
+            rating: rating ?? null,
+            enjoyment: enjoyment ?? null,
             refreshRate: parseInt(refreshRate),
             device: parseInt(deviceKey),
             proof: proof.length > 0 ? proof : undefined,
@@ -159,7 +161,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             onClose();
             return data;
         }), {
-            pending: 'Submitting',
+            pending: 'Submitting...',
             success: {
                 render: ({ data }) => data?.wasAuto ? 'Rating accepted' : 'Rating submitted',
             },
@@ -238,11 +240,13 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         <TextInput id='submitProof' value={proof} onChange={onProofChange} invalid={(level.Meta.Difficulty === 'Extreme' && !validateLink(proof)) || (proof !== '' && !validateLink(proof))} />
                         <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
                     </div>
-                    <div>
-                        <FormInputLabel>Percent</FormInputLabel>
-                        <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' />
-                        <FormInputDescription>Optional, defaults to 100. Will not affect ratings or get sent to the queue if under 100.</FormInputDescription>
-                    </div>
+                    {level.Meta.Length !== 'Platformer' &&
+                        <div>
+                            <FormInputLabel>Percent</FormInputLabel>
+                            <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' />
+                            <FormInputDescription>Optional, defaults to 100. Will not affect ratings or get sent to the queue if under 100.</FormInputDescription>
+                        </div>
+                    }
                     <div>
                         <FormInputLabel>Attempts</FormInputLabel>
                         <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} placeholder={randomAttempts.toFixed()} />
