@@ -12,4 +12,5 @@ export enum PermissionFlags {
     BAN_USERS = 1 << 10,
     MANAGE_PACKS = 1 << 11,
     MANAGE_LISTS = 1 << 12,
+    DELETE_LEVELS = 1 << 13,
 }

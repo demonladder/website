@@ -6,9 +6,8 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import GetLevelSubmissions, { Submission as ISubmission } from '../../../api/submissions/GetLevelSubmissions';
-import useUserPermissions from '../../../hooks/useUserPermissions';
-import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import Select from '../../../components/Select';
+import useRoles from '../../../hooks/api/useRoles';
 
 type Props = {
     submission: ISubmission,
@@ -21,8 +20,11 @@ const progressFilterOptions = {
 };
 
 function Submission({ submission }: Props) {
-    const permissions = useUserPermissions(submission.User);
-    const isStaff = (permissions & PermissionFlags.STAFF_DASHBOARD) !== 0;
+    const { data: roles } = useRoles();
+    const userRoles = roles && submission.User.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
+
+    // Find the highest non-null role color
+    const iconRole = userRoles?.sort((a, b) => a.Ordering - b.Ordering).filter((r) => r.Color !== null).at(0) ?? null;
 
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
@@ -32,6 +34,7 @@ function Submission({ submission }: Props) {
     const hasWidgets = submission.Proof !== null || submission.Device === 'Mobile';
 
     const title: string[] = [];
+    title.push(submission.User.Name);
     title.push(`Sent at: ${new Date(submission.DateAdded).toLocaleString()}`);
     title.push(`Last changed at: ${new Date(submission.DateChanged).toLocaleString()}`);
     title.push(`${submission.RefreshRate}fps`);
@@ -39,11 +42,13 @@ function Submission({ submission }: Props) {
     if (submission.Attempts) title.push(`Attempts: ${submission.Attempts}`);
     if (submission.Device === 'Mobile') title.push('Completed on mobile');
 
+    const shortenedName = submission.User.Name.length > 20 ? submission.User.Name.slice(0, 20) + '...' : submission.User.Name;
+
     return (
         <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
             <Link className={`w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
             <Link className={`w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
-            <Link className={'p-2 flex-grow bg-gray-500' + (isStaff ? ' text-role-listHelper font-bold' : '')} to={linkDestination}>{submission.User.Name}</Link>
+            <Link style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}`} : undefined} className={'p-2 flex-grow bg-gray-500' + (iconRole ? ' font-bold' : '')} to={linkDestination}>{shortenedName} {iconRole?.Icon}</Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&

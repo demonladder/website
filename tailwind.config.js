@@ -72,8 +72,11 @@ export default {
                     360: '#000000',
                 },
                 role: {
+                    admin: '#958269',
+                    moderator: '#71ffcb',
+                    developer: '#cf9cff',
                     listHelper: '#9bff99',
-                }
+                },
             },
         },
     },

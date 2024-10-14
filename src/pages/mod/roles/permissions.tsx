@@ -57,6 +57,12 @@ export const permissions: Permission[] = [
         Flag: PermissionFlags.MANAGE_ROLES,
     },
     {
+        ID: 13,
+        Name: 'Delete levels',
+        Description: 'Allows users to delete levels.',
+        Flag: PermissionFlags.MANAGE_PACKS,
+    },
+    {
         ID: 7,
         Name: 'Auto accept settings',
         Description: 'Allows users to change the auto accept settings.',

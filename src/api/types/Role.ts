@@ -3,7 +3,8 @@ export default interface Role {
     Name: string;
     Icon: string | null;
     PermissionBitField: number;
-    Order: number;
+    Ordering: number;
+    Color: number | null;
     CreatedAt: Date;
     UpdatedAt: Date;
 }
