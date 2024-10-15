@@ -1,0 +1,40 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import APIClient from '../../../api/APIClient';
+import User from '../../../api/types/User';
+import { toast } from 'react-toastify';
+import renderToastError from '../../../utils/renderToastError';
+
+export default function Users({ roleID }: { roleID: number }) {
+    const queryClient = useQueryClient();
+    const { data } = useQuery({
+        queryKey: ['role', roleID, 'users'],
+        queryFn: () => APIClient.get<User[]>(`/roles/${roleID}/users`).then((res) => res.data),
+    });
+
+    function removeUser(userID: number) {
+        void toast.promise(
+            APIClient
+                .delete(`/roles/${roleID}/users/${userID}`)
+                .then(() => {
+                    void queryClient.invalidateQueries(['role', roleID, 'users']);
+                    void queryClient.invalidateQueries(['users', userID]);
+                }),
+            {
+                pending: 'Removing role...',
+                success: 'Role removed from user',
+                error: renderToastError,
+            }
+        );
+    }
+
+    return (
+        <div>
+            <h4 className='text-xl mt-4'>Users</h4>
+            <ul>
+                {data?.map((user) => (
+                    <li className='my-2' key={user.ID}><button onClick={() => removeUser(user.ID)}><i className='bx bx-x' /></button> {user.Name}</li>
+                ))}
+            </ul>
+        </div>
+    );
+}
