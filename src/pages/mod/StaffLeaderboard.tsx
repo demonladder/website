@@ -7,6 +7,7 @@ function StaffLeaderboardEntry({ data, highestScore }: { data: StaffLeaderboardR
     if (highestScore === undefined) return (<LoadingSpinner />);
 
     const width = data.Points * 100 / highestScore;
+    const displayScore = `${data.Points.toFixed(1)}pt${pluralS(data.Points)}`;
 
     return (
         // <div className='mt-[2px] max-md:text-xs'>
@@ -20,11 +21,11 @@ function StaffLeaderboardEntry({ data, highestScore }: { data: StaffLeaderboardR
         // </div>
         <tr>
             <td className='pe-4'>
-                <p>{data.User?.Name}</p>
+                <p className='flex justify-between'>{data.User?.Name} <span className='opacity-0 inline-block'>{displayScore}</span></p>
             </td>
             <td className='w-full'>
-                <div className='h-10 bg-gray-500 flex justify-end' style={{ width: width + '%' }}>
-                    <p className='self-center me-2'>{`${data.Points.toFixed(1)}pt${pluralS(data.Points)}`}</p>
+                <div className='h-10 bg-gray-500 flex justify-end' style={{ width: `${width}%` }}>
+                    <p className='self-center me-2'>{displayScore}</p>
                 </div>
             </td>
         </tr>
@@ -47,7 +48,7 @@ export default function StaffLeaderboard() {
             <p>Points are also awarded for denied submissions so no mindlessly approving submissions</p>
             <table className='mt-2 pe-8'>
                 <tbody>
-                    {data?.map((contestant) => (<StaffLeaderboardEntry data={contestant} highestScore={highestScore} key={'leader_' + contestant.UserID} />))}
+                    {data?.map((contestant) => (<StaffLeaderboardEntry data={contestant} highestScore={highestScore} key={`leader_${contestant.UserID}`} />))}
                 </tbody>
             </table>
         </section>
