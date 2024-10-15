@@ -96,4 +96,5 @@ export default {
             addVariant('round', '.round &');
         }),
     ],
+    darkMode: 'media',
 };
