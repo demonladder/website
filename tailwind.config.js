@@ -85,7 +85,7 @@ export default {
             pattern: /permission-[0-9]/,
         },
         {
-            pattern: /refreshRate-.*/,
+            pattern: /refreshRate-(72|120|144|240|288|300)/,
         },
         {
             pattern: /max-h-[0-9]*/,
@@ -96,5 +96,5 @@ export default {
             addVariant('round', '.round &');
         }),
     ],
-    darkMode: 'media',
+    darkMode: 'selector',
 };
