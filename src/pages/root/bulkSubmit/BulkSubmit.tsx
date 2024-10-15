@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/StorageManager';
 import { useMutation } from '@tanstack/react-query';
 import SubmitBulk, { BulkSubmission } from '../../../api/submissions/SubmitBulk';
-import renderToastError from '../../../utils/renderToastError';
+import { render } from '../../../utils/renderToastError';
 import { AxiosError } from 'axios';
 
 function parseValue(val: string | null): null | string {
@@ -75,8 +75,8 @@ export default function BulkSubmit() {
             }
         },
         onError: (err) => {
-            toast.error(renderToastError.render({ data: err as AxiosError }));
-        }
+            if (err instanceof AxiosError) toast.error(render({ data: err }));
+        },
     });
 
     const onSubmit = useCallback(() => {

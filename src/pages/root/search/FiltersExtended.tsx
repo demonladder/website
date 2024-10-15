@@ -1,5 +1,5 @@
 import StorageManager from '../../../utils/StorageManager';
-import { NumberInput } from '../../../components/Input';
+import { NumberInput, TextInput } from '../../../components/Input';
 import CheckBox from '../../../components/input/CheckBox';
 import { SearchFilters } from './Search';
 import Select from '../../../components/Select';
@@ -86,7 +86,7 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
                     <div className='flex items-center'>
                         <NumberInput className='num-lg' value={filters.IDLow} min='1' max='500000000' onChange={(e) => setFilters(prev => ({ ...prev, IDLow: e.target.value, update: 'any' }))} />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput className='num-lg' value={filters.IDHigh} min='1' max='500000000' onChange={(e) => setFilters(prev => ({ ...prev, IDHigh: e.target.value, update: 'any' }))} />
+                        <TextInput className='num-lg' value={filters.IDHigh} min='1' max='500000000' onChange={(e) => setFilters(prev => ({ ...prev, IDHigh: e.target.value, update: 'any' }))} />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
