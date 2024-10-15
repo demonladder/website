@@ -85,7 +85,7 @@ export default {
             pattern: /permission-[0-9]/,
         },
         {
-            pattern: /refreshRate-(72|120|144|240|288|300)/,
+            pattern: /refreshRate-\d*/,
         },
         {
             pattern: /max-h-[0-9]*/,
