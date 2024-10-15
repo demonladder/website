@@ -24,7 +24,7 @@ function Submission({ submission }: Props) {
     const userRoles = roles && submission.User.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
 
     // Find the highest non-null role color
-    const iconRole = userRoles?.sort((a, b) => a.Ordering - b.Ordering).filter((r) => r.Color !== null).at(0) ?? null;
+    const iconRole = userRoles?.sort((a, b) => (a?.Ordering ?? 0) - (b?.Ordering ?? 0)).filter((r) => r?.Color !== null).at(0) ?? null;
 
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
