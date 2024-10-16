@@ -23,7 +23,7 @@ import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 import useUser from '../../../hooks/useUser';
 
 export default function LevelOverview() {
-    const [showTwoPlayerStats, _setShowTwoPlayerStats] = useState(false);
+    const [showTwoPlayerStats, setShowTwoPlayerStats] = useState(false);
     const navigate = useNavigate();
 
     const session = useUser();
@@ -70,6 +70,7 @@ export default function LevelOverview() {
     let roundedEnjoyment = 'Unrated';
     let standardDeviation = '-';
     const displayRating = showTwoPlayerStats ? level.TwoPlayerRating : (level.Rating ?? level.DefaultRating);
+    const enjoyment = showTwoPlayerStats ? level.TwoPlayerEnjoyment : level.Enjoyment;
 
     {
         const deviation = showTwoPlayerStats ? level.TwoPlayerDeviation : level.Deviation;
@@ -81,8 +82,8 @@ export default function LevelOverview() {
         }
     }
 
-    if (level.Enjoyment !== null) {
-        avgEnjoyment = level.Enjoyment.toFixed(2);
+    if (enjoyment !== null) {
+        avgEnjoyment = enjoyment.toFixed(2);
         roundedEnjoyment = Math.round(parseFloat(avgEnjoyment)).toString();
     }
 
@@ -178,8 +179,8 @@ export default function LevelOverview() {
                     <TagBox level={level} />
                 </div>
             </div>
-            <Submissions level={level} />
-            <RatingGraph levelID={level.ID} />
+            <Submissions level={level} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
+            <RatingGraph levelMeta={level.Meta} twoPlayer={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <Packs levelID={levelID} />
             <Showcase level={level} />
             <ExternalLinks level={level} />

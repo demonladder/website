@@ -8,8 +8,9 @@ import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import GetLevelSubmissions, { Submission as ISubmission } from '../../../api/submissions/GetLevelSubmissions';
 import Select from '../../../components/Select';
 import useRoles from '../../../hooks/api/useRoles';
+import TwoPlayerButtons from './TwoPlayerButtons';
 
-type Props = {
+type SubmissionProps = {
     submission: ISubmission,
 }
 
@@ -19,7 +20,7 @@ const progressFilterOptions = {
     incomplete: 'users with progress',
 };
 
-function Submission({ submission }: Props) {
+function Submission({ submission }: SubmissionProps) {
     const { data: roles } = useRoles();
     const userRoles = roles && submission.User.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
 
@@ -48,7 +49,7 @@ function Submission({ submission }: Props) {
         <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
             <Link className={`w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
             <Link className={`w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
-            <Link style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}`} : undefined} className={'p-2 flex-grow bg-gray-500' + (iconRole ? ' font-bold' : '')} to={linkDestination}>{shortenedName} {iconRole?.Icon}</Link>
+            <Link style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined} className={'p-2 flex-grow bg-gray-500' + (iconRole ? ' font-bold' : '')} to={linkDestination}>{shortenedName} {iconRole?.Icon}</Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&
@@ -66,17 +67,24 @@ function Submission({ submission }: Props) {
     );
 }
 
-export default function Submissions({ level }: { level: FullLevel }) {
+interface SubmissionsProps {
+    level: FullLevel;
+    showTwoPlayerStats: boolean;
+    setShowTwoPlayerStats: (show: boolean) => void;
+}
+
+export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlayerStats }: SubmissionsProps) {
     const [page, setPage] = useState(1);
     const [progressFilterKey, setProgressFilterKey] = useState('victors');
     const { data: submissions, status } = useQuery({
-        queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey }],
-        queryFn: () => GetLevelSubmissions({ levelID: level.ID, progressFilter: progressFilterKey, chunk: 24, page }),
+        queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey, twoPlayer: showTwoPlayerStats }],
+        queryFn: () => GetLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, chunk: 24, page }),
     });
 
     return (
         <section className='mt-6'>
             <h2 className='text-3xl'>{submissions?.total ?? <LoadingSpinner />} Submission{level.SubmissionCount !== 1 ? 's' : ''}</h2>
+            <TwoPlayerButtons levelMeta={level.Meta} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <div>
                 {status === 'loading'
                     ? <LoadingSpinner />

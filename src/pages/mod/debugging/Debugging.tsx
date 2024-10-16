@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { BotSettings } from './BotSettings';
 import StatisticLineChart from './StatisticLineChart';
 import { Metrics } from '../../../api/stats/GetStatistic';
+import ms from 'ms';
 
 export default function Debugging() {
     function handleError() {
@@ -13,7 +14,7 @@ export default function Debugging() {
 
     const { mutate: syncLevels, status: syncLevelsStatus } = useMutation(async () => APIClient.post('/tests/syncLevels').catch(handleError));
     const { mutate: syncTwoPlayerLevels, status: syncTwoPlayerLevelsStatus } = useMutation(async () => APIClient.post('/tests/syncTwoPlayerLevels').catch(handleError));
-    const { mutate: fixDeviation, status: fixDeviationStatus } = useMutation(async () => APIClient.post('/tests/fixDeviation', {}, { timeout: 6 * 60 * 1000 }).catch(handleError));
+    const { mutate: fixDeviation, status: fixDeviationStatus } = useMutation(async () => APIClient.post('/tests/fixDeviation', {}, { timeout: ms('20m') }).catch(handleError));
     const { mutate: restartServer, status: restartServerStatus } = useMutation(async () => APIClient.post('/tests/restartServer', {}).catch(handleError));
 
     return (
@@ -31,7 +32,7 @@ export default function Debugging() {
                 </div>
                 <div className='mb-2'>
                     <SecondaryButton onClick={() => fixDeviation()} disabled={fixDeviationStatus === 'loading'}>Recalculate level stats</SecondaryButton>
-                    <p>Takes like 5.5 minutes</p>
+                    <p>Takes like 17 minutes</p>
                 </div>
                 <div className='mb-2'>
                     <DangerButton onClick={() => restartServer()} disabled={restartServerStatus === 'loading'}>Restart server</DangerButton>

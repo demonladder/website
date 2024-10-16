@@ -17,6 +17,7 @@ import FormGroup from '../../../components/form/FormGroup';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import { NaNToNull } from '../../../utils/NaNToNull';
+import CheckBox from '../../../components/input/CheckBox';
 
 const deviceOptions: { [key: string]: string } = {
     '1': 'PC',
@@ -40,6 +41,7 @@ export default function EditSubmission() {
     const [refreshRate, setRefreshRate] = useState<number>();
     const [progress, setProgress] = useState<number>();
     const [attempts, setAttempts] = useState('');
+    const [wasSolo, setWasSolo] = useState(true);
 
     const queryClient = useQueryClient();
 
@@ -83,6 +85,7 @@ export default function EditSubmission() {
                 proof: proof !== '' ? proof : null,
                 progress,
                 attempts: NaNToNull(parseInt(attempts)),
+                isSolo: wasSolo,
                 isEdit: true,
             }).then(() => queryClient.invalidateQueries(['level', activeLevel.ID])).finally(() => setIsMutating(false)),
             {
@@ -101,6 +104,7 @@ export default function EditSubmission() {
         setUserResult(s);
         setProgress(s.Progress);
         setAttempts(s.Attempts?.toString() ?? '');
+        setWasSolo(s.IsSolo);
     }
 
     function deleteSubmission() {
@@ -188,6 +192,12 @@ export default function EditSubmission() {
                         <FormGroup>
                             <FormInputLabel>Attempts</FormInputLabel>
                             <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} min='1' />
+                        </FormGroup>
+                        <FormGroup>
+                            <label className='flex items-center gap-2 mb-2'>
+                                <CheckBox checked={wasSolo} onChange={(e) => setWasSolo(e.target.checked)} />
+                                Solo completion
+                            </label>
                         </FormGroup>
                         <div className='flex gap-2'>
                             <PrimaryButton onClick={submit} disabled={isMutating}>Edit</PrimaryButton>
