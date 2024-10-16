@@ -9,13 +9,14 @@ export interface AlphabetResponse {
     RatingCount: number;
 }
 
-export default async function GenerateAlphabet(minTier?: number, maxTier?: number, minEnjoyment?: number, maxEnjoyment?: number, difficulty?: string) {
+export default async function GenerateAlphabet(minTier?: number, maxTier?: number, minEnjoyment?: number, maxEnjoyment?: number, difficulty?: string, uncompletedOnly = false) {
     const res = await APIClient.get<AlphabetResponse[]>('/alphabet', { params: {
         minTier: NaNToNull(minTier),
         maxTier: NaNToNull(maxTier),
         minEnjoyment: NaNToNull(minEnjoyment),
         maxEnjoyment: NaNToNull(maxEnjoyment),
         difficulty,
+        uncompletedOnly,
     } });
     return res.data;
 }

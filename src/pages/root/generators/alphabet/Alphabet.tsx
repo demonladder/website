@@ -29,10 +29,11 @@ export default function Alphabet() {
     const [minEnjoyment, setMinEnjoyment] = useState<number>();
     const [maxEnjoyment, setMaxEnjoyment] = useState<number>();
     const [difficulty, setDifficulty] = useState('-1');
+    const [uncompletedOnly, setUncompletedOnly] = useState(false);
     const [levels, setLevels] = useLocalStorage<AlphabetResponse[]>('alphabetLevels', []);
 
     const generateMutation = useMutation({
-        mutationFn: () => GenerateAlphabet(minTier, maxTier, minEnjoyment, maxEnjoyment, difficulty !== '-1' ? difficulty : undefined),
+        mutationFn: () => GenerateAlphabet(minTier, maxTier, minEnjoyment, maxEnjoyment, difficulty !== '-1' ? difficulty : undefined, uncompletedOnly),
         onError: (error: AxiosError) => toast.error((error.response?.data as { error: string })?.error ?? 'An error occurred'),
         onSuccess: (data) => {
             setLevels(data);
@@ -74,7 +75,7 @@ export default function Alphabet() {
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2 font-bold'>
-                        <CheckBox />
+                        <CheckBox checked={uncompletedOnly} onChange={(e) => setUncompletedOnly(e.target.checked)} />
                         Only uncompleted levels
                     </label>
                     <FormInputDescription>Optional. Only include levels that you have not completed.</FormInputDescription>
