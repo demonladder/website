@@ -68,7 +68,7 @@ export default function EditSubmission() {
             return toast.error('You must select a user!');
         }
 
-        if (rating === null || enjoyment === null) {
+        if (rating === null && enjoyment === null) {
             return toast.error('Either rating or enjoyment is required!');
         }
 
