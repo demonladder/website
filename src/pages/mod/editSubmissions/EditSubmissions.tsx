@@ -206,6 +206,7 @@ export default function EditSubmission() {
                         {showDeleteConfirm &&
                             <div className='mt-4'>
                                 <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} placeholder='Delete reason' />
+                                <FormInputDescription>Does not notify the user if the field is left blank!</FormInputDescription>
                                 <PrimaryButton onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
                                 <DangerButton onClick={deleteSubmission}>Confirm delete</DangerButton>
                             </div>
