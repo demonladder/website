@@ -35,6 +35,17 @@ export default function Index() {
                         </Announcement.Body>
                     </Announcement>
                 </Container>
+                <script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2651090626022491' crossOrigin='anonymous'></script>
+                {/* Standard ad */}
+                <ins className='adsbygoogle'
+                    style={{ display: 'block'}}
+                    data-ad-client='ca-pub-2651090626022491'
+                    data-ad-slot='3401081232'
+                    data-ad-format='auto'
+                    data-full-width-responsive='true'></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({ });
+                </script>
                 <Container className='bg-opacity-90'>
                     <Announcement.DiscordLink />
                 </Container>
