@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/StorageManager';
 import { useMutation } from '@tanstack/react-query';
 import SubmitBulk, { BulkSubmission } from '../../../api/submissions/SubmitBulk';
-import renderToastError from '../../../utils/renderToastError';
+import { render } from '../../../utils/renderToastError';
 import { AxiosError } from 'axios';
 
 function parseValue(val: string | null): null | string {
@@ -16,6 +16,8 @@ function parseValue(val: string | null): null | string {
 
 function parseIntParam(val?: string | null, def?: number): null | number {
     if (val === undefined || val === null || val === '-') return def ?? null;
+    if (val.startsWith('[') && val.endsWith(']')) throw new Error('Don\'t wrap optional values in [ ]');
+    if (val.startsWith('<') && val.endsWith('>')) throw new Error('Don\'t wrap required values in < >');
     return parseInt(val);
 }
 
@@ -52,6 +54,7 @@ export default function BulkSubmit() {
 
             if (tier === null && enjoyment === null) throw new Error('Tier and enjoyment are required. Supply one or both.');
 
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
             return { levelID, levelName, creator, tier, enjoyment, FPS, device: device as 'pc' | 'mobile', videoProof };
         });
     }, [submissions]);
@@ -75,8 +78,8 @@ export default function BulkSubmit() {
             }
         },
         onError: (err) => {
-            toast.error(renderToastError.render({ data: err as AxiosError }));
-        }
+            if (err instanceof AxiosError) toast.error(render({ data: err }));
+        },
     });
 
     const onSubmit = useCallback(() => {

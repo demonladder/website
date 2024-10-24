@@ -27,7 +27,8 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
         if (session.user && !session?.user?.DiscordData) {
             discordSync();
         }
-    }, [session.user, discordSync]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const pfp = `https://cdn.discordapp.com/avatars/${session?.user?.DiscordData?.ID ?? '-'}/${session?.user?.DiscordData?.Avatar ?? '-'}.png`;
 

@@ -17,6 +17,11 @@ const HeaderRoutes: Route[] = [
         subroutes: [],
     },
     {
+        name: 'Generators',
+        to: '/generators',
+        subroutes: [],
+    },
+    {
         name: (<span><i className='bx bxs-cog text-2xl' /></span>),
         to: '/settings/site',
         subroutes: [],

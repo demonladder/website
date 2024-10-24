@@ -8,10 +8,7 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-
-export function validateUsername(name: string): boolean {
-    return name.match(/[a-zA-Z0-9._]{2,32}/)?.[0] === name;
-}
+import { validateUsername } from '../../../utils/validators/validateUsername';
 
 export default function SignUp() {
     const navigate = useNavigate();

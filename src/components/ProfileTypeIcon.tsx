@@ -1,7 +1,7 @@
 import Role from '../api/types/Role';
 
 export default function ProfileTypeIcon({ roles }: { roles: Role[] }) {
-    const topRole = roles.sort((a, b) => a.Order - b.Order)[0];
+    const topRole = roles.sort((a, b) => a.Ordering - b.Ordering)[0];
 
     if (!topRole || !topRole.Icon) return;
 

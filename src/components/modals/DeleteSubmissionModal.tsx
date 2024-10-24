@@ -18,9 +18,9 @@ export default function DeleteSubmissionModal({ submission, onClose: close }: Pr
     function deleteSubmission(levelID?: number) {
         if (levelID === undefined) return;
 
-        toast.promise(DeleteSubmission(levelID, userID).then(() => {
-            queryClient.invalidateQueries(['level', levelID]);
-            queryClient.invalidateQueries(['user', userID, 'submissions']);
+        void toast.promise(DeleteSubmission(levelID, userID).then(() => {
+            void queryClient.invalidateQueries(['level', levelID]);
+            void queryClient.invalidateQueries(['user', userID, 'submissions']);
             close();
         }), {
             pending: 'Deleting...',

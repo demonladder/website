@@ -5,7 +5,15 @@ interface SpreadResponse {
         Rating: number;
         Count: number;
     }[];
+    twoPlayerRating: {
+        Rating: number;
+        Count: number;
+    }[];
     enjoyment: {
+        Enjoyment: number;
+        Count: number;
+    }[];
+    twoPlayerEnjoyment: {
         Enjoyment: number;
         Count: number;
     }[];

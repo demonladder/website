@@ -72,8 +72,11 @@ export default {
                     360: '#000000',
                 },
                 role: {
+                    admin: '#958269',
+                    moderator: '#71ffcb',
+                    developer: '#cf9cff',
                     listHelper: '#9bff99',
-                }
+                },
             },
         },
     },
@@ -82,7 +85,7 @@ export default {
             pattern: /permission-[0-9]/,
         },
         {
-            pattern: /refreshRate-.*/,
+            pattern: /refreshRate-\d*/,
         },
         {
             pattern: /max-h-[0-9]*/,
@@ -93,5 +96,5 @@ export default {
             addVariant('round', '.round &');
         }),
     ],
-    darkMode: 'media',
+    darkMode: 'selector',
 };

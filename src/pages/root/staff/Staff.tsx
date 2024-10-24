@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import GetStaff, { StaffMember } from '../../../api/user/StaffMember';
+import Role from '../../../api/types/Role';
 
-const titles: { [key: string]: string } = {
+const roleTitles: Record<Role['ID'], string> = {
     2: 'List helpers',
     3: 'Developers',
     4: 'Moderators',
@@ -14,7 +15,7 @@ const titles: { [key: string]: string } = {
     6: 'Owner',
 };
 
-const descriptions: { [key: string]: string } = {
+const roleDescriptions: Record<Role['ID'], string> = {
     2: 'The GDDL Helpers. They can approve/reject submissions & GDDL pack submissions.',
     3: 'The GDDL Developers.',
     4: 'The GDDL Moderators. They help keep the chatting environment as neat and tolerable as possible.',
@@ -22,21 +23,21 @@ const descriptions: { [key: string]: string } = {
     6: 'The current owner of GDDL!'
 }
 
-function List({ data, permissionLevel }: { data?: StaffMember[], permissionLevel: number }) {
-    const filtered = data?.filter((s) => s.Roles.includes(permissionLevel)) ?? [];
+function List({ data, roleID }: { data?: StaffMember[], roleID: number }) {
+    const filtered = data?.filter((s) => s.Roles.includes(roleID)) ?? [];
 
     if (filtered.length === 0 && data !== undefined) return;
 
     return (
         <div className='p-4 round:rounded-lg mb-2 grid grid-cols-2 lg:grid-cols-4 gap-8'>
             <span className='max-lg:hidden'></span>
-            <div className={'text-right break-words text-permission-' + permissionLevel}>
-                <h3 className='text-3xl font-bold'>{titles[permissionLevel]} <ProfileTypeIcon roles={[]} /></h3>
-                <p>{descriptions[permissionLevel] || 'Description'}</p>
+            <div className={`text-right break-words text-permission-${roleID}`}>
+                <h3 className='text-3xl font-bold'>{roleTitles[roleID]} <ProfileTypeIcon roles={[]} /></h3>
+                <p>{roleDescriptions[roleID] || 'Description'}</p>
             </div>
             <ul>
-                {filtered.map((s, i) => <li key={'staffList_' + permissionLevel + '_' + i}>
-                    <Link to={'/profile/' + s.ID} className='underline'>{s.Name}</Link>
+                {filtered.map((s, i) => <li key={`staffList_${roleID}_${i}`}>
+                    <Link to={`/profile/${s.ID}`} className='underline'>{s.Name}</Link>
                 </li>)}
             </ul>
         </div>
@@ -54,12 +55,11 @@ export default function Staff() {
             <h1 className='text-4xl mb-4'>Current staff members</h1>
             <FloatingLoadingSpinner isLoading={isLoading} />
             <div>
-                <List data={data} permissionLevel={6} />
-                <List data={data} permissionLevel={5} />
-                <List data={data} permissionLevel={4} />
-                <List data={data} permissionLevel={3} />
-                <List data={data} permissionLevel={2} />
-                <List data={data} permissionLevel={1} />
+                <List data={data} roleID={6} />
+                <List data={data} roleID={5} />
+                <List data={data} roleID={4} />
+                <List data={data} roleID={3} />
+                <List data={data} roleID={2} />
             </div>
         </Container>
     );

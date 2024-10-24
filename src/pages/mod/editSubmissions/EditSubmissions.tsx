@@ -17,6 +17,7 @@ import FormGroup from '../../../components/form/FormGroup';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import { NaNToNull } from '../../../utils/NaNToNull';
+import CheckBox from '../../../components/input/CheckBox';
 
 const deviceOptions: { [key: string]: string } = {
     '1': 'PC',
@@ -26,6 +27,8 @@ const deviceOptions: { [key: string]: string } = {
 export default function EditSubmission() {
     const [deviceKey, setDeviceKey] = useState('1');
     const [isMutating, setIsMutating] = useState(false);
+    const [deleteReason, setDeleteReason] = useState('');
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     const { activeLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch' });
     const [usernameFilter, lateUsernameFilter, setUsernameFilter] = useLateValue('');
@@ -38,8 +41,13 @@ export default function EditSubmission() {
     const [refreshRate, setRefreshRate] = useState<number>();
     const [progress, setProgress] = useState<number>();
     const [attempts, setAttempts] = useState('');
+    const [wasSolo, setWasSolo] = useState(true);
 
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        setShowDeleteConfirm(false);
+    }, [activeLevel?.ID, userResult?.UserID, usernameFilter]);
 
     const { status, data } = useQuery({
         queryKey: ['level', activeLevel?.ID, 'submissions', { page, username: lateUsernameFilter, progressFilterKey: 'all' }],
@@ -60,8 +68,8 @@ export default function EditSubmission() {
             return toast.error('You must select a user!');
         }
 
-        if (rating === null || enjoyment === null) {
-            return toast.error('An error occurred');
+        if (rating === null && enjoyment === null) {
+            return toast.error('Either rating or enjoyment is required!');
         }
 
         // Send
@@ -77,13 +85,14 @@ export default function EditSubmission() {
                 proof: proof !== '' ? proof : null,
                 progress,
                 attempts: NaNToNull(parseInt(attempts)),
+                isSolo: wasSolo,
                 isEdit: true,
             }).then(() => queryClient.invalidateQueries(['level', activeLevel.ID])).finally(() => setIsMutating(false)),
             {
                 pending: 'Editing',
                 success: 'Edited submission',
                 error: renderToastError,
-            }
+            },
         );
     }
 
@@ -95,6 +104,7 @@ export default function EditSubmission() {
         setUserResult(s);
         setProgress(s.Progress);
         setAttempts(s.Attempts?.toString() ?? '');
+        setWasSolo(s.IsSolo);
     }
 
     function deleteSubmission() {
@@ -106,7 +116,7 @@ export default function EditSubmission() {
         }
 
         setIsMutating(true);
-        const request = DeleteSubmission(activeLevel.ID, userResult.UserID).then(() => {
+        const request = DeleteSubmission(activeLevel.ID, userResult.UserID, deleteReason).then(() => {
             void queryClient.invalidateQueries(['submissions']);
             void queryClient.invalidateQueries(['level', activeLevel.ID]);
             setUserResult(undefined);
@@ -183,10 +193,24 @@ export default function EditSubmission() {
                             <FormInputLabel>Attempts</FormInputLabel>
                             <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} min='1' />
                         </FormGroup>
+                        <FormGroup>
+                            <label className='flex items-center gap-2 mb-2'>
+                                <CheckBox checked={wasSolo} onChange={(e) => setWasSolo(e.target.checked)} />
+                                Solo completion
+                            </label>
+                        </FormGroup>
                         <div className='flex gap-2'>
                             <PrimaryButton onClick={submit} disabled={isMutating}>Edit</PrimaryButton>
-                            <DangerButton onClick={deleteSubmission} disabled={isMutating}>Delete</DangerButton>
+                            <DangerButton onClick={() => setShowDeleteConfirm(true)} disabled={isMutating}>Delete</DangerButton>
                         </div>
+                        {showDeleteConfirm &&
+                            <div className='mt-4'>
+                                <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} placeholder='Delete reason' />
+                                <FormInputDescription>Does not notify the user if the field is left blank!</FormInputDescription>
+                                <PrimaryButton onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
+                                <DangerButton onClick={deleteSubmission}>Confirm delete</DangerButton>
+                            </div>
+                        }
                     </div>
                 }
             </div>

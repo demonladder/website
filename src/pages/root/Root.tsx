@@ -2,11 +2,12 @@ import Header from '../../layouts/header/Header';
 import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Footer from '../../layouts/footer/Footer';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import useResizeObserver from '@react-hook/resize-observer';
 import noise3D from '../../utils/noise/noise3D';
 import StorageManager from '../../utils/StorageManager';
 import NavbarNotificationRenderer from '../../context/NavbarNotification/NavbarNotificationRenderer';
+import useNavbarNotification from '../../context/NavbarNotification/useNavbarNotification';
 
 // function getBrowserName() {
 //     const browserInfo = navigator.userAgent;
@@ -124,6 +125,16 @@ export default function Root() {
     }, [draw]);
 
     useResizeObserver(containerRef, setup);
+    const { error: notifyError } = useNavbarNotification();
+
+    useEffect(() => {
+        const url = new URLSearchParams(location.search);
+        const error = url.get('error');
+        if (error) {
+            if (error === 'already_linked') notifyError('This Discord account is already linked to another GDDL account.');
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div ref={containerRef} className='relative flex flex-col'>

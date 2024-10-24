@@ -79,18 +79,18 @@ export default function Search() {
     const [filters, setFilters] = useSessionStorage<SearchFilters>('search.filters', { ...resetObj });
 
     const generateQ = useCallback((pageIndex: number) => {
-        const joined: any = {
+        const joined: Record<string, string | number | boolean | null> = {
             ...filters,
             ...sorter,
             page: pageIndex,
         };
-        const q: any = {};
-        for (let p of Object.keys(joined)) {
+        const q: Record<string, string | number | boolean | null> = {};
+        for (const p of Object.keys(joined)) {
             if (joined[p] === null || joined[p] === undefined || joined[p] === '') continue;
             q[p] = joined[p];
         }
         return q;
-    }, [filters, sorter, pageIndex]);
+    }, [filters, sorter]);
 
     //
     // Filter levels
@@ -111,7 +111,7 @@ export default function Search() {
         return () => {
             clearTimeout(timer);
         }
-    }, [filters, sorter]);
+    }, [filters, sorter, generateQ, pageIndex, setQ]);
 
     const { status: searchStatus, data: searchData } = useQuery({
         queryKey: ['search', q],
@@ -124,7 +124,7 @@ export default function Search() {
                 setPageIndex(1);
             }
         }
-    }, [searchData]);
+    }, [searchData, pageIndex, setPageIndex]);
 
     const onPageChange = useCallback((page: number) => {
         setPageIndex(page);

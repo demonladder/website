@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { DangerButton, PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/Button';
 import { TextInput } from '../../../components/Input';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import SaveRole from '../../../api/roles/SaveRole';
 import useDeleteRoleModal from '../../../hooks/modals/useDeleteRoleModal';
+import Users from './Users';
 
 export default function EditRole() {
     const roleID = parseInt(useParams().roleID ?? '');
@@ -80,8 +81,10 @@ export default function EditRole() {
                     ))}
                 </ul>
             </div>
+            <div className='divider my-8' />
+            <Users roleID={roleID} />
             {role &&
-                <DangerButton onClick={() => openDeleteRoleModal(role)} className='mt-2'>Delete {role?.Name}?</DangerButton>
+                <button onClick={() => openDeleteRoleModal(role)} className='mt-2 text-red-500 underline-t'>Delete {role?.Name}</button>
             }
         </div>
     );

@@ -25,7 +25,7 @@ export default function About() {
             <section className='mt-8'>
                 <h2 id='mechanism' className='text-3xl text-primary mb-3'>The mechanism</h2>
                 <p className='mb-1'>With the official system in mind, each demon difficulty is split into 5 tiers, with the exception of Extreme Demons being split into 15 tiers. Tiers are then named from Tier 1 to Tier 35, with Tier 35 being the hardest.</p>
-                <p>Tiers are determined by user ratings. This means the list is community-driven, one thing that is loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level. The system has been running well since launch, and we have collected over <span className='text-primary font-bold'>240,000 ratings</span> for over <span className='text-primary font-bold'>7,500 demons</span> covering over 95% of the demons in the game.</p>
+                <p>Tiers are determined by user ratings. This means the list is community-driven, one thing that is loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level. The system has been running well since launch, and we have collected over <span className='text-primary font-bold'>310,000 ratings</span> for over <span className='text-primary font-bold'>8,000 demons</span> covering over 94% of the demons in the game.</p>
             </section>
             <section className='mt-8'>
                 <h2 id='guidelines' className='text-3xl text-primary mb-3'>Rating guidelines</h2>
@@ -65,6 +65,15 @@ export default function About() {
                             <ListItem>It seems that people bug-fix levels, so use that as the basis of votes.</ListItem>
                         </ul>
                     </li>
+                    <li className='mb-5'>
+                        <p className='mb-1'>6) Extreme demon submissions require proof</p>
+                        <ul>
+                            <ListItem>This sections covers when proof is required. What counts as proof is covered in the <a href='#proof' className='text-blue-500 underline'>proof section.</a></ListItem>
+                            <ListItem>Every level that is rated extreme demon in-game need video proof.</ListItem>
+                            <ListItem>Levels that have a rounded tier rating of 21 or more need video proof. This means even non-extremes might need proof.</ListItem>
+                            <ListItem>Proof is required if you want to rate a level tier 21 or higher.</ListItem>
+                        </ul>
+                    </li>
                 </ol>
             </section>
             <section className='mt-8'>
@@ -91,8 +100,8 @@ export default function About() {
                     <p>{`https://bilibili.com/video/{id}`}</p>
                 </pre>
                 <p>Proof is not required for non-extremes and is entirely optional. You are still allowed to add proof to non-extremes of course.</p>
-                <p>Proof is required for extreme demons. This means levels like Acu or Mystic Bounds still require proof despite their rating being in the insane demon range.</p>
-                <p>For levels that are tier 31 or more, click is required in the proof.</p>
+                <p>For levels that are tier 31 or more, audible clicks are required in the proof.</p>
+                <p>Proof must contain the endscreen.</p>
             </section>
             <section className='mt-8'>
                 <h2 id='autoAccept' className='text-3xl text-primary mb-3'>Auto accept system</h2>
