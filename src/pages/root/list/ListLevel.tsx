@@ -88,6 +88,7 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
         e.preventDefault();
 
         const buttons: ButtonData[] = [
+            { type: 'info', text: 'Copy ID', onClick: () => void navigator.clipboard.writeText(listLevel.LevelID.toString()) },
             { type: 'danger', text: 'Remove', onClick: onRemoveLevel },
         ];
 
