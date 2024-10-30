@@ -35,7 +35,7 @@ function BanRecord({ record }: { record: IBanRecord }) {
         <div className='bg-gray-500 mb-3 p-3 round:rounded-lg grid grid-cols-1 xl:grid-cols-3 gap-4'>
             <div>
                 <p>Ban from <span className='font-bold'>{record.BanStart}</span> to <span className='font-bold'>{record.BanStop}</span> UTC</p>
-                <p>Duration: {duration} days</p>
+                <p>Duration: {duration.toFixed(2)} days</p>
             </div>
             <div>
                 <p>User banned by <UserLink userID={record.StaffID} /></p>
