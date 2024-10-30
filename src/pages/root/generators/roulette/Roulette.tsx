@@ -3,7 +3,7 @@ import { PrimaryButton } from '../../../../components/Button';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { NumberInput, TextInput } from '../../../../components/Input';
+import { TextInput } from '../../../../components/Input';
 import CheckBox from '../../../../components/input/CheckBox';
 import Select from '../../../../components/Select';
 import { useMutation } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ import GenerateRoulette, { RouletteResponse } from '../../../../api/generators/G
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import { Link } from 'react-router-dom';
 import IDButton from '../../../../components/IDButton';
-import useValidFloat from '../../../../hooks/useValidFloat';
+import useValidNumber from '../../../../hooks/useValidNumber';
 import validateParameter from '../validateParameter';
 
 const difficultyOptions = {
@@ -26,16 +26,22 @@ const difficultyOptions = {
 };
 
 export default function Roulette() {
-    const [minTier, setMinTier, isMinTierValid] = useValidFloat('');
-    const [maxTier, setMaxTier, isMaxTierInvalid] = useValidFloat('');
-    const [minEnjoyment, setMinEnjoyment, isMinEnjoymentValid] = useValidFloat('');
-    const [maxEnjoyment, setMaxEnjoyment, isMaxEnjoymentValid] = useValidFloat('');
+    const minTier = useValidNumber('');
+    const maxTier = useValidNumber('');
+    const minEnjoyment = useValidNumber('');
+    const maxEnjoyment = useValidNumber('');
     const [difficulty, setDifficulty] = useState('-1');
     const [rouletteLevels, setRouletteLevels] = useLocalStorage<RouletteResponse[] | null>('rouletteLevels', null);
     const [progress, setProgress] = useLocalStorage('rouletteProgress', 0);
 
     const generateMutation = useMutation({
-        mutationFn: () => GenerateRoulette(parseFloat(minTier), parseFloat(maxTier), parseFloat(minEnjoyment), parseFloat(maxEnjoyment), difficulty !== '-1' ? difficulty : undefined),
+        mutationFn: () => GenerateRoulette(
+            parseFloat(minTier.value) + (minTier.isInteger ? -0.5 : 0),
+            parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0),
+            parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0),
+            parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0),
+            difficulty !== '-1' ? difficulty : undefined
+        ),
         onError: (error: AxiosError) => toast.error((error.response?.data as { error: string })?.error ?? 'An error occurred'),
         onSuccess: (data) => {
             setRouletteLevels(data);
@@ -44,10 +50,10 @@ export default function Roulette() {
     });
 
     function submit() {
-        if (validateParameter(isMinTierValid, minTier, 'Minimum tier')) return;
-        if (validateParameter(isMaxTierInvalid, maxTier, 'Maximum tier')) return;
-        if (validateParameter(isMinEnjoymentValid, minEnjoyment, 'Minimum enjoyment')) return;
-        if (validateParameter(isMaxEnjoymentValid, maxEnjoyment, 'Maximum enjoyment')) return;
+        if (minTier.value !== '' && !validateParameter(minTier.isValid, minTier.value, 'Minimum tier')) return;
+        if (maxTier.value !== '' && !validateParameter(maxTier.isValid, maxTier.value, 'Maximum tier')) return;
+        if (minEnjoyment.value !== '' && !validateParameter(minEnjoyment.isValid, minEnjoyment.value, 'Minimum enjoyment')) return;
+        if (maxEnjoyment.value !== '' && !validateParameter(maxEnjoyment.isValid, maxEnjoyment.value, 'Maximum enjoyment')) return;
 
         generateMutation.mutate();
     }
@@ -58,23 +64,23 @@ export default function Roulette() {
             <p>Generate a roulette. For every level you have to get 1% more than the last level. Eg. you must get at least 1% on level #1, 2% on level #2, 3% on level #3 and so on until you reach level #100 where you have to get 100%.</p>
             <FormGroup>
                 <FormInputLabel>Minimum tier</FormInputLabel>
-                <TextInput value={minTier} onChange={(e) => setMinTier(e.target.value.trim())} id='minTier' min='1' max='35' invalid={!isMinTierValid} />
-                <FormInputDescription>Optional. The lowest tier of the roulette. Does not correct for rounding eg. for tier 2 type "1.5"</FormInputDescription>
+                <TextInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value.trim())} id='minTier' min='1' max='35' invalid={!minTier.isValid} />
+                <FormInputDescription>Optional. The lowest tier of the roulette. Use decimals for higher precision.</FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Maximum tier</FormInputLabel>
-                <NumberInput value={maxTier} onChange={(e) => setMaxTier(e.target.value.trim())} id='maxTier' min='1' max='35' invalid={!isMaxTierInvalid} />
-                <FormInputDescription>Optional. The highest tier of the roulette. Does not correct for rounding eg. for tier 2 type "2.5"</FormInputDescription>
+                <TextInput value={maxTier.value} onChange={(e) => maxTier.setValue(e.target.value.trim())} id='maxTier' min='1' max='35' invalid={!maxTier.isValid} />
+                <FormInputDescription>Optional. The highest tier of the roulette. Use decimals for higher precision.</FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Minimum enjoyment</FormInputLabel>
-                <NumberInput value={minEnjoyment} onChange={(e) => setMinEnjoyment(e.target.value.trim())} id='minEnjoyment' min='0' max='10' invalid={!isMinEnjoymentValid} />
-                <FormInputDescription>Optional. The lowest enjoyment of the roulette. Does not correct for rounding eg. for enjoyment 2 type "1.5"</FormInputDescription>
+                <TextInput value={minEnjoyment.value} onChange={(e) => minEnjoyment.setValue(e.target.value.trim())} id='minEnjoyment' min='0' max='10' invalid={!minEnjoyment.isValid} />
+                <FormInputDescription>Optional. The lowest enjoyment of the roulette. Use decimals for higher precision.</FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Maximum enjoyment</FormInputLabel>
-                <NumberInput value={maxEnjoyment} onChange={(e) => setMaxEnjoyment(e.target.value.trim())} id='maxEnjoyment' min='0' max='10' invalid={!isMaxEnjoymentValid} />
-                <FormInputDescription>Optional. The highest enjoyment of the roulette. Does not correct for rounding eg. for enjoyment 2 type "2.5"</FormInputDescription>
+                <TextInput value={maxEnjoyment.value} onChange={(e) => maxEnjoyment.setValue(e.target.value.trim())} id='maxEnjoyment' min='0' max='10' invalid={!maxEnjoyment.isValid} />
+                <FormInputDescription>Optional. The highest enjoyment of the roulette. Use decimals for higher precision.</FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Difficulty</FormInputLabel>

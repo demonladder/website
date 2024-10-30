@@ -2,7 +2,7 @@ import { useState } from 'react';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { NumberInput } from '../../../../components/Input';
+import { TextInput } from '../../../../components/Input';
 import Select from '../../../../components/Select';
 import CheckBox from '../../../../components/input/CheckBox';
 import { PrimaryButton } from '../../../../components/Button';
@@ -13,8 +13,7 @@ import GenerateAlphabet, { AlphabetResponse } from '../../../../api/alphabet/Gen
 import { useLocalStorage } from 'usehooks-ts';
 import { Link } from 'react-router-dom';
 import IDButton from '../../../../components/IDButton';
-import useValidFloat from '../../../../hooks/useValidFloat';
-import validateParameter from '../validateParameter';
+import useValidNumber from '../../../../hooks/useValidNumber';
 
 const difficultyOptions = {
     '-1': 'Any',
@@ -26,16 +25,23 @@ const difficultyOptions = {
 };
 
 export default function Alphabet() {
-    const [minTier, setMinTier, isMinTierValid] = useValidFloat('');
-    const [maxTier, setMaxTier, isMaxTierValid] = useValidFloat('');
-    const [minEnjoyment, setMinEnjoyment, isMinEnjoymentValid] = useValidFloat('');
-    const [maxEnjoyment, setMaxEnjoyment, isMaxEnjoymentValid] = useValidFloat('');
+    const minTier = useValidNumber('');
+    const maxTier = useValidNumber('');
+    const minEnjoyment = useValidNumber('');
+    const maxEnjoyment = useValidNumber('');
     const [difficulty, setDifficulty] = useState('-1');
     const [uncompletedOnly, setUncompletedOnly] = useState(false);
     const [levels, setLevels] = useLocalStorage<AlphabetResponse[]>('alphabetLevels', []);
 
     const generateMutation = useMutation({
-        mutationFn: () => GenerateAlphabet(parseFloat(minTier), parseFloat(maxTier), parseFloat(minEnjoyment), parseFloat(maxEnjoyment), difficulty !== '-1' ? difficulty : undefined, uncompletedOnly),
+        mutationFn: () => GenerateAlphabet(
+            parseFloat(minTier.value) + (minTier.isInteger ? -0.5 : 0),
+            parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0),
+            parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0),
+            parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0),
+            difficulty !== '-1' ? difficulty : undefined,
+            uncompletedOnly
+        ),
         onError: (error: AxiosError) => toast.error((error.response?.data as { error: string })?.error ?? 'An error occurred'),
         onSuccess: (data) => {
             setLevels(data);
@@ -43,10 +49,10 @@ export default function Alphabet() {
     });
 
     function submit() {
-        if (validateParameter(isMinTierValid, minTier, 'Minimum tier')) return;
-        if (validateParameter(isMaxTierValid, maxTier, 'Maximum tier')) return;
-        if (validateParameter(isMinEnjoymentValid, minEnjoyment, 'Minimum enjoyment')) return;
-        if (validateParameter(isMaxEnjoymentValid, maxEnjoyment, 'Maximum enjoyment')) return;
+        if (!minTier.isValid) return toast.error('Minimum tier must be a number');
+        if (!maxTier.isValid) return toast.error('Maximum tier must be a number');
+        if (!minEnjoyment.isValid) return toast.error('Minimum enjoyment must be a number');
+        if (!maxEnjoyment.isValid) return toast.error('Maximum enjoyment must be a number');
 
         generateMutation.mutate();
     }
@@ -54,26 +60,27 @@ export default function Alphabet() {
     return (
         <div>
             <h2 className='text-3xl'>Alphabet</h2>
+            <p>You get one level for every letter in the alphabet. It should be completed in alphabetical order but that's up to you really.</p>
             <div>
                 <FormGroup>
                     <FormInputLabel>Minimum tier</FormInputLabel>
-                    <NumberInput value={minTier} onChange={(e) => setMinTier(e.target.value.trim())} id='minTier' min='1' max='35' invalid={!isMinTierValid} />
-                    <FormInputDescription>Optional. The lowest tier of the alphabet. Does not correct for rounding eg. for tier 2 type "1.5"</FormInputDescription>
+                    <TextInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value.trim())} id='minTier' min='1' max='35' invalid={!minTier.isValid} />
+                    <FormInputDescription>Optional. The lowest tier of the alphabet. Use decimals for higher precision.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Maximum tier</FormInputLabel>
-                    <NumberInput value={maxTier} onChange={(e) => setMaxTier(e.target.value.trim())} id='maxTier' min='1' max='35' invalid={!isMaxTierValid} />
-                    <FormInputDescription>Optional. The highest tier of the alphabet. Does not correct for rounding eg. for tier 2 type "2.5"</FormInputDescription>
+                    <TextInput value={maxTier.value} onChange={(e) => maxTier.setValue(e.target.value.trim())} id='maxTier' min='1' max='35' invalid={!maxTier.isValid} />
+                    <FormInputDescription>Optional. The highest tier of the alphabet. Use decimals for higher precision.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Minimum enjoyment</FormInputLabel>
-                    <NumberInput value={minEnjoyment} onChange={(e) => setMinEnjoyment(e.target.value.trim())} id='minEnjoyment' min='0' max='10' invalid={!isMinEnjoymentValid} />
-                    <FormInputDescription>Optional. The lowest enjoyment of the alphabet. Does not correct for rounding eg. for enjoyment 2 type "1.5"</FormInputDescription>
+                    <TextInput value={minEnjoyment.value} onChange={(e) => minEnjoyment.setValue(e.target.value.trim())} id='minEnjoyment' min='0' max='10' invalid={!minEnjoyment.isValid} />
+                    <FormInputDescription>Optional. The lowest enjoyment of the alphabet. Use decimals for higher precision.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Maximum enjoyment</FormInputLabel>
-                    <NumberInput value={maxEnjoyment} onChange={(e) => setMaxEnjoyment(e.target.value.trim())} id='maxEnjoyment' min='0' max='10' invalid={!isMaxEnjoymentValid} />
-                    <FormInputDescription>Optional. The highest enjoyment of the alphabet. Does not correct for rounding eg. for enjoyment 2 type "2.5"</FormInputDescription>
+                    <TextInput value={maxEnjoyment.value} onChange={(e) => maxEnjoyment.setValue(e.target.value.trim())} id='maxEnjoyment' min='0' max='10' invalid={!maxEnjoyment.isValid} />
+                    <FormInputDescription>Optional. The highest enjoyment of the alphabet. Use decimals for higher precision.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Difficulty</FormInputLabel>
