@@ -11,7 +11,7 @@ export default function Generators() {
                 <NavLink to='roulette' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Roulette</NavLink>
                 <NavLink to='reverseRoulette' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Reverse roulette [WIP]</NavLink>
                 <NavLink to='tierRoulette' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Tier roulette</NavLink>
-                <NavLink to='decathlon' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Decathlon [WIP]</NavLink>
+                <NavLink to='decathlon' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Decathlon</NavLink>
             </div>
             <Outlet />
         </Container>
