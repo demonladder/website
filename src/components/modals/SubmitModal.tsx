@@ -9,7 +9,7 @@ import { FullLevel } from '../../api/types/compounds/FullLevel';
 import renderToastError from '../../utils/renderToastError';
 import StorageManager from '../../utils/StorageManager';
 import { validateIntChange, validateIntInputChange } from '../../utils/validators/validateIntChange';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import WarningBox from '../message/WarningBox';
 import { validateLink } from '../../utils/validators/validateLink';
 import CheckBox from '../input/CheckBox';
@@ -18,6 +18,7 @@ import GetSingleSubmission from '../../api/submissions/GetSingleSubmission';
 import FormInputLabel from '../form/FormInputLabel';
 import FormInputDescription from '../form/FormInputDescription';
 import useUser from '../../hooks/useUser';
+import DeleteSubmission from '../../api/submissions/DeleteSubmission';
 
 interface Props {
     level: FullLevel;
@@ -99,6 +100,23 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     }, [userSubmission, secondPlayerSearch]);
 
     const queryClient = useQueryClient();
+
+    const deleteMutation = useMutation({
+        mutationFn: async () => {
+            if (session.user?.ID === undefined) return;
+            return await toast.promise(DeleteSubmission(level.ID, session.user.ID), {
+                pending: 'Deleting...',
+                success: 'Submission deleted',
+                error: renderToastError,
+            });
+        },
+        onSuccess: () => {
+            void queryClient.invalidateQueries(['level', level.ID]);
+            void queryClient.invalidateQueries(['submission', level.ID, session.user?.ID]);
+            if (session.user?.ID !== undefined) void queryClient.invalidateQueries(['user', session.user.ID]);
+            onClose();
+        },
+    });
 
     function submitForm(e: React.FormEvent) {
         e.preventDefault();
@@ -270,9 +288,12 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <div className='flex round:gap-1 float-right'>
-                    <SecondaryButton onClick={onClose}>Close</SecondaryButton>
-                    <PrimaryButton onClick={submitForm}>Submit</PrimaryButton>
+                <div className='flex justify-between'>
+                    <button className='text-red-400 underline-t disabled:text-gray-400' onClick={() => deleteMutation.mutate()} disabled={deleteMutation.status === 'loading'}>delete</button>
+                    <div>
+                        <SecondaryButton onClick={onClose}>Close</SecondaryButton>
+                        <PrimaryButton onClick={submitForm}>Submit</PrimaryButton>
+                    </div>
                 </div>
             </Modal.Footer>
         </Modal>
