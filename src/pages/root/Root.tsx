@@ -132,6 +132,7 @@ export default function Root() {
         const error = url.get('error');
         if (error) {
             if (error === 'already_linked') notifyError('This Discord account is already linked to another GDDL account.');
+            else if (error === 'mismatching_disord_id') notifyError('The Discord account linked to this GDDL account does not match the Discord account you are trying to link with.');
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
