@@ -88,9 +88,9 @@ export default function About() {
                 <p>Proof must come in the form of a video. GDDL does not host videos so you will have to upload the video somewhere else.</p>
                 <p>Here is a list of accepted URLs:</p>
                 <pre className='my-2'>
-                    <p>{`https://www.youtube.com/watch?={id}`}</p>
-                    <p>{`https://m.youtube.com/watch?={id}`}</p>
-                    <p>{`https://youtube.com/watch?={id}`}</p>
+                    <p>{`https://www.youtube.com/watch?v={id}`}</p>
+                    <p>{`https://m.youtube.com/watch?v={id}`}</p>
+                    <p>{`https://youtube.com/watch?v={id}`}</p>
                     <p>{`https://youtu.be/{id}`}</p>
                     <p>{`https://www.twitch.tv/videos/{id}`}</p>
                     <p>{`https://twitch.tv/videos/{id}`}</p>
