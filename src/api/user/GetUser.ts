@@ -15,7 +15,7 @@ type DTOResponse = User & {
     Roles: Role[],
 };
 
-type UserResponse = Omit<DTOResponse, 'Favorite' | 'LeastFavorite'> & {
+export type UserResponse = Omit<DTOResponse, 'Favorite' | 'LeastFavorite'> & {
     FavoriteLevels: number[],
     LeastFavoriteLevels: number[],
 }

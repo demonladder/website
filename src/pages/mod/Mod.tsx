@@ -27,10 +27,10 @@ export default function Mod() {
                         <NavButton to='/mod/editSubmission'>Edit submission</NavButton>
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Users</p>
+                        <NavButton to='/mod/manageUser'>Manage user</NavButton>
                         <NavButton to='/mod/signupLinks'>Sign-up links</NavButton>
                         <NavButton to='/mod/createUser'>Create user</NavButton>
                         <NavButton to='/mod/deleteUser'>Delete user</NavButton>
-                        <NavButton to='/mod/userBans'>Bans</NavButton>
                         <div className='divider my-3'></div>
                         <p className='text-gray-400 text-sm ps-3'>Packs</p>
                         <NavButton to='/mod/editPack'>Packs</NavButton>

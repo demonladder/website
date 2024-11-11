@@ -1,0 +1,50 @@
+import { useParams } from 'react-router-dom';
+import EditInformation from './EditInformation';
+import Notes from './Notes';
+import Roles from './Roles';
+import BanHistory from './BanHistory';
+import { useQuery } from '@tanstack/react-query';
+import GetUser from '../../../api/user/GetUser';
+import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import { useDocumentTitle } from 'usehooks-ts';
+import Submissions from './Submissions';
+
+export default function ManageUserContent() {
+    const userID = useParams().userID;
+    
+    const { data: fetchedUser, status } = useQuery({
+        queryKey: ['user', parseInt(userID ?? '-1')],
+        queryFn: () => GetUser(parseInt(userID ?? '-1')),
+        enabled: userID !== undefined,
+    });
+
+    useDocumentTitle(`Editing user ${fetchedUser?.Name ?? '...'}`);
+
+    if (userID === undefined) return;
+    if (status === 'loading') return <InlineLoadingSpinner />;
+    if (fetchedUser === undefined) return <p>User not found</p>;
+
+    return (
+        <>
+            <p>Selected user: <b>{fetchedUser.ID} ({fetchedUser.Name})</b></p>
+            <div className='divider my-8 text-gray-500' />
+            <EditInformation user={fetchedUser} />
+            <div className='divider my-8 text-gray-500' />
+            <div className='mt-4'>
+                <Submissions />
+            </div>
+            <div className='divider my-8 text-gray-500' />
+            <div className='mt-4'>
+                <Roles user={fetchedUser} />
+            </div>
+            <div className='divider my-8 text-gray-500' />
+            <div className='mt-4'>
+                <Notes user={fetchedUser} />
+            </div>
+            <div className='divider my-8 text-gray-500' />
+            <div className='mt-4'>
+                <BanHistory user={fetchedUser} />
+            </div>
+        </>
+    );
+}

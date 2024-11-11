@@ -78,8 +78,8 @@ export default function EditSubmission() {
             APIClient.patch(`/user/${userResult.UserID}/submissions/${activeLevel.ID}`, {
                 levelID: activeLevel.ID,
                 userID: userResult.UserID,
-                rating: rating || null,
-                enjoyment: enjoyment || null,
+                rating: rating ?? null,
+                enjoyment: enjoyment ?? null,
                 refreshRate,
                 device: parseInt(deviceKey),
                 proof: proof !== '' ? proof : null,

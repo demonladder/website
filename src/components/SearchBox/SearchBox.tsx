@@ -7,7 +7,7 @@ interface Props<T> {
     search: string;
     onSearchChange: (search: string) => void;
     list: T[];
-    onDelayedChange: (a: string) => void;
+    onDelayedChange?: (a: string) => void;
     setResult: (result: T | undefined) => void;
     status: string;
     id?: string;
@@ -15,13 +15,14 @@ interface Props<T> {
     invalid?: boolean;
     getLabel: (result: T) => string;
     getName: (result: T) => string;
+    overWriteInput?: boolean;
 }
 
 
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox<T>({ search, onSearchChange, list, getLabel, getName, onDelayedChange, setResult, status, id, placeholder = 'Search...', invalid = false }: Props<T>) {
+export default function SearchBox<T>({ search, onSearchChange, list, getLabel, getName, onDelayedChange, setResult, status, id, placeholder = 'Search...', invalid = false, overWriteInput = true }: Props<T>) {
     const [visible, setVisible] = useState(false);  // State of the search results
 
     // When the search changes, wait a bit before telling the parent
@@ -30,6 +31,8 @@ export default function SearchBox<T>({ search, onSearchChange, list, getLabel, g
         setResult(undefined);
 
         onSearchChange(e.target.value);
+
+        if (onDelayedChange === undefined) return;
         clearTimeout(timer);
         setTimer(setTimeout(() => {
             onDelayedChange(e.target.value);
@@ -54,7 +57,7 @@ export default function SearchBox<T>({ search, onSearchChange, list, getLabel, g
 
     // When the user clicks a result, set search state and pass the clicked result to parent
     function handleClick(r: T) {
-        onSearchChange(getName(r));
+        if (overWriteInput) onSearchChange(getName(r));
         setResult(r);
     }
 

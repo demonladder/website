@@ -35,7 +35,6 @@ import ProfileSettings from './pages/root/settings/profileSettings/ProfileSettin
 import ClientSiteSettings from './pages/root/settings/siteSettings/SiteSettings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
-import UserBans from './pages/mod/userBans/UserBans';
 import EditPack from './pages/mod/pack/EditPack';
 import Settings from './pages/root/settings/Settings';
 import CrossroadPack from './pages/root/packs/packOverview/CrossroadPack';
@@ -65,6 +64,8 @@ import TierRoulette from './pages/root/generators/tierRoulette/TierRoulette';
 import ChangeLogs from './pages/root/changeLogs/ChangeLogs';
 import ReverseRoulette from './pages/root/generators/reverseRoulette/ReverseRoulette';
 import Decathlon from './pages/root/generators/decathlon/Decathlon';
+import ManageUser from './pages/mod/manageUser/ManageUser';
+import ManageUserContent from './pages/mod/manageUser/ManageUserContent';
 
 const router = createBrowserRouter(
     [
@@ -237,16 +238,22 @@ const router = createBrowserRouter(
                             element: <EditSubmission />,
                         },
                         {
+                            path: 'manageUser',
+                            element: <ManageUser />,
+                            children: [
+                                {
+                                    path: ':userID',
+                                    element: <ManageUserContent />
+                                },
+                            ],
+                        },
+                        {
                             path: 'createUser',
                             element: <CreateUser />,
                         },
                         {
                             path: 'deleteUser',
                             element: <DeleteUser />,
-                        },
-                        {
-                            path: 'userBans',
-                            element: <UserBans />,
                         },
                         {
                             path: 'signupLinks',

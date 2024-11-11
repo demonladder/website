@@ -1,22 +1,22 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from '../components/SearchBox/SearchBox';
-import { TinyUser } from '../api/types/TinyUser';
 import SearchUser from '../api/user/SearchUser';
 import GetUser from '../api/user/GetUser';
+import User from '../api/types/User';
 
 interface Props {
     ID: string,
     userID?: number,
     maxUsersOnList?: number,
-    onUserSelect?: (user: TinyUser) => void;
+    onUserSelect?: (user: User) => void;
 }
 
 export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect }: Props) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const [activeUser, setActiveUser] = useState<TinyUser>();
+    const [activeUser, setActiveUser] = useState<User>();
     const [isInvalid, setIsInvalid] = useState(false);
 
     const { data, status } = useQuery({
@@ -30,7 +30,14 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                 setActiveUser({
                     ID: user.ID,
                     Name: user.Name,
-                    PermissionLevel: 0,
+                    AverageEnjoyment: user.AverageEnjoyment,
+                    Favorite: user.FavoriteLevels.join(','),
+                    HardestID: user.HardestID,
+                    Introduction: user.Introduction,
+                    LeastFavorite: user.LeastFavoriteLevels.join(','),
+                    MaxPref: user.MaxPref,
+                    MinPref: user.MinPref,
+                    RoleIDs: user.RoleIDs,
                 });
                 setSearch(user.Name);
             }).catch(console.error);

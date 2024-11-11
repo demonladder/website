@@ -1,56 +1,13 @@
 import { useState, useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useUserSearch from '../../../hooks/useUserSearch';
-import { BanRecord as IBanRecord, GetBanHistory, BanUser, RevokeBan } from './api';
-import UserLink from '../../../components/UserLink';
-import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
+import { GetBanHistory, BanUser } from './api';
+import { PrimaryButton } from '../../../components/Button';
 import { TextInput } from '../../../components/Input';
 import useSelect from '../../../hooks/useSelect';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-
-function BanRecord({ record }: { record: IBanRecord }) {
-    const duration = (new Date(record.BanStop).getTime() - new Date(record.BanStart).getTime()) / (1000 * 60 * 60 * 24);
-    const isActive = new Date(record.BanStop).getTime() > new Date().getTime();
-
-    const [isLoading, setIsloading] = useState(false);
-    const queryClient = useQueryClient();
-    function onRevoke() {
-        setIsloading(true);
-
-        const promise = RevokeBan(record.BanID).then(() => {
-            void queryClient.invalidateQueries(['banHistory']);
-        }).finally(() => {
-            setIsloading(false);
-        });
-
-        void toast.promise(promise, {
-            pending: 'Revoking...',
-            success: 'Ban revoked!',
-            error: renderToastError,
-        });
-    }
-
-    return (
-        <div className='bg-gray-500 mb-3 p-3 round:rounded-lg grid grid-cols-1 xl:grid-cols-3 gap-4'>
-            <div>
-                <p>Ban from <span className='font-bold'>{record.BanStart}</span> to <span className='font-bold'>{record.BanStop}</span> UTC</p>
-                <p>Duration: {duration.toFixed(2)} days</p>
-            </div>
-            <div>
-                <p>User banned by <UserLink userID={record.StaffID} /></p>
-                <p>Ban reason: {record.Reason || 'None specified'}</p>
-            </div>
-            <div>
-                <p>Status: {isActive ? 'Active' : 'Inactive'}</p>
-                {isActive
-                    ? <DangerButton onClick={onRevoke} disabled={isLoading}>Revoke</DangerButton>
-                    : <SecondaryButton onClick={onRevoke} disabled={isLoading}>Clear</SecondaryButton>
-                }
-            </div>
-        </div>
-    );
-}
+import BanRecord from '../manageUser/BanRecord';
 
 export default function UserBans() {
     const userID = new URLSearchParams(window.location.search).get('userID');
@@ -64,7 +21,7 @@ export default function UserBans() {
             13: '3 months',
             26: '6 months',
             10000: 'Permanent',
-        }
+        },
     });
 
     const [isLoading, setIsloading] = useState(false);

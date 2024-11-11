@@ -84,7 +84,7 @@ export default function EditRole() {
             <div className='divider my-8' />
             <Users roleID={roleID} />
             {role &&
-                <button onClick={() => openDeleteRoleModal(role)} className='mt-2 text-red-500 underline-t'>Delete {role?.Name}</button>
+                <button onClick={() => openDeleteRoleModal(role)} className='mt-2 text-red-500 underline-t'>Delete role "{role?.Name}"</button>
             }
         </div>
     );

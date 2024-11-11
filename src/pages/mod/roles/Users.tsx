@@ -3,6 +3,7 @@ import APIClient from '../../../api/APIClient';
 import User from '../../../api/types/User';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
+import RemoveRoleFromUser from '../../../api/user/RemoveRoleFromUser';
 
 export default function Users({ roleID }: { roleID: number }) {
     const queryClient = useQueryClient();
@@ -13,12 +14,10 @@ export default function Users({ roleID }: { roleID: number }) {
 
     function removeUser(userID: number) {
         void toast.promise(
-            APIClient
-                .delete(`/roles/${roleID}/users/${userID}`)
-                .then(() => {
-                    void queryClient.invalidateQueries(['role', roleID, 'users']);
-                    void queryClient.invalidateQueries(['users', userID]);
-                }),
+            RemoveRoleFromUser(userID, roleID).then(() => {
+                void queryClient.invalidateQueries(['role', roleID, 'users']);
+                void queryClient.invalidateQueries(['users', userID]);
+            }),
             {
                 pending: 'Removing role...',
                 success: 'Role removed from user',

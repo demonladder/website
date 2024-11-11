@@ -1,20 +1,12 @@
 import APIClient from '../../../api/APIClient';
+import UserBan from '../../../api/types/UserBan';
 
-export interface BanRecord {
-    BanID: number
-    StaffID: number
-    StaffName: string
-    BanStart: string
-    BanStop: string
-    Reason: string
-}
-
-export async function GetBanHistory(userID: number | undefined): Promise<BanRecord[]> {
+export async function GetBanHistory(userID: number | undefined) {
     if (userID === undefined) {
         return [];
     }
 
-    const res = await APIClient.get('/user/ban', { params: { userID } });
+    const res = await APIClient.get<UserBan[]>('/user/ban', { params: { userID } });
     return res.data;
 }
 

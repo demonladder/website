@@ -27,6 +27,12 @@ export const permissions: Permission[] = [
         Flag: PermissionFlags.PASSWORD_LINKS,
     },
     {
+        ID: 14,
+        Name: 'Manage notes',
+        Description: 'Allows users to create, delete and edit notes.',
+        Flag: PermissionFlags.MANAGE_NOTES,
+    },
+    {
         ID: 11,
         Name: 'Ban users',
         Description: 'Allows users to ban other users.',
