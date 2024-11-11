@@ -25,19 +25,20 @@ enum EListType {
 }
 
 export default function Submissions({ userID }: Props) {
-    const [page, setPage] = useSessionStorage('profilePageIndex_' + userID, 1);
+    const [page, setPage] = useSessionStorage(`profilePageIndex_${userID}`, 1);
     const [sort, setSort] = useState<{ sort: string, sortDirection: string }>({ sort: 'LevelID', sortDirection: 'asc' });
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
     const [query, lateQuery, setQuery] = useLateValue('', 500);
+    const [onlyIncomplete, setOnlyIncomplete] = useState(false);
 
     const { status, data } = useQuery({
-        queryKey: ['user', userID, 'submissions', { page, name: lateQuery, ...sort }],
-        queryFn: () => GetUserSubmissions({ userID, page, name: lateQuery, ...sort }),
+        queryKey: ['user', userID, 'submissions', { page, name: lateQuery, onlyIncomplete, ...sort }],
+        queryFn: () => GetUserSubmissions({ userID, page, name: lateQuery, onlyIncomplete, ...sort }),
     });
 
     useEffect(() => {
         if (data?.total !== 0 && data?.submissions.length === 0) setPage(1);
-    }, [data]);
+    }, [data, setPage]);
 
     if (status === 'loading') {
         return (
@@ -68,6 +69,9 @@ export default function Submissions({ userID }: Props) {
                         </svg>
                     </button>
                 </div>
+                <button className={'w-7 h-7 grid place-items-center text-black ' + (onlyIncomplete ? 'bg-gray-950 text-white' : 'bg-white')} onClick={() => setOnlyIncomplete((prev) => !prev)}>
+                    <span><b>%</b></span>
+                </button>
                 <div className='max-md:w-full md:w-60'>
                     <TextInput value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Filter by name...' />
                 </div>
