@@ -44,15 +44,15 @@ export default function Select({ options, activeKey, onChange, invalid = false, 
                     : options.find((o) => o.key === activeKey)?.value
                 }
                 <div className={'shadow-2xl absolute z-10 -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows]'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>
-                    <div className={`min-h-0 bg-gray-600 max-h-${height ?? '44'} overflow-auto`}>
+                    <ul className={`bg-gray-600 max-h-${height ?? '44'} overflow-y-scroll`}>
                         {!Array.isArray(options)
                             ? Object.entries(options).map((o) => <SelectOption option={o} setValue={optionClicked} key={o[0] + '_0'} />)
                             : options.map((o) => <SelectOption option={[o.key, o.value]} setValue={optionClicked} key={o.key + '_1'} />)
                         }
-                    </div>
+                    </ul>
                 </div>
             </div>
-            <i className='absolute top-0 right-1 bx bx-caret-down' />
+            <i className='bx bx-caret-down absolute top-0 right-1' />
         </div>
     );
 }
@@ -63,6 +63,6 @@ function SelectOption({ option, setValue }: {option: [string, string], setValue:
     }
 
     return (
-        <p onClick={handleClick} tabIndex={0} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} className='hover:bg-gray-500 px-2 py-1'>{option[1]}</p>
+        <li onClick={handleClick} tabIndex={0} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} className='hover:bg-gray-500 px-2 py-1'>{option[1]}</li>
     );
 }
