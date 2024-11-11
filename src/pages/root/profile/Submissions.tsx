@@ -78,7 +78,7 @@ export default function Submissions({ userID }: Props) {
             </div>
             {listType === 'inline' ?
                 <InlineList levels={submissions} userID={userID} /> :
-                <GridList levels={submissions} />
+                <GridList levels={submissions} userID={userID} />
             }
             {submissions.length === 0 &&
                 <p>No levels</p>
@@ -125,10 +125,33 @@ function InlineList({ levels, userID }: { levels: (UserSubmission)[], userID: nu
     );
 }
 
-function GridList({ levels }: { levels: UserSubmission[] }) {
+function GridList({ levels, userID }: { levels: UserSubmission[], userID: number }) {
+    const openAddListLevelModal = useAddListLevelModal();
+    const openDeleteSubmissionModal = useDeleteSubmissionModal();
+
+    const navigate = useNavigate();
+    const { createMenu } = useContextMenu();
+
+    function openContext(e: React.MouseEvent, submission: UserSubmission) {
+        e.preventDefault();
+
+        const buttons: ButtonData[] = [
+            { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
+            { text: 'Add to list', onClick: () => openAddListLevelModal(userID, submission.LevelID) },
+            { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
+        ];
+        if (userID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission) });
+
+        createMenu({
+            x: e.clientX,
+            y: e.clientY,
+            buttons,
+        });
+    }
+
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-            {levels.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} difficulty={p.Level.Meta.Difficulty} inPack={false} key={p.LevelID} />)}
+            {levels.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} difficulty={p.Level.Meta.Difficulty} inPack={false} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />)}
         </div>
     );
 }
