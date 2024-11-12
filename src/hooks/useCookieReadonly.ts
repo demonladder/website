@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import { useCallback, useEffect, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 
-class CookieChangeEvent extends CustomEvent<{ name: string }> {
+export class CookieChangeEvent extends CustomEvent<{ name: string }> {
     constructor(name: string) {
         super('cookie-change', { detail: { name } });
     }

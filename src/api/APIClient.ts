@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import ms from 'ms';
 import _ from 'lodash';
+import Cookies from 'js-cookie';
+import { CookieChangeEvent } from '../hooks/useCookieReadonly';
 
 const APIClient = axios.create({
     baseURL: import.meta.env.VITE_SERVER_URL,
@@ -72,6 +74,16 @@ APIClient.interceptors.response.use(undefined, (error: AxiosError) => {
     }
 
     throw error;
+});
+
+APIClient.interceptors.response.use(undefined, (error: AxiosError) => {
+    if (error.response?.status !== 401) throw error;
+    if ((error.response?.data as { error: string }).error !== 'Authentication failed!') throw error;
+
+    Cookies.remove(import.meta.env.VITE_SESSION_ID_NAME);
+    window.dispatchEvent(new CookieChangeEvent(import.meta.env.VITE_SESSION_ID_NAME));
+
+    throw new Error('You have been logged out due to inactivity.');
 });
 
 export default APIClient;
