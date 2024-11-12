@@ -80,17 +80,6 @@ export default {
             },
         },
     },
-    safelist: [
-        {
-            pattern: /permission-[0-9]/,
-        },
-        {
-            pattern: /refreshRate-\d*/,
-        },
-        {
-            pattern: /max-h-[0-9]*/,
-        },
-    ],
     plugins: [
         plugin(function({ addVariant }) {
             addVariant('round', '.round &');

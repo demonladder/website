@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { KeyboardAccessibility } from '../utils/KeyboardAccessibility';
 
 interface Props {
-    options: {[key: string]: string} | { key: string, value: string }[];
+    options: { [key: string]: string } | { key: string, value: string }[];
     activeKey: string;
     onChange: (option: string) => void;
     invalid?: boolean;
@@ -43,8 +43,8 @@ export default function Select({ options, activeKey, onChange, invalid = false, 
                     ? options[activeKey]
                     : options.find((o) => o.key === activeKey)?.value
                 }
-                <div className={'shadow-2xl absolute z-10 -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows]'} style={{ gridTemplateRows: open ? '1fr' : '0fr'}}>
-                    <ul className={`bg-gray-600 max-h-${height ?? '44'} overflow-y-scroll`}>
+                <div className={'shadow-2xl absolute z-10 -translate-x-2 translate-y-[2px] overflow-hidden grid transition-[grid-template-rows]'} style={{ gridTemplateRows: open ? '1fr' : '0fr' }}>
+                    <ul className={`bg-gray-600 max-h-${height ?? '44'} overflow-y-scroll`} style={{ maxHeight: height ? `${(parseInt(height) / 4).toFixed(2)}rem` : '11rem' }}>
                         {!Array.isArray(options)
                             ? Object.entries(options).map((o) => <SelectOption option={o} setValue={optionClicked} key={o[0] + '_0'} />)
                             : options.map((o) => <SelectOption option={[o.key, o.value]} setValue={optionClicked} key={o.key + '_1'} />)
@@ -57,7 +57,7 @@ export default function Select({ options, activeKey, onChange, invalid = false, 
     );
 }
 
-function SelectOption({ option, setValue }: {option: [string, string], setValue: (option: string) => void}) {
+function SelectOption({ option, setValue }: { option: [string, string], setValue: (option: string) => void }) {
     function handleClick() {
         setValue(option[0])
     }
