@@ -255,6 +255,9 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     </div>
                     <div>
                         <label htmlFor='submitProof'>Proof <a href='/about#proof' target='_blank'><i className='bx bx-info-circle' /></a></label>
+                        {level.Meta.Difficulty !== 'Extreme' && Math.round(level.Rating ?? 16) < 16 &&
+                            <p className='text-sm text-yellow-500'>Please be aware that proof is not strictly required for easier levels. By not adding proof you can bypass the queue and skip the waiting time to get this submission added.</p>
+                        }
                         <TextInput id='submitProof' value={proof} onChange={onProofChange} invalid={(level.Meta.Difficulty === 'Extreme' && !validateLink(proof)) || (proof !== '' && !validateLink(proof))} />
                         <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
                     </div>
