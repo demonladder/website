@@ -4,16 +4,19 @@ import Modal from '../Modal';
 import DeleteSubmission from '../../api/submissions/DeleteSubmission';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
-import { UserSubmission } from '../../api/user/GetUserSubmissions';
+import Submission from '../../api/types/Submission';
+import LevelMeta from '../../api/types/LevelMeta';
+import Level from '../../api/types/Level';
 
 interface Props {
-    submission: UserSubmission;
+    level: Level & { Meta: LevelMeta };
+    submission: Submission;
     onClose: () => void;
 }
 
-export default function DeleteSubmissionModal({ submission, onClose: close }: Props) {
+export default function DeleteSubmissionModal({ level, submission, onClose: close }: Props) {
     const queryClient = useQueryClient();
-    const { UserID: userID, LevelID: levelID, Level: level } = submission;
+    const { UserID: userID, LevelID: levelID } = submission;
 
     function deleteSubmission(levelID?: number) {
         if (levelID === undefined) return;

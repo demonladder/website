@@ -9,6 +9,6 @@ function refreshRateToColor(refreshRate: number) {
 
 export default function RefreshRateIcon({ refreshRate }: { refreshRate: number }) {
     return (
-        <b className={`self-center text-center py-2 w-12 round:rounded-e-md bg-refreshRate-${refreshRateToColor(refreshRate)}` + ((refreshRate < 360 && refreshRate >= 75) ? ' text-black' : '')}>{refreshRate}</b>
+        <b className={`flex items-center justify-center text-center py-2 w-12 round:rounded-e-md bg-refreshRate-${refreshRateToColor(refreshRate)}` + ((refreshRate < 360 && refreshRate >= 75) ? ' text-black' : '')}>{refreshRate}</b>
     );
 }

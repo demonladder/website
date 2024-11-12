@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
@@ -9,9 +9,16 @@ import GetLevelSubmissions, { Submission as ISubmission } from '../../../api/sub
 import Select from '../../../components/Select';
 import useRoles from '../../../hooks/api/useRoles';
 import TwoPlayerButtons from './TwoPlayerButtons';
+import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
+import useUser from '../../../hooks/useUser';
+import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
+import Level from '../../../api/types/Level';
+import LevelMeta from '../../../api/types/LevelMeta';
 
-type SubmissionProps = {
-    submission: ISubmission,
+interface SubmissionProps {
+    level: Level & { Meta: LevelMeta };
+    submission: ISubmission;
 }
 
 const progressFilterOptions = {
@@ -20,7 +27,7 @@ const progressFilterOptions = {
     incomplete: 'users with progress',
 };
 
-function Submission({ submission }: SubmissionProps) {
+function Submission({ level, submission }: SubmissionProps) {
     const { data: roles } = useRoles();
     const userRoles = roles && submission.User.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
 
@@ -44,12 +51,43 @@ function Submission({ submission }: SubmissionProps) {
     if (submission.Device === 'Mobile') title.push('Completed on mobile');
 
     const shortenedName = submission.User.Name.length > 20 ? submission.User.Name.slice(0, 20) + '...' : submission.User.Name;
+    const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > 20) ? submission.SecondaryUser.Name.slice(0, 20) + '...' : submission.SecondaryUser?.Name;
+
+    const { createMenu } = useContextMenu();
+    const openDeleteSubmissionModal = useDeleteSubmissionModal();
+    const navigate = useNavigate();
+    const user = useUser();
+    function openContext(e: React.MouseEvent) {
+        e.preventDefault();
+
+        const buttons: ButtonData[] = [
+            { text: 'View Profile', onClick: () => navigate(linkDestination) },
+        ];
+
+        if (user.hasPermission(PermissionFlags.EDIT_LIST)) {
+            buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(level, submission) });
+        }
+
+        createMenu({
+            buttons,
+            x: e.clientX,
+            y: e.clientY,
+        })
+    }
 
     return (
-        <div title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
-            <Link className={`w-[40px] lg:w-1/6 p-2 text-center round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
-            <Link className={`w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
-            <Link style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined} className={'p-2 flex-grow bg-gray-500' + (iconRole ? ' font-bold' : '')} to={linkDestination}>{shortenedName} {iconRole?.Icon}</Link>
+        <div onContextMenu={openContext} title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
+            <Link className={`flex items-center justify-center w-[40px] lg:w-1/6 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
+            <Link className={`flex items-center justify-center w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
+            <Link style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined} className={'p-2 flex-grow bg-gray-500' + (iconRole ? ' font-bold' : '')} to={linkDestination}>
+                {submission.SecondaryUser
+                    ? <>
+                        <p>P1: <b>{shortenedName} {iconRole?.Icon}</b></p>
+                        <p>P2: <b>{shortenedSecondaryName}</b></p>
+                    </>
+                    : <p>{shortenedName} {iconRole?.Icon}</p>
+                }
+            </Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-gray-500 pe-2'>
                     {submission.Device === 'Mobile' &&
@@ -98,7 +136,7 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
                                 </div>
                             </div>
                             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
-                                {submissions.submissions.map(s => <Submission submission={s} key={s.UserID} />)}
+                                {submissions.submissions.map(s => <Submission level={level} submission={s} key={s.UserID} />)}
                                 {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
                             </div>
                             <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />

@@ -104,7 +104,7 @@ function InlineList({ levels, userID }: { levels: (UserSubmission)[], userID: nu
             { text: 'Add to list', onClick: () => openAddListLevelModal(userID, submission.LevelID) },
             { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
         ];
-        if (userID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission) });
+        if (userID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.Level, submission) });
 
         createMenu({
             x: e.clientX,
@@ -140,7 +140,7 @@ function GridList({ levels, userID }: { levels: UserSubmission[], userID: number
             { text: 'Add to list', onClick: () => openAddListLevelModal(userID, submission.LevelID) },
             { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
         ];
-        if (userID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission) });
+        if (userID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.Level, submission) });
 
         createMenu({
             x: e.clientX,

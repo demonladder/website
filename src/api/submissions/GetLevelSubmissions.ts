@@ -2,7 +2,10 @@ import APIClient from '../APIClient';
 import ISubmission from '../types/Submission';
 import User from '../types/User';
 
-export type Submission = (ISubmission & { User: User });
+export type Submission = (ISubmission & {
+    User: User,
+    SecondaryUser?: User,
+});
 
 type GetLevelSubmissionsResponse = {
     total: number,
