@@ -49,7 +49,7 @@ export default function Login() {
                         <FormInputLabel htmlFor='loginPassword'>Password</FormInputLabel>
                         <PasswordInput ref={passwordRef} id='loginPassword' name='password' />
                     </div>
-                    <PrimaryButton type='submit' onClick={() => submit()} className='relative w-full' loading={isLoading}>Log in</PrimaryButton>
+                    <PrimaryButton type='submit' className='relative w-full' loading={isLoading}>Log in</PrimaryButton>
                     <div className='mt-8'>
                         <p className='text-center'>
                             Don't have an account? Register <Link to='/signup' className='text-blue-400 underline'>here!</Link>
