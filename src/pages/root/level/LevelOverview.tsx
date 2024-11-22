@@ -22,6 +22,15 @@ import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 import useUser from '../../../hooks/useUser';
 
+const levelLengths = {
+    1: 'Tiny',
+    2: 'Short',
+    3: 'Medium',
+    4: 'Long',
+    5: 'XL',
+    6: 'Platformer',
+}
+
 export default function LevelOverview() {
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useState(false);
     const navigate = useNavigate();
@@ -170,7 +179,7 @@ export default function LevelOverview() {
                             </li>
                             <li className='flex justify-between'>
                                 <p>Length:</p>
-                                <b>{level.Meta.Length}</b>
+                                <b>{levelLengths[level.Meta.Length]}</b>
                             </li>
                         </ul>
                     </div>
