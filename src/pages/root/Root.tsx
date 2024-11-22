@@ -98,6 +98,7 @@ export default function Root() {
 
         const width = entry.contentRect.width;
         const height = entry.contentRect.height;
+        if (height > 3000) return;
 
         canvas.width = width;
         canvas.height = height;
