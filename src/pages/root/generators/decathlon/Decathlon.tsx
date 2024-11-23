@@ -14,7 +14,7 @@ export default function Decathlon() {
     const queryClient = useQueryClient();
 
     const generateMutation = useMutation({
-        mutationFn: GenerateDecathlon,
+        mutationFn: () => toast.promise(GenerateDecathlon, { pending: 'Generating...', success: 'Generated!', error: renderToastError }),
         onSuccess: () => {
             void queryClient.invalidateQueries(['decathlon']);
         },
