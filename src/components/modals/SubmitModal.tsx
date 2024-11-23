@@ -19,6 +19,7 @@ import FormInputLabel from '../form/FormInputLabel';
 import FormInputDescription from '../form/FormInputDescription';
 import useUser from '../../hooks/useUser';
 import DeleteSubmission from '../../api/submissions/DeleteSubmission';
+import { LevelLengths } from '../../api/types/LevelMeta';
 
 interface Props {
     level: FullLevel;
@@ -232,7 +233,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             <Modal.Body>
                 <p className='my-3'>Make sure to read our guidelines <a href='/about#guidelines' className='text-blue-500' target='_blank'>here</a></p>
                 <div className='flex flex-col gap-3'>
-                    {level.Meta.Length === 'Platformer' &&
+                    {level.Meta.Length === LevelLengths.PLATFORMER &&
                         <WarningBox text={'Platformer submissions are currently restricted; your tier rating will be ignored, but you\'re welcome to submit your enjoyment for the time being!'} />
                     }
                     <div>
@@ -261,7 +262,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         <TextInput id='submitProof' value={proof} onChange={onProofChange} invalid={(level.Meta.Difficulty === 'Extreme' && !validateLink(proof)) || (proof !== '' && !validateLink(proof))} />
                         <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
                     </div>
-                    {level.Meta.Length !== 'Platformer' &&
+                    {level.Meta.Length !== LevelLengths.PLATFORMER &&
                         <div>
                             <FormInputLabel>Percent</FormInputLabel>
                             <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' />

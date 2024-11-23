@@ -1,10 +1,21 @@
-enum LevelLengths {
+export enum LevelLengths {
     TINY = 1,
     SHORT = 2,
     MEDIUM = 3,
     LONG = 4,
     XL = 5,
     PLATFORMER = 6,
+}
+
+export function levelLengthToString(length: LevelLengths): string {
+    switch (length) {
+        case LevelLengths.TINY: return 'Tiny';
+        case LevelLengths.SHORT: return 'Short';
+        case LevelLengths.MEDIUM: return 'Medium';
+        case LevelLengths.LONG: return 'Long';
+        case LevelLengths.XL: return 'XL';
+        case LevelLengths.PLATFORMER: return 'Platformer';
+    }
 }
 
 export default interface LevelMeta {

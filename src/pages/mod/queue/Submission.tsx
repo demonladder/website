@@ -10,6 +10,7 @@ import Select from '../../../components/Select';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../components/form/FormInputLabel';
+import { levelLengthToString } from '../../../api/types/LevelMeta';
 
 interface Props {
     submission: QueueSubmission;
@@ -46,7 +47,7 @@ export default function Submission({ submission, remove }: Props) {
             </div>
             <div className='mb-3'>
                 <div className='mb-2'>
-                    <p><b>Length:</b> {submission.Level.Meta.Length}</p>
+                    <p><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
                 </div>
                 <div className='mb-2'>
                     <p><b>Actual rating:</b> {submission.Level.Rating?.toFixed(2) ?? 'None'}</p>
