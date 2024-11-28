@@ -11,7 +11,7 @@ type SearchInfo = {
 export interface SearchLevelDTO extends FullLevel {
     Completed: 0 | 1;
     InPack: 0 | 1;
-};
+}
 
 export default async function SearchLevels(q: object): Promise<SearchInfo> {
     const res = await APIClient.get<SearchInfo>('/level/search', {

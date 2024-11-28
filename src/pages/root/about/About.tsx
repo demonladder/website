@@ -95,9 +95,6 @@ export default function About() {
                     <p>{`https://www.twitch.tv/videos/{id}`}</p>
                     <p>{`https://twitch.tv/videos/{id}`}</p>
                     <p>{`https://drive.google.com/file/d/{id}`}</p>
-                    <p>{`https://www.bilibili.com/video/{id}`}</p>
-                    <p>{`https://m.bilibili.com/video/{id}`}</p>
-                    <p>{`https://bilibili.com/video/{id}`}</p>
                 </pre>
                 <p>Proof is not required for non-extremes and is entirely optional. You are still allowed to add proof to non-extremes of course.</p>
                 <p>For levels that are tier 31 or more, audible clicks are required in the proof.</p>

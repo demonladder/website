@@ -66,7 +66,7 @@ export const permissions: Permission[] = [
         ID: 13,
         Name: 'Delete levels',
         Description: 'Allows users to delete levels.',
-        Flag: PermissionFlags.MANAGE_PACKS,
+        Flag: PermissionFlags.DELETE_LEVELS,
     },
     {
         ID: 7,
