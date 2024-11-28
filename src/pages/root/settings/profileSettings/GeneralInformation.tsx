@@ -55,7 +55,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         const newUser = {
             name: name,
             introduction: introductionRef.current.value || null,
-            hardest: hardestSearch.activeLevel?.ID,
+            hardest: hardestSearch.activeLevel?.ID ?? null,
             favoriteLevels: [
                 favoriteLevelSearch1.activeLevel?.ID,
                 favoriteLevelSearch2.activeLevel?.ID,
@@ -63,7 +63,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             leastFavoriteLevels: [
                 leastFavoriteLevelSearch1.activeLevel?.ID,
                 leastFavoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined).join(','),
+            ].filter((v) => v !== undefined).join(',') || null,
             minPref: parseInt(minPrefRef.current.value) || null,
             maxPref: parseInt(maxPrefRef.current.value) || null,
         };
