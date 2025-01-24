@@ -1,4 +1,4 @@
-import { Link, redirect, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
 import Submissions from './Submissions';
@@ -17,6 +17,7 @@ import PendingSubmissions from './PendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
 import useUser from '../../../hooks/useUser';
 import flagEmoji from '../../../utils/flagEmoji';
+import Skills from './Skills';
 
 export default function Profile() {
     const userID = parseInt('' + useParams().userID) || 0;
@@ -152,6 +153,7 @@ export default function Profile() {
             <Submissions userID={userID} />
             <PendingSubmissions userID={userID} />
             <Lists userID={userID} />
+            <Skills userID={userID} />
             <Rankings userID={userID} />
         </Container>
     );
