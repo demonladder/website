@@ -32,7 +32,7 @@ import ErrorElement from './components/ErrorElement';
 import SignUp from './pages/root/signup/SignUp';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProfileSettings from './pages/root/settings/profileSettings/ProfileSettings';
+import DiscordSettings from './pages/root/settings/profileSettings/DiscordSettings';
 import ClientSiteSettings from './pages/root/settings/siteSettings/SiteSettings';
 import About from './pages/root/about/About';
 import Staff from './pages/root/staff/Staff';
@@ -129,7 +129,7 @@ const router = createBrowserRouter(
                 },
                 {
                     path: 'profile/settings',
-                    element: <ProfileSettings />,
+                    element: <DiscordSettings />,
                 },
                 {
                     path: 'profile/:userID',
@@ -155,7 +155,7 @@ const router = createBrowserRouter(
                         },
                         {
                             path: 'profile',
-                            element: <ProfileSettings />,
+                            element: <DiscordSettings />,
                         },
                         {
                             path: 'submission',
