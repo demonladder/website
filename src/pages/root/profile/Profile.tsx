@@ -20,7 +20,7 @@ import flagEmoji from '../../../utils/flagEmoji';
 import Skills from './Skills';
 
 export default function Profile() {
-    const userID = parseInt('' + useParams().userID) || 0;
+    const userID = parseInt(useParams().userID ?? '') || 0;
     const session = useUser();
 
     const { status, data: userData, error } = useUserQuery(userID);
@@ -133,7 +133,7 @@ export default function Profile() {
                     <div className='hidden lg:block'>
                         <Tracker>
                             <b>Average enjoyment:</b>
-                            <p>{toFixed('' + userData.AverageEnjoyment, 1, '-')}</p>
+                            <p>{toFixed(userData.AverageEnjoyment?.toString(), 1, '-')}</p>
                         </Tracker>
                     </div>
                     <a href='#pendingSubmissions'>
@@ -145,7 +145,7 @@ export default function Profile() {
                     <div className='lg:hidden'>
                         <Tracker>
                             <b>Average enjoyment:</b>
-                            <p>{toFixed('' + userData.AverageEnjoyment, 1, '-')}</p>
+                            <p>{toFixed(userData.AverageEnjoyment?.toString(), 1, '-')}</p>
                         </Tracker>
                     </div>
                 </div>
@@ -158,4 +158,3 @@ export default function Profile() {
         </Container>
     );
 }
-

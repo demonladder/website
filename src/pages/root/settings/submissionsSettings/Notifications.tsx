@@ -47,6 +47,11 @@ export default function Notifications() {
             return;
         }
 
+        if (DMNotifs && !DMTierLimit) {
+            toast.error('Please specify a tier limit');
+            return;
+        }
+
         acceptNotifs
             ? wantBitField.add(NotificationsBitField.Accept)
             : wantBitField.remove(NotificationsBitField.Accept);
