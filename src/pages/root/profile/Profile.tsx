@@ -16,12 +16,7 @@ import Lists from './Lists';
 import PendingSubmissions from './PendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
 import useUser from '../../../hooks/useUser';
-
-export function profileLoader() {
-    if (StorageManager.hasSession()) return redirect(`/profile/${StorageManager.getUser()!.userID}`);
-
-    return redirect('/signup');
-}
+import flagEmoji from '../../../utils/flagEmoji';
 
 export default function Profile() {
     const userID = parseInt('' + useParams().userID) || 0;
@@ -83,19 +78,24 @@ export default function Profile() {
                 <meta property='og:title' content={userData.Name} />
                 <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
             </Helmet>
-            <section className='flex justify-between flex-wrap items-center'>
-                <h1 className='text-4xl max-sm:basis-full mb-2'>{userData.DiscordData?.Avatar &&
-                    <object data={pfp} type='image/png' className='inline w-16 rounded-full' />} {userData.Name} <ProfileTypeIcon roles={userData.Roles} />
-                    <span>
+            <div className='mb-2 flex gap-4'>{userData.DiscordData?.Avatar &&
+                <img src={pfp} className='inline w-20 rounded-full' />
+            }
+                <div className='flex flex-col'>
+                    <h1 className='text-5xl max-sm:basis-full'>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></h1>
+                    <p>
+                        {userData.Pronouns &&
+                            <span className='me-1'>{userData.Pronouns}</span>
+                        }
                         {userData.CompletedPacks.map((p) => (
-                            <Link to={`/pack/${p.PackID}`} key={p.PackID}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1' width={34} height={34} /></Link>
+                            <Link to={`/pack/${p.PackID}`} key={p.PackID}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1 w-6' /></Link>
                         ))}
-                    </span>
-                </h1>
-                <div className='flex gap-2'>
+                    </p>
+                </div>
+                <div className='ms-auto self-center'>
                     <SecondaryButton onClick={session.logout} hidden={!ownPage}>Log out</SecondaryButton>
                 </div>
-            </section>
+            </div>
             <section className='flex max-sm:flex-col'>
                 <div className='bg-gray-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full sm:w-1/3'>
                     <p><b>Introduction:</b></p>

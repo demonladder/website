@@ -9,4 +9,6 @@ export default interface User {
     MaxPref: number | null;
     Introduction: string | null;
     AverageEnjoyment: number | null;
+    CountryCode: string | null;
+    Pronouns: string | null;
 }

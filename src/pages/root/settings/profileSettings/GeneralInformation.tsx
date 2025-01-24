@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { NumberInput, TextInput } from '../../../../components/Input';
 import StorageManager from '../../../../utils/StorageManager';
 import { PrimaryButton } from '../../../../components/Button';
@@ -11,6 +11,28 @@ import useUserQuery from '../../../../hooks/queries/useUserQuery';
 import SaveProfile from '../../../../api/user/SaveProfile';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
+import Select from '../../../../components/Select';
+import { ISO3611Alpha2 } from './ISO3611-1-alpha-2';
+
+const basePronouns = {
+    'he/him': 'he/him',
+    'she/her': 'she/her',
+    'they/them': 'they/them',
+    'xe/xem': 'xe/xem',
+    'ze/zir': 'ze/zir',
+    'it/its': 'it/its',
+} as Record<string, string>;
+
+const pronounOptions = {
+    '-': 'Select your pronouns',
+    ...basePronouns,
+    'other': 'Other',
+} as const;
+
+const countryOptions = {
+    '-': 'Select your country',
+    ...ISO3611Alpha2,
+} as const;
 
 export default function GeneralInformation({ userID }: { userID: number }) {
     const hasSession = StorageManager.hasSession();
@@ -21,6 +43,11 @@ export default function GeneralInformation({ userID }: { userID: number }) {
 
     const [name, setName] = useState('');
     const introductionRef = useRef<HTMLTextAreaElement>(null);
+    const [countryKey, setCountryKey] = useState('-');
+    const [pronounKey, setPronounKey] = useState('-');
+    const pronounSelectID = useId();
+    const [customPronouns, setCustomPronouns] = useState('');
+    const countrySelectID = useId();
 
     const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.HardestID } });
 
@@ -38,6 +65,21 @@ export default function GeneralInformation({ userID }: { userID: number }) {
 
         setName(data.Name);
         if (introductionRef.current && data.Introduction) introductionRef.current.value = '' + data.Introduction;
+
+        if (data.Pronouns) {
+            if (basePronouns[data.Pronouns]) {
+                setPronounKey(data.Pronouns);
+            } else {
+                setPronounKey('other');
+                setCustomPronouns(data.Pronouns);
+            }
+        } else {
+            setPronounKey('-');
+        }
+
+        if (data.CountryCode) setCountryKey(data.CountryCode);
+        else setCountryKey('-');
+
         if (minPrefRef.current && data.MinPref) minPrefRef.current.value = data.MinPref.toString();
         if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = data.MaxPref.toString();
     }, [data]);
@@ -52,9 +94,17 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         if (!minPrefRef.current) return;
         if (!maxPrefRef.current) return;
 
+        const pronouns = (() => {
+            if (pronounKey === 'other') return customPronouns;
+            if (pronounKey === '-') return null;
+            return pronounKey;
+        })();
+
         const newUser = {
             name: name,
             introduction: introductionRef.current.value || null,
+            pronouns,
+            countryCode: countryKey === '-' ? null : countryKey,
             hardest: hardestSearch.activeLevel?.ID ?? null,
             favoriteLevels: [
                 favoriteLevelSearch1.activeLevel?.ID,
@@ -98,10 +148,25 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                 <FormInputDescription>Your introduction is visible to everyone visiting your profile.</FormInputDescription>
             </FormGroup>
             <FormGroup>
+                <FormInputLabel>Pronouns</FormInputLabel>
+                <Select options={pronounOptions} activeKey={pronounKey} onChange={setPronounKey} id={pronounSelectID} />
+                {pronounKey === 'other' &&
+                    <div className='mt-3'>
+                        <TextInput value={customPronouns} onChange={(e) => setCustomPronouns(e.target.value)} placeholder='Please specify...' invalid={customPronouns.length > 20} />
+                    </div>
+                }
+                <FormInputDescription>What are your pronouns?</FormInputDescription>
+            </FormGroup>
+            <FormGroup>
+                <FormInputLabel htmlFor={countrySelectID}>Country</FormInputLabel>
+                <Select options={countryOptions} activeKey={countryKey} onChange={setCountryKey} id={countrySelectID} />
+                <FormInputDescription>Where are you from?</FormInputDescription>
+            </FormGroup>
+            <div className='divider my-12' />
+            <FormGroup>
                 <FormInputLabel>Hardest level</FormInputLabel>
-                <div className='mb-2'>
-                    {hardestSearch.SearchBox}
-                </div>
+                {hardestSearch.SearchBox}
+                <FormInputDescription>What is the hardest level you have completed? Does NOT automatically update!</FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Favorite levels</FormInputLabel>
