@@ -44,10 +44,13 @@ export default function Footer() {
                     </ul>
                 </div>
                 <div>
-                    <h2 className='mb-2 font-bold'>API</h2>
+                    <h2 className='mb-2 font-bold'>Resources</h2>
                     <ul className='flex flex-col gap-1'>
                         <li>
-                            <a href='/api/docs'>Documentation</a>
+                            <a href='https://docs.google.com/spreadsheets/d/1qKlWKpDkOpU1ZF6V6xGfutDY2NvcA8MNPnsv6GBkKPQ/edit?gid=0#gid=0' target='_blank' rel='noopener noreferrer'>Google Sheet version</a>
+                        </li>
+                        <li>
+                            <a href='/api/docs'>API Documentation</a>
                         </li>
                     </ul>
                 </div>
