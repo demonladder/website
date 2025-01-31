@@ -38,6 +38,8 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                     MaxPref: user.MaxPref,
                     MinPref: user.MinPref,
                     RoleIDs: user.RoleIDs,
+                    CountryCode: user.CountryCode,
+                    Pronouns: user.Pronouns,
                 });
                 setSearch(user.Name);
             }).catch(console.error);

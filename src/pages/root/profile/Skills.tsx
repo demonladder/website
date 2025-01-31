@@ -6,6 +6,7 @@ import GetTags from '../../../api/tags/GetTags';
 import Select from '../../../components/Select';
 import { useId, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
+import { PrimaryButton } from '../../../components/Button';
 
 ChartJS.register(RadialLinearScale);
 
@@ -36,10 +37,12 @@ export default function Skills({ userID }: { userID: number }) {
     const [accuracyKey, setAccuracyKey] = useState('25');
     const [correctTier, setCorrectTier] = useState(false);
     const correctTierID = useId();
+    const [isActive, setIsActive] = useState(false);
 
     const { data: rawData } = useQuery({
         queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey, accuracy: accuracyKey, correctTier }],
         queryFn: () => GetSkills(userID, levelSpanKey, accuracyKey, correctTier),
+        enabled: isActive,
     });
 
     const { data: tags } = useQuery({
@@ -78,6 +81,15 @@ export default function Skills({ userID }: { userID: number }) {
             },
         ],
     };
+
+    if (!isActive) {
+        return (
+            <div>
+                <h2 className='text-3xl mt-6'>Skills</h2>
+                <PrimaryButton onClick={() => setIsActive(true)}>Show</PrimaryButton>
+            </div>
+        );
+    }
 
     return (
         <div>
