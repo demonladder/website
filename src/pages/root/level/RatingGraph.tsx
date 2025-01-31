@@ -17,60 +17,80 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
 
     if (data === undefined) return;
 
-    const ratingData = (twoPlayer ? data.twoPlayerRating : data.rating);
-    const enjoymentData = (twoPlayer ? data.twoPlayerEnjoyment : data.enjoyment);
+    const ratingData = twoPlayer ? data.twoPlayerRating : data.rating;
+    const maxRatingCount = ratingData.reduce((acc, cur) => acc + cur.Count, 0);
+    const lowestRating = ratingData.reduce((acc, cur) => Math.min(acc, cur.Rating), ratingData[0].Rating);
+    const highestRating = ratingData.reduce((acc, cur) => Math.max(acc, cur.Rating), ratingData[0].Rating);
 
-    const maxCount = ratingData.reduce((acc, cur) => acc + cur.Count, 0);
+    // Fill the gaps in the rating data
+    const filledRatingData = [...ratingData];
+    for (let i = lowestRating; i <= highestRating; i++) {
+        if (!ratingData.find((d) => d.Rating === i)) {
+            filledRatingData.push({ Rating: i, Count: 0 });
+        }
+    }
+
+    filledRatingData.sort((a, b) => a.Rating - b.Rating);
+
+    const enjoymentData = (twoPlayer ? data.twoPlayerEnjoyment : data.enjoyment);
     const maxEnjoymentCount = enjoymentData.reduce((acc, cur) => acc + cur.Count, 0);
 
     return (
-        <section className='mt-6'>
+        <section className='mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 border-gray-500 border-y py-6'>
             {ratingData.length > 0 &&
-                <>
+                <div>
                     <h2 className='text-3xl mb-1'>Rating spread</h2>
                     <TwoPlayerButtons levelMeta={levelMeta} showTwoPlayerStats={twoPlayer} setShowTwoPlayerStats={setShowTwoPlayerStats} />
                     <table>
                         <tbody>
                             <tr>
                                 <th></th>
+                                <th></th>
                                 <th className='w-full'></th>
                             </tr>
-                            {ratingData.map((d) => (
+                            {filledRatingData.map((d) => (
                                 <tr key={d.Rating}>
-                                    <td>
+                                    <td className='border-e pe-3'>
                                         <p className='pe-2 whitespace-nowrap'>{`Tier ${d.Rating}`}</p>
                                     </td>
+                                    <td className='px-3 text-right'>
+                                        <p>{d.Count}</p>
+                                    </td>
                                     <td className='flex items-center'>
-                                        <span className={`inline-block h-6 tier-${d.Rating}`} style={{ width: `${d.Count / maxCount * 100}%` }} />
-                                        <span className='ms-4 text-white'>{d.Count} ({(d.Count / maxCount * 100).toFixed(2)}%)</span>
+                                        <span className={`inline-block h-6 tier-${d.Rating} round:rounded`} style={{ width: `${d.Count / maxRatingCount * 100}%` }} />
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                </>
+                </div>
             }
-            <h2 className='text-3xl mt-6 mb-1'>Enjoyment spread</h2>
-            <TwoPlayerButtons levelMeta={levelMeta} showTwoPlayerStats={twoPlayer} setShowTwoPlayerStats={setShowTwoPlayerStats} />
-            <table className='mt-2'>
-                <tbody>
-                    <tr>
-                        <th></th>
-                        <th className='w-full'></th>
-                    </tr>
-                    {enjoymentData.map((d) => (
-                        <tr key={d.Enjoyment}>
-                            <td>
-                                <p className='pe-2 whitespace-nowrap text-center'>{`${d.Enjoyment}`}/10</p>
-                            </td>
-                            <td className='flex items-center'>
-                                <span className={`inline-block h-6 enj-${d.Enjoyment}`} style={{ width: `${d.Count / maxEnjoymentCount * 100}%` }} />
-                                <span className='ms-4 text-white'>{d.Count} ({(d.Count / maxEnjoymentCount * 100).toFixed(2)}%)</span>
-                            </td>
+            <div>
+                <h2 className='text-3xl'>Enjoyment spread</h2>
+                <TwoPlayerButtons levelMeta={levelMeta} showTwoPlayerStats={twoPlayer} setShowTwoPlayerStats={setShowTwoPlayerStats} />
+                <table className='mt-2'>
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th className='w-full'></th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                        {enjoymentData.map((d) => (
+                            <tr key={d.Enjoyment}>
+                                <td className='border-e pe-3'>
+                                    <p className='pe-2 whitespace-nowrap text-center'>{`${d.Enjoyment}`}/10</p>
+                                </td>
+                                <td className='px-3 text-right'>
+                                    <p>{d.Count}</p>
+                                </td>
+                                <td className='flex items-center'>
+                                    <span className={`inline-block h-6 enj-${d.Enjoyment} round:rounded`} style={{ width: `${d.Count / maxEnjoymentCount * 100}%` }} />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </section>
     );
 }
