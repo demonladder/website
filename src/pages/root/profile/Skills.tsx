@@ -4,14 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import APIClient from '../../../api/APIClient';
 import GetTags from '../../../api/tags/GetTags';
 import Select from '../../../components/Select';
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
+import CheckBox from '../../../components/input/CheckBox';
 
 ChartJS.register(RadialLinearScale);
 
-async function GetSkills(userID: number, levelSpan: string, accuracy: string) {
+async function GetSkills(userID: number, levelSpan: string, accuracy: string, correctTier = false) {
     const n = levelSpan === 'allTime' ? 20000 : parseInt(levelSpan.slice(3));
 
-    const res = await APIClient.get<Record<string, number>>(`/user/${userID}/skills`, { params: { span: n, accuracy } });
+    const res = await APIClient.get<Record<string, number>>(`/user/${userID}/skills`, { params: { span: n, accuracy, correctTier } });
     return res.data;
 }
 
@@ -33,10 +34,12 @@ const accuracyOptions = {
 export default function Skills({ userID }: { userID: number }) {
     const [levelSpanKey, setLevelSpanKey] = useState('allTime');
     const [accuracyKey, setAccuracyKey] = useState('25');
+    const [correctTier, setCorrectTier] = useState(false);
+    const correctTierID = useId();
 
     const { data: rawData } = useQuery({
-        queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey, accuracy: accuracyKey }],
-        queryFn: () => GetSkills(userID, levelSpanKey, accuracyKey),
+        queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey, accuracy: accuracyKey, correctTier }],
+        queryFn: () => GetSkills(userID, levelSpanKey, accuracyKey, correctTier),
     });
 
     const { data: tags } = useQuery({
@@ -60,7 +63,8 @@ export default function Skills({ userID }: { userID: number }) {
             };
         }
 
-        return merged;
+        const order = [1, 2, 3, 4, 5, 6, 7, 8, 17, 9, 10, 11, 18, 12, 13, 14, 16, 19, 20, 15];
+        return merged.sort((a, b) => order.indexOf(a.ordering) - order.indexOf(b.ordering));
     }, [rawData, tags]);
 
     const chartData: ChartData<'radar'> = {
@@ -90,6 +94,12 @@ export default function Skills({ userID }: { userID: number }) {
                     <div className='max-w-xs'>
                         <Select options={accuracyOptions} activeKey={accuracyKey} id='skillAccuracy' onChange={setAccuracyKey} />
                     </div>
+                </div>
+                <div>
+                    <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' htmlFor={correctTierID}>
+                        <CheckBox id={correctTierID} checked={correctTier} onChange={() => setCorrectTier((prev) => !prev)} />
+                        Adjust for level tier
+                    </label>
                 </div>
             </div>
             <div className='divider my-4'></div>
