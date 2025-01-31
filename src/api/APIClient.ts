@@ -10,6 +10,7 @@ const APIClient = axios.create({
     withCredentials: true,
 });
 
+// Stop sending requests after 15 errors
 APIClient.interceptors.request.use((config) => {
     const controller = new AbortController();
 

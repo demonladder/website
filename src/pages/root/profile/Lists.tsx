@@ -51,11 +51,11 @@ export default function Lists({ userID }: Props) {
             {lookingAtOwnPage && <PrimaryButton onClick={() => openCreateListModal(userID)}>Create new list</PrimaryButton>}
             {(lists?.length ?? 0) > 0
                 ? (
-                    <table className='w-full text-xl my-2'>
+                    <table className='w-full text-sm lg:text-xl my-2'>
                         <thead>
-                            <tr className='text-2xl border-b-2'>
+                            <tr className='text-sm lg:text-2xl border-b-2'>
                                 <th className='text-start'><p className='ps-2'>Name</p></th>
-                                <th className='text-start'>Description</th>
+                                <th className='text-start max-lg:hidden'>Description</th>
                                 <th>Median tier</th>
                                 <th>Average tier</th>
                             </tr>
@@ -64,7 +64,7 @@ export default function Lists({ userID }: Props) {
                             {lists?.map((list) => (
                                 <tr className='bg-gray-700' key={list.ID} onContextMenu={(e) => openContext(e, list)}>
                                     <td><Link to={`/list/${list.ID}`} className='block py-1 ps-2 my-2'>{list.Name}</Link></td>
-                                    <td><p>{list.Description?.slice(0, 64).trim().concat(list.Description.length > 64 ? '...' : '') ?? <i className='text-gray-300'>No description</i>}</p></td>
+                                    <td className='max-lg:hidden'><p>{list.Description?.slice(0, 64).trim().concat(list.Description.length > 64 ? '...' : '') ?? <i className='text-gray-300'>No description</i>}</p></td>
                                     <td className={`text-center tier-${list.MedianTier ?? 0}`}>
                                         {!list.MedianTier
                                             ? <p><i>N/A</i></p>

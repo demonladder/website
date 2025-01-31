@@ -83,7 +83,7 @@ export default function Profile() {
                 <img src={pfp} className='inline w-20 rounded-full' />
             }
                 <div className='flex flex-col'>
-                    <h1 className='text-5xl max-sm:basis-full'>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></h1>
+                    <h1 className='text-2xl md:text-5xl max-sm:basis-full'>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></h1>
                     <p>
                         {userData.Pronouns &&
                             <span className='me-1'>{userData.Pronouns}</span>

@@ -12,8 +12,8 @@ interface UserRanking {
     Total: number;
 }
 
-async function GetUserRankings(userID: number): Promise<Record<string | 'Overall', UserRanking>> {
-    return (await APIClient.get(`/user/${userID}/rank`)).data;
+async function GetUserRankings(userID: number) {
+    return (await APIClient.get<Record<string | 'Overall', UserRanking>>(`/user/${userID}/rank`)).data;
 }
 
 function percentToRank(percent: number): string {
@@ -58,7 +58,7 @@ export default function Rankings({ userID }: Props) {
     return (
         <section>
             <h2 className='text-3xl mt-6' id='rankings'>Rankings <NewLabel ID='rankings' /></h2>
-            <table className='gap-2 my-2 text-xl block'>
+            <table className='gap-2 my-2 text-sm md:text-xl block'>
                 <tbody className='block'>
                     {data === undefined
                         ? (<tr><td><LoadingSpinner /></td></tr>)
