@@ -1,6 +1,5 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { PrimaryButton } from '../../../components/Button';
-import Container from '../../../components/Container';
 import TextArea from '../../../components/input/TextArea';
 import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/StorageManager';
@@ -8,6 +7,9 @@ import { useMutation } from '@tanstack/react-query';
 import SubmitBulk, { BulkSubmission } from '../../../api/submissions/SubmitBulk';
 import { render } from '../../../utils/renderToastError';
 import { AxiosError } from 'axios';
+import { validateTier } from './validateTier';
+import { validateEnjoyment } from './validateEnjoyment';
+import Page from '../../../components/Page';
 
 function parseValue(val: string | null): null | string {
     if (val === undefined || val === '-') return null;
@@ -21,43 +23,43 @@ function parseIntParam(val?: string | null, def?: number): null | number {
     return parseInt(val);
 }
 
+function parseSubmissions(submissions: string) {
+    const lines = submissions.split('\n').map((l) => l.trim()).filter((l) => l !== '');
+    if (lines.length === 0) return [];
+
+    return lines.map((l) => {
+        const params = l.split(' ');
+
+        let levelID: number | null = null;
+        let levelName: string | null = null;
+        let creator: string | null = null;
+
+        let paramOffset = 0;
+        if (params[0] == parseInt(params[0]).toString()) {  // Level ID variant
+            levelID = parseInt(params[0]);
+        } else {
+            levelName = params[0];
+            creator = params[1];
+            if (!levelName || !creator) throw new Error('Level name and creator are required. Supply both.');
+
+            paramOffset++;
+        }
+        const tier = parseIntParam(params[1 + paramOffset]);
+        const enjoyment = parseIntParam(params[2 + paramOffset]);
+        const FPS = parseIntParam(params[3 + paramOffset]) ?? StorageManager.getSettings().submission.defaultRefreshRate;
+        const device = parseValue(params[4 + paramOffset]) ?? StorageManager.getSettings().submission.defaultDevice === 'mobile' ? 'mobile' : 'pc';
+        const videoProof = parseValue(params[5 + paramOffset]);
+
+        if (tier === null && enjoyment === null) throw new Error('Tier and enjoyment are required. Supply one or both.');
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        return { levelID, levelName, creator, tier, enjoyment, FPS, device: device as 'pc' | 'mobile', videoProof };
+    });
+}
+
 export default function BulkSubmit() {
     const [submissions, setSubmissions] = useState('');
     const [valid, setValid] = useState(true);
-
-    const parseSubmissions = useCallback(() => {
-        const lines = submissions.split('\n').map((l) => l.trim()).filter((l) => l !== '');
-        if (lines.length === 0) return [];
-
-        return lines.map((l) => {
-            const params = l.split(' ');
-
-            let levelID: number | null = null;
-            let levelName: string | null = null;
-            let creator: string | null = null;
-
-            let paramOffset = 0;
-            if (params[0] == parseInt(params[0]).toString()) {  // Level ID variant
-                levelID = parseInt(params[0]);
-            } else {
-                levelName = params[0];
-                creator = params[1];
-                if (!levelName || !creator) throw new Error('Level name and creator are required. Supply both.');
-
-                paramOffset++;
-            }
-            const tier = parseIntParam(params[1 + paramOffset]);
-            const enjoyment = parseIntParam(params[2 + paramOffset]);
-            const FPS = parseIntParam(params[3 + paramOffset]) ?? StorageManager.getSettings().submission.defaultRefreshRate;
-            const device = parseValue(params[4 + paramOffset]) ?? StorageManager.getSettings().submission.defaultDevice === 'mobile' ? 'mobile' : 'pc';
-            const videoProof = parseValue(params[5 + paramOffset]);
-
-            if (tier === null && enjoyment === null) throw new Error('Tier and enjoyment are required. Supply one or both.');
-
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-            return { levelID, levelName, creator, tier, enjoyment, FPS, device: device as 'pc' | 'mobile', videoProof };
-        });
-    }, [submissions]);
 
     const mutation = useMutation({
         mutationFn: (ctx: BulkSubmission[]) => SubmitBulk(ctx),
@@ -84,17 +86,27 @@ export default function BulkSubmit() {
 
     const onSubmit = useCallback(() => {
         try {
-            mutation.mutate(parseSubmissions());
+            mutation.mutate(parseSubmissions(submissions));
             setValid(true);
         } catch (err) {
             if (err instanceof Error) toast.error(err.message);
             else toast.error('An unknown error occurred');
             setValid(false);
         }
-    }, [parseSubmissions, setValid, mutation]);
+    }, [submissions, setValid, mutation]);
+
+    const isValid = useMemo(() => {
+        if (!submissions) return true;
+
+        for (const line of submissions.split('\n')) {
+            if (!(validateUsingLevelID(line) || validateUsingCreator(line))) return false;
+        }
+
+        return true;
+    }, [submissions]);
 
     return (
-        <Container>
+        <Page>
             <div className='mb-2'>
                 <h1 className='text-4xl'>Bulk submit</h1>
                 <p>Each line is a new submission. Whitespace and empty lines will be ignored.</p>
@@ -103,8 +115,76 @@ export default function BulkSubmit() {
                 <pre>{'<level name> <creator> [tier] [enjoyment] [fps] [pc or mobile] [video proof]'}</pre>
                 <p>Values wrapped in [ ] are optional. You can use a - as a placeholder for optional values.</p>
             </div>
-            <TextArea value={submissions} onChange={(e) => setSubmissions(e.target.value)} placeholder={'Examples:\n64658786 - 10\nichor lazerblitz 8\n3 6 - 120 mobile'} invalid={!valid} aria-invalid={!valid} autoCorrect='off' autoFocus={true} />
+            <TextArea value={submissions} onChange={(e) => setSubmissions(e.target.value)} placeholder={'Examples:\n64658786 - 10\nichor lazerblitz 8\n3 6 - 120 mobile'} invalid={!isValid} aria-invalid={!isValid} autoCorrect='off' autoFocus={true} />
             <PrimaryButton onClick={onSubmit} loading={mutation.status === 'loading'}>Submit</PrimaryButton>
-        </Container>
+        </Page>
     );
+}
+
+function validateFPS(input: string): boolean {
+    const fps = parseInt(input);
+    if (fps.toString() !== input) return false;
+    if (fps < 30 || fps > 999) return false;
+    return true;
+}
+
+function validateURL(input: string): boolean {
+    try {
+        new URL(input);
+    } catch {
+        return false;
+    }
+    return true;
+}
+
+function validateUsingLevelID(val: string): boolean {
+    const params = val.split(' ');
+    if (params.length < 1) return false;
+
+    if (isNaN(parseInt(params[0]))) return false;
+
+    if (!params[1]) return true;
+    if (!validateTier(params[1])) return false;
+
+    if (!params[2]) return true;
+    if (!validateEnjoyment(params[2])) return false;
+
+    if (!params[3]) return true;
+    if (!validateFPS(params[3])) return false;
+
+    if (!params[4]) return true;
+    const device = params[4];
+    if (device !== 'pc' && device !== 'mobile') return false;
+
+    if (!params[5]) return true;
+    if (!validateURL(params[5])) return false;
+
+    return true;
+}
+
+function validateUsingCreator(val: string): boolean {
+    const params = val.split(' ');
+    if (params.length < 2) return false;
+
+    const levelName = params[0];
+    const creator = params[1];
+    if (!levelName || !creator) return false;
+
+    if (!params[2]) return true;
+    if (!validateTier(params[2])) return false;
+
+    if (!params[3]) return true;
+    if (!validateEnjoyment(params[3])) return false;
+
+    if (!params[4]) return true;
+    if (!validateFPS(params[4])) return false;
+
+    if (!params[5]) return true;
+    const device = params[5];
+    if (device !== 'pc' && device !== 'mobile') return false;
+
+    if (!params[6]) return true;
+    if (!validateURL(params[6])) return false;
+
+    return true;
 }
