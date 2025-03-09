@@ -8,24 +8,8 @@ import noise3D from '../../utils/noise/noise3D';
 import StorageManager from '../../utils/StorageManager';
 import NavbarNotificationRenderer from '../../context/NavbarNotification/NavbarNotificationRenderer';
 import useNavbarNotification from '../../context/NavbarNotification/useNavbarNotification';
-
-// function getBrowserName() {
-//     const browserInfo = navigator.userAgent;
-
-//     if (browserInfo.includes('Opera') || browserInfo.includes('Opr')) {
-//         return 'Opera';
-//     } else if (browserInfo.includes('Edg')) {
-//         return 'Edge';
-//     } else if (browserInfo.includes('Chrome')) {
-//         return 'Chrome';
-//     } else if (browserInfo.includes('Safari')) {
-//         return 'Safari';
-//     } else if (browserInfo.includes('Firefox')) {
-//         return 'Firefox'
-//     }
-
-//     return 'unknown';
-// }
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 
 export default function Root() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -91,7 +75,7 @@ export default function Root() {
 
     const setup = useCallback((entry: ResizeObserverEntry) => {
         if (!StorageManager.getUseBackground()) return;
-        
+
         const canvas = canvasRef.current;
         if (!canvas) return;
         if (!containerRef.current) return;
@@ -135,39 +119,38 @@ export default function Root() {
             if (error === 'already_linked') notifyError('This Discord account is already linked to another GDDL account.');
             else if (error === 'mismatching_disord_id') notifyError('The Discord account linked to this GDDL account does not match the Discord account you are trying to link with.');
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div ref={containerRef} className='relative flex flex-col'>
-            <Helmet>
-                <title>GD Demon Ladder</title>
-            </Helmet>
-            <Header />
-            <NavbarNotificationRenderer />
-            <div className='hidden'>
-                <p className='bg-refreshRate-60'>60</p>
-                <p className='bg-refreshRate-75'>75</p>
-                <p className='bg-refreshRate-120'>120</p>
-                <p className='bg-refreshRate-144'>144</p>
-                <p className='bg-refreshRate-240'>240</p>
-                <p className='bg-refreshRate-360'>360</p>
-                <p className='text-permission-0'>0</p>
-                <p className='text-permission-1'>1</p>
-                <p className='text-permission-2'>2</p>
-                <p className='text-permission-3'>3</p>
-                <p className='text-permission-4'>4</p>
-                <p className='text-permission-5'>5</p>
-                <p className='text-permission-6'>6</p>
+        <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
+            <div ref={containerRef} className='relative flex flex-col'>
+                <Helmet>
+                    <title>GD Demon Ladder</title>
+                </Helmet>
+                <Header />
+                <NavbarNotificationRenderer />
+                <div className='hidden'>{/* Force Tailwind to include these colors. This is to reduce the final css bundle size. */}
+                    <p className='bg-refreshRate-60'>60</p>
+                    <p className='bg-refreshRate-75'>75</p>
+                    <p className='bg-refreshRate-120'>120</p>
+                    <p className='bg-refreshRate-144'>144</p>
+                    <p className='bg-refreshRate-240'>240</p>
+                    <p className='bg-refreshRate-360'>360</p>
+                    <p className='text-permission-0'>0</p>
+                    <p className='text-permission-1'>1</p>
+                    <p className='text-permission-2'>2</p>
+                    <p className='text-permission-3'>3</p>
+                    <p className='text-permission-4'>4</p>
+                    <p className='text-permission-5'>5</p>
+                    <p className='text-permission-6'>6</p>
+                </div>
+                <div className='flex-grow over'>
+                    <Outlet />
+                </div>
+                <Footer />
+                <canvas ref={canvasRef} className='pointer-events-none absolute -z-50' />
             </div>
-            <main className='flex-grow over'>
-                <Outlet />
-            </main>
-            <Footer />
-            {/* {getBrowserName() === 'Firefox' &&
-                <div className='snow' />
-            } */}
-            <canvas ref={canvasRef} className='pointer-events-none absolute -z-50' />
-        </div>
+        </QueryParamProvider>
     );
 }

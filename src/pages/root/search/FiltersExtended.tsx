@@ -1,17 +1,13 @@
-import StorageManager from '../../../utils/StorageManager';
 import { NumberInput, TextInput } from '../../../components/Input';
 import CheckBox from '../../../components/input/CheckBox';
-import { SearchFilters } from './Search';
 import Select from '../../../components/Select';
-import NewLabel from '../../../components/NewLabel';
 import { useQuery } from '@tanstack/react-query';
 import GetTags from '../../../api/tags/GetTags';
 import { useCallback } from 'react';
-
-type Props = {
-    filters: SearchFilters,
-    setFilters: React.Dispatch<React.SetStateAction<SearchFilters>>,
-}
+import useSession from '../../../hooks/useSession';
+import { BooleanParam, NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { QueryParamNames } from './QueryParamNames';
+import { toast } from 'react-toastify';
 
 const twoPlayerOptions = {
     any: 'Any',
@@ -36,8 +32,25 @@ const updateOptions = {
     '97452273-1000000000': '2.2',
 };
 
-export default function FiltersExtended({ filters, setFilters }: Props) {
-    const inSession = StorageManager.hasSession();
+export default function FiltersExtended() {
+    const session = useSession();
+    const [minSubCount, setMinSubCount] = useQueryParam(QueryParamNames.MinSubmissionCount, NumberParam);
+    const [maxSubCount, setMaxSubCount] = useQueryParam(QueryParamNames.MaxSubmissionCount, NumberParam);
+    const [minEnjoymentCount, setMinEnjoymentCount] = useQueryParam(QueryParamNames.MinEnjoymentCount, NumberParam);
+    const [maxEnjoymentCount, setMaxEnjoymentCount] = useQueryParam(QueryParamNames.MaxEnjoymentCount, NumberParam);
+    const [minDeviation, setMinDeviation] = useQueryParam(QueryParamNames.MinDeviation, NumberParam);
+    const [maxDeviation, setMaxDeviation] = useQueryParam(QueryParamNames.MaxDeviation, NumberParam);
+    const [minID, setMinID] = useQueryParam(QueryParamNames.MinID, NumberParam);
+    const [maxID, setMaxID] = useQueryParam(QueryParamNames.MaxID, NumberParam);
+    const [twoPlayer, setTwoPlayer] = useQueryParam(QueryParamNames.TwoPlayer, withDefault(StringParam, 'any'));
+    const [update, setUpdate] = useQueryParam(QueryParamNames.Update, withDefault(StringParam, 'any'));
+    const [topSkillset, setTopSkillset] = useQueryParam(QueryParamNames.TopSkillset, withDefault(StringParam, '0'));
+    const [excludeCompleted, setExcludeCompleted] = useQueryParam(QueryParamNames.ExcludeCompleted, withDefault(BooleanParam, false));
+    const [excludeUnrated, setExcludeUnrated] = useQueryParam(QueryParamNames.ExcludeUnrated, withDefault(BooleanParam, false));
+    const [exculdeUnratedEnj, setExcludeUnratedEnj] = useQueryParam(QueryParamNames.ExcludeUnratedEnjoyment, withDefault(BooleanParam, false));
+    const [excludeRated, setExcludeRated] = useQueryParam(QueryParamNames.ExcludeRated, withDefault(BooleanParam, false));
+    const [excludeRatedEnj, setExcludeRatedEnj] = useQueryParam(QueryParamNames.ExcludeRatedEnjoyment, withDefault(BooleanParam, false));
+    const [inPack, setInPack] = useQueryParam(QueryParamNames.InPack, withDefault(BooleanParam, false));
 
     const { data: tags } = useQuery({
         queryKey: ['tags'],
@@ -46,13 +59,22 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
 
     const onUpdateChange = useCallback((key: string) => {
         if (key !== 'any') {
-            const lowID = key.split('-')[0];
-            const highID = key.split('-')[1];
-            setFilters(prev => ({ ...prev, update: key, IDLow: lowID, IDHigh: highID }));
+            const lowID = parseInt(key.split('-')[0]);
+            const highID = parseInt(key.split('-')[1]);
+
+            if (isNaN(lowID) || isNaN(highID)) {
+                toast.error('Invalid update range');
+                return;
+            }
+
+            setMinID(lowID);
+            setMaxID(highID);
         } else {
-            setFilters(prev => ({ ...prev, update: key, IDLow: '', IDHigh: '' }));
+            setMinID(undefined);
+            setMaxID(undefined);
         }
-    }, [setFilters]);
+        setUpdate(key);
+    }, [setMinID, setMaxID, setUpdate]);
 
     return (
         <div className='flex flex-col gap-3'>
@@ -60,71 +82,71 @@ export default function FiltersExtended({ filters, setFilters }: Props) {
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Submission count:</p>
                     <div className='flex items-center'>
-                        <NumberInput value={filters.subLowCount} min='1' max='1000' onChange={(e) => setFilters(prev => ({ ...prev, subLowCount: e.target.value }))} />
+                        <NumberInput value={minSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMinSubCount(parseInt(e.target.value))} />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput value={filters.subHighCount} min='1' max='1000' onChange={(e) => setFilters(prev => ({ ...prev, subHighCount: e.target.value }))} />
+                        <NumberInput value={maxSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxSubCount(parseInt(e.target.value))} />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Enjoyment count:</p>
                     <div className='flex items-center'>
-                        <NumberInput value={filters.enjLowCount} min='1' max='1000' onChange={(e) => setFilters(prev => ({ ...prev, enjLowCount: e.target.value }))} />
+                        <NumberInput value={minEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMinEnjoymentCount(parseInt(e.target.value))} />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput value={filters.enjHighCount} min='1' max='1000' onChange={(e) => setFilters(prev => ({ ...prev, enjHighCount: e.target.value }))} />
+                        <NumberInput value={maxEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxEnjoymentCount(parseInt(e.target.value))} />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Rating deviation:</p>
                     <div className='flex items-center'>
-                        <NumberInput className='num-lg' value={filters.devLow} min='1' max='10' onChange={(e) => setFilters(prev => ({ ...prev, devLow: e.target.value }))} />
+                        <NumberInput className='num-lg' value={minDeviation ?? undefined} min='1' max='10' onChange={(e) => setMinDeviation(parseFloat(e.target.value))} />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput className='num-lg' value={filters.devHigh} min='1' max='10' onChange={(e) => setFilters(prev => ({ ...prev, devHigh: e.target.value }))} />
+                        <NumberInput className='num-lg' value={maxDeviation ?? undefined} min='1' max='10' onChange={(e) => setMaxDeviation(parseFloat(e.target.value))} />
                     </div>
                 </div>
                 <div className='col-span-12 md:col-span-6 xl:col-span-6'>
                     <p className='form-label m-0'>Level ID:</p>
                     <div className='flex items-center'>
-                        <NumberInput className='num-lg' value={filters.IDLow} min='1' max='500000000' onChange={(e) => setFilters(prev => ({ ...prev, IDLow: e.target.value, update: 'any' }))} />
+                        <NumberInput className='num-lg' value={minID ?? undefined} min='1' max='500000000' onChange={(e) => setMinID(parseInt(e.target.value))} />
                         <p className='m-0 mx-2'>to</p>
-                        <TextInput className='num-lg' value={filters.IDHigh} min='1' max='500000000' onChange={(e) => setFilters(prev => ({ ...prev, IDHigh: e.target.value, update: 'any' }))} />
+                        <TextInput className='num-lg' value={maxID ?? undefined} min='1' max='500000000' onChange={(e) => setMaxID(parseInt(e.target.value))} />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Two player:</p>
-                    <Select height='20' activeKey={filters.twoPlayer} options={twoPlayerOptions} onChange={(key) => setFilters(prev => ({ ...prev, twoPlayer: key }))} id='twoPlayerSelectOptions' />
+                    <Select height='20' activeKey={twoPlayer} options={twoPlayerOptions} onChange={(key) => setTwoPlayer(key)} id='twoPlayerSelectOptions' />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
-                    <p>Update <NewLabel ID='updateFilter' /></p>
-                    <Select height='20' activeKey={filters.update} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
+                    <p>Update:</p>
+                    <Select height='20' activeKey={update} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
-                    <p>Top skillset <NewLabel ID='skillsetFilter' /></p>
-                    <Select height='20' activeKey={filters.skillset.toString()} options={[...(tags ?? []).map((t) => ({ key: t.ID.toString(), value: t.Name })), { key: '0', value: 'Any' }]} onChange={(key) => setFilters(prev => ({ ...prev, skillset: parseInt(key) }))} id='skillsetSelectOptions' />
+                    <p>Top skillset:</p>
+                    <Select height='20' activeKey={topSkillset} options={[...(tags ?? []).map((t) => ({ key: t.ID.toString(), value: t.Name })), { key: '0', value: 'Any' }]} onChange={(key) => setTopSkillset(key)} id='skillsetSelectOptions' />
                 </div>
             </div>
             <div className='grid grid-cols-12'>
-                <label className={'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' + (inSession ? '' : ' text-gray-500 line-through')}>
-                    <CheckBox checked={filters.removeCompleted} onChange={() => setFilters(prev => ({ ...prev, removeCompleted: !prev.removeCompleted }))} disabled={!inSession} />
+                <label className={'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' + (session.user ? '' : ' text-gray-500 line-through')}>
+                    <CheckBox checked={excludeCompleted} onChange={() => setExcludeCompleted((prev) => !prev)} disabled={!session.user} />
                     Exclude completed
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
-                    <CheckBox checked={filters.removeUnrated} onChange={() => setFilters(prev => ({ ...prev, removeUnrated: !prev.removeUnrated }))} />
+                    <CheckBox checked={excludeUnrated} onChange={() => setExcludeUnrated((prev) => !prev)} />
                     Exclude unrated tier
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
-                    <CheckBox checked={filters.removeUnratedEnj} onChange={() => setFilters(prev => ({ ...prev, removeUnratedEnj: !prev.removeUnratedEnj }))} />
+                    <CheckBox checked={exculdeUnratedEnj} onChange={() => setExcludeUnratedEnj((prev) => !prev)} />
                     Exclude unrated enjoyment
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
-                    <CheckBox checked={filters.removeRated} onChange={() => setFilters(prev => ({ ...prev, removeRated: !prev.removeRated }))} />
+                    <CheckBox checked={excludeRated} onChange={() => setExcludeRated((prev) => !prev)} />
                     Exclude rated tier
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
-                    <CheckBox checked={filters.removeRatedEnj} onChange={() => setFilters(prev => ({ ...prev, removeRatedEnj: !prev.removeRatedEnj }))} />
+                    <CheckBox checked={excludeRatedEnj} onChange={() => setExcludeRatedEnj((prev) => !prev)} />
                     Exclude rated enjoyment
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
-                    <CheckBox checked={filters.inPack} onChange={() => setFilters(prev => ({ ...prev, inPack: !prev.inPack }))} />
+                    <CheckBox checked={inPack} onChange={() => setInPack((prev) => !prev)} />
                     Exclude non-pack levels
                 </label>
             </div>
