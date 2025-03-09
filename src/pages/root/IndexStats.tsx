@@ -11,12 +11,12 @@ export default function IndexStats() {
         queryFn: GetStats,
     });
 
-    function anyOrLoading(value: any) {
+    function anyOrLoading<T>(value: T) {
         return value ?? (<InlineLoadingSpinner />);
     }
 
     return (
-        <Container>
+        <Container className='xl:row-span-3'>
             <h2 className='text-4xl'>Stats</h2>
             <div className='flex gap-8 flex-wrap'>
                 <div>
@@ -37,10 +37,6 @@ export default function IndexStats() {
                     <p>Pending submissions: {anyOrLoading(data?.pendingSubmissions)}</p>
                     <p>Submissions last 24h: {anyOrLoading(data?.recentSubmissions)}</p>
                     <p>Oldest queued submission: {data?.oldestQueuedSubmission !== undefined ? ms(Date.now() - new Date(data.oldestQueuedSubmission).getTime()) : '0s'} ago</p>
-                </div>
-                <div>
-                    <h3 className='text-2xl mt-2'>Most popular levels:</h3>
-                    <ol className='my-1 list-inside list-decimal'>{anyOrLoading(data?.topPopularLevels.map((level) => (<li key={level.ID}><Link to={`/level/${level.ID}`}>{level.Meta.Name}</Link></li>)))}</ol>
                 </div>
                 <div>
                     <h3 className='text-2xl mt-2'>Top raters:</h3>
