@@ -150,9 +150,9 @@ function createRoot() {
     return root;
 }
 
-const rootElement = document.getElementById('root') || createRoot();
+const rootElement = document.getElementById('root') ?? createRoot();
 const root = ReactDOM.createRoot(rootElement);
-StorageManager.getIsRounded() && rootElement.classList.add('round');
+if (StorageManager.getIsRounded()) rootElement.classList.add('round');
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
