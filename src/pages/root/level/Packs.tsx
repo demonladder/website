@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import GetLevelPacks from '../../../api/level/GetLevelPacks';
 import PackRef from '../../../components/PackRef/PackRef';
-import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 type Props = {
     levelID: number,
@@ -13,14 +13,14 @@ export default function Packs({ levelID }: Props) {
         queryFn: () => GetLevelPacks(levelID),
     });
 
-    if (status === 'loading') {
+    if (status === 'loading' || status === 'error') {
         return (
-            <section className='mt-6 text-3xl'>
-                <h2 className=''>Packs</h2>
-                <InlineLoadingSpinner />
+            <section className='mt-6'>
+                <h2 className='text-3xl'>Packs</h2>
+                <LoadingSpinner />
             </section>
         );
-    } else if (status === 'error') return;
+    }
 
     return (
         <section className='mt-6'>

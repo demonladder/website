@@ -15,6 +15,7 @@ import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import Level from '../../../api/types/Level';
 import LevelMeta from '../../../api/types/LevelMeta';
+import pluralS from '../../../utils/pluralS';
 
 interface SubmissionProps {
     level: Level & { Meta: LevelMeta };
@@ -65,6 +66,7 @@ function Submission({ level, submission }: SubmissionProps) {
         ];
 
         if (user.hasPermission(PermissionFlags.EDIT_LIST)) {
+            buttons.push({ text: 'Mod view', onClick: () => navigate(`/mod/editSubmission?levelID=${submission.LevelID}&userID=${submission.UserID}`) });
             buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(level, submission) });
         }
 
@@ -112,38 +114,36 @@ interface SubmissionsProps {
 }
 
 export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlayerStats }: SubmissionsProps) {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [progressFilterKey, setProgressFilterKey] = useState('victors');
+
     const { data: submissions, status } = useQuery({
         queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey, twoPlayer: showTwoPlayerStats }],
-        queryFn: () => GetLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, chunk: 24, page }),
+        queryFn: () => GetLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, limit: 24, page }),
     });
+
+    if (status === 'error' || status === 'loading') return (
+        <section className='mt-6'>
+            <h2 className='text-3xl'>Submissions</h2>
+            <LoadingSpinner />
+        </section>
+    );
 
     return (
         <section className='mt-6'>
-            <h2 className='text-3xl'>{submissions?.total ?? <LoadingSpinner />} Submission{level.SubmissionCount !== 1 ? 's' : ''}</h2>
+            <h2 className='text-3xl'>{level.SubmissionCount} Submission{pluralS(level.SubmissionCount)}</h2>
             <TwoPlayerButtons levelMeta={level.Meta} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
-            <div>
-                {status === 'loading'
-                    ? <LoadingSpinner />
-                    : (submissions === undefined
-                        ? <p className='mb-0'>This level does not have any submissions</p>
-                        : <>
-                            <div className='flex'>
-                                <p className='me-1'>Showing</p>
-                                <div className='max-w-xs grow'>
-                                    <Select options={progressFilterOptions} activeKey={progressFilterKey} onChange={setProgressFilterKey} id='submissionsProgressFilter' />
-                                </div>
-                            </div>
-                            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
-                                {submissions.submissions.map(s => <Submission level={level} submission={s} key={s.UserID} />)}
-                                {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
-                            </div>
-                            <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
-                        </>
-                    )
-                }
+            <div className='flex'>
+                <p className='me-1'>Showing</p>
+                <div className='max-w-xs grow'>
+                    <Select options={progressFilterOptions} activeKey={progressFilterKey} onChange={setProgressFilterKey} id='submissionsProgressFilter' />
+                </div>
             </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
+                {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.UserID} />)}
+                {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
+            </div>
+            <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
         </section>
     );
 }

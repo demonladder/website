@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import axios from 'axios';
-import NewLabel from '../../../components/NewLabel';
 import { pluralWas } from '../../../utils/pluralS';
 
 interface SHFResponseDataObject {
@@ -51,7 +50,7 @@ export default function ExternalLinks({ level }: Props) {
 
     return (
         <div className='mt-6'>
-            <h2 className='text-3xl mb-2' id='levelShowcase'>External links <NewLabel ID='externalLinks' /></h2>
+            <h2 className='text-3xl mb-2' id='levelShowcase'>External links</h2>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-2'>
                 <LinkButton link={`https://gdbrowser.com/${level.ID}`} message='GDBrowser' />
                 <LinkButton link={`https://www.youtube.com/results?search_query=geometry+dash+${level.Meta.Name.toLowerCase().replace(' ', '+')}`} message='Search on youtube' />
