@@ -11,7 +11,7 @@ function LeaderboardEntry({ data, highestScore }: { data: Leader, highestScore?:
     const width = data.Sum * 100 / highestScore;
     const pfp = `https://cdn.discordapp.com/avatars/${data?.DiscordID}/${data?.Avatar}.png`;
 
-    const profileColor = parseInt(''+data.AccentColor) || 0;
+    const profileColor = data.AccentColor ? parseInt(data.AccentColor) : 0;
 
     const red = profileColor >> 16;
     const green = (profileColor >> 8) & 0xff;
@@ -34,7 +34,7 @@ function LeaderboardEntry({ data, highestScore }: { data: Leader, highestScore?:
 }
 
 export default function Leaderboard({ packID }: { packID?: number }) {
-    const { data: packLeaders, isLoading, isFetching } = useQuery({
+    const { data: packLeaders, status } = useQuery({
         queryKey: ['packLeaders', packID],
         queryFn: () => GetPackLeaders(packID),
     });
@@ -50,7 +50,8 @@ export default function Leaderboard({ packID }: { packID?: number }) {
         <section className='mt-4'>
             <h2 className='text-3xl'>Leaderboard</h2>
             <p>The current top 25:</p>
-            <LoadingSpinner isLoading={isLoading || isFetching} />
+            <LoadingSpinner isLoading={status === 'loading'} />
+            {status === 'error' && <p>Error: could not fetch leaderboard from server</p>}
             <div className='pe-8'>
                 {packLeaders?.leaderboard?.map((contestant) => (<LeaderboardEntry data={contestant} highestScore={highestScore} key={'leader_' + contestant.UserID} />))}
             </div>
