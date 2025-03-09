@@ -1,5 +1,4 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import Container from '../../../components/Container';
 import GetNotifications, { NotificationResponse, UnreadFilter } from '../../../api/notifications/GetNotificationsRequest';
 import MarkReadNotifications from '../../../api/notifications/MarkReadNotifications';
 import { useState } from 'react';
@@ -7,6 +6,7 @@ import { SecondaryButton } from '../../../components/Button';
 import { toast } from 'react-toastify';
 import MarkAllReadRequest from '../../../api/notifications/MarkAllReadRequest';
 import renderToastError from '../../../utils/renderToastError';
+import Page from '../../../components/Page';
 
 export default function Notifications() {
     const [isMutating, setIsMutating] = useState(false);
@@ -35,24 +35,22 @@ export default function Notifications() {
     }
 
     return (
-        <Container>
-            <div>
-                <h2 className='text-3xl'>Notifications</h2>
-                    <div className='mb-4'>
-                        <button className={(allOrUnread === 'all' ? 'bg-white text-black' : 'bg-gray-500') + ' px-2 py-[2px] round:rounded-s'} onClick={() => setAllOrUnread('all')}>All</button>
-                        <button className={(allOrUnread === 'unread' ? 'bg-white text-black' : 'bg-gray-500') + ' px-2 py-[2px] round:rounded-e'} onClick={() => setAllOrUnread('unread')}>Unread</button>
-                        <SecondaryButton className='ms-4' onClick={markAllRead}>Mark all as read</SecondaryButton>
-                    </div>
-                {data?.length === 0 &&
-                    <p>No notifications</p>
-                }
-                <ul className='flex flex-col gap-2 xl:gap-1'>
-                    {data?.map((notif) => 
-                        <Notification notif={notif} key={notif.ID} />
-                    )}
-                </ul>
+        <Page>
+            <h2 className='text-3xl'>Notifications</h2>
+            <div className='mb-4'>
+                <button className={(allOrUnread === 'all' ? 'bg-white text-black' : 'bg-gray-500') + ' px-2 py-[2px] round:rounded-s'} onClick={() => setAllOrUnread('all')}>All</button>
+                <button className={(allOrUnread === 'unread' ? 'bg-white text-black' : 'bg-gray-500') + ' px-2 py-[2px] round:rounded-e'} onClick={() => setAllOrUnread('unread')}>Unread</button>
+                <SecondaryButton className='ms-4' onClick={markAllRead}>Mark all as read</SecondaryButton>
             </div>
-        </Container>
+            {data?.length === 0 &&
+                <p>No notifications</p>
+            }
+            <ul className='flex flex-col gap-2 xl:gap-1'>
+                {data?.map((notif) =>
+                    <Notification notif={notif} key={notif.ID} />
+                )}
+            </ul>
+        </Page>
     );
 }
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Container from '../../../components/Container';
+import Page from '../../../components/Page';
 
 function ListItem({ children }: { children: React.ReactNode }) {
     return (
@@ -12,7 +12,7 @@ function ListItem({ children }: { children: React.ReactNode }) {
 
 export default function About() {
     return (
-        <Container>
+        <Page>
             <section>
                 <h2 id='origin' className='text-3xl text-primary mb-3'>It's just to fill in what is not enough</h2>
                 <p className='mb-1'>Launched in August 2020, this project is a list of EVERY demon rated, with a little tier put beside it. It originated from the discussion that the demon difficulties in-game is not enough. The division of difficulties for demons is always a subject to discuss, but there isn't a definitive list for this. Well, until now!</p>
@@ -107,6 +107,6 @@ export default function About() {
                 <p>This system is mainly in place to mitigate the amount of tier 1 The Lightning Road submissions in the queue.</p>
                 <p>The exact specifics can vary but at the time of writing, levels above tier 16 will not have auto accepting enabled. Submissions that deviate more than 2 from the level's rounded rating will also not be automatically accepted but put in the queue instead.</p>
             </section>
-        </Container>
+        </Page>
     );
 }

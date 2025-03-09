@@ -6,7 +6,6 @@ import StorageManager from '../../../utils/StorageManager';
 import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
 import { AxiosError } from 'axios';
-import Container from '../../../components/Container';
 import Tracker from './Tracker';
 import { SecondaryButton } from '../../../components/Button';
 import toFixed from '../../../utils/toFixed';
@@ -18,6 +17,7 @@ import useUserQuery from '../../../hooks/queries/useUserQuery';
 import useSession from '../../../hooks/useSession';
 import flagEmoji from '../../../utils/flagEmoji';
 import Skills from './Skills';
+import Page from '../../../components/Page';
 
 export default function Profile() {
     const userID = parseInt(useParams().userID ?? '') || 0;
@@ -25,36 +25,16 @@ export default function Profile() {
 
     const { status, data: userData, error } = useUserQuery(userID);
 
-    if (status === 'loading') {
-        return (
-            <Container>
-                <LoadingSpinner />
-            </Container>
-        );
-    } else if (status === 'error') {
+    if (status === 'loading') return <Page><LoadingSpinner /></Page>;
+    if (status === 'error') {
         if ((error as AxiosError).response?.status === 404) {
-            return (
-                <Container>
-                    <h1>User does not exist</h1>
-                </Container>
-            );
+            return <Page><h1>User does not exist</h1></Page>;
         }
 
-        return (
-            <Container>
-                <h1>An error ocurred</h1>
-            </Container>
-        );
+        return <Page><h1>An error ocurred</h1></Page>;
     }
 
-
-    if (userData === undefined) {
-        return (
-            <div className='container'>
-                <h5>No user data</h5>
-            </div>
-        );
-    }
+    if (userData === undefined) return <Page><h5>No user data</h5></Page>;
 
     const ownPage = StorageManager.hasSession() && userID === session.user?.ID;
 
@@ -73,7 +53,7 @@ export default function Profile() {
     const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png`;
 
     return (
-        <Container key={userID}>
+        <Page key={userID}>
             <Helmet>
                 <title>{'GDDL - ' + userData.Name}</title>
                 <meta property='og:title' content={userData.Name} />
@@ -155,6 +135,6 @@ export default function Profile() {
             <Lists userID={userID} />
             <Skills userID={userID} />
             <Rankings userID={userID} />
-        </Container>
+        </Page>
     );
 }

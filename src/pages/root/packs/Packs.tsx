@@ -5,6 +5,7 @@ import Container from '../../../components/Container';
 import UserLink from '../../../components/UserLink';
 import Leaderboard from './Leaderboard';
 import Category from './Category';
+import Page from '../../../components/Page';
 
 export default function Packs() {
     const { status, data: packs, failureReason } = useQuery({
@@ -28,7 +29,7 @@ export default function Packs() {
     }
 
     return (
-        <Container>
+        <Page>
             <section>
                 <h1 className='text-4xl'>Packs</h1>
                 <p className='mb-8'>The pack icons were created by <UserLink userID={138} /> (@cadregadev)</p>
@@ -37,6 +38,6 @@ export default function Packs() {
                 ))}
             </section>
             <Leaderboard />
-        </Container>
+        </Page>
     )
 }
