@@ -8,7 +8,7 @@ import renderToastError from '../../../../utils/renderToastError';
 import { NumberInput } from '../../../../components/Input';
 import { validateIntInputChange } from '../../../../utils/validators/validateIntChange';
 import GetWants from '../../../../api/user/GetWants';
-import useUser from '../../../../hooks/useUser';
+import useSession from '../../../../hooks/useSession';
 
 enum NotificationsBitField {
     Accept = 2 ** 0,
@@ -16,7 +16,7 @@ enum NotificationsBitField {
 }
 
 export default function Notifications() {
-    const session = useUser();
+    const session = useSession();
 
     const queryClient = useQueryClient();
     const { data } = useQuery({

@@ -8,7 +8,7 @@ import { useContextMenu } from '../../../components/ui/menuContext/MenuContextCo
 import List from '../../../api/types/List';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
 import useCreateListModal from '../../../hooks/modals/useCreateListModal';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 
 interface Props {
     userID: number;
@@ -19,7 +19,7 @@ export default function Lists({ userID }: Props) {
     const openCreateListModal = useCreateListModal();
 
     const navigate = useNavigate();
-    const session = useUser();
+    const session = useSession();
 
     const lookingAtOwnPage = userID === session.user?.ID;
 

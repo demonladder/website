@@ -15,13 +15,13 @@ import Rankings from './Rankings';
 import Lists from './Lists';
 import PendingSubmissions from './PendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 import flagEmoji from '../../../utils/flagEmoji';
 import Skills from './Skills';
 
 export default function Profile() {
     const userID = parseInt(useParams().userID ?? '') || 0;
-    const session = useUser();
+    const session = useSession();
 
     const { status, data: userData, error } = useUserQuery(userID);
 

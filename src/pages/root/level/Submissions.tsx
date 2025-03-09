@@ -10,7 +10,7 @@ import Select from '../../../components/Select';
 import useRoles from '../../../hooks/api/useRoles';
 import TwoPlayerButtons from './TwoPlayerButtons';
 import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import Level from '../../../api/types/Level';
@@ -56,7 +56,7 @@ function Submission({ level, submission }: SubmissionProps) {
     const { createMenu } = useContextMenu();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
     const navigate = useNavigate();
-    const user = useUser();
+    const user = useSession();
     function openContext(e: React.MouseEvent) {
         e.preventDefault();
 

@@ -7,7 +7,7 @@ import GetWants from '../../../../api/user/GetWants';
 import UpdateRoleManagementSettings from '../../../../api/notifications/UpdateRoleManagementSettings';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
-import useUser from '../../../../hooks/useUser';
+import useSession from '../../../../hooks/useSession';
 
 const hardestManageOptions = {
     1: 'Manual',
@@ -17,7 +17,7 @@ const hardestManageOptions = {
 
 export default function DiscordRoles() {
     const [hardestManageKey, setHardestManageKey] = useState('1');
-    const session = useUser();
+    const session = useSession();
     const queryClient = useQueryClient();
 
     const { data, status } = useQuery({

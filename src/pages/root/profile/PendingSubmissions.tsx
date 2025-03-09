@@ -13,7 +13,7 @@ import { DangerButton, SecondaryButton } from '../../../components/Button';
 import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import NewLabel from '../../../components/NewLabel';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import { useApproveClicked } from '../../mod/queue/useApproveClicked';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
@@ -87,7 +87,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const user = useUser();
+    const user = useSession();
 
     const { createMenu } = useContextMenu();
 

@@ -1,8 +1,8 @@
 import DemonLogo from './DemonLogo';
-import useUser from '../hooks/useUser';
+import useSession from '../hooks/useSession';
 
 export default function DiscordProfilePicture() {
-    const session = useUser();
+    const session = useSession();
 
     return (
         <div>

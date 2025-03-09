@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import NotificationButton from '../../../components/ui/Notifications';
 import useNavbarNotification from '../../../context/NavbarNotification/useNavbarNotification';
 import { useEffect } from 'react';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 
 export default function ProfileButtons() {
-    const session = useUser();
+    const session = useSession();
 
-    if (session.hasCookie && session.loadStatus === 'loading') return <InlineLoadingSpinner />;
+    if (session.loadStatus === 'loading') return <InlineLoadingSpinner />;
 
     if (!session.user) {
         return <LoginButton />
@@ -20,7 +20,7 @@ export default function ProfileButtons() {
 }
 
 function ProfileButton({ userID, username }: { userID: number, username: string }) {
-    const session = useUser();
+    const session = useSession();
 
     const { discordSync } = useNavbarNotification();
     useEffect(() => {

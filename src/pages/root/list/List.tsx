@@ -9,7 +9,7 @@ import GetList from '../../../api/list/GetList';
 import MoveListLevel from '../../../api/list/MoveListLevel';
 import renderToastError from '../../../utils/renderToastError';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 
 interface Meta {
     ID: number;
@@ -52,7 +52,7 @@ export default function List() {
     const [isDragLocked, setIsDragLocked] = useState(false);
 
     const openDeleteModal = useDeleteListModal();
-    const session = useUser();
+    const session = useSession();
 
     const queryClient = useQueryClient();
 

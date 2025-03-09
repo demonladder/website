@@ -2,10 +2,10 @@ import { DiscordLink } from '../../../../components/Button';
 import DiscordProfilePicture from '../../../../components/DiscordProfilePicture';
 import { LoginButton } from '../../login/ProfileButtons';
 import GeneralInformation from './GeneralInformation';
-import useUser from '../../../../hooks/useUser';
+import useSession from '../../../../hooks/useSession';
 
 export default function DiscordSettings() {
-    const session = useUser();
+    const session = useSession();
 
     if (!session.user) {
         return (

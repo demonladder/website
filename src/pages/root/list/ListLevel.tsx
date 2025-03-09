@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import RemoveLevel from '../../../api/list/RemoveLevel';
 import renderToastError from '../../../utils/renderToastError';
 import { useQueryClient } from '@tanstack/react-query';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 
 interface Props {
     list: List;
@@ -23,7 +23,7 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
     const itemRef = useRef<HTMLLIElement>(null);
     const { createMenu } = useContextMenu();
     const queryClient = useQueryClient();
-    const session = useUser();
+    const session = useSession();
 
     const isListOwner = list.OwnerID === session.user?.ID;
 
