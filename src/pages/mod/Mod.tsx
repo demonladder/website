@@ -1,16 +1,7 @@
-import { Link, Outlet, redirect } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Container from '../../components/Container';
-import APIClient from '../../api/APIClient';
 import { Suspense } from 'react';
 import { NavButton } from '../../components/ui/NavButton';
-
-export async function modLoader() {
-    return APIClient.get('/isStaff').then(() => {
-        return null;
-    }).catch(() => {
-        return redirect('/');
-    });
-}
 
 export default function Mod() {
     return (
