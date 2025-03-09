@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import GetUserSubmissions, { UserSubmission } from '../../../api/user/GetUserSubmissions';
+import GetUserSubmissions, { Sorts, UserSubmission } from '../../../api/user/GetUserSubmissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
@@ -25,20 +25,20 @@ enum EListType {
 }
 
 export default function Submissions({ userID }: Props) {
-    const [page, setPage] = useSessionStorage(`profilePageIndex_${userID}`, 1);
-    const [sort, setSort] = useState<{ sort: string, sortDirection: string }>({ sort: 'LevelID', sortDirection: 'asc' });
+    const [page, setPage] = useSessionStorage(`profilePageIndex_${userID}`, 0);
+    const [sort, setSort] = useState<{ sort: Sorts, sortDirection: string }>({ sort: Sorts.LEVEL_ID, sortDirection: 'asc' });
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
     const [query, lateQuery, setQuery] = useLateValue('', 500);
     const [onlyIncomplete, setOnlyIncomplete] = useState(false);
 
-    const { status, data } = useQuery({
+    const { status, data: submissionResult } = useQuery({
         queryKey: ['user', userID, 'submissions', { page, name: lateQuery, onlyIncomplete, ...sort }],
         queryFn: () => GetUserSubmissions({ userID, page, name: lateQuery, onlyIncomplete, ...sort }),
     });
 
     useEffect(() => {
-        if (data?.total !== 0 && data?.submissions.length === 0) setPage(1);
-    }, [data, setPage]);
+        if (submissionResult?.total !== 0 && submissionResult?.submissions.length === 0) setPage(0);
+    }, [submissionResult, setPage]);
 
     if (status === 'loading') {
         return (
@@ -46,9 +46,9 @@ export default function Submissions({ userID }: Props) {
         );
     }
 
-    const submissions = data?.submissions;
+    const submissions = submissionResult?.submissions;
 
-    if (submissions === undefined || data === undefined) {
+    if (submissions === undefined || submissionResult === undefined) {
         return;
     }
 
@@ -83,7 +83,7 @@ export default function Submissions({ userID }: Props) {
             {submissions.length === 0 &&
                 <p>No levels</p>
             }
-            <PageButtons onPageChange={setPage} meta={{ ...data, page }} />
+            <PageButtons onPageChange={setPage} meta={{ ...submissionResult, page }} />
         </div>
     );
 }

@@ -11,7 +11,7 @@ type DTOResponse = User & {
     DiscordData: DiscordUserData | null,
     CompletedPacks: { PackID: number, IconName: string }[],
     PendingSubmissionCount: number,
-    TotalSubmissions: number,
+    SubmissionCount: number,
     Roles: Role[],
 };
 

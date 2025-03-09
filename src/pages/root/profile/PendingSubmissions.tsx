@@ -31,7 +31,7 @@ export default function PendingSubmissions({ userID }: Props) {
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
     const [hide, setHide] = useState(true);
 
-    const { status, data: submissions } = useQuery({
+    const { status, data: submissionResult } = useQuery({
         queryKey: ['user', userID, 'submissions', 'pending'],
         queryFn: () => GetUserPendingSubmissions(userID),
     });
@@ -42,7 +42,7 @@ export default function PendingSubmissions({ userID }: Props) {
         );
     }
 
-    if (!submissions?.length) {
+    if (!submissionResult?.submissions?.length) {
         return;
     }
 
@@ -68,12 +68,12 @@ export default function PendingSubmissions({ userID }: Props) {
                 </div>
             </div>
             {!hide && (listType === 'inline'
-                ? <InlineList levels={submissions} userID={userID} />
+                ? <InlineList levels={submissionResult.submissions} userID={userID} />
                 : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-                    {submissions.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} difficulty={p.Level.Meta.Difficulty} inPack={false} key={p.LevelID} />)}
+                    {submissionResult.submissions.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} difficulty={p.Level.Meta.Difficulty} inPack={false} key={p.LevelID} />)}
                 </div>)
             }
-            {!hide && submissions.length === 0 &&
+            {!hide && submissionResult.submissions.length === 0 &&
                 <p>No levels</p>
             }
         </div>

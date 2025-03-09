@@ -108,7 +108,7 @@ export default function Profile() {
                     </Tracker>
                     <Tracker>
                         <b>Total submissions:</b>
-                        <p>{userData.TotalSubmissions}</p>
+                        <p>{userData.SubmissionCount}</p>
                     </Tracker>
                     <div className='hidden lg:block'>
                         <Tracker>
