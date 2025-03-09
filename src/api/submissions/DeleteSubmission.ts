@@ -1,7 +1,9 @@
 import APIClient from '../APIClient';
 
-export default async function DeleteSubmission(levelID: number, userID: number, reason = '') {
-    await APIClient.delete(`/user/${userID}/submissions/${levelID}`, { data: {
-        reason: reason !== undefined ? (reason.length > 0 ? reason : undefined) : undefined,
-    } });
+export default async function DeleteSubmission(ID: number, reason = '') {
+    await APIClient.delete(`/submissions/${ID}`, {
+        data: {
+            reason: reason ? reason : undefined,  // Turn empty string into undefined
+        },
+    });
 }

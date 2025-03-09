@@ -5,9 +5,14 @@ import Song from '../types/Song';
 import Submission from '../types/Submission';
 
 export type UserPendingSubmission = Submission & { Level: Level & { Meta: LevelMeta & { Song: Song; }; }; };
-type GetUserPendingSubmissionsResponse = UserPendingSubmission[];
+interface GetUserPendingSubmissionsResponse {
+    total: number;
+    limit: number;
+    page: number;
+    submissions: UserPendingSubmission[];
+}
 
 export default async function GetUserPendingSubmissions(userID: number) {
-    const res = await APIClient.get<GetUserPendingSubmissionsResponse>(`/user/${userID}/submissions/pending`, { params: { userID } });
+    const res = await APIClient.get<GetUserPendingSubmissionsResponse>(`/user/${userID}/submissions`, { params: { pending: true } });
     return res.data;
 }
