@@ -22,12 +22,12 @@ export default function Notifications() {
         setIsMutating(true);
 
         const promise = MarkAllReadRequest().then(() => {
-            queryClient.invalidateQueries(['notifications']);
+            void queryClient.invalidateQueries(['notifications']);
         }).finally(() => {
             setIsMutating(false);
         });
-        
-        toast.promise(promise, {
+
+        void toast.promise(promise, {
             pending: 'Marking...',
             success: 'Success',
             error: renderToastError,
@@ -61,10 +61,12 @@ function Notification({ notif }: { notif: NotificationResponse }) {
         if (notif.IsRead) return;
 
         MarkReadNotifications([notif.ID])?.then(() => {
-            queryClient.invalidateQueries(['notifications']);
+            void queryClient.invalidateQueries(['notifications']);
+        }).catch(() => {
+            toast.error('Failed to mark as read');
         });
     }
-    
+
     return (
         <li className='flex justify-between group'>
             <div>

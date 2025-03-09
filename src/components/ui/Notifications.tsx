@@ -1,19 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import GetNotifications from '../../api/notifications/GetNotificationsRequest';
 import { Link } from 'react-router-dom';
+import { useUnreadNotifications } from '../../hooks/api/notifications/useUnreadNotifications';
 
 export default function NotificationButton() {
-    const { data } = useQuery({
-        queryKey: ['notifications', 'unread'],
-        queryFn: () => GetNotifications({ allOrUnread: 'unread' }),
-    });
+    const { data } = useUnreadNotifications();
 
     return (
-        <div className='cursor-pointer relative'>
-            {(data?.filter((n) => !n.IsRead).length || 0) > 0
-                ? <Link to='/notifications'><i className='bx bxs-envelope text-2xl' /></Link>
-                : <Link to='/notifications'><i className='bx bx-envelope-open text-2xl' /></Link>
-            }
-        </div>
+        <Link to='/notifications'>
+            <i className={`bx ${data?.length ? 'bxs-envelope' : 'bx-envelope-open'} text-2xl`} />
+        </Link>
     );
 }
