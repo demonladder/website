@@ -5,7 +5,7 @@ import './styles.scss';
 import ms from 'ms';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, redirect, Route, RouterProvider } from 'react-router-dom';
 import Root from './pages/root/Root';
 import Index from './pages/root/RootIndex';
 import Search from './pages/root/search/Search';
@@ -16,8 +16,8 @@ import Packs from './pages/root/packs/Packs';
 import Profile from './pages/root/profile/Profile';
 import { profileLoader } from './pages/root/profile/profileLoader';
 import PackOverview from './pages/root/packs/packOverview/PackOverview';
-import Mod from './pages/mod/Mod';
-import { modLoader as ModLoader } from './pages/mod/Mod';
+const Mod = lazy(() => import('./pages/mod/Mod'));
+import { modLoader as ModLoader } from './pages/mod/mod.loader';
 const ModIndex = lazy(() => import('./pages/mod/ModIndex'));
 const Queue = lazy(() => import('./pages/mod/queue/Queue'));
 const EditReferences = lazy(() => import('./pages/mod/references/References'));
@@ -67,237 +67,70 @@ import ReverseRoulette from './pages/root/generators/reverseRoulette/ReverseRoul
 import Decathlon from './pages/root/generators/decathlon/Decathlon';
 import ManageUser from './pages/mod/manageUser/ManageUser';
 import ManageUserContent from './pages/mod/manageUser/ManageUserContent';
+import FloatingLoadingSpinner from './components/FloatingLoadingSpinner';
 
-const router = createBrowserRouter(
+const router = createBrowserRouter(createRoutesFromElements(
     [
-        {
-            path: '/',
-            element: <Root />,
-            errorElement: <ErrorElement />,
-            children: [
-                {
-                    index: true,
-                    element: <Index />,
-                },
-                {
-                    path: 'search',
-                    element: <Search />,
-                },
-                {
-                    path: 'platformerList',
-                    element: <PlatformerList />,
-                },
-                {
-                    path: 'references',
-                    element: <References />,
-                },
-                {
-                    path: 'packs',
-                    element: <Packs />,
-                },
-                {
-                    path: 'about',
-                    element: <About />,
-                },
-                {
-                    path: 'pack/78',
-                    element: <CrossroadPack />,
-                },
-                {
-                    path: 'pack/:packID',
-                    element: <PackOverview />,
-                },
-                {
-                    path: 'staff',
-                    element: <Staff />,
-                },
-                {
-                    path: 'level/:levelID',
-                    element: <LevelOverview />,
-                },
-                {
-                    path: 'login',
-                    element: <Login />,
-                },
-                {
-                    path: 'signup',
-                    element: <SignUp />,
-                },
-                {
-                    path: 'profile',
-                    loader: profileLoader,
-                },
-                {
-                    path: 'profile/settings',
-                    element: <DiscordSettings />,
-                },
-                {
-                    path: 'profile/:userID',
-                    element: <Profile />,
-                },
-                {
-                    path: 'notifications',
-                    loader: sessionLoader,
-                    element: <Notifications />,
-                },
-                {
-                    path: 'game',
-                    element: <Suspense><Game /></Suspense>,
-                },
-                {
-                    path: 'settings',
-                    //loader: sessionLoader,
-                    element: <Settings />,
-                    children: [
-                        {
-                            path: 'site',
-                            element: <ClientSiteSettings />,
-                        },
-                        {
-                            path: 'profile',
-                            element: <DiscordSettings />,
-                        },
-                        {
-                            path: 'submission',
-                            element: <SubmissionSettings />,
-                        },
-                    ],
-                },
-                {
-                    path: 'list',
-                    loader: () => redirect('/search'),
-                },
-                {
-                    path: 'list/:listID',
-                    element: <List />,
-                },
-                {
-                    path: 'forgotPassword',
-                    element: <ForgotPassword />,
-                },
-                {
-                    path: 'generators',
-                    element: <Generators />,
-                    children: [
-                        {
-                            path: 'alphabet',
-                            element: <Alphabet />,
-                        },
-                        {
-                            path: 'roulette',
-                            element: <Roulette />,
-                        },
-                        {
-                            path: 'reverseRoulette',
-                            element: <ReverseRoulette />,
-                        },
-                        {
-                            path: 'tierRoulette',
-                            element: <TierRoulette />,
-                        },
-                        {
-                            path: 'decathlon',
-                            element: <Decathlon />,
-                        },
-                    ],
-                },
-                {
-                    path: 'bulkSubmit',
-                    element: <BulkSubmit />,
-                },
-                {
-                    path: 'changeLogs',
-                    element: <ChangeLogs />,
-                },
-                {
-                    path: '/mod',
-                    element: <Mod />,
-                    loader: ModLoader,
-                    children: [
-                        {
-                            index: true,
-                            element: <ModIndex />
-                        },
-                        {
-                            path: 'queue',
-                            element: <Queue />
-                        },
-                        {
-                            path: 'references',
-                            element: <EditReferences />
-                        },
-                        {
-                            path: 'editPack',
-                            element: <EditPack />,
-                        },
-                        {
-                            path: 'addSubmission',
-                            element: <AddSubmission />,
-                        },
-                        {
-                            path: 'editSubmission',
-                            element: <EditSubmission />,
-                        },
-                        {
-                            path: 'manageUser',
-                            element: <ManageUser />,
-                            children: [
-                                {
-                                    path: ':userID',
-                                    element: <ManageUserContent />
-                                },
-                            ],
-                        },
-                        {
-                            path: 'createUser',
-                            element: <CreateUser />,
-                        },
-                        {
-                            path: 'deleteUser',
-                            element: <DeleteUser />,
-                        },
-                        {
-                            path: 'signupLinks',
-                            element: <SignupLink />,
-                        },
-                        {
-                            path: 'addLevel',
-                            element: <AddLevel />,
-                        },
-                        {
-                            path: 'editLevel',
-                            element: <EditLevel />,
-                        },
-                        {
-                            path: 'editTags',
-                            element: <EditTags />
-                        },
-                        {
-                            path: 'siteSettings',
-                            element: <SiteSettings />,
-                        },
-                        {
-                            path: 'debugging',
-                            element: <Debugging />,
-                        },
-                        {
-                            path: 'logs',
-                            element: <Logs />,
-                        },
-                        {
-                            path: 'roles',
-                            element: <Roles />,
-                        },
-                        {
-                            path: 'roles/:roleID',
-                            element: <EditRole />,
-                        },
-                    ]
-                },
-            ],
-        },
+        <Route path='/' element={<Root />} errorElement={<ErrorElement />}>
+            <Route index element={<Index />} />
+            <Route path='search' element={<Search />} />
+            <Route path='platformerList' element={<PlatformerList />} />
+            <Route path='references' element={<References />} />
+            <Route path='packs' element={<Packs />} />
+            <Route path='about' element={<About />} />
+            <Route path='pack/78' element={<CrossroadPack />} />
+            <Route path='pack/:packID' element={<PackOverview />} />
+            <Route path='staff' element={<Staff />} />
+            <Route path='level/:levelID' element={<LevelPage />} />
+            <Route path='login' element={<Login />} />
+            <Route path='signup' element={<SignUp />} />
+            <Route path='profile' loader={profileLoader} />
+            <Route path='profile/settings' element={<DiscordSettings />} />
+            <Route path='profile/:userID' element={<Profile />} />
+            <Route path='notifications' element={<Notifications />} loader={sessionLoader} />
+            <Route path='game' element={<Suspense><Game /></Suspense>} />
+            <Route path='settings' element={<Settings />}>
+                <Route path='site' element={<ClientSiteSettings />} />
+                <Route path='profile' element={<DiscordSettings />} />
+                <Route path='submission' element={<SubmissionSettings />} />
+            </Route>
+            <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
+            <Route path='list/:listID' element={<List />} />
+            <Route path='forgotPassword' element={<ForgotPassword />} />
+            <Route path='generators' element={<Generators />}>
+                <Route path='alphabet' element={<Alphabet />} />
+                <Route path='roulette' element={<Roulette />} />
+                <Route path='reverseRoulette' element={<ReverseRoulette />} />
+                <Route path='tierRoulette' element={<TierRoulette />} />
+                <Route path='decathlon' element={<Decathlon />} />
+            </Route>
+            <Route path='bulkSubmit' element={<BulkSubmit />} />
+            <Route path='changeLogs' element={<ChangeLogs />} />
+            <Route path='mod' element={<Suspense fallback={<FloatingLoadingSpinner />} ><Mod /></Suspense>} loader={ModLoader}>
+                <Route index element={<ModIndex />} />
+                <Route path='queue' element={<Queue />} />
+                <Route path='references' element={<EditReferences />} />
+                <Route path='editPack' element={<EditPack />} />
+                <Route path='addSubmission' element={<AddSubmission />} />
+                <Route path='editSubmission' element={<EditSubmission />} />
+                <Route path='manageUser' element={<ManageUser />}>
+                    <Route path=':userID' element={<ManageUserContent />} />
+                </Route>
+                <Route path='createUser' element={<CreateUser />} />
+                <Route path='deleteUser' element={<DeleteUser />} />
+                <Route path='signupLinks' element={<SignupLink />} />
+                <Route path='addLevel' element={<AddLevel />} />
+                <Route path='editLevel' element={<EditLevel />} />
+                <Route path='editTags' element={<EditTags />} />
+                <Route path='siteSettings' element={<SiteSettings />} />
+                <Route path='debugging' element={<Debugging />} />
+                <Route path='logs' element={<Logs />} />
+                <Route path='roles' element={<Roles />} />
+                <Route path='roles/:roleID' element={<EditRole />} />
+            </Route>
+        </Route>,
     ],
-);
+));
 
 const queryClient = new QueryClient({
     defaultOptions: {
