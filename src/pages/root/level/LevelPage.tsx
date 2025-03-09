@@ -20,7 +20,7 @@ import Showcase from './Showcase';
 import ExternalLinks from './ExternalLinks';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useSubmitModal from '../../../hooks/modals/useSubmitModal';
-import useUser from '../../../hooks/useUser';
+import useSession from '../../../hooks/useSession';
 
 const levelLengths = {
     1: 'Tiny',
@@ -31,16 +31,16 @@ const levelLengths = {
     6: 'Platformer',
 }
 
-export default function LevelOverview() {
+export default function LevelPage() {
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useState(false);
     const navigate = useNavigate();
 
-    const session = useUser();
+    const session = useSession();
 
     const openAddListLevelModal = useAddListLevelModal();
     const openSubmitModal = useSubmitModal();
 
-    const levelID = parseInt(useParams().levelID || '0');
+    const levelID = parseInt(useParams().levelID ?? '0');
     const { status, data: level, error } = useQuery({
         queryKey: ['level', levelID],
         queryFn: () => GetLevel(levelID),
@@ -51,14 +51,14 @@ export default function LevelOverview() {
 
     if (status === 'loading') {
         return <Container><FloatingLoadingSpinner /></Container>;
-    } else if (status === 'error') {
-        const err = error as AxiosError;
+    }
 
-        if (err) {
-            if (err.response?.status === 404) {
+    if (status === 'error') {
+        if (error instanceof AxiosError) {
+            if (error.response?.status === 404) {
                 return (
                     <Container>
-                        <h1 className='text-4xl'>404: Level was not found!</h1>
+                        <h1 className='text-4xl'>404: Level not found!</h1>
                     </Container>
                 );
             }

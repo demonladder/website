@@ -10,7 +10,7 @@ import Root from './pages/root/Root';
 import Index from './pages/root/RootIndex';
 import Search from './pages/root/search/Search';
 import References from './pages/root/references/References';
-import LevelOverview from './pages/root/level/LevelOverview';
+import LevelPage from './pages/root/level/LevelPage';
 import Login from './pages/root/login/Login';
 import Packs from './pages/root/packs/Packs';
 import Profile from './pages/root/profile/Profile';
