@@ -7,22 +7,19 @@ import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
-import useUser from '../../../hooks/useUser';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 
 export default function Login() {
     const nameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const session = useUser();
 
     const navigate = useNavigate();
 
     const { mutate: submit, isLoading } = useMutation({
-        mutationFn: () => toast.promise(APIClient.post<string>('/login', {
+        mutationFn: () => toast.promise(APIClient.post<string>('/auth/login', {
             username: nameRef.current?.value,
             password: passwordRef.current?.value,
         }).then(() => {
-            session.login();
             navigate('/');
         }), {
             pending: 'Logging in...',

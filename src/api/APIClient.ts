@@ -1,8 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import ms from 'ms';
 import _ from 'lodash';
-import Cookies from 'js-cookie';
-import { CookieChangeEvent } from '../hooks/useCookieReadonly';
 
 const APIClient = axios.create({
     baseURL: import.meta.env.VITE_SERVER_URL,
@@ -16,10 +14,6 @@ APIClient.interceptors.request.use((config) => {
 
     if (errorCounter >= 15) {
         controller.abort();
-    }
-
-    if (config.url === (import.meta.env.VITE_SERVER_URL) || config.url?.startsWith('/')) {
-        config.headers['X-Access-Token'] = import.meta.env.VITE_ACCESS_TOKEN as string;
     }
 
     config.signal = controller.signal;
@@ -77,12 +71,15 @@ APIClient.interceptors.response.use(undefined, (error: AxiosError) => {
     throw error;
 });
 
+// APIClient.interceptors.request.use((config) => {
+//     const sessionToken = localStorage.getItem(import.meta.env.VITE_SESSION_ID_NAME);
+//     if (sessionToken) config.headers.Authorization = `Bearer ${sessionToken}`;
+//     return config;
+// });
+
 APIClient.interceptors.response.use(undefined, (error: AxiosError) => {
     if (error.response?.status !== 401) throw error;
     if ((error.response?.data as { error: string }).error !== 'Authentication failed!') throw error;
-
-    Cookies.remove(import.meta.env.VITE_SESSION_ID_NAME);
-    window.dispatchEvent(new CookieChangeEvent(import.meta.env.VITE_SESSION_ID_NAME));
 
     throw new Error('You have been logged out due to inactivity.');
 });
