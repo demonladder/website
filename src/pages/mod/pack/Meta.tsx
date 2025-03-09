@@ -7,7 +7,7 @@ import TextArea from '../../../components/input/TextArea';
 import renderToastError from '../../../utils/renderToastError';
 import SavePackMetaRequest from '../../../api/packs/requests/SavePackDescriptionRequest';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetPacks from '../../../api/packs/requests/GetPacks';
+import { getPacks } from '../../../api/packs/requests/getPacks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormGroup from '../../../components/form/FormGroup';
@@ -28,7 +28,7 @@ export default function Meta({ packID }: Props) {
 
     const { data: packsData } = useQuery({
         queryKey: ['packs'],
-        queryFn: GetPacks,
+        queryFn: getPacks,
     });
 
     useEffect(() => {
@@ -49,7 +49,7 @@ export default function Meta({ packID }: Props) {
         }).finally(() => {
             setIsLoading(false);
         });
-    
+
         void toast.promise(request, {
             pending: 'Saving...',
             success: 'Saved',
