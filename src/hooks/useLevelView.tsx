@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import useLocalStorage from './useLocalStorage';
 
-export default function useLevelView() {
-    const [isList, setIsList] = useState(true);
+export default function useLevelView(storageKey: string): [boolean, JSX.Element] {
+    const [isList, setIsList] = useLocalStorage(storageKey, true);
 
     function onViewList() {
         if (!isList) setIsList(true);
@@ -12,7 +12,7 @@ export default function useLevelView() {
     }
 
     return [
-        isList,
+        isList === true,
         (<div className='flex items-center text-black'>
             <button className={'w-7 h-7 grid place-items-center ' + (isList ? 'bg-gray-950 text-white' : 'bg-white')} onClick={onViewList}>
                 <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' stroke='currentColor' viewBox='0 0 16 16'>
