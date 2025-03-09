@@ -7,6 +7,7 @@ import Select from '../../../components/Select';
 import { useId, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import { PrimaryButton } from '../../../components/Button';
+import NewLabel from '../../../components/NewLabel';
 
 ChartJS.register(RadialLinearScale);
 
@@ -85,7 +86,7 @@ export default function Skills({ userID }: { userID: number }) {
     if (!isActive) {
         return (
             <div>
-                <h2 className='text-3xl mt-6'>Skills</h2>
+                <h2 className='text-3xl mt-6'>Skills <NewLabel ID='userSkills' /></h2>
                 <PrimaryButton onClick={() => setIsActive(true)}>Show</PrimaryButton>
             </div>
         );
@@ -93,7 +94,7 @@ export default function Skills({ userID }: { userID: number }) {
 
     return (
         <div>
-            <h2 className='text-3xl mt-6'>Skills</h2>
+            <h2 className='text-3xl mt-6'>Skills <NewLabel ID='userSkills' /></h2>
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-4'>
                 <div>
                     <label htmlFor='skillLevelSpan'>Levels included:</label>

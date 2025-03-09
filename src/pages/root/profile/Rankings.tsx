@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import APIClient from '../../../api/APIClient';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import NewLabel from '../../../components/NewLabel';
 
 interface Props {
     userID: number;
@@ -57,7 +56,7 @@ export default function Rankings({ userID }: Props) {
 
     return (
         <section>
-            <h2 className='text-3xl mt-6' id='rankings'>Rankings <NewLabel ID='rankings' /></h2>
+            <h2 className='text-3xl mt-6' id='rankings'>Rankings</h2>
             <table className='gap-2 my-2 text-sm md:text-xl block'>
                 <tbody className='block'>
                     {data === undefined

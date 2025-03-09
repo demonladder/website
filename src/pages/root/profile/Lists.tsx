@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import NewLabel from '../../../components/NewLabel';
 import { PrimaryButton } from '../../../components/Button';
 import { useCallback } from 'react';
 import GetUserLists from '../../../api/user/GetUserLists';
@@ -47,7 +46,7 @@ export default function Lists({ userID }: Props) {
 
     return (
         <section>
-            <h2 className='text-3xl mt-6' id='lists'>Lists <NewLabel ID='lists' /></h2>
+            <h2 className='text-3xl mt-6' id='lists'>Lists</h2>
             {lookingAtOwnPage && <PrimaryButton onClick={() => openCreateListModal(userID)}>Create new list</PrimaryButton>}
             {(lists?.length ?? 0) > 0
                 ? (
