@@ -18,6 +18,15 @@ export function levelLengthToString(length: LevelLengths): string {
     }
 }
 
+enum Difficulties {
+    Official = 'Official',
+    Easy = 'Easy',
+    Medium = 'Medium',
+    Hard = 'Hard',
+    Insane = 'Insane',
+    Extreme = 'Extreme',
+}
+
 export default interface LevelMeta {
     ID: number;
     Name: string;
@@ -26,5 +35,5 @@ export default interface LevelMeta {
     SongID: number;
     Length: LevelLengths;
     IsTwoPlayer: boolean;
-    Difficulty: string;
+    Difficulty: Difficulties;
 }

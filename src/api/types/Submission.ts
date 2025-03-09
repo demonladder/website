@@ -1,4 +1,5 @@
 export default interface Submission {
+    ID: number;
     LevelID: number;
     UserID: number;
     Rating: number | null;
@@ -8,8 +9,9 @@ export default interface Submission {
     Proof: string | null;
     IsSolo: boolean;
     SecondPlayerID: number | null;
-    DateAdded: string;
-    DateChanged: string;
     Progress: number;
     Attempts: number | null;
+    ApprovedBy: number | null;
+    DateAdded: string;
+    DateChanged: string;
 }

@@ -19,14 +19,14 @@ type GetLevelSubmissionsRequest = {
     levelID: number,
     page?: number,
     progressFilter?: string,
-    chunk?: number,
+    limit?: number,
     username?: string,
 }
 
-export default async function GetLevelSubmissions({ twoPlayer, levelID, page = 1, progressFilter = 'victors', chunk = 25, username }: GetLevelSubmissionsRequest) {
+export default async function GetLevelSubmissions({ twoPlayer, levelID, page = 1, progressFilter = 'victors', limit, username }: GetLevelSubmissionsRequest) {
     const res = await APIClient.get<GetLevelSubmissionsResponse>(`/level/${levelID}/submissions`, { params: {
         page,
-        chunk,
+        limit,
         twoPlayer,
         username: username || undefined,
         progressFilter,
