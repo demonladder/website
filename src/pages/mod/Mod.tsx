@@ -1,11 +1,11 @@
 import { Link, Outlet } from 'react-router-dom';
-import Container from '../../components/Container';
 import { Suspense } from 'react';
 import { NavButton } from '../../components/ui/NavButton';
+import Page from '../../components/Page';
 
 export default function Mod() {
     return (
-        <Container>
+        <Page>
             <div className='grid grid-cols-12 gap-5'>
                 <div id='mod-menu' className='col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col'>
                     <Link to='/mod' className='text-4xl mb-2'>Dashboard</Link>
@@ -48,6 +48,6 @@ export default function Mod() {
                     </div>
                 </div>
             </div>
-        </Container>
+        </Page>
     );
 }
