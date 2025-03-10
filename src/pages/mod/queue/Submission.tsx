@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import Modal from '../../../components/Modal';
 import { TextInput } from '../../../components/Input';
 import TSubmission from '../../../api/types/Submission';

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import CheckBox from '../../../../components/input/CheckBox';
 import StorageManager from '../../../../utils/StorageManager';
 import FormGroup from '../../../../components/form/FormGroup';

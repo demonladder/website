@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { clamp } from '../utils/clamp';
-import { PrimaryButton } from './Button';
+import { PrimaryButton } from './ui/buttons/PrimaryButton';
 import { NumberInput } from './Input';
 
 type Props = {

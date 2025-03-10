@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { DangerButton, PrimaryButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import WarningBox from '../../../components/message/WarningBox';
 import renderToastError from '../../../utils/renderToastError';

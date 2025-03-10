@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import { TextInput } from '../../../components/Input';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { validateUsername } from '../../../utils/validators/validateUsername';
 import { UserResponse } from '../../../api/user/GetUser';
 import TextArea from '../../../components/input/TextArea';

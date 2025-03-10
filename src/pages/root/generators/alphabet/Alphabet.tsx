@@ -5,7 +5,7 @@ import FormInputLabel from '../../../../components/form/FormInputLabel';
 import { TextInput } from '../../../../components/Input';
 import Select from '../../../../components/Select';
 import CheckBox from '../../../../components/input/CheckBox';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';

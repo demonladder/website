@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/types/TinyUser';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import Select from '../../../components/Select';
 import renderToastError from '../../../utils/renderToastError';

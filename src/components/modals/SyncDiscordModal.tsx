@@ -1,4 +1,5 @@
-import { DiscordLink, PrimaryButton } from '../Button';
+import { DiscordLink } from '../ui/buttons/DiscordLink';
+import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import Modal from '../Modal';
 
 interface Props {

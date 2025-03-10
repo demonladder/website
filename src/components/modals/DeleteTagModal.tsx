@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
-import { DangerButton, PrimaryButton } from '../Button';
+import { DangerButton } from '../ui/buttons/DangerButton';
+import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import Modal from '../Modal';
 import DeleteTag from '../../api/tags/DeleteTag';
 import renderToastError from '../../utils/renderToastError';

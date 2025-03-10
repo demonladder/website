@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import GenerateTierRoulette, { TierRouletteResponse } from '../../../../api/generators/GenerateTierRoulette';

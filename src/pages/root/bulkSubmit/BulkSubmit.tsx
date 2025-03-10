@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import TextArea from '../../../components/input/TextArea';
 import { toast } from 'react-toastify';
 import StorageManager from '../../../utils/StorageManager';

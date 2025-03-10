@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';

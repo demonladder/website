@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { GetBanHistory, BanUser } from './api';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../components/Input';
 import useSelect from '../../../hooks/useSelect';
 import { toast } from 'react-toastify';

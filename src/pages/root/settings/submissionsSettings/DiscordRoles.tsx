@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import Select from '../../../../components/Select';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import GetWants from '../../../../api/user/GetWants';
 import UpdateRoleManagementSettings from '../../../../api/notifications/UpdateRoleManagementSettings';

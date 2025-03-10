@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { NumberInput } from '../../../components/Input';
 import GetAutoAcceptSettings from '../../../api/settings/autoAccept/GetAutoAcceptSettings';
 import { useEffect, useState } from 'react';

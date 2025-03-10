@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import TextArea from '../../../components/input/TextArea';

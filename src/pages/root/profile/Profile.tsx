@@ -7,7 +7,7 @@ import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
 import { AxiosError } from 'axios';
 import Tracker from './Tracker';
-import { SecondaryButton } from '../../../components/Button';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import toFixed from '../../../utils/toFixed';
 import LevelResolvableText from './LevelResolvableText';
 import Rankings from './Rankings';

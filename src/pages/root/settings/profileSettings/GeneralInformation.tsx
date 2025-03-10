@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useId } from 'react';
 import { NumberInput, TextInput } from '../../../../components/Input';
 import StorageManager from '../../../../utils/StorageManager';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import TextArea from '../../../../components/input/TextArea';
 import FormGroup from '../../../../components/form/FormGroup';
 import { toast } from 'react-toastify';

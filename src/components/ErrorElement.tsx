@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { SecondaryButton } from './Button';
+import { SecondaryButton } from './ui/buttons/SecondaryButton';
 import { Helmet } from 'react-helmet-async';
 import Header from '../layouts/header/Header';
 import Footer from '../layouts/footer/Footer';

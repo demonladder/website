@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import CheckBox from '../../../../components/input/CheckBox';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import UpdateSubmissionSettings, { BitField } from '../../../../api/user/UpdateWants';

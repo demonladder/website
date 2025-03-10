@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import CheckBox from '../../../components/input/CheckBox';
 import FormGroup from '../../../components/form/FormGroup';
 import SaveSiteSettings from '../../../api/settings/SaveSiteSettings';

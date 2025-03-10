@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import GetNotifications, { NotificationResponse, UnreadFilter } from '../../../api/notifications/GetNotificationsRequest';
 import MarkReadNotifications from '../../../api/notifications/MarkReadNotifications';
 import { useState } from 'react';
-import { SecondaryButton } from '../../../components/Button';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { toast } from 'react-toastify';
 import MarkAllReadRequest from '../../../api/notifications/MarkAllReadRequest';
 import renderToastError from '../../../utils/renderToastError';

@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../components/Input';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';

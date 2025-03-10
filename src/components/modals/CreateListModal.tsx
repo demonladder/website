@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import { PrimaryButton, SecondaryButton } from '../Button';
+import { SecondaryButton } from '../ui/buttons/SecondaryButton';
+import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { TextInput } from '../Input';
 import Modal from '../Modal';
 import CreateList from '../../api/list/CreateList';

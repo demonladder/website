@@ -4,7 +4,7 @@ import { BanUser, GetBanHistory } from '../userBans/api';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 import { UserResponse } from '../../../api/user/GetUser';
 import { TextInput } from '../../../components/Input';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import useSelect from '../../../hooks/useSelect';
 import { useId, useRef } from 'react';
 import { toast } from 'react-toastify';

@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 import { UserResponse } from '../../../api/user/GetUser';
-import { DangerButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 import useRoles from '../../../hooks/api/useRoles';
 import SearchBox from '../../../components/SearchBox/SearchBox';

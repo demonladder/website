@@ -6,7 +6,7 @@ import GameObject from './GameObject';
 import GameState from './GameState';
 import createLevel2 from './levels/Level2';
 import { useEffect } from 'react';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 
 export const keysPressed: Record<string, boolean> = {};
 export const player = new Player();

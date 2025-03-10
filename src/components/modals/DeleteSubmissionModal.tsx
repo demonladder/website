@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
-import { DangerButton, SecondaryButton } from '../Button';
+import { DangerButton } from '../ui/buttons/DangerButton';
+import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import Modal from '../Modal';
 import DeleteSubmission from '../../api/submissions/DeleteSubmission';
 import { useQueryClient } from '@tanstack/react-query';

@@ -5,7 +5,7 @@ import SignupToken from '../../../api/signupToken/SignupToken';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/types/TinyUser';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputLabel from '../../../components/form/FormInputLabel';

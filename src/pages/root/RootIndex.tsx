@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
-import { PrimaryButton } from '../../components/Button';
+import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import IndexStats from './IndexStats';
 import Title from '../../components/announcement/Title';
 import Body from '../../components/announcement/Body';

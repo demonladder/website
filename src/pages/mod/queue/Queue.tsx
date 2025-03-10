@@ -3,7 +3,7 @@ import DenySubmission from '../../../api/submissions/DenySubmission';
 import GetSubmissionQueue from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submission';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';

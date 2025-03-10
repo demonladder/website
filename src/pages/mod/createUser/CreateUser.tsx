@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
 import APIClient from '../../../api/APIClient';

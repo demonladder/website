@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { DangerButton, SecondaryButton } from '../Button';
+import { DangerButton } from '../ui/buttons/DangerButton';
+import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import Modal from '../Modal';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';

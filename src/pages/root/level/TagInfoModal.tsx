@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Modal from '../../../components/Modal';
-import { SecondaryButton } from '../../../components/Button';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { useQuery } from '@tanstack/react-query';
 import GetTags from '../../../api/tags/GetTags';
 

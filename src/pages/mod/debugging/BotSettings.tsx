@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { DangerButton, PrimaryButton, SecondaryButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useQueryClient } from '@tanstack/react-query';
 import BotStatus from './BotStatus';
 import DeactivateBotRequest from '../../../api/bot/DeactivateBotRequest';

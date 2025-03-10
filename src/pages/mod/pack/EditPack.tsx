@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
-import { DangerButton, PrimaryButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import renderToastError from '../../../utils/renderToastError';
 import { Change } from './types/Change';

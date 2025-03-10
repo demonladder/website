@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import Container from '../../../components/Container';
 import { TextInput } from '../../../components/Input';
 import APIClient from '../../../api/APIClient';

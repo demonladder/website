@@ -1,4 +1,5 @@
-import { PrimaryButton, SecondaryButton } from './Button';
+import { SecondaryButton } from './ui/buttons/SecondaryButton';
+import { PrimaryButton } from './ui/buttons/PrimaryButton';
 import LoadingSpinner from './LoadingSpinner';
 
 type Props = {

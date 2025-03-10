@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import APIClient from '../../../api/APIClient';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputDescription from '../../../components/form/FormInputDescription';

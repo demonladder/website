@@ -12,7 +12,7 @@ import StorageManager from '../../../utils/StorageManager';
 import toFixed from '../../../utils/toFixed';
 import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import TagBox from './TagBox';
 import RatingGraph from './RatingGraph';
 import { TagEligibility } from '../../../api/level/tags/GetTagEligibility';

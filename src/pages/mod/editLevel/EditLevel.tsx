@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { DangerButton, PrimaryButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { NumberInput, TextInput } from '../../../components/Input';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import { validateIntInputChange } from '../../../utils/validators/validateIntChange';

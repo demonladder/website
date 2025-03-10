@@ -6,7 +6,7 @@ import GetTags from '../../../api/tags/GetTags';
 import Select from '../../../components/Select';
 import { useId, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import NewLabel from '../../../components/NewLabel';
 
 ChartJS.register(RadialLinearScale);

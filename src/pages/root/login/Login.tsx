@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import APIClient from '../../../api/APIClient';
 import { useRef } from 'react';
 import { toast } from 'react-toastify';

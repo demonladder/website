@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import { PrimaryButton } from '../../../components/Button';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useCallback } from 'react';
 import GetUserLists from '../../../api/user/GetUserLists';
 import { useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';

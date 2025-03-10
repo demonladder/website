@@ -13,7 +13,8 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 import Select from '../../../components/Select';
 import CheckBox from '../../../components/input/CheckBox';
 import { parseInt } from '../../../utils/parse/parseInt';
-import { DangerButton, PrimaryButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { validateTier } from '../../root/bulkSubmit/validateTier';
 import { validateEnjoyment } from '../../root/bulkSubmit/validateEnjoyment';
 

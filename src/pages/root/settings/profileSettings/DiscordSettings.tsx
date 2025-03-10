@@ -1,4 +1,4 @@
-import { DiscordLink } from '../../../../components/Button';
+import { DiscordLink } from '../../../../components/ui/buttons/DiscordLink';
 import DiscordProfilePicture from '../../../../components/DiscordProfilePicture';
 import { LoginButton } from '../../login/ProfileButtons';
 import GeneralInformation from './GeneralInformation';

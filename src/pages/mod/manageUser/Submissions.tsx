@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { DangerButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 
 export default function Submissions() {
     return (

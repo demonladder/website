@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { PrimaryButton } from '../../../../components/Button';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import GenerateDecathlon from '../../../../api/generators/decathlon/GenerateDecathlon';
 import GetDecathlon from '../../../../api/generators/decathlon/GetDecathlon';
 import { Link } from 'react-router-dom';

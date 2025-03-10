@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { PrimaryButton, SecondaryButton } from '../Button';
+import { SecondaryButton } from '../ui/buttons/SecondaryButton';
+import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import Modal from '../Modal';
 import GetUserLists from '../../api/user/GetUserLists';
 import List from '../../api/types/List';

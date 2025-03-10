@@ -4,7 +4,8 @@ import { RevokeBan } from '../userBans/api';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import UserLink from '../../../components/UserLink';
-import { DangerButton, SecondaryButton } from '../../../components/Button';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import UserBan from '../../../api/types/UserBan';
 
 interface Props {
