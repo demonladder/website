@@ -1,20 +1,16 @@
-import { useRef, useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetReferences from '../../../api/references/GetReferences';
+import { useState } from 'react';
+import { Reference } from '../../../api/references/getReferences';
 import ChangeReferences, { Change, ChangeType } from '../../../api/references/ChangeReferences';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { DangerButton, PrimaryButton } from '../../../components/Button';
-import { NumberInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
-import toFixed from '../../../utils/toFixed';
 import useLevelSearch from '../../../hooks/useLevelSearch';
-
-type Reference = {
-    Tier: number,
-    ID: number,
-    Name: string,
-    Rating: number,
-}
+import { useReferences } from '../../../api/references/hooks/useReferences';
+import { useMutation } from '@tanstack/react-query';
+import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
+import renderToastError from '../../../utils/renderToastError';
+import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import PageButtons from '../../../components/PageButtons';
 
 type LevelProps = {
     data: Reference,
@@ -27,9 +23,7 @@ type ChangeLevelProps = {
 }
 
 function ChangeLevel({ data, remove }: ChangeLevelProps) {
-    let action = data.Type + ' ';
-    let preposition = (data.Type === 'remove' ? 'from' : 'to') + ' ';
-    let targetTier = 'tier ' + data.Tier;
+    const prefix = (data.Type === 'remove' ? 'from' : 'to');
 
     return (
         <div className='flex justify-between'>
@@ -37,7 +31,7 @@ function ChangeLevel({ data, remove }: ChangeLevelProps) {
                 <DangerButton onClick={remove}>X</DangerButton>
                 <div className='name'>
                     <h4 className='break-word'>{data.Name}</h4>
-                    <p>{action + preposition + targetTier}</p>
+                    <p>{`${data.Type} ${prefix} tier ${data.Tier}`}</p>
                 </div>
             </div>
             <p>{data.ID}</p>
@@ -45,79 +39,44 @@ function ChangeLevel({ data, remove }: ChangeLevelProps) {
     );
 }
 
-export default function EditReferences() {
-    const [tier, setTier] = useState(1);
-    const [changeList, setChangeList] = useState<Change[]>([]);
-
-    const { status, data } = useQuery({
-        queryKey: ['editReferences'],
-        queryFn: GetReferences
-    });
-
-    function Content() {
-        if (status ==='loading') return <LoadingSpinner isLoading={true} />;
-        if (status ==='error') return <h3>Something went wrong</h3>
-
-        return (
-            <>
-                <div className='divider my-3'></div>
-                <div className='flex flex-col gap-2 mb-8'>
-                    {
-                        data.filter((l) => l.Tier === tier).map(l => <Level data={l} remove={() => {
-                            if (changeList.filter((e) => e.ID === l.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
-
-                            setChangeList((prev) => [...prev, {Tier: l.Tier, ID: l.ID, Type: 'remove', Name: l.Name } as Change]);
-                        }} key={l.ID} />)
-                    }
-                </div>
-                <div className='change-list'>
-                    <h3 className='text-xl'>{changeList[0] && 'Change list'}</h3>
-                    <div className='list'>
-                        {
-                            changeList.map(c => <ChangeLevel data={c} remove={() => setChangeList(changeList.filter(d => d !== c))} key={c.ID} />)
-                        }
+function Level({ data, remove }: LevelProps) {
+    return (
+        <div className='flex gap-2'>
+            <div className='grow flex justify-between items-center'>
+                <div className='flex gap-2 items-center'>
+                    <DangerButton onClick={remove}>X</DangerButton>
+                    <div>
+                        <h4 className='break-all'>{data.Level.Meta.Name}</h4>
+                        <p>{data.ID}</p>
                     </div>
-                </div>
-            </>
-        );
-    }
-    
-    function Level({ data, remove }: LevelProps) {
-        const roundedTier = Math.round(data.Rating);
-
-        return (
-            <div className='flex gap-2'>
-                <div className='grow flex justify-between items-center'>
-                    <div className='flex gap-2 items-center'>
-                        <DangerButton onClick={remove}>X</DangerButton>
-                        <div>
-                            <h4 className='break-all'>{data.Name}</h4>
-                            <p>{data.ID}</p>
-                        </div>
-                    </div>
-                </div>
-                <div className={'w-16 flex justify-center tier-' + roundedTier}>
-                    <p className='self-center'>{toFixed(''+data.Rating, 2, '-')}</p>
                 </div>
             </div>
-        );
-    }
+            <div className={`w-16 flex justify-center tier-${data.Level.Rating?.toFixed() ?? 0}`}>
+                <p className='self-center'>{data.Level.Rating?.toFixed(2) ?? '-'}</p>
+            </div>
+        </div>
+    );
+}
 
-    const queryClient = useQueryClient();
+export default function EditReferences() {
+    const [tier, setTier] = useQueryParam('tier', withDefault(NumberParam, 1));
+    const [maxTier, setMaxTier] = useState(35);
+    const [changeList, setChangeList] = useState<Change[]>([]);
+    const [removeList, setRemoveList] = useState<number[]>([]);
 
-    const loadingRef = useRef(false);
-    function save() {
-        if (!loadingRef.current) {
-            loadingRef.current = true;
-            toast.promise(ChangeReferences(changeList).then(() => {
-                setChangeList([]);
-                queryClient.invalidateQueries(['editReferences']);
-            }).finally(() => loadingRef.current = false), {
-                pending: 'Saving...',
-                success: 'Saved',
-                error: 'An error occurred',
-            });
-        }
+    const { status, data, refetch } = useReferences();
+
+    const mutation = useMutation(ChangeReferences, {
+        onSuccess: () => {
+            setChangeList([]);
+            void refetch();
+            toast.success('Saved');
+        },
+        onError: (err: Error) => toast.error(renderToastError.render({ data: err })),
+    });
+
+    function onSave() {
+        mutation.mutate(changeList);
     }
 
     const { activeLevel, SearchBox } = useLevelSearch({ ID: 'editReferenceLevelInput' });
@@ -129,27 +88,67 @@ export default function EditReferences() {
 
         const newChange: Change = { Tier: activeLevel.Rating, ID: activeLevel.ID, Name: activeLevel.Meta.Name, Type: ChangeType.Add };
         newChange.Tier = tier;
-        setChangeList(prev => [...prev, newChange])
+        setChangeList(prev => [...prev, newChange]);
     }
+
+    function onRemoveReference(reference: Reference) {
+        if (!removeList.some((ID) => ID === reference.ID)) setRemoveList((prev) => [...prev, reference.ID]);
+
+        if (changeList.filter((e) => e.ID === reference.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
+        setChangeList((prev) => [...prev, { Tier: reference.Tier, ID: reference.ID, Type: 'remove', Name: reference.Level.Meta.Name } as Change]);
+    }
+
+    if (status === 'loading') return <LoadingSpinner isLoading={true} />;
+    if (status === 'error') return <h3>Something went wrong</h3>
 
     return (
         <div id='edit-references'>
-            <h3 className='mb-3 text-2xl'>Edit References</h3>
+            <FloatingLoadingSpinner isLoading={mutation.isLoading} />
             <div className='flex justify-between mb-3'>
-                <div>
-                    <label className='me-2' htmlFor='editReferenceTierInput'>Edit tier:</label>
-                    <NumberInput id='editReferenceTierInput' min='1' max='35' value={tier} onChange={e => setTier(parseInt(e.target.value))} />
-                </div>
-                <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} onClick={save}>Save changes</PrimaryButton>
+                <h3 className='mb-3 text-2xl'>Edit References</h3>
+                <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} onClick={onSave} disabled={mutation.isLoading}>Save changes</PrimaryButton>
             </div>
-            <div className='position-relative'>
+            <div className=''>
                 <label htmlFor='editReferenceLevelInput'>Level:</label>
                 <div className='flex'>
                     {SearchBox}
                     <PrimaryButton onClick={addChange}>Add</PrimaryButton>
                 </div>
             </div>
-            <Content />
+            <div className='divider my-3'></div>
+            <div className='flex flex-col gap-2 mb-8'>{
+                data.filter((l) => l.Tier === tier).map((l) => <Level data={l} remove={() => onRemoveReference(l)} key={l.ID} />)
+            }</div>
+            <PageButtons onPageChange={(page) => setTier(page + 1)} meta={{ page: tier - 1, total: maxTier, limit: 1 }} />
+            <div className='flex justify-around'>
+                <button className='text-gray-400 underline-t' onClick={() => setMaxTier((prev) => prev + 1)}>Add tier</button>
+            </div>
+            {changeList.length > 0 &&
+                <div className='change-list'>
+                    <h3 className='text-xl'>Change list</h3>
+                    <div className='list'>{
+                        changeList.map(c => <ChangeLevel data={c} remove={() => setChangeList(changeList.filter(d => d !== c))} key={c.ID} />)
+                    }</div>
+                </div>
+            }
+            <RemoveList references={removeList} undo={(ID) => setRemoveList((prev) => prev.filter((r) => r !== ID))} />
+        </div>
+    );
+}
+
+function RemoveList({ references, undo }: { references: number[], undo: (ID: number) => void }) {
+    const { data } = useReferences();
+
+    if (!data) return <LoadingSpinner isLoading={true} />;
+
+    return (
+        <div>
+            <h3 className='text-xl'>To remove</h3>
+            <ul>{
+                references.map((ID) => data.find((r) => r.ID === ID)).filter((r) => r !== undefined).map((r) => (
+                    <ChangeLevel data={{ ID: r.ID, Name: r.Level.Meta.Name, Tier: r.Tier, Type: ChangeType.Remove }} remove={() => undo(r.ID)} key={r!.ID} />
+                ))
+            }</ul>
         </div>
     );
 }

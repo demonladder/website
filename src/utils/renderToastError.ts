@@ -5,8 +5,10 @@ const renderToastError = {
 }
 
 export default renderToastError;
-export function render({ data }: { data?: AxiosError}) {
-    return data ? parseRequest(data) : 'An unknown error occurred';
+
+export function render({ data }: { data?: Error }) {
+    if (data instanceof AxiosError) return parseRequest(data);
+    return data?.message ?? 'An unknown error occurred';
 }
 
 export function parseRequest(req: AxiosError): string {

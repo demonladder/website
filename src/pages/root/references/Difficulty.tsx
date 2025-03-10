@@ -1,11 +1,11 @@
 import Tier from './Tier';
-import { Reference } from '../../../api/references/GetReferences';
+import { Reference } from '../../../api/references/getReferences';
 
-type Props = {
-    references: Reference[],
-    minTier: number,
-    maxTier: number,
-    name: string,
+interface Props {
+    references: Reference[];
+    minTier: number;
+    maxTier: number;
+    name: string;
 }
 
 export default function Difficulty({ references, minTier, maxTier, name }: Props) {
@@ -15,27 +15,27 @@ export default function Difficulty({ references, minTier, maxTier, name }: Props
 
     // Group into tiers
     const tiers: Reference[][] = [];
-    for (let l of levels) {
+    for (const l of levels) {
         const index = l.Tier - minTier;
         if (tiers[index] === undefined) tiers[index] = [];
         tiers[index].push(l);
     }
-    
+
     const columns: Reference[][][] = [];
     while (tiers.length > 0) {
         columns.push(tiers.splice(0, tiersPerColumn));
     }
-    
+
     return (
         <div>
-            <div className={`tier-${Math.floor((maxTier + minTier)/2)} head`}>
+            <div className={`tier-${Math.floor((maxTier + minTier) / 2)} head`}>
                 <h3 className='m-0 p-2 text-center'>{name}</h3>
             </div>
             <div className='flex max-sm:flex-col'>
                 {
-                    columns.map((c, i) => <div className='flex flex-col flex-grow' key={name + '-col-' + i}>
+                    columns.map((c, i) => <div className='flex flex-col flex-grow' key={`${name}-col-${i}`}>
                         {
-                            c.map(t => <Tier references={t} key={'tier-' + t[0].Tier} />)
+                            c.map(t => <Tier references={t} tier={i + minTier} key={`tier-${t[0].Tier}`} />)
                         }
                     </div>)
                 }
