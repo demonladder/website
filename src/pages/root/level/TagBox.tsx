@@ -87,7 +87,7 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
     }
 
     return (
-        <div onClick={handleClick} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} tabIndex={0} className={(eligible ? 'cursor-pointer ' : '') + 'px-2 py-1 group round:rounded-lg select-none relative border ' + (submission.HasVoted ? 'bg-blue-600 bg-opacity-25 border-blue-400' : 'bg-gray-600 border-gray-600 hover:border-white transition-colors')}>
+        <div onClick={handleClick} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} tabIndex={0} className={(eligible ? 'cursor-pointer ' : '') + 'px-2 py-1 group round:rounded-lg select-none relative border ' + (submission.HasVoted ? 'bg-blue-600/25 border-blue-400' : 'bg-gray-600 border-gray-600 hover:border-white transition-colors')}>
             <span>{submission.Tag.Name} </span>
             <span>{submission.ReactCount}</span>
             {submission.Tag.Description &&

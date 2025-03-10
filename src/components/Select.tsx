@@ -38,7 +38,7 @@ export default function Select({ options, activeKey, onChange, invalid = false, 
 
     return (
         <div className='cursor-pointer select-none relative' tabIndex={0} onClick={openMenu} onKeyDown={KeyboardAccessibility.onSelect(openMenu)}>
-            <div id={id} className={'bg-black bg-opacity-20 border-b-2 w-full ps-2' + (invalid ? ' border-red-600' : '')}>
+            <div id={id} className={'bg-black/20 border-b-2 w-full ps-2' + (invalid ? ' border-red-600' : '')}>
                 {!Array.isArray(options)
                     ? options[activeKey]
                     : options.find((o) => o.key === activeKey)?.value

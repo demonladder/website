@@ -19,7 +19,7 @@ interface SHFResponseDataObject {
 
 function LinkButton({ link, message }: { link: string, message: string }) {
     return (
-        <a href={link} target='_blank' rel='noopener noreferrer' className='px-4 py-2 bg-gray-500 round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>{message} <i className='bx bx-link-external float-right' /></a>
+        <a href={link} target='_blank' rel='noopener noreferrer' className='px-4 py-2 bg-gray-500 round:rounded-md border border-white/0 hover:border-white/100 transition-colors'>{message} <i className='bx bx-link-external float-right' /></a>
     );
 }
 

@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+button {
+    cursor: pointer;
+}
+
+@custom-variant round {
+    @slot
+}
+
+@theme {
+    --font-sans: 'Montserrat', 'sans-serif';
+
+    --color-primary: #EFA51C;
+    --color-secondary: #1a1a1a;
+
+    --color-header-200: #ffc530;
+    --color-header-300: #ffb52c;
+    --color-header-400: #EFA51C;
+    --color-header-500: #df950c;
+
+    --color-gray-500: #4d4d4d;
+    --color-gray-600: #454545;
+    --color-gray-700: #353535;
+    --color-gray-800: #2b2b2b;
+    --color-gray-900: #262626;
+    --color-gray-950: #1a1a1a;
+
+    --color-tier-0: #360432;
+    --color-tier-1: #DDDFEE;
+    --color-tier-2: #D5D3E9;
+    --color-tier-3: #D3CBE7;
+    --color-tier-4: #D3C3E4;
+    --color-tier-5: #D4BBE2;
+    --color-tier-6: #D5B0DE;
+    --color-tier-7: #DBA7DC;
+    --color-tier-8: #DB9FD1;
+    --color-tier-9: #D991C1;
+    --color-tier-10: #DA86B0;
+    --color-tier-11: #DB7698;
+    --color-tier-12: #DC6A7D;
+    --color-tier-13: #DD5A5A;
+    --color-tier-14: #DC514C;
+    --color-tier-15: #DA493E;
+    --color-tier-16: #DA4534;
+    --color-tier-17: #D93E26;
+    --color-tier-18: #DC3F23;
+    --color-tier-19: #C03A1B;
+    --color-tier-20: #B23415;
+    --color-tier-21: #A23010;
+    --color-tier-22: #9B2B0C;
+    --color-tier-23: #932B0B;
+    --color-tier-24: #892608;
+    --color-tier-25: #832607;
+    --color-tier-26: #752105;
+    --color-tier-27: #6C1E04;
+    --color-tier-28: #601A02;
+    --color-tier-29: #5A1802;
+    --color-tier-30: #511700;
+    --color-tier-31: #491900;
+    --color-tier-32: #3F1A00;
+    --color-tier-33: #331700;
+    --color-tier-34: #231300;
+    --color-tier-35: #110A00;
+    --color-tier-36: #000000;
+
+    --color-enj--1: #360432;
+    --color-enj-0: #E67C73;
+    --color-enj-1: #EA8B71;
+    --color-enj-2: #EE9A6D;
+    --color-enj-3: #F2A96D;
+    --color-enj-4: #F6B86B;
+    --color-enj-5: #FAC769;
+    --color-enj-6: #FFD666;
+    --color-enj-7: #D5D06F;
+    --color-enj-8: #ABC978;
+    --color-enj-9: #81C281;
+    --color-enj-10: #57BB8A;
+
+    --color-refreshRate-60: #5d5d5d;
+    --color-refreshRate-75: #ff9900;
+    --color-refreshRate-120: #ffff00;
+    --color-refreshRate-144: #00ff00;
+    --color-refreshRate-240: #00ffff;
+    --color-refreshRate-360: #000000;
+    
+    --color-button-primary-1: #2c6cd4;
+    --color-button-primary-2: #225bb8;
+    --color-button-primary-3: #184a99;
+
+    --color-button-info-1: #47cc6b;
+    --color-button-info-2: #3dba5f;
+    --color-button-info-3: #32a852;
+
+    --color-button-secondary-1: #929292;
+    --color-button-secondary-2: #797979;
+    --color-button-secondary-3: #666666;
+
+    --color-button-danger-1: #b50000;
+    --color-button-danger-2: #9b0000;
+    --color-button-danger-3: #8e0000;
+
+    --color-button-discord-primary: #5865f2;
+    --color-button-discord-hover: #4752c4;
+    --color-button-discord-active: #3c45a5;
+
+    --color-permission-0: white;
+    --color-permission-1: #92ffa3;
+    --color-permission-2: #cf9cff;
+    --color-permission-3: #71ffcb;
+    --color-permission-4: #efa51c;
+    --color-permission-5: #efa51c;
+    --color-permission-6: #ffef01;
+
+    --color-role-admin: #958269;
+    --color-role-moderator: #71ffcb;
+    --color-role-developer: #cf9cff;
+    --color-role-listHelper: #9bff99;
+}
+
+.tier-0 { @apply bg-tier-0; }
+.tier-1 { @apply bg-tier-1; color: black; }
+.tier-2 { @apply bg-tier-2; color: black; }
+.tier-3 { @apply bg-tier-3; color: black; }
+.tier-4 { @apply bg-tier-4; color: black; }
+.tier-5 { @apply bg-tier-5; color: black; }
+.tier-6 { @apply bg-tier-6; color: black; }
+.tier-7 { @apply bg-tier-7; color: black; }
+.tier-8 { @apply bg-tier-8; color: black; }
+.tier-9 { @apply bg-tier-9; color: black; }
+.tier-10 { @apply bg-tier-10; color: black; }
+.tier-11 { @apply bg-tier-11; color: black; }
+.tier-12 { @apply bg-tier-12; color: black; }
+.tier-13 { @apply bg-tier-13; color: black; }
+.tier-14 { @apply bg-tier-14; color: black; }
+.tier-15 { @apply bg-tier-15; color: black; }
+.tier-16 { @apply bg-tier-16; color: white; }
+.tier-17 { @apply bg-tier-17; color: white; }
+.tier-18 { @apply bg-tier-18; color: white; }
+.tier-19 { @apply bg-tier-19; color: white; }
+.tier-20 { @apply bg-tier-20; color: white; }
+.tier-21 { @apply bg-tier-21; color: white; }
+.tier-22 { @apply bg-tier-22; color: white; }
+.tier-23 { @apply bg-tier-23; color: white; }
+.tier-24 { @apply bg-tier-24; color: white; }
+.tier-25 { @apply bg-tier-25; color: white; }
+.tier-26 { @apply bg-tier-26; color: white; }
+.tier-27 { @apply bg-tier-27; color: white; }
+.tier-28 { @apply bg-tier-28; color: white; }
+.tier-29 { @apply bg-tier-29; color: white; }
+.tier-30 { @apply bg-tier-30; color: white; }
+.tier-31 { @apply bg-tier-31; color: white; }
+.tier-32 { @apply bg-tier-32; color: white; }
+.tier-33 { @apply bg-tier-33; color: white; }
+.tier-34 { @apply bg-tier-34; color: white; }
+.tier-35 { @apply bg-tier-35; color: white; }
+.tier-36 { @apply bg-tier-36; color: white; }
+
+.enj--1 { @apply bg-enj--1; color: white; }
+.enj-0 { @apply bg-enj-0; color: black; }
+.enj-1 { @apply bg-enj-1; color: black; }
+.enj-2 { @apply bg-enj-2; color: black; }
+.enj-3 { @apply bg-enj-3; color: black; }
+.enj-4 { @apply bg-enj-4; color: black; }
+.enj-5 { @apply bg-enj-5; color: black; }
+.enj-6 { @apply bg-enj-6; color: black; }
+.enj-7 { @apply bg-enj-7; color: black; }
+.enj-8 { @apply bg-enj-8; color: black; }
+.enj-9 { @apply bg-enj-9; color: black; }
+.enj-10 { @apply bg-enj-10; color: black; }
+
+body, #root, #root > div.flex {
+    min-height: 100vh;
+}
+
+.underline {
+    background: radial-gradient(circle at center, currentColor 0%, currentColor 100%) no-repeat;
+    background-size: 0 2px;
+    background-position: 50% 100%;
+    transition: background-size 100ms ease-in-out;
+    /*padding: 0;*/
+    text-decoration: none!important;
+}
+.underline:hover {
+    background-size: 100% 2px;
+}
+
+.underline-t {
+    text-decoration: underline;
+}
+
+.divider {
+    border-bottom: 1px solid currentColor;
+}
+
+input[type=number].no-spinner {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+input.no-spinner::-webkit-outer-spin-button,
+input.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.bg-fade {
+    animation: bg-fade 1s;
+}
+@keyframes bg-fade {
+    from {
+        background-color: white;
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+label:has(> input[type=checkbox]:disabled) {
+    @apply text-gray-400 line-through;
+}

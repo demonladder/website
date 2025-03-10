@@ -37,7 +37,7 @@ function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoy
     const enjoymentClass = 'enj-' + roundedEnjoyment;
 
     return (
-        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 font-bold' : ' bg-gray-700')} onContextMenu={onContextMenu}>
+        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 even:bg-green-700/60 font-bold' : ' bg-gray-700 even:bg-gray-700/40')} onContextMenu={onContextMenu}>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
                     <img src='/assets/images/yes tick.webp' className='max-md:w-6 max-md:h-6 w-8 h-8 self-center me-2' alt='' />

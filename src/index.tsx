@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles.scss';
+import './styles.css';
 import ms from 'ms';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';

@@ -33,7 +33,7 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
     
     return (
-        <div className={'relative cursor-pointer p-2 border border-white border-opacity-0 hover:border-opacity-100 transition-colors round:rounded-xl tier-' + roundedRating.toFixed()} onClick={handleClick} onContextMenu={onContextMenu}>
+        <div className={'relative cursor-pointer p-2 border border-white/0 hover:border-white/100 transition-colors round:rounded-xl tier-' + roundedRating.toFixed()} onClick={handleClick} onContextMenu={onContextMenu}>
             <b className='text-xl'><Copy text={ID.toString()} /> {name}</b>
             <div className='flex justify-between text-lg'>
                 <div>

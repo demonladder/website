@@ -78,7 +78,7 @@ function Submission({ level, submission }: SubmissionProps) {
     }
 
     return (
-        <div onContextMenu={openContext} title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white border-opacity-0 hover:border-opacity-100 transition-colors'>
+        <div onContextMenu={openContext} title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white/0 hover:border-white/100 transition-colors'>
             <Link className={`flex items-center justify-center w-[40px] lg:w-1/6 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
             <Link className={`flex items-center justify-center w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
             <Link style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined} className={'p-2 flex-grow bg-gray-500' + (iconRole ? ' font-bold' : '')} to={linkDestination}>

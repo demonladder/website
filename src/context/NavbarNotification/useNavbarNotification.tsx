@@ -7,7 +7,7 @@ function InfoNotification({ message, onClose: close }: { message: string, onClos
     return (
         <div className='bg-green-600 text-black px-32 h-8 flex justify-between items-center'>
             <span>{message}</span>
-            <button className='bg-black bg-opacity-20 px-2 h-full' onClick={close}>dismiss</button>
+            <button className='bg-black/20 px-2 h-full' onClick={close}>dismiss</button>
         </div>
     );
 }
@@ -16,7 +16,7 @@ function WarningNotification({ message, onClose: close }: { message: string, onC
     return (
         <div className='bg-yellow-500 text-black px-32 h-8 flex justify-between items-center'>
             <span>{message}</span>
-            <button className='bg-black bg-opacity-20 px-2 h-full' onClick={close}>dismiss</button>
+            <button className='bg-black/20 px-2 h-full' onClick={close}>dismiss</button>
         </div>
     );
 }
@@ -25,7 +25,7 @@ function ErrorNotification({ message, onClose: close }: { message: string, onClo
     return (
         <div className='bg-red-700 px-32 h-8 flex justify-between items-center'>
             <span>{message}</span>
-            <button className='bg-black bg-opacity-20 px-2 h-full' onClick={close}>dismiss</button>
+            <button className='bg-black/20 px-2 h-full' onClick={close}>dismiss</button>
         </div>
     );
 }
@@ -38,7 +38,7 @@ function DiscordSyncNotification({ onClose: close }: { onClose: () => void }) {
             <span>You haven't synced your Discord account to your GDDL account yet.</span>
             <div className='h-full'>
                 <button className='bg-button-discord-primary hover:bg-button-discord-hover active:bg-button-discord-active transition-colors px-2 h-full' onClick={openModal}>sync now</button>
-                <button className='bg-black bg-opacity-20 px-2 h-full' onClick={close}>dismiss</button>
+                <button className='bg-black/20 px-2 h-full' onClick={close}>dismiss</button>
             </div>
         </div>
     );
