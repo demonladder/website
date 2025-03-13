@@ -1,29 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import CheckBox from '../../../../components/input/CheckBox';
 import StorageManager from '../../../../utils/StorageManager';
 import FormGroup from '../../../../components/form/FormGroup';
 
 export default function ClientSiteSettings() {
-    const roundedRef = useRef<HTMLInputElement>(null);
-    const highlightRef = useRef<HTMLInputElement>(null);
-    const backgroundRef = useRef<HTMLInputElement>(null);
-    const experimentalRef = useRef<HTMLInputElement>(null);
+    const [isRounded, setIsRounded] = useState<boolean>(StorageManager.getIsRounded());
+    const [highlightCompleted, setHighlightCompleted] = useState<boolean>(StorageManager.getHighlightCompleted());
+    const [useExperimental, setUseExperimental] = useState<boolean>(StorageManager.getUseExperimental());
 
-    useEffect(() => {
-        if (roundedRef.current) roundedRef.current.checked = StorageManager.getIsRounded();
-        if (highlightRef.current) highlightRef.current.checked = StorageManager.getHighlightCompleted();
-        if (backgroundRef.current) backgroundRef.current.checked = StorageManager.getUseBackground();
-        if (experimentalRef.current) experimentalRef.current.checked = StorageManager.getUseExperimental();
-    }, []);
-    
     function onSave(e: React.FormEvent) {
         e.preventDefault();
 
-        if (roundedRef.current) StorageManager.setRounded(roundedRef.current.checked);
-        if (highlightRef.current) StorageManager.setHighlightCompleted(highlightRef.current.checked);
-        if (backgroundRef.current) StorageManager.setUseBackground(backgroundRef.current.checked);
-        if (experimentalRef.current) StorageManager.setUseExperimental(experimentalRef.current.checked);
+        StorageManager.setRounded(isRounded);
+        StorageManager.setHighlightCompleted(highlightCompleted);
+        StorageManager.setUseExperimental(useExperimental);
         location.reload();
     }
 
@@ -34,35 +25,28 @@ export default function ClientSiteSettings() {
             <form className='text-lg'>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
-                        <CheckBox ref={roundedRef} />
+                        <CheckBox checked={isRounded} onChange={(e) => setIsRounded(e.target.checked)} />
                         Rounded corners
                     </label>
                     <p className='text-gray-400 text-sm'>Gives pretty much everything round corners.</p>
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
-                        <CheckBox ref={highlightRef} />
+                        <CheckBox checked={highlightCompleted} onChange={(e) => setHighlightCompleted(e.target.checked)} />
                         Highlight completed levels
                     </label>
                     <p className='text-gray-400 text-sm'>Adds a checkmark and green background to levels in list view.</p>
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
-                        <CheckBox ref={backgroundRef} />
-                        Background feature
-                    </label>
-                    <p className='text-gray-400 text-sm'>Will lag your device and it doesn't even look that good!</p>
-                </FormGroup>
-                <FormGroup>
-                <label className='flex items-center gap-2'>
-                        <CheckBox ref={experimentalRef} />
+                        <CheckBox checked={useExperimental} onChange={(e) => setUseExperimental(e.target.checked)} />
                         Experimental features
                     </label>
                     <p className='text-gray-400 text-sm'>This unlocks beta features that are not yet fully polished!</p>
                 </FormGroup>
-                <div>
+                <FormGroup>
                     <PrimaryButton type='submit' onClick={onSave}>Save</PrimaryButton>
-                </div>
+                </FormGroup>
             </form>
         </main>
     );
