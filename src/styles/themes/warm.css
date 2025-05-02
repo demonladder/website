@@ -1,0 +1,26 @@
+@theme {
+    --warm-theme-500: #fffaf5;
+    --warm-theme-600: #fff3e6;
+    --warm-theme-700: #ffedda;
+    --warm-theme-800: #ffe5c9;
+    --warm-theme-900: #ffdfbb;
+    --warm-theme-950: #ffdab2;
+    --warm-from: #fffaf5;
+    --warm-to: #ffdab2;
+    --warm-text: black;
+    --warm-primary: #ffd3a4;
+}
+
+[data-theme="warm"] {
+    --theme-gradient-angle: 135deg;
+    --theme-gradient-from: var(--warm-from);
+    --theme-gradient-to: var(--warm-to);
+    --color-theme-500: var(--warm-theme-500);
+    --color-theme-600: var(--warm-theme-600);
+    --color-theme-700: var(--warm-theme-700);
+    --color-theme-800: var(--warm-theme-800);
+    --color-theme-950: var(--warm-theme-950);
+    --color-refreshRate-60: var(--warm-theme-950);
+    --color-theme-primary: var(--warm-primary);
+    color: var(--warm-text);
+}

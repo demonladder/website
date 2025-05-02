@@ -2,6 +2,8 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import Difficulty from './Difficulty';
 import { useReferences } from '../../../api/references/hooks/useReferences';
 import Page from '../../../components/Page';
+import Heading1 from '../../../components/headings/Heading1';
+import { Helmet } from 'react-helmet-async';
 
 const diffs = [
     {
@@ -35,10 +37,13 @@ export default function References() {
     const { status, data: referenceDemons } = useReferences();
 
     if (status === 'loading') return <LoadingSpinner />;
-    if (status === 'error') return <Page><h1 className='text-4xl'>Error: could not fetch references</h1></Page>;
+    if (status === 'error') return <Page><Heading1>Error: could not fetch references</Heading1></Page>;
 
     return (
         <div className='max-w-[95%] overflow-x-scroll mx-auto my-4'>
+            <Helmet>
+                <title>GDDL | References</title>
+            </Helmet>
             <div className='flex max-sm:flex-col'>
                 {
                     diffs.map((diff) => <Difficulty name={diff.name} minTier={diff.minTier} maxTier={diff.maxTier} key={diff.name} references={referenceDemons} />)

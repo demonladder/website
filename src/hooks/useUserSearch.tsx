@@ -31,10 +31,10 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                     ID: user.ID,
                     Name: user.Name,
                     AverageEnjoyment: user.AverageEnjoyment,
-                    Favorite: user.FavoriteLevels.join(','),
+                    Favorite: user.Favorite,
                     HardestID: user.HardestID,
                     Introduction: user.Introduction,
-                    LeastFavorite: user.LeastFavoriteLevels.join(','),
+                    LeastFavorite: user.LeastFavorite,
                     MaxPref: user.MaxPref,
                     MinPref: user.MinPref,
                     RoleIDs: user.RoleIDs,
@@ -69,7 +69,7 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         SearchBox: (<SearchBox search={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
             ...d,
             label: d.Name,
-        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => { setActiveUser(user); user && onUserSelect && onUserSelect(user); }} status={status} placeholder='Search user...' invalid={isInvalid} />)
+        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => { setActiveUser(user); if (user && onUserSelect) onUserSelect(user); }} status={status} placeholder='Search user...' invalid={isInvalid} />)
     }), [activeUser, setQuery, clear, search, data, status, ID, onUserSelect, isInvalid]);
 
     return result;

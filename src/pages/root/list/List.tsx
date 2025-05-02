@@ -1,41 +1,20 @@
 import { Link, useParams } from 'react-router-dom';
-import Container from '../../../components/Container';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import ListLevel from './ListLevel';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import GetList from '../../../api/list/GetList';
 import MoveListLevel from '../../../api/list/MoveListLevel';
 import renderToastError from '../../../utils/renderToastError';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
 import useSession from '../../../hooks/useSession';
-
-interface Meta {
-    ID: number;
-    Name: string;
-    Creator: string;
-    Description: string | null;
-    SongID: number;
-    Length: number;
-    IsTwoPlayer: 0 | 1;
-    Difficulty: string;
-}
-
-interface Level {
-    ID: number;
-    Rating: number | null;
-    Enjoyment: number | null;
-    Deviation: number | null;
-    RatingCount: number;
-    EnjoymentCount: number;
-    SubmissionCount: number;
-    TwoPlayerRating: number | null;
-    TwoPlayerDeviation: number | null;
-    DefaultRating: number | null;
-    Showcase: string | null;
-    Meta: Meta;
-}
+import Page from '../../../components/Page';
+import { editListName } from '../../../api/list/editName';
+import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import Level from '../../../api/types/Level';
+import Heading1 from '../../../components/headings/Heading1';
+import { Helmet } from 'react-helmet-async';
 
 export interface IListLevel {
     ListID: number;
@@ -50,26 +29,32 @@ export default function List() {
     const listID = parseInt(useParams().listID ?? '');
     const validListID = !isNaN(listID);
     const [isDragLocked, setIsDragLocked] = useState(false);
+    const [name, setName] = useState('');
+    const [isEditingName, setIsEditingName] = useState(false);
 
     const openDeleteModal = useDeleteListModal();
     const session = useSession();
 
     const queryClient = useQueryClient();
 
-    const { data: list } = useQuery({
+    const { data: list, status } = useQuery({
         queryKey: ['list', listID],
         queryFn: () => GetList(listID),
         enabled: validListID,
     });
 
+    useEffect(() => {
+        if (list) setName(list.Name);
+    }, [list]);
+
     const setPosition = useCallback((oldPosition: number, newPosition: number) => {
         if (oldPosition === newPosition) return;
-    
+
         const oldID = list?.Levels.find((l) => l.Position === oldPosition)?.LevelID;
         if (!oldID) return;
-    
+
         setIsDragLocked(true);
-    
+
         void toast.promise(
             MoveListLevel(list.ID, oldID, newPosition).then(() => queryClient.invalidateQueries(['list', listID])).finally(() => setIsDragLocked(false)),
             {
@@ -80,32 +65,48 @@ export default function List() {
         );
     }, [list, listID, queryClient, setIsDragLocked]);
 
-    if (!validListID) {
-        return (
-            <Container>
-                <h1 className='text-4xl'>404: List not found</h1>
-            </Container>
-        );
+    const nameMutation = useMutation(([listID, name]: [number, string]) => editListName(listID, name));
+
+    function onSaveName(e: React.SyntheticEvent) {
+        e.preventDefault();
+        setIsEditingName(false);
+
+        if (name !== list?.Name) nameMutation.mutate([listID, name], {
+            onSuccess: () => {
+                if (list) list.Name = name;
+                toast.success('List name updated');
+            },
+        });
     }
 
+    function onNameClicked() {
+        if (session.user?.ID !== list?.OwnerID && !session.hasPermission(PermissionFlags.MANAGE_LISTS)) return;
+        setIsEditingName(true);
+    }
+
+    if (!validListID || (status === 'error' && list === undefined)) return <Page><Heading1>404: List not found</Heading1></Page>;
+    if (status === 'loading') return <Page><Heading1><LoadingSpinner /></Heading1></Page>;
+
     return (
-        <Container>
-            {list === undefined
-                ? <h1 className='text-4xl'><LoadingSpinner /></h1>
-                : <>
-                    <h1 className='text-4xl'>{list.Name} <span className='text-base'>by <Link to={`/profile/${list.OwnerID}`} className='text-blue-400 underline'>{list.Owner.Name}</Link></span></h1>
-                    <h2 className='text-xl'>{list.Description}</h2>
-                    <ol className='mt-4'>
-                        {list.Levels.map((level) => <ListLevel list={list} listLevel={level} setPosition={setPosition} dragLocked={isDragLocked} key={level.LevelID} />)}
-                    </ol>
-                    {list.Levels.length === 0 && (
-                        <p><i>This list doesn't have any levels yet</i></p>
-                    )}
-                    {list.OwnerID === session.user?.ID &&
-                        <button onClick={() => openDeleteModal(list)} className='mt-4 text-red-500 underline-t'>Delete list</button>
-                    }
-                </>
+        <Page>
+            <Helmet>
+                <title>GDDL | List | {list.Name}</title>
+            </Helmet>
+            {!isEditingName
+                ? <Heading1 onClick={onNameClicked}>{list.Name}</Heading1>
+                : <form onSubmit={onSaveName}><input type='text' value={name} onChange={(e) => setName(e.target.value)} className='text-4xl font-bold block w-full outline-none' autoFocus onBlur={onSaveName} /></form>
             }
-        </Container>
+            <h2 className='text-2xl'>by <Link to={`/profile/${list.OwnerID}`} className='text-blue-400 underline'>{list.Owner.Name}</Link></h2>
+            <h3 className='my-2 text-lg'>{list.Description}</h3>
+            <ol className='mt-4'>
+                {list.Levels.map((level) => <ListLevel list={list} listLevel={level} setPosition={setPosition} dragLocked={isDragLocked} key={level.LevelID} />)}
+            </ol>
+            {list.Levels.length === 0 && (
+                <p><i>This list doesn't have any levels yet</i></p>
+            )}
+            {list.OwnerID === session.user?.ID &&
+                <button onClick={() => openDeleteModal(list)} className='mt-4 text-red-500 underline-t'>Delete list</button>
+            }
+        </Page>
     );
 }

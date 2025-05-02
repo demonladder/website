@@ -1,0 +1,15 @@
+@theme {
+    --dark-from: #262626;
+    --dark-to: #262626;
+}
+
+[data-theme="dark"] {
+    color: white;
+}
+[data-theme="dark"] header a {
+    color: black;
+}
+[data-theme="dark"] header input {
+    color: black;
+    --color-theme-950: rgb(0 0 0 / 0.2);
+}

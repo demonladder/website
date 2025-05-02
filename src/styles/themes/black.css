@@ -1,0 +1,30 @@
+@theme {
+    --black-theme-400: hsl(0, 0%, 50%);
+    --black-theme-500: hsl(0, 0%, 16%);
+    --black-theme-600: hsl(0, 0%, 12%);
+    --black-theme-700: hsl(0, 0%, 8%);
+    --black-theme-800: hsl(0, 0%, 4%);
+    --black-theme-900: hsl(0, 0%, 0%);
+    --black-theme-950: #000000;
+    --black-primary: #000000;
+    --black-from: var(--black-theme-800);
+    --black-to: var(--black-theme-800);
+    --black-text: #ffffff;
+}
+
+[data-theme="black"] {
+    --theme-gradient-angle: 135deg;
+    --theme-gradient-from: var(--black-from);
+    --theme-gradient-to: var(--black-to);
+    
+    --color-theme-400: var(--black-theme-400);
+    --color-theme-500: var(--black-theme-500);
+    --color-theme-600: var(--black-theme-600);
+    --color-theme-700: var(--black-theme-700);
+    --color-theme-800: var(--black-theme-800);
+    --color-theme-900: var(--black-theme-900);
+    --color-theme-950: var(--black-theme-950);
+    --color-theme-primary: var(--black-primary);
+    color: var(--black-text);
+    --color-theme-outline: rgb(90, 90, 90);
+}

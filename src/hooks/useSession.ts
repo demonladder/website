@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PermissionFlags } from '../pages/mod/roles/PermissionFlags';
 import { useCallback } from 'react';
 import GetMe from '../api/auth/GetMe';
+import APIClient from '../api/APIClient';
 
 export default function useSession() {
     const { data: user, status } = useQuery({
@@ -15,11 +16,14 @@ export default function useSession() {
         const permissions = user.Roles
             .map((r) => r.PermissionBitField)
             .reduce((acc, val) => acc | val, 0);
+
+        if (permissions & PermissionFlags.ADMIN) return true;
         return (permissions & permission) !== 0;
     }, [user]);
 
-    const logout = useCallback(() => {
-        localStorage.removeItem(import.meta.env.VITE_SESSION_ID_NAME);
+    const logout = useCallback(async () => {
+        await APIClient.post('/auth/logout');
+        document.location.reload();
     }, []);
 
     return {

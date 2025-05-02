@@ -1,26 +1,27 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Container from '../../../components/Container';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import APIClient from '../../../api/APIClient';
-import { useRef } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputLabel from '../../../components/form/FormInputLabel';
+import Page from '../../../components/Page';
+import Heading1 from '../../../components/headings/Heading1';
+import FormGroup from '../../../components/form/FormGroup';
 
 export default function Login() {
-    const nameRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const { mutate: submit, isLoading } = useMutation({
-        mutationFn: () => toast.promise(APIClient.post<string>('/auth/login', {
-            username: nameRef.current?.value,
-            password: passwordRef.current?.value,
-        }).then(() => {
-            navigate('/');
+        mutationFn: (body: { username: string, password: string }) => toast.promise(APIClient.post<string>('/auth/login', body).then(() => {
+            void queryClient.invalidateQueries(['me']);
+            navigate(-1);
         }), {
             pending: 'Logging in...',
             success: 'Logged in!',
@@ -30,23 +31,23 @@ export default function Login() {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        submit();
+        submit({ username, password });
     }
 
     return (
-        <Container>
+        <Page>
             <div className='flex justify-center'>
-                <form className='w-11/12 md:w-1/2 lg:w-2/6' onSubmit={(e) => handleSubmit(e)}>
-                    <h1 className='mb-4 text-4xl'>Login</h1>
-                    <div className='mb-3'>
+                <form className='w-11/12 md:w-1/2 lg:w-2/6' onSubmit={handleSubmit}>
+                    <Heading1 className='mb-4'>Login</Heading1>
+                    <FormGroup>
                         <FormInputLabel htmlFor='loginUsername'>Username</FormInputLabel>
-                        <TextInput ref={nameRef} id='loginUsername' name='username' />
-                    </div>
-                    <div className='mb-3'>
+                        <TextInput value={username} onChange={(e) => setUsername(e.target.value)} id='loginUsername' name='username' autoComplete='username' />
+                    </FormGroup>
+                    <FormGroup>
                         <FormInputLabel htmlFor='loginPassword'>Password</FormInputLabel>
-                        <PasswordInput ref={passwordRef} id='loginPassword' name='password' />
-                    </div>
-                    <PrimaryButton type='submit' className='relative w-full' loading={isLoading}>Log in</PrimaryButton>
+                        <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} id='loginPassword' name='password' autoComplete='current-password' autoCapitalize='off' />
+                    </FormGroup>
+                    <PrimaryButton type='submit' className='relative mt-4 w-full' loading={isLoading}>Log in</PrimaryButton>
                     <div className='mt-8'>
                         <p className='text-center'>
                             Don't have an account? Register <Link to='/signup' className='text-blue-400 underline'>here!</Link>
@@ -57,6 +58,6 @@ export default function Login() {
                     </div>
                 </form>
             </div>
-        </Container>
+        </Page>
     );
 }

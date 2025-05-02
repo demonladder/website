@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { NumberInput, TextInput } from '../../../components/Input';
@@ -19,7 +19,9 @@ export default function EditLevel() {
     const [hash, setHash] = useHash();
     const { activeLevel, SearchBox } = useLevelSearch({ ID: 'editLevelSearch', required: true, options: { defaultLevel: parseInt(hash) || null } });
     const [defaultRating, setDefaultRating] = useState('');
+    const defaultRatingID = useId();
     const [showcase, setShowcase] = useState('');
+    const showcaseID = useId();
     const [confirmRemove, setConfirmRemove] = useState(false);
 
     useEffect(() => {
@@ -77,38 +79,34 @@ export default function EditLevel() {
 
     return (
         <div>
-            <h3 className='text-2xl mb-3'>Edit Level</h3>
+            <h3 className='text-2xl mb-4'>Edit Level</h3>
             <div>
                 <FormInputLabel>Level:</FormInputLabel>
                 {SearchBox}
             </div>
             <div className='mt-4'>
-                <div>
-                    <FormInputLabel>Default rating</FormInputLabel>
-                    <NumberInput value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > 35 || parseInt(defaultRating) < 1} />
-                </div>
-                <div className='mt-1'>
-                    <FormInputLabel>Showcase link</FormInputLabel>
-                    <TextInput value={showcase} onChange={onShowcase} />
-                </div>
-                <div>
+                <FormGroup>
+                    <FormInputLabel htmlFor={defaultRatingID}>Default rating</FormInputLabel>
+                    <NumberInput id={defaultRatingID} value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > 35 || parseInt(defaultRating) < 1} />
+                </FormGroup>
+                <FormGroup className='mt-1'>
+                    <FormInputLabel htmlFor={showcaseID}>Showcase link</FormInputLabel>
+                    <TextInput id={showcaseID} value={showcase} onChange={onShowcase} />
+                    <FormInputDescription>Must be a YouTube video ID</FormInputDescription>
+                </FormGroup>
+                <FormGroup>
                     <PrimaryButton onClick={onSubmit} loading={mutation.isLoading}>Save</PrimaryButton>
-                </div>
-            </div>
-            <hr className='my-4' />
-            <div>
-                <FormGroup>
-                    <PrimaryButton onClick={() => recalculateMutation.mutate()} disabled={recalculateMutation.status === 'loading'}>Re-calculate stats</PrimaryButton>
-                    <FormInputDescription>Should only really be used if an error has occurred in the stat calucation which happens when I do a lil oopsie.</FormInputDescription>
                 </FormGroup>
             </div>
-            <hr className='my-4' />
-            <div>
-                <FormGroup>
-                    <DangerButton onClick={onRemoveLevel} loading={deleteMutation.isLoading}>{confirmRemove ? 'Confirm r' : 'R'}emove level</DangerButton>
-                    <FormInputDescription>If the level gets unrated.</FormInputDescription>
-                </FormGroup>
-            </div>
+            <div className='my-8 border-theme-500 border-b-2' />
+            <FormGroup>
+                <PrimaryButton onClick={() => recalculateMutation.mutate()} disabled={recalculateMutation.status === 'loading'}>Re-calculate stats</PrimaryButton>
+                <FormInputDescription>Should only really be used if an error has occurred in the stat calucation which happens when I do a lil oopsie.</FormInputDescription>
+            </FormGroup>
+            <FormGroup>
+                <DangerButton onClick={onRemoveLevel} loading={deleteMutation.isLoading}>{confirmRemove ? 'Confirm r' : 'R'}emove level</DangerButton>
+                <FormInputDescription>If the level gets unrated.</FormInputDescription>
+            </FormGroup>
         </div>
     );
 }

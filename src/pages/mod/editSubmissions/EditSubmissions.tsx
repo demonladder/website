@@ -10,7 +10,7 @@ import useLateValue from '../../../hooks/useLateValue';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import { NumberParam, useQueryParam } from 'use-query-params';
 import EditableSubmission from './EditableSubmission';
-import GetSingleSubmission from '../../../api/submissions/GetSingleSubmission';
+import { useSubmission } from '../../../components/modals/useSubmission';
 
 export default function EditSubmission() {
     const [levelID, setLevelID] = useQueryParam('levelID', NumberParam);
@@ -26,9 +26,7 @@ export default function EditSubmission() {
         queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, limit: 24, page, username: lateUsernameFilter, progressFilter: 'all' }),
     });
 
-    const { data: submission } = useQuery({
-        queryKey: ['submission', userID, levelID],
-        queryFn: () => GetSingleSubmission(levelID ?? 0, userID ?? 0),
+    const { data: submission } = useSubmission(levelID ?? 0, userID ?? 0, {
         enabled: userID !== undefined && levelID !== undefined,
     });
 
@@ -58,7 +56,7 @@ export default function EditSubmission() {
                     <TextInput value={usernameFilter} onChange={(e) => setUsernameFilter(e.target.value)} placeholder='Filter by user name...' />
                     <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2'>
                         {data?.submissions.map((s) => (
-                            <button className={'flex ps-1 border border-white/0 hover:border-white/80 transition-colors select-none round:rounded ' + (s.UserID === userID ? 'bg-button-primary-1 font-bold' : 'bg-gray-600')} onClick={() => submissionClicked(s)} key={`edit_${s.UserID}_${s.LevelID}`}>
+                            <button className={'flex ps-1 border border-white/0 hover:border-white/80 transition-colors select-none round:rounded ' + (s.UserID === userID ? 'bg-button-primary-1 font-bold' : 'bg-theme-600')} onClick={() => submissionClicked(s)} key={`edit_${s.UserID}_${s.LevelID}`}>
                                 <p className='grow text-start self-center'>{s.User.Name}</p>
                                 <p className={`w-8 py-1 tier-${s.Rating !== null ? Math.round(s.Rating) : 0}`}>{s.Rating || '-'}</p>
                                 <p className={`w-8 py-1 enj-${s.Enjoyment !== null ? Math.round(s.Enjoyment) : -1}`}>{s.Enjoyment !== null ? s.Enjoyment : '-'}</p>

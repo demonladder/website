@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import PageButtons from '../../../components/PageButtons';
@@ -9,13 +9,13 @@ import GetLevelSubmissions, { Submission as ISubmission } from '../../../api/sub
 import Select from '../../../components/Select';
 import useRoles from '../../../hooks/api/useRoles';
 import TwoPlayerButtons from './TwoPlayerButtons';
-import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
-import useSession from '../../../hooks/useSession';
+import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import Level from '../../../api/types/Level';
 import LevelMeta from '../../../api/types/LevelMeta';
 import pluralS from '../../../utils/pluralS';
+import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 
 interface SubmissionProps {
     level: Level & { Meta: LevelMeta };
@@ -31,9 +31,11 @@ const progressFilterOptions = {
 function Submission({ level, submission }: SubmissionProps) {
     const { data: roles } = useRoles();
     const userRoles = roles && submission.User.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
+    const secondaryUserRoles = roles && submission.SecondaryUser?.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
 
     // Find the highest non-null role color
     const iconRole = userRoles?.sort((a, b) => (a?.Ordering ?? 0) - (b?.Ordering ?? 0)).filter((r) => r?.Color !== null).at(0) ?? null;
+    const secondaryIconRole = secondaryUserRoles?.sort((a, b) => (a?.Ordering ?? 0) - (b?.Ordering ?? 0)).filter((r) => r?.Color !== null).at(0) ?? null;
 
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
@@ -54,44 +56,30 @@ function Submission({ level, submission }: SubmissionProps) {
     const shortenedName = submission.User.Name.length > 20 ? submission.User.Name.slice(0, 20) + '...' : submission.User.Name;
     const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > 20) ? submission.SecondaryUser.Name.slice(0, 20) + '...' : submission.SecondaryUser?.Name;
 
-    const { createMenu } = useContextMenu();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
     const navigate = useNavigate();
-    const user = useSession();
-    function openContext(e: React.MouseEvent) {
-        e.preventDefault();
-
-        const buttons: ButtonData[] = [
-            { text: 'View Profile', onClick: () => navigate(linkDestination) },
-        ];
-
-        if (user.hasPermission(PermissionFlags.EDIT_LIST)) {
-            buttons.push({ text: 'Mod view', onClick: () => navigate(`/mod/editSubmission?levelID=${submission.LevelID}&userID=${submission.UserID}`) });
-            buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(level, submission) });
-        }
-
-        createMenu({
-            buttons,
-            x: e.clientX,
-            y: e.clientY,
-        })
-    }
+    const openContext = useContextMenu([
+        { text: 'View Profile', onClick: () => navigate(linkDestination) },
+        { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
+        { text: 'Mod view', onClick: () => navigate(`/mod/editSubmission?levelID=${submission.LevelID}&userID=${submission.UserID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+        { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(level, submission), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+    ]);
 
     return (
-        <div onContextMenu={openContext} title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white/0 hover:border-white/100 transition-colors'>
+        <div onContextMenu={openContext} title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow'>
             <Link className={`flex items-center justify-center w-[40px] lg:w-1/6 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
             <Link className={`flex items-center justify-center w-[40px] lg:w-1/6 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
-            <Link style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined} className={'p-2 flex-grow bg-gray-500' + (iconRole ? ' font-bold' : '')} to={linkDestination}>
+            <Link className='p-2 flex-grow bg-theme-500' to={linkDestination}>
                 {submission.SecondaryUser
                     ? <>
-                        <p>P1: <b>{shortenedName} {iconRole?.Icon}</b></p>
-                        <p>P2: <b>{shortenedSecondaryName}</b></p>
+                        <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
+                        <p className={secondaryIconRole ? 'font-bold' : ''} style={secondaryIconRole?.Color ? { color: `#${secondaryIconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedSecondaryName} {secondaryIconRole?.Icon}</p>
                     </>
-                    : <p>{shortenedName} {iconRole?.Icon}</p>
+                    : <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
                 }
             </Link>
             {hasWidgets &&
-                <span className='flex gap-1 items-center bg-gray-500 pe-2'>
+                <span className='flex gap-1 items-center bg-theme-500 pe-2'>
                     {submission.Device === 'Mobile' &&
                         <i className='bx bx-mobile-alt' />
                     }
@@ -114,13 +102,17 @@ interface SubmissionsProps {
 }
 
 export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlayerStats }: SubmissionsProps) {
-    const [page, setPage] = useState(0);
-    const [progressFilterKey, setProgressFilterKey] = useState('victors');
+    const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
+    const [progressFilterKey, setProgressFilterKey] = useState<keyof typeof progressFilterOptions>('victors');
 
     const { data: submissions, status } = useQuery({
         queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey, twoPlayer: showTwoPlayerStats }],
         queryFn: () => GetLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, limit: 24, page }),
     });
+
+    useEffect(() => {
+        setPage(0);
+    }, [showTwoPlayerStats, setPage]);
 
     if (status === 'error' || status === 'loading') return (
         <section className='mt-6'>
@@ -131,7 +123,7 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
 
     return (
         <section className='mt-6'>
-            <h2 className='text-3xl'>{level.SubmissionCount} Submission{pluralS(level.SubmissionCount)}</h2>
+            <h2 className='text-3xl'>{submissions.total} Submission{pluralS(submissions.total)}</h2>
             <TwoPlayerButtons levelMeta={level.Meta} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <div className='flex'>
                 <p className='me-1'>Showing</p>

@@ -1,0 +1,27 @@
+@theme {
+    --color-enj--1: #360432;
+    --color-enj-0: #E67C73;
+    --color-enj-1: #EA8B71;
+    --color-enj-2: #EE9A6D;
+    --color-enj-3: #F2A96D;
+    --color-enj-4: #F6B86B;
+    --color-enj-5: #FAC769;
+    --color-enj-6: #FFD666;
+    --color-enj-7: #D5D06F;
+    --color-enj-8: #ABC978;
+    --color-enj-9: #81C281;
+    --color-enj-10: #57BB8A;
+}
+
+.enj--1 { @apply bg-enj--1; color: white; }
+.enj-0 { @apply bg-enj-0; color: black; }
+.enj-1 { @apply bg-enj-1; color: black; }
+.enj-2 { @apply bg-enj-2; color: black; }
+.enj-3 { @apply bg-enj-3; color: black; }
+.enj-4 { @apply bg-enj-4; color: black; }
+.enj-5 { @apply bg-enj-5; color: black; }
+.enj-6 { @apply bg-enj-6; color: black; }
+.enj-7 { @apply bg-enj-7; color: black; }
+.enj-8 { @apply bg-enj-8; color: black; }
+.enj-9 { @apply bg-enj-9; color: black; }
+.enj-10 { @apply bg-enj-10; color: black; }

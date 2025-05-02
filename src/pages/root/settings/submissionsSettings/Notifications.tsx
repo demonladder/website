@@ -52,13 +52,11 @@ export default function Notifications() {
             return;
         }
 
-        acceptNotifs
-            ? wantBitField.add(NotificationsBitField.Accept)
-            : wantBitField.remove(NotificationsBitField.Accept);
+        if (acceptNotifs) wantBitField.add(NotificationsBitField.Accept);
+        else wantBitField.remove(NotificationsBitField.Accept);
 
-        DMNotifs
-            ? wantBitField.add(NotificationsBitField.DMs)
-            : wantBitField.remove(NotificationsBitField.DMs);
+        if (DMNotifs) wantBitField.add(NotificationsBitField.DMs);
+        else wantBitField.remove(NotificationsBitField.DMs);
 
         void toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries(['user', session.user?.ID, 'wants'])), {
             pending: 'Saving...',

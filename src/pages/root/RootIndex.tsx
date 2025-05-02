@@ -12,10 +12,7 @@ export default function Index() {
     const navigate = useNavigate();
 
     return (
-        <main className='relative'>
-            <div className='absolute -z-10 w-full'>
-                <img src='/assets/images/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' />
-            </div>
+        <main>
             <div className='container mx-auto py-4 grid grid-cols-1 xl:grid-cols-4 gap-8'>
                 <Container className='xl:col-span-3'>
                     <Announcement>
@@ -28,7 +25,7 @@ export default function Index() {
                         </Body>
                     </Announcement>
                 </Container>
-                <iframe src='https://discord.com/widget?id=741568423485767721&theme=dark' width={350} height={500} allowTransparency sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts'></iframe>
+                <iframe src='https://discord.com/widget?id=741568423485767721&theme=dark' className='shadow-lg' width={350} height={500} allowTransparency sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts' />
                 <TrendingLevels />
                 <IndexStats />
                 <PopularLevels />

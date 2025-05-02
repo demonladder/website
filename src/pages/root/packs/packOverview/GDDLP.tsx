@@ -4,6 +4,7 @@ import Container from '../../../../components/Container';
 import Leaderboard from '../Leaderboard';
 import GetGDDLPTiers from '../../../../api/pack/requests/GetGDDLPTiers';
 import pluralS from '../../../../utils/pluralS';
+import Heading1 from '../../../../components/headings/Heading1';
 
 interface Props {
     pack: PackResponse;
@@ -36,7 +37,7 @@ export default function GDDLP({ pack }: Props) {
                     {pack.IconName && <img src={'/packIcons/' + pack.IconName} style={{ minWidth: '64px' }} />}
                 </div>
                 <div>
-                    <h1 className='text-4xl mb-1'>{pack.Name}</h1>
+                    <Heading1 className='mb-1'>{pack.Name}</Heading1>
                     <p>{pack.Description}</p>
                 </div>
             </div>

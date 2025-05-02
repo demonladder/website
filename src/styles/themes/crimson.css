@@ -1,0 +1,25 @@
+@theme {    
+    --crimson-theme-500: hsl(0, 100%, 10%);
+    --crimson-theme-600: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 20%);
+    --crimson-theme-700: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 40%);
+    --crimson-theme-800: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 60%);
+    --crimson-theme-900: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 80%);
+    --crimson-theme-950: hsl(0, 83%, 2%);
+    --crimson-from: var(--crimson-theme-500);
+    --crimson-to: var(--crimson-theme-800);
+    --crimson-primary: #390505;
+}
+
+[data-theme="crimson"] {
+    --theme-gradient-angle: 90deg;
+    --theme-gradient-from: var(--crimson-from);
+    --theme-gradient-to: var(--crimson-to);
+    --color-theme-500: var(--crimson-theme-500);
+    --color-theme-600: var(--crimson-theme-600);
+    --color-theme-700: var(--crimson-theme-700);
+    --color-theme-800: var(--crimson-theme-800);
+    --color-theme-900: var(--crimson-theme-900);
+    --color-theme-950: var(--crimson-theme-950);
+    --color-theme-primary: #570101;
+    color: white;
+}

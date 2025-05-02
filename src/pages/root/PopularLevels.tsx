@@ -16,8 +16,8 @@ export default function PopularLevels() {
         queryFn: getPopularLevels,
     });
 
-    if (status === 'loading') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>
-    if (status === 'error') return <div className='xl:col-span-3'>Error, could not fetch popular levels</div>
+    if (status === 'loading') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>;
+    if (status === 'error') return <div className='xl:col-span-3'>Error, could not fetch popular levels</div>;
 
     return (
         <div className='xl:col-span-3'>
@@ -47,13 +47,13 @@ export default function PopularLevels() {
 
 export function LevelPreview({ level, index }: { level: LevelPreviewDTO, index: number }) {
     return (
-        <Link to={`/level/${level.ID}`} className='bg-gray-800 round:rounded-lg p-3 flex items-center gap-2'>
-            <DemonLogo diff={level.Meta.Difficulty} className='w-16' />
+        <Link to={`/level/${level.ID}`} className='bg-theme-800 shadow border border-theme-outline round:rounded-lg p-3 flex items-center gap-2'>
+            <DemonLogo diff={level.Meta.Difficulty} width='96' />
             <div className='flex flex-col'>
                 <h3 className='text-xl'>{index}. {level.Meta.Name}</h3>
                 <div>
-                    <span className={`rounded px-2 tier-${level.Rating?.toFixed(0) ?? '-'}`}>{level.Rating?.toFixed(0)}</span>
-                    <span className={`rounded px-2 enj-${level.Enjoyment?.toFixed(0) ?? '-'}`}>{level.Enjoyment?.toFixed(0)}</span>
+                    <span className={`round:rounded-s px-3 tier-${level.Rating?.toFixed() ?? '0'}`}>{level.Rating?.toFixed() ?? '-'}</span>
+                    <span className={`round:rounded-e px-3 enj-${level.Enjoyment?.toFixed() ?? '-'}`}>{level.Enjoyment?.toFixed()}</span>
                 </div>
             </div>
         </Link>

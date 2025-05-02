@@ -5,6 +5,8 @@ import UserLink from '../../../components/UserLink';
 import Leaderboard from './Leaderboard';
 import Category from './Category';
 import Page from '../../../components/Page';
+import Heading1 from '../../../components/headings/Heading1';
+import { Helmet } from 'react-helmet-async';
 
 export default function Packs() {
     const { status, data: packs } = useQuery({
@@ -17,8 +19,11 @@ export default function Packs() {
 
     return (
         <Page>
+            <Helmet>
+                <title>GDDL | Packs</title>
+            </Helmet>
             <section>
-                <h1 className='text-4xl'>Packs</h1>
+                <Heading1>Packs</Heading1>
                 <p className='mb-8'>The pack icons were created by <UserLink userID={138} /> (@aamberette)</p>
                 {packs.categories.map((c) => (
                     <Category category={c} packs={packs.packs.filter((p) => p.CategoryID == c.ID)} key={'packCategory_' + c.Name} />
@@ -26,5 +31,5 @@ export default function Packs() {
             </section>
             <Leaderboard />
         </Page>
-    )
+    );
 }

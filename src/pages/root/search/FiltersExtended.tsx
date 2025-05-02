@@ -1,13 +1,12 @@
 import { NumberInput, TextInput } from '../../../components/Input';
 import CheckBox from '../../../components/input/CheckBox';
 import Select from '../../../components/Select';
-import { useQuery } from '@tanstack/react-query';
-import GetTags from '../../../api/tags/GetTags';
 import { useCallback } from 'react';
 import useSession from '../../../hooks/useSession';
 import { BooleanParam, NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { QueryParamNames } from './QueryParamNames';
 import { toast } from 'react-toastify';
+import { useTags } from '../../../hooks/api/tags/useTags';
 
 const twoPlayerOptions = {
     any: 'Any',
@@ -44,7 +43,7 @@ export default function FiltersExtended() {
     const [maxID, setMaxID] = useQueryParam(QueryParamNames.MaxID, NumberParam);
     const [twoPlayer, setTwoPlayer] = useQueryParam(QueryParamNames.TwoPlayer, withDefault(StringParam, 'any'));
     const [update, setUpdate] = useQueryParam(QueryParamNames.Update, withDefault(StringParam, 'any'));
-    const [topSkillset, setTopSkillset] = useQueryParam(QueryParamNames.TopSkillset, withDefault(StringParam, '0'));
+    const [topSkillset, setTopSkillset] = useQueryParam(QueryParamNames.TopSkillset, withDefault(NumberParam, 0));
     const [excludeCompleted, setExcludeCompleted] = useQueryParam(QueryParamNames.ExcludeCompleted, withDefault(BooleanParam, false));
     const [excludeUnrated, setExcludeUnrated] = useQueryParam(QueryParamNames.ExcludeUnrated, withDefault(BooleanParam, false));
     const [exculdeUnratedEnj, setExcludeUnratedEnj] = useQueryParam(QueryParamNames.ExcludeUnratedEnjoyment, withDefault(BooleanParam, false));
@@ -52,10 +51,7 @@ export default function FiltersExtended() {
     const [excludeRatedEnj, setExcludeRatedEnj] = useQueryParam(QueryParamNames.ExcludeRatedEnjoyment, withDefault(BooleanParam, false));
     const [inPack, setInPack] = useQueryParam(QueryParamNames.InPack, withDefault(BooleanParam, false));
 
-    const { data: tags } = useQuery({
-        queryKey: ['tags'],
-        queryFn: GetTags,
-    });
+    const { data: tags } = useTags();
 
     const onUpdateChange = useCallback((key: string) => {
         if (key !== 'any') {
@@ -75,6 +71,12 @@ export default function FiltersExtended() {
         }
         setUpdate(key);
     }, [setMinID, setMaxID, setUpdate]);
+
+    const tagOptions: Record<number, string> = {};
+    (tags ?? []).forEach((tag) => {
+        tagOptions[tag.ID] = tag.Name;
+    });
+    tagOptions[0] = 'Any';
 
     return (
         <div className='flex flex-col gap-3'>
@@ -121,7 +123,7 @@ export default function FiltersExtended() {
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Top skillset:</p>
-                    <Select height='20' activeKey={topSkillset} options={[...(tags ?? []).map((t) => ({ key: t.ID.toString(), value: t.Name })), { key: '0', value: 'Any' }]} onChange={(key) => setTopSkillset(key)} id='skillsetSelectOptions' />
+                    <Select height='20' activeKey={topSkillset} options={tagOptions} onChange={(key) => setTopSkillset(key)} id='skillsetSelectOptions' />
                 </div>
             </div>
             <div className='grid grid-cols-12'>

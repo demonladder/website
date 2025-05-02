@@ -2,7 +2,7 @@ import APIClient from '../APIClient';
 
 export interface Reference {
     Tier: number;
-    ID: number;
+    LevelID: number;
     Level: {
         Rating: number | null;
         Meta: {

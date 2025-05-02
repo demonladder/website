@@ -3,14 +3,9 @@ import APIClient from '../APIClient';
 interface HealthStats {
     warns: number;
     errors: number;
-    dataLogs: {
-        levelSearches: number;
-        ratingsSubmitted: number;
-        starbotRatingsSubmitted: number;
-    }[];
 }
 
-export default async function GetHealthStats() {
-    const res = await APIClient.get<HealthStats>('/stats/health');
+export default async function GetHealthStats(): Promise<HealthStats> {
+    const res = await APIClient.get<HealthStats>('/stats/logCounts');
     return res.data;
 }

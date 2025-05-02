@@ -3,15 +3,15 @@ import { clamp } from '../utils/clamp';
 import { PrimaryButton } from './ui/buttons/PrimaryButton';
 import { NumberInput } from './Input';
 
-type Props = {
-    onPageChange: (page: number) => void,
-    meta?: PageMeta,
+interface Props {
+    onPageChange: (page: number) => void;
+    meta?: PageMeta;
 }
 
-export type PageMeta = {
-    page: number,
-    total: number,
-    limit: number,
+export interface PageMeta {
+    page: number;
+    total: number;
+    limit: number;
 }
 
 export default function PageButtons({ onPageChange, meta }: Props) {

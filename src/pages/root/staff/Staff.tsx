@@ -5,6 +5,7 @@ import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import GetStaff, { StaffMember } from '../../../api/user/StaffMember';
 import Role from '../../../api/types/Role';
+import Heading1 from '../../../components/headings/Heading1';
 
 const roleTitles: Record<Role['ID'], string> = {
     2: 'List helpers',
@@ -21,7 +22,7 @@ const roleDescriptions: Record<Role['ID'], string> = {
     4: 'The GDDL Moderators. They help keep the chatting environment as neat and tolerable as possible.',
     5: 'The GDDL Admins. They oversee the entirety of the server and bypass restrictions.',
     6: 'The current owner of GDDL!'
-}
+};
 
 function List({ data, roleID }: { data?: StaffMember[], roleID: number }) {
     const filtered = data?.filter((s) => s.Roles.includes(roleID)) ?? [];
@@ -52,7 +53,7 @@ export default function Staff() {
 
     return (
         <Container>
-            <h1 className='text-4xl mb-4'>Current staff members</h1>
+            <Heading1 className='mb-4'>Current staff members</Heading1>
             <FloatingLoadingSpinner isLoading={isLoading} />
             <div>
                 <List data={data} roleID={6} />

@@ -10,6 +10,7 @@ import { AxiosError } from 'axios';
 import { validateTier } from './validateTier';
 import { validateEnjoyment } from './validateEnjoyment';
 import Page from '../../../components/Page';
+import Heading1 from '../../../components/headings/Heading1';
 
 function parseValue(val: string | null): null | string {
     if (val === undefined || val === '-') return null;
@@ -108,7 +109,7 @@ export default function BulkSubmit() {
     return (
         <Page>
             <div className='mb-2'>
-                <h1 className='text-4xl'>Bulk submit</h1>
+                <Heading1>Bulk submit</Heading1>
                 <p>Each line is a new submission. Whitespace and empty lines will be ignored.</p>
                 <p>Each line must follow one of the following two formats:</p>
                 <pre>{'<level ID> [tier] [enjoyment] [fps] [pc or mobile] [video proof]'}</pre>

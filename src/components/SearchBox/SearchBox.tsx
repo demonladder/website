@@ -52,13 +52,14 @@ export default function SearchBox<T>({ search, onSearchChange, list, getLabel, g
 
         return () => {
             document.removeEventListener('click', onClick);
-        }
+        };
     }, [id]);
 
     // When the user clicks a result, set search state and pass the clicked result to parent
     function handleClick(r: T) {
         if (overWriteInput) onSearchChange(getName(r));
         setResult(r);
+        setVisible(false);
     }
 
     function keyDown(event: React.KeyboardEvent) {
@@ -70,8 +71,8 @@ export default function SearchBox<T>({ search, onSearchChange, list, getLabel, g
     return (
         <div>
             <TextInput value={search} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} invalid={invalid} />
-            {/* <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 text-white'} style={{ zIndex: 5 }}> */}
-            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-gray-600 round:rounded-b-lg text-white text-base z-10 shadow-2xl'}>
+            {/* <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-600 text-white'} style={{ zIndex: 5 }}> */}
+            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-600 round:rounded-b-lg text-base z-10 shadow-2xl'}>
                 {status === 'loading'
                     ? <LoadingSpinner />
                     : ((status === 'error' || list.length === 0)

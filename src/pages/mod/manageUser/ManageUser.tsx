@@ -1,3 +1,4 @@
+import Heading2 from '../../../components/headings/Heading2';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { Outlet, useNavigate } from 'react-router-dom';
 
@@ -11,7 +12,7 @@ export default function ManageUser() {
 
     return (
         <div>
-            <h2 className='text-2xl mb-4'>Manage User</h2>
+            <Heading2 className='mb-4'>Manage User</Heading2>
             {SearchBox}
             <Outlet />
         </div>

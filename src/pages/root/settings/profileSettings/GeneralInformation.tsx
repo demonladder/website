@@ -13,49 +13,47 @@ import FormInputDescription from '../../../../components/form/FormInputDescripti
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import Select from '../../../../components/Select';
 import { ISO3611Alpha2 } from './ISO3611-1-alpha-2';
+import { useMutation } from '@tanstack/react-query';
+import Heading1 from '../../../../components/headings/Heading1';
 
-const basePronouns = {
+const pronounOptions = {
+    '-': 'Select your pronouns',
     'he/him': 'he/him',
     'she/her': 'she/her',
     'they/them': 'they/them',
     'xe/xem': 'xe/xem',
     'ze/zir': 'ze/zir',
     'it/its': 'it/its',
-} as Record<string, string>;
-
-const pronounOptions = {
-    '-': 'Select your pronouns',
-    ...basePronouns,
     'other': 'Other',
 } as const;
+type PronounOptionKey = keyof typeof pronounOptions;
 
 const countryOptions = {
     '-': 'Select your country',
     ...ISO3611Alpha2,
 } as const;
+type CountryOptionKey = keyof typeof countryOptions;
 
 export default function GeneralInformation({ userID }: { userID: number }) {
     const hasSession = StorageManager.hasSession();
 
-    const [isMutating, setIsMutating] = useState(false);
-
-    const { data, status, invalidate: invalidateUser } = useUserQuery(userID, { enabled: hasSession });
+    const { data, status, refetch: invalidateUser } = useUserQuery(userID, { enabled: hasSession });
 
     const [name, setName] = useState('');
     const introductionRef = useRef<HTMLTextAreaElement>(null);
-    const [countryKey, setCountryKey] = useState('-');
-    const [pronounKey, setPronounKey] = useState('-');
+    const [countryKey, setCountryKey] = useState<CountryOptionKey>('-');
+    const [pronounKey, setPronounKey] = useState<PronounOptionKey>('-');
     const pronounSelectID = useId();
     const [customPronouns, setCustomPronouns] = useState('');
     const countrySelectID = useId();
 
     const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.HardestID } });
 
-    const favoriteLevelSearch1 = useLevelSearch({ ID: 'profileFavorite1', options: { defaultLevel: data?.FavoriteLevels[0] } });
-    const favoriteLevelSearch2 = useLevelSearch({ ID: 'profileFavorite2', options: { defaultLevel: data?.FavoriteLevels[1] } });
+    const favoriteLevelSearch1 = useLevelSearch({ ID: 'profileFavorite1', options: { defaultLevel: data?.Favorite[0] } });
+    const favoriteLevelSearch2 = useLevelSearch({ ID: 'profileFavorite2', options: { defaultLevel: data?.Favorite[1] } });
 
-    const leastFavoriteLevelSearch2 = useLevelSearch({ ID: 'profileLeastFavorite2', options: { defaultLevel: data?.LeastFavoriteLevels[1] } });
-    const leastFavoriteLevelSearch1 = useLevelSearch({ ID: 'profileLeastFavorite1', options: { defaultLevel: data?.LeastFavoriteLevels[0] } });
+    const leastFavoriteLevelSearch2 = useLevelSearch({ ID: 'profileLeastFavorite2', options: { defaultLevel: data?.LeastFavorite[1] } });
+    const leastFavoriteLevelSearch1 = useLevelSearch({ ID: 'profileLeastFavorite1', options: { defaultLevel: data?.LeastFavorite[0] } });
 
     const minPrefRef = useRef<HTMLInputElement>(null);
     const maxPrefRef = useRef<HTMLInputElement>(null);
@@ -67,8 +65,8 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         if (introductionRef.current && data.Introduction) introductionRef.current.value = '' + data.Introduction;
 
         if (data.Pronouns) {
-            if (basePronouns[data.Pronouns]) {
-                setPronounKey(data.Pronouns);
+            if (data.Pronouns !== 'other' && data.Pronouns !== '-') {
+                setPronounKey(data.Pronouns as PronounOptionKey);
             } else {
                 setPronounKey('other');
                 setCustomPronouns(data.Pronouns);
@@ -77,17 +75,23 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             setPronounKey('-');
         }
 
-        if (data.CountryCode) setCountryKey(data.CountryCode);
+        if (data.CountryCode) setCountryKey(data.CountryCode as CountryOptionKey);
         else setCountryKey('-');
 
         if (minPrefRef.current && data.MinPref) minPrefRef.current.value = data.MinPref.toString();
         if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = data.MaxPref.toString();
     }, [data]);
 
-    function onSave(e: React.MouseEvent) {
-        e.preventDefault();
-        if (isMutating) return;
+    const updateMutation = useMutation(SaveProfile, {
+        onSuccess: async () => {
+            await invalidateUser();
+            toast.success('Profile updated successfully!');
+        },
+        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
+    });
 
+    function onSave(e: React.FormEvent) {
+        e.preventDefault();
         if (!data) return;
 
         if (!introductionRef.current) return;
@@ -100,7 +104,8 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             return pronounKey;
         })();
 
-        const newUser = {
+        updateMutation.mutate({
+            ID: userID,
             name: name,
             introduction: introductionRef.current.value || null,
             pronouns,
@@ -109,35 +114,21 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             favoriteLevels: [
                 favoriteLevelSearch1.activeLevel?.ID,
                 favoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined).join(',') || null,
+            ].filter((v) => v !== undefined) || null,
             leastFavoriteLevels: [
                 leastFavoriteLevelSearch1.activeLevel?.ID,
                 leastFavoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined).join(',') || null,
+            ].filter((v) => v !== undefined) || null,
             minPref: parseInt(minPrefRef.current.value) || null,
             maxPref: parseInt(maxPrefRef.current.value) || null,
-        };
-
-        setIsMutating(true);
-        void toast.promise(SaveProfile(userID, newUser).then(invalidateUser).finally(() => setIsMutating(false)), {
-            pending: 'Saving...',
-            success: 'Saved!',
-            error: renderToastError,
         });
     }
 
-    if (status === 'loading') {
-        return;
-    } else if (status === 'error') {
-        return (
-            <div>
-                <h1 className='text-4xl'>An error occurred</h1>
-            </div>
-        );
-    }
+    if (status === 'loading') return;
+    if (status === 'error') return <div><Heading1>An error occurred</Heading1></div>;
 
     return (
-        <form>
+        <form onSubmit={onSave}>
             <FormGroup>
                 <FormInputLabel>Your name</FormInputLabel>
                 <TextInput value={name} onChange={(e) => setName(e.target.value)} invalid={!name.match(/^[a-zA-Z0-9._]{0,32}$/)} />
@@ -162,11 +153,11 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                 <Select options={countryOptions} activeKey={countryKey} onChange={setCountryKey} id={countrySelectID} />
                 <FormInputDescription>Where are you from?</FormInputDescription>
             </FormGroup>
-            <div className='divider my-12' />
+            <div className='border-b border-b-theme-500 my-12' />
             <FormGroup>
                 <FormInputLabel>Hardest level</FormInputLabel>
                 {hardestSearch.SearchBox}
-                <FormInputDescription>What is the hardest level you have completed? Does NOT automatically update!</FormInputDescription>
+                <FormInputDescription>What is the hardest level you have completed? Does not automatically update!</FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Favorite levels</FormInputLabel>
@@ -194,7 +185,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                     <NumberInput ref={maxPrefRef} />
                 </div>
             </FormGroup>
-            <PrimaryButton type='submit' onClick={onSave} disabled={isMutating}>Update</PrimaryButton>
+            <PrimaryButton type='submit' loading={updateMutation.isLoading}>Update</PrimaryButton>
         </form>
     );
 }

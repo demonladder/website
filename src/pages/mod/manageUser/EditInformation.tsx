@@ -10,6 +10,7 @@ import TextArea from '../../../components/input/TextArea';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import SaveProfile from '../../../api/user/SaveProfile';
 import renderToastError from '../../../utils/renderToastError';
+import Heading3 from '../../../components/headings/Heading3';
 
 export default function EditInformation({ user }: { user: UserResponse }) {
     const nameID = useId();
@@ -28,7 +29,7 @@ export default function EditInformation({ user }: { user: UserResponse }) {
 
     const queryClient = useQueryClient();
     const editMutation = useMutation({
-        mutationFn: () => toast.promise(SaveProfile(user.ID, { name: newName, introduction: newIntroduction }), { pending: 'Saving...', success: 'Saved', error: renderToastError }),
+        mutationFn: (body: Parameters<typeof SaveProfile>[0]) => toast.promise(SaveProfile(body), { pending: 'Saving...', success: 'Saved', error: renderToastError }),
         onSuccess: () => {
             void queryClient.invalidateQueries(['user', user.ID]);
             void queryClient.invalidateQueries(['userSearch']);
@@ -37,24 +38,26 @@ export default function EditInformation({ user }: { user: UserResponse }) {
 
     function submitHandler(e: React.FormEvent) {
         e.preventDefault();
-        editMutation.mutate();
+        editMutation.mutate({ ID: user.ID, name: newName, introduction: newIntroduction });
     }
 
     return (
-        <form className='mt-4' onSubmit={submitHandler}>
-            <h3 className='text-xl'>Edit information</h3>
-            <FormGroup>
-                <FormInputLabel htmlFor={nameID}>Name</FormInputLabel>
-                <TextInput id={nameID} className='border p-2' value={newName} onChange={(e) => setNewName(e.target.value)} invalid={!validateUsername(newName)} />
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel htmlFor={introductionID}>Introduction</FormInputLabel>
-                <TextArea id={introductionID} className='border p-2' value={newIntroduction} onChange={(e) => setNewIntroduction(e.target.value)} invalid={!validateUsername(newName)} />
-            </FormGroup>
-            <div className='flex justify-between'>
-                <PrimaryButton type='submit' disabled={!isChanged}>Save</PrimaryButton>
-                <p>{newIntroduction.length}/500</p>
-            </div>
-        </form>
+        <>
+            <Heading3>Edit information</Heading3>
+            <form className='mt-4' onSubmit={submitHandler}>
+                <FormGroup>
+                    <FormInputLabel htmlFor={nameID}>Name</FormInputLabel>
+                    <TextInput id={nameID} className='border p-2' value={newName} onChange={(e) => setNewName(e.target.value)} invalid={!validateUsername(newName)} />
+                </FormGroup>
+                <FormGroup>
+                    <FormInputLabel htmlFor={introductionID}>Introduction</FormInputLabel>
+                    <TextArea id={introductionID} className='border p-2' value={newIntroduction} onChange={(e) => setNewIntroduction(e.target.value)} invalid={!validateUsername(newName)} />
+                </FormGroup>
+                <div className='flex justify-between'>
+                    <PrimaryButton type='submit' disabled={!isChanged}>Save</PrimaryButton>
+                    <p>{newIntroduction.length}/500</p>
+                </div>
+            </form>
+        </>
     );
 }

@@ -4,12 +4,12 @@ import useModal from './useModal';
 export default function useCreateListModal() {
     const { createModal, closeModal } = useModal();
 
-    function open(userID: number) {
+    function open(userID: number, levelID: number) {
         const ID = `createList-${userID}`;
 
         createModal(
             ID,
-            <CreateListModal userID={userID} onClose={() => closeModal(ID)} />,
+            <CreateListModal userID={userID} levelID={levelID} onClose={() => closeModal(ID)} />,
         );
     }
 

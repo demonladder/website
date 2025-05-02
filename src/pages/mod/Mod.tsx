@@ -2,13 +2,14 @@ import { Link, Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
 import { NavButton } from '../../components/ui/NavButton';
 import Page from '../../components/Page';
+import Heading1 from '../../components/headings/Heading1';
 
 export default function Mod() {
     return (
         <Page>
             <div className='grid grid-cols-12 gap-5'>
                 <div id='mod-menu' className='col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col'>
-                    <Link to='/mod' className='text-4xl mb-2'>Dashboard</Link>
+                    <Heading1 className='mb-2'><Link to='/mod'>Dashboard</Link></Heading1>
                     <NavButton to='/mod/roles'>Roles</NavButton>
                     <hr className='my-2' />
                     <div className='flex flex-col select-none'>
@@ -41,7 +42,7 @@ export default function Mod() {
                     </div>
                 </div>
                 <div className='col-span-12 lg:col-span-8 xl:col-span-9'>
-                    <div className='bg-gray-700 p-4 round:rounded-xl relative'>
+                    <div className='bg-theme-700 border border-theme-outline p-4 round:rounded-xl relative'>
                         <Suspense fallback={<p>Loading...</p>}>
                             <Outlet />
                         </Suspense>

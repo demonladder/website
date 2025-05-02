@@ -1,0 +1,25 @@
+@theme {
+    --citrus-theme-500: #fce69f;
+    --citrus-theme-600: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 20%);
+    --citrus-theme-700: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 40%);
+    --citrus-theme-800: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 60%);
+    --citrus-theme-900: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 80%);
+    --citrus-theme-950: #faa94d;
+    --citrus-primary: #ffde7d;
+    --citrus-from: #f4e495;
+    --citrus-to: #fec794;
+}
+
+[data-theme="citrus"] {
+    --theme-gradient-angle: 135deg;
+    --theme-gradient-from: var(--citrus-from);
+    --theme-gradient-to: var(--citrus-to);
+    --color-theme-500: var(--citrus-theme-500);
+    --color-theme-600: var(--citrus-theme-600);
+    --color-theme-700: var(--citrus-theme-700);
+    --color-theme-800: var(--citrus-theme-800);
+    --color-theme-950: var(--citrus-theme-950);
+    --color-refreshRate-60: var(--citrus-theme-950);
+    --color-theme-primary: var(--citrus-primary);
+    color: black;
+}

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import axios from 'axios';
 import { pluralWas } from '../../../utils/pluralS';
+import { Difficulties } from '../../../api/types/LevelMeta';
 
 interface SHFResponseDataObject {
     _id: string;
@@ -19,7 +20,7 @@ interface SHFResponseDataObject {
 
 function LinkButton({ link, message }: { link: string, message: string }) {
     return (
-        <a href={link} target='_blank' rel='noopener noreferrer' className='px-4 py-2 bg-gray-500 round:rounded-md border border-white/0 hover:border-white/100 transition-colors'>{message} <i className='bx bx-link-external float-right' /></a>
+        <a href={link} target='_blank' rel='noopener noreferrer' className='px-4 py-2 bg-theme-500 shadow-md round:rounded-md border border-white/0 hover:border-white/100 transition-colors'>{message} <i className='bx bx-link-external float-right pt-1' /></a>
     );
 }
 
@@ -31,7 +32,7 @@ export default function ExternalLinks({ level }: Props) {
     const { data: aredl } = useQuery({
         queryKey: ['aredl', level.ID],
         queryFn: () => axios.get<{ position: number }>(`https://api.aredl.net/api/aredl/levels/${level.ID}`).then((res) => res.data),
-        enabled: level.Meta.Difficulty === 'Extreme',
+        enabled: level.Meta.Difficulty === Difficulties.Extreme,
     });
 
     const { data: pointercrateData } = useQuery({

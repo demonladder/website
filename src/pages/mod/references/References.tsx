@@ -48,7 +48,7 @@ function Level({ data, remove }: LevelProps) {
                     <DangerButton onClick={remove}>X</DangerButton>
                     <div>
                         <h4 className='break-all'>{data.Level.Meta.Name}</h4>
-                        <p>{data.ID}</p>
+                        <p>{data.LevelID}</p>
                     </div>
                 </div>
             </div>
@@ -93,10 +93,10 @@ export default function EditReferences() {
     }
 
     function onRemoveReference(reference: Reference) {
-        if (!removeList.some((ID) => ID === reference.ID)) setRemoveList((prev) => [...prev, reference.ID]);
+        if (!removeList.some((ID) => ID === reference.LevelID)) setRemoveList((prev) => [...prev, reference.LevelID]);
 
-        if (changeList.filter((e) => e.ID === reference.ID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
-        setChangeList((prev) => [...prev, { Tier: reference.Tier, ID: reference.ID, Type: 'remove', Name: reference.Level.Meta.Name } as Change]);
+        if (changeList.filter((e) => e.ID === reference.LevelID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
+        setChangeList((prev) => [...prev, { Tier: reference.Tier, ID: reference.LevelID, Type: 'remove', Name: reference.Level.Meta.Name } as Change]);
     }
 
     if (status === 'loading') return <LoadingSpinner isLoading={true} />;
@@ -118,7 +118,7 @@ export default function EditReferences() {
             </div>
             <div className='divider my-3'></div>
             <div className='flex flex-col gap-2 mb-8'>{
-                data.filter((l) => l.Tier === tier).map((l) => <Level data={l} remove={() => onRemoveReference(l)} key={l.ID} />)
+                data.filter((l) => l.Tier === tier).map((l) => <Level data={l} remove={() => onRemoveReference(l)} key={l.LevelID} />)
             }</div>
             <PageButtons onPageChange={(page) => setTier(page + 1)} meta={{ page: tier - 1, total: maxTier, limit: 1 }} />
             <div className='flex justify-around'>
@@ -146,8 +146,8 @@ function RemoveList({ references, undo }: { references: number[], undo: (ID: num
         <div>
             <h3 className='text-xl'>To remove</h3>
             <ul>{
-                references.map((ID) => data.find((r) => r.ID === ID)).filter((r) => r !== undefined).map((r) => (
-                    <ChangeLevel data={{ ID: r.ID, Name: r.Level.Meta.Name, Tier: r.Tier, Type: ChangeType.Remove }} remove={() => undo(r.ID)} key={r!.ID} />
+                references.map((ID) => data.find((r) => r.LevelID === ID)).filter((r) => r !== undefined).map((r) => (
+                    <ChangeLevel data={{ ID: r.LevelID, Name: r.Level.Meta.Name, Tier: r.Tier, Type: ChangeType.Remove }} remove={() => undo(r.LevelID)} key={r!.LevelID} />
                 ))
             }</ul>
         </div>

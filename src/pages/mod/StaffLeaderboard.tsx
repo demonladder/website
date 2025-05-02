@@ -33,7 +33,7 @@ function StaffLeaderboardEntry({ data, highestScore }: { data: StaffLeaderboardR
 }
 
 export default function StaffLeaderboard() {
-    const { data } = useQuery({
+    const { data, status } = useQuery({
         queryKey: ['staffLeaderboard'],
         queryFn: GetStaffLeaderboard,
     });
@@ -46,6 +46,7 @@ export default function StaffLeaderboard() {
             <p>You get more points the higher the tier of the level is</p>
             <p>Bonus points for proof (Remember to check it)</p>
             <p>Points are also awarded for denied submissions so no mindlessly approving submissions</p>
+            <LoadingSpinner isLoading={status === 'loading'} />
             <table className='mt-2 pe-8'>
                 <tbody>
                     {data?.map((contestant) => (<StaffLeaderboardEntry data={contestant} highestScore={highestScore} key={`leader_${contestant.UserID}`} />))}

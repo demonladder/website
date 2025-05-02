@@ -1,0 +1,33 @@
+@import "./themes/black.css";
+@import "./themes/blue.css";
+@import "./themes/citrus.css";
+@import "./themes/coffee.css";
+@import "./themes/crimson.css";
+/* @import "./themes/culob.css"; */
+@import "./themes/dark.css";
+@import "./themes/june.css";
+@import "./themes/lilac.css";
+@import "./themes/midnight.css";
+@import "./themes/peach.css";
+@import "./themes/rfmx.css";
+@import "./themes/seaweed.css";
+@import "./themes/terry.css";
+@import "./themes/warm.css";
+@import "./themes/white.css";
+
+@theme {
+    --theme-gradient-angle: 0deg;
+    --theme-gradient-from: #262626;
+    --theme-gradient-to: #262626;
+    --theme-primary-text: black;
+
+    --color-theme-primary: #EFA51C;
+    --color-theme-400: #929292;
+    --color-theme-500: #4d4d4d;
+    --color-theme-600: #454545;
+    --color-theme-700: #353535;
+    --color-theme-800: #2b2b2b;
+    --color-theme-900: #262626;
+    --color-theme-950: #1a1a1a;
+    --color-theme-outline: #0000;
+}

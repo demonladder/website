@@ -1,13 +1,10 @@
-import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { useWindowSize } from 'usehooks-ts';
 import HeaderThin from './HeaderThin';
 import HeaderWide from './HeaderWide';
 
 export default function Header() {
-    const { width } = useWindowDimensions();
+    const { width } = useWindowSize();
 
-    if (width >= 1536) {
-        return <HeaderWide />;
-    }
-
+    if (width >= 1536) return <HeaderWide />;
     return <HeaderThin />;
 }

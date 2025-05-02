@@ -7,6 +7,6 @@ interface WantData {
 }
 
 export default async function GetWants() {
-    const res = await APIClient.get<WantData>('/notifications/wants');
+    const res = await APIClient.get<WantData>('/wants');
     return res.data;
 }

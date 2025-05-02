@@ -29,12 +29,12 @@ const deviceOptions: { [key: string]: string } = {
 
 export default function EditableSubmission({ submission }: Props) {
     const [rating, setRating] = useState<number | undefined>(submission.Rating ?? undefined);
-    const [enjoyment, setEnjoyment] = useState<number>();
+    const [enjoyment, setEnjoyment] = useState<number | undefined>(submission.Enjoyment ?? undefined);
     const [proof, setProof] = useState('');
-    const [refreshRate, setRefreshRate] = useState<number>();
+    const [refreshRate, setRefreshRate] = useState<number>(submission.RefreshRate);
     const [deviceKey, setDeviceKey] = useState('1');
-    const [progress, setProgress] = useState<number>();
-    const [attempts, setAttempts] = useState('');
+    const [progress, setProgress] = useState<number>(submission.Progress);
+    const [attempts, setAttempts] = useState(submission.Attempts?.toString() ?? '');
     const [wasSolo, setWasSolo] = useState(true);
     const [deleteReason, setDeleteReason] = useState('');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -45,7 +45,7 @@ export default function EditableSubmission({ submission }: Props) {
     const invalidEnjoyment = enjoyment === undefined || !validateEnjoyment(enjoyment);
 
     const updateMutation = useMutation({
-        mutationFn: () => APIClient.patch(`/user/${submission.UserID}/submissions/${submission.LevelID}`, {
+        mutationFn: () => APIClient.patch(`/submissions/${submission.ID}`, {
             levelID: submission.LevelID,
             userID: submission.UserID,
             rating: rating ?? null,

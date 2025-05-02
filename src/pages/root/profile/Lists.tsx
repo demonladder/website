@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import GetUserLists from '../../../api/user/GetUserLists';
-import { useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 import List from '../../../api/types/List';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
-import useCreateListModal from '../../../hooks/modals/useCreateListModal';
 import useSession from '../../../hooks/useSession';
+import { MenuContext } from '../../../components/ui/menuContext/MenuContext';
+import Heading2 from '../../../components/headings/Heading2';
 
 interface Props {
     userID: number;
@@ -15,7 +14,6 @@ interface Props {
 
 export default function Lists({ userID }: Props) {
     const openDeleteListModal = useDeleteListModal();
-    const openCreateListModal = useCreateListModal();
 
     const navigate = useNavigate();
     const session = useSession();
@@ -27,27 +25,26 @@ export default function Lists({ userID }: Props) {
         queryFn: () => GetUserLists(userID),
     });
 
-    const { createMenu } = useContextMenu();
+    const menuContext = useContext(MenuContext);
 
     const openContext = useCallback((e: React.MouseEvent, list: List) => {
         if (userID !== session.user?.ID) return;
 
         e.preventDefault();
 
-        createMenu({
+        menuContext?.setMenuData({
             x: e.clientX,
             y: e.clientY,
             buttons: [
                 { text: 'Info', onClick: () => navigate(`/list/${list.ID}`) },
                 { text: 'Delete', type: 'danger', onClick: () => openDeleteListModal(list) },
             ],
-        })
-    }, [createMenu, navigate, openDeleteListModal, session.user?.ID, userID]);
+        });
+    }, [menuContext, navigate, openDeleteListModal, session.user?.ID, userID]);
 
     return (
-        <section>
-            <h2 className='text-3xl mt-6' id='lists'>Lists</h2>
-            {lookingAtOwnPage && <PrimaryButton onClick={() => openCreateListModal(userID)}>Create new list</PrimaryButton>}
+        <section className='mt-6'>
+            <Heading2 id='lists'>Lists</Heading2>
             {(lists?.length ?? 0) > 0
                 ? (
                     <table className='w-full text-sm lg:text-xl my-2'>
@@ -61,9 +58,9 @@ export default function Lists({ userID }: Props) {
                         </thead>
                         <tbody>
                             {lists?.map((list) => (
-                                <tr className='bg-gray-700' key={list.ID} onContextMenu={(e) => openContext(e, list)}>
+                                <tr className='bg-theme-700' key={list.ID} onContextMenu={(e) => openContext(e, list)}>
                                     <td><Link to={`/list/${list.ID}`} className='block py-1 ps-2 my-2'>{list.Name}</Link></td>
-                                    <td className='max-lg:hidden'><p>{list.Description?.slice(0, 64).trim().concat(list.Description.length > 64 ? '...' : '') ?? <i className='text-gray-300'>No description</i>}</p></td>
+                                    <td className='max-lg:hidden'><p>{list.Description?.slice(0, 64).trim().concat(list.Description.length > 64 ? '...' : '') ?? <i className='text-theme-300'>No description</i>}</p></td>
                                     <td className={`text-center tier-${list.MedianTier ?? 0}`}>
                                         {!list.MedianTier
                                             ? <p><i>N/A</i></p>
@@ -79,7 +76,10 @@ export default function Lists({ userID }: Props) {
                             ))}
                         </tbody>
                     </table>
-                ) : (<p><i>{lookingAtOwnPage ? 'You have not created any lists' : 'This user has not created any lists yet'}</i></p>)
+                )
+                : (
+                    <p><i>{lookingAtOwnPage ? 'You have' : 'This user has'} not created any lists yet</i></p>
+                )
             }
         </section>
     );

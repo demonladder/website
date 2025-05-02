@@ -4,5 +4,5 @@ export default interface DiscordUserData {
     Name: string | null;
     Username: string;
     Avatar: string | null;
-    AccentColor: number | null;
+    AccentColor: string | null;
 }

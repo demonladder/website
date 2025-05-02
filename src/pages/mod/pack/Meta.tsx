@@ -44,8 +44,8 @@ export default function Meta({ packID }: Props) {
         setIsLoading(true);
 
         const request = SavePackMetaRequest(packID, description, categoryKey, roleID).then(() => {
-            queryClient.invalidateQueries(['packs']);
-            queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries(['packs']);
+            void queryClient.invalidateQueries(['packSearch']);
         }).finally(() => {
             setIsLoading(false);
         });
@@ -59,6 +59,11 @@ export default function Meta({ packID }: Props) {
 
     if (packsData === undefined) return (<LoadingSpinner />);
 
+    const categories: Record<number, string> = {};
+    for (const category of packsData.categories) {
+        categories[category.ID] = category.Name;
+    }
+
     return (
         <>
             <FormGroup>
@@ -67,7 +72,7 @@ export default function Meta({ packID }: Props) {
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Category</FormInputLabel>
-                <Select options={packsData.categories.map((c) => ({ key: c.ID.toString(), value: c.Name }))} activeKey={categoryKey.toString()} onChange={(k) => setCategoryKey(parseInt(k))} id='editPackCategory' />
+                <Select options={categories} activeKey={categoryKey} onChange={(k) => setCategoryKey(k)} id='editPackCategory' />
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Role ID</FormInputLabel>

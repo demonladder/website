@@ -1,0 +1,153 @@
+@theme {
+    --color-tier-0: #360432;
+    --color-tier-1: #DDDFEE;
+    --color-tier-2: #D5D3E9;
+    --color-tier-3: #D3CBE7;
+    --color-tier-4: #D3C3E4;
+    --color-tier-5: #D4BBE2;
+    --color-tier-6: #D5B0DE;
+    --color-tier-7: #DBA7DC;
+    --color-tier-8: #DB9FD1;
+    --color-tier-9: #D991C1;
+    --color-tier-10: #DA86B0;
+    --color-tier-11: #DB7698;
+    --color-tier-12: #DC6A7D;
+    --color-tier-13: #DD5A5A;
+    --color-tier-14: #DC514C;
+    --color-tier-15: #DA493E;
+    --color-tier-16: #DA4534;
+    --color-tier-17: #D93E26;
+    --color-tier-18: #DC3F23;
+    --color-tier-19: #C03A1B;
+    --color-tier-20: #B23415;
+    --color-tier-21: #A23010;
+    --color-tier-22: #9B2B0C;
+    --color-tier-23: #932B0B;
+    --color-tier-24: #892608;
+    --color-tier-25: #832607;
+    --color-tier-26: #752105;
+    --color-tier-27: #6C1E04;
+    --color-tier-28: #601A02;
+    --color-tier-29: #5A1802;
+    --color-tier-30: #511700;
+    --color-tier-31: #491900;
+    --color-tier-32: #3F1A00;
+    --color-tier-33: #331700;
+    --color-tier-34: #231300;
+    --color-tier-35: #110A00;
+    --color-tier-36: #000000;
+}
+
+.tier-0 { @apply bg-tier-0; color: white; }
+.tier-1 { @apply bg-tier-1; color: black; }
+.tier-2 { @apply bg-tier-2; color: black; }
+.tier-3 { @apply bg-tier-3; color: black; }
+.tier-4 { @apply bg-tier-4; color: black; }
+.tier-5 { @apply bg-tier-5; color: black; }
+.tier-6 { @apply bg-tier-6; color: black; }
+.tier-7 { @apply bg-tier-7; color: black; }
+.tier-8 { @apply bg-tier-8; color: black; }
+.tier-9 { @apply bg-tier-9; color: black; }
+.tier-10 { @apply bg-tier-10; color: black; }
+.tier-11 { @apply bg-tier-11; color: black; }
+.tier-12 { @apply bg-tier-12; color: black; }
+.tier-13 { @apply bg-tier-13; color: black; }
+.tier-14 { @apply bg-tier-14; color: black; }
+.tier-15 { @apply bg-tier-15; color: black; }
+.tier-16 { @apply bg-tier-16; color: white; }
+.tier-17 { @apply bg-tier-17; color: white; }
+.tier-18 { @apply bg-tier-18; color: white; }
+.tier-19 { @apply bg-tier-19; color: white; }
+.tier-20 { @apply bg-tier-20; color: white; }
+.tier-21 { @apply bg-tier-21; color: white; }
+.tier-22 { @apply bg-tier-22; color: white; }
+.tier-23 { @apply bg-tier-23; color: white; }
+.tier-24 { @apply bg-tier-24; color: white; }
+.tier-25 { @apply bg-tier-25; color: white; }
+.tier-26 { @apply bg-tier-26; color: white; }
+.tier-27 { @apply bg-tier-27; color: white; }
+.tier-28 { @apply bg-tier-28; color: white; }
+.tier-29 { @apply bg-tier-29; color: white; }
+.tier-30 { @apply bg-tier-30; color: white; }
+.tier-31 { @apply bg-tier-31; color: white; }
+.tier-32 { @apply bg-tier-32; color: white; }
+.tier-33 { @apply bg-tier-33; color: white; }
+.tier-34 { @apply bg-tier-34; color: white; }
+.tier-35 { @apply bg-tier-35; color: white; }
+.tier-36 { @apply bg-tier-36; color: white; }
+
+.from-tier-0 { @apply from-tier-0; }
+.from-tier-1 { @apply from-tier-1; }
+.from-tier-2 { @apply from-tier-2; }
+.from-tier-3 { @apply from-tier-3; }
+.from-tier-4 { @apply from-tier-4; }
+.from-tier-5 { @apply from-tier-5; }
+.from-tier-6 { @apply from-tier-6; }
+.from-tier-7 { @apply from-tier-7; }
+.from-tier-8 { @apply from-tier-8; }
+.from-tier-9 { @apply from-tier-9; }
+.from-tier-10 { @apply from-tier-10; }
+.from-tier-11 { @apply from-tier-11; }
+.from-tier-12 { @apply from-tier-12; }
+.from-tier-13 { @apply from-tier-13; }
+.from-tier-14 { @apply from-tier-14; }
+.from-tier-15 { @apply from-tier-15; }
+.from-tier-16 { @apply from-tier-16; }
+.from-tier-17 { @apply from-tier-17; }
+.from-tier-18 { @apply from-tier-18; }
+.from-tier-19 { @apply from-tier-19; }
+.from-tier-20 { @apply from-tier-20; }
+.from-tier-21 { @apply from-tier-21; }
+.from-tier-22 { @apply from-tier-22; }
+.from-tier-23 { @apply from-tier-23; }
+.from-tier-24 { @apply from-tier-24; }
+.from-tier-25 { @apply from-tier-25; }
+.from-tier-26 { @apply from-tier-26; }
+.from-tier-27 { @apply from-tier-27; }
+.from-tier-28 { @apply from-tier-28; }
+.from-tier-29 { @apply from-tier-29; }
+.from-tier-30 { @apply from-tier-30; }
+.from-tier-31 { @apply from-tier-31; }
+.from-tier-32 { @apply from-tier-32; }
+.from-tier-33 { @apply from-tier-33; }
+.from-tier-34 { @apply from-tier-34; }
+.from-tier-35 { @apply from-tier-35; }
+.from-tier-36 { @apply from-tier-36; }
+
+.to-tier-0 { @apply to-tier-0; }
+.to-tier-1 { @apply to-tier-1; }
+.to-tier-2 { @apply to-tier-2; }
+.to-tier-3 { @apply to-tier-3; }
+.to-tier-4 { @apply to-tier-4; }
+.to-tier-5 { @apply to-tier-5; }
+.to-tier-6 { @apply to-tier-6; }
+.to-tier-7 { @apply to-tier-7; }
+.to-tier-8 { @apply to-tier-8; }
+.to-tier-9 { @apply to-tier-9; }
+.to-tier-10 { @apply to-tier-10; }
+.to-tier-11 { @apply to-tier-11; }
+.to-tier-12 { @apply to-tier-12; }
+.to-tier-13 { @apply to-tier-13; }
+.to-tier-14 { @apply to-tier-14; }
+.to-tier-15 { @apply to-tier-15; }
+.to-tier-16 { @apply to-tier-16; }
+.to-tier-17 { @apply to-tier-17; }
+.to-tier-18 { @apply to-tier-18; }
+.to-tier-19 { @apply to-tier-19; }
+.to-tier-20 { @apply to-tier-20; }
+.to-tier-21 { @apply to-tier-21; }
+.to-tier-22 { @apply to-tier-22; }
+.to-tier-23 { @apply to-tier-23; }
+.to-tier-24 { @apply to-tier-24; }
+.to-tier-25 { @apply to-tier-25; }
+.to-tier-26 { @apply to-tier-26; }
+.to-tier-27 { @apply to-tier-27; }
+.to-tier-28 { @apply to-tier-28; }
+.to-tier-29 { @apply to-tier-29; }
+.to-tier-30 { @apply to-tier-30; }
+.to-tier-31 { @apply to-tier-31; }
+.to-tier-32 { @apply to-tier-32; }
+.to-tier-33 { @apply to-tier-33; }
+.to-tier-34 { @apply to-tier-34; }
+.to-tier-35 { @apply to-tier-35; }
+.to-tier-36 { @apply to-tier-36; }

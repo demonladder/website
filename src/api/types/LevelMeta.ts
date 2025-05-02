@@ -18,7 +18,7 @@ export function levelLengthToString(length: LevelLengths): string {
     }
 }
 
-enum Difficulties {
+export enum Difficulties {
     Official = 'Official',
     Easy = 'Easy',
     Medium = 'Medium',

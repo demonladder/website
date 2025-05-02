@@ -1,9 +1,8 @@
 import Markdown from 'react-markdown';
-import Container from '../../../components/Container';
-import NewLabel from '../../../components/NewLabel';
 import { useQuery } from '@tanstack/react-query';
 import APIClient from '../../../api/APIClient';
 import markdownComponents from '../../../utils/markdownComponents';
+import Page from '../../../components/Page';
 
 export default function ChangeLogs() {
     const { data: markdown } = useQuery({
@@ -12,9 +11,8 @@ export default function ChangeLogs() {
     });
 
     return (
-        <Container>
-            <p><NewLabel ID='changelogs' /></p>
+        <Page>
             <Markdown children={markdown} components={markdownComponents} />
-        </Container>
+        </Page>
     );
 }

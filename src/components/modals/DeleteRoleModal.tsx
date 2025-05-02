@@ -20,8 +20,8 @@ export default function DeleteRoleModal({ role, onClose: close, onSucces }: Prop
     const deleteRole = useCallback((roleID?: number) => {
         if (roleID === undefined) return;
 
-        toast.promise(DeleteRole(roleID).then(() => {
-            queryClient.invalidateQueries(['roles']);
+        void toast.promise(DeleteRole(roleID).then(() => {
+            void queryClient.invalidateQueries(['roles']);
             close();
             if (onSucces) onSucces();
         }), {
@@ -33,15 +33,13 @@ export default function DeleteRoleModal({ role, onClose: close, onSucces }: Prop
 
     return (
         <Modal title='Delete Role' show={true} onClose={close}>
-            <Modal.Body>
+            <div>
                 <p>Are you sure you want to delete the role "{role.Name}"?</p>
-            </Modal.Body>
-            <Modal.Footer>
-                <div className='flex place-content-end gap-2'>
-                    <SecondaryButton onClick={close}>Close</SecondaryButton>
-                    <DangerButton onClick={() => deleteRole(role.ID)}>Delete</DangerButton>
-                </div>
-            </Modal.Footer>
+            </div>
+            <div className='flex place-content-end gap-2'>
+                <SecondaryButton onClick={close}>Close</SecondaryButton>
+                <DangerButton onClick={() => deleteRole(role.ID)}>Delete</DangerButton>
+            </div>
         </Modal>
     );
 }

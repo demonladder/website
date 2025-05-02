@@ -8,6 +8,7 @@ import GetCrossroadsPackLevels from '../../../../api/pack/requests/GetCrossroads
 import Page from '../../../../components/Page';
 import { LevelRenderer } from '../../../../components/LevelRenderer';
 import usePack from '../../../../hooks/api/usePack';
+import Heading1 from '../../../../components/headings/Heading1';
 
 export default function CrossroadPack() {
     const { status, data: pack } = usePack(78);
@@ -19,7 +20,7 @@ export default function CrossroadPack() {
     const [isList, viewButtons] = useLevelView('packs.listView');
 
     if (status === 'loading' || levelStatus === 'loading') return <Page><LoadingSpinner /></Page>;
-    if (status === 'error' || levelStatus === 'error') return <Page><h1 className='text-4xl'>An error occurred</h1></Page>
+    if (status === 'error' || levelStatus === 'error') return <Page><Heading1>An error occurred</Heading1></Page>;
 
     const allTypes = packLevels.map((l) => l.Path).filter((t) => t !== undefined);
     const types = allTypes.filter((t, i) => allTypes.indexOf(t) === i);
@@ -41,7 +42,7 @@ export default function CrossroadPack() {
                     {pack.IconName && <img src={'/packIcons/' + pack.IconName} style={{ minWidth: '64px' }} />}
                 </div>
                 <div>
-                    <h1 className='text-4xl mb-1'>{pack.Name}</h1>
+                    <Heading1 className='mb-1'>{pack.Name}</Heading1>
                     <p>{pack.Description}</p>
                 </div>
             </div>

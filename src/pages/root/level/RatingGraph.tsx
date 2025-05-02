@@ -60,7 +60,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                 <div>
                     <h2 className='text-3xl mb-1'>Rating spread</h2>
                     <TwoPlayerButtons levelMeta={levelMeta} showTwoPlayerStats={twoPlayer} setShowTwoPlayerStats={setShowTwoPlayerStats} />
-                    <table>
+                    <table className='mt-2'>
                         <tbody>
                             <tr>
                                 <th></th>
@@ -70,13 +70,13 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                             {filledRatingData.map((d) => (
                                 <tr key={d.Rating}>
                                     <td className='border-e pe-3'>
-                                        <p className={`pe-2 whitespace-nowrap`}>{d.Rating}</p>
+                                        <p className='pe-2 whitespace-nowrap text-center'>{d.Rating}</p>
                                     </td>
                                     <td className='ps-4 pe-2 text-right cursor-pointer select-none' onClick={() => setShowPercentages((prev) => !prev)}>
                                         <p>{showPercentages ? `${(d.Count / totalRatings * 100).toFixed(1)}%` : d.Count}</p>
                                     </td>
                                     <td className='flex items-center'>
-                                        <span className={`inline-block h-6 tier-${d.Rating} round:rounded`} style={{ width: `${d.Count / maxRatingCount * 100}%` }} />
+                                        <span className={`inline-block h-6 tier-${d.Rating} rounded shadow`} style={{ width: `${d.Count / maxRatingCount * 100}%` }} />
                                     </td>
                                 </tr>
                             ))}
@@ -86,7 +86,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
             }
             {enjoymentData.length > 0 &&
                 <div>
-                    <h2 className='text-3xl'>Enjoyment spread</h2>
+                    <h2 className='text-3xl mb-1'>Enjoyment spread</h2>
                     <TwoPlayerButtons levelMeta={levelMeta} showTwoPlayerStats={twoPlayer} setShowTwoPlayerStats={setShowTwoPlayerStats} />
                     <table className='mt-2'>
                         <tbody>
@@ -104,7 +104,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                                         <p>{showPercentages ? `${(d.Count / totalEnjoyments * 100).toFixed(1)}%` : d.Count}</p>
                                     </td>
                                     <td className='flex items-center'>
-                                        <span className={`inline-block h-6 enj-${d.Enjoyment} round:rounded`} style={{ width: `${d.Count / maxEnjoymentCount * 100}%` }} />
+                                        <span className={`inline-block h-6 enj-${d.Enjoyment} rounded shadow`} style={{ width: `${d.Count / maxEnjoymentCount * 100}%` }} />
                                     </td>
                                 </tr>
                             ))}

@@ -23,7 +23,7 @@ function WarningNotification({ message, onClose: close }: { message: string, onC
 
 function ErrorNotification({ message, onClose: close }: { message: string, onClose: () => void }) {
     return (
-        <div className='bg-red-700 px-32 h-8 flex justify-between items-center'>
+        <div className='bg-red-700 text-white px-32 h-8 flex justify-between items-center'>
             <span>{message}</span>
             <button className='bg-black/20 px-2 h-full' onClick={close}>dismiss</button>
         </div>

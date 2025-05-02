@@ -1,7 +1,5 @@
-import { useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import APIClient from '../../../api/APIClient';
-import Container from '../../../components/Container';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
@@ -9,82 +7,72 @@ import renderToastError from '../../../utils/renderToastError';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import { validateUsername } from '../../../utils/validators/validateUsername';
+import Page from '../../../components/Page';
+import Heading1 from '../../../components/headings/Heading1';
+import FormGroup from '../../../components/form/FormGroup';
+import { useMutation } from '@tanstack/react-query';
+import SignUpFn from '../../../api/auth/SignUp';
 
 export default function SignUp() {
-    const navigate = useNavigate();
-
     const [password, setPassword] = useState('');
-    const password2Ref = useRef<HTMLInputElement>(null);
+    const [passwordConfirm, setPasswordConfirm] = useState('');
 
     const url = new URLSearchParams(useLocation().search);
     const overrideKey = url.get('key');
-    const [username, setUsername] = useState(url.get('name') || '');
+    const [username, setUsername] = useState(url.get('name') ?? '');
 
-    function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    const signupMutation = useMutation({
+        mutationFn: ({ username, password, overrideKey }: { username: string, password: string, overrideKey?: string }) => SignUpFn(username, password, overrideKey),
+    });
+
+    function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        if (!password2Ref.current) return;
+        if (password !== passwordConfirm) return toast.error('Passwords must match!');
 
-        const password2 = password2Ref.current.value;
-
-        if (!username) return toast.error('Username cannot be empty!');
-        if (username.length < 3 || username.length > 30) return toast.error('Name must be between 2 and 32 characters long!');
-        if (!validateUsername(username)) return toast.error('Name contains banned characters!');
-
-        if (!password || password.length < 7) {
-            return toast.error('Password must be longer than 6 characters!');
-        }
-
-        if (password !== password2) {
-            return toast.error('Passwords must match!');
-        }
-
-        void toast.promise(APIClient.post<string>('/login/signup', {
-            username,
-            password,
-            overrideKey,
-        }).then((response) => {
-            if (response.status === 200) {
-                navigate(-1);
-            }
-
-            return response;
-        }), {
-            pending: 'Signing you up...',
-            success: 'Signed in!',
-            error: renderToastError,
+        signupMutation.mutate({ username, password, overrideKey: overrideKey ?? undefined }, {
+            onSuccess: (data) => {
+                window.location.href = `/profile/${data.ID}`;
+            },
+            onError: (err) => {
+                if (err instanceof Error) {
+                    toast.error(renderToastError.render({ data: err }));
+                } else {
+                    toast.error('An unknown error occurred. Please try again later.');
+                }
+            },
         });
     }
 
     return (
-        <Container className='bg-gray-800'>
+        <Page>
             <div className='flex justify-center'>
                 <div className='w-11/12 md:w-1/2 lg:w-2/6'>
-                    <h1 className='text-4xl mb-4'>Sign Up</h1>
+                    <Heading1 className='mb-4'>Sign Up</Heading1>
                     {url.get('name') === null &&
                         <div className='my-6'>
-                            <p>Already have your name on the site? Contact the staff <a className='text-blue-500 font-bold underline' href='https://discord.gg/gddl' target='_blank' rel='noopener noreferrer'>in our discord</a> to get an alternative sign up link.</p>
+                            <p>Already have your name on the site from the sheet days? Contact the staff <a className='text-blue-500 font-bold underline' href='https://discord.gg/gddl' target='_blank' rel='noopener noreferrer'>in our discord</a> to get a password reset link.</p>
                         </div>
                     }
-                    <form method='post' action='/signup'>
-                        <div className='mb-3'>
+                    <form onSubmit={handleSubmit}>
+                        <FormGroup>
                             <FormInputLabel htmlFor='username'>Username</FormInputLabel>
-                            <TextInput id='username' value={username} onChange={(e) => overrideKey === null && setUsername(e.target.value)} invalid={!validateUsername(username)} name='username' />
+                            <TextInput id='username' value={username} onChange={(e) => setUsername(e.target.value.trimStart())} invalid={!validateUsername(username)} pattern='^[a-zA-Z0-9._]{2,32}$' disabled={url.get('name') !== null} name='username' autoComplete='off' required />
                             <p className='text-gray-400 text-sm'>Name must be between 2 and 32 characters. It can only contain the following characters: <code>{'a-Z 0-9 . _'}</code></p>
-                        </div>
-                        <div className='mb-3'>
+                        </FormGroup>
+                        <FormGroup>
                             <FormInputLabel htmlFor='password'>Password</FormInputLabel>
-                            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value.trim())} id='password' name='password' autoComplete='new-password' invalid={password.length < 7} required />
+                            <PasswordInput value={password} onChange={(e) => setPassword(e.target.value.trim())} id='password' name='password' autoComplete='new-password' autoCapitalize='off' minLength={7} invalid={password.length < 7} required />
                             <FormInputDescription>Passwords must be at least 7 characters long</FormInputDescription>
-                        </div>
-                        <div className='mb-3'>
+                        </FormGroup>
+                        <FormGroup>
                             <FormInputLabel htmlFor='confirmPassword'>Confirm password</FormInputLabel>
-                            <PasswordInput ref={password2Ref} id='confirmPassword' name='password2' autoComplete='new-password' required />
-                        </div>
-                        <PrimaryButton type='submit' onClick={handleSubmit} className='w-full'>Sign Up</PrimaryButton>
+                            <PasswordInput id='confirmPassword' value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value.trimStart())} autoComplete='new-password' autoCapitalize='off' required />
+                        </FormGroup>
+                        <PrimaryButton type='submit' className='mt-4 w-full'>Sign Up</PrimaryButton>
                     </form>
                 </div>
             </div>
-        </Container>
+        </Page>
     );
 }

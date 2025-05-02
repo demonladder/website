@@ -13,14 +13,16 @@ import useUserSearch from '../../../hooks/useUserSearch';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
+import { Difficulties } from '../../../api/types/LevelMeta';
 
 const deviceOptions = {
     '1': 'PC',
     '2': 'Mobile',
 };
+type DeviceKey = keyof typeof deviceOptions;
 
 export default function AddSubmission() {
-    const [deviceKey, setDeviceKey] = useState('1');
+    const [deviceKey, setDeviceKey] = useState<DeviceKey>('1');
     const [isMutating, setIsMutating] = useState(false);
 
     const [rating, setRating] = useState<number>();
@@ -77,7 +79,7 @@ export default function AddSubmission() {
                         if (data === undefined) {
                             return 'Erm, this is not supposed to appear';
                         }
-                        return `${data} for ${activeLevel.Meta.Name}!`
+                        return `${data} for ${activeLevel.Meta.Name}!`;
                     }
                 },
                 error: renderToastError,
@@ -160,5 +162,5 @@ function validateRefreshRate(FPS: number) {
 }
 
 function validateProof(proof: string, level?: FullLevel) {
-    return !(level?.Meta.Difficulty === 'Extreme' && proof.length === 0);
+    return !(level?.Meta.Difficulty === Difficulties.Extreme && proof.length === 0);
 }

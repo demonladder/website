@@ -1,5 +1,10 @@
 export default function DemonLogo({ diff, ...props }: { diff?: number | string } & React.ImgHTMLAttributes<HTMLImageElement>) {
-    return (<img src={DifficultyToImgSrc(diff)} {...props} />);
+    return (
+        <div className='relative'>
+            <img src={DifficultyToImgSrc(diff)} {...props} className=' z-10' />
+            {/* <img src='/assets/images/feature.png' className='' /> */}
+        </div>
+    );
 }
 
 export function DifficultyToImgSrc(diff?: string | number) {

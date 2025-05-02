@@ -2,18 +2,20 @@ import { useState } from 'react';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { TextInput } from '../../../../components/Input';
+import { NumberInput, TextInput } from '../../../../components/Input';
 import Select from '../../../../components/Select';
 import CheckBox from '../../../../components/input/CheckBox';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
-import GenerateAlphabet, { AlphabetResponse } from '../../../../api/alphabet/GenerateAlphabet';
+import { AlphabetResponse, generateAlphabet } from './api/generateAlphabet';
 import { useLocalStorage } from 'usehooks-ts';
 import { Link } from 'react-router-dom';
 import IDButton from '../../../../components/IDButton';
 import useValidNumber from '../../../../hooks/useValidNumber';
+import _ from 'lodash';
+import renderToastError from '../../../../utils/renderToastError';
 
 const difficultyOptions = {
     '-1': 'Any',
@@ -29,20 +31,20 @@ export default function Alphabet() {
     const maxTier = useValidNumber('');
     const minEnjoyment = useValidNumber('');
     const maxEnjoyment = useValidNumber('');
-    const [difficulty, setDifficulty] = useState('-1');
+    const [difficulty, setDifficulty] = useState<keyof typeof difficultyOptions>('-1');
     const [uncompletedOnly, setUncompletedOnly] = useState(false);
     const [levels, setLevels] = useLocalStorage<AlphabetResponse[]>('alphabetLevels', []);
 
     const generateMutation = useMutation({
-        mutationFn: () => GenerateAlphabet(
-            parseFloat(minTier.value) + (minTier.isInteger ? -0.5 : 0),
-            parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0),
-            parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0),
-            parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0),
+        mutationFn: () => generateAlphabet(
+            _.clamp(parseFloat(minTier.value) + (minTier.isInteger ? -0.5 : 0), 1, 35),
+            _.clamp(parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0), 1, 35),
+            _.clamp(parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0), 0, 10),
+            _.clamp(parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0), 0, 10),
             difficulty !== '-1' ? difficulty : undefined,
             uncompletedOnly
         ),
-        onError: (error: AxiosError) => toast.error((error.response?.data as { error: string })?.error ?? 'An error occurred'),
+        onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
         onSuccess: (data) => {
             setLevels(data);
         },
@@ -64,7 +66,7 @@ export default function Alphabet() {
             <div>
                 <FormGroup>
                     <FormInputLabel>Minimum tier</FormInputLabel>
-                    <TextInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value.trim())} id='minTier' min='1' max='35' invalid={!minTier.isValid} />
+                    <NumberInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value)} id='minTier' min='1' max='35' invalid={!minTier.isValid} />
                     <FormInputDescription>Optional. The lowest tier of the alphabet. Use decimals for higher precision.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
@@ -100,7 +102,7 @@ export default function Alphabet() {
                 <ol className='mt-4 text-xl'>{levels.map((l) => (
                     <li className='even:bg-gray-700 px-2 py-4' key={l.ID}>
                         <div className='flex'>
-                            <p className='ps-2 py-1 grow'><Link to={`/level/${l.ID}`} className='underline'>{l.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
+                            <p className='ps-2 py-1 grow'><Link to={`/level/${l.ID}`} className='underline'>{l.Meta.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
                             <p className={`w-20 text-center py-1 tier-${l.Rating.toFixed()}`}>{l.Rating.toFixed()}</p>
                             <p className={`w-20 text-center py-1 enj-${l.Enjoyment.toFixed()}`}>{l.Enjoyment.toFixed()}</p>
                         </div>

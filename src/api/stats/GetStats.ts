@@ -16,7 +16,6 @@ interface Stats {
     topRaters: {
         UserID: number;
         Name: string;
-        Ratings: number;
     }[];
     packs: number;
 }

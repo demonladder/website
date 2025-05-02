@@ -1,0 +1,28 @@
+@theme {
+    --june-theme-500: #f897de;
+    --june-theme-600: #f897de;
+    --june-theme-700: #f897de;
+    --june-theme-800: #f897de;
+    --june-theme-900: #f897de;
+    --june-theme-950: #f897de;
+    --june-primary: #f897de;
+    --june-from: var(--june-theme-800);
+    --june-to: var(--june-theme-950);
+    --june-text: rgb(27, 25, 25);
+}
+
+[data-theme="june"] {
+    --theme-gradient-angle: 135deg;
+    --theme-gradient-from: var(--june-from);
+    --theme-gradient-to: var(--june-to);
+    
+    --color-theme-400: var(--june-theme-400);
+    --color-theme-500: var(--june-theme-500);
+    --color-theme-600: var(--june-theme-600);
+    --color-theme-700: var(--june-theme-700);
+    --color-theme-800: var(--june-theme-800);
+    --color-theme-900: var(--june-theme-900);
+    --color-theme-950: var(--june-theme-950);
+    --color-theme-primary: var(--june-primary);
+    color: var(--june-text);
+}

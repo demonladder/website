@@ -3,13 +3,13 @@ import Cookies from 'js-cookie';
 
 export type User = {
     userID: number,
-}
+};
 
 interface Settings {
     submission: {
-        defaultRefreshRate: number,
-        defaultDevice: string,
-    },
+        defaultRefreshRate: number;
+        defaultDevice: 'pc' | 'mobile';
+    };
 }
 
 type RecursivePartial<T> = {
@@ -23,7 +23,7 @@ function generateDefaultSettings(): Settings {
     return {
         submission: {
             defaultRefreshRate: 60,
-            defaultDevice: '1',
+            defaultDevice: 'pc',
         },
     };
 }
@@ -107,4 +107,4 @@ export default {
     setUseBackground(state: boolean) {
         localStorage.setItem('background', JSON.stringify(state));
     },
-}
+};

@@ -1,0 +1,12 @@
+@theme {
+    --color-refreshRate-60: #5d5d5d;
+    --color-refreshRate-75: #ff9900;
+    --color-refreshRate-120: #ffff00;
+    --color-refreshRate-144: #00ff00;
+    --color-refreshRate-240: #00ffff;
+    --color-refreshRate-360: #000000;
+}
+
+.bg-refreshRate-60, .bg-refreshRate-360 {
+    color: white;
+}

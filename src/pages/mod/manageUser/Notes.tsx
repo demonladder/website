@@ -11,6 +11,7 @@ import renderToastError from '../../../utils/renderToastError';
 import CreateUserNote from '../../../api/notes/CreateUserNote';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import DeleteUserNote from '../../../api/notes/DeleteUserNote';
+import Heading3 from '../../../components/headings/Heading3';
 
 export default function Notes({ user }: { user: UserResponse }) {
     const addID = useId();
@@ -42,8 +43,8 @@ export default function Notes({ user }: { user: UserResponse }) {
     });
 
     return (
-        <>
-            <h3 className='text-xl'>Notes</h3>
+        <section>
+            <Heading3>Notes</Heading3>
             {notes !== undefined && notes.length !== 0
                 ? <ul className='relative'>
                     {notes?.map((note) => (
@@ -67,6 +68,6 @@ export default function Notes({ user }: { user: UserResponse }) {
                     <p>{newNote.length}/1000</p>
                 </div>
             </FormGroup>
-        </>
+        </section>
     );
 }

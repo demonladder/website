@@ -9,6 +9,7 @@ import GetPackLevels from '../../../../api/pack/requests/GetPackLevels';
 import Page from '../../../../components/Page';
 import usePack from '../../../../hooks/api/usePack';
 import { LevelRenderer } from '../../../../components/LevelRenderer';
+import Heading1 from '../../../../components/headings/Heading1';
 // import GDDLP from './GDDLP';
 
 export default function PackOverview() {
@@ -30,7 +31,7 @@ function Content() {
     const [isList, viewButtons] = useLevelView('packs.listView');
 
     if (status === 'loading' || levelStatus === 'loading') return <LoadingSpinner />;
-    if (status === 'error' || levelStatus === 'error') return <h1 className='text-4xl'>Error: could not fetch pack</h1>;
+    if (status === 'error' || levelStatus === 'error') return <Heading1>Error: could not fetch pack</Heading1>;
 
     // if (packID === 6) {
     //     return <GDDLP pack={pack} />;
@@ -46,7 +47,7 @@ function Content() {
                     {pack.IconName && <img src={'/packIcons/' + pack.IconName} style={{ minWidth: '64px' }} />}
                 </div>
                 <div>
-                    <h1 className='text-4xl mb-1'>{pack.Name}</h1>
+                    <Heading1 className='mb-1'>{pack.Name}</Heading1>
                     <p>{pack.Description}</p>
                 </div>
             </div>

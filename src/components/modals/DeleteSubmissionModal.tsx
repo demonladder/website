@@ -27,22 +27,18 @@ export default function DeleteSubmissionModal({ level, submission, onClose: clos
             close();
         }), {
             pending: 'Deleting...',
-            success: 'Deleted a submission for ' + level.Meta.Name || `(${levelID})`,
+            success: 'Deleted a submission for ' + level.Meta.Name,
             error: renderToastError,
         });
     }
 
     return (
         <Modal title='Delete submission' show={true} onClose={close}>
-            <Modal.Body>
-                <p>Are you sure you want to delete <b>{submission.User.Name}s</b> submission for <b>{level.Meta.Name}</b> <span className={`py-1 px-2 rounded tier-${level.Rating?.toFixed(0) ?? '0'}`}>{level.Rating?.toFixed(0) ?? ' - '}</span> ?</p>
-            </Modal.Body>
-            <Modal.Footer>
-                <div className='flex place-content-end gap-2'>
-                    <SecondaryButton onClick={close}>Close</SecondaryButton>
-                    <DangerButton onClick={() => deleteSubmission()}>Delete</DangerButton>
-                </div>
-            </Modal.Footer>
+            <p>Are you sure you want to delete <b>{submission.User.Name}s</b> submission for <b>{level.Meta.Name}</b> <span className={`py-1 px-2 rounded tier-${level.Rating?.toFixed(0) ?? '0'}`}>{level.Rating?.toFixed(0) ?? ' - '}</span> ?</p>
+            <div className='flex place-content-end gap-2 mt-4'>
+                <SecondaryButton onClick={close}>Close</SecondaryButton>
+                <DangerButton onClick={() => deleteSubmission()}>Delete</DangerButton>
+            </div>
         </Modal>
     );
 }

@@ -9,6 +9,7 @@ type SearchInfo = {
 };
 
 export interface SearchLevelRequest {
+    limit?: number;
     name?: string;
 }
 

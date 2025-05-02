@@ -1,0 +1,25 @@
+@theme {
+    --coffee-400: #3a3a3a;
+    --coffee-600: #bda797;
+    --coffee-700: #bda797;
+    --coffee-800: #8d7c74;
+    --coffee-900: #bda797;
+    --coffee-950: #8d7c74;
+    --coffee-from: var(--coffee-900);
+    --coffee-to: var(--coffee-900);
+    --coffee-primary: var(--coffee-950);
+}
+
+[data-theme="coffee"] {
+    --theme-gradient-angle: 45deg;
+    --theme-gradient-from: var(--coffee-from);
+    --theme-gradient-to: var(--coffee-to);
+    --color-theme-400: var(--coffee-400);
+    --color-theme-600: var(--coffee-600);
+    --color-theme-700: var(--coffee-700);
+    --color-theme-800: var(--coffee-800);
+    --color-theme-900: var(--coffee-900);
+    --color-theme-950: var(--coffee-950);
+    --color-theme-primary: var(--coffee-primary);
+    color: black;
+}

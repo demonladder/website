@@ -65,5 +65,5 @@ export default function useLevelSearch({ ID, required = false, options = {} }: P
         markInvalid: () => setIsInvalid(true),
         SearchBox: (<SearchBox search={search} getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Creator}`} getName={(r) => r.Meta.Name} onSearchChange={setSearch} id={ID} list={data?.levels || []} onDelayedChange={setSearchQuery} setResult={setActiveLevel} status={status} invalid={isInvalid || (required && !activeLevel)} placeholder={defaultData?.Meta.Name} />),
         value: search,
-    }
+    };
 }

@@ -1,12 +1,24 @@
 import { DetailedHTMLProps, InputHTMLAttributes, forwardRef } from 'react';
 
-export const TextInput = forwardRef<HTMLInputElement, DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & { invalid?: boolean }>(({ invalid = false, ...props }, ref) => (
-    <input {...props} ref={ref} type='text' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black/20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />
-));
+interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+    invalid?: boolean;
+}
 
-export const PasswordInput = forwardRef<HTMLInputElement, DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & { invalid?: boolean }>(({ invalid = false, ...props }, ref) => (
-    <input {...props} ref={ref} type='password' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black/20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />
-));
+function Input({ ref, invalid = false, ...props }: InputProps) {
+    return <input {...props} ref={ref} className={'outline-none rounded-none caret-current border-b-2 border-current bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />;
+}
+
+export function TextInput(props: Omit<InputProps, 'type'>) {
+    return <Input {...props} type='text' />;
+}
+
+export function URLInput(props: Omit<InputProps, 'type'>) {
+    return <Input {...props} type='url' />;
+}
+
+export function PasswordInput(props: Omit<InputProps, 'type'>) {
+    return <Input {...props} type='password' />;
+}
 
 interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     disableSpinner?: boolean,
@@ -14,8 +26,8 @@ interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputEl
     invalid?: boolean,
 }
 
-export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disableSpinner, centered, invalid = false, ...props}, ref) => (
-    <input {...props} ref={ref} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-black/20 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />
+export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disableSpinner, centered, invalid = false, ...props }, ref) => (
+    <input {...props} ref={ref} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />
 ));
 
 export type ICheckboxProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;

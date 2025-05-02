@@ -3,8 +3,8 @@ export default interface User {
     Name: string;
     RoleIDs: string;
     HardestID: number | null;
-    Favorite: string | null;
-    LeastFavorite: string | null;
+    Favorite: number[];
+    LeastFavorite: number[];
     MinPref: number | null;
     MaxPref: number | null;
     Introduction: string | null;

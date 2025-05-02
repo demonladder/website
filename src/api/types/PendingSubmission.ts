@@ -1,4 +1,5 @@
 export default interface PendingSubmission {
+    ID: number;
     LevelID: number;
     UserID: number;
     Rating: number | null;

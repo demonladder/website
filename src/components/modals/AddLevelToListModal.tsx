@@ -8,7 +8,8 @@ import LoadingSpinner from '../LoadingSpinner';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
-import AddLevelToList from '../../api/list/AddLevelToList';
+import useCreateListModal from '../../hooks/modals/useCreateListModal';
+import addLevelToList from '../../api/list/addLevelToList';
 
 interface Props {
     onClose: () => void;
@@ -20,18 +21,18 @@ function ListItem({ userID, levelID, list, onClose: close }: { userID: number, l
     const queryClient = useQueryClient();
 
     const onSubmit = useCallback(() => {
-        const promise = AddLevelToList(levelID, list.ID).then(() => {
-            queryClient.invalidateQueries(['user', userID, 'lists']);
-            queryClient.invalidateQueries(['list', list.ID]);
+        const promise = addLevelToList(levelID, list.ID).then(() => {
+            void queryClient.invalidateQueries(['user', userID, 'lists']);
+            void queryClient.invalidateQueries(['list', list.ID]);
             close();
         });
 
-        toast.promise(promise, {
+        void toast.promise(promise, {
             pending: 'Adding...',
             success: 'Added level!',
             error: renderToastError,
         });
-    }, [levelID, list.ID]);
+    }, [close, levelID, list.ID, queryClient, userID]);
 
     return (
         <li className='mt-4'>
@@ -47,25 +48,28 @@ export default function AddLevelToListModal({ onClose, userID, levelID }: Props)
         queryFn: () => GetUserLists(userID, 'Name'),
     });
 
+    const openCreateListModal = useCreateListModal();
+
     return (
-        <Modal title='Add level to list' show={true} onClose={onClose} >
-            <Modal.Body>{status === 'error' ? <p>An error occured, please try again later</p> : <>
-                <ol className='my-6'>
-                    {lists?.map((list) => (
-                        <ListItem userID={userID} levelID={levelID} list={list} onClose={onClose} key={list.ID} />
-                    ))}
-                </ol>
-                {lists?.length === 0 &&
-                    <p>You don't have any lists yet.</p>
-                }
-                <LoadingSpinner isLoading={status === 'loading'} />
-            </>
-            }</Modal.Body>
-            <Modal.Footer>
-                <div className='flex float-right'>
-                    <SecondaryButton onClick={onClose}>Close</SecondaryButton>
-                </div>
-            </Modal.Footer>
+        <Modal title='Add level to list' show={true} onClose={onClose}>
+            <div>{status === 'error'
+                ? <p>An error occured, please try again later</p>
+                : <>
+                    <ol className='my-6'>
+                        {lists?.map((list) => (
+                            <ListItem userID={userID} levelID={levelID} list={list} onClose={onClose} key={list.ID} />
+                        ))}
+                    </ol>
+                    {lists?.length === 0 &&
+                        <p>You don't have any lists yet.</p>
+                    }
+                    <PrimaryButton onClick={() => openCreateListModal(userID, levelID)}>Create new list</PrimaryButton>
+                    <LoadingSpinner isLoading={status === 'loading'} />
+                </>
+            }</div>
+            <div className='flex float-right'>
+                <SecondaryButton onClick={onClose}>Close</SecondaryButton>
+            </div>
         </Modal>
     );
 }

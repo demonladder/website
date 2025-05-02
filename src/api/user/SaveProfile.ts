@@ -1,14 +1,18 @@
 import APIClient from '../APIClient';
 
-export interface EdittableUser {
+interface UpdateUserDTO {
+    ID: number;
     name?: string;
     introduction?: string | null;
-    favoriteLevels?: string | null;
-    leastFavoriteLevels?: string | null;
+    pronouns?: string | null;
+    countryCode?: string | null;
+    hardest?: number | null;
+    favoriteLevels?: number[] | null;
+    leastFavoriteLevels?: number[] | null;
     minPref?: number | null;
     maxPref?: number | null;
 }
 
-export default async function SaveProfile(userID: number, user: EdittableUser) {
-    await APIClient.patch(`/user/${userID}`, user);
+export default async function SaveProfile(userData: UpdateUserDTO) {
+    await APIClient.patch(`/user/${userData.ID}`, userData);
 }

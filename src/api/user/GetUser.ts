@@ -6,28 +6,17 @@ import Role from '../types/Role';
 import Song from '../types/Song';
 import User from '../types/User';
 
-type DTOResponse = User & {
+export type UserResponse = User & {
     Hardest?: Level & { Meta: LevelMeta & { Song: Song } },
     DiscordData: DiscordUserData | null,
     CompletedPacks: { PackID: number, IconName: string }[],
     PendingSubmissionCount: number,
     SubmissionCount: number,
+    TotalAttempts: number | null,
     Roles: Role[],
 };
 
-export type UserResponse = Omit<DTOResponse, 'Favorite' | 'LeastFavorite'> & {
-    FavoriteLevels: number[],
-    LeastFavoriteLevels: number[],
-}
-
 export default async function GetUser(userID: number): Promise<UserResponse> {
-    const res = (await APIClient.get<DTOResponse>(`/user/${userID}`)).data;
-
-    const user: UserResponse = {
-        ...res,
-        FavoriteLevels: res.Favorite?.toString().split(',').map((v: string) => parseInt(v)).slice(0, 2) || [],
-        LeastFavoriteLevels: res.LeastFavorite?.toString().split(',').map((v: string) => parseInt(v)).slice(0, 2) || [],
-    };
-
-    return user;
+    const res = (await APIClient.get<UserResponse>(`/user/${userID}`)).data;
+    return res;
 }

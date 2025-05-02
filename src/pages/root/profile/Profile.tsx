@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
 import Submissions from './Submissions';
@@ -8,7 +8,6 @@ import LevelTracker from './LevelTracker';
 import { AxiosError } from 'axios';
 import Tracker from './Tracker';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
-import toFixed from '../../../utils/toFixed';
 import LevelResolvableText from './LevelResolvableText';
 import Rankings from './Rankings';
 import Lists from './Lists';
@@ -16,25 +15,39 @@ import PendingSubmissions from './PendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
 import useSession from '../../../hooks/useSession';
 import flagEmoji from '../../../utils/flagEmoji';
-import Skills from './Skills';
+import { lazy, Suspense } from 'react';
+const Skills = lazy(() => import('./Skills'));
 import Page from '../../../components/Page';
+import Heading1 from '../../../components/headings/Heading1';
+import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+// import { useReportUserModal } from '../../../hooks/modals/useReportUserModal';
 
 export default function Profile() {
-    const userID = parseInt(useParams().userID ?? '') || 0;
+    const userID = parseInt(useParams().userID ?? '0') || 0;
     const session = useSession();
+    // const openReportUserModal = useReportUserModal();
 
     const { status, data: userData, error } = useUserQuery(userID);
+
+    const navigate = useNavigate();
+    const contextMenu = useContextMenu([
+        // { text: 'Report user', onClick: () => openReportUserModal(userID) },
+        { text: 'Copy profile', onClick: () => void navigator.clipboard.writeText(`https://gdladder.com/profile/${userID}`) },
+        { text: 'Copy user ID', onClick: () => void navigator.clipboard.writeText(userID.toString()) },
+        { text: 'Mod view', onClick: () => navigate(`/mod/manageUser/${userID}`), permission: PermissionFlags.STAFF_DASHBOARD },
+    ]);
 
     if (status === 'loading') return <Page><LoadingSpinner /></Page>;
     if (status === 'error') {
         if ((error as AxiosError).response?.status === 404) {
-            return <Page><h1>User does not exist</h1></Page>;
+            return <Page><Heading1>404: User does not exist</Heading1></Page>;
         }
 
-        return <Page><h1>An error ocurred</h1></Page>;
+        return <Page><Heading1>An error ocurred</Heading1></Page>;
     }
 
-    if (userData === undefined) return <Page><h5>No user data</h5></Page>;
+    if (userData === undefined) return <Page><p>No user data</p></Page>;
 
     const ownPage = StorageManager.hasSession() && userID === session.user?.ID;
 
@@ -53,17 +66,17 @@ export default function Profile() {
     const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png`;
 
     return (
-        <Page key={userID}>
+        <Page onContextMenu={contextMenu} key={userID}>
             <Helmet>
                 <title>{'GDDL - ' + userData.Name}</title>
                 <meta property='og:title' content={userData.Name} />
                 <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
             </Helmet>
             <div className='mb-2 flex gap-4'>{userData.DiscordData?.Avatar &&
-                <img src={pfp} className='inline w-20 rounded-full' />
+                <img src={pfp} className='inline w-20 h-20 rounded-full' />
             }
                 <div className='flex flex-col'>
-                    <h1 className='text-2xl md:text-5xl max-sm:basis-full'>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></h1>
+                    <Heading1 className='max-sm:basis-full'>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></Heading1>
                     <p>
                         {userData.Pronouns &&
                             <span className='me-1'>{userData.Pronouns}</span>
@@ -74,15 +87,15 @@ export default function Profile() {
                     </p>
                 </div>
                 <div className='ms-auto self-center'>
-                    <SecondaryButton onClick={session.logout} hidden={!ownPage}>Log out</SecondaryButton>
+                    <SecondaryButton onClick={() => void session.logout()} hidden={!ownPage}>Log out</SecondaryButton>
                 </div>
             </div>
             <section className='flex max-sm:flex-col'>
-                <div className='bg-gray-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full sm:w-1/3'>
+                <div className='bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full sm:w-1/3'>
                     <p><b>Introduction:</b></p>
                     <p className='border-b-2 h-24 overflow-auto'>{userData.Introduction}</p>
                 </div>
-                <div className='p-3 bg-gray-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3 max-md:gap-y-2'>
+                <div className='p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3 max-md:gap-y-2'>
                     <LevelTracker levelID={userData.HardestID} title='Hardest' />
                     <Tracker>
                         <b>Tier preference:</b>
@@ -91,29 +104,29 @@ export default function Profile() {
                     <Tracker>
                         <b>Favorites:</b>
                         <div>
-                            {userData.FavoriteLevels.length === 0 &&
+                            {userData.Favorite.length === 0 &&
                                 <p>None</p>
                             }
-                            {userData.FavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.FavoriteLevels.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
+                            {userData.Favorite.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.Favorite.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
                         </div>
                     </Tracker>
                     <Tracker>
                         <b>Least favorites:</b>
                         <div>
-                            {userData.LeastFavoriteLevels.length === 0 &&
+                            {userData.LeastFavorite.length === 0 &&
                                 <p>None</p>
                             }
-                            {userData.LeastFavoriteLevels.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.LeastFavoriteLevels.length - 1 === i} key={`userLeastFavorites_${userData.ID}_${i}`} />))}
+                            {userData.LeastFavorite.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.LeastFavorite.length - 1 === i} key={`userLeastFavorites_${userData.ID}_${i}`} />))}
                         </div>
                     </Tracker>
                     <Tracker>
                         <b>Total submissions:</b>
                         <p>{userData.SubmissionCount}</p>
                     </Tracker>
-                    <div className='hidden lg:block'>
+                    <div className=''>
                         <Tracker>
-                            <b>Average enjoyment:</b>
-                            <p>{toFixed(userData.AverageEnjoyment?.toString(), 1, '-')}</p>
+                            <b>Total attempts:</b>
+                            <p>{userData.TotalAttempts ?? 0}</p>
                         </Tracker>
                     </div>
                     <a href='#pendingSubmissions'>
@@ -122,18 +135,18 @@ export default function Profile() {
                             <p>{userData.PendingSubmissionCount}</p>
                         </Tracker>
                     </a>
-                    <div className='lg:hidden'>
-                        <Tracker>
-                            <b>Average enjoyment:</b>
-                            <p>{toFixed(userData.AverageEnjoyment?.toString(), 1, '-')}</p>
-                        </Tracker>
+                    <div className='flex flex-wrap justify-between'>
+                        <b>Average enjoyment:</b>
+                        <p>{userData.AverageEnjoyment?.toFixed(1) ?? '-'}</p>
                     </div>
                 </div>
             </section>
-            <Submissions userID={userID} />
+            <Submissions user={userData} />
             <PendingSubmissions userID={userID} />
             <Lists userID={userID} />
-            <Skills userID={userID} />
+            {StorageManager.getUseExperimental() &&
+                <Suspense fallback={<LoadingSpinner />}><Skills userID={userID} /></Suspense>
+            }
             <Rankings userID={userID} />
         </Page>
     );

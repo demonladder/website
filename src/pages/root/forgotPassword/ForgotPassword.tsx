@@ -1,45 +1,46 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import Container from '../../../components/Container';
 import { TextInput } from '../../../components/Input';
-import APIClient from '../../../api/APIClient';
-import { toast } from 'react-toastify';
+import Heading1 from '../../../components/headings/Heading1';
+import Page from '../../../components/Page';
+import FormGroup from '../../../components/form/FormGroup';
+import { useMutation } from '@tanstack/react-query';
+import { Id, toast } from 'react-toastify';
+import renderToastError from '../../../utils/renderToastError';
 import { AxiosError } from 'axios';
+import { forgotPassword } from '../../../api/auth/forgotPassword';
 
 export default function ForgotPassword() {
     const [username, setUsername] = useState('');
-    const [nameChanged, setNameChanged] = useState(false);
 
-    function onNameChange(name: string) {
-        setUsername(name);
-        setNameChanged(true);
-    }
+    const toastHandle = useRef<Id | null>(null);
+    const mutation = useMutation(forgotPassword, {
+        onMutate: () => toastHandle.current = toast.loading('Sending...'),
+        onSuccess: () => toast.update(toastHandle.current!, { type: 'success', render: 'DM sent!', autoClose: null, isLoading: false }),
+        onError: (err: AxiosError) => toast.update(toastHandle.current!, { type: 'error', render: () => renderToastError.render({ data: err }), autoClose: null, isLoading: false }),
+    });
 
-    async function onSubmit() {
-        setNameChanged(false);
+    function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
 
-        try {
-            await APIClient.post('/forgotPassword', { username });
-            toast.success('Check your DMs');
-        } catch (err) {
-            toast.error(((err as AxiosError).response?.data as any)?.error ?? 'An error occurred');
-        }
-        // toast.success(res.data.message);
+        mutation.mutate(username);
     }
 
     return (
-        <Container>
+        <Page>
             <div className='flex justify-center'>
                 <div className='w-11/12 md:w-1/2 lg:w-2/6'>
-                    <h1 className='text-4xl'>Forgot Password</h1>
-                    <p>Enter your Discord username below and we will send you a link to reset your password.</p>
-                    <p>If you have not linked your GDDL account to Discord, join <a href="https://discord.gg/gddl">our Discord</a> and create a support post.</p>
-                    <div className='mt-2'>
-                        <TextInput value={username} onChange={(e) => onNameChange(e.target.value)} placeholder='Discord username' invalid={username.match(/^[a-zA-Z0-9\._]{2,32}$/) === null} />
-                    </div>
-                    <PrimaryButton onClick={onSubmit} disabled={!nameChanged}>Send</PrimaryButton>
+                    <Heading1 className='mb-4'>Forgot password?</Heading1>
+                    <p>Enter your Discord username below and you will be sent a link to reset your password.</p>
+                    <p>If you have not linked your GDDL account to Discord, join <a href='https://discord.gg/gddl'>our Discord</a> and create a thread in <b>#support</b>.</p>
+                    <form onSubmit={onSubmit}>
+                        <FormGroup>
+                            <TextInput value={username} onChange={(e) => setUsername(e.target.value)} placeholder='Discord username' autoComplete='discord username' invalid={username.match(/^[a-zA-Z0-9._]{2,32}$/) === null} />
+                        </FormGroup>
+                        <PrimaryButton type='submit' disabled={mutation.isLoading}>Send</PrimaryButton>
+                    </form>
                 </div>
             </div>
-        </Container>
+        </Page>
     );
 }

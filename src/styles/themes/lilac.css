@@ -1,0 +1,24 @@
+@theme {
+    --lilac-theme-600: red;
+    --lilac-theme-700: #584596;
+    --lilac-theme-800: #6e58ac;
+    --lilac-theme-900: #806bbf;
+    --lilac-theme-950: #947dd3;
+    --lilac-primary: #947dd3;
+    --lilac-from: #271d43;
+    --lilac-to: #271d43;
+    --lilac-text: #f5edff;
+}
+
+[data-theme="lilac"] {
+    --theme-gradient-angle: 45deg;
+    --theme-gradient-from: var(--lilac-from);
+    --theme-gradient-to: var(--lilac-to);
+    --color-theme-600: var(--lilac-theme-600);
+    --color-theme-700: var(--lilac-theme-700);
+    --color-theme-800: var(--lilac-theme-800);
+    --color-theme-900: var(--lilac-theme-900);
+    --color-theme-950: var(--lilac-theme-950);
+    --color-theme-primary: var(--lilac-primary);
+    color: var(--lilac-text);
+}

@@ -22,29 +22,21 @@ export default function ManageUserContent() {
 
     if (userID === undefined) return;
     if (status === 'loading') return <InlineLoadingSpinner />;
-    if (fetchedUser === undefined) return <p>User not found</p>;
+    if (status === 'error') return <p>Error: couldn't fetch user</p>;
 
     return (
         <>
             <p>Selected user: <b>{fetchedUser.ID} ({fetchedUser.Name})</b></p>
-            <div className='divider my-8 text-gray-500' />
+            <div className='divider my-12 text-gray-500' />
             <EditInformation user={fetchedUser} />
-            <div className='divider my-8 text-gray-500' />
-            <div className='mt-4'>
-                <Submissions />
-            </div>
-            <div className='divider my-8 text-gray-500' />
-            <div className='mt-4'>
-                <Roles user={fetchedUser} />
-            </div>
-            <div className='divider my-8 text-gray-500' />
-            <div className='mt-4'>
-                <Notes user={fetchedUser} />
-            </div>
-            <div className='divider my-8 text-gray-500' />
-            <div className='mt-4'>
-                <BanHistory user={fetchedUser} />
-            </div>
+            <div className='divider my-12 text-gray-500' />
+            <Submissions user={fetchedUser} />
+            <div className='divider my-12 text-gray-500' />
+            <Roles user={fetchedUser} />
+            <div className='divider my-12 text-gray-500' />
+            <Notes user={fetchedUser} />
+            <div className='divider my-12 text-gray-500' />
+            <BanHistory user={fetchedUser} />
         </>
     );
 }

@@ -1,6 +1,7 @@
 import IDButton from './IDButton';
 import { Link } from 'react-router-dom';
 import StorageManager from '../utils/StorageManager';
+import Heading4 from './headings/Heading4';
 
 interface Props {
     ID: number;
@@ -18,13 +19,13 @@ interface Props {
 
 function Header() {
     return (
-        <div className='grid grid-cols-12 font-bold text-2xl ps-2 cursor-default border-b-2'>
-            <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3'>Level Name</h4>
-            <h4 className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'>Creator</h4>
-            <h4 className='col-span-3 hidden xl:block self-center'>Song</h4>
-            <h4 className='col-span-2 hidden lg:flex justify-center self-center'>ID</h4>
-            <h4 className='col-span-2 lg:col-span-1 flex justify-center'><p>Tier</p></h4>
-            <h4 className='col-span-2 lg:col-span-1 flex justify-center'><p>Enj.</p></h4>
+        <div className='grid grid-cols-12 font-bold ps-2 cursor-default border-b-2'>
+            <Heading4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3'>Level Name</Heading4>
+            <Heading4 className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'>Creator</Heading4>
+            <Heading4 className='col-span-3 hidden xl:block self-center'>Song</Heading4>
+            <Heading4 className='col-span-2 hidden lg:flex justify-center self-center'>ID</Heading4>
+            <Heading4 className='col-span-2 lg:col-span-1 flex justify-center'><p>Tier</p></Heading4>
+            <Heading4 className='col-span-2 lg:col-span-1 flex justify-center'><p>Enj.</p></Heading4>
         </div>
     );
 }
@@ -37,7 +38,7 @@ function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoy
     const enjoymentClass = 'enj-' + roundedEnjoyment;
 
     return (
-        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl' + ((completed && StorageManager.getHighlightCompleted()) ? ' bg-green-700 even:bg-green-700/60 font-bold' : ' bg-gray-700 even:bg-gray-700/40 text-white')} onContextMenu={onContextMenu}>
+        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl ' + ((completed && StorageManager.getHighlightCompleted()) ? 'bg-green-700 even:bg-green-700/60 font-bold' : 'bg-theme-700 even:bg-theme-700/40')} onContextMenu={onContextMenu}>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
                     <img src='/assets/images/yes tick.webp' className='max-md:w-6 max-md:h-6 w-8 h-8 self-center me-2' alt='' />

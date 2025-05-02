@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import useSessionStorage from '../../../hooks/useSessionStorage';
@@ -30,7 +30,7 @@ export default function EditPack() {
     const [isLoading, setIsLoading] = useState(false);
 
     const queryClient = useQueryClient();
-    const { data } = usePack(packResult?.ID || 0, {
+    const { data } = usePack(packResult?.ID ?? 0, {
         enabled: packResult !== undefined,
     });
 
@@ -38,7 +38,7 @@ export default function EditPack() {
         const uniquePacks = changeList.reduce((acc: number[], cur) => {
             if (acc.includes(cur.PackID)) return acc;
 
-            return [ ...acc, cur.PackID ];
+            return [...acc, cur.PackID];
         }, []);
 
         return uniquePacks.map((packID) => {
@@ -77,7 +77,7 @@ export default function EditPack() {
             LevelName: levelName,
             Type: 'add',
             EX,
-        }
+        };
 
         // No duplicates
         if (changeList.find((c) => {
@@ -105,7 +105,7 @@ export default function EditPack() {
         }).finally(() => {
             setIsLoading(false);
         });
-    
+
         void toast.promise(request, {
             pending: 'Saving...',
             success: 'Saved',
@@ -126,7 +126,7 @@ export default function EditPack() {
         }).finally(() => {
             setIsLoading(false);
         });
-    
+
         void toast.promise(request, {
             pending: 'Creating...',
             success: 'Created',
@@ -134,20 +134,15 @@ export default function EditPack() {
         });
     }
 
-    function deletePack() {
-        if (!packResult) return;
-
-        const request = DeletePackRequest(packResult.ID).then(() => {
+    const deleteMutation = useMutation({
+        mutationFn: DeletePackRequest,
+        onSuccess: () => {
             void queryClient.invalidateQueries(['packs']);
             void queryClient.invalidateQueries(['packSearch']);
-        });
-
-        void toast.promise(request, {
-            pending: 'Deleting...',
-            success: 'Deleted ' + packResult.Name,
-            error: renderToastError,
-        });
-    }
+            toast.success('Deleted pack');
+        },
+        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
+    });
 
     const hasContent = packResult !== undefined && data !== undefined;
     return (
@@ -187,7 +182,7 @@ export default function EditPack() {
             {hasContent &&
                 <div>
                     <div className='divider my-8'></div>
-                    <DangerButton onClick={deletePack}>Delete pack</DangerButton>
+                    <DangerButton onClick={() => deleteMutation.mutate(packResult.ID)} loading={deleteMutation.isLoading}>Delete pack</DangerButton>
                 </div>
             }
         </div>

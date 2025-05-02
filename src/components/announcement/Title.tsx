@@ -1,5 +1,7 @@
+import Heading1 from '../headings/Heading1';
+
 export default function Title({ children }: { children: React.ReactNode; }) {
     return (
-        <h1 className='text-4xl mb-2'>{children}</h1>
+        <Heading1 className='mb-2'>{children}</Heading1>
     );
 }

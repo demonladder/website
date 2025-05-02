@@ -8,6 +8,6 @@ export interface StaffLeaderboardRecord {
 }
 
 export default async function GetStaffLeaderboard() {
-    const res = await APIClient.get<StaffLeaderboardRecord[]>('/staffLeaderboard');
+    const res = await APIClient.get<StaffLeaderboardRecord[]>('/staff/leaderboard');
     return res.data;
 }

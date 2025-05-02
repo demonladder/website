@@ -7,13 +7,12 @@ import PackMeta from '../../api/types/PackMeta';
 interface Props {
     pack: Pack;
     meta: PackMeta | null;
-    completed?: boolean;
 }
 
-export default function PackRef({ pack, meta, completed = false }: Props) {
+export default function PackRef({ pack, meta }: Props) {
     return (
-        <Link to={`/pack/${pack.ID}`} className={'block relative group px-4 py-2 ' + (completed ? 'bg-green-700' : 'bg-gray-500') + ' round:rounded-md border border-white/0 hover:border-white/100 transition-colors'}>
-            {meta !== null &&
+        <Link to={`/pack/${pack.ID}`} className={'block relative group px-4 py-2 bg-theme-500 round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow-md'}>
+            {meta &&
                 <HoverMenu averageEnjoyment={meta.AverageEnjoyment} levelCount={meta.LevelCount} medianTier={meta.MedianTier} />
             }
             <PackIcon pack={pack} className='inline me-4' />

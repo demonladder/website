@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.css';
@@ -52,7 +51,6 @@ const Game = lazy(() => import('./pages/root/game/Game'));
 import List from './pages/root/list/List';
 import EditLevel from './pages/mod/editLevel/EditLevel';
 import { HelmetProvider } from 'react-helmet-async';
-import ModalProvider from './context/ModalProvider';
 import Roles from './pages/mod/roles/Roles';
 import EditRole from './pages/mod/roles/EditRole';
 import ForgotPassword from './pages/root/forgotPassword/ForgotPassword';
@@ -68,6 +66,9 @@ import Decathlon from './pages/root/generators/decathlon/Decathlon';
 import ManageUser from './pages/mod/manageUser/ManageUser';
 import ManageUserContent from './pages/mod/manageUser/ManageUserContent';
 import FloatingLoadingSpinner from './components/FloatingLoadingSpinner';
+import Appearance from './pages/root/settings/appearance/Appearance';
+import AccountSettings from './pages/root/settings/account/AccountSettings';
+import './migrations';
 
 const router = createBrowserRouter(createRoutesFromElements(
     [
@@ -85,14 +86,15 @@ const router = createBrowserRouter(createRoutesFromElements(
             <Route path='login' element={<Login />} />
             <Route path='signup' element={<SignUp />} />
             <Route path='profile' loader={profileLoader} />
-            <Route path='profile/settings' element={<DiscordSettings />} />
             <Route path='profile/:userID' element={<Profile />} />
             <Route path='notifications' element={<Notifications />} loader={sessionLoader} />
             <Route path='game' element={<Suspense><Game /></Suspense>} />
             <Route path='settings' element={<Settings />}>
+                <Route path='account' element={<AccountSettings />} />
                 <Route path='site' element={<ClientSiteSettings />} />
                 <Route path='profile' element={<DiscordSettings />} />
                 <Route path='submission' element={<SubmissionSettings />} />
+                <Route path='appearance' element={<Appearance />} />
             </Route>
             <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
             <Route path='list/:listID' element={<List />} />
@@ -150,20 +152,33 @@ function createRoot() {
     return root;
 }
 
+document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') ?? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark')) ? 'dark' : 'white'));
+document.documentElement.setAttribute('data-font', localStorage.getItem('font') ?? 'default');
+
 const rootElement = document.getElementById('root') ?? createRoot();
 const root = ReactDOM.createRoot(rootElement);
 if (StorageManager.getIsRounded()) rootElement.classList.add('round');
+
+declare const kofiWidgetOverlay: {
+    draw: (username: string, options: Record<string, string>) => void;
+};
+
+if (import.meta.env.PROD) kofiWidgetOverlay.draw('gddemonladder', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#00b9fe',
+    'floating-chat.donateButton.text-color': '#fff'
+});
+
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
             <HelmetProvider>
                 <MenuContextProvider>
-                    <ModalProvider>
-                        <NavbarNotificationProvider>
-                            <RouterProvider router={router} />
-                            <ReactQueryDevtools initialIsOpen={false} />
-                        </NavbarNotificationProvider>
-                    </ModalProvider>
+                    <NavbarNotificationProvider>
+                        <RouterProvider router={router} />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </NavbarNotificationProvider>
                 </MenuContextProvider>
             </HelmetProvider>
         </QueryClientProvider>

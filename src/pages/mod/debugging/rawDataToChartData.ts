@@ -21,5 +21,5 @@ export default function rawDataToChartData(rawData?: StatRecordNullable[], dataS
                 },
             },
         ],
-    }
+    };
 }

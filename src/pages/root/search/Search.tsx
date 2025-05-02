@@ -16,6 +16,9 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import { QueryParamNames } from './QueryParamNames';
 import { LevelRenderer } from '../../../components/LevelRenderer';
 import useLevelView from '../../../hooks/useLevelView';
+import Heading1 from '../../../components/headings/Heading1';
+import Heading2 from '../../../components/headings/Heading2';
+import { Helmet } from 'react-helmet-async';
 
 export default function Search() {
     const [name, lazyName, setName] = useLazyQueryParam(QueryParamNames.Name, '');
@@ -111,15 +114,23 @@ export default function Search() {
         }
     }, [searchData, query, setQuery]);
 
-    if (searchStatus === 'error') return <h2>An error ocurred!</h2>;
+    function onNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setName(e.target.value);
+        setQuery({ ...query, [QueryParamNames.Page]: 0 });
+    }
+
+    if (searchStatus === 'error') return <Heading2>An error ocurred!</Heading2>;
 
     return (
         <main className='my-4'>
+            <Helmet>
+                <title>GDDL | Search</title>
+            </Helmet>
             <Container className='bg-gray-800'>
-                <h1 className='text-4xl mb-2'>The Ladder</h1>
+                <Heading1 className='mb-2'>The Ladder</Heading1>
                 <div className='flex items-center gap-1'>
                     <div className='relative flex-grow group'>
-                        <TextInput autoFocus placeholder='Search level name...' value={name} onChange={(e) => { setName(e.target.value); setQuery({ ...query, [QueryParamNames.Page]: 0 }) }} />
+                        <TextInput autoFocus placeholder='Search level name...' value={name} onChange={onNameChange} />
                         <button className='absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity' onClick={() => setName('')}>
                             <svg width='16' height='16' stroke='currentColor' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
                                 <path strokeWidth='2' strokeLinecap='round' d='M4 4l22 22M4 26l22 -22' />

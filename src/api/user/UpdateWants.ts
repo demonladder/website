@@ -1,7 +1,7 @@
 import APIClient from '../APIClient';
 
 export default async function UpdateSubmissionSettings(bitField: BitField, DMTierLimit: number) {
-    await APIClient.put('/notifications/wants', { bitField: bitField.bits, DMTierLimit });
+    await APIClient.patch('/wants', { bitField: bitField.bits, DMTierLimit });
 }
 
 export class BitField {

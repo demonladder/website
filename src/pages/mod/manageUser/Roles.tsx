@@ -1,5 +1,4 @@
 import { useId, useState } from 'react';
-import { UserResponse } from '../../../api/user/GetUser';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 import useRoles from '../../../hooks/api/useRoles';
@@ -10,6 +9,8 @@ import { toast } from 'react-toastify';
 import AddRoleToUser from '../../../api/user/AddRoleToUser';
 import renderToastError from '../../../utils/renderToastError';
 import RemoveRoleFromUser from '../../../api/user/RemoveRoleFromUser';
+import { UserResponse } from '../../../api/user/GetUser';
+import Heading3 from '../../../components/headings/Heading3';
 
 export default function Roles({ user }: { user: UserResponse }) {
     const queryClient = useQueryClient();
@@ -22,10 +23,12 @@ export default function Roles({ user }: { user: UserResponse }) {
     const unacquiredRoles = rolesQuery.data?.filter((r) => !user.RoleIDs.includes(r.ID.toString())).filter((r) => r.Name.toLowerCase().includes(addFilter.toLowerCase())) ?? [];
 
     const addRoleMutation = useMutation({
-        mutationFn: (roleID: number) => toast.promise(AddRoleToUser(user.ID, roleID), { pending: 'Adding role...', success: 'Role added', error: renderToastError }),
+        mutationFn: (roleID: number) => AddRoleToUser(user.ID, roleID),
         onSuccess: () => {
+            toast.success('Role added!');
             void queryClient.invalidateQueries(['user', user.ID]);
         },
+        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
     });
 
     const removeRoleMutation = useMutation({
@@ -40,8 +43,8 @@ export default function Roles({ user }: { user: UserResponse }) {
     }
 
     return (
-        <>
-            <h3 className='text-xl'>Roles</h3>
+        <section>
+            <Heading3>Roles</Heading3>
             <div className='mb-4'>
                 <SearchBox search={addFilter} onSearchChange={setAddFilter} list={unacquiredRoles} setResult={onAddRole} getLabel={(r) => `${r.Icon ?? ''} ${r.Name}`} getName={(r) => r.Name} overWriteInput={false} status='ready' placeholder='Role' id={manageUserAddRoleSearchBox} />
             </div>
@@ -53,6 +56,6 @@ export default function Roles({ user }: { user: UserResponse }) {
                     ))}
                 </ul>
             }
-        </>
+        </section>
     );
 }

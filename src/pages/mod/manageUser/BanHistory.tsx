@@ -1,6 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import BanRecord from './BanRecord';
-import { BanUser, GetBanHistory } from '../userBans/api';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 import { UserResponse } from '../../../api/user/GetUser';
 import { TextInput } from '../../../components/Input';
@@ -11,13 +10,13 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputLabel from '../../../components/form/FormInputLabel';
+import Heading3 from '../../../components/headings/Heading3';
+import { useUserBans } from '../../../hooks/api/user/useUserBans';
+import { banUser } from '../../../api/user/bans/banUser';
 
 export default function BanHistory({ user }: { user: UserResponse }) {
     const queryClient = useQueryClient();
-    const banQuery = useQuery({
-        queryKey: ['banHistory', user.ID],
-        queryFn: () => GetBanHistory(user.ID),
-    });
+    const banQuery = useUserBans(user.ID);
 
     const selectID = useId();
     const durationSelect = useSelect({
@@ -33,7 +32,7 @@ export default function BanHistory({ user }: { user: UserResponse }) {
     const reasonRef = useRef<HTMLInputElement>(null);
 
     const banMutation = useMutation({
-        mutationFn: () => toast.promise(BanUser(user.ID, parseInt(durationSelect.activeElement), reasonRef.current?.value ?? ''), {
+        mutationFn: () => toast.promise(banUser(user.ID, parseInt(durationSelect.activeElement), reasonRef.current?.value ?? ''), {
             pending: 'Banning...',
             success: 'User banned!',
             error: renderToastError,
@@ -53,34 +52,33 @@ export default function BanHistory({ user }: { user: UserResponse }) {
         banMutation.mutate();
     }
 
+    if (banQuery.status === 'loading') return <section><InlineLoadingSpinner /></section>;
+
     return (
-        <>
-            <h3 className='text-xl'>Ban history</h3>
-            {banQuery.status !== 'loading'
-                ? <div>
-                    {banQuery.data?.map((record) => (
-                        <BanRecord record={record} key={record.BanID} />
-                    ))}
-                    {banQuery.data?.length === 0 &&
-                        <p>Clean record :D</p>
-                    }
-                    <div className='mt-8'>
-                        <form>
-                            <h4 className='text-lg'>Create new ban</h4>
-                            <FormGroup>
-                                <FormInputLabel htmlFor={selectID}>Select duration:</FormInputLabel>
-                                {durationSelect.Select}
-                            </FormGroup>
-                            <FormGroup>
-                                <FormInputLabel htmlFor='banReason'>Reason:</FormInputLabel>
-                                <TextInput id='banReason' placeholder='Ban reason...' ref={reasonRef} />
-                            </FormGroup>
-                            <PrimaryButton type='submit' onClick={submit} disabled={banMutation.isLoading}>Submit</PrimaryButton>
-                        </form>
-                    </div>
-                </div>
-                : <InlineLoadingSpinner />
-            }
-        </>
-    )
+        <section>
+            <Heading3>Ban history</Heading3>
+            <div>
+                {banQuery.data?.map((record) => (
+                    <BanRecord record={record} key={record.BanID} />
+                ))}
+                {banQuery.data?.length === 0 &&
+                    <p>Clean record :D</p>
+                }
+            </div>
+            <div className='mt-8'>
+                <form>
+                    <h4 className='text-lg'>Create new ban</h4>
+                    <FormGroup>
+                        <FormInputLabel htmlFor={selectID}>Select duration:</FormInputLabel>
+                        {durationSelect.Select}
+                    </FormGroup>
+                    <FormGroup>
+                        <FormInputLabel htmlFor='banReason'>Reason:</FormInputLabel>
+                        <TextInput id='banReason' placeholder='Ban reason...' ref={reasonRef} />
+                    </FormGroup>
+                    <PrimaryButton type='submit' onClick={submit} disabled={banMutation.isLoading}>Submit</PrimaryButton>
+                </form>
+            </div>
+        </section>
+    );
 }

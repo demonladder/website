@@ -18,7 +18,7 @@ export const permissions: Permission[] = [
         ID: 1,
         Name: 'Edit list',
         Description: 'Allows users to accept, reject and edit submissions.',
-        Flag: PermissionFlags.EDIT_LIST,
+        Flag: PermissionFlags.MANAGE_SUBMISSIONS,
     },
     {
         ID: 2,
@@ -79,6 +79,12 @@ export const permissions: Permission[] = [
         Name: 'Site settings',
         Description: 'Allows users to change the site settings.',
         Flag: PermissionFlags.SITE_SETTINGS,
+    },
+    {
+        ID: 15,
+        Name: 'Administrator',
+        Description: 'Allows users to access all settings and features.',
+        Flag: PermissionFlags.ADMIN,
     },
     {
         ID: 4,

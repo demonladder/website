@@ -6,6 +6,7 @@ import RatingFilter from './filters/RatingFilter';
 import EnjoymentFilter from './filters/EnjoymentFilter';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import { QueryParamNames } from './QueryParamNames';
+import _ from 'lodash';
 
 type Props = {
     creator: string,
@@ -14,7 +15,7 @@ type Props = {
     setSong: (value: string) => void,
     reset: () => void,
     show: boolean,
-}
+};
 
 const difficultyOptions = {
     [-1]: 'Any',
@@ -42,7 +43,7 @@ export default function FilterMenu({ creator, setCreator, song, setSong, reset, 
 
     return (
         <div className='grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
-            <div className='min-h-0 bg-gray-700 round:rounded-b-3xl'>
+            <div className='min-h-0 bg-theme-700 round:rounded-b-3xl'>
                 <div className='px-7 py-4 flex flex-col gap-4'>
                     <div className='flex justify-between'>
                         <h2 className='text-2xl' style={{ color: 'currentColor' }}>Filters</h2>
@@ -53,7 +54,7 @@ export default function FilterMenu({ creator, setCreator, song, setSong, reset, 
                         <EnjoymentFilter />
                         <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2'>
                             <p>Difficulty:</p>
-                            <Select id='filtersDifficulty' options={difficultyOptions} activeKey={difficulty.toString()} onChange={(o) => setDifficulty(parseInt(o))} />
+                            <Select id='filtersDifficulty' options={difficultyOptions} activeKey={_.clamp(difficulty, -1, 5) as keyof typeof difficultyOptions} onChange={(o) => setDifficulty(o)} />
                         </div>
                         <div className='col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-2'>
                             <p>Creator:</p>
@@ -65,7 +66,7 @@ export default function FilterMenu({ creator, setCreator, song, setSong, reset, 
                         </div>
                         <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                             <p className='form-label m-0'>Length:</p>
-                            <Select activeKey={length.toString()} onChange={(key) => setLength(parseInt(key))} options={lengthOptions} id='lengthSelectOptions' />
+                            <Select activeKey={_.clamp(length, 0, 6) as keyof typeof lengthOptions} onChange={(key) => setLength(key)} options={lengthOptions} id='lengthSelectOptions' />
                         </div>
                     </div>
                     <div className='divider my-3'></div>

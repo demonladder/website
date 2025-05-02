@@ -10,30 +10,32 @@ import Level from '../../../components/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import { TextInput } from '../../../components/Input';
 import { useNavigate } from 'react-router-dom';
-import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
+import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import useLateValue from '../../../hooks/useLateValue';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
+import User from '../../../api/types/User';
+import Heading2 from '../../../components/headings/Heading2';
 
-type Props = {
-    userID: number,
-}
+interface Props {
+    user: User;
+};
 
 enum EListType {
     inline = 'inline',
     grid = 'grid'
 }
 
-export default function Submissions({ userID }: Props) {
-    const [page, setPage] = useSessionStorage(`profilePageIndex_${userID}`, 0);
+export default function Submissions({ user }: Props) {
+    const [page, setPage] = useSessionStorage(`profilePageIndex_${user.ID}`, 0);
     const [sort, setSort] = useState<{ sort: Sorts, sortDirection: string }>({ sort: Sorts.LEVEL_ID, sortDirection: 'asc' });
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
     const [query, lateQuery, setQuery] = useLateValue('', 500);
     const [onlyIncomplete, setOnlyIncomplete] = useState(false);
 
     const { status, data: submissionResult } = useQuery({
-        queryKey: ['user', userID, 'submissions', { page, name: lateQuery, onlyIncomplete, ...sort }],
-        queryFn: () => GetUserSubmissions({ userID, page, name: lateQuery, onlyIncomplete, ...sort }),
+        queryKey: ['user', user.ID, 'submissions', { page, name: lateQuery, onlyIncomplete, ...sort }],
+        queryFn: () => GetUserSubmissions({ userID: user.ID, page, name: lateQuery, onlyIncomplete, ...sort }),
     });
 
     useEffect(() => {
@@ -53,63 +55,61 @@ export default function Submissions({ userID }: Props) {
     }
 
     return (
-        <div className='mt-6'>
+        <section className='mt-6'>
             <div className='flex items-center gap-2 mb-2 flex-wrap'>
-                <h2 className='text-3xl' id='submissions'>Submissions</h2>
+                <Heading2 id='submissions'>Submissions</Heading2>
                 <SortMenu set={setSort} />
                 <div className='flex items-center text-black'>
-                    <button className={'w-7 h-7 grid place-items-center ' + (listType === EListType.inline ? 'bg-gray-950 text-white' : 'bg-white')} onClick={() => setListType(EListType.inline)}>
+                    <button className={'w-7 h-7 grid place-items-center ' + (listType === EListType.inline ? 'bg-theme-950 text-white' : 'bg-white')} onClick={() => setListType(EListType.inline)}>
                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' stroke='currentColor' viewBox='0 0 16 16'>
                             <path fillRule='evenodd' d='M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z' />
                         </svg>
                     </button>
-                    <button className={'w-7 h-7 grid place-items-center ' + (listType === EListType.grid ? 'bg-gray-950 text-white' : 'bg-white')} onClick={() => setListType(EListType.grid)}>
+                    <button className={'w-7 h-7 grid place-items-center ' + (listType === EListType.grid ? 'bg-theme-950 text-white' : 'bg-white')} onClick={() => setListType(EListType.grid)}>
                         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
                             <path d='M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z' />
                         </svg>
                     </button>
                 </div>
-                <button className={'w-7 h-7 grid place-items-center text-black ' + (onlyIncomplete ? 'bg-gray-950 text-white' : 'bg-white')} onClick={() => setOnlyIncomplete((prev) => !prev)}>
+                <button className={'w-7 h-7 grid place-items-center text-black ' + (onlyIncomplete ? 'bg-theme-950 text-white' : 'bg-white')} onClick={() => setOnlyIncomplete((prev) => !prev)}>
                     <span><b>%</b></span>
                 </button>
                 <div className='max-md:w-full md:w-60'>
                     <TextInput value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Filter by name...' />
                 </div>
             </div>
-            {listType === 'inline' ?
-                <InlineList levels={submissions} userID={userID} /> :
-                <GridList levels={submissions} userID={userID} />
+            {listType === EListType.inline ?
+                <InlineList levels={submissions} user={user} /> :
+                <GridList levels={submissions} user={user} />
             }
             {submissions.length === 0 &&
                 <p>No levels</p>
             }
             <PageButtons onPageChange={setPage} meta={{ ...submissionResult, page }} />
-        </div>
+        </section>
     );
 }
 
-function InlineList({ levels, userID }: { levels: (UserSubmission)[], userID: number }) {
+function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
 
     const navigate = useNavigate();
 
-    const { createMenu } = useContextMenu();
-
+    const setContext = useContextMenu();
     function openContext(e: React.MouseEvent, submission: UserSubmission) {
         e.preventDefault();
+        e.stopPropagation();
 
-        const buttons: ButtonData[] = [
-            { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
-            { text: 'Add to list', onClick: () => openAddListLevelModal(userID, submission.LevelID) },
-            { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
-        ];
-        if (userID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.Level, submission) });
-
-        createMenu({
+        setContext({
             x: e.clientX,
             y: e.clientY,
-            buttons,
+            buttons: [
+                { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
+                { text: 'Add to list', onClick: () => openAddListLevelModal(user.ID, submission.LevelID) },
+                { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
+                { text: 'Delete', type: 'danger', userID: submission.UserID, onClick: () => openDeleteSubmissionModal(submission.Level, { ...submission, User: user }) },
+            ],
         });
     }
 
@@ -125,27 +125,26 @@ function InlineList({ levels, userID }: { levels: (UserSubmission)[], userID: nu
     );
 }
 
-function GridList({ levels, userID }: { levels: UserSubmission[], userID: number }) {
+function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
 
     const navigate = useNavigate();
-    const { createMenu } = useContextMenu();
-
+    
+    const setContext = useContextMenu();
     function openContext(e: React.MouseEvent, submission: UserSubmission) {
         e.preventDefault();
+        e.stopPropagation();
 
-        const buttons: ButtonData[] = [
-            { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
-            { text: 'Add to list', onClick: () => openAddListLevelModal(userID, submission.LevelID) },
-            { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
-        ];
-        if (userID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.Level, submission) });
-
-        createMenu({
+        setContext({
             x: e.clientX,
             y: e.clientY,
-            buttons,
+            buttons: [
+                { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
+                { text: 'Add to list', onClick: () => openAddListLevelModal(user.ID, submission.LevelID) },
+                { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
+                { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.Level, { ...submission, User: user }), userID: submission.UserID },
+            ],
         });
     }
 

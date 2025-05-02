@@ -7,49 +7,54 @@ import CreateList from '../../api/list/CreateList';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
+import FormGroup from '../form/FormGroup';
+import FormInputLabel from '../form/FormInputLabel';
+import FormInputDescription from '../form/FormInputDescription';
 
 interface Props {
     userID: number;
+    levelID: number;
     onClose: () => void;
 }
 
-export default function CreateListModal({ userID, onClose: close }: Props) {
+export default function CreateListModal({ userID, levelID, onClose: close }: Props) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
     const queryClient = useQueryClient();
 
-    const createList = useCallback(() => {
-        const promise = CreateList(title, description).then(() => {
+    const createList = useCallback((e: React.FormEvent) => {
+        e.preventDefault();
+
+        const promise = CreateList(title, levelID, description).then(() => {
             close();
-            queryClient.invalidateQueries(['user', userID, 'lists']);
+            void queryClient.invalidateQueries(['user', userID, 'lists']);
         });
 
-        toast.promise(promise, {
+        void toast.promise(promise, {
             pending: 'Creating...',
             success: 'List created!',
             error: renderToastError,
         });
-    }, [title, description]);
+    }, [title, description, close, levelID, queryClient, userID]);
 
     return (
         <Modal title='Create list' show={true} onClose={close}>
-            <Modal.Body>
-                <div>
-                    <p>Title</p>
-                    <TextInput value={title} onChange={(e) => setTitle(e.target.value.trimStart())} invalid={!title.match(/^[a-zA-Z0-9\s\._-]{3,32}$/)} />
-                </div>
-                <div className='mt-2'>
-                    <p>Description</p>
+            <form onSubmit={createList}>
+                <FormGroup>
+                    <FormInputLabel>Title</FormInputLabel>
+                    <TextInput value={title} onChange={(e) => setTitle(e.target.value.trimStart())} invalid={!title.match(/^[a-zA-Z0-9\s._-]{3,32}$/)} minLength={3} maxLength={32} required />
+                    <FormInputDescription>3-32 characters. Allowed characters: a-Z 0-9 spaces . _ -</FormInputDescription>
+                </FormGroup>
+                <FormGroup>
+                    <FormInputLabel>Description</FormInputLabel>
                     <TextInput value={description} onChange={(e) => setDescription(e.target.value)} />
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <div className='flex float-right'>
-                    <SecondaryButton onClick={close}>Close</SecondaryButton>
-                    <PrimaryButton onClick={createList}>Create</PrimaryButton>
-                </div>
-            </Modal.Footer>
+                </FormGroup>
+                <FormGroup className='flex float-right gap-2'>
+                    <SecondaryButton type='button' onClick={close}>Close</SecondaryButton>
+                    <PrimaryButton type='submit'>Create</PrimaryButton>
+                </FormGroup>
+            </form>
         </Modal>
     );
 }

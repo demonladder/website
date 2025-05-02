@@ -1,0 +1,24 @@
+@theme {
+    --peach-theme-600: green;
+    --peach-theme-700: #ffede9;
+    --peach-theme-800: #ffdad4;
+    --peach-theme-900: #ffb4a9;
+    --peach-theme-950: #ff897a;
+    --peach-primary: #ff897a;
+    --peach-from: #fff7f6;
+    --peach-to: #fff7f6;
+    --peach-text: #000000;
+}
+
+[data-theme="peach"] {
+    --theme-gradient-angle: 45deg;
+    --theme-gradient-from: var(--peach-from);
+    --theme-gradient-to: var(--peach-to);
+    --color-theme-600: var(--peach-theme-600);
+    --color-theme-700: var(--peach-theme-700);
+    --color-theme-800: var(--peach-theme-800);
+    --color-theme-900: var(--peach-theme-900);
+    --color-theme-950: var(--peach-theme-950);
+    --color-theme-primary: var(--peach-primary);
+    color: var(--peach-text);
+}

@@ -1,4 +1,3 @@
-// NOTE: same interface exists in API
 export interface Change {
     PackID: number;
     PackName: string;

@@ -13,8 +13,6 @@ export default function Debugging() {
         toast.error('Error occurred');
     }
 
-    const { mutate: syncLevels, status: syncLevelsStatus } = useMutation(async () => APIClient.post('/tests/syncLevels').catch(handleError));
-    const { mutate: syncTwoPlayerLevels, status: syncTwoPlayerLevelsStatus } = useMutation(async () => APIClient.post('/tests/syncTwoPlayerLevels').catch(handleError));
     const { mutate: fixDeviation, status: fixDeviationStatus } = useMutation(async () => APIClient.post('/tests/fixDeviation', {}, { timeout: ms('20m') }).catch(handleError));
     const { mutate: restartServer, status: restartServerStatus } = useMutation(async () => APIClient.post('/tests/restartServer', {}).catch(handleError));
 
@@ -23,14 +21,6 @@ export default function Debugging() {
             <h3 className='text-2xl'>Debugging</h3>
             <p className='mb-2'>For developer eyes only :P</p>
             <div>
-                <div className='mb-2'>
-                    <SecondaryButton onClick={() => syncLevels()} disabled={syncLevelsStatus === 'loading'}>Sync level data to GD database</SecondaryButton>
-                    <p>Speed is capped at 0.6s per level to avoid getting rate limited. 7k demons take a little over 1 hour to sync :yuhh:</p>
-                </div>
-                <div className='mb-2'>
-                    <SecondaryButton onClick={() => syncTwoPlayerLevels()} disabled={syncTwoPlayerLevelsStatus === 'loading'}>Sync two player levels</SecondaryButton>
-                    <p>Gets all two player levels and updates the database.</p>
-                </div>
                 <div className='mb-2'>
                     <SecondaryButton onClick={() => fixDeviation()} disabled={fixDeviationStatus === 'loading'}>Recalculate level stats</SecondaryButton>
                     <p>Takes like 17 minutes</p>

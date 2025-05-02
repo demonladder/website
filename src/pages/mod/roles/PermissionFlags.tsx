@@ -1,5 +1,5 @@
 export enum PermissionFlags {
-    EDIT_LIST = 1 << 0,
+    MANAGE_SUBMISSIONS = 1 << 0,
     PASSWORD_LINKS = 1 << 1,
     STAFF_DASHBOARD = 1 << 2,
     BOT_CONTROL = 1 << 3,
@@ -14,4 +14,5 @@ export enum PermissionFlags {
     MANAGE_LISTS = 1 << 12,
     DELETE_LEVELS = 1 << 13,
     MANAGE_NOTES = 1 << 14,
+    ADMIN = 1 << 15,
 }

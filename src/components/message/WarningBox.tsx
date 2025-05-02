@@ -1,9 +1,10 @@
-export default function WarningBox({ text }: { text: string|undefined }) {
-    if (!text) return null;
-
+export default function WarningBox({ children }: { children: React.ReactNode }) {
     return (
-        <div className='border-2 border-red-600 font-bold text-center p-2 my-2'>
-            <p>{text}</p>
+        <div className='bg-amber-400/40 border-s-4 border-amber-400 round:rounded-lg p-2 my-4'>
+            <p className='font-bold'><i className='bx bxs-error text-xl' /> Warning</p>
+            <div>
+                {children}
+            </div>
         </div>
     );
 }

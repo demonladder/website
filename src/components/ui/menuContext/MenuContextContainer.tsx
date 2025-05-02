@@ -1,23 +1,29 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { MenuContext } from './MenuContext';
+import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
+import useSession from '../../../hooks/useSession';
 
 export interface ButtonData {
-    text: string;
+    text: React.ReactNode;
     onClick?: React.MouseEventHandler;
     type?: 'info' | 'danger';
     disabled?: boolean;
+    ID?: string;
+    requireSession?: boolean;
+    permission?: PermissionFlags;
+    userID?: number;
 }
 
-interface MenuData {
+export interface MenuData {
     x: number;
     y: number;
     buttons: ButtonData[];
 }
 
-const MenuContext = createContext<{ menuData: MenuData | undefined, setMenuData: React.Dispatch<React.SetStateAction<MenuData | undefined>> } | undefined>(undefined);
-
 export default function MenuContextProvider({ children }: { children?: React.ReactNode }) {
     const [menuData, setMenuData] = useState<MenuData>();
     const menuRef = useRef<HTMLDivElement>(null);
+    const session = useSession();
 
     useEffect(() => {
         function close(e: MouseEvent) {
@@ -37,7 +43,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         return () => {
             document.removeEventListener('click', close);
             document.removeEventListener('scroll', closeOnScroll);
-        }
+        };
     }, []);
 
     function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, b: ButtonData) {
@@ -50,10 +56,12 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         <MenuContext.Provider value={{ menuData, setMenuData }}>
             {children}
             {menuData &&
-                <div ref={menuRef} className='fixed w-36 z-50 bg-gray-900 text-white round:rounded shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
+                <div ref={menuRef} className='fixed w-36 z-50 bg-theme-900 text-white round:rounded shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
                     <ul>{
-                        menuData.buttons.map((b) => (
-                            <li>
+                        menuData.buttons
+                            .filter((b) => !(b.requireSession && !session.user) && !(b.permission && !session.hasPermission(b.permission)) && !(b.userID && b.userID !== session.user?.ID))
+                            .map((b) => (
+                            <li key={b.ID}>
                                 <button onClick={(e) => handleClick(e, b)} className={'w-full text-start my-1 px-2 py-1 disabled:text-gray-400 disabled:line-through ' + (!(b.type === 'danger') ? 'hover:bg-gray-700' : 'hover:bg-red-600')} disabled={b.disabled}>
                                     {b.text}
                                 </button>
@@ -64,17 +72,4 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
             }
         </MenuContext.Provider>
     );
-}
-
-export function useContextMenu() {
-    const context = useContext(MenuContext);
-
-    return {
-        createMenu: (data: MenuData) => {
-            context?.setMenuData(data);
-        },
-        closeMenu: () => {
-            context?.setMenuData(undefined);
-        }
-    };
 }

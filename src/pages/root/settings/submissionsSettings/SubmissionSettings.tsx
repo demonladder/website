@@ -1,46 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { NumberInput } from '../../../../components/Input';
-import StorageManager from '../../../../utils/StorageManager';
 import Select from '../../../../components/Select';
 import Notifications from './Notifications';
 import DiscordRoles from './DiscordRoles';
+import useLocalStorage from '../../../../hooks/useLocalStorage';
 
 const deviceOptions = {
-    1: 'PC',
-    2: 'Mobile',
-};
+    pc: 'PC',
+    mobile: 'Mobile',
+} as const;
 
 export default function SubmissionSettings() {
-    const [defaultFPS, setDefaultFPS] = useState(StorageManager.getSettings().submission.defaultRefreshRate);
-    const [defaultDevice, setDefaultDevice] = useState(StorageManager.getSettings().submission.defaultDevice || '1');
+    const [defaultFPS, setDefaultFPS] = useLocalStorage('settings.submissions.defaultFPS', 60);
+    const [defaultDevice, setDefaultDevice] = useLocalStorage<keyof typeof deviceOptions>('defaultDevice', 'pc');
     const [FPSInvalid, setFPSInvalid] = useState(false);
 
-    useEffect(() => {
-        StorageManager.setSetting({
-            submission: {
-                defaultDevice,
-            },
-        });
-    }, [defaultDevice]);
-
     function updateFPS(e: React.ChangeEvent<HTMLInputElement>) {
-        const parsed = parseInt(e.target.value) as number;
+        const parsed = parseInt(e.target.value);
         setDefaultFPS(parsed);
         setFPSInvalid(false);
 
-        if (!isNaN(parsed) && parsed >= 30) {
-            StorageManager.setSetting({
-                submission: {
-                    defaultRefreshRate: parsed,
-                },
-            });
-        } else {
+        if (isNaN(parsed) || parsed < 30) {
             setFPSInvalid(true);
         }
     }
 
     return (
-        <main>
+        <section>
             <h2 className='text-3xl mb-4'>Submission settings</h2>
             <div>
                 <label htmlFor='defaultRefreshRateInput'><b>Default FPS</b></label>
@@ -49,11 +35,12 @@ export default function SubmissionSettings() {
             </div>
             <div>
                 <label htmlFor='submitDevice'><b>Default device</b></label>
-                <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice} onChange={setDefaultDevice} />
+                <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice ?? 'pc'} onChange={setDefaultDevice} />
                 <p className='text-gray-400 text-sm'>The default device for all your submissions</p>
             </div>
             <Notifications />
+            <div className='divider my-8 text-gray-400'></div>
             <DiscordRoles />
-        </main>
+        </section>
     );
 }

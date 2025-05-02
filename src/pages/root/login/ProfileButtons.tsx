@@ -5,16 +5,12 @@ import useNavbarNotification from '../../../context/NavbarNotification/useNavbar
 import { useEffect } from 'react';
 import useSession from '../../../hooks/useSession';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
-import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 
 export default function ProfileButtons() {
     const session = useSession();
 
-    if (session.loadStatus === 'loading') return <InlineLoadingSpinner />;
-
-    if (!session.user) {
-        return <LoginButton />
-    }
+    if (session.loadStatus === 'loading') return <LoginButton />;
+    if (!session.user) return <LoginButton />;
 
     return <ProfileButton userID={session.user.ID} username={session.user.Name} />;
 }
@@ -24,7 +20,7 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
 
     const { discordSync } = useNavbarNotification();
     useEffect(() => {
-        if (session.user && !session?.user?.DiscordData) {
+        if (session.user && !session.user.DiscordData) {
             discordSync();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,13 +31,13 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
     return (
         <div className='flex items-center gap-1'>
             {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
-                <Link to='/mod'><i className='bx bx-shield-quarter text-2xl'></i></Link>
+                <Link to='/mod'><i className='bx bx-shield-quarter text-2xl' /></Link>
             }
             <NotificationButton />
             <Link to={`/profile/${userID}`} className='flex items-center'>
                 <span className='fs-5'>{username}</span>
                 <div className='ms-3 w-16'>
-                    {session?.user?.DiscordData?.Avatar
+                    {session.user?.DiscordData?.Avatar
                         ? <img src={pfp || ''} className='rounded-full' />
                         : <DemonLogo diff={session?.user?.Hardest?.Meta.Difficulty} />
                     }
@@ -53,9 +49,9 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
 
 export function LoginButton() {
     return (
-        <div className='py-2 flex items-center gap-3 text-white'>
-            <Link to='/signup' className='bg-button-secondary-2 px-2 py-1 align-middle'>Sign up</Link>
-            <Link to='/login' className='bg-button-primary-2 px-2 py-1 align-middle'>Log in</Link>
+        <div className='py-2 flex items-center gap-3'>
+            <Link to='/signup' className='bg-button-secondary-2 px-2 py-1 align-middle' style={{ color: 'white' }}>Sign up</Link>
+            <Link to='/login' className='bg-button-primary-2 px-2 py-1 align-middle' style={{ color: 'white' }}>Log in</Link>
         </div>
     );
 }

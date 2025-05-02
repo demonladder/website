@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import ProfileButtons from '../../pages/root/login/ProfileButtons';
 import { Link, useNavigate } from 'react-router-dom';
 import HeaderRoutes from './HeaderRoutes';
@@ -8,17 +8,18 @@ import useUserSearch from '../../hooks/useUserSearch';
 export default function HeaderThin() {
     const [navOpen, setNavOpen] = useState(false);
     const navigate = useNavigate();
+    const searchID = useId();
     const userSearch = useUserSearch({
-        ID: 'userSearchThin',
+        ID: searchID,
         onUserSelect: (user) => {
             navigate('/profile/' + user.ID);
         },
     });
 
     return (
-        <header className='bg-primary text-black flex items-center justify-between flex-wrap gap-x-8 px-16 py-8'>
+        <header className='bg-theme-primary text-(--theme-primary-text) flex items-center justify-between flex-wrap gap-x-8 px-16 py-8'>
             <div>
-                <Link to='/' className='font-bold text-3xl'>GDDLadder</Link>
+                <Link to='/' className='font-bold text-3xl'>GDDL</Link>
             </div>
             <button onClick={() => setNavOpen(prev => !prev)}>
                 <svg width='32px' height='32px' viewBox='0 0 32 32' stroke='currentColor' strokeWidth='2'>

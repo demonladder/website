@@ -29,11 +29,17 @@ export default function Users({ roleID }: { roleID: number }) {
     return (
         <div>
             <h4 className='text-xl mt-4'>Users</h4>
-            <ul>
-                {data?.map((user) => (
-                    <li className='my-2' key={user.ID}><button onClick={() => removeUser(user.ID)}><i className='bx bx-x' /></button> {user.Name}</li>
-                ))}
-            </ul>
+            {data?.length === 0
+                ? <p>No users have this role</p>
+                : <>
+                    <p>Users with this role:</p>
+                    <ul>
+                        {data?.map((user) => (
+                            <li className='my-2' key={user.ID}><button onClick={() => removeUser(user.ID)}><i className='bx bx-x' /></button> {user.Name}</li>
+                        ))}
+                    </ul>
+                </>
+            }
         </div>
     );
 }

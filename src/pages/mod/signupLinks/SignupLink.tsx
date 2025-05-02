@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import GetSignupTokens, { TokenPair } from '../../../api/signupToken/GetSignupTokens';
-import SignupToken from '../../../api/signupToken/SignupToken';
+import GetSignupTokens from '../../../api/signupToken/GetSignupTokens';
+import SignupToken from '../../../api/types/SignupToken';
+import CreateSignupToken from '../../../api/signupToken/SignupToken';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/types/TinyUser';
@@ -9,9 +10,12 @@ import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputLabel from '../../../components/form/FormInputLabel';
+import User from '../../../api/types/User';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import FormGroup from '../../../components/form/FormGroup';
 
-function Token({ token }: { token: TokenPair }) {
-    const link = 'https://gdladder.com/signup?key=' + token.Token + '&name=' + token.Name;
+function Token({ token, user }: { token: SignupToken, user: User }) {
+    const link = `https://gdladder.com/signup?key=${token.Token}&name=${user.Name}`;
 
     function linkClick(e: React.MouseEvent<HTMLParagraphElement>) {
         void navigator.clipboard.writeText(link);
@@ -24,7 +28,7 @@ function Token({ token }: { token: TokenPair }) {
 
     return (
         <div>
-            <p><b>{token.Name}:</b></p>
+            <p><b>{user.Name}:</b></p>
             <p className='break-words cursor-pointer inline underline' onClick={linkClick}>{link}</p>
         </div>
     );
@@ -33,15 +37,14 @@ function Token({ token }: { token: TokenPair }) {
 export default function SignupLink() {
     const [result, setResult] = useState<TinyUser>();
 
-    const { data: tokens } = useQuery({
+    const { data: tokens, refetch } = useQuery({
         queryKey: ['signupTokens'],
         queryFn: GetSignupTokens,
-        staleTime: 10000, // 10 seconds
     });
 
     const queryClient = useQueryClient();
     const genToken = useMutation({
-        mutationFn: async (context: number) => toast.promise(SignupToken(context).then(() => queryClient.invalidateQueries(['signupTokens'])), {
+        mutationFn: async (context: number) => toast.promise(CreateSignupToken(context).then(() => queryClient.invalidateQueries(['signupTokens'])), {
             pending: 'Generating...',
             success: 'Generated!',
             error: renderToastError,
@@ -58,15 +61,18 @@ export default function SignupLink() {
         <div>
             <h3 className='mb-4 text-2xl'>Create Sign-up Link</h3>
             <p className='mb-4'>Generate a one-time sign-up link for an existing user. Anyone with the link can create a password for the listed username.</p>
-            <div className='mb-4'>
-                <FormInputLabel htmlFor='tokenReceiver'>User:</FormInputLabel>
+            <FormGroup>
+                <FormInputLabel htmlFor='tokenReceiver'>User</FormInputLabel>
                 <UserSearchBox setResult={setResult} id='tokenReceiver' />
                 <PrimaryButton onClick={newLink} disabled={genToken.status === 'loading'}>Generate</PrimaryButton>
+            </FormGroup>
+            <div className='flex justify-between items-center mt-8'>
+                <p>Links</p>
+                <SecondaryButton onClick={() => void refetch()} disabled={tokens === undefined}>Refresh</SecondaryButton>
             </div>
-            <p>Links:</p>
             <div className='flex flex-col gap-4'>
                 {(tokens !== undefined)
-                    ? tokens.map((token) => <Token token={token} key={token.Token} />)
+                    ? tokens.map((token) => <Token token={token} user={token.User} key={token.Token} />)
                     : <LoadingSpinner />
                 }
             </div>

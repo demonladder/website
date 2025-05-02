@@ -1,19 +1,32 @@
-import { NavLink, Outlet } from 'react-router-dom';
-import Container from '../../../components/Container';
+import { NavLink as Nav, Outlet } from 'react-router-dom';
+import Page from '../../../components/Page';
+import Heading1 from '../../../components/headings/Heading1';
+import { Helmet } from 'react-helmet-async';
 
 export default function Generators() {
     return (
-        <Container>
-            <h1 className='text-4xl'>Generators</h1>
+        <Page>
+            <Helmet>
+                <title>GDDL | Generators</title>
+            </Helmet>
+            <Heading1>Generators</Heading1>
             <p>Generators are fun tools to make lists. You can use them straight away or save the results for later</p>
             <div className='grid gap-2 grid-cols-1 md:grid-cols-2 2xl:grid-cols-5 my-8 text-xl'>
-                <NavLink to='alphabet' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Alphabet</NavLink>
-                <NavLink to='roulette' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Roulette</NavLink>
-                <NavLink to='reverseRoulette' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Reverse roulette [WIP]</NavLink>
-                <NavLink to='tierRoulette' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Tier roulette</NavLink>
-                <NavLink to='decathlon' className={({ isActive }) => `p-2 text-center bg-gray-${isActive ? 600 : 700}`}>Decathlon</NavLink>
+                <NavLink to='alphabet'>Alphabet</NavLink>
+                <NavLink to='roulette'>Roulette</NavLink>
+                <NavLink to='reverseRoulette'>Reverse roulette [WIP]</NavLink>
+                <NavLink to='tierRoulette'>Tier roulette</NavLink>
+                <NavLink to='decathlon'>Decathlon</NavLink>
             </div>
             <Outlet />
-        </Container>
+        </Page>
+    );
+}
+
+function NavLink({ to, children }: { to: string, children: React.ReactNode }) {
+    return (
+        <Nav to={to} className={({ isActive }) => `p-2 text-center round:rounded-lg ${isActive ? 'bg-theme-600 font-bold border border-theme-outline' : 'bg-theme-700'}`}>
+            {children}
+        </Nav>
     );
 }

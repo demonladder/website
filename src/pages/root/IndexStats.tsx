@@ -5,15 +5,15 @@ import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
 import { Link } from 'react-router-dom';
 import ms from 'ms';
 
+function anyOrLoading<T>(value: T) {
+    return value ?? (<InlineLoadingSpinner />);
+}
+
 export default function IndexStats() {
     const { data } = useQuery({
         queryKey: ['stats'],
         queryFn: GetStats,
     });
-
-    function anyOrLoading<T>(value: T) {
-        return value ?? (<InlineLoadingSpinner />);
-    }
 
     return (
         <Container className='xl:row-span-3'>

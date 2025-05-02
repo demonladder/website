@@ -1,5 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetTags from '../../../api/tags/GetTags';
+import { useQueryClient } from '@tanstack/react-query';
 import { Tag } from '../../../api/types/level/Tag';
 import { useRef, useState } from 'react';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -13,6 +12,7 @@ import renderToastError from '../../../utils/renderToastError';
 import CreateTag from '../../../api/tags/CreateTag';
 import useDeleteTagModal from '../../../hooks/modals/useDeleteTagModal';
 import ReorderTag from '../../../api/tags/ReorderTag';
+import { useTags } from '../../../hooks/api/tags/useTags';
 
 export default function EditTags() {
     const [isMutating, setIsMutating] = useState(false);
@@ -23,10 +23,7 @@ export default function EditTags() {
     const openDeleteTagModal = useDeleteTagModal();
 
     const queryClient = useQueryClient();
-    const { data: tags } = useQuery({
-        queryKey: ['tags'],
-        queryFn: GetTags,
-    });
+    const { data: tags } = useTags();
 
     function onTagSelect(tag?: Tag) {
         if (tag === undefined || selectedTag?.ID === tag.ID) {
@@ -51,8 +48,8 @@ export default function EditTags() {
         if (!nameRef.current || !descriptionRef.current) return;
 
         setIsMutating(true);
-        toast.promise(SaveTag(selectedTag, nameRef.current.value, descriptionRef.current.value).then(() => {
-            queryClient.invalidateQueries(['tags']);
+        void toast.promise(SaveTag(selectedTag, nameRef.current.value, descriptionRef.current.value).then(() => {
+            void queryClient.invalidateQueries(['tags']);
         }).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Saved',
@@ -65,10 +62,10 @@ export default function EditTags() {
         setIsMutating(true);
 
         if (!nameRef.current || !descriptionRef.current) return;
-        toast.promise(CreateTag(nameRef.current.value, descriptionRef.current.value).then(() => {
-            queryClient.invalidateQueries(['tags']);
+        void toast.promise(CreateTag(nameRef.current.value, descriptionRef.current.value).then(() => {
+            void queryClient.invalidateQueries(['tags']);
         }).finally(() => {
-            setIsMutating(false)
+            setIsMutating(false);
         }), {
             pending: 'Creating...',
             success: 'Created tag',
@@ -113,7 +110,7 @@ export default function EditTags() {
     );
 }
 
-function TagItem({ dragLocked, tag, selected, onSelect }: { dragLocked: boolean, tag: Tag, selected: boolean, onSelect(tag?: Tag): void }) {
+function TagItem({ dragLocked, tag, selected, onSelect }: { dragLocked: boolean, tag: Tag, selected: boolean, onSelect: (tag?: Tag) => void }) {
     const [isBeingDragged, setIsBeingDragged] = useState(false);
     const [dragOver, setDragOver] = useState(false);
 
@@ -149,11 +146,11 @@ function TagItem({ dragLocked, tag, selected, onSelect }: { dragLocked: boolean,
 
         const droppedID = parseInt(e.dataTransfer.getData('text/plain'));
         const request = ReorderTag(droppedID, tag.Ordering).then(() => {
-            queryClient.invalidateQueries(['tags']);
+            void queryClient.invalidateQueries(['tags']);
             onSelect();
         });
 
-        toast.promise(request, {
+        void toast.promise(request, {
             pending: 'Reordering...',
             success: 'Reordered',
             error: renderToastError,

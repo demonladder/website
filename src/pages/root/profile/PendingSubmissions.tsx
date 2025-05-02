@@ -11,15 +11,14 @@ import renderToastError from '../../../utils/renderToastError';
 import Modal from '../../../components/Modal';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
-import { ButtonData, useContextMenu } from '../../../components/ui/menuContext/MenuContextContainer';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import NewLabel from '../../../components/NewLabel';
-import useSession from '../../../hooks/useSession';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import { useApproveClicked } from '../../mod/queue/useApproveClicked';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
+import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 
-type Props = {
+interface Props {
     userID: number,
 }
 
@@ -68,7 +67,7 @@ export default function PendingSubmissions({ userID }: Props) {
                     <SecondaryButton className='ms-2' onClick={() => setHide((prev) => !prev)}>{hide ? 'Show' : 'Hide'}</SecondaryButton>
                 </div>
             </div>
-            {!hide && (listType === 'inline'
+            {!hide && (listType === EListType.inline
                 ? <InlineList levels={submissionResult.submissions} userID={userID} />
                 : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
                     {submissionResult.submissions.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} difficulty={p.Level.Meta.Difficulty} inPack={false} key={p.LevelID} />)}
@@ -88,37 +87,33 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const user = useSession();
-
-    const { createMenu } = useContextMenu();
 
     const approveSubmission = useApproveClicked();
 
+    const setContext = useContextMenu();
     function openContext(e: React.MouseEvent, submission: UserPendingSubmission) {
         e.preventDefault();
 
         setClickedSubmission(submission);
 
-        const buttons: ButtonData[] = [
-            { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
-            { text: 'Add to list', onClick: () => openAddListLevelModal(submission.UserID, submission.LevelID) },
-            { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
-        ];
-        if (user.hasPermission(PermissionFlags.EDIT_LIST)) buttons.push({ text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.LevelID, submission.UserID) });
-        if (user.user?.ID === submission.UserID) buttons.push({ text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true) });
-
-        createMenu({
+        setContext({
             x: e.clientX,
             y: e.clientY,
-            buttons,
+            buttons: [
+                { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
+                { text: 'Add to list', onClick: () => openAddListLevelModal(submission.UserID, submission.LevelID) },
+                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
+                { text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.ID, submission.LevelID, submission.UserID), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true), userID: submission.UserID },
+            ],
         });
     }
 
     function deleteSubmission(levelID?: number) {
         if (levelID === undefined) return;
 
-        toast.promise(DeletePendingSubmission(levelID, userID).then(() => {
-            queryClient.invalidateQueries(['user', userID, 'submissions', 'pending']);
+        void toast.promise(DeletePendingSubmission(levelID, userID).then(() => {
+            void queryClient.invalidateQueries(['user', userID, 'submissions', 'pending']);
             setShowDeleteModal(false);
         }), {
             pending: 'Deleting...',
@@ -137,15 +132,11 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
             </div>
             {showDeleteModal && clickedSubmission &&
                 <Modal title='Delete submission' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-                    <Modal.Body>
-                        <p>Are you sure you want to delete your pending submission for {clickedSubmission.Level.Meta.Name}? (ID: {clickedSubmission.LevelID})</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <div className='flex place-content-end gap-2'>
-                            <SecondaryButton onClick={() => setShowDeleteModal(false)}>Close</SecondaryButton>
-                            <DangerButton onClick={() => deleteSubmission(clickedSubmission.LevelID)}>Delete</DangerButton>
-                        </div>
-                    </Modal.Footer>
+                    <p>Are you sure you want to delete your pending submission for {clickedSubmission.Level.Meta.Name}? (ID: {clickedSubmission.LevelID})</p>
+                    <div className='flex place-content-end gap-2'>
+                        <SecondaryButton onClick={() => setShowDeleteModal(false)}>Close</SecondaryButton>
+                        <DangerButton onClick={() => deleteSubmission(clickedSubmission.LevelID)}>Delete</DangerButton>
+                    </div>
                 </Modal>
             }
         </>
