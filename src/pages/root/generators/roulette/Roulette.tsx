@@ -15,22 +15,27 @@ import { Link } from 'react-router-dom';
 import IDButton from '../../../../components/IDButton';
 import useValidNumber from '../../../../hooks/useValidNumber';
 import validateParameter from '../validateParameter';
+import renderToastError from '../../../../utils/renderToastError';
+import Heading2 from '../../../../components/headings/Heading2';
 
 const difficultyOptions = {
     '-1': 'Any',
-    'easy': 'Easy',
-    'medium': 'Medium',
-    'hard': 'Hard',
-    'insane': 'Insane',
-    'extreme': 'Extreme',
-};
+    1: 'Easy',
+    2: 'Medium',
+    3: 'Hard',
+    4: 'Insane',
+    5: 'Extreme',
+} as const;
+type Difficulty = keyof typeof difficultyOptions;
 
 export default function Roulette() {
     const minTier = useValidNumber('');
     const maxTier = useValidNumber('');
     const minEnjoyment = useValidNumber('');
     const maxEnjoyment = useValidNumber('');
-    const [difficulty, setDifficulty] = useState('-1');
+    const [difficulty, setDifficulty] = useState<Difficulty>('-1');
+    const [excludeCompleted, setExcludeCompleted] = useState(false);
+
     const [rouletteLevels, setRouletteLevels] = useLocalStorage<RouletteResponse[] | null>('rouletteLevels', null);
     const [progress, setProgress] = useLocalStorage('rouletteProgress', 0);
 
@@ -40,9 +45,10 @@ export default function Roulette() {
             parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0),
             parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0),
             parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0),
-            difficulty !== '-1' ? difficulty : undefined
+            difficulty !== '-1' ? difficulty : undefined,
+            excludeCompleted,
         ),
-        onError: (error: AxiosError) => toast.error((error.response?.data as { error: string })?.error ?? 'An error occurred'),
+        onError: (err: AxiosError) => toast.error(renderToastError.render({ data: err })),
         onSuccess: (data) => {
             setRouletteLevels(data);
             setProgress(0);
@@ -60,7 +66,7 @@ export default function Roulette() {
 
     return (
         <div>
-            <h2 className='text-3xl'>Roulette</h2>
+            <Heading2>Roulette</Heading2>
             <p>Generate a roulette. For every level you have to get 1% more than the last level. Eg. you must get at least 1% on level #1, 2% on level #2, 3% on level #3 and so on until you reach level #100 where you have to get 100%.</p>
             <FormGroup>
                 <FormInputLabel>Minimum tier</FormInputLabel>
@@ -89,7 +95,7 @@ export default function Roulette() {
             </FormGroup>
             <FormGroup>
                 <label className='flex items-center gap-2 font-bold'>
-                    <CheckBox />
+                    <CheckBox checked={excludeCompleted} onChange={(e) => setExcludeCompleted(e.target.checked)} />
                     Only uncompleted levels
                 </label>
                 <FormInputDescription>Optional. Only include levels that you have not completed.</FormInputDescription>
@@ -110,7 +116,7 @@ function List({ levels, progress, setProgress }: { levels?: RouletteResponse[] |
         <ol className='mt-4 text-xl'>{levels.slice(0, progress + 1).map((l, i) => (
             <li className='even:bg-gray-700 px-2 py-4' key={l.ID}>
                 <div className='flex'>
-                    <p className='ps-2 py-1 grow'><b>{i + 1}%</b> <Link to={`/level/${l.ID}`} className='underline'>{l.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
+                    <p className='ps-2 py-1 grow'><b>{i + 1}%</b> <Link to={`/level/${l.ID}`} className='underline'>{l.Meta.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
                     <p className={`w-20 text-center py-1 tier-${l.Rating.toFixed()}`}>{l.Rating.toFixed()}</p>
                     <p className={`w-20 text-center py-1 enj-${l.Enjoyment.toFixed()}`}>{l.Enjoyment.toFixed()}</p>
                 </div>
