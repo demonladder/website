@@ -5,10 +5,10 @@ export default async function SavePackChangesRequest(changes: Change[]) {
     const additions = changes.filter((c) => c.Type === 'add');
     const removals = changes.filter((c) => c.Type === 'remove');
 
-    if (additions.length > 0) await APIClient.put(`/packs/level/batch`, {
+    if (additions.length > 0) await APIClient.patch(`/packs/levels`, {
         changes: additions.map((c) => ({
-            LevelID: c.LevelID,
-            PackID: c.PackID,
+            levelID: c.LevelID,
+            packID: c.PackID,
             EX: c.EX,
         })),
     });
