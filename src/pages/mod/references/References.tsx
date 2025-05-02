@@ -12,19 +12,20 @@ import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import renderToastError from '../../../utils/renderToastError';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import PageButtons from '../../../components/PageButtons';
+import Heading3 from '../../../components/headings/Heading3';
 
-type LevelProps = {
-    data: Reference,
-    remove: () => void,
+interface LevelProps {
+    data: Reference;
+    remove: () => void;
 }
 
-type ChangeLevelProps = {
-    data: Change,
-    remove: () => void,
+interface ChangeLevelProps {
+    data: Change;
+    remove: () => void;
 }
 
 function ChangeLevel({ data, remove }: ChangeLevelProps) {
-    const prefix = (data.Type === 'remove' ? 'from' : 'to');
+    const prefix = (data.Type === ChangeType.Remove ? 'from' : 'to');
 
     return (
         <div className='flex justify-between'>
@@ -85,7 +86,7 @@ export default function EditReferences() {
         if (!activeLevel) return;
         if (activeLevel.Rating === null) return;
 
-        if (changeList.filter(c => c.ID === activeLevel.ID && c.Type === 'add').length === 1) return;
+        if (changeList.filter(c => c.ID === activeLevel.ID && c.Type === ChangeType.Add).length === 1) return;
 
         const newChange: Change = { Tier: activeLevel.Rating, ID: activeLevel.ID, Name: activeLevel.Meta.Name, Type: ChangeType.Add };
         newChange.Tier = tier;
@@ -95,18 +96,18 @@ export default function EditReferences() {
     function onRemoveReference(reference: Reference) {
         if (!removeList.some((ID) => ID === reference.LevelID)) setRemoveList((prev) => [...prev, reference.LevelID]);
 
-        if (changeList.filter((e) => e.ID === reference.LevelID && e.Type === 'remove').length === 1) return;  // Make sure the same change doesn't appear twice
+        if (changeList.filter((e) => e.ID === reference.LevelID && e.Type === ChangeType.Remove).length === 1) return;  // Make sure the same change doesn't appear twice
         setChangeList((prev) => [...prev, { Tier: reference.Tier, ID: reference.LevelID, Type: 'remove', Name: reference.Level.Meta.Name } as Change]);
     }
 
     if (status === 'loading') return <LoadingSpinner isLoading={true} />;
-    if (status === 'error') return <h3>Something went wrong</h3>
+    if (status === 'error') return <Heading3>Something went wrong</Heading3>;
 
     return (
         <div id='edit-references'>
             <FloatingLoadingSpinner isLoading={mutation.isLoading} />
             <div className='flex justify-between mb-3'>
-                <h3 className='mb-3 text-2xl'>Edit References</h3>
+                <Heading3 className='mb-3'>Edit References</Heading3>
                 <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} onClick={onSave} disabled={mutation.isLoading}>Save changes</PrimaryButton>
             </div>
             <div className=''>
