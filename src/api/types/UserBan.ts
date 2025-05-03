@@ -3,6 +3,6 @@ export default interface UserBan {
     UserID: number;
     StaffID: number | null;
     BanStart: string;
-    BanStop: string;
+    BanStop: string | null;
     Reason: string;
 }

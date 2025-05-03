@@ -1,28 +1,26 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import UserLink from '../../../components/UserLink';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import UserBan from '../../../api/types/UserBan';
 import { revokeBan } from '../../../api/user/bans/revokeBan';
+import ms from 'ms';
 
 interface Props {
     record: UserBan;
 }
 
 export default function BanRecord({ record }: Props) {
-    const duration = (new Date(record.BanStop).getTime() - new Date(record.BanStart).getTime()) / (1000 * 60 * 60 * 24);
-    const isActive = new Date(record.BanStop).getTime() > new Date().getTime();
+    const duration = record.BanStop ? (new Date(record.BanStop).getTime() - new Date(record.BanStart).getTime()) : null;
+    const isActive = record.BanStop ? new Date(record.BanStop).getTime() > new Date().getTime() : true;
 
     const [isLoading, setIsloading] = useState(false);
-    const queryClient = useQueryClient();
     function onRevoke() {
         setIsloading(true);
 
         const promise = revokeBan(record.BanID).then(() => {
-            void queryClient.invalidateQueries(['banHistory']);
+            record.BanStop = new Date().toISOString().replace('T', ' ').replace('Z', ' +00:00');
         }).finally(() => {
             setIsloading(false);
         });
@@ -37,8 +35,9 @@ export default function BanRecord({ record }: Props) {
     return (
         <div className='bg-gray-500 mb-3 p-3 round:rounded-lg grid grid-cols-1 xl:grid-cols-3 gap-4'>
             <div>
-                <p>Ban from <span className='font-bold'>{record.BanStart}</span> to <span className='font-bold'>{record.BanStop}</span> UTC</p>
-                <p>Duration: {duration.toFixed(2)} days</p>
+                <p>Banned on <b>{record.BanStart}</b></p>
+                <p>Banned until <b>{record.BanStop}</b></p>
+                <p>Duration: <b>{duration ? ms(duration) : 'permanent'}</b></p>
             </div>
             <div>
                 <p>User banned by {record.StaffID ? <UserLink userID={record.StaffID} /> : '-'}</p>
@@ -46,10 +45,7 @@ export default function BanRecord({ record }: Props) {
             </div>
             <div>
                 <p>Status: {isActive ? 'Active' : 'Inactive'}</p>
-                {isActive
-                    ? <DangerButton onClick={onRevoke} disabled={isLoading}>Revoke</DangerButton>
-                    : <SecondaryButton onClick={onRevoke} disabled={isLoading}>Clear</SecondaryButton>
-                }
+                {isActive && <DangerButton onClick={onRevoke} disabled={isLoading}>Revoke</DangerButton>}
             </div>
         </div>
     );
