@@ -2,11 +2,11 @@ import APIClient from '../APIClient';
 import { SiteSettings } from '../types/SiteSettings';
 
 export default async function SaveSiteSettings(settings: SiteSettings) {
-    await APIClient.post('/siteSettings', {
-        queueEditLock: settings.isQueueEditLocked,
-        submissionLock: settings.isSubmissionLocked,
-        accountCreationLock: settings.isAccountCreationLocked,
-        userSettingLock: settings.isUserSettingsLocked,
+    await APIClient.patch('/siteSettings', {
+        isQueueEditLocked: settings.isQueueEditLocked,
+        isSubmissionLocked: settings.isSubmissionLocked,
+        isAccountCreationLocked: settings.isAccountCreationLocked,
+        isUserSettingLocked: settings.isUserSettingsLocked,
         isAccessTokenEnabled: settings.isAccessTokenEnabled,
     });
 }
