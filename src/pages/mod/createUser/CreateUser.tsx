@@ -17,7 +17,7 @@ export default function CreateUser() {
             return toast.error('Name can\'t be empty');
         }
 
-        toast.promise(APIClient.post('/user', { name: nameRef.current.value }), {
+        void toast.promise(APIClient.post('/user', { name: nameRef.current.value }), {
             pending: 'Creating user...',
             success: 'User created!',
             error: renderToastError,

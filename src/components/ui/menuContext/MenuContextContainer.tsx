@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { MenuContext } from './MenuContext';
 import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
 import useSession from '../../../hooks/useSession';
@@ -52,21 +52,25 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         setMenuData(undefined);
     }
 
+    const filteredButtons = useMemo(() => menuData?.buttons.filter((button) => {
+        if (button.requireSession && !session.user) return false;
+        if (button.permission && session.hasPermission(button.permission)) return true;
+        if (button.userID && button.userID !== session.user?.ID) return false;
+        return true;
+    }), [menuData?.buttons, session]);
+
     return (
         <MenuContext.Provider value={{ menuData, setMenuData }}>
             {children}
             {menuData &&
                 <div ref={menuRef} className='fixed w-36 z-50 bg-theme-900 text-white round:rounded shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
-                    <ul>{
-                        menuData.buttons
-                            .filter((b) => !(b.requireSession && !session.user) && !(b.permission && !session.hasPermission(b.permission)) && !(b.userID && b.userID !== session.user?.ID))
-                            .map((b) => (
-                            <li key={b.ID}>
-                                <button onClick={(e) => handleClick(e, b)} className={'w-full text-start my-1 px-2 py-1 disabled:text-gray-400 disabled:line-through ' + (!(b.type === 'danger') ? 'hover:bg-gray-700' : 'hover:bg-red-600')} disabled={b.disabled}>
-                                    {b.text}
-                                </button>
-                            </li>
-                        ))
+                    <ul>{filteredButtons?.map((b) => (
+                        <li key={b.ID}>
+                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start my-1 px-2 py-1 disabled:text-gray-400 disabled:line-through ' + (!(b.type === 'danger') ? 'hover:bg-gray-700' : 'hover:bg-red-600')} disabled={b.disabled}>
+                                {b.text}
+                            </button>
+                        </li>
+                    ))
                     }</ul>
                 }</div>
             }

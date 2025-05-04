@@ -17,6 +17,8 @@ import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 import { useApproveClicked } from '../../mod/queue/useApproveClicked';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import PendingSubmission from '../../../api/types/PendingSubmission';
+import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 
 interface Props {
     userID: number,
@@ -84,6 +86,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
     const [clickedSubmission, setClickedSubmission] = useState<UserPendingSubmission>();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const openAddListLevelModal = useAddListLevelModal();
+    const openDenySubmissionModal = useDenySubmissionModal();
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -93,6 +96,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
     const setContext = useContextMenu();
     function openContext(e: React.MouseEvent, submission: UserPendingSubmission) {
         e.preventDefault();
+        e.stopPropagation();
 
         setClickedSubmission(submission);
 
@@ -100,24 +104,23 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
             x: e.clientX,
             y: e.clientY,
             buttons: [
-                { text: 'Info', onClick: () => navigate(`/level/${submission.LevelID}`) },
+                { text: 'View level', onClick: () => navigate(`/level/${submission.LevelID}`) },
                 { text: 'Add to list', onClick: () => openAddListLevelModal(submission.UserID, submission.LevelID) },
                 { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
                 { text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.ID, submission.LevelID, submission.UserID), permission: PermissionFlags.MANAGE_SUBMISSIONS },
                 { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true), userID: submission.UserID },
+                { text: 'Deny', type: 'danger', onClick: () => openDenySubmissionModal(submission), permission: PermissionFlags.MANAGE_SUBMISSIONS },
             ],
         });
     }
 
-    function deleteSubmission(levelID?: number) {
-        if (levelID === undefined) return;
-
-        void toast.promise(DeletePendingSubmission(levelID, userID).then(() => {
+    function deleteSubmission(submission: PendingSubmission) {
+        void toast.promise(DeletePendingSubmission(submission.ID).then(() => {
             void queryClient.invalidateQueries(['user', userID, 'submissions', 'pending']);
             setShowDeleteModal(false);
         }), {
             pending: 'Deleting...',
-            success: 'Deleted your submission for ' + levels.find((l) => l.LevelID === levelID)?.Level.Meta.Name || `(${levelID})`,
+            success: 'Deleted your submission for ' + levels.find((l) => l.LevelID === submission.LevelID)?.Level.Meta.Name || `(${submission.LevelID})`,
             error: renderToastError,
         });
     }
@@ -130,12 +133,12 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
                     <Level ID={p.LevelID} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />
                 ))}
             </div>
-            {showDeleteModal && clickedSubmission &&
+            {clickedSubmission &&
                 <Modal title='Delete submission' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                     <p>Are you sure you want to delete your pending submission for {clickedSubmission.Level.Meta.Name}? (ID: {clickedSubmission.LevelID})</p>
                     <div className='flex place-content-end gap-2'>
                         <SecondaryButton onClick={() => setShowDeleteModal(false)}>Close</SecondaryButton>
-                        <DangerButton onClick={() => deleteSubmission(clickedSubmission.LevelID)}>Delete</DangerButton>
+                        <DangerButton onClick={() => deleteSubmission(clickedSubmission)}>Delete</DangerButton>
                     </div>
                 </Modal>
             }

@@ -1,50 +1,22 @@
-import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import Modal from '../../../components/Modal';
-import { TextInput } from '../../../components/Input';
 import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import { useApproveClicked } from './useApproveClicked';
-import Select from '../../../components/Select';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../components/form/FormInputLabel';
 import { levelLengthToString } from '../../../api/types/LevelMeta';
+import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 
 interface Props {
     submission: QueueSubmission;
-    remove: (submission: QueueSubmission, reason?: string) => void;
 }
 
-const denyReasons = {
-    'missingProof': 'Missing proof',
-    'wrongProof': 'Wrong proof',
-    'inaccessibleProof': 'Inaccessible proof',
-    'noEndscreen': 'No endscreen',
-    'incompleteRun': 'Doesn\'t show the entire run',
-    'missingClicks': 'Missing/incoherent clicks',
-    'hacked': 'Hacked',
-    'fakeAccount': 'Fake account',
-    'custom': 'Other',
-};
-type DenyReason = keyof typeof denyReasons;
-
-export default function Submission({ submission, remove }: Props) {
-    const [showDenyReason, setShowDenyReason] = useState(false);
-    const [denyReason, setDenyReason] = useState<DenyReason>('custom');
-    const reasonRef = useRef<HTMLInputElement>(null);
+export default function Submission({ submission }: Props) {
+    const showDenyModal = useDenySubmissionModal();
 
     const standardDeviations = Math.abs((submission.Level.Rating ?? submission.Rating ?? 0) - (submission.Rating ?? submission.Level.Rating ?? 0)) / (submission.Level.Deviation ?? 1);
 
     const navigate = useNavigate();
     const approveSubmission = useApproveClicked();
-
-    function onDeny() {
-        remove(submission, denyReason !== 'custom' ? denyReasons[denyReason] : (reasonRef.current?.value || undefined));
-        setShowDenyReason(true);
-    }
 
     return (
         <li className={`round:rounded-2xl tier-${submission.Rating ?? 0} p-3 my-2 text-lg`}>
@@ -85,29 +57,9 @@ export default function Submission({ submission, remove }: Props) {
             <div className='flex justify-evenly max-md:flex-col max-md:gap-4'>
                 <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID)}>Approve</PrimaryButton>
                 <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true)}>Only enjoyment</PrimaryButton>
-                <DangerButton className='px-3 py-2' onClick={() => setShowDenyReason(true)}>Deny</DangerButton>
+                <DangerButton className='px-3 py-2' onClick={() => showDenyModal(submission)}>Deny</DangerButton>
                 <DangerButton className='px-3 h- py-2' onClick={() => navigate(`/mod/manageUser/${submission.UserID}`)}>Launch user into space</DangerButton>
             </div>
-            <Modal title='Deny reason' show={showDenyReason} onClose={() => setShowDenyReason(false)}>
-                <div>
-                    <FormGroup>
-                        <FormInputLabel htmlFor='denyReason'>Select a type</FormInputLabel>
-                        <Select id='denyReason' options={denyReasons} activeKey={denyReason} onChange={setDenyReason} height='36' />
-                        <FormInputDescription>Choose a reason for denying the submission.</FormInputDescription>
-                    </FormGroup>
-                    {['custom', 'hacked'].includes(denyReason) &&
-                        <FormGroup>
-                            <FormInputLabel htmlFor='customDenyReason'>Write a reason</FormInputLabel>
-                            <TextInput ref={reasonRef} id='customDenyReason' placeholder='Reason...' />
-                            <FormInputDescription>Optional.</FormInputDescription>
-                        </FormGroup>
-                    }
-                </div>
-                <div className='flex gap-2 justify-end'>
-                    <SecondaryButton onClick={() => setShowDenyReason(false)}>Close</SecondaryButton>
-                    <DangerButton onClick={() => onDeny()}>Deny</DangerButton>
-                </div>
-            </Modal>
         </li>
     );
 }

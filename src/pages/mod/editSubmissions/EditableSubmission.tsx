@@ -2,7 +2,6 @@ import { toast } from 'react-toastify';
 import Submission from '../../../api/types/Submission';
 import APIClient from '../../../api/APIClient';
 import { FormEvent, useCallback, useState } from 'react';
-import { NaNToNull } from '../../../utils/NaNToNull';
 import { render } from '../../../utils/renderToastError';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -23,19 +22,21 @@ interface Props {
 }
 
 const deviceOptions: { [key: string]: string } = {
-    '1': 'PC',
-    '2': 'Mobile',
+    'pc': 'PC',
+    'mobile': 'Mobile',
 };
+type Device = keyof typeof deviceOptions;
 
 export default function EditableSubmission({ submission }: Props) {
     const [rating, setRating] = useState<number | undefined>(submission.Rating ?? undefined);
     const [enjoyment, setEnjoyment] = useState<number | undefined>(submission.Enjoyment ?? undefined);
     const [proof, setProof] = useState('');
-    const [refreshRate, setRefreshRate] = useState<number>(submission.RefreshRate);
-    const [deviceKey, setDeviceKey] = useState('1');
-    const [progress, setProgress] = useState<number>(submission.Progress);
+    const [refreshRate, setRefreshRate] = useState(submission.RefreshRate.toString());
+    const [deviceKey, setDeviceKey] = useState<Device>(submission.Device.toLowerCase());
+    const [progress, setProgress] = useState(submission.Progress.toString());
     const [attempts, setAttempts] = useState(submission.Attempts?.toString() ?? '');
     const [wasSolo, setWasSolo] = useState(true);
+    const [secondPlayerID, setSecondPlayerID] = useState<number>();
     const [deleteReason, setDeleteReason] = useState('');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -50,15 +51,19 @@ export default function EditableSubmission({ submission }: Props) {
             userID: submission.UserID,
             rating: rating ?? null,
             enjoyment: enjoyment ?? null,
-            refreshRate,
-            device: parseInt(deviceKey),
+            refreshRate: parseInt(refreshRate),
+            device: deviceKey,
             proof: proof !== '' ? proof : null,
-            progress,
-            attempts: NaNToNull(parseInt(attempts)),
+            progress: parseInt(progress),
+            attempts: parseInt(attempts) ?? null,
             isSolo: wasSolo,
+            secondPlayerID: wasSolo ? null : secondPlayerID,
             isEdit: true,
         }),
-        onSuccess: () => queryClient.invalidateQueries(['level', submission.LevelID]),
+        onSuccess: () => {
+            void queryClient.invalidateQueries(['level', submission.LevelID]);
+            toast.success('Submission updated!');
+        },
         onError: (err: AxiosError) => toast.error(render({ data: err })),
     });
 
@@ -92,7 +97,7 @@ export default function EditableSubmission({ submission }: Props) {
             </FormGroup>
             <FormGroup>
                 <FormInputLabel htmlFor='addSubmissionRefreshRate'>Refresh rate</FormInputLabel>
-                <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} min='30' />
+                <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} placeholder='60' min='30' />
                 <FormInputDescription>Minimum 30</FormInputDescription>
             </FormGroup>
             <FormGroup>
@@ -106,7 +111,7 @@ export default function EditableSubmission({ submission }: Props) {
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Progress</FormInputLabel>
-                <NumberInput value={progress} onChange={(e) => setProgress(parseInt(e.target.value))} min='1' max='100' />
+                <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' min='1' max='100' />
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Attempts</FormInputLabel>
@@ -118,16 +123,23 @@ export default function EditableSubmission({ submission }: Props) {
                     Solo completion
                 </label>
             </FormGroup>
-            <div className='flex gap-2'>
+            {!wasSolo &&
+                <FormGroup>
+                    <FormInputLabel htmlFor='secondPlayerID'>Second player ID</FormInputLabel>
+                    <NumberInput id='secondPlayerID' value={secondPlayerID} onChange={(e) => setSecondPlayerID(parseInt(e.target.value))} min='1' />
+                    <FormInputDescription>Optional</FormInputDescription>
+                </FormGroup>
+            }
+            <FormGroup className='flex gap-2'>
                 <PrimaryButton type='submit' onClick={submit} disabled={updateMutation.isLoading}>Edit</PrimaryButton>
                 <DangerButton type='button' onClick={() => setShowDeleteConfirm(true)} disabled={deleteMutation.isLoading}>Delete</DangerButton>
-            </div>
+            </FormGroup>
             {showDeleteConfirm &&
                 <div className='mt-4'>
                     <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} placeholder='Delete reason' />
                     <FormInputDescription>Does not notify the user if the field is left blank!</FormInputDescription>
-                    <PrimaryButton onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
-                    <DangerButton onClick={() => deleteMutation.mutate()}>Confirm delete</DangerButton>
+                    <PrimaryButton type='button' onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
+                    <DangerButton type='button' onClick={() => deleteMutation.mutate()}>Confirm delete</DangerButton>
                 </div>
             }
         </form>

@@ -88,8 +88,8 @@ export default function AddSubmission() {
     }
 
     function clear() {
-        setRating(NaN);
-        setEnjoyment(NaN);
+        setRating(undefined);
+        setEnjoyment(undefined);
         setRefreshRate(60);
         setDeviceKey('1');
         setProof('');

@@ -1,5 +1,5 @@
 import APIClient from '../APIClient';
 
-export default async function DeletePendingSubmission(levelID: number, userID: number) {
-    await APIClient.delete(`/user/${userID}/submissions/pending/${levelID}`);
+export default async function DeletePendingSubmission(ID: number) {
+    await APIClient.delete(`/submissions/pending/${ID}`);
 }
