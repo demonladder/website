@@ -17,13 +17,19 @@ type Decathlon = Omit<List, 'Type' | 'Description'> & {
     })[]
 };
 
-export default async function GetDecathlon(): Promise<Decathlon> {
-    const res = await APIClient.get<List & {levels: (ListLevel & {
+interface APIResponse {
+    list: List;
+    levels: (ListLevel & {
         Level: Omit<Level, 'RatingCount' | 'EnjoymentCount' | 'SubmissionCount'> & { Meta: LevelMeta },
-    })[]}>('/decathlon');
+    })[]
+}
+
+export default async function GetDecathlon(): Promise<Decathlon> {
+    const res = await APIClient.get<APIResponse>('/decathlon');
     return {
-        ...res.data,
+        ...res.data.list,
+        levels: res.data.levels,
         Type: 1,
-        Description: JSON.parse(res.data.Description as string) as DecathlonMetaData,
+        Description: JSON.parse(res.data.list.Description!) as DecathlonMetaData,
     };
 }
