@@ -12,13 +12,13 @@ import { validateEnjoyment } from './validateEnjoyment';
 import Page from '../../../components/Page';
 import Heading1 from '../../../components/headings/Heading1';
 
-function parseValue(val: string | null): null | string {
-    if (val === undefined || val === '-') return null;
+function parseValue(val?: string): string | undefined {
+    if (val === undefined || val === '-') return undefined;
     return val;
 }
 
-function parseIntParam(val?: string | null, def?: number): null | number {
-    if (val === undefined || val === null || val === '-') return def ?? null;
+function parseIntParam(val?: string | null, def?: number): number | undefined {
+    if (val === undefined || val === null || val === '-') return def ?? undefined;
     if (val.startsWith('[') && val.endsWith(']')) throw new Error('Don\'t wrap optional values in [ ]');
     if (val.startsWith('<') && val.endsWith('>')) throw new Error('Don\'t wrap required values in < >');
     return parseInt(val);
@@ -31,9 +31,9 @@ function parseSubmissions(submissions: string) {
     return lines.map((l) => {
         const params = l.split(' ');
 
-        let levelID: number | null = null;
-        let levelName: string | null = null;
-        let creator: string | null = null;
+        let levelID: number | undefined = undefined;
+        let levelName: string | undefined = undefined;
+        let creator: string | undefined = undefined;
 
         let paramOffset = 0;
         if (params[0] == parseInt(params[0]).toString()) {  // Level ID variant
@@ -60,7 +60,6 @@ function parseSubmissions(submissions: string) {
 
 export default function BulkSubmit() {
     const [submissions, setSubmissions] = useState('');
-    const [valid, setValid] = useState(true);
 
     const mutation = useMutation({
         mutationFn: (ctx: BulkSubmission[]) => SubmitBulk(ctx),
@@ -86,15 +85,8 @@ export default function BulkSubmit() {
     });
 
     const onSubmit = useCallback(() => {
-        try {
-            mutation.mutate(parseSubmissions(submissions));
-            setValid(true);
-        } catch (err) {
-            if (err instanceof Error) toast.error(err.message);
-            else toast.error('An unknown error occurred');
-            setValid(false);
-        }
-    }, [submissions, setValid, mutation]);
+        mutation.mutate(parseSubmissions(submissions));
+    }, [submissions, mutation]);
 
     const isValid = useMemo(() => {
         if (!submissions) return true;

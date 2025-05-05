@@ -1,19 +1,19 @@
 import APIClient from '../APIClient';
 
-export type SubmittableSubmission = {
-    levelID: number,
-    rating: number | null,
-    enjoyment: number | null,
-    refreshRate?: number | null,
-    device?: 'pc' | 'mobile' | null,
-    proof?: string | null,
-    progress?: number | null,
-    attempts?: number | null,
-    isSolo?: boolean,
-    secondPlayerID?: number,
-};
+interface SubmitDTO {
+    levelID: number;
+    rating?: number;
+    enjoyment?: number;
+    refreshRate?: number;
+    device?: 'pc' | 'mobile';
+    proof?: string;
+    progress?: number;
+    attempts?: number;
+    isSolo?: boolean;
+    secondPlayerID?: number;
+}
 
-export default async function SendSubmission(submission: SubmittableSubmission) {
+export default async function SendSubmission(submission: SubmitDTO) {
     const res = await APIClient.post<{ wasAuto: boolean }>('/submissions', submission);
     return res.data;
 }

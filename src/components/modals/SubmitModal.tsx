@@ -150,12 +150,12 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         const loadingHandle = toast.loading('Submitting...');
         submitMutation.mutate({
             levelID: level.ID,
-            rating: rating ?? null,
-            enjoyment: enjoyment ?? null,
+            rating: rating,
+            enjoyment: enjoyment,
             refreshRate: parseInt(refreshRate),
             device: deviceKey,
             proof: proof.length > 0 ? proof : undefined,
-            progress: parseInt(progress) || 100,
+            progress: parseInt(progress),
             attempts: attemptCount,
             isSolo: wasSolo,
             secondPlayerID: secondPlayerSearch.activeUser?.ID,
