@@ -1,14 +1,15 @@
 import APIClient from '../../../api/APIClient';
+import Level from '../../../api/types/Level';
+import LevelMeta from '../../../api/types/LevelMeta';
+import PlatformerList from '../../../api/types/PlatformerList';
 
-export interface ListEntry {
-    LevelID: number;
-    Name: string;
-    Enjoyment: number | null;
-    Difficulty: string;
-    Creator: string;
-    Position: number;
+export interface ListEntry extends PlatformerList {
+    Level: Level & {
+        Meta: LevelMeta;
+    };
 }
 
-export function GetPlatformerList(): Promise<ListEntry[]> {
-    return APIClient.get('/platformerList').then((res) => res.data);
+export async function GetPlatformerList() {
+    const res = await APIClient.get<ListEntry[]>('/platformerList');
+    return res.data;
 }
