@@ -31,18 +31,25 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
     return (
         <div className='flex items-center gap-1'>
             {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
-                <Link to='/mod'><i className='bx bx-shield-quarter text-2xl' /></Link>
+                <Link to='/mod'><i className='bx bx-shield-quarter text-2xl text-theme-header-text' /></Link>
             }
             <NotificationButton />
-            <Link to={`/profile/${userID}`} className='flex items-center'>
-                <span className='fs-5'>{username}</span>
-                <div className='ms-3 w-16'>
-                    {session.user?.DiscordData?.Avatar
-                        ? <img src={pfp || ''} className='rounded-full' />
-                        : <DemonLogo diff={session?.user?.Hardest?.Meta.Difficulty} />
-                    }
-                </div>
-            </Link>
+            <div className='relative group'>
+                <Link to={`/profile/${userID}`} className='flex items-center text-theme-header-text'>
+                    <span className='fs-5'>{username}</span>
+                    <div className='ms-3 w-16'>
+                        {session.user?.DiscordData?.Avatar
+                            ? <img src={pfp || ''} className='rounded-full' />
+                            : <DemonLogo diff={session?.user?.Hardest?.Meta.Difficulty} />
+                        }
+                    </div>
+                </Link>
+                <ul className='absolute bg-gray-600 round:rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex flex-col'>
+                    <li><Link className='p-2 block round:rounded-t-lg hover:bg-theme-400/50' to={`/profile/${userID}`}>Go to profile</Link></li>
+                    <li><Link className='p-2 block hover:bg-theme-400/50' to='/settings/account'>Settings</Link></li>
+                    <li><p className='p-2 round:rounded-b-lg hover:bg-theme-400/50 cursor-pointer transition-colors' onClick={() => void session.logout()}>Log out</p></li>
+                </ul>
+            </div>
         </div>
     );
 }

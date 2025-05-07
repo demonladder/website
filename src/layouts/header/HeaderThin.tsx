@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import HeaderRoutes from './HeaderRoutes';
 import NavItem from './NavItem';
 import useUserSearch from '../../hooks/useUserSearch';
+import useSession from '../../hooks/useSession';
+import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
 
 export default function HeaderThin() {
     const [navOpen, setNavOpen] = useState(false);
@@ -15,6 +17,7 @@ export default function HeaderThin() {
             navigate('/profile/' + user.ID);
         },
     });
+    const session = useSession();
 
     return (
         <header className='bg-theme-primary text-(--theme-primary-text) flex items-center justify-between flex-wrap gap-x-8 px-16 py-8'>
@@ -38,6 +41,7 @@ export default function HeaderThin() {
                             {userSearch.SearchBox}
                         </div>
                         <ProfileButtons />
+                        <SecondaryButton onClick={() => void session.logout()}>Log out</SecondaryButton>
                     </div>
                 </nav>
             </div>

@@ -7,13 +7,11 @@ import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import LevelTracker from './LevelTracker';
 import { AxiosError } from 'axios';
 import Tracker from './Tracker';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import LevelResolvableText from './LevelResolvableText';
 import Rankings from './Rankings';
 import Lists from './Lists';
 import PendingSubmissions from './PendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
-import useSession from '../../../hooks/useSession';
 import flagEmoji from '../../../utils/flagEmoji';
 import { lazy, Suspense } from 'react';
 const Skills = lazy(() => import('./Skills'));
@@ -25,7 +23,6 @@ import { PermissionFlags } from '../../mod/roles/PermissionFlags';
 
 export default function Profile() {
     const userID = parseInt(useParams().userID ?? '0') || 0;
-    const session = useSession();
     // const openReportUserModal = useReportUserModal();
 
     const { status, data: userData, error } = useUserQuery(userID);
@@ -49,8 +46,6 @@ export default function Profile() {
 
     if (userData === undefined) return <Page><p>No user data</p></Page>;
 
-    const ownPage = StorageManager.hasSession() && userID === session.user?.ID;
-
     function calcPref() {
         if (userData === undefined) return '-';
 
@@ -72,9 +67,10 @@ export default function Profile() {
                 <meta property='og:title' content={userData.Name} />
                 <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
             </Helmet>
-            <div className='mb-2 flex gap-4'>{userData.DiscordData?.Avatar &&
-                <img src={pfp} className='inline w-20 h-20 rounded-full' />
-            }
+            <div className='mb-2 flex gap-4'>
+                {userData.DiscordData?.Avatar &&
+                    <img src={pfp} className='inline w-20 h-20 rounded-full' />
+                }
                 <div className='flex flex-col'>
                     <Heading1 className='max-sm:basis-full'>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></Heading1>
                     <p>
@@ -85,9 +81,6 @@ export default function Profile() {
                             <Link to={`/pack/${p.PackID}`} key={p.PackID}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1 w-6' /></Link>
                         ))}
                     </p>
-                </div>
-                <div className='ms-auto self-center'>
-                    <SecondaryButton onClick={() => void session.logout()} hidden={!ownPage}>Log out</SecondaryButton>
                 </div>
             </div>
             <section className='flex max-sm:flex-col'>

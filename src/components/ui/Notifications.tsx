@@ -5,7 +5,7 @@ export default function NotificationButton() {
     const { data } = useUnreadNotifications();
 
     return (
-        <Link to='/notifications'>
+        <Link to='/notifications' className='text-theme-header-text'>
             <i className={`bx ${data?.length ? 'bxs-envelope' : 'bx-envelope-open'} text-2xl`} />
         </Link>
     );

@@ -14,12 +14,12 @@ export default function HeaderWide() {
     });
 
     return (
-        <header className='bg-theme-primary text-(--theme-primary-text) shadow-lg border-b border-theme-outline'>
+        <header className='bg-theme-primary shadow-lg border-b border-theme-outline'>
             <nav className='px-32 flex items-center h-32'>
-                <div className='me-6'>
+                <div className='me-6 text-theme-header-text'>
                     <Link to='/' className='font-bold text-3xl'>GDDL</Link>
                 </div>
-                <div className='flex items-center gap-x-6 gap-y-1 text-xl'>
+                <div className='flex items-center gap-x-6 gap-y-1 text-xl text-theme-header-text'>
                     {HeaderRoutes.map((route, i) => (
                         <NavItem route={route} size={'wide'} key={`headerRoute_${i}`} />
                     ))}
