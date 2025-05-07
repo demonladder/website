@@ -1,14 +1,14 @@
 @theme {
     --dark-from: #262626;
     --dark-to: #262626;
+    --dark-header-text: black;
 }
 
 [data-theme="dark"] {
     color: white;
+    --color-theme-header-text: var(--dark-header-text);
 }
-[data-theme="dark"] header a {
-    color: black;
-}
+
 [data-theme="dark"] header input {
     color: black;
     --color-theme-950: rgb(0 0 0 / 0.2);

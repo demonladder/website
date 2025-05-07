@@ -23,4 +23,5 @@
     --color-theme-950: var(--midnight-theme-950);
     --color-theme-primary: var(--midnight-primary);
     color: var(--midnight-text);
+    --color-theme-header-text: var(--midnight-text);
 }

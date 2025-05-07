@@ -8,6 +8,7 @@
     --crimson-from: var(--crimson-theme-500);
     --crimson-to: var(--crimson-theme-800);
     --crimson-primary: #390505;
+    --crimson-text: white;
 }
 
 [data-theme="crimson"] {
@@ -21,5 +22,6 @@
     --color-theme-900: var(--crimson-theme-900);
     --color-theme-950: var(--crimson-theme-950);
     --color-theme-primary: #570101;
-    color: white;
+    color: var(--crimson-text);
+    --color-theme-header-text: var(--crimson-text);
 }

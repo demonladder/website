@@ -26,5 +26,6 @@
     --color-theme-950: var(--black-theme-950);
     --color-theme-primary: var(--black-primary);
     color: var(--black-text);
+    --color-theme-header-text: var(--black-text);
     --color-theme-outline: rgb(90, 90, 90);
 }
