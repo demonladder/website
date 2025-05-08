@@ -4,7 +4,6 @@ import FilterMenu from './FilterMenu';
 import SortMenu from './SortMenu';
 import SearchLevels from '../../../api/level/SearchLevels';
 import { useQuery } from '@tanstack/react-query';
-import Container from '../../../components/Container';
 import { TextInput } from '../../../components/Input';
 import PageButtons from '../../../components/PageButtons';
 import { GridLevel } from '../../../components/GridLevel';
@@ -19,6 +18,7 @@ import useLevelView from '../../../hooks/useLevelView';
 import Heading1 from '../../../components/headings/Heading1';
 import Heading2 from '../../../components/headings/Heading2';
 import { Helmet } from 'react-helmet-async';
+import Page from '../../../components/Page';
 
 export default function Search() {
     const [name, lazyName, setName] = useLazyQueryParam(QueryParamNames.Name, '');
@@ -122,42 +122,40 @@ export default function Search() {
     if (searchStatus === 'error') return <Heading2>An error ocurred!</Heading2>;
 
     return (
-        <main className='my-4'>
+        <Page>
             <Helmet>
                 <title>GDDL | Search</title>
             </Helmet>
-            <Container className='bg-gray-800'>
-                <Heading1 className='mb-2'>The Ladder</Heading1>
-                <div className='flex items-center gap-1'>
-                    <div className='relative flex-grow group'>
-                        <TextInput autoFocus placeholder='Search level name...' value={name} onChange={onNameChange} />
-                        <button className='absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity' onClick={() => setName('')}>
-                            <svg width='16' height='16' stroke='currentColor' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
-                                <path strokeWidth='2' strokeLinecap='round' d='M4 4l22 22M4 26l22 -22' />
-                            </svg>
-                        </button>
-                    </div>
-                    <button className='bg-white text-black w-7 h-7 grid place-items-center' onClick={() => setShowFilters((prev: boolean) => !prev)}>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='16px' height='16px' fill='currentColor' viewBox='0 0 16 16'>
-                            <path d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z' />
+            <Heading1 className='mb-2'>The Ladder</Heading1>
+            <div className='flex items-center gap-1'>
+                <div className='relative flex-grow group'>
+                    <TextInput autoFocus placeholder='Search level name...' value={name} onChange={onNameChange} />
+                    <button className='absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity' onClick={() => setName('')}>
+                        <svg width='16' height='16' stroke='currentColor' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
+                            <path strokeWidth='2' strokeLinecap='round' d='M4 4l22 22M4 26l22 -22' />
                         </svg>
                     </button>
-                    <SortMenu />
-                    {listViewButtons}
                 </div>
-                <FilterMenu creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
-                <div className='my-4'>
-                    {(searchStatus === 'loading' && !searchData)
-                        ? <LoadingSpinner />
-                        : searchData.levels.length === 0
-                            ? <h2 className='text-3xl'>No levels found!</h2>
-                            : listView
-                                ? <LevelRenderer element={Level} levels={searchData.levels} className='level-list' header={<Level.Header />} />
-                                : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
-                    }
-                </div>
-                {searchData && <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />}
-            </Container>
-        </main>
+                <button className='bg-white text-black w-7 h-7 grid place-items-center' onClick={() => setShowFilters((prev: boolean) => !prev)}>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16px' height='16px' fill='currentColor' viewBox='0 0 16 16'>
+                        <path d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z' />
+                    </svg>
+                </button>
+                <SortMenu />
+                {listViewButtons}
+            </div>
+            <FilterMenu creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
+            <div className='my-4'>
+                {(searchStatus === 'loading' && !searchData)
+                    ? <LoadingSpinner />
+                    : searchData.levels.length === 0
+                        ? <h2 className='text-3xl'>No levels found!</h2>
+                        : listView
+                            ? <LevelRenderer element={Level} levels={searchData.levels} className='level-list' header={<Level.Header />} />
+                            : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
+                }
+            </div>
+            {searchData && <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />}
+        </Page>
     );
 }

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import Container from '../../../components/Container';
+import Page from '../../../components/Page';
 import { Link } from 'react-router-dom';
 import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
@@ -52,7 +52,7 @@ export default function Staff() {
     });
 
     return (
-        <Container>
+        <Page>
             <Heading1 className='mb-4'>Current staff members</Heading1>
             <FloatingLoadingSpinner isLoading={isLoading} />
             <div>
@@ -62,6 +62,6 @@ export default function Staff() {
                 <List data={data} roleID={3} />
                 <List data={data} roleID={2} />
             </div>
-        </Container>
+        </Page>
     );
 }

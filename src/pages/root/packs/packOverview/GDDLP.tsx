@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import PackResponse from '../../../../api/pack/responses/PackResponse';
-import Container from '../../../../components/Container';
+import Page from '../../../../components/Page';
 import Leaderboard from '../Leaderboard';
 import GetGDDLPTiers from '../../../../api/pack/requests/GetGDDLPTiers';
 import pluralS from '../../../../utils/pluralS';
@@ -31,7 +31,7 @@ export default function GDDLP({ pack }: Props) {
     }));
 
     return (
-        <Container className='bg-gray-800'>
+        <Page>
             <div className='flex gap-2 mb-4'>
                 <div>
                     {pack.IconName && <img src={'/packIcons/' + pack.IconName} style={{ minWidth: '64px' }} />}
@@ -69,6 +69,6 @@ export default function GDDLP({ pack }: Props) {
                 ))}
             </div>
             <Leaderboard packID={pack.ID} />
-        </Container>
+        </Page>
     );
 }
