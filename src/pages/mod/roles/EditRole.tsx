@@ -11,12 +11,17 @@ import renderToastError from '../../../utils/renderToastError';
 import SaveRole from '../../../api/roles/SaveRole';
 import useDeleteRoleModal from '../../../hooks/modals/useDeleteRoleModal';
 import Users from './Users';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import Heading2 from '../../../components/headings/Heading2';
+import Heading3 from '../../../components/headings/Heading3';
 
 export default function EditRole() {
     const roleID = parseInt(useParams().roleID ?? '');
     const [roleName, setRoleName] = useState('');
     const [tempPermissions, setTempPermissions] = useState(0);
     const [isMutating, setIsMutating] = useState(false);
+    const [color, setColor] = useState('');
     const queryClient = useQueryClient();
 
     const navigate = useNavigate();
@@ -36,17 +41,18 @@ export default function EditRole() {
         if (role) {
             setRoleName(role.Name);
             setTempPermissions(role.PermissionBitField);
+            setColor(role.Color?.toString(16) ?? '');
         }
     }, [role]);
 
     const onSave = useCallback(() => {
         setIsMutating(true);
-        void toast.promise(SaveRole(roleID, roleName, tempPermissions).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
+        void toast.promise(SaveRole(roleID, color ? parseInt(color, 16) : null, roleName, tempPermissions).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
             pending: 'Saving role...',
             success: 'Role saved',
             error: renderToastError,
         });
-    }, [roleName, tempPermissions, roleID, queryClient, setIsMutating]);
+    }, [roleID, color, roleName, tempPermissions, queryClient]);
 
     if (Number.isNaN(roleID)) {
         navigate('/mod/roles');
@@ -54,19 +60,28 @@ export default function EditRole() {
     }
 
     return (
-        <div>
-            <h3 className='text-2xl mb-4'>Edit Role - {role?.Name}</h3>
-            <div className='mb-4'>
-                <p>Role name</p>
+        <>
+            <Heading2>Edit Role - {role?.Name}</Heading2>
+            <section className='my-4'>
+                <FormInputLabel>Role name</FormInputLabel>
                 <TextInput id='roleName' value={roleName} onChange={(e) => setRoleName(e.target.value)} />
-                {(role?.PermissionBitField !== tempPermissions || role.Name !== roleName) &&
+                {(role?.PermissionBitField !== tempPermissions || role.Name !== roleName || role.Color?.toString(16) !== color) &&
                     <div className='fixed bottom-0 z-20 left-1/2 -translate-x-1/2 bg-gray-500 px-4 py-2 flex flex-col justify-center'>
                         <p>Changes have been made</p>
                         <PrimaryButton onClick={onSave} disabled={isMutating}>Save</PrimaryButton>
                     </div>
                 }
-            </div>
-            <div>
+            </section>
+            <section className='mb-4 flex gap-8'>
+                <div className='grow'>
+                    <FormInputLabel>Role color</FormInputLabel>
+                    <TextInput id='roleColor' value={color} onChange={(e) => setColor(e.target.value)} placeholder='Hex color code' />
+                    <FormInputDescription >Use a hex color code, e.g. #ff0000. Go find a color picker, I'm too lazy for this shi</FormInputDescription>
+                </div>
+                <div className='w-24 h-24' style={{ backgroundColor: `#${color}` }} />
+            </section>
+            <section>
+                <Heading3>Permissions</Heading3>
                 <ul>
                     {permissions.map((permission) => (
                         <li className='py-4 border-b border-gray-500' key={permission.ID}>
@@ -80,12 +95,12 @@ export default function EditRole() {
                         </li>
                     ))}
                 </ul>
-            </div>
+            </section>
             <div className='divider my-8' />
             <Users roleID={roleID} />
             {role &&
                 <button onClick={() => openDeleteRoleModal(role)} className='mt-8 text-red-500 underline-t'>Delete role "{role?.Name}"</button>
             }
-        </div>
+        </>
     );
 }

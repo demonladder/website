@@ -19,6 +19,7 @@ import Page from '../../../components/Page';
 import Heading1 from '../../../components/headings/Heading1';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import { useUserColor } from '../../../hooks/useUserColor';
 // import { useReportUserModal } from '../../../hooks/modals/useReportUserModal';
 
 export default function Profile() {
@@ -26,6 +27,7 @@ export default function Profile() {
     // const openReportUserModal = useReportUserModal();
 
     const { status, data: userData, error } = useUserQuery(userID);
+    const userColor = useUserColor(userData?.RoleIDs);
 
     const navigate = useNavigate();
     const contextMenu = useContextMenu([
@@ -72,7 +74,7 @@ export default function Profile() {
                     <img src={pfp} className='inline w-20 h-20 rounded-full' />
                 }
                 <div className='flex flex-col'>
-                    <Heading1 className='max-sm:basis-full'>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></Heading1>
+                    <Heading1 className='max-sm:basis-full' style={{ color: userColor ? `#${userColor.toString(16)}` : undefined }}>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></Heading1>
                     <p>
                         {userData.Pronouns &&
                             <span className='me-1'>{userData.Pronouns}</span>

@@ -4,6 +4,7 @@ import User from '../../../api/types/User';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import RemoveRoleFromUser from '../../../api/user/RemoveRoleFromUser';
+import Heading3 from '../../../components/headings/Heading3';
 
 export default function Users({ roleID }: { roleID: number }) {
     const queryClient = useQueryClient();
@@ -27,8 +28,8 @@ export default function Users({ roleID }: { roleID: number }) {
     }
 
     return (
-        <div>
-            <h4 className='text-xl mt-4'>Users</h4>
+        <section className='mt-4'>
+            <Heading3>Users</Heading3>
             {data?.length === 0
                 ? <p>No users have this role</p>
                 : <>
@@ -40,6 +41,6 @@ export default function Users({ roleID }: { roleID: number }) {
                     </ul>
                 </>
             }
-        </div>
+        </section>
     );
 }
