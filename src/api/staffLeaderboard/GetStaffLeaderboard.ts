@@ -1,13 +1,21 @@
 import APIClient from '../APIClient';
+import DiscordUserData from '../types/DiscordUserData';
 import User from '../types/User';
 
 export interface StaffLeaderboardRecord {
     UserID: number;
     Points: number;
-    User?: User;
+    User?: User & {
+        DiscordData: DiscordUserData;
+    };
+}
+
+interface ResponseDTO {
+    allTime: StaffLeaderboardRecord[];
+    monthly: StaffLeaderboardRecord[];
 }
 
 export default async function GetStaffLeaderboard() {
-    const res = await APIClient.get<StaffLeaderboardRecord[]>('/staff/leaderboard');
+    const res = await APIClient.get<ResponseDTO>('/staff/leaderboard');
     return res.data;
 }

@@ -4,8 +4,6 @@ import GetHealthStats from '../../api/stats/GetHealthStats';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import StaffLeaderboard from './StaffLeaderboard';
-import useSession from '../../hooks/useSession';
-import { PermissionFlags } from './roles/PermissionFlags';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -32,8 +30,6 @@ export default function ModIndex() {
         queryFn: GetHealthStats,
     });
 
-    const session = useSession();
-
     return (
         <div>
             <h3 className='text-2xl mb-3'>Overview</h3>
@@ -44,9 +40,7 @@ export default function ModIndex() {
                 <StatisticTracker value={logCounts?.warns} label='Warnings in the past 24h' />
                 <StatisticTracker value={logCounts?.errors} label='Errors in the past 24h' />
             </div>
-            {session.hasPermission(PermissionFlags.ADMIN) &&
-                <StaffLeaderboard />
-            }
+            <StaffLeaderboard />
         </div>
     );
 }
