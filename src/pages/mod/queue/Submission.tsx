@@ -5,9 +5,10 @@ import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQu
 import { useApproveClicked } from './useApproveClicked';
 import { levelLengthToString } from '../../../api/types/LevelMeta';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Heading4 from '../../../components/headings/Heading4';
 import { DifficultyToImgSrc } from '../../../components/DemonLogo';
+import { toast } from 'react-toastify';
 
 interface Props {
     submission: QueueSubmission;
@@ -15,6 +16,8 @@ interface Props {
 
 export default function Submission({ submission }: Props) {
     const showDenyModal = useDenySubmissionModal();
+    const [isProofClicked, setIsProofClicked] = useState(false);
+    const [proofClickedAt, setProofClickedAt] = useState<Date>();
 
     const levelRating = submission.IsSolo ? submission.Level.Rating : submission.Level.TwoPlayerRating;
     const standardDeviations = useMemo(() => {
@@ -38,6 +41,19 @@ export default function Submission({ submission }: Props) {
         return 'Possible troll detected!';
     }, [standardDeviations]);
 
+    function onProofClick() {
+        if (!submission.Proof) return toast.error('No proof URL provided');
+
+        setIsProofClicked(true);
+        setProofClickedAt(new Date());
+        window.open(submission.Proof, '_blank', 'noopener,noreferrer');
+    }
+
+    function getProofReviewTime() {
+        if (!proofClickedAt) return null;
+        return new Date().getTime() - proofClickedAt.getTime();
+    }
+
     const navigate = useNavigate();
     const approveSubmission = useApproveClicked();
 
@@ -45,7 +61,6 @@ export default function Submission({ submission }: Props) {
         <li className={`round:rounded-2xl bg-linear-to-br tier-${submission.Rating ?? 0} from-tier-${submission.Rating ?? 0} to-tier-${levelRating?.toFixed() ?? 0} p-3 my-2 text-lg`}>
             <div className='mb-3'>
                 <Link to={`/level/${submission.LevelID}`} className='text-2xl font-bold underline'>{submission.Level.Meta.Name} <span className='text-lg font-normal'>by {submission.Level.Meta.Creator}</span></Link>
-                <p>Submission ID {submission.ID}</p>
                 <p>Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold group' target='_blank' rel='noopener noreferrer'>{submission.User.Name} <i className='bx bx-link-external' /></a></p>
                 <p>Submitted at {submission.DateChanged.replace('+00:00', 'UTC')}</p>
             </div>
@@ -67,7 +82,7 @@ export default function Submission({ submission }: Props) {
                         <span className='font-bold'>Proof: </span>
                         <span className='break-all group'>
                             {submission.Proof
-                                ? <a href={submission.Proof.startsWith('https') ? submission.Proof : 'https://' + submission.Proof} target='_blank' rel='noopener noreferrer' className='underline'>{submission.Proof} <i className='bx bx-link-external' /></a>
+                                ? <button onClick={onProofClick} className='underline'>{submission.Proof} <i className='bx bx-link-external' /></button>
                                 : 'None'
                             }
                         </span>
@@ -87,8 +102,8 @@ export default function Submission({ submission }: Props) {
                 </div>
             </div>
             <div className='mt-4 flex justify-evenly max-md:flex-col max-md:gap-4'>
-                <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID)}>Approve</PrimaryButton>
-                <PrimaryButton className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true)}>Only enjoyment</PrimaryButton>
+                <PrimaryButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</PrimaryButton>
+                <PrimaryButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</PrimaryButton>
                 <DangerButton className='px-3 py-2' onClick={() => showDenyModal(submission)}>Deny</DangerButton>
                 <DangerButton className='px-3 h- py-2' onClick={() => navigate(`/mod/manageUser/${submission.UserID}`)}>Mod view</DangerButton>
             </div>
