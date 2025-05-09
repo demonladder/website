@@ -7,7 +7,7 @@ export interface StaffMember {
 }
 
 export default async function GetStaff(): Promise<StaffMember[]> {
-    const res = await APIClient.get<{ ID: number, Name: string, RoleIDs: string }[]>('/user/staff');
+    const res = await APIClient.get<{ ID: number, Name: string, RoleIDs: string }[]>('/staff');
 
     return res.data.map((s) => ({
         ID: s.ID,
