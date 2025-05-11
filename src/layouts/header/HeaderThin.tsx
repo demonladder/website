@@ -20,23 +20,23 @@ export default function HeaderThin() {
     const session = useSession();
 
     return (
-        <header className='bg-theme-primary text-(--theme-primary-text) flex items-center justify-between flex-wrap gap-x-8 px-16 py-8'>
-            <div>
-                <Link to='/' className='font-bold text-3xl'>GDDL</Link>
+        <header className='bg-theme-header text-theme-header-text gap-x-8'>
+            <div className='flex justify-between'>
+                <Link to='/' className='font-bold text-3xl'><img src='/assets/banner.png' width='300' /></Link>
+                <button onClick={() => setNavOpen((prev) => !prev)} className='px-8'>
+                    <svg width='32px' height='32px' viewBox='0 0 32 32' stroke='currentColor' strokeWidth='2'>
+                        <path d='M3 5h29M3 16h29M3 27h29' />
+                    </svg>
+                </button>
             </div>
-            <button onClick={() => setNavOpen(prev => !prev)}>
-                <svg width='32px' height='32px' viewBox='0 0 32 32' stroke='currentColor' strokeWidth='2'>
-                    <path d='M3 5h29M3 16h29M3 27h29' />
-                </svg>
-            </button>
-            <div className='basis-full grow grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: navOpen ? '1fr' : '0fr' }}>
+            <div className='basis-full grow px-16 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: navOpen ? '1fr' : '0fr' }}>
                 <nav className='min-h-0 flex flex-col justify-between'>
-                    <div className='flex flex-col gap-x-3 gap-y-1 text-xl'>
+                    <div className='flex flex-col gap-x-3 gap-y-1 text-xl pt-4'>
                         {HeaderRoutes.map((route, i) => (
                             <NavItem route={route} size={'thin'} key={`headerRoute_${i}`} />
                         ))}
                     </div>
-                    <div className='flex max-sm:flex-col sm:items-center gap-4'>
+                    <div className='flex max-sm:flex-col sm:items-center gap-4 pb-4'>
                         <div className='my-4'>
                             {userSearch.SearchBox}
                         </div>

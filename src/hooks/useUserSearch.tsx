@@ -61,6 +61,11 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         setSearchQuery(value);
     }, []);
 
+    const onSetResult = useCallback((user?: User) => {
+        setActiveUser(user);
+        if (user && onUserSelect) onUserSelect(user);
+    }, [onUserSelect]);
+
     const result = useMemo(() => ({
         activeUser,
         setQuery,
@@ -69,8 +74,8 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         SearchBox: (<SearchBox search={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
             ...d,
             label: d.Name,
-        })) || []} onDelayedChange={setSearchQuery} setResult={(user) => { setActiveUser(user); if (user && onUserSelect) onUserSelect(user); }} status={status} placeholder='Search user...' invalid={isInvalid} />)
-    }), [activeUser, setQuery, clear, search, data, status, ID, onUserSelect, isInvalid]);
+        })) || []} onDelayedChange={setSearchQuery} setResult={onSetResult} status={status} placeholder='Search user...' invalid={isInvalid} />)
+    }), [activeUser, setQuery, clear, search, ID, data, onSetResult, status, isInvalid]);
 
     return result;
 }
