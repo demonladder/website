@@ -33,7 +33,7 @@ export default function BanRecord({ record }: Props) {
     }
 
     return (
-        <div className='bg-gray-500 mb-3 p-3 round:rounded-lg grid grid-cols-1 xl:grid-cols-3 gap-4'>
+        <div className='bg-theme-500 mb-3 p-3 round:rounded-lg grid grid-cols-1 xl:grid-cols-3 gap-4'>
             <div>
                 <p>Banned on <b>{record.BanStart}</b></p>
                 <p>Banned until <b>{record.BanStop}</b></p>

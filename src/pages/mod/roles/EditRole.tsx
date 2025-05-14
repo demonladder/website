@@ -66,7 +66,7 @@ export default function EditRole() {
                 <FormInputLabel>Role name</FormInputLabel>
                 <TextInput id='roleName' value={roleName} onChange={(e) => setRoleName(e.target.value)} />
                 {(role?.PermissionBitField !== tempPermissions || role.Name !== roleName || (role.Color !== null && role.Color.toString(16).padStart(6, '0') !== color)) &&
-                    <div className='fixed bottom-0 z-20 left-1/2 -translate-x-1/2 bg-gray-500 px-4 py-2 flex flex-col justify-center'>
+                    <div className='fixed bottom-0 z-20 left-1/2 -translate-x-1/2 bg-theme-500 px-4 py-2 flex flex-col justify-center'>
                         <p>Changes have been made</p>
                         <PrimaryButton onClick={onSave} disabled={isMutating}>Save</PrimaryButton>
                     </div>

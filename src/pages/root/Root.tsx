@@ -175,11 +175,11 @@ export default function Root() {
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
             <ModalProvider>
-                <div className='fixed top-0 -z-50 w-full h-screen bg-linear-(--theme-gradient-angle) from-(--theme-gradient-from) to-(--theme-gradient-to)'>
+                <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to'>
                     {/* <img src='/assets/images/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' /> */}
                 </div>
                 {isBackgroundEnabled &&
-                    <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50' />
+                    <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
                 }
                 <Helmet>
                     <title>GD Demon Ladder</title>
@@ -202,7 +202,7 @@ export default function Root() {
                         <p className='text-permission-5'>5</p>
                         <p className='text-permission-6'>6</p>
                     </div>
-                    <div className='flex-grow over'>
+                    <div className='flex-grow over text-theme-text'>
                         <Outlet />
                     </div>
                     <Footer />

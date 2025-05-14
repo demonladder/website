@@ -3,7 +3,7 @@ import BlankAnchor from '../../components/ui/BlankAnchor';
 
 export default function Footer() {
     return (
-        <footer className='bg-theme-950 py-10'>
+        <footer className='bg-theme-footer text-theme-footer-text py-10'>
             <div className='mx-auto container grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 max-lg:px-10 gap-8'>
                 <div>
                     <b>Our socials:</b>

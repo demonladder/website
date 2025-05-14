@@ -63,10 +63,10 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         <MenuContext.Provider value={{ menuData, setMenuData }}>
             {children}
             {menuData &&
-                <div ref={menuRef} className='fixed w-36 z-50 bg-theme-900 text-white round:rounded shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
+                <div ref={menuRef} className='fixed w-36 z-50 bg-theme-900 text-theme-text round:rounded shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
                     <ul>{filteredButtons?.map((b) => (
                         <li key={b.ID}>
-                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start my-1 px-2 py-1 disabled:text-gray-400 disabled:line-through ' + (!(b.type === 'danger') ? 'hover:bg-gray-700' : 'hover:bg-red-600')} disabled={b.disabled}>
+                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start my-1 px-2 py-1 disabled:text-theme-400 disabled:line-through ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600')} disabled={b.disabled}>
                                 {b.text}
                             </button>
                         </li>

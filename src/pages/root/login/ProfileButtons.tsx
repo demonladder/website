@@ -31,11 +31,11 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
     return (
         <div className='flex items-center gap-1'>
             {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
-                <Link to='/mod'><i className='bx bx-shield-quarter text-2xl text-theme-header-text' /></Link>
+                <Link to='/mod'><i className='bx bx-shield-quarter text-2xl' /></Link>
             }
             <NotificationButton />
             <div className='relative group'>
-                <Link to={`/profile/${userID}`} className='flex items-center text-theme-header-text'>
+                <Link to={`/profile/${userID}`} className='flex items-center'>
                     <span className='fs-5'>{username}</span>
                     <div className='ms-3 w-16'>
                         {session.user?.DiscordData?.Avatar
@@ -44,10 +44,10 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
                         }
                     </div>
                 </Link>
-                <ul className='absolute z-40 bg-gray-600 round:rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex flex-col'>
-                    <li><Link className='p-2 block round:rounded-t-lg hover:bg-theme-400/50' to={`/profile/${userID}`}>Go to profile</Link></li>
-                    <li><Link className='p-2 block hover:bg-theme-400/50' to='/settings/account'>Settings</Link></li>
-                    <li><p className='p-2 round:rounded-b-lg hover:bg-theme-400/50 cursor-pointer transition-colors' onClick={() => void session.logout()}>Log out</p></li>
+                <ul className='absolute z-40 bg-theme-600 text-theme-text shadow round:rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex flex-col'>
+                    <li><Link className='p-2 block round:rounded-t-lg hover:bg-theme-950/40' to={`/profile/${userID}`}>Go to profile</Link></li>
+                    <li><Link className='p-2 block hover:bg-theme-950/40' to='/settings/account'>Settings</Link></li>
+                    <li><p className='p-2 round:rounded-b-lg hover:bg-theme-950/40 cursor-pointer transition-colors' onClick={() => void session.logout()}>Log out</p></li>
                 </ul>
             </div>
         </div>

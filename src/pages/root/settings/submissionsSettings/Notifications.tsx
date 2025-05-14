@@ -9,6 +9,7 @@ import { NumberInput } from '../../../../components/Input';
 import { validateIntInputChange } from '../../../../utils/validators/validateIntChange';
 import GetWants from '../../../../api/user/GetWants';
 import useSession from '../../../../hooks/useSession';
+import FormInputDescription from '../../../../components/form/FormInputDescription';
 
 enum NotificationsBitField {
     Accept = 2 ** 0,
@@ -81,7 +82,7 @@ export default function Notifications() {
                 <div className='mb-2'>
                     <label htmlFor='submissionSettingsDMTierLimit'><b>Tier limit for Discord DMs</b></label>
                     <NumberInput id='submissionSettingsDMTierLimit' value={DMTierLimit} onChange={(e) => validateIntInputChange(e, setDMTierLimit)} />
-                    <p className='text-sm text-gray-400'>You will only receive DMs if the level is above the specified tier</p>
+                    <FormInputDescription>You will only receive DMs if the level is above the specified tier</FormInputDescription>
                 </div>
                 {session.user &&
                     <PrimaryButton onClick={submit}>Save</PrimaryButton>

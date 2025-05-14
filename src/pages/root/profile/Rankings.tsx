@@ -13,7 +13,7 @@ interface UserRanking {
 }
 
 async function GetUserRankings(userID: number) {
-    return (await APIClient.get<Record<string | 'Overall', UserRanking>>(`/user/${userID}/rank`)).data;
+    return (await APIClient.get<Record<string, UserRanking>>(`/user/${userID}/rank`)).data;
 }
 
 function percentToRank(percent: number): string {
@@ -35,7 +35,7 @@ function Rank({ tier, count, total }: { tier?: string, count: number, total: num
     const percent = (count / total * 100);
 
     return (
-        <tr className='odd:bg-gray-700 flex py-1'>
+        <tr className='odd:bg-theme-700 flex py-1'>
             <td className='whitespace-nowrap w-24'><p className='px-2 py-1'><b>{tier !== undefined ? `Tier ${tier}` : 'Overall'}</b></p></td>
             <td className='px-2 whitespace-nowrap w-10 self-center text-center mx-4'><b>{percentToRank(percent)}</b></td>
             <td className='px-2 whitespace-nowrap w-20 self-center mx-2'>{percent.toFixed(2)}%</td>

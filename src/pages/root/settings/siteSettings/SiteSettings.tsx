@@ -3,6 +3,7 @@ import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import CheckBox from '../../../../components/input/CheckBox';
 import StorageManager from '../../../../utils/StorageManager';
 import FormGroup from '../../../../components/form/FormGroup';
+import FormInputDescription from '../../../../components/form/FormInputDescription';
 
 export default function ClientSiteSettings() {
     const [isRounded, setIsRounded] = useState<boolean>(StorageManager.getIsRounded());
@@ -28,21 +29,21 @@ export default function ClientSiteSettings() {
                         <CheckBox checked={isRounded} onChange={(e) => setIsRounded(e.target.checked)} />
                         Rounded corners
                     </label>
-                    <p className='text-gray-400 text-sm'>Gives pretty much everything round corners.</p>
+                    <FormInputDescription>Gives pretty much everything round corners.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
                         <CheckBox checked={highlightCompleted} onChange={(e) => setHighlightCompleted(e.target.checked)} />
                         Highlight completed levels
                     </label>
-                    <p className='text-gray-400 text-sm'>Adds a checkmark and green background to levels in list view.</p>
+                    <FormInputDescription>Adds a checkmark and green background to levels in list view.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
                         <CheckBox checked={useExperimental} onChange={(e) => setUseExperimental(e.target.checked)} />
                         Experimental features
                     </label>
-                    <p className='text-gray-400 text-sm'>This unlocks beta features that are not yet fully polished!</p>
+                    <FormInputDescription>This unlocks beta features that are not yet fully polished!</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <PrimaryButton type='submit' onClick={onSave}>Save</PrimaryButton>

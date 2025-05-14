@@ -3,8 +3,8 @@ import { RadioButton } from '../../../components/Input';
 import { Sorts } from '../../../api/user/GetUserSubmissions';
 import { useLocalStorage } from 'usehooks-ts';
 
-type Props = {
-    set: (sort: { sort: Sorts, sortDirection: 'asc' | 'desc' }) => void,
+interface Props {
+    set: (sort: { sort: Sorts, sortDirection: 'asc' | 'desc' }) => void;
 }
 
 export default function SortMenu({ set }: Props) {
@@ -43,7 +43,7 @@ export default function SortMenu({ set }: Props) {
 
         return () => {
             document.removeEventListener('mousemove', mouseMove);
-        }
+        };
     }, [mouseMove]);
 
     return (
@@ -59,7 +59,7 @@ export default function SortMenu({ set }: Props) {
                 }
             </button>
             <div ref={resultsRef} className='absolute left-1/2 -translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
-                <div className='min-h-0 bg-gray-600 w-max'>
+                <div className='min-h-0 bg-theme-600 w-max'>
                     <div className='p-3 flex flex-col gap-2'>
                         <div className='columns-2'>
                             <div>

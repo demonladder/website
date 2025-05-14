@@ -4,6 +4,7 @@ import Select from '../../../../components/Select';
 import Notifications from './Notifications';
 import DiscordRoles from './DiscordRoles';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
+import FormInputDescription from '../../../../components/form/FormInputDescription';
 
 const deviceOptions = {
     pc: 'PC',
@@ -31,15 +32,15 @@ export default function SubmissionSettings() {
             <div>
                 <label htmlFor='defaultRefreshRateInput'><b>Default FPS</b></label>
                 <NumberInput id='defaultRefreshRateInput' value={defaultFPS} onChange={updateFPS} invalid={FPSInvalid} />
-                <p className='text-gray-400 text-sm'>This value will be used for every submission you send if you don't explicitly type the fps on the submission form</p>
+                <FormInputDescription>This value will be used for every submission you send if you don't explicitly type the fps on the submission form</FormInputDescription>
             </div>
             <div>
                 <label htmlFor='submitDevice'><b>Default device</b></label>
                 <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice ?? 'pc'} onChange={setDefaultDevice} />
-                <p className='text-gray-400 text-sm'>The default device for all your submissions</p>
+                <FormInputDescription>The default device for all your submissions</FormInputDescription>
             </div>
             <Notifications />
-            <div className='divider my-8 text-gray-400'></div>
+            <div className='divider my-8 text-theme-400'></div>
             <DiscordRoles />
         </section>
     );
