@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import SaveProfile from '../../../api/user/SaveProfile';
 import renderToastError from '../../../utils/renderToastError';
 import Heading3 from '../../../components/headings/Heading3';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 
 export default function EditInformation({ user }: { user: UserResponse }) {
     const nameID = useId();
@@ -42,7 +43,7 @@ export default function EditInformation({ user }: { user: UserResponse }) {
     }
 
     return (
-        <>
+        <section>
             <Heading3>Edit information</Heading3>
             <form className='mt-4' onSubmit={submitHandler}>
                 <FormGroup>
@@ -58,6 +59,13 @@ export default function EditInformation({ user }: { user: UserResponse }) {
                     <p>{newIntroduction.length}/500</p>
                 </div>
             </form>
-        </>
+            <div>
+                <Heading3 className='mt-4'>Discord link</Heading3>
+                <p>ID: <b>{user.DiscordData?.ID}</b></p>
+                <p>Username: <b>{user.DiscordData?.Username}</b></p>
+                <p>Display name: <b>{user.DiscordData?.Name}</b></p>
+                <SecondaryButton onClick={() => toast.warn('Not implemented yet')}>Un-link</SecondaryButton>
+            </div>
+        </section>
     );
 }
