@@ -1,25 +1,41 @@
 @theme {
-    --coffee-400: #3a3a3a;
-    --coffee-600: #bda797;
-    --coffee-700: #bda797;
-    --coffee-800: #8d7c74;
-    --coffee-900: #bda797;
-    --coffee-950: #8d7c74;
-    --coffee-from: var(--coffee-900);
-    --coffee-to: var(--coffee-900);
-    --coffee-primary: var(--coffee-950);
+    --theme-coffee-400: #3a3a3a;
+    --theme-coffee-500: #b19a8a;
+    --theme-coffee-600: #bda797;
+    --theme-coffee-700: #bda797;
+    --theme-coffee-800: #8d7c74;
+    --theme-coffee-900: #bda797;
+    --theme-coffee-950: #8d7c74;
+
+    --theme-coffee-header: var(--theme-coffee-950);
+    --theme-coffee-header-text: black;
+
+    --theme-coffee-bg-from: var(--theme-coffee-900);
+    --theme-coffee-bg-to: var(--theme-coffee-900);
+    --theme-coffee-text: #1b1919;
+    --theme-coffee-outline: #0000;
+
+    --theme-coffee-footer: var(--theme-coffee-950);
+    --theme-coffee-footer-text: #ffffff;
 }
 
 [data-theme="coffee"] {
-    --theme-gradient-angle: 45deg;
-    --theme-gradient-from: var(--coffee-from);
-    --theme-gradient-to: var(--coffee-to);
-    --color-theme-400: var(--coffee-400);
-    --color-theme-600: var(--coffee-600);
-    --color-theme-700: var(--coffee-700);
-    --color-theme-800: var(--coffee-800);
-    --color-theme-900: var(--coffee-900);
-    --color-theme-950: var(--coffee-950);
-    --color-theme-primary: var(--coffee-primary);
-    color: black;
+    --color-theme-400: var(--theme-coffee-400);
+    --color-theme-500: var(--theme-coffee-500);
+    --color-theme-600: var(--theme-coffee-600);
+    --color-theme-700: var(--theme-coffee-700);
+    --color-theme-800: var(--theme-coffee-800);
+    --color-theme-900: var(--theme-coffee-900);
+    --color-theme-950: var(--theme-coffee-950);
+
+    --color-theme-header: var(--theme-coffee-header);
+    --color-theme-header-text: var(--theme-coffee-text);
+
+    --color-theme-bg-from: var(--theme-coffee-bg-from);
+    --color-theme-bg-to: var(--theme-coffee-bg-to);
+    --color-theme-text: var(--theme-coffee-text);
+    --color-theme-outline: var(--theme-coffee-outline);
+
+    --color-theme-footer: var(--theme-coffee-footer);
+    --color-theme-footer-text: var(--theme-coffee-footer-text);
 }

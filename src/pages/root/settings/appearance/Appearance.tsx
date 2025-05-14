@@ -67,7 +67,7 @@ export default function Appearance() {
                         <p className='text-center'>Dark</p>
                     </li>
                     <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-midnight-bg-from) to-(--theme-midnight-bg-to) shadow' onClick={() => onTheme('midnight')} />
+                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-midnight-700) to-(--theme-midnight-900) shadow' onClick={() => onTheme('midnight')} />
                         <p className='text-center'>Midnight</p>
                     </li>
                     <li>
@@ -83,7 +83,7 @@ export default function Appearance() {
                         <p className='text-center'>Beige</p>
                     </li>
                     <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--lilac-theme-800) to-(--lilac-theme-900) shadow' onClick={() => onTheme('lilac')} />
+                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-lilac-bg-from) to-(--theme-lilac-bg-to) shadow' onClick={() => onTheme('lilac')} />
                         <p className='text-center'>Lilac</p>
                     </li>
                     <li>
@@ -99,27 +99,23 @@ export default function Appearance() {
                         <p className='text-center'>Citrus</p>
                     </li>
                     <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-seaweed-bg-from) to-(--seaweed-theme-800) shadow' onClick={() => onTheme('seaweed')} />
+                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-seaweed-bg-from) to-(--theme-seaweed-800) shadow' onClick={() => onTheme('seaweed')} />
                         <p className='text-center'>Seaweed</p>
                     </li>
-                    {/* <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--culob-from) to-(--culob-theme-950) shadow' onClick={() => onTheme('culob')} />
-                        <p className='text-center'>@Culob</p>
-                    </li> */}
                     <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--peach-from) to-(--peach-theme-950) shadow' onClick={() => onTheme('peach')} />
+                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-peach-bg-from) to-(--theme-peach-bg-to) shadow' onClick={() => onTheme('peach')} />
                         <p className='text-center'>Peach</p>
                     </li>
                     <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--june-from) to-(--june-theme-950) shadow' onClick={() => onTheme('june')} />
+                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-june-800) to-(--theme-june-outline) shadow' onClick={() => onTheme('june')} />
                         <p className='text-center'>@June</p>
                     </li>
                     <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--warm-from) to-(--warm-theme-950) shadow' onClick={() => onTheme('warm')} />
+                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-warm-bg-from) to-(--theme-warm-950) shadow' onClick={() => onTheme('warm')} />
                         <p className='text-center'>Warm</p>
                     </li>
                     <li>
-                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--white-from) to-(--white-to) shadow' onClick={() => onTheme('white')} />
+                        <button className='w-24 h-24 rounded-full bg-linear-to-br from-(--theme-white-bg-from) to-(--theme-white-bg-to) shadow' onClick={() => onTheme('white')} />
                         <p className='text-center'>White</p>
                     </li>
                 </ul>

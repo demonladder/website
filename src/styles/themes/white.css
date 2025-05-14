@@ -1,30 +1,41 @@
 @theme {
-    --white-theme-400: hsl(0, 0%, 50%);
-    --white-theme-500: hsl(0, 0%, 88%);
-    --white-theme-600: hsl(0, 0%, 91%);
-    --white-theme-700: hsl(0, 0%, 94%);
-    --white-theme-800: hsl(0, 0%, 97%);
-    --white-theme-900: hsl(0, 0%, 100%);
-    --white-theme-950: #ffffff;
-    --white-primary: #ffffff;
-    --white-from: var(--white-theme-800);
-    --white-to: var(--white-theme-950);
-    --white-text: #000000;
+    --theme-white-400: hsl(0, 0%, 50%);
+    --theme-white-500: hsl(0, 0%, 85%);
+    --theme-white-600: hsl(0, 0%, 88%);
+    --theme-white-700: hsl(0, 0%, 91%);
+    --theme-white-800: hsl(0, 0%, 94%);
+    --theme-white-900: hsl(0, 0%, 97%);
+    --theme-white-950: hsl(0, 0%, 100%);
+
+    --theme-white-header: #ffffff;
+    --theme-white-header-text: white;
+
+    --theme-white-bg-from: var(--theme-white-800);
+    --theme-white-bg-to: var(--theme-white-950);
+    --theme-white-text: black;
+    --theme-white-outline: #a3a3a3;
+
+    --theme-white-footer: var(--theme-white-950);
+    --theme-white-footer-text: black;
 }
 
 [data-theme="white"] {
-    --theme-gradient-angle: 135deg;
-    --theme-gradient-from: var(--white-from);
-    --theme-gradient-to: var(--white-to);
-    
-    --color-theme-400: var(--white-theme-400);
-    --color-theme-500: var(--white-theme-500);
-    --color-theme-600: var(--white-theme-600);
-    --color-theme-700: var(--white-theme-700);
-    --color-theme-800: var(--white-theme-800);
-    --color-theme-900: var(--white-theme-900);
-    --color-theme-950: var(--white-theme-950);
-    --color-theme-primary: var(--white-primary);
-    color: var(--white-text);
-    --color-theme-outline: rgb(163, 163, 163);
+    --color-theme-400: var(--theme-white-400);
+    --color-theme-500: var(--theme-white-500);
+    --color-theme-600: var(--theme-white-600);
+    --color-theme-700: var(--theme-white-700);
+    --color-theme-800: var(--theme-white-800);
+    --color-theme-900: var(--theme-white-900);
+    --color-theme-950: var(--theme-white-950);
+
+    --color-theme-header: var(--theme-white-header);
+    --color-theme-header-text: var(--theme-white-text);
+
+    --color-theme-bg-from: var(--theme-white-bg-from);
+    --color-theme-bg-to: var(--theme-white-bg-to);
+    --color-theme-text: var(--theme-white-text);
+    --color-theme-outline: var(--theme-white-outline);
+
+    --color-theme-footer: var(--theme-white-footer);
+    --color-theme-footer-text: var(--theme-white-footer-text);
 }

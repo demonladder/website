@@ -1,26 +1,37 @@
 @theme {
-    --warm-theme-500: #fffaf5;
-    --warm-theme-600: #fff3e6;
-    --warm-theme-700: #ffedda;
-    --warm-theme-800: #ffe5c9;
-    --warm-theme-900: #ffdfbb;
-    --warm-theme-950: #ffdab2;
-    --warm-from: #fffaf5;
-    --warm-to: #ffdab2;
-    --warm-text: black;
-    --warm-primary: #ffd3a4;
+    --theme-warm-500: #fffaf5;
+    --theme-warm-600: #fff3e6;
+    --theme-warm-700: #ffedda;
+    --theme-warm-800: #ffe5c9;
+    --theme-warm-900: #ffdfbb;
+    --theme-warm-950: #ffdab2;
+
+    --theme-warm-header: #ffd3a4;
+    
+    --theme-warm-bg-from: #fffaf5;
+    --theme-warm-bg-to: #ffdab2;
+    --theme-warm-text: black;
+
+    --theme-warm-footer: var(--theme-warm-900);
 }
 
 [data-theme="warm"] {
-    --theme-gradient-angle: 135deg;
-    --theme-gradient-from: var(--warm-from);
-    --theme-gradient-to: var(--warm-to);
-    --color-theme-500: var(--warm-theme-500);
-    --color-theme-600: var(--warm-theme-600);
-    --color-theme-700: var(--warm-theme-700);
-    --color-theme-800: var(--warm-theme-800);
-    --color-theme-950: var(--warm-theme-950);
-    --color-refreshRate-60: var(--warm-theme-950);
-    --color-theme-primary: var(--warm-primary);
-    color: var(--warm-text);
+    --color-theme-400: var(--theme-warm-400);
+    --color-theme-500: var(--theme-warm-500);
+    --color-theme-600: var(--theme-warm-600);
+    --color-theme-700: var(--theme-warm-700);
+    --color-theme-800: var(--theme-warm-800);
+    --color-theme-900: var(--theme-warm-900);
+    --color-theme-950: var(--theme-warm-950);
+
+    --color-theme-header: var(--theme-warm-header);
+    --color-theme-header-text: var(--theme-warm-text);
+
+    --color-theme-bg-from: var(--theme-warm-bg-from);
+    --color-theme-bg-to: var(--theme-warm-bg-to);
+    --color-theme-text: var(--theme-warm-text);
+    --color-theme-outline: var(--theme-warm-outline);
+
+    --color-theme-footer: var(--theme-warm-footer);
+    --color-theme-footer-text: var(--theme-warm-footer-text);
 }

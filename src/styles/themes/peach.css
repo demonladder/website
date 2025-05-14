@@ -1,24 +1,37 @@
 @theme {
-    --peach-theme-600: green;
-    --peach-theme-700: #ffede9;
-    --peach-theme-800: #ffdad4;
-    --peach-theme-900: #ffb4a9;
-    --peach-theme-950: #ff897a;
-    --peach-primary: #ff897a;
-    --peach-from: #fff7f6;
-    --peach-to: #fff7f6;
-    --peach-text: #000000;
+    --theme-peach-600: #ffdab9;
+    --theme-peach-700: #fbc4ab;
+    --theme-peach-800: #f8ad9d;
+    --theme-peach-900: #f4978e;
+    --theme-peach-950: #f08080;
+
+    --theme-peach-header: #fe9c8f;
+
+    --theme-peach-bg-from: #ffd2cc;
+    --theme-peach-bg-to: var(--theme-peach-900);
+    --theme-peach-text: #000000;
+    --theme-peach-outline: #fbc4ab;
+
+    --theme-peach-footer: var(--theme-peach-900);
 }
 
 [data-theme="peach"] {
-    --theme-gradient-angle: 45deg;
-    --theme-gradient-from: var(--peach-from);
-    --theme-gradient-to: var(--peach-to);
-    --color-theme-600: var(--peach-theme-600);
-    --color-theme-700: var(--peach-theme-700);
-    --color-theme-800: var(--peach-theme-800);
-    --color-theme-900: var(--peach-theme-900);
-    --color-theme-950: var(--peach-theme-950);
-    --color-theme-primary: var(--peach-primary);
-    color: var(--peach-text);
+    --color-theme-400: var(--theme-peach-400);
+    --color-theme-500: var(--theme-peach-500);
+    --color-theme-600: var(--theme-peach-600);
+    --color-theme-700: var(--theme-peach-700);
+    --color-theme-800: var(--theme-peach-800);
+    --color-theme-900: var(--theme-peach-900);
+    --color-theme-950: var(--theme-peach-950);
+
+    --color-theme-header: var(--theme-peach-header);
+    --color-theme-header-text: var(--theme-peach-text);
+
+    --color-theme-bg-from: var(--theme-peach-bg-from);
+    --color-theme-bg-to: var(--theme-peach-bg-to);
+    --color-theme-text: var(--theme-peach-text);
+    --color-theme-outline: var(--theme-peach-outline);
+
+    --color-theme-footer: var(--theme-peach-footer);
+    --color-theme-footer-text: var(--theme-peach-footer-text);
 }

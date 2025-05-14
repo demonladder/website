@@ -1,28 +1,41 @@
 @theme {
-    --culob-theme-500: #f897de;
-    --culob-theme-600: #f897de;
-    --culob-theme-700: #f2af29;
-    --culob-theme-800: #fc440f;
-    --culob-theme-900: #a3e7fc;
-    --culob-theme-950: #175676;
-    --culob-primary: #873d48;
-    --culob-from: var(--culob-theme-800);
-    --culob-to: var(--culob-theme-950);
-    --culob-text: rgb(27, 25, 25);
+    --theme-culob-400: hsl(0, 0%, 50%);
+    --theme-culob-500: #f897de;
+    --theme-culob-600: #f897de;
+    --theme-culob-700: #f2af29;
+    --theme-culob-800: #fc440f;
+    --theme-culob-900: #a3e7fc;
+    --theme-culob-950: #175676;
+
+    --theme-culob-header: #873d48;
+    --theme-culob-header-text: #1b1919;
+
+    --theme-culob-bg-from: var(--theme-culob-800);
+    --theme-culob-bg-to: var(--theme-culob-950);
+    --theme-culob-text: #1b1919;
+    --theme-culob-outline: #5a5a5a;
+
+    --theme-culob-footer: var(--theme-culob-950);
+    --theme-culob-footer-text: #ffffff;
 }
 
 [data-theme="culob"] {
-    --theme-gradient-angle: 135deg;
-    --theme-gradient-from: var(--culob-from);
-    --theme-gradient-to: var(--culob-to);
-    
-    --color-theme-400: var(--culob-theme-400);
-    --color-theme-500: var(--culob-theme-500);
-    --color-theme-600: var(--culob-theme-600);
-    --color-theme-700: var(--culob-theme-700);
-    --color-theme-800: var(--culob-theme-800);
-    --color-theme-900: var(--culob-theme-900);
-    --color-theme-950: var(--culob-theme-950);
-    --color-theme-primary: var(--culob-primary);
-    color: var(--culob-text);
+    --color-theme-400: var(--theme-culob-400);
+    --color-theme-500: var(--theme-culob-500);
+    --color-theme-600: var(--theme-culob-600);
+    --color-theme-700: var(--theme-culob-700);
+    --color-theme-800: var(--theme-culob-800);
+    --color-theme-900: var(--theme-culob-900);
+    --color-theme-950: var(--theme-culob-950);
+
+    --color-theme-header: var(--theme-culob-header);
+    --color-theme-header-text: var(--theme-culob-text);
+
+    --color-theme-bg-from: var(--theme-culob-bg-from);
+    --color-theme-bg-to: var(--theme-culob-bg-to);
+    --color-theme-text: var(--theme-culob-text);
+    --color-theme-outline: var(--theme-culob-outline);
+
+    --color-theme-footer: var(--theme-culob-footer);
+    --color-theme-footer-text: var(--theme-culob-footer-text);
 }

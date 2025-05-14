@@ -1,24 +1,36 @@
 @theme {
-    --seaweed-theme-600: #40b0bc;
-    --seaweed-theme-700: #3fbdac;
-    --seaweed-theme-800: #3ddc84;
-    --seaweed-theme-900: #3ecb9a;
-    --seaweed-theme-950: #3ddc84;
-    --seaweed-primary: #3ddc84;
-    --seaweed-from: #e4f7ff;
-    --seaweed-to: #e4f7ff;
-    --seaweed-text: #000000;
+    --theme-seaweed-600: #40b0bc;
+    --theme-seaweed-700: #3fbdac;
+    --theme-seaweed-800: #3ddc84;
+    --theme-seaweed-900: #3ecb9a;
+    --theme-seaweed-950: #3ddc84;
+    
+    --theme-seaweed-header: #3ddc84;
+    
+    --theme-seaweed-bg-from: #e4f7ff;
+    --theme-seaweed-bg-to: #e4f7ff;
+    --theme-seaweed-text: #000000;
+
+    --theme-seaweed-footer: var(--theme-seaweed-900);
 }
 
 [data-theme="seaweed"] {
-    --theme-gradient-angle: 45deg;
-    --theme-gradient-from: var(--seaweed-from);
-    --theme-gradient-to: var(--seaweed-to);
-    --color-theme-600: var(--seaweed-theme-600);
-    --color-theme-700: var(--seaweed-theme-700);
-    --color-theme-800: var(--seaweed-theme-800);
-    --color-theme-900: var(--seaweed-theme-900);
-    --color-theme-950: var(--seaweed-theme-950);
-    --color-theme-primary: var(--seaweed-primary);
-    color: var(--seaweed-text);
+    --color-theme-400: var(--theme-seaweed-400);
+    --color-theme-500: var(--theme-seaweed-500);
+    --color-theme-600: var(--theme-seaweed-600);
+    --color-theme-700: var(--theme-seaweed-700);
+    --color-theme-800: var(--theme-seaweed-800);
+    --color-theme-900: var(--theme-seaweed-900);
+    --color-theme-950: var(--theme-seaweed-950);
+
+    --color-theme-header: var(--theme-seaweed-header);
+    --color-theme-header-text: var(--theme-seaweed-text);
+
+    --color-theme-bg-from: var(--theme-seaweed-bg-from);
+    --color-theme-bg-to: var(--theme-seaweed-bg-to);
+    --color-theme-text: var(--theme-seaweed-text);
+    --color-theme-outline: var(--theme-seaweed-outline);
+
+    --color-theme-footer: var(--theme-seaweed-footer);
+    --color-theme-footer-text: var(--theme-seaweed-footer-text);
 }

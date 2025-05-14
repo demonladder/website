@@ -1,24 +1,38 @@
 @theme {
-    --lilac-theme-600: red;
-    --lilac-theme-700: #584596;
-    --lilac-theme-800: #6e58ac;
-    --lilac-theme-900: #806bbf;
-    --lilac-theme-950: #947dd3;
-    --lilac-primary: #947dd3;
-    --lilac-from: #271d43;
-    --lilac-to: #271d43;
-    --lilac-text: #f5edff;
+    --theme-lilac-600: #513e8e;
+    --theme-lilac-700: #584596;
+    --theme-lilac-800: #6e58ac;
+    --theme-lilac-900: #806bbf;
+    --theme-lilac-950: #947dd3;
+
+    --theme-lilac-header: #947dd3;
+    --theme-lilac-header-text: white;
+
+    --theme-lilac-bg-from: #271d43;
+    --theme-lilac-bg-to: #271d43;
+    --theme-lilac-text: #f5edff;
+
+    --theme-lilac-footer: var(--theme-lilac-900);
+    --theme-lilac-footer-text: white;
 }
 
 [data-theme="lilac"] {
-    --theme-gradient-angle: 45deg;
-    --theme-gradient-from: var(--lilac-from);
-    --theme-gradient-to: var(--lilac-to);
-    --color-theme-600: var(--lilac-theme-600);
-    --color-theme-700: var(--lilac-theme-700);
-    --color-theme-800: var(--lilac-theme-800);
-    --color-theme-900: var(--lilac-theme-900);
-    --color-theme-950: var(--lilac-theme-950);
-    --color-theme-primary: var(--lilac-primary);
-    color: var(--lilac-text);
+    --color-theme-400: var(--theme-lilac-400);
+    --color-theme-500: var(--theme-lilac-500);
+    --color-theme-600: var(--theme-lilac-600);
+    --color-theme-700: var(--theme-lilac-700);
+    --color-theme-800: var(--theme-lilac-800);
+    --color-theme-900: var(--theme-lilac-900);
+    --color-theme-950: var(--theme-lilac-950);
+
+    --color-theme-header: var(--theme-lilac-header);
+    --color-theme-header-text: var(--theme-lilac-text);
+
+    --color-theme-bg-from: var(--theme-lilac-bg-from);
+    --color-theme-bg-to: var(--theme-lilac-bg-to);
+    --color-theme-text: var(--theme-lilac-text);
+    --color-theme-outline: var(--theme-lilac-outline);
+
+    --color-theme-footer: var(--theme-lilac-footer);
+    --color-theme-footer-text: var(--theme-lilac-footer-text);
 }

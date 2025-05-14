@@ -1,25 +1,41 @@
 @theme {
-    --citrus-theme-500: #fce69f;
-    --citrus-theme-600: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 20%);
-    --citrus-theme-700: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 40%);
-    --citrus-theme-800: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 60%);
-    --citrus-theme-900: color-mix(in oklab, var(--citrus-theme-500), var(--citrus-theme-950) 80%);
-    --citrus-theme-950: #faa94d;
-    --citrus-primary: #ffde7d;
-    --citrus-from: #f4e495;
-    --citrus-to: #fec794;
+    --theme-citrus-400: #577388;
+    --theme-citrus-500: #fce69f;
+    --theme-citrus-600: color-mix(in oklab, var(--theme-citrus-500), var(--theme-citrus-950) 20%);
+    --theme-citrus-700: color-mix(in oklab, var(--theme-citrus-500), var(--theme-citrus-950) 40%);
+    --theme-citrus-800: color-mix(in oklab, var(--theme-citrus-500), var(--theme-citrus-950) 60%);
+    --theme-citrus-900: color-mix(in oklab, var(--theme-citrus-500), var(--theme-citrus-950) 80%);
+    --theme-citrus-950: #faa94d;
+
+    --theme-citrus-header: #ffde7d;
+    --theme-citrus-header-text: black;
+
+    --theme-citrus-bg-from: #f4e495;
+    --theme-citrus-bg-to: #fec794;
+    --theme-citrus-text: black;
+    --theme-citrus-outline: #5a5a5a;
+
+    --theme-citrus-footer: var(--theme-citrus-950);
+    --theme-citrus-footer-text: #ffffff;
 }
 
 [data-theme="citrus"] {
-    --theme-gradient-angle: 135deg;
-    --theme-gradient-from: var(--citrus-from);
-    --theme-gradient-to: var(--citrus-to);
-    --color-theme-500: var(--citrus-theme-500);
-    --color-theme-600: var(--citrus-theme-600);
-    --color-theme-700: var(--citrus-theme-700);
-    --color-theme-800: var(--citrus-theme-800);
-    --color-theme-950: var(--citrus-theme-950);
-    --color-refreshRate-60: var(--citrus-theme-950);
-    --color-theme-primary: var(--citrus-primary);
-    color: black;
+    --color-theme-400: var(--theme-citrus-400);
+    --color-theme-500: var(--theme-citrus-500);
+    --color-theme-600: var(--theme-citrus-600);
+    --color-theme-700: var(--theme-citrus-700);
+    --color-theme-800: var(--theme-citrus-800);
+    --color-theme-900: var(--theme-citrus-900);
+    --color-theme-950: var(--theme-citrus-950);
+
+    --color-theme-header: var(--theme-citrus-header);
+    --color-theme-header-text: var(--theme-citrus-text);
+
+    --color-theme-bg-from: var(--theme-citrus-bg-from);
+    --color-theme-bg-to: var(--theme-citrus-bg-to);
+    --color-theme-text: var(--theme-citrus-text);
+    --color-theme-outline: var(--theme-citrus-outline);
+
+    --color-theme-footer: var(--theme-citrus-footer);
+    --color-theme-footer-text: var(--theme-citrus-footer-text);
 }

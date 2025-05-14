@@ -1,12 +1,22 @@
 @theme {
-    --dark-from: #262626;
-    --dark-to: #262626;
-    --dark-header-text: black;
-}
+    --theme-dark-400: #929292;
+    --theme-dark-500: #4d4d4d;
+    --theme-dark-600: #454545;
+    --theme-dark-700: #353535;
+    --theme-dark-800: #2b2b2b;
+    --theme-dark-900: #262626;
+    --theme-dark-950: #1a1a1a;
 
-[data-theme="dark"] {
-    color: white;
-    --color-theme-header-text: var(--dark-header-text);
+    --theme-dark-header: #efa51c;
+    --theme-dark-header-text: black;
+
+    --theme-dark-bg-from: #262626;
+    --theme-dark-bg-to: #262626;
+    --theme-dark-text: #ffffff;
+    --theme-dark-outline: rgba(0, 0, 0, 0);
+
+    --theme-dark-footer: #1a1a1a;
+    --theme-dark-footer-text: #ffffff;
 }
 
 [data-theme="dark"] header input {

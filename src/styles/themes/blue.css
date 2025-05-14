@@ -1,29 +1,41 @@
 @theme {
-    --blue-theme-400: #7b8f9e;
-    --blue-theme-500: #89e3ff;
-    --blue-theme-600: #8ed9ff;
-    --blue-theme-700: #69c6f8;
-    --blue-theme-800: #4bbcf3;
-    --blue-theme-900: #3ba5da;
-    --blue-theme-950: #2b8ec0;
-    --blue-primary: #61ddff;
-    --blue-from: var(--blue-theme-800);
-    --blue-to: var(--blue-theme-950);
-    --blue-text: rgb(27, 25, 25);
+    --theme-blue-400: #577388;
+    --theme-blue-500: #89e3ff;
+    --theme-blue-600: #8ed9ff;
+    --theme-blue-700: #69c6f8;
+    --theme-blue-800: #4bbcf3;
+    --theme-blue-900: #3ba5da;
+    --theme-blue-950: #2b8ec0;
+
+    --theme-blue-header: #61ddff;
+    --theme-blue-header-text: black;
+
+    --theme-blue-bg-from: var(--theme-blue-800);
+    --theme-blue-bg-to: var(--theme-blue-800);
+    --theme-blue-text: #1b1919;
+    --theme-blue-outline: #5a5a5a;
+
+    --theme-blue-footer: #2b8ec0;
+    --theme-blue-footer-text: #ffffff;
 }
 
 [data-theme="blue"] {
-    --theme-gradient-angle: 135deg;
-    --theme-gradient-from: var(--blue-from);
-    --theme-gradient-to: var(--blue-to);
-    
-    --color-theme-400: var(--blue-theme-400);
-    --color-theme-500: var(--blue-theme-500);
-    --color-theme-600: var(--blue-theme-600);
-    --color-theme-700: var(--blue-theme-700);
-    --color-theme-800: var(--blue-theme-800);
-    --color-theme-900: var(--blue-theme-900);
-    --color-theme-950: var(--blue-theme-950);
-    --color-theme-primary: var(--blue-primary);
-    color: var(--blue-text);
+    --color-theme-400: var(--theme-blue-400);
+    --color-theme-500: var(--theme-blue-500);
+    --color-theme-600: var(--theme-blue-600);
+    --color-theme-700: var(--theme-blue-700);
+    --color-theme-800: var(--theme-blue-800);
+    --color-theme-900: var(--theme-blue-900);
+    --color-theme-950: var(--theme-blue-950);
+
+    --color-theme-header: var(--theme-blue-header);
+    --color-theme-header-text: var(--theme-blue-text);
+
+    --color-theme-bg-from: var(--theme-blue-bg-from);
+    --color-theme-bg-to: var(--theme-blue-bg-to);
+    --color-theme-text: var(--theme-blue-text);
+    --color-theme-outline: var(--theme-blue-outline);
+
+    --color-theme-footer: var(--theme-blue-footer);
+    --color-theme-footer-text: var(--theme-blue-footer-text);
 }

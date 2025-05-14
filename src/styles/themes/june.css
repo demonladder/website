@@ -1,28 +1,38 @@
 @theme {
-    --june-theme-500: #f897de;
-    --june-theme-600: #f897de;
-    --june-theme-700: #f897de;
-    --june-theme-800: #f897de;
-    --june-theme-900: #f897de;
-    --june-theme-950: #f897de;
-    --june-primary: #f897de;
-    --june-from: var(--june-theme-800);
-    --june-to: var(--june-theme-950);
-    --june-text: rgb(27, 25, 25);
+    --theme-june-500: #f897de;
+    --theme-june-600: #ff7cdc;
+    --theme-june-700: #f897de;
+    --theme-june-800: #f897de;
+    --theme-june-900: #f897de;
+    --theme-june-950: #ff73da;
+
+    --theme-june-header: #f080d2;
+    
+    --theme-june-bg-from: var(--theme-june-800);
+    --theme-june-bg-to: var(--theme-june-950);
+    --theme-june-text: rgb(27, 25, 25);
+    --theme-june-outline: #e534eb;
+
+    --theme-june-footer: var(--theme-june-950);
 }
 
 [data-theme="june"] {
-    --theme-gradient-angle: 135deg;
-    --theme-gradient-from: var(--june-from);
-    --theme-gradient-to: var(--june-to);
-    
-    --color-theme-400: var(--june-theme-400);
-    --color-theme-500: var(--june-theme-500);
-    --color-theme-600: var(--june-theme-600);
-    --color-theme-700: var(--june-theme-700);
-    --color-theme-800: var(--june-theme-800);
-    --color-theme-900: var(--june-theme-900);
-    --color-theme-950: var(--june-theme-950);
-    --color-theme-primary: var(--june-primary);
-    color: var(--june-text);
+    --color-theme-400: var(--theme-june-400);
+    --color-theme-500: var(--theme-june-500);
+    --color-theme-600: var(--theme-june-600);
+    --color-theme-700: var(--theme-june-700);
+    --color-theme-800: var(--theme-june-800);
+    --color-theme-900: var(--theme-june-900);
+    --color-theme-950: var(--theme-june-950);
+
+    --color-theme-header: var(--theme-june-header);
+    --color-theme-header-text: var(--theme-june-text);
+
+    --color-theme-bg-from: var(--theme-june-bg-from);
+    --color-theme-bg-to: var(--theme-june-bg-to);
+    --color-theme-text: var(--theme-june-text);
+    --color-theme-outline: var(--theme-june-outline);
+
+    --color-theme-footer: var(--theme-june-footer);
+    --color-theme-footer-text: var(--theme-june-footer-text);
 }

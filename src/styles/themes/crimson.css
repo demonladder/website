@@ -1,27 +1,41 @@
-@theme {    
-    --crimson-theme-500: hsl(0, 100%, 10%);
-    --crimson-theme-600: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 20%);
-    --crimson-theme-700: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 40%);
-    --crimson-theme-800: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 60%);
-    --crimson-theme-900: color-mix(in oklab, var(--crimson-theme-500), var(--crimson-theme-950) 80%);
-    --crimson-theme-950: hsl(0, 83%, 2%);
-    --crimson-from: var(--crimson-theme-500);
-    --crimson-to: var(--crimson-theme-800);
-    --crimson-primary: #390505;
-    --crimson-text: white;
+@theme {
+    --theme-crimson-400: hsl(0, 0%, 50%);
+    --theme-crimson-500: hsl(0, 100%, 10%);
+    --theme-crimson-600: color-mix(in oklab, var(--theme-crimson-500), var(--theme-crimson-950) 20%);
+    --theme-crimson-700: color-mix(in oklab, var(--theme-crimson-500), var(--theme-crimson-950) 40%);
+    --theme-crimson-800: color-mix(in oklab, var(--theme-crimson-500), var(--theme-crimson-950) 60%);
+    --theme-crimson-900: color-mix(in oklab, var(--theme-crimson-500), var(--theme-crimson-950) 80%);
+    --theme-crimson-950: hsl(0, 83%, 2%);
+
+    --theme-crimson-header: #390505;
+    --theme-crimson-header-text: #ffffff;
+
+    --theme-crimson-bg-from: var(--theme-crimson-500);
+    --theme-crimson-bg-to: var(--theme-crimson-800);
+    --theme-crimson-text: #ffffff;
+    --theme-crimson-outline: #5a5a5a;
+
+    --theme-crimson-footer: var(--theme-crimson-950);
+    --theme-crimson-footer-text: #ffffff;
 }
 
 [data-theme="crimson"] {
-    --theme-gradient-angle: 90deg;
-    --theme-gradient-from: var(--crimson-from);
-    --theme-gradient-to: var(--crimson-to);
-    --color-theme-500: var(--crimson-theme-500);
-    --color-theme-600: var(--crimson-theme-600);
-    --color-theme-700: var(--crimson-theme-700);
-    --color-theme-800: var(--crimson-theme-800);
-    --color-theme-900: var(--crimson-theme-900);
-    --color-theme-950: var(--crimson-theme-950);
-    --color-theme-primary: #570101;
-    color: var(--crimson-text);
-    --color-theme-header-text: var(--crimson-text);
+    --color-theme-400: var(--theme-crimson-400);
+    --color-theme-500: var(--theme-crimson-500);
+    --color-theme-600: var(--theme-crimson-600);
+    --color-theme-700: var(--theme-crimson-700);
+    --color-theme-800: var(--theme-crimson-800);
+    --color-theme-900: var(--theme-crimson-900);
+    --color-theme-950: var(--theme-crimson-950);
+
+    --color-theme-header: var(--theme-crimson-header);
+    --color-theme-header-text: var(--theme-crimson-text);
+
+    --color-theme-bg-from: var(--theme-crimson-bg-from);
+    --color-theme-bg-to: var(--theme-crimson-bg-to);
+    --color-theme-text: var(--theme-crimson-text);
+    --color-theme-outline: var(--theme-crimson-outline);
+
+    --color-theme-footer: var(--theme-crimson-footer);
+    --color-theme-footer-text: var(--theme-crimson-footer-text);
 }

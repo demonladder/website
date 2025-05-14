@@ -1,31 +1,41 @@
 @theme {
-    --rfmx-theme-400: #adbbc5;
-    --rfmx-theme-500: #89e3ff;
-    --rfmx-theme-600: #707070;
-    --rfmx-theme-700: #707070;
-    --rfmx-theme-800: #707070;
-    --rfmx-theme-900: #707070;
-    --rfmx-theme-950: #ffb52c;
-    --rfmx-primary: #ffb52c;
-    --rfmx-primary-text: black;
-    --rfmx-from: #dbe8ff;
-    --rfmx-to: #dbe8ff;
-    --rfmx-text: rgb(255, 255, 255);
+    --theme-rfmx-400: #adbbc5;
+    --theme-rfmx-500: #89e3ff;
+    --theme-rfmx-600: #707070;
+    --theme-rfmx-700: #707070;
+    --theme-rfmx-800: #707070;
+    --theme-rfmx-900: #707070;
+    --theme-rfmx-950: #ffb52c;
+
+    --theme-rfmx-header: #ffb52c;
+    --theme-rfmx-header-text: black;
+    
+    --theme-rfmx-bg-from: #dbe8ff;
+    --theme-rfmx-bg-to: #dbe8ff;
+    --theme-rfmx-text: white;
+    --theme-rfmx-outline: #0000;
+
+    --theme-rfmx-footer: var(--theme-rfmx-900);
+    --theme-rfmx-footer-text: white;
 }
 
 [data-theme="rfmx"] {
-    --theme-gradient-angle: 135deg;
-    --theme-gradient-from: var(--rfmx-from);
-    --theme-gradient-to: var(--rfmx-to);
-    --theme-primary-text: var(--rfmx-primary-text);
-    
-    --color-theme-400: var(--rfmx-theme-400);
-    --color-theme-500: var(--rfmx-theme-500);
-    --color-theme-600: var(--rfmx-theme-600);
-    --color-theme-700: var(--rfmx-theme-700);
-    --color-theme-800: var(--rfmx-theme-800);
-    --color-theme-900: var(--rfmx-theme-900);
-    --color-theme-950: var(--rfmx-theme-950);
-    --color-theme-primary: var(--rfmx-primary);
-    color: var(--rfmx-text);
+    --color-theme-400: var(--theme-rfmx-400);
+    --color-theme-500: var(--theme-rfmx-500);
+    --color-theme-600: var(--theme-rfmx-600);
+    --color-theme-700: var(--theme-rfmx-700);
+    --color-theme-800: var(--theme-rfmx-800);
+    --color-theme-900: var(--theme-rfmx-900);
+    --color-theme-950: var(--theme-rfmx-950);
+
+    --color-theme-header: var(--theme-rfmx-header);
+    --color-theme-header-text: var(--theme-rfmx-header-text);
+
+    --color-theme-bg-from: var(--theme-rfmx-bg-from);
+    --color-theme-bg-to: var(--theme-rfmx-bg-to);
+    --color-theme-text: var(--theme-rfmx-text);
+    --color-theme-outline: var(--theme-rfmx-outline);
+
+    --color-theme-footer: var(--theme-rfmx-footer);
+    --color-theme-footer-text: var(--theme-rfmx-footer-text);
 }
