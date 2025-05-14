@@ -16,9 +16,15 @@ export const permissions: Permission[] = [
     },
     {
         ID: 1,
-        Name: 'Edit list',
+        Name: 'Manage submissions',
         Description: 'Allows users to accept, reject and edit submissions.',
         Flag: PermissionFlags.MANAGE_SUBMISSIONS,
+    },
+    {
+        ID: 16,
+        Name: 'Skip queue',
+        Description: 'Users will have all their submission be automatically accepted.',
+        Flag: PermissionFlags.SKIP_QUEUE,
     },
     {
         ID: 2,

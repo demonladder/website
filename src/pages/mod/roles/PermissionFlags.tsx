@@ -15,4 +15,5 @@ export enum PermissionFlags {
     DELETE_LEVELS = 1 << 13,
     MANAGE_NOTES = 1 << 14,
     ADMIN = 1 << 15,
+    SKIP_QUEUE = 1 << 16,
 }
