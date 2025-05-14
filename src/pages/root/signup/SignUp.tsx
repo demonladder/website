@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { PasswordInput, TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
@@ -12,6 +12,24 @@ import Heading1 from '../../../components/headings/Heading1';
 import FormGroup from '../../../components/form/FormGroup';
 import { useMutation } from '@tanstack/react-query';
 import SignUpFn from '../../../api/auth/SignUp';
+import _ from 'lodash';
+
+function getCharacterVariety(text: string) {
+    let variety = 0;
+
+    if (/[0-9]/.test(text)) variety += 10;
+    if (/[a-z]/.test(text)) variety += 26;
+    if (/[A-Z]/.test(text)) variety += 26;
+    if (/\W|_/.test(text)) variety += 32;
+
+    return variety;
+}
+
+function percentToColor(percent: number) {
+    if (percent < 40) return 'red';
+    if (percent < 80) return 'yellow';
+    return '#00ff00';
+}
 
 export default function SignUp() {
     const [password, setPassword] = useState('');
@@ -44,6 +62,13 @@ export default function SignUp() {
         });
     }
 
+    const strength = useMemo(() => {
+        const entropy = password === '' ? 0 : Math.log2(getCharacterVariety(password)) * password.length;
+        const secondsToCrack = 2 ** entropy / 1e9;
+        return _.clamp(secondsToCrack ** 0.1466321, 0, 100);
+    }, [password]);
+    const strengthColor = useMemo(() => percentToColor(strength), [strength]);
+
     return (
         <Page>
             <div className='flex justify-center'>
@@ -63,6 +88,7 @@ export default function SignUp() {
                         <FormGroup>
                             <FormInputLabel htmlFor='password'>Password</FormInputLabel>
                             <PasswordInput value={password} onChange={(e) => setPassword(e.target.value.trim())} id='password' name='password' autoComplete='new-password' autoCapitalize='off' minLength={7} invalid={password.length < 7} required />
+                            <div className='h-1 rounded-b' style={{ backgroundImage: `linear-gradient(to left, ${strengthColor}, ${strengthColor})`, backgroundSize: `${strength}%`, backgroundRepeat: 'no-repeat' }} />
                             <FormInputDescription>Passwords must be at least 7 characters long</FormInputDescription>
                         </FormGroup>
                         <FormGroup>
