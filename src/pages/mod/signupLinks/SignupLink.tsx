@@ -67,7 +67,7 @@ export default function SignupLink() {
                 <PrimaryButton onClick={newLink} disabled={genToken.status === 'loading'}>Generate</PrimaryButton>
             </FormGroup>
             <div className='flex justify-between items-center mt-8'>
-                <p>Links</p>
+                <p><b>Links</b></p>
                 <SecondaryButton onClick={() => void refetch()} disabled={tokens === undefined}>Refresh</SecondaryButton>
             </div>
             <div className='flex flex-col gap-4'>
@@ -76,6 +76,9 @@ export default function SignupLink() {
                     : <LoadingSpinner />
                 }
             </div>
+            {tokens?.length === 0 &&
+                <p className='text-center'>No links found.</p>
+            }
         </div>
     );
 }
