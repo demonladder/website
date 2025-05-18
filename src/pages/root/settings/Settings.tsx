@@ -13,6 +13,7 @@ export default function Settings() {
                         <NavButton to='/settings/appearance'>Appearance</NavButton>
                         <NavButton to='/settings/submission'>Submission settings</NavButton>
                         <NavButton to='/settings/account'>Account settings</NavButton>
+                        <NavButton to='/settings/developer'>Developer</NavButton>
                     </div>
                 </div>
                 <div className='grow'>
