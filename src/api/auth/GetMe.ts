@@ -20,7 +20,6 @@ interface MeResponse extends User {
 }
 
 export default async function GetMe() {
-    const me = (await APIClient.get<User>('/auth/me')).data;
-    const res = await APIClient.get<MeResponse>(`/user/${me.ID}`);
+    const res = await APIClient.get<MeResponse>('/user/me');
     return res.data;
 }

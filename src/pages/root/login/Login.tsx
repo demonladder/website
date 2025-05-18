@@ -19,7 +19,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const { mutate: submit, isLoading } = useMutation({
-        mutationFn: (body: { username: string, password: string }) => toast.promise(APIClient.post<string>('/auth/login', body).then(() => {
+        mutationFn: (body: { username: string, password: string }) => toast.promise(APIClient.post<string>('/account/login', body).then(() => {
             void queryClient.invalidateQueries(['me']);
             navigate(-1);
         }), {
