@@ -22,7 +22,7 @@ export default function useSession() {
     }, [user]);
 
     const logout = useCallback(async () => {
-        await APIClient.post('/auth/logout');
+        await APIClient.post('/account/logout');
         document.location.reload();
     }, []);
 

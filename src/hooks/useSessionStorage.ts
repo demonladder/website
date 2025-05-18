@@ -6,7 +6,7 @@ export default function useSessionStorage<T>(key: string, defaultValue: T): [T, 
 
     useEffect(() => {
         sessionStorage.setItem(key, JSON.stringify(value));
-    }, [value]);
+    }, [key, value]);
     
     return [value, setValue];
 }

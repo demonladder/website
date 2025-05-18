@@ -46,7 +46,7 @@ function ProfileButton({ userID, username }: { userID: number, username: string 
                 </Link>
                 <ul className='absolute z-40 bg-theme-600 text-theme-text shadow round:rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex flex-col'>
                     <li><Link className='p-2 block round:rounded-t-lg hover:bg-theme-950/40' to={`/profile/${userID}`}>Go to profile</Link></li>
-                    <li><Link className='p-2 block hover:bg-theme-950/40' to='/settings/account'>Settings</Link></li>
+                    <li><Link className='p-2 block hover:bg-theme-950/40' to='/settings/profile'>Settings</Link></li>
                     <li><p className='p-2 round:rounded-b-lg hover:bg-theme-950/40 cursor-pointer transition-colors' onClick={() => void session.logout()}>Log out</p></li>
                 </ul>
             </div>

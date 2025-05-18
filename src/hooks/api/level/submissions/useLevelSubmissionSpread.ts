@@ -2,27 +2,27 @@ import { useQuery } from '@tanstack/react-query';
 import APIClient from '../../../../api/APIClient';
 
 interface SpreadResponse {
-    rating: {
-        Rating: number;
-        Count: number;
-    }[];
-    twoPlayerRating: {
-        Rating: number;
-        Count: number;
-    }[];
-    enjoyment: {
-        Enjoyment: number;
-        Count: number;
-    }[];
-    twoPlayerEnjoyment: {
-        Enjoyment: number;
-        Count: number;
-    }[];
+    rating: Record<string, number>;
+    twoPlayerRating: Record<string, number>;
+    enjoyment: Record<string, number>;
+    twoPlayerEnjoyment: Record<string, number>;
+}
+
+async function getSubmissionSpread(levelID: number) {
+    const res = await APIClient.get<SpreadResponse>(`/level/${levelID}/submissions/spread`);
+    const data = res.data;
+
+    return {
+        rating: Object.entries(data.rating).map(([key, value]) => ({ Rating: Number(key), Count: value })),
+        twoPlayerRating: Object.entries(data.twoPlayerRating).map(([key, value]) => ({ Rating: Number(key), Count: value })),
+        enjoyment: Object.entries(data.enjoyment).map(([key, value]) => ({ Enjoyment: Number(key), Count: value })),
+        twoPlayerEnjoyment: Object.entries(data.twoPlayerEnjoyment).map(([key, value]) => ({ Enjoyment: Number(key), Count: value })),
+    };
 }
 
 export function useLevelSubmissionSpread(levelID: number) {
     return useQuery({
         queryKey: ['level', levelID, 'submissions', 'spread'],
-        queryFn: () => APIClient.get<SpreadResponse>(`/level/${levelID}/submissions/spread`).then((res) => res.data),
+        queryFn: () => getSubmissionSpread(levelID),
     });
 }

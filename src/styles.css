@@ -117,3 +117,7 @@ label:has(> input[type=checkbox]:disabled) {
 [data-font="serif"] {
     --font-sans: 'Noto Serif', 'Merriweather', 'serif';
 }
+
+html.inverted {
+    filter: invert(100%);
+}
