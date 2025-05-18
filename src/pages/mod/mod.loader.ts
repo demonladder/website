@@ -1,18 +1,16 @@
 import { redirect } from 'react-router-dom';
-import APIClient from '../../api/APIClient';
-import User from '../../api/types/User';
 import { permissionsFromRoles } from '../../utils/permissionsFromRoles';
-import Role from '../../api/types/Role';
 import { PermissionFlags } from './roles/PermissionFlags';
+import GetMe from '../../api/auth/GetMe';
 
 export async function modLoader() {
     try {
-        const currentUser = (await APIClient.get<User & { Roles: Role[] }>('/auth/me')).data;
+        const currentUser = await GetMe();
 
         const permissions = permissionsFromRoles(currentUser.Roles);
         if (permissions & PermissionFlags.STAFF_DASHBOARD) return null;
         return redirect('/');
-    } catch (_) {
+    } catch {
         return redirect('/');
     }
 }
