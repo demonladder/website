@@ -15,6 +15,7 @@ interface Props {
     creator: string;
     songName: string;
     onContextMenu?: React.MouseEventHandler;
+    selected?: boolean;
 }
 
 function Header() {
@@ -30,15 +31,22 @@ function Header() {
     );
 }
 
-function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu }: Props) {
+function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
     const tierClass = 'tier-' + roundedTier;
     const enjoymentClass = 'enj-' + roundedEnjoyment;
 
+    let backgroundClass = 'bg-theme-700 even:bg-theme-700/40';
+    if (selected) {
+        backgroundClass = 'bg-theme-950 border';
+    } else if (completed && StorageManager.getHighlightCompleted()) {
+        backgroundClass = 'bg-green-700 even:bg-green-700/60 font-bold text-white';
+    }
+
     return (
-        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl ' + ((completed && StorageManager.getHighlightCompleted()) ? 'bg-green-700 even:bg-green-700/60 font-bold' : 'bg-theme-700 even:bg-theme-700/40')} onContextMenu={onContextMenu}>
+        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl ' + (backgroundClass)} onContextMenu={onContextMenu}>
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
                     <img src='/assets/images/yes tick.webp' className='max-md:w-6 max-md:h-6 w-8 h-8 self-center me-2' alt='' />

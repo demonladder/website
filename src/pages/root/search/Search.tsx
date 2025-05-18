@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Level from '../../../components/Level';
 import FilterMenu from './FilterMenu';
 import SortMenu from './SortMenu';
@@ -19,9 +19,12 @@ import Heading1 from '../../../components/headings/Heading1';
 import Heading2 from '../../../components/headings/Heading2';
 import { Helmet } from 'react-helmet-async';
 import Page from '../../../components/Page';
+import { useNavigate } from 'react-router-dom';
 
 export default function Search() {
-    const [name, lazyName, setName] = useLazyQueryParam(QueryParamNames.Name, '');
+    const [savedFilters, setSavedFilters] = useSessionStorage<Partial<Record<QueryParamNames, string>>>('levelFilters', {});
+
+    const [name, lazyName, setName] = useLazyQueryParam(QueryParamNames.Name, savedFilters[QueryParamNames.Name] ?? '');
     const [creator, lazyCreator, setCreator] = useLazyQueryParam(QueryParamNames.Creator, '');
     const [song, lazySong, setSong] = useLazyQueryParam(QueryParamNames.Song, '');
 
@@ -53,6 +56,11 @@ export default function Search() {
         [QueryParamNames.ExcludeRatedEnjoyment]: BooleanParam,
         [QueryParamNames.InPack]: BooleanParam,
     });
+    
+    useEffect(() => {
+        setQuery(savedFilters, 'replace');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const generateQ = useCallback((name: string, creator: string, song: string) => {
         return {
@@ -90,6 +98,7 @@ export default function Search() {
     }, [query]);
 
     function reset() {
+        setSavedFilters({});
         setQuery({}, 'replace');
     }
 
@@ -106,17 +115,50 @@ export default function Search() {
         queryFn: () => SearchLevels(q),
     });
 
+    // Reset page to 0 if the search data is empty and the page is greater than 0
     useEffect(() => {
         if (searchData) {
             if (searchData.total < (query.page - 1) * searchData.limit) {
                 setQuery({ ...query, page: 0 });
             }
+
+            setSelection(0);
         }
     }, [searchData, query, setQuery]);
+
+    // Persist filters to session storage
+    useEffect(() => {
+        setSavedFilters(query);
+        setSavedFilters((prev) => ({
+            ...prev,
+            [QueryParamNames.Name]: lazyName,
+            [QueryParamNames.Creator]: lazyCreator,
+            [QueryParamNames.Song]: lazySong,
+        }));
+    }, [lazyCreator, lazyName, lazySong, query, setSavedFilters]);
 
     function onNameChange(e: React.ChangeEvent<HTMLInputElement>) {
         setName(e.target.value);
         setQuery({ ...query, [QueryParamNames.Page]: 0 });
+    }
+
+    const [selection, setSelection] = useState(0);
+    const navigate = useNavigate();
+    function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setSelection((prev) => Math.min(prev + 1, searchData?.levels.length ?? 0));
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setSelection((prev) => Math.max(prev - 1, 0));
+        } else if (e.key === 'Enter') {
+            if (selection > 0) {
+                const level = searchData?.levels[selection - 1];
+                if (level) {
+                    navigate('/level/' + level.ID);
+                }
+            }
+        }
     }
 
     if (searchStatus === 'error') return <Heading2>An error ocurred!</Heading2>;
@@ -129,7 +171,7 @@ export default function Search() {
             <Heading1 className='mb-2'>The Ladder</Heading1>
             <div className='flex items-center gap-1'>
                 <div className='relative flex-grow group'>
-                    <TextInput autoFocus placeholder='Search level name...' value={name} onChange={onNameChange} />
+                    <TextInput autoFocus placeholder='Search level name...' value={name} onChange={onNameChange} onKeyDown={onKeyDown} />
                     <button className='absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity' onClick={() => setName('')}>
                         <svg width='16' height='16' stroke='currentColor' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
                             <path strokeWidth='2' strokeLinecap='round' d='M4 4l22 22M4 26l22 -22' />
@@ -142,16 +184,18 @@ export default function Search() {
                     </svg>
                 </button>
                 <SortMenu />
+                <div />
                 {listViewButtons}
             </div>
             <FilterMenu creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
+            {searchData && <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />}
             <div className='my-4'>
                 {(searchStatus === 'loading' && !searchData)
                     ? <LoadingSpinner />
                     : searchData.levels.length === 0
                         ? <h2 className='text-3xl'>No levels found!</h2>
                         : listView
-                            ? <LevelRenderer element={Level} levels={searchData.levels} className='level-list' header={<Level.Header />} />
+                            ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' header={<Level.Header />} />
                             : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
                 }
             </div>
