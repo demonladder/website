@@ -58,7 +58,7 @@ export default function AccountSettings() {
                         <p>Are you sure you want to delete your account?</p>
                         <p>This action is irreversible! All related data to your account will be deleted.</p>
                         <FormGroup>
-                            <TextInput value={nameChallenge} onChange={(e) => setNameChallenge(e.target.value)} placeholder='Type your username to confirm' invalid={!isNameValid} />
+                            <TextInput name='deleteUserChallenge' value={nameChallenge} onChange={(e) => setNameChallenge(e.target.value)} placeholder='Type your username to confirm' invalid={!isNameValid} autoComplete='off' />
                             <FormInputDescription>Enter your username to confirm the deletion of your account.</FormInputDescription>
                         </FormGroup>
                     </div>
