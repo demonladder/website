@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useId } from 'react';
 import { NumberInput, TextInput } from '../../../../components/Input';
-import StorageManager from '../../../../utils/StorageManager';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import TextArea from '../../../../components/input/TextArea';
 import FormGroup from '../../../../components/form/FormGroup';
@@ -15,6 +14,8 @@ import Select from '../../../../components/Select';
 import { ISO3611Alpha2 } from './ISO3611-1-alpha-2';
 import { useMutation } from '@tanstack/react-query';
 import Heading1 from '../../../../components/headings/Heading1';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
+import useSession from '../../../../hooks/useSession';
 
 const pronounOptions = {
     '-': 'Select your pronouns',
@@ -35,9 +36,9 @@ const countryOptions = {
 type CountryOptionKey = keyof typeof countryOptions;
 
 export default function GeneralInformation({ userID }: { userID: number }) {
-    const hasSession = StorageManager.hasSession();
+    const session = useSession();
 
-    const { data, status, refetch: invalidateUser } = useUserQuery(userID, { enabled: hasSession });
+    const { data, status, refetch: invalidateUser } = useUserQuery(userID, { enabled: session.user !== undefined });
 
     const [name, setName] = useState('');
     const introductionRef = useRef<HTMLTextAreaElement>(null);
@@ -124,7 +125,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         });
     }
 
-    if (status === 'loading') return;
+    if (status === 'loading') return <LoadingSpinner />;
     if (status === 'error') return <div><Heading1>An error occurred</Heading1></div>;
 
     return (
