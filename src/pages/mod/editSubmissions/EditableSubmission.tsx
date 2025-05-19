@@ -14,8 +14,8 @@ import CheckBox from '../../../components/input/CheckBox';
 import { parseInt } from '../../../utils/parse/parseInt';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import { validateTier } from '../../root/bulkSubmit/validateTier';
-import { validateEnjoyment } from '../../root/bulkSubmit/validateEnjoyment';
+import { validateTier } from '../../../utils/validators/validateTier';
+import { validateEnjoyment } from '../../../utils/validators/validateEnjoyment';
 
 interface Props {
     submission: Submission;

@@ -1,16 +1,16 @@
 import { useCallback, useMemo, useState } from 'react';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import TextArea from '../../../components/input/TextArea';
+import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import TextArea from '../../components/input/TextArea';
 import { toast } from 'react-toastify';
-import StorageManager from '../../../utils/StorageManager';
+import StorageManager from '../../utils/StorageManager';
 import { useMutation } from '@tanstack/react-query';
-import SubmitBulk, { BulkSubmission } from '../../../api/submissions/SubmitBulk';
-import { render } from '../../../utils/renderToastError';
+import { BulkSubmission, submitBulk } from './api/submitBulk';
+import { render } from '../../utils/renderToastError';
 import { AxiosError } from 'axios';
-import { validateTier } from './validateTier';
-import { validateEnjoyment } from './validateEnjoyment';
-import Page from '../../../components/Page';
-import Heading1 from '../../../components/headings/Heading1';
+import { validateTier } from '../../utils/validators/validateTier';
+import { validateEnjoyment } from '../../utils/validators/validateEnjoyment';
+import Page from '../../components/Page';
+import Heading1 from '../../components/headings/Heading1';
 
 function parseValue(val?: string): string | undefined {
     if (val === undefined || val === '-') return undefined;
@@ -62,7 +62,7 @@ export default function BulkSubmit() {
     const [submissions, setSubmissions] = useState('');
 
     const mutation = useMutation({
-        mutationFn: (ctx: BulkSubmission[]) => SubmitBulk(ctx),
+        mutationFn: (ctx: BulkSubmission[]) => submitBulk(ctx),
         onSuccess: (failedSubmissions, submissions) => {
             if (failedSubmissions.length === 0) {
                 toast.success('All submissions were successful');

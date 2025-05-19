@@ -1,4 +1,4 @@
-import APIClient from '../APIClient';
+import APIClient from '../../../api/APIClient';
 
 export interface BulkSubmission {
     levelID?: number;
@@ -12,7 +12,7 @@ export interface BulkSubmission {
 }
 
 // Returns failed submissions
-export default async function SubmitBulk(submissions: BulkSubmission[]) {
+export async function submitBulk(submissions: BulkSubmission[]) {
     const res = await APIClient.post<BulkSubmission[]>('/submissions/bulk', { submissions });
     return res.data;
 }
