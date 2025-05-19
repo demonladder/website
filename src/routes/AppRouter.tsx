@@ -14,9 +14,8 @@ const AddLevel = lazy(() => import('../pages/mod/addLevel/AddLevel'));
 const DeleteUser = lazy(() => import('../pages/mod/deleteUser/DeleteUser'));
 const SiteSettings = lazy(() => import('../pages/mod/siteSettings/SiteSettings'));
 const Game = lazy(() => import('../pages/root/game/Game'));
-import { profileLoader } from '../pages/root/profile/profileLoader';
-import Root from '../pages/root/Root';
-import Index from '../pages/root/RootIndex';
+import { profileLoader } from '../features/profile/loader';
+import Home from '../features/home/HomePage';
 import Search from '../pages/root/search/Search';
 import PlatformerList from '../pages/root/platformerList/PlatformerList';
 import References from '../pages/root/references/References';
@@ -28,7 +27,7 @@ import Staff from '../pages/root/staff/Staff';
 import LevelPage from '../pages/root/level/LevelPage';
 import Login from '../pages/root/login/Login';
 import SignUp from '../pages/root/signup/SignUp';
-import Profile from '../pages/root/profile/Profile';
+import Profile from '../features/profile/ProfilePage';
 import Notifications from '../pages/root/notifications/Notifications';
 import { sessionLoader } from '../utils/sessionLoader';
 import Settings from '../pages/root/settings/Settings';
@@ -59,11 +58,12 @@ import Debugging from '../pages/mod/debugging/Debugging';
 import Logs from '../pages/mod/siteLogs/Logs';
 import Roles from '../pages/mod/roles/Roles';
 import EditRole from '../pages/mod/roles/EditRole';
+import MainLayout from '../layouts/MainLayout';
 
 export const router = createBrowserRouter(createRoutesFromElements(
     [
-        <Route path='/' element={<Root />} errorElement={<ErrorElement />}>
-            <Route index element={<Index />} />
+        <Route element={<MainLayout />} errorElement={<ErrorElement />}>
+            <Route path='/' element={<Home />} />
             <Route path='search' element={<Search />} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />

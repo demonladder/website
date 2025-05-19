@@ -1,6 +1,6 @@
-import APIClient from '../APIClient';
-import Level from '../types/Level';
-import LevelMeta from '../types/LevelMeta';
+import APIClient from '../../../api/APIClient';
+import Level from '../../../api/types/Level';
+import LevelMeta from '../../../api/types/LevelMeta';
 
 export interface LevelPreviewDTO {
     ID: number;

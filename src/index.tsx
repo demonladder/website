@@ -4,7 +4,6 @@ import './styles.css';
 import ms from 'ms';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import StorageManager from './utils/StorageManager';
@@ -12,7 +11,7 @@ import MenuContextProvider from './components/ui/menuContext/MenuContextContaine
 import { HelmetProvider } from 'react-helmet-async';
 import NavbarNotificationProvider from './context/NavbarNotification/NavbarNotificationProvider';
 import './migrations';
-import { router } from './routes/AppRouter';
+import App from './App';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -56,7 +55,7 @@ root.render(
             <HelmetProvider>
                 <MenuContextProvider>
                     <NavbarNotificationProvider>
-                        <RouterProvider router={router} />
+                        <App />
                         <ReactQueryDevtools initialIsOpen={false} />
                     </NavbarNotificationProvider>
                 </MenuContextProvider>

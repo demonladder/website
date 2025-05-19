@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import Container from '../../components/Container';
-import GetStats from '../../api/stats/GetStats';
-import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
 import { Link } from 'react-router-dom';
 import ms from 'ms';
+import Container from '../../../components/Container';
+import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import { getStats } from '../api/getStats';
 
 function anyOrLoading<T>(value: T) {
     return value ?? (<InlineLoadingSpinner />);
@@ -12,7 +12,7 @@ function anyOrLoading<T>(value: T) {
 export default function IndexStats() {
     const { data } = useQuery({
         queryKey: ['stats'],
-        queryFn: GetStats,
+        queryFn: getStats,
     });
 
     return (

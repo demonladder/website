@@ -1,4 +1,4 @@
-import APIClient from '../APIClient';
+import APIClient from '../../../api/APIClient';
 import { LevelPreviewDTO } from './getPopularLevels';
 
 export async function getTrendingLevels(): Promise<LevelPreviewDTO[]> {

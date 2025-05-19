@@ -1,6 +1,6 @@
-import APIClient from '../APIClient';
-import Level from '../types/Level';
-import LevelMeta from '../types/LevelMeta';
+import APIClient from '../../../api/APIClient';
+import Level from '../../../api/types/Level';
+import LevelMeta from '../../../api/types/LevelMeta';
 
 interface Stats {
     users: number;
@@ -20,7 +20,7 @@ interface Stats {
     packs: number;
 }
 
-export default async function GetStats() {
+export async function getStats() {
     const res = await APIClient.get<Stats>('/stats');
     return res.data;
 }

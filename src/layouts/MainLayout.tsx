@@ -1,19 +1,19 @@
-import Header from '../../layouts/header/Header';
-import { Outlet } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import Footer from '../../layouts/footer/Footer';
-import { useCallback, useEffect, useRef } from 'react';
-import useResizeObserver from '@react-hook/resize-observer';
-import noise3D from '../../utils/noise/noise3D';
-import StorageManager from '../../utils/StorageManager';
-import NavbarNotificationRenderer from '../../context/NavbarNotification/NavbarNotificationRenderer';
-import useNavbarNotification from '../../context/NavbarNotification/useNavbarNotification';
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import ModalProvider from '../context/ModalProvider';
+import { Helmet } from 'react-helmet-async';
+import Header from './header/Header';
+import NavbarNotificationRenderer from '../context/NavbarNotification/NavbarNotificationRenderer';
+import { Outlet } from 'react-router-dom';
+import Footer from './footer/Footer';
+import StorageManager from '../utils/StorageManager';
+import { useCallback, useEffect, useRef } from 'react';
+import noise3D from '../utils/noise/noise3D';
 import { useWindowSize } from 'usehooks-ts';
-import ModalProvider from '../../context/ModalProvider';
+import useResizeObserver from '@react-hook/resize-observer';
+import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 
-export default function Root() {
+export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const points = useRef<{ x: number, y: number }[]>([]);
@@ -34,7 +34,7 @@ export default function Root() {
 
     const draw = useCallback((prevFrameTime: DOMHighResTimeStamp) => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        if (!canvas) return console.error('Canvas not found');
 
         const ctx = canvas.getContext('2d');
 
@@ -42,9 +42,8 @@ export default function Root() {
             console.error('Canvas rendering not supported');
             return;
         }
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'rgb(127 127 127)';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = 'currentColor';
 
         // Draw the lines
@@ -140,24 +139,6 @@ export default function Root() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // :D
-    // useEffect(() => {
-    //     const intervalHandle = setInterval(() => {
-    //         document.querySelectorAll('p,a').forEach((p) => {
-    //             if (p.innerText && !p.hasAttribute('data-original-text')) {
-    //                 const text = p.innerText;
-    //                 const uwu = toUwU(text);
-    //                 p.innerText = uwu;
-    //                 p.setAttribute('data-original-text', text);
-    //             }
-    //         });
-    //     }, 500);
-
-    //     return () => {
-    //         clearInterval(intervalHandle);
-    //     };
-    // }, []);
-
     const onScroll = useCallback(() => {
         if (!canvasRef.current) return;
 
@@ -175,9 +156,7 @@ export default function Root() {
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
             <ModalProvider>
-                <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to'>
-                    {/* <img src='/assets/images/bg-1080.jpg' className='w-full h-[30rem] object-cover brightness-50' alt='' /> */}
-                </div>
+                <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to' />
                 {isBackgroundEnabled &&
                     <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
                 }

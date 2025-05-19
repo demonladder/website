@@ -2,13 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
-import IndexStats from './IndexStats';
+import IndexStats from './components/IndexStats';
 import Title from '../../components/announcement/Title';
 import Body from '../../components/announcement/Body';
-import TrendingLevels from './TrendingLevels';
-import PopularLevels from './PopularLevels';
+import TrendingLevels from './components/TrendingLevels';
+import PopularLevels from './components/PopularLevels';
 
-export default function Index() {
+export default function Home() {
     const navigate = useNavigate();
 
     return (
@@ -25,7 +25,7 @@ export default function Index() {
                         </Body>
                     </Announcement>
                 </Container>
-                <iframe src='https://discord.com/widget?id=741568423485767721&theme=dark' className='shadow-lg' width={350} height={500} allowTransparency sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts' />
+                <iframe src='https://discord.com/widget?id=741568423485767721&theme=dark' className='shadow-lg' width={350} height={500} sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts' />
                 <TrendingLevels />
                 <IndexStats />
                 <PopularLevels />

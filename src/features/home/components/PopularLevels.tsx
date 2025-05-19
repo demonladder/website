@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
 import { Link } from 'react-router-dom';
-import DemonLogo from '../../components/DemonLogo';
-import { getPopularLevels, LevelPreviewDTO } from '../../api/level/getPopularLevels';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 import 'swiper/css/scrollbar';
+import { getPopularLevels, LevelPreviewDTO } from '../api/getPopularLevels';
+import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import DemonLogo from '../../../components/DemonLogo';
 
 export default function PopularLevels() {
     const { data, status } = useQuery({

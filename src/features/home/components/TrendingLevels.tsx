@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
-import { getTrendingLevels } from '../../api/level/getTrendingLevels';
-import { LevelPreview } from './PopularLevels';
+import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import { getTrendingLevels } from '../api/getTrendingLevels';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
+import { LevelPreview } from './PopularLevels';
 
 export default function TrendingLevels() {
     const { data, status } = useQuery({
@@ -15,8 +15,8 @@ export default function TrendingLevels() {
         queryFn: getTrendingLevels,
     });
 
-    if (status === 'loading') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>
-    if (status === 'error') return <div className='xl:col-span-3'>Error, could not fetch trending levels</div>
+    if (status === 'loading') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>;
+    if (status === 'error') return <div className='xl:col-span-3'>Error, could not fetch trending levels</div>;
 
     return (
         <div className='xl:col-span-3'>
