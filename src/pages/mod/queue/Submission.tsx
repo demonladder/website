@@ -3,7 +3,7 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import { useApproveClicked } from './useApproveClicked';
-import { levelLengthToString } from '../../../api/types/LevelMeta';
+import { levelLengthToString } from '../../../features/level/types/LevelMeta';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 import { useMemo, useState } from 'react';
 import Heading4 from '../../../components/headings/Heading4';

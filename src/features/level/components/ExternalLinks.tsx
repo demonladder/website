@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import axios from 'axios';
 import { pluralWas } from '../../../utils/pluralS';
-import { Difficulties } from '../../../api/types/LevelMeta';
+import { Difficulties } from '../types/LevelMeta';
 
-interface SHFResponseDataObject {
+interface SFHResponseDataObject {
     _id: string;
     name: string;
     songURL: string;
@@ -42,7 +42,7 @@ export default function ExternalLinks({ level }: Props) {
 
     const { data: SFHData } = useQuery({
         queryKey: ['songfilehub', level.ID],
-        queryFn: () => axios.get<SHFResponseDataObject[]>(`https://api.songfilehub.com/songs?levelID=${level.ID}&states=rated`).then((res) => res.data),
+        queryFn: () => axios.get<SFHResponseDataObject[]>(`https://api.songfilehub.com/songs?levelID=${level.ID}&states=rated`).then((res) => res.data),
     });
 
     const pointercrate = pointercrateData?.find((l) => l.level_id === level.ID)

@@ -1,7 +1,7 @@
 import APIClient from '../../../api/APIClient';
-import Level from '../../../api/types/Level';
-import LevelMeta from '../../../api/types/LevelMeta';
-import Song from '../../../api/types/Song';
+import Level from '../../level/types/Level';
+import LevelMeta from '../../level/types/LevelMeta';
+import Song from '../../level/types/Song';
 import Submission from '../../../api/types/Submission';
 
 export type UserSubmission = Submission & {

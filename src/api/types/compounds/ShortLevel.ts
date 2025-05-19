@@ -1,5 +1,5 @@
-import Level from '../Level';
-import LevelMeta from '../LevelMeta';
+import Level from '../../../features/level/types/Level';
+import LevelMeta from '../../../features/level/types/LevelMeta';
 
 export interface ShortLevel {
     ID: number;

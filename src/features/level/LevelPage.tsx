@@ -1,25 +1,25 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import DemonLogo, { DifficultyToImgSrc } from '../../../components/DemonLogo';
+import DemonLogo, { DifficultyToImgSrc } from '../../components/DemonLogo';
 import { Helmet } from 'react-helmet-async';
-import { getLevel } from '../../../features/level/api/getLevel';
-import IDButton from '../../../components/IDButton';
-import Packs from './Packs';
-import Submissions from './Submissions';
+import { getLevel } from './api/getLevel';
+import IDButton from '../../components/IDButton';
+import Packs from './components/Packs';
+import Submissions from './components/Submissions';
 import { AxiosError } from 'axios';
-import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import TagBox from './TagBox';
-import RatingGraph from './RatingGraph';
-import { TagEligibility } from '../../../api/level/tags/GetTagEligibility';
-import Showcase from './Showcase';
-import ExternalLinks from './ExternalLinks';
-import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
-import useSubmitModal from '../../../hooks/modals/useSubmitModal';
-import useSession from '../../../hooks/useSession';
-import Page from '../../../components/Page';
+import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
+import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import TagBox from './components/TagBox';
+import RatingGraph from './components/RatingGraph';
+import { TagEligibility } from '../../api/level/tags/GetTagEligibility';
+import Showcase from './components/Showcase';
+import ExternalLinks from './components/ExternalLinks';
+import useAddListLevelModal from '../../hooks/modals/useAddListLevelModal';
+import useSubmitModal from '../../hooks/modals/useSubmitModal';
+import useSession from '../../hooks/useSession';
+import Page from '../../components/Page';
 import { BooleanParam, useQueryParam, withDefault } from 'use-query-params';
-import Heading1 from '../../../components/headings/Heading1';
+import Heading1 from '../../components/headings/Heading1';
 
 const levelLengths = {
     1: 'Tiny',

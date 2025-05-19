@@ -1,6 +1,6 @@
 import APIClient from '../APIClient';
-import Level from '../types/Level';
-import LevelMeta from '../types/LevelMeta';
+import Level from '../../features/level/types/Level';
+import LevelMeta from '../../features/level/types/LevelMeta';
 import Submission from '../types/Submission';
 import User from '../types/User';
 

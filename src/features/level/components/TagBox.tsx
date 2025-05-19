@@ -11,7 +11,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import { KeyboardAccessibility } from '../../../utils/KeyboardAccessibility';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
-import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
 
 export default function TagBox({ level }: { level: FullLevel }) {
     const [isLoading, setIsLoading] = useState(false);

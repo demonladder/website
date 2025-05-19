@@ -19,7 +19,7 @@ import FormInputLabel from '../form/FormInputLabel';
 import FormInputDescription from '../form/FormInputDescription';
 import useSession from '../../hooks/useSession';
 import DeleteSubmission from '../../api/submissions/DeleteSubmission';
-import { Difficulties, LevelLengths } from '../../api/types/LevelMeta';
+import { Difficulties, LevelLengths } from '../../features/level/types/LevelMeta';
 import { useSubmission } from './useSubmission';
 import FormGroup from '../form/FormGroup';
 

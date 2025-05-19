@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import GetLevelPacks from '../../../api/level/GetLevelPacks';
+import { getLevelPacks } from '../api/getLevelPacks';
 import PackRef from '../../../components/PackRef/PackRef';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
@@ -10,7 +10,7 @@ type Props = {
 export default function Packs({ levelID }: Props) {
     const { data: packs, status } = useQuery({
         queryKey: ['level', levelID, 'packs'],
-        queryFn: () => GetLevelPacks(levelID),
+        queryFn: () => getLevelPacks(levelID),
     });
 
     if (status === 'loading' || status === 'error') {

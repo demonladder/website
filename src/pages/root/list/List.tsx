@@ -12,7 +12,7 @@ import useSession from '../../../hooks/useSession';
 import Page from '../../../components/Page';
 import { editListName } from '../../../api/list/editName';
 import { PermissionFlags } from '../../mod/roles/PermissionFlags';
-import Level from '../../../api/types/Level';
+import Level from '../../../features/level/types/Level';
 import Heading1 from '../../../components/headings/Heading1';
 import { Helmet } from 'react-helmet-async';
 

@@ -24,7 +24,7 @@ import About from '../pages/root/about/About';
 import CrossroadPack from '../pages/root/packs/packOverview/CrossroadPack';
 import PackOverview from '../pages/root/packs/packOverview/PackOverview';
 import Staff from '../pages/root/staff/Staff';
-import LevelPage from '../pages/root/level/LevelPage';
+import LevelPage from '../features/level/LevelPage';
 import Login from '../pages/root/login/Login';
 import SignUp from '../pages/root/signup/SignUp';
 import Profile from '../features/profile/ProfilePage';

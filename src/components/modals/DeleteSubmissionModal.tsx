@@ -6,8 +6,8 @@ import DeleteSubmission from '../../api/submissions/DeleteSubmission';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
 import Submission from '../../api/types/Submission';
-import LevelMeta from '../../api/types/LevelMeta';
-import Level from '../../api/types/Level';
+import LevelMeta from '../../features/level/types/LevelMeta';
+import Level from '../../features/level/types/Level';
 import User from '../../api/types/User';
 
 interface Props {

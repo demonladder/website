@@ -1,7 +1,7 @@
 import APIClient from '../../APIClient';
-import Level from '../../types/Level';
-import LevelMeta from '../../types/LevelMeta';
-import Song from '../../types/Song';
+import Level from '../../../features/level/types/Level';
+import LevelMeta from '../../../features/level/types/LevelMeta';
+import Song from '../../../features/level/types/Song';
 
 interface PackLevelDTO {
     LevelID: number;

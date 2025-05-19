@@ -1,5 +1,5 @@
 import APIClient from '../APIClient';
-import Level from '../types/Level';
+import Level from '../../features/level/types/Level';
 
 export interface TierRouletteResponse {
     ID: number;

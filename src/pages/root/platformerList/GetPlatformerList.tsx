@@ -1,6 +1,6 @@
 import APIClient from '../../../api/APIClient';
-import Level from '../../../api/types/Level';
-import LevelMeta from '../../../api/types/LevelMeta';
+import Level from '../../../features/level/types/Level';
+import LevelMeta from '../../../features/level/types/LevelMeta';
 import PlatformerList from '../../../api/types/PlatformerList';
 
 export interface ListEntry extends PlatformerList {

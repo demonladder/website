@@ -1,5 +1,5 @@
-import Level from '../../api/types/Level';
-import LevelMeta from '../../api/types/LevelMeta';
+import Level from '../../features/level/types/Level';
+import LevelMeta from '../../features/level/types/LevelMeta';
 import Submission from '../../api/types/Submission';
 import User from '../../api/types/User';
 import DeleteSubmissionModal from '../../components/modals/DeleteSubmissionModal';

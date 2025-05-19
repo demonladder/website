@@ -5,15 +5,15 @@ import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
-import GetLevelSubmissions, { Submission as ISubmission } from '../../../api/submissions/GetLevelSubmissions';
+import { Submission as ISubmission, getLevelSubmissions } from '../api/getLevelSubmissions';
 import Select from '../../../components/Select';
 import useRoles from '../../../hooks/api/useRoles';
 import TwoPlayerButtons from './TwoPlayerButtons';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
-import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
-import Level from '../../../api/types/Level';
-import LevelMeta from '../../../api/types/LevelMeta';
+import Level from '../types/Level';
+import LevelMeta from '../types/LevelMeta';
 import pluralS from '../../../utils/pluralS';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 
@@ -107,7 +107,7 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
 
     const { data: submissions, status } = useQuery({
         queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey, twoPlayer: showTwoPlayerStats }],
-        queryFn: () => GetLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, limit: 24, page }),
+        queryFn: () => getLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, limit: 24, page }),
     });
 
     useEffect(() => {

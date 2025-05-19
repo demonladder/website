@@ -5,7 +5,7 @@ import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import Submission from '../../../api/types/Submission';
-import GetLevelSubmissions from '../../../api/submissions/GetLevelSubmissions';
+import { getLevelSubmissions } from '../../../features/level/api/getLevelSubmissions';
 import useLateValue from '../../../hooks/useLateValue';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import { NumberParam, useQueryParam } from 'use-query-params';
@@ -23,7 +23,7 @@ export default function EditSubmission() {
 
     const { status, data } = useQuery({
         queryKey: ['level', activeLevel?.ID, 'submissions', { page, username: lateUsernameFilter, progressFilterKey: 'all' }],
-        queryFn: () => GetLevelSubmissions({ levelID: activeLevel?.ID || 0, limit: 24, page, username: lateUsernameFilter, progressFilter: 'all' }),
+        queryFn: () => getLevelSubmissions({ levelID: activeLevel?.ID || 0, limit: 24, page, username: lateUsernameFilter, progressFilter: 'all' }),
     });
 
     const { data: submission } = useSubmission(levelID ?? 0, userID ?? 0, {

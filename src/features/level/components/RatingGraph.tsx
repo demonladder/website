@@ -1,5 +1,5 @@
 import TwoPlayerButtons from './TwoPlayerButtons';
-import LevelMeta from '../../../api/types/LevelMeta';
+import LevelMeta from '../types/LevelMeta';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/useLevelSubmissionSpread';
 import { useState } from 'react';

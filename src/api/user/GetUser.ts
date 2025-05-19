@@ -1,9 +1,9 @@
 import APIClient from '../APIClient';
 import DiscordUserData from '../types/DiscordUserData';
-import Level from '../types/Level';
-import LevelMeta from '../types/LevelMeta';
+import Level from '../../features/level/types/Level';
+import LevelMeta from '../../features/level/types/LevelMeta';
 import Role from '../types/Role';
-import Song from '../types/Song';
+import Song from '../../features/level/types/Song';
 import User from '../types/User';
 
 export type UserResponse = User & {
