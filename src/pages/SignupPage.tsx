@@ -1,17 +1,17 @@
 import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { PasswordInput, TextInput } from '../../../components/Input';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PasswordInput, TextInput } from '../components/Input';
+import { PrimaryButton } from '../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
-import renderToastError from '../../../utils/renderToastError';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../components/form/FormInputLabel';
-import { validateUsername } from '../../../utils/validators/validateUsername';
-import Page from '../../../components/Page';
-import Heading1 from '../../../components/headings/Heading1';
-import FormGroup from '../../../components/form/FormGroup';
+import renderToastError from '../utils/renderToastError';
+import FormInputDescription from '../components/form/FormInputDescription';
+import FormInputLabel from '../components/form/FormInputLabel';
+import { validateUsername } from '../utils/validators/validateUsername';
+import Page from '../components/Page';
+import Heading1 from '../components/headings/Heading1';
+import FormGroup from '../components/form/FormGroup';
 import { useMutation } from '@tanstack/react-query';
-import SignUpFn from '../../../api/auth/SignUp';
+import SignUpFn from '../api/auth/SignUp';
 import _ from 'lodash';
 
 function getCharacterVariety(text: string) {

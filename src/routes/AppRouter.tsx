@@ -23,13 +23,12 @@ import Packs from '../pages/root/packs/Packs';
 import About from '../features/about/AboutPage';
 import CrossroadPack from '../pages/root/packs/packOverview/CrossroadPack';
 import PackOverview from '../pages/root/packs/packOverview/PackOverview';
-import Staff from '../pages/root/staff/Staff';
+import Staff from '../pages/StaffPage';
 import LevelPage from '../features/level/LevelPage';
 import Login from '../features/login/LoginPage';
-import SignUp from '../pages/root/signup/SignUp';
+import SignUp from '../pages/SignupPage';
 import Profile from '../features/profile/ProfilePage';
-import Notifications from '../pages/root/notifications/Notifications';
-import { sessionLoader } from '../utils/sessionLoader';
+import Notifications from '../pages/NotificationsPage';
 import Settings from '../pages/root/settings/Settings';
 import AccountSettings from '../pages/root/settings/account/AccountSettings';
 import ClientSiteSettings from '../pages/root/settings/siteSettings/SiteSettings';
@@ -38,7 +37,7 @@ import SubmissionSettings from '../pages/root/settings/submissionsSettings/Submi
 import Appearance from '../pages/root/settings/appearance/Appearance';
 import Developer from '../pages/root/settings/developer/Developer';
 import List from '../pages/root/list/List';
-import ForgotPassword from '../pages/root/forgotPassword/ForgotPassword';
+import ForgotPassword from '../pages/ForgotPasswordPage';
 import Generators from '../pages/root/generators/Generators';
 import Alphabet from '../pages/root/generators/alphabet/Alphabet';
 import Roulette from '../pages/root/generators/roulette/Roulette';
@@ -77,7 +76,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
             <Route path='signup' element={<SignUp />} />
             <Route path='profile' loader={profileLoader} />
             <Route path='profile/:userID' element={<Profile />} />
-            <Route path='notifications' element={<Notifications />} loader={sessionLoader} />
+            <Route path='notifications' element={<Notifications />} />
             <Route path='game' element={<Suspense><Game /></Suspense>} />
             <Route path='settings' element={<Settings />}>
                 <Route path='account' element={<AccountSettings />} />

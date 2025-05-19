@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import Page from '../../../components/Page';
+import Page from '../components/Page';
 import { Link } from 'react-router-dom';
-import ProfileTypeIcon from '../../../components/ProfileTypeIcon';
-import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
-import GetStaff, { StaffMember } from '../../../api/user/StaffMember';
-import Role from '../../../api/types/Role';
-import Heading1 from '../../../components/headings/Heading1';
+import ProfileTypeIcon from '../components/ProfileTypeIcon';
+import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
+import GetStaff, { StaffMember } from '../api/user/StaffMember';
+import Role from '../api/types/Role';
+import Heading1 from '../components/headings/Heading1';
 
 const roleTitles: Record<Role['ID'], string> = {
     2: 'List helpers',

@@ -1,5 +1,5 @@
 import APIClient from '../APIClient';
 
 export async function forgotPassword(username: string) {
-    await APIClient.post('/login/forgotPassword', { username });
+    await APIClient.post('/account/forgotPassword', { username });
 }
