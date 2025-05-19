@@ -1,6 +1,6 @@
 import { DiscordLink } from '../../../../components/ui/buttons/DiscordLink';
 import DiscordProfilePicture from '../../../../components/DiscordProfilePicture';
-import { LoginButton } from '../../login/ProfileButtons';
+import { LoginButton } from '../../../../components/ProfileButtons';
 import GeneralInformation from './GeneralInformation';
 import useSession from '../../../../hooks/useSession';
 

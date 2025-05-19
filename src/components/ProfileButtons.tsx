@@ -1,10 +1,10 @@
-import DemonLogo from '../../../components/DemonLogo';
+import DemonLogo from './DemonLogo';
 import { Link } from 'react-router-dom';
-import NotificationButton from '../../../components/ui/Notifications';
-import useNavbarNotification from '../../../context/NavbarNotification/useNavbarNotification';
+import NotificationButton from './ui/Notifications';
+import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 import { useEffect } from 'react';
-import useSession from '../../../hooks/useSession';
-import { PermissionFlags } from '../../mod/roles/PermissionFlags';
+import useSession from '../hooks/useSession';
+import { PermissionFlags } from '../pages/mod/roles/PermissionFlags';
 
 export default function ProfileButtons() {
     const session = useSession();

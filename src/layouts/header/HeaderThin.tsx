@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import ProfileButtons from '../../pages/root/login/ProfileButtons';
+import ProfileButtons from '../../components/ProfileButtons';
 import { Link, useNavigate } from 'react-router-dom';
 import HeaderRoutes from './HeaderRoutes';
 import NavItem from './NavItem';

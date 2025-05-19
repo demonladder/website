@@ -1,15 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { PasswordInput, TextInput } from '../../../components/Input';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import APIClient from '../../../api/APIClient';
+import { PasswordInput, TextInput } from '../../components/Input';
+import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import renderToastError from '../../../utils/renderToastError';
-import FormInputLabel from '../../../components/form/FormInputLabel';
-import Page from '../../../components/Page';
-import Heading1 from '../../../components/headings/Heading1';
-import FormGroup from '../../../components/form/FormGroup';
+import renderToastError from '../../utils/renderToastError';
+import FormInputLabel from '../../components/form/FormInputLabel';
+import Page from '../../components/Page';
+import Heading1 from '../../components/headings/Heading1';
+import FormGroup from '../../components/form/FormGroup';
+import { accountLogin } from './api/accountLogin';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -19,14 +19,15 @@ export default function Login() {
     const navigate = useNavigate();
 
     const { mutate: submit, isLoading } = useMutation({
-        mutationFn: (body: { username: string, password: string }) => toast.promise(APIClient.post<string>('/account/login', body).then(() => {
-            void queryClient.invalidateQueries(['me']);
-            navigate(-1);
-        }), {
+        mutationFn: ({ username, password }: { username: string, password: string }) => toast.promise(accountLogin(username, password), {
             pending: 'Logging in...',
             success: 'Logged in!',
             error: renderToastError,
         }),
+        onSuccess: () => {
+            void queryClient.invalidateQueries(['me']);
+            navigate(-1);
+        },
     });
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
