@@ -17,7 +17,7 @@ const Game = lazy(() => import('../pages/root/game/Game'));
 import { profileLoader } from '../features/profile/loader';
 import Home from '../features/home/HomePage';
 import Search from '../pages/root/search/Search';
-import PlatformerList from '../pages/root/platformerList/PlatformerList';
+import PlatformerList from '../features/platformerList/PlatformerListPage';
 import References from '../pages/root/references/References';
 import Packs from '../pages/root/packs/Packs';
 import About from '../features/about/AboutPage';

@@ -1,7 +1,7 @@
 import APIClient from '../../../api/APIClient';
-import Level from '../../../features/level/types/Level';
-import LevelMeta from '../../../features/level/types/LevelMeta';
-import PlatformerList from '../../../api/types/PlatformerList';
+import Level from '../../level/types/Level';
+import LevelMeta from '../../level/types/LevelMeta';
+import PlatformerList from '../types/PlatformerList';
 
 export interface ListEntry extends PlatformerList {
     Level: Level & {
@@ -9,7 +9,7 @@ export interface ListEntry extends PlatformerList {
     };
 }
 
-export async function GetPlatformerList() {
+export async function getPlatformerList() {
     const res = await APIClient.get<ListEntry[]>('/platformerList');
     return res.data;
 }

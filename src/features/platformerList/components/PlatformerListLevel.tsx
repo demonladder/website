@@ -1,30 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import DemonLogo from '../../../components/DemonLogo';
-import { GetPlatformerList } from './GetPlatformerList';
-import { ListEntry } from './GetPlatformerList';
-import IDButton from '../../../components/IDButton';
 import { Link } from 'react-router-dom';
-import Heading1 from '../../../components/headings/Heading1';
-import Page from '../../../components/Page';
+import DemonLogo from '../../../components/DemonLogo';
+import IDButton from '../../../components/IDButton';
+import { ListEntry } from '../api/getPlatformerList';
 
-export default function PlatformerList() {
-    const { data } = useQuery({
-        queryKey: ['platformerList'],
-        queryFn: GetPlatformerList,
-    });
-
-    return (
-        <Page>
-            <Heading1>Platformer list</Heading1>
-            <p className='mb-2'>As there currently aren't enough platformer levels to put them into tiers, we have created this temporary ranking of all the platformer demons. The position of each level is decided by our community until we're able to generalise the levels into tiers.</p>
-            <div className='grid grid-cols-1 gap-3'>
-                {data?.sort((a, b) => a.Position > b.Position ? 1 : -1).map((level) => (<Entry level={level} />))}
-            </div>
-        </Page>
-    );
-}
-
-function Entry({ level }: { level: ListEntry }) {
+export function PlatformerListLevel({ level }: { level: ListEntry; }) {
     const roundedEnjoyment = level.Level.Enjoyment?.toFixed() ?? '-1';
 
     return (
