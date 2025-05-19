@@ -46,7 +46,7 @@ import ReverseRoulette from '../pages/root/generators/reverseRoulette/ReverseRou
 import TierRoulette from '../pages/root/generators/tierRoulette/TierRoulette';
 import Decathlon from '../pages/root/generators/decathlon/Decathlon';
 import BulkSubmit from '../features/bulkSubmit/BulkSubmit';
-import ChangeLogs from '../pages/root/changeLogs/ChangeLogs';
+import Changelogs from '../features/changelogs/ChangelogsPage';
 import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
 import EditPack from '../pages/mod/pack/EditPack';
 import ManageUser from '../pages/mod/manageUser/ManageUser';
@@ -98,7 +98,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='decathlon' element={<Decathlon />} />
             </Route>
             <Route path='bulkSubmit' element={<BulkSubmit />} />
-            <Route path='changeLogs' element={<ChangeLogs />} />
+            <Route path='changeLogs' element={<Changelogs />} />
             <Route path='mod' element={<Suspense fallback={<FloatingLoadingSpinner />} ><Mod /></Suspense>} loader={ModLoader}>
                 <Route index element={<ModIndex />} />
                 <Route path='queue' element={<Queue />} />
