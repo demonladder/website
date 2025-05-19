@@ -1,25 +1,26 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
-import Submissions from '../../pages/root/profile/Submissions';
+import Submissions from './components/Submissions';
 import StorageManager from '../../utils/StorageManager';
 import ProfileTypeIcon from '../../components/ProfileTypeIcon';
-import LevelTracker from '../../pages/root/profile/LevelTracker';
+import LevelTracker from './components/LevelTracker';
 import { AxiosError } from 'axios';
-import Tracker from '../../pages/root/profile/Tracker';
-import LevelResolvableText from '../../pages/root/profile/LevelResolvableText';
-import Rankings from '../../pages/root/profile/Rankings';
-import Lists from '../../pages/root/profile/Lists';
-import PendingSubmissions from '../../pages/root/profile/PendingSubmissions';
+import Tracker from './components/Tracker';
+import LevelResolvableText from '../../components/LevelResolvableText';
+import Rankings from './components/Rankings';
+import Lists from './components/Lists';
+import PendingSubmissions from './components/PendingSubmissions';
 import useUserQuery from '../../hooks/queries/useUserQuery';
 import flagEmoji from '../../utils/flagEmoji';
 import { lazy, Suspense } from 'react';
-const Skills = lazy(() => import('../../pages/root/profile/Skills'));
+const Skills = lazy(() => import('./components/Skills'));
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
 import useContextMenu from '../../components/ui/menuContext/useContextMenu';
 import { PermissionFlags } from '../../pages/mod/roles/PermissionFlags';
 import { useUserColor } from '../../hooks/useUserColor';
+import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
 // import { useReportUserModal } from '../../../hooks/modals/useReportUserModal';
 
 export default function Profile() {
@@ -49,11 +50,11 @@ export default function Profile() {
     if (userData === undefined) return <Page><p>No user data</p></Page>;
 
     function calcPref() {
-        if (userData === undefined) return '-';
+        if (userData === undefined) return <InlineLoadingSpinner />;
 
         const { MinPref: minPref, MaxPref: maxPref } = userData;
 
-        if (minPref === null && maxPref === null) return '-';
+        if (minPref === null && maxPref === null) return <span className='text-theme-400'>None</span>;
         if (minPref !== null && maxPref === null) return `>${minPref - 1}`;
         if (minPref === null && maxPref !== null) return `<${maxPref + 1}`;
 
@@ -85,7 +86,7 @@ export default function Profile() {
                     </p>
                 </div>
             </div>
-            <section className='flex max-sm:flex-col'>
+            <section className='flex max-sm:flex-col' onContextMenu={(e) => e.stopPropagation()}>
                 <div className='bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full sm:w-1/3'>
                     <p><b>Introduction:</b></p>
                     <p className='border-b-2 h-24 overflow-auto'>{userData.Introduction}</p>
@@ -100,7 +101,7 @@ export default function Profile() {
                         <b>Favorites:</b>
                         <div>
                             {userData.Favorite.length === 0 &&
-                                <p>None</p>
+                                <p className='text-theme-400'>None</p>
                             }
                             {userData.Favorite.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.Favorite.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
                         </div>
@@ -109,7 +110,7 @@ export default function Profile() {
                         <b>Least favorites:</b>
                         <div>
                             {userData.LeastFavorite.length === 0 &&
-                                <p>None</p>
+                                <p className='text-theme-400'>None</p>
                             }
                             {userData.LeastFavorite.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.LeastFavorite.length - 1 === i} key={`userLeastFavorites_${userData.ID}_${i}`} />))}
                         </div>
@@ -118,12 +119,10 @@ export default function Profile() {
                         <b>Total submissions:</b>
                         <p>{userData.SubmissionCount}</p>
                     </Tracker>
-                    <div className=''>
-                        <Tracker>
-                            <b>Total attempts:</b>
-                            <p>{userData.TotalAttempts ?? 0}</p>
-                        </Tracker>
-                    </div>
+                    <Tracker>
+                        <b>Total attempts:</b>
+                        <p>{userData.TotalAttempts ?? 0}</p>
+                    </Tracker>
                     <a href='#pendingSubmissions'>
                         <Tracker>
                             <b>Pending submissions:</b>

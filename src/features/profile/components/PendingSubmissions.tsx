@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import DeletePendingSubmission from '../../../api/submissions/DeletePendingSubmission';
-import GetUserPendingSubmissions, { UserPendingSubmission } from '../../../api/user/GetUserPendingSubmissions';
+import { UserPendingSubmission } from '../api/getUserPendingSubmissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
@@ -13,12 +13,13 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import NewLabel from '../../../components/NewLabel';
-import { PermissionFlags } from '../../mod/roles/PermissionFlags';
-import { useApproveClicked } from '../../mod/queue/useApproveClicked';
+import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
+import { useApproveClicked } from '../../../pages/mod/queue/useApproveClicked';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import PendingSubmission from '../../../api/types/PendingSubmission';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
+import { useUserPendingSubmissions } from '../hooks/useUserPendingSubmissions';
 
 interface Props {
     userID: number,
@@ -33,20 +34,10 @@ export default function PendingSubmissions({ userID }: Props) {
     const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
     const [hide, setHide] = useState(true);
 
-    const { status, data: submissionResult } = useQuery({
-        queryKey: ['user', userID, 'submissions', 'pending'],
-        queryFn: () => GetUserPendingSubmissions(userID),
-    });
+    const { status, data: submissionResult } = useUserPendingSubmissions(userID);
 
-    if (status === 'loading') {
-        return (
-            <LoadingSpinner />
-        );
-    }
-
-    if (!submissionResult?.submissions?.length) {
-        return;
-    }
+    if (status === 'loading') return (<LoadingSpinner />);
+    if (!submissionResult?.submissions?.length) return;
 
     return (
         <div className='mt-6'>

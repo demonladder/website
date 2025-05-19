@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import DemonLogo, { DifficultyToImgSrc } from '../../../components/DemonLogo';
 import { Helmet } from 'react-helmet-async';
-import GetLevel from '../../../api/level/GetLevel';
+import { getLevel } from '../../../features/level/api/getLevel';
 import IDButton from '../../../components/IDButton';
 import Packs from './Packs';
 import Submissions from './Submissions';
@@ -42,7 +42,7 @@ export default function LevelPage() {
     const levelID = parseInt(useParams().levelID ?? '0');
     const { status, data: level, error } = useQuery({
         queryKey: ['level', levelID],
-        queryFn: () => GetLevel(levelID),
+        queryFn: () => getLevel(levelID),
     });
     const { data: voteMeta } = useQuery<TagEligibility>({
         queryKey: ['level', levelID, 'tags', 'eligible'],

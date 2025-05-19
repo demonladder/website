@@ -1,19 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import APIClient from '../../../api/APIClient';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Heading2 from '../../../components/headings/Heading2';
+import { getUserRankings } from '../api/getUserRankings';
 
 interface Props {
     userID: number;
-}
-
-interface UserRanking {
-    Count: number;
-    Total: number;
-}
-
-async function GetUserRankings(userID: number) {
-    return (await APIClient.get<Record<string, UserRanking>>(`/user/${userID}/rank`)).data;
 }
 
 function percentToRank(percent: number): string {
@@ -52,7 +43,7 @@ function Rank({ tier, count, total }: { tier?: string, count: number, total: num
 export default function Rankings({ userID }: Props) {
     const { data } = useQuery({
         queryKey: ['user', userID, 'rankings'],
-        queryFn: () => GetUserRankings(userID),
+        queryFn: () => getUserRankings(userID),
     });
 
     return (

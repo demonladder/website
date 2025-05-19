@@ -9,8 +9,8 @@ export default interface PendingSubmission {
     Proof: string | null;
     IsSolo: boolean;
     SecondPlayerID: number | null;
-    DateAdded: string;
-    DateChanged: string;
     Progress: number;
     Attempts: number | null;
+    DateAdded: string;
+    DateChanged: string;
 }

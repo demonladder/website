@@ -7,7 +7,7 @@ import CheckBox from '../../../components/input/CheckBox';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import NewLabel from '../../../components/NewLabel';
 import { useTags } from '../../../hooks/api/tags/useTags';
-import GetSkills from '../../../api/skills/GetSkills';
+import { getSkills } from '../api/getSkills';
 import Heading2 from '../../../components/headings/Heading2';
 
 ChartJS.register(RadialLinearScale);
@@ -38,7 +38,7 @@ export default function Skills({ userID }: { userID: number }) {
 
     const { data: rawData } = useQuery({
         queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey, accuracy: accuracyKey, correctTier }],
-        queryFn: () => GetSkills(userID, levelSpanKey.slice(3), accuracyKey, correctTier),
+        queryFn: () => getSkills(userID, levelSpanKey.slice(3), accuracyKey, correctTier),
         enabled: isActive,
     });
 

@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import Modal from '../Modal';
-import GetUserLists from '../../api/user/GetUserLists';
+import { getUserLists } from '../../features/profile/api/getUserLists';
 import List from '../../api/types/List';
 import LoadingSpinner from '../LoadingSpinner';
 import { useCallback } from 'react';
@@ -45,7 +45,7 @@ function ListItem({ userID, levelID, list, onClose: close }: { userID: number, l
 export default function AddLevelToListModal({ onClose, userID, levelID }: Props) {
     const { data: lists, status } = useQuery({
         queryKey: ['user', userID, 'lists', { order: 'Name' }],
-        queryFn: () => GetUserLists(userID, 'Name'),
+        queryFn: () => getUserLists(userID, 'Name'),
     });
 
     const openCreateListModal = useCreateListModal();

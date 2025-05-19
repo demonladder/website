@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { RadioButton } from '../../../components/Input';
-import { Sorts } from '../../../api/user/GetUserSubmissions';
+import { Sorts } from '../api/getUserSubmissions';
 import { useLocalStorage } from 'usehooks-ts';
 
 interface Props {

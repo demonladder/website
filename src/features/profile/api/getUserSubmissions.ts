@@ -1,8 +1,8 @@
-import APIClient from '../APIClient';
-import Level from '../types/Level';
-import LevelMeta from '../types/LevelMeta';
-import Song from '../types/Song';
-import Submission from '../types/Submission';
+import APIClient from '../../../api/APIClient';
+import Level from '../../../api/types/Level';
+import LevelMeta from '../../../api/types/LevelMeta';
+import Song from '../../../api/types/Song';
+import Submission from '../../../api/types/Submission';
 
 export type UserSubmission = Submission & {
     Level: Level & {
@@ -12,7 +12,7 @@ export type UserSubmission = Submission & {
     },
 };
 
-export type GetUserSubmissionsResponses = {
+export interface GetUserSubmissionsResponses {
     total: number;
     limit: number,
     page: number;
@@ -29,7 +29,7 @@ export enum Sorts {
     RECENCY = 'recency',
 }
 
-export default async function GetUserSubmissions({ userID, page = 0, name, sort, sortDirection, onlyIncomplete }: { userID: number, page?: number, name?: string, sort: Sorts, sortDirection: string, onlyIncomplete?: boolean }) {
+export async function getUserSubmissions({ userID, page = 0, name, sort, sortDirection, onlyIncomplete }: { userID: number, page?: number, name?: string, sort: Sorts, sortDirection: string, onlyIncomplete?: boolean }) {
     const res = await APIClient.get<GetUserSubmissionsResponses>(`/user/${userID}/submissions`, {
         params: {
             page,

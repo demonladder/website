@@ -1,6 +1,6 @@
-import APIClient from '../APIClient';
+import APIClient from '../../../api/APIClient';
 
-export default async function GetSkills(userID: number, levelSpan: string, minTagSubmissions: string, tierCorrection = false) {
+export async function getSkills(userID: number, levelSpan: string, minTagSubmissions: string, tierCorrection = false) {
     const n = isNaN(parseInt(levelSpan)) ? 200_000 : parseInt(levelSpan);
 
     const res = await APIClient.get<Record<string, number>>(`/user/${userID}/skills`, { params: {

@@ -1,12 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCallback, useContext } from 'react';
-import GetUserLists from '../../../api/user/GetUserLists';
 import List from '../../../api/types/List';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
 import useSession from '../../../hooks/useSession';
 import { MenuContext } from '../../../components/ui/menuContext/MenuContext';
 import Heading2 from '../../../components/headings/Heading2';
+import { useUserLists } from '../hooks/useUserLists';
 
 interface Props {
     userID: number;
@@ -20,10 +19,7 @@ export default function Lists({ userID }: Props) {
 
     const lookingAtOwnPage = userID === session.user?.ID;
 
-    const { data: lists } = useQuery({
-        queryKey: ['user', userID, 'lists'],
-        queryFn: () => GetUserLists(userID),
-    });
+    const { data: lists } = useUserLists(userID);
 
     const menuContext = useContext(MenuContext);
 

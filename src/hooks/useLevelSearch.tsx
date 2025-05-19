@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import GetLevel from '../api/level/GetLevel';
+import { getLevel } from '../features/level/api/getLevel';
 import SearchLevels from '../api/level/SearchLevels';
 import { FullLevel } from '../api/types/compounds/FullLevel';
 import SearchBox from '../components/SearchBox/SearchBox';
@@ -32,7 +32,7 @@ export default function useLevelSearch({ ID, required = false, options = {} }: P
 
     const { data: defaultData } = useQuery({
         queryKey: ['level', options.defaultLevel],
-        queryFn: () => GetLevel(options.defaultLevel || null),
+        queryFn: () => getLevel(options.defaultLevel || null),
     });
 
     useEffect(() => {

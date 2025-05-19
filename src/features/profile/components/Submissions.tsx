@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import GetUserSubmissions, { Sorts, UserSubmission } from '../../../api/user/GetUserSubmissions';
+import { Sorts, UserSubmission, getUserSubmissions } from '../api/getUserSubmissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
@@ -35,18 +35,14 @@ export default function Submissions({ user }: Props) {
 
     const { status, data: submissionResult } = useQuery({
         queryKey: ['user', user.ID, 'submissions', { page, name: lateQuery, onlyIncomplete, ...sort }],
-        queryFn: () => GetUserSubmissions({ userID: user.ID, page, name: lateQuery, onlyIncomplete, ...sort }),
+        queryFn: () => getUserSubmissions({ userID: user.ID, page, name: lateQuery, onlyIncomplete, ...sort }),
     });
 
     useEffect(() => {
         if (submissionResult?.total !== 0 && submissionResult?.submissions.length === 0) setPage(0);
     }, [submissionResult, setPage]);
 
-    if (status === 'loading') {
-        return (
-            <LoadingSpinner />
-        );
-    }
+    if (status === 'loading') return (<LoadingSpinner />);
 
     const submissions = submissionResult?.submissions;
 
