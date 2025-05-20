@@ -7,7 +7,7 @@ import { GridLevel } from '../../../../components/GridLevel';
 import GetCrossroadsPackLevels from '../../../../api/pack/requests/GetCrossroadsPackLevels';
 import Page from '../../../../components/Page';
 import { LevelRenderer } from '../../../../components/LevelRenderer';
-import usePack from '../../../../hooks/api/usePack';
+import usePack from '../../../../features/singlePack/hooks/usePack';
 import Heading1 from '../../../../components/headings/Heading1';
 
 export default function CrossroadPack() {

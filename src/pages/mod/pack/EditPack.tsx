@@ -12,9 +12,9 @@ import CreatePackRequest from '../../../api/pack/requests/CreatePackRequest';
 import DeletePackRequest from '../../../api/pack/requests/DeletePackRequest';
 import Meta from './Meta';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import usePack from '../../../hooks/api/usePack';
+import usePack from '../../../features/singlePack/hooks/usePack';
 import List from './List';
-import { GetPackLevelsResponse as PackLevel } from '../../../api/pack/requests/GetPackLevels';
+import { GetPackLevelsResponse as PackLevel } from '../../../features/singlePack/api/getPackLevels';
 
 function checkChangeEquality(change1: Change, change2: Change): boolean {
     return change1.LevelID === change2.LevelID && change1.PackID === change2.PackID && change1.Type === change2.Type;

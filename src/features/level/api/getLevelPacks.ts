@@ -1,6 +1,6 @@
 import APIClient from '../../../api/APIClient';
-import Pack from '../../../api/types/Pack';
-import PackMeta from '../../../api/types/PackMeta';
+import Pack from '../../singlePack/types/Pack';
+import PackMeta from '../../singlePack/types/PackMeta';
 
 interface GetLevelPacksResponse extends Pack {
     Meta: PackMeta;

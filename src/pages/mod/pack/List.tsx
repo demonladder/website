@@ -1,8 +1,8 @@
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { Level } from './EditPack';
 import useLevelSearch from '../../../hooks/useLevelSearch';
-import usePackLevels from '../../../hooks/api/usePackLevels';
-import { GetPackLevelsResponse as PackLevel } from '../../../api/pack/requests/GetPackLevels';
+import usePackLevels from '../../../features/singlePack/hooks/usePackLevels';
+import { GetPackLevelsResponse as PackLevel } from '../../../features/singlePack/api/getPackLevels';
 
 interface Props {
     addLevel: (levelID: number, levelName: string, ex?: boolean) => void;

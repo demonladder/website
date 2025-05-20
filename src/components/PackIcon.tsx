@@ -1,4 +1,4 @@
-import Pack from '../api/types/Pack';
+import Pack from '../features/singlePack/types/Pack';
 
 interface Props {
     pack: Pack,

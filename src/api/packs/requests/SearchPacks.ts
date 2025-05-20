@@ -1,6 +1,6 @@
 import APIClient from '../../APIClient';
-import Pack from '../../types/Pack';
-import PackMeta from '../../types/PackMeta';
+import Pack from '../../../features/singlePack/types/Pack';
+import PackMeta from '../../../features/singlePack/types/PackMeta';
 
 interface SearchPacksResponse extends Pack {
     Meta: PackMeta;

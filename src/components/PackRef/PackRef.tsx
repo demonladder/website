@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import PackIcon from '../PackIcon';
 import HoverMenu from './HoverMenu';
-import Pack from '../../api/types/Pack';
-import PackMeta from '../../api/types/PackMeta';
+import Pack from '../../features/singlePack/types/Pack';
+import PackMeta from '../../features/singlePack/types/PackMeta';
 import useSession from '../../hooks/useSession';
 
 interface Props {

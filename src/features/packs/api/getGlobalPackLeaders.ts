@@ -1,16 +1,16 @@
-import APIClient from '../../APIClient';
-import DiscordUserData from '../../types/DiscordUserData';
-import User from '../../types/User';
+import APIClient from '../../../api/APIClient';
+import DiscordUserData from '../../../api/types/DiscordUserData';
+import User from '../../../api/types/User';
 
 interface PackLeaderResponse {
     UserID: number;
     Sum: number;
     User: User & {
-        DiscordData: DiscordUserData;
+        DiscordData: DiscordUserData | null;
     };
 }
 
-export default async function GetPackLeaders(packID?: number): Promise<PackLeaderResponse[]> {
+export async function getGlobalPackLeaders(packID?: number): Promise<PackLeaderResponse[]> {
     if (packID !== undefined) return await APIClient.get<PackLeaderResponse[]>(`/packs/${packID}/leaderboard`).then((res) => res.data);
     return await APIClient.get<PackLeaderResponse[]>('/packs/leaderboard').then((res) => res.data);
 }

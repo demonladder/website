@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { getPacks } from '../../../api/packs/requests/getPacks';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import UserLink from '../../../components/UserLink';
-import Leaderboard from './Leaderboard';
-import Category from './Category';
-import Page from '../../../components/Page';
-import Heading1 from '../../../components/headings/Heading1';
 import { Helmet } from 'react-helmet-async';
+import Page from '../../components/Page';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Heading1 from '../../components/headings/Heading1';
+import Category from './components/Category';
+import UserLink from '../../components/UserLink';
+import { getPacks } from './api/getPacks';
+import Leaderboard from './components/Leaderboard';
 
 export default function Packs() {
     const { status, data: packs } = useQuery({

@@ -1,4 +1,4 @@
-import PackMeta from '../../api/types/PackMeta';
+import PackMeta from '../../features/singlePack/types/PackMeta';
 
 interface Props {
     averageEnjoyment: PackMeta['AverageEnjoyment'];

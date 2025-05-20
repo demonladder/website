@@ -7,11 +7,11 @@ import TextArea from '../../../components/input/TextArea';
 import renderToastError from '../../../utils/renderToastError';
 import SavePackMetaRequest from '../../../api/packs/requests/SavePackDescriptionRequest';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getPacks } from '../../../api/packs/requests/getPacks';
+import { getPacks } from '../../../features/packs/api/getPacks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormGroup from '../../../components/form/FormGroup';
-import usePack from '../../../hooks/api/usePack';
+import usePack from '../../../features/singlePack/hooks/usePack';
 
 interface Props {
     packID: number;

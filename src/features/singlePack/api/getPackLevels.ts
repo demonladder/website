@@ -1,7 +1,7 @@
-import APIClient from '../../APIClient';
-import Level from '../../../features/level/types/Level';
-import LevelMeta from '../../../features/level/types/LevelMeta';
-import PackLevel from '../../types/PackLevel';
+import APIClient from '../../../api/APIClient';
+import Level from '../../level/types/Level';
+import LevelMeta from '../../level/types/LevelMeta';
+import PackLevel from '../types/PackLevel';
 
 export type GetPackLevelsResponse = PackLevel & {
     Completed: 0 | 1,
@@ -19,7 +19,7 @@ export type GetPackLevelsResponse = PackLevel & {
     },
 };
 
-export default async function GetPackLevels(packID: number) {
+export async function getPackLevels(packID: number) {
     const res = await APIClient.get<GetPackLevelsResponse[]>(`/packs/${packID}/levels`);
     return res.data;
 }

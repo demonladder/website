@@ -1,47 +1,35 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
-import Level from '../../../../components/Level';
-import useLevelView from '../../../../hooks/useLevelView';
-import { GridLevel } from '../../../../components/GridLevel';
-import Leaderboard from '../Leaderboard';
-import GetPackLevels from '../../../../api/pack/requests/GetPackLevels';
-import Page from '../../../../components/Page';
-import usePack from '../../../../hooks/api/usePack';
-import { LevelRenderer } from '../../../../components/LevelRenderer';
-import Heading1 from '../../../../components/headings/Heading1';
-// import GDDLP from './GDDLP';
+import Level from '../../components/Level';
+import useLevelView from '../../hooks/useLevelView';
+import { GridLevel } from '../../components/GridLevel';
+import Leaderboard from '../packs/components/Leaderboard';
+import { getPackLevels } from './api/getPackLevels';
+import Page from '../../components/Page';
+import usePack from './hooks/usePack';
+import { LevelRenderer } from '../../components/LevelRenderer';
+import Heading1 from '../../components/headings/Heading1';
+import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
+import Heading3 from '../../components/headings/Heading3';
 
 export default function PackOverview() {
-    return (
-        <Page>
-            <Content />
-        </Page>
-    );
-}
-
-function Content() {
     const packID = parseInt(useParams().packID ?? '') || 0;
     const { status, data: pack } = usePack(packID);
     const { status: levelStatus, data: packLevels } = useQuery({
         queryKey: ['packs', packID, 'levels'],
-        queryFn: () => GetPackLevels(packID),
+        queryFn: () => getPackLevels(packID),
     });
 
     const [isList, viewButtons] = useLevelView('packs.listView');
 
-    if (status === 'loading' || levelStatus === 'loading') return <LoadingSpinner />;
-    if (status === 'error' || levelStatus === 'error') return <Heading1>Error: could not fetch pack</Heading1>;
-
-    // if (packID === 6) {
-    //     return <GDDLP pack={pack} />;
-    // }
+    if (status === 'loading' || levelStatus === 'loading') return <FloatingLoadingSpinner />;
+    if (status === 'error' || levelStatus === 'error') return <Page><Heading1>Error: could not fetch pack</Heading1></Page>;
 
     const normalLevels = packLevels.filter((lvl) => !lvl.EX).map((level) => ({ ...level.Level, ID: level.LevelID, Completed: level.Completed }));
     const exLevels = packLevels.filter((lvl) => lvl.EX).map((level) => ({ ...level.Level, ID: level.LevelID, Completed: level.Completed }));
 
     return (
-        <>
+        <Page>
             <div className='flex gap-2 mb-4'>
                 <div>
                     {pack.IconName && <img src={'/packIcons/' + pack.IconName} style={{ minWidth: '64px' }} />}
@@ -59,13 +47,13 @@ function Content() {
                 : <LevelRenderer element={GridLevel} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8' levels={normalLevels} />
             }
             {exLevels.length > 0 && <>
-                <h3 className='mb-3'>The following demons are not required for pack completion:</h3>
+                <Heading3 className='mb-3'>The following demons are not required for pack completion:</Heading3>
                 {isList
                     ? <LevelRenderer element={Level} className='level-list my-3 mb-8' header={<Level.Header />} levels={exLevels} />
                     : <LevelRenderer element={GridLevel} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8' levels={exLevels} />
                 }
             </>}
             <Leaderboard packID={packID} />
-        </>
+        </Page>
     );
 }
