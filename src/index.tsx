@@ -31,7 +31,7 @@ function createRoot() {
     return root;
 }
 
-document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') ?? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark')) ? 'dark' : 'white'));
+document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') ?? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark')).matches ? 'dark' : 'white'));
 document.documentElement.setAttribute('data-font', localStorage.getItem('font') ?? 'default');
 
 const rootElement = document.getElementById('root') ?? createRoot();
