@@ -3,10 +3,13 @@ import CheckBox from '../../../components/input/CheckBox';
 import Select from '../../../components/Select';
 import { useCallback } from 'react';
 import useSession from '../../../hooks/useSession';
-import { BooleanParam, NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { BooleanParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import { QueryParamNames } from './QueryParamNames';
 import { toast } from 'react-toastify';
 import { useTags } from '../../../hooks/api/tags/useTags';
+import { NaNToNull } from '../../../utils/NaNToNull';
+import { TwoPlayerParam } from '../../../utils/queryParameters/twoPlayerParam';
+import { UpdateParam } from '../../../utils/queryParameters/updateParam';
 
 const twoPlayerOptions = {
     any: 'Any',
@@ -30,6 +33,7 @@ const updateOptions = {
     '28355990-97452273': '2.1',
     '97452273-1000000000': '2.2',
 };
+type UpdateOption = keyof typeof updateOptions;
 
 export default function FiltersExtended() {
     const session = useSession();
@@ -41,8 +45,8 @@ export default function FiltersExtended() {
     const [maxDeviation, setMaxDeviation] = useQueryParam(QueryParamNames.MaxDeviation, NumberParam);
     const [minID, setMinID] = useQueryParam(QueryParamNames.MinID, NumberParam);
     const [maxID, setMaxID] = useQueryParam(QueryParamNames.MaxID, NumberParam);
-    const [twoPlayer, setTwoPlayer] = useQueryParam(QueryParamNames.TwoPlayer, withDefault(StringParam, 'any'));
-    const [update, setUpdate] = useQueryParam(QueryParamNames.Update, withDefault(StringParam, 'any'));
+    const [twoPlayer, setTwoPlayer] = useQueryParam(QueryParamNames.TwoPlayer, withDefault(TwoPlayerParam, 'any'));
+    const [update, setUpdate] = useQueryParam(QueryParamNames.Update, withDefault(UpdateParam, 'any'));
     const [topSkillset, setTopSkillset] = useQueryParam(QueryParamNames.TopSkillset, withDefault(NumberParam, 0));
     const [excludeCompleted, setExcludeCompleted] = useQueryParam(QueryParamNames.ExcludeCompleted, withDefault(BooleanParam, false));
     const [excludeUnrated, setExcludeUnrated] = useQueryParam(QueryParamNames.ExcludeUnrated, withDefault(BooleanParam, false));
@@ -53,7 +57,7 @@ export default function FiltersExtended() {
 
     const { data: tags } = useTags();
 
-    const onUpdateChange = useCallback((key: string) => {
+    const onUpdateChange = useCallback((key: UpdateOption) => {
         if (key !== 'any') {
             const lowID = parseInt(key.split('-')[0]);
             const highID = parseInt(key.split('-')[1]);
@@ -84,42 +88,42 @@ export default function FiltersExtended() {
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Submission count:</p>
                     <div className='flex items-center'>
-                        <NumberInput value={minSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMinSubCount(parseInt(e.target.value))} />
+                        <NumberInput value={minSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMinSubCount(NaNToNull(parseInt(e.target.value)))} />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput value={maxSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxSubCount(parseInt(e.target.value))} />
+                        <NumberInput value={maxSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxSubCount(NaNToNull(parseInt(e.target.value)))} />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Enjoyment count:</p>
                     <div className='flex items-center'>
-                        <NumberInput value={minEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMinEnjoymentCount(parseInt(e.target.value))} />
+                        <NumberInput value={minEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMinEnjoymentCount(NaNToNull(parseInt(e.target.value)))} />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput value={maxEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxEnjoymentCount(parseInt(e.target.value))} />
+                        <NumberInput value={maxEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxEnjoymentCount(NaNToNull(parseInt(e.target.value)))} />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Rating deviation:</p>
                     <div className='flex items-center'>
-                        <NumberInput className='num-lg' value={minDeviation ?? undefined} min='1' max='10' onChange={(e) => setMinDeviation(parseFloat(e.target.value))} />
+                        <NumberInput className='num-lg' value={minDeviation ?? undefined} min='1' max='10' onChange={(e) => setMinDeviation(NaNToNull(parseFloat(e.target.value)))} />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput className='num-lg' value={maxDeviation ?? undefined} min='1' max='10' onChange={(e) => setMaxDeviation(parseFloat(e.target.value))} />
+                        <NumberInput className='num-lg' value={maxDeviation ?? undefined} min='1' max='10' onChange={(e) => setMaxDeviation(NaNToNull(parseFloat(e.target.value)))} />
                     </div>
                 </div>
                 <div className='col-span-12 md:col-span-6 xl:col-span-6'>
                     <p className='form-label m-0'>Level ID:</p>
                     <div className='flex items-center'>
-                        <NumberInput className='num-lg' value={minID ?? undefined} min='1' max='500000000' onChange={(e) => setMinID(parseInt(e.target.value))} />
+                        <NumberInput className='num-lg' value={minID ?? undefined} min='1' max='500000000' onChange={(e) => setMinID(NaNToNull(parseInt(e.target.value)))} />
                         <p className='m-0 mx-2'>to</p>
-                        <TextInput className='num-lg' value={maxID ?? undefined} min='1' max='500000000' onChange={(e) => setMaxID(parseInt(e.target.value))} />
+                        <TextInput className='num-lg' value={maxID ?? undefined} min='1' max='500000000' onChange={(e) => setMaxID(NaNToNull(parseInt(e.target.value)))} />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Two player:</p>
-                    <Select height='20' activeKey={twoPlayer} options={twoPlayerOptions} onChange={(key) => setTwoPlayer(key)} id='twoPlayerSelectOptions' />
+                    <Select height='20' activeKey={twoPlayer ?? 'any'} options={twoPlayerOptions} onChange={(key) => setTwoPlayer(key)} id='twoPlayerSelectOptions' />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Update:</p>
-                    <Select height='20' activeKey={update} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
+                    <Select height='20' activeKey={update ?? 'any'} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Top skillset:</p>
