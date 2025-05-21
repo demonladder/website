@@ -1,0 +1,67 @@
+import { Link } from 'react-router-dom';
+import Heading4 from '../../../../components/headings/Heading4';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
+import useUserQuery from '../../../../hooks/queries/useUserQuery';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { toast } from 'react-toastify';
+import renderToastError from '../../../../utils/renderToastError';
+import AddRoleToUser from '../../../../api/user/AddRoleToUser';
+import { UserStat } from './UserStat';
+import { useVerificationRole } from '../hooks/useVerificationRole';
+import { useQueryClient } from '@tanstack/react-query';
+
+interface Props {
+    userID: number;
+    submissions: number;
+    distinctApprovals: number;
+}
+
+export default function EligibleUser({ userID, submissions, distinctApprovals }: Props) {
+    const user = useUserQuery(userID);
+    const verificationRole = useVerificationRole();
+    const queryClient = useQueryClient();
+
+    function onVerify() {
+        if (!verificationRole.data) return toast.error('Verification role not set');
+
+        void toast.promise(AddRoleToUser(userID, verificationRole.data.ID), {
+            pending: 'Verifying user...',
+            success: 'User verified!',
+            error: renderToastError,
+        }).then(() => {
+            void user.refetch();
+            void queryClient.invalidateQueries(['verifiedUsers']);
+            void queryClient.invalidateQueries(['usersEligibleForVerification']);
+        });
+    }
+
+    return (
+        <div className='bg-theme-600 px-4 py-2 round:rounded-lg relative'>
+            {user.isLoading && <LoadingSpinner />}
+            {user.isSuccess && <>
+                <Heading4 className='flex gap-2'>
+                    <img src={`https://cdn.discordapp.com/avatars/${user.data.DiscordData?.ID}/${user.data.DiscordData?.Avatar}.png`} className='inline-block w-14 h-14 rounded-full' />
+                    <div className='flex flex-col justify-around'>
+                        <Link to={`/profile/${userID}`} className='underline'>{user.data.Name}</Link>
+                        {user.data.CompletedPacks.length > 0 &&
+                            <div>
+                                {user.data.CompletedPacks.map((pack) => (
+                                    <Link to={`/pack/${pack.PackID}`} key={pack.PackID}><img src={`/packIcons/${pack.IconName}`} className='inline-block me-1 w-6' /></Link>
+                                ))}
+                            </div>
+                        }
+                    </div>
+                </Heading4>
+                <div className='grid grid-cols-2 gap-2 mt-4'>
+                    <UserStat label='Eligible submissions'>{submissions}</UserStat>
+                    <UserStat label='Distinct approvals' title='The number of distinct users who have approved the users submissions'>{distinctApprovals}</UserStat>
+                    <UserStat label='Total submissions'>{user.data.SubmissionCount}</UserStat>
+                    <UserStat label='Average enjoyment'>{user.data.AverageEnjoyment?.toFixed(2) ?? '-'}</UserStat>
+                </div>
+                <div className='flex mt-4'>
+                    <PrimaryButton className='grow' onClick={onVerify}>Verify</PrimaryButton>
+                </div>
+            </>}
+        </div>
+    );
+}

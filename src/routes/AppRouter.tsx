@@ -50,7 +50,7 @@ import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
 import EditPack from '../pages/mod/pack/EditPack';
 import ManageUser from '../pages/mod/manageUser/ManageUser';
 import ManageUserContent from '../pages/mod/manageUser/ManageUserContent';
-import Verification from '../pages/mod/verification/Verification';
+import Verification from '../features/admin/verification/Verification';
 import EditLevel from '../pages/mod/editLevel/EditLevel';
 import EditTags from '../pages/mod/editTags/EditTags';
 import Debugging from '../pages/mod/debugging/Debugging';
