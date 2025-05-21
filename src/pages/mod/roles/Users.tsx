@@ -10,7 +10,7 @@ export default function Users({ roleID }: { roleID: number }) {
     const queryClient = useQueryClient();
     const { data } = useQuery({
         queryKey: ['role', roleID, 'users'],
-        queryFn: () => APIClient.get<User[]>(`/roles/${roleID}/users`).then((res) => res.data),
+        queryFn: () => APIClient.get<{ users: User[]}>(`/roles/${roleID}/users`).then((res) => res.data),
     });
 
     function removeUser(userID: number) {
@@ -30,12 +30,12 @@ export default function Users({ roleID }: { roleID: number }) {
     return (
         <section className='mt-4'>
             <Heading3>Users</Heading3>
-            {data?.length === 0
+            {data?.users.length === 0
                 ? <p>No users have this role</p>
                 : <>
                     <p>Users with this role:</p>
                     <ul>
-                        {data?.map((user) => (
+                        {data?.users.map((user) => (
                             <li className='my-2' key={user.ID}><button onClick={() => removeUser(user.ID)}><i className='bx bx-x' /></button> {user.Name}</li>
                         ))}
                     </ul>

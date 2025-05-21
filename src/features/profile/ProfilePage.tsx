@@ -75,7 +75,7 @@ export default function Profile() {
                     <img src={pfp} className='inline w-20 h-20 rounded-full' />
                 }
                 <div className='flex flex-col'>
-                    <Heading1 className='max-sm:basis-full' style={{ color: userColor ? `#${userColor.toString(16)}` : undefined }}>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></Heading1>
+                    <Heading1 className='max-sm:basis-full' style={{ color: userColor ? `#${userColor.toString(16).padStart(6, '0')}` : undefined }}>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></Heading1>
                     <p>
                         {userData.Pronouns &&
                             <span className='me-1'>{userData.Pronouns}</span>
