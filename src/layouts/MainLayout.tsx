@@ -7,7 +7,7 @@ import NavbarNotificationRenderer from '../context/NavbarNotification/NavbarNoti
 import { Outlet } from 'react-router-dom';
 import Footer from './footer/Footer';
 import StorageManager from '../utils/StorageManager';
-import { useCallback, useEffect, useRef } from 'react';
+import { Suspense, useCallback, useEffect, useRef } from 'react';
 import noise3D from '../utils/noise/noise3D';
 import { useWindowSize } from 'usehooks-ts';
 import useResizeObserver from '@react-hook/resize-observer';
@@ -182,7 +182,9 @@ export default function MainLayout() {
                         <p className='text-permission-6'>6</p>
                     </div>
                     <div className='flex-grow over text-theme-text'>
-                        <Outlet />
+                        <Suspense fallback={<div className='flex justify-center items-center h-screen'><i className='bx bx-loader-alt bx-spin text-4xl' /></div>}>
+                            <Outlet />
+                        </Suspense>
                     </div>
                     <Footer />
                 </div>

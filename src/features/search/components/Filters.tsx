@@ -5,8 +5,10 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import RatingFilter from './filters/RatingFilter';
 import EnjoymentFilter from './filters/EnjoymentFilter';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
-import { QueryParamNames } from './QueryParamNames';
+import { QueryParamNames } from '../enums/QueryParamNames';
 import _ from 'lodash';
+import Divider from '../../../components/divider/Divider';
+import Heading2 from '../../../components/headings/Heading2';
 
 type Props = {
     creator: string,
@@ -37,16 +39,16 @@ const lengthOptions = {
     6: 'Platformer',
 };
 
-export default function FilterMenu({ creator, setCreator, song, setSong, reset, show }: Props) {
+export default function Filters({ creator, setCreator, song, setSong, reset, show }: Props) {
     const [difficulty, setDifficulty] = useQueryParam(QueryParamNames.Difficulty, withDefault(NumberParam, -1));
     const [length, setLength] = useQueryParam(QueryParamNames.Length, withDefault(NumberParam, 0));
 
     return (
-        <div className='grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
+        <div className='grid overflow-hidden transition-[grid-template-rows] duration-700' style={{ gridTemplateRows: show ? '1fr' : '0fr', transitionTimingFunction: 'cubic-bezier(0.05, 0.7, 0.1, 1.0)' }}>
             <div className='min-h-0 bg-theme-700 round:rounded-b-3xl'>
-                <div className='px-7 py-4 flex flex-col gap-4'>
+                <div className='px-7 py-4 flex flex-col gap-4 opacity-0 transition-opacity duration-700' style={{ opacity: show ? 1 : 0, transitionTimingFunction: 'cubic-bezier(0.05, 0.7, 0.1, 1.0)' }}>
                     <div className='flex justify-between'>
-                        <h2 className='text-2xl' style={{ color: 'currentColor' }}>Filters</h2>
+                        <Heading2>Filters</Heading2>
                         <DangerButton onClick={reset}>Reset</DangerButton>
                     </div>
                     <div className='grid grid-cols-12 gap-4 gap-y-2'>
@@ -69,7 +71,7 @@ export default function FilterMenu({ creator, setCreator, song, setSong, reset, 
                             <Select activeKey={_.clamp(length, 0, 6) as keyof typeof lengthOptions} onChange={(key) => setLength(key)} options={lengthOptions} id='lengthSelectOptions' />
                         </div>
                     </div>
-                    <div className='divider my-3'></div>
+                    <Divider />
                     <FiltersExtended />
                 </div>
             </div>

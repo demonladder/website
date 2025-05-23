@@ -27,7 +27,7 @@ export default function useLevelSearch({ ID, required = false, options = {} }: P
 
     const { data, status } = useQuery({
         queryKey: ['levelSearch', searchQuery],
-        queryFn: () => SearchLevels({ ...options, name: searchQuery, limit: 5 }),
+        queryFn: () => SearchLevels({ ...options, name: searchQuery, limit: 5, page: 0 }),
     });
 
     const { data: defaultData } = useQuery({

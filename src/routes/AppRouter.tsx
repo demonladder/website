@@ -16,7 +16,7 @@ const SiteSettings = lazy(() => import('../pages/mod/siteSettings/SiteSettings')
 const Game = lazy(() => import('../pages/root/game/Game'));
 import { profileLoader } from '../features/profile/loader';
 import Home from '../features/home/HomePage';
-import Search from '../pages/root/search/Search';
+const Search = lazy(() => import('../features/search/SearchPage'));
 import PlatformerList from '../features/platformerList/PlatformerListPage';
 import References from '../pages/root/references/References';
 import Packs from '../features/packs/PacksPage';

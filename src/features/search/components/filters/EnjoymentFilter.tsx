@@ -1,7 +1,7 @@
 import { NumberParam, useQueryParam } from 'use-query-params';
 import { NumberInput } from '../../../../components/Input';
 import { parseNumber } from '../../../../utils/parse/parseNumber';
-import { QueryParamNames } from '../QueryParamNames';
+import { QueryParamNames } from '../../enums/QueryParamNames';
 
 export default function EnjoymentFilter() {
     const [minEnjoyment, setMinEnjoyment] = useQueryParam(QueryParamNames.MinEnjoyment, NumberParam);

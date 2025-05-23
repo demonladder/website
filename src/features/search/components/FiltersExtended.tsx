@@ -4,12 +4,13 @@ import Select from '../../../components/Select';
 import { useCallback } from 'react';
 import useSession from '../../../hooks/useSession';
 import { BooleanParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
-import { QueryParamNames } from './QueryParamNames';
+import { QueryParamNames } from '../enums/QueryParamNames';
 import { toast } from 'react-toastify';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import { NaNToNull } from '../../../utils/NaNToNull';
 import { TwoPlayerParam } from '../../../utils/queryParameters/twoPlayerParam';
 import { UpdateParam } from '../../../utils/queryParameters/updateParam';
+import Divider from '../../../components/divider/Divider';
 
 const twoPlayerOptions = {
     any: 'Any',
@@ -130,6 +131,7 @@ export default function FiltersExtended() {
                     <Select height='20' activeKey={topSkillset} options={tagOptions} onChange={(key) => setTopSkillset(key)} id='skillsetSelectOptions' />
                 </div>
             </div>
+            <Divider />
             <div className='grid grid-cols-12'>
                 <label className={'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' + (session.user ? '' : ' text-gray-500 line-through')}>
                     <CheckBox checked={excludeCompleted} onChange={() => setExcludeCompleted((prev) => !prev)} disabled={!session.user} />

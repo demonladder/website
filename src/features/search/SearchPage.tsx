@@ -1,28 +1,36 @@
 import { useCallback, useEffect, useState } from 'react';
-import Level from '../../../components/Level';
-import FilterMenu from './FilterMenu';
-import SortMenu from './SortMenu';
-import SearchLevels from '../../../api/level/SearchLevels';
+import Level from '../../components/Level';
+import Filters from './components/Filters';
+import SortMenu from './components/SortMenu';
+import SearchLevels from '../../api/level/SearchLevels';
 import { useQuery } from '@tanstack/react-query';
-import { TextInput } from '../../../components/Input';
-import PageButtons from '../../../components/PageButtons';
-import { GridLevel } from '../../../components/GridLevel';
-import useSessionStorage from '../../../hooks/useSessionStorage';
+import PageButtons from '../../components/PageButtons';
+import { GridLevel } from '../../components/GridLevel';
+import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
-import { useLazyQueryParam } from '../../../hooks/useLazyQueryParam';
-import { stripFalsyProperties } from '../../../utils/stripFalsyProperties';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import { QueryParamNames } from './QueryParamNames';
-import { LevelRenderer } from '../../../components/LevelRenderer';
-import useLevelView from '../../../hooks/useLevelView';
-import Heading1 from '../../../components/headings/Heading1';
-import Heading2 from '../../../components/headings/Heading2';
+import { useLazyQueryParam } from '../../hooks/useLazyQueryParam';
+import { stripFalsyProperties } from '../../utils/stripFalsyProperties';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import { QueryParamNames } from './enums/QueryParamNames';
+import { LevelRenderer } from '../../components/LevelRenderer';
+import Heading1 from '../../components/headings/Heading1';
+import Heading2 from '../../components/headings/Heading2';
 import { Helmet } from 'react-helmet-async';
-import Page from '../../../components/Page';
+import Page from '../../components/Page';
 import { useNavigate } from 'react-router-dom';
+import SearchInput from '../../components/input/search/Search';
+import ViewType from './components/ViewType';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import pluralS from '../../utils/pluralS';
+
+// TODO: Expand filters to include all filters from the level search page
+interface SavedFilters {
+    [QueryParamNames.Name]: string;
+    [QueryParamNames.Page]: number;
+}
 
 export default function Search() {
-    const [savedFilters, setSavedFilters] = useSessionStorage<Partial<Record<QueryParamNames, string>>>('levelFilters', {});
+    const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('levelFilters', {});
 
     const [name, lazyName, setName] = useLazyQueryParam(QueryParamNames.Name, savedFilters[QueryParamNames.Name] ?? '');
     const [creator, lazyCreator, setCreator] = useLazyQueryParam(QueryParamNames.Creator, '');
@@ -56,10 +64,10 @@ export default function Search() {
         [QueryParamNames.ExcludeRatedEnjoyment]: BooleanParam,
         [QueryParamNames.InPack]: BooleanParam,
     });
-    
+
     useEffect(() => {
         setQuery(savedFilters, 'replace');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const generateQ = useCallback((name: string, creator: string, song: string) => {
@@ -104,7 +112,7 @@ export default function Search() {
 
     const [q, setQ] = useSessionStorage('searchQuery', generateQ(name, creator, song));
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
-    const [listView, listViewButtons] = useLevelView('search.listView');
+    const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
     useEffect(() => {
         setQ(generateQ(lazyName, lazyCreator, lazySong));
@@ -168,38 +176,24 @@ export default function Search() {
             <Helmet>
                 <title>GDDL | Search</title>
             </Helmet>
-            <Heading1 className='mb-2'>The Ladder</Heading1>
-            <div className='flex items-center gap-1'>
-                <div className='relative flex-grow group'>
-                    <TextInput autoFocus placeholder='Search level name...' value={name} onChange={onNameChange} onKeyDown={onKeyDown} />
-                    <button className='absolute right-1 top-1 opacity-0 group-hover:opacity-100 transition-opacity' onClick={() => setName('')}>
-                        <svg width='16' height='16' stroke='currentColor' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>
-                            <path strokeWidth='2' strokeLinecap='round' d='M4 4l22 22M4 26l22 -22' />
-                        </svg>
-                    </button>
-                </div>
-                <button className='bg-white text-black w-7 h-7 grid place-items-center' onClick={() => setShowFilters((prev: boolean) => !prev)}>
-                    <svg xmlns='http://www.w3.org/2000/svg' width='16px' height='16px' fill='currentColor' viewBox='0 0 16 16'>
-                        <path d='M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z' />
-                    </svg>
-                </button>
+            <Heading1 className='mb-2'>Levels</Heading1>
+            <div className='flex gap-4 items-center'>
+                <SearchInput onKeyDown={onKeyDown} value={name} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} placeholder='Search level...' />
+            </div>
+            <Filters creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
+            <div className='flex justify-between mt-4'>
                 <SortMenu />
-                <div />
-                {listViewButtons}
+                <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
             </div>
-            <FilterMenu creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
+            <LoadingSpinner isLoading={searchStatus === 'loading'} />
+            {searchStatus === 'success' &&
+                <div className='my-4'>{searchData.levels.length !== 0 && isListView
+                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' header={<Level.Header />} />
+                    : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
+                }</div>
+            }
             {searchData && <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />}
-            <div className='my-4'>
-                {(searchStatus === 'loading' && !searchData)
-                    ? <LoadingSpinner />
-                    : searchData.levels.length === 0
-                        ? <h2 className='text-3xl'>No levels found!</h2>
-                        : listView
-                            ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' header={<Level.Header />} />
-                            : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
-                }
-            </div>
-            {searchData && <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />}
+            {searchData !== undefined && <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>}
         </Page>
     );
 }

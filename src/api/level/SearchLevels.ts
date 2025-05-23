@@ -11,6 +11,7 @@ type SearchInfo = {
 export interface SearchLevelRequest {
     limit?: number;
     name?: string;
+    page: number;
 }
 
 export interface SearchLevelResponse extends FullLevel {

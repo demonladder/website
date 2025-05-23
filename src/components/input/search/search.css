@@ -1,0 +1,18 @@
+.search {
+    flex-grow: 1;
+    display: flex;
+    gap: 16px;
+    padding: 0 16px;
+    height: 56px;
+    align-items: center;
+
+    background-color: #ECE6F0;
+    border-radius: 28px;
+    color: #1D1B20;
+}
+
+.search input {
+    outline: none;
+    flex-grow: 1;
+    height: 100%;
+}

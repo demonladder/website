@@ -41,9 +41,9 @@ export default function PageButtons({ onPageChange, meta }: Props) {
     return (
         <div className='mt-3 flex gap-3 justify-center items-center'>
             {meta.page > 0 &&  // If the current page is not the first, render button
-                <div className='flex gap-2'>
-                    <PrimaryButton onClick={() => onPageButtonClick(0)}>{'<<'}</PrimaryButton>
-                    <PrimaryButton onClick={() => onPageButtonClick(meta.page - 1)}>{'<'}</PrimaryButton>
+                <div className='flex gap-2 text-2xl'>
+                    <PrimaryButton onClick={() => onPageButtonClick(0)}><i className='bx bx-chevrons-left' /></PrimaryButton>
+                    <PrimaryButton onClick={() => onPageButtonClick(meta.page - 1)}><i className='bx bx-chevron-left' /></PrimaryButton>
                 </div>
             }
             <div className='flex items-center gap-1'>
@@ -52,9 +52,9 @@ export default function PageButtons({ onPageChange, meta }: Props) {
                 <p>/{maxPages}</p>
             </div>
             {(meta.page + 1) < maxPages &&  // If the current page is not the last, render button
-                <div className='flex gap-2'>
-                    <PrimaryButton onClick={() => onPageButtonClick(meta.page + 1)}>{'>'}</PrimaryButton>
-                    <PrimaryButton onClick={() => onPageButtonClick(maxPages - 1)}>{'>>'}</PrimaryButton>
+                <div className='flex gap-2 text-2xl'>
+                    <PrimaryButton onClick={() => onPageButtonClick(meta.page + 1)}><i className='bx bx-chevron-right' /></PrimaryButton>
+                    <PrimaryButton onClick={() => onPageButtonClick(maxPages - 1)}><i className='bx bx-chevrons-right' /></PrimaryButton>
                 </div>
             }
         </div>
