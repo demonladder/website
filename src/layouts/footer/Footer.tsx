@@ -45,7 +45,7 @@ export default function Footer() {
                 <div>
                     <h2 className='mb-2 font-bold'>Resources</h2>
                     <ul className='flex flex-col gap-1'>
-                        <BlankAnchor href='https://geode-sdk.org/mods/b1rtek.gddlintegration'>Geode mode</BlankAnchor>
+                        <BlankAnchor href='https://geode-sdk.org/mods/b1rtek.gddlintegration'>Geode mod</BlankAnchor>
                         <BlankAnchor href='https://docs.google.com/spreadsheets/d/1qKlWKpDkOpU1ZF6V6xGfutDY2NvcA8MNPnsv6GBkKPQ/edit?gid=0#gid=0'>Google Sheet version</BlankAnchor>
                         <BlankAnchor href='/api/docs'>API Documentation</BlankAnchor>
                     </ul>

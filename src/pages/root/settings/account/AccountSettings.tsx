@@ -11,6 +11,8 @@ import DeleteUserRequest from '../../../../api/user/Delete';
 import { useMutation } from '@tanstack/react-query';
 import renderToastError from '../../../../utils/renderToastError';
 import Heading1 from '../../../../components/headings/Heading1';
+import { forgotPassword } from '../../../../api/auth/forgotPassword';
+import Heading3 from '../../../../components/headings/Heading3';
 
 export default function AccountSettings() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -20,12 +22,21 @@ export default function AccountSettings() {
 
     const deleteUserMutation = useMutation({
         mutationFn: DeleteUserRequest,
-        onSuccess: () => toast.success('Account deleted successfully!'),
-        onError: (error: Error) => toast.error(renderToastError.render({ data: error})),
+        onSuccess: () => {
+            window.location.href = '/';
+        },
+        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
     });
 
     function onPasswordReset() {
-        toast.info('Not implemented yet');
+        const name = session.user?.DiscordData?.Username;
+        if (!name) return toast.error('You must be logged in to reset your password!');
+
+        void toast.promise(forgotPassword(name), {
+            pending: 'Sending password reset link...',
+            success: 'Password reset link sent!',
+            error: renderToastError,
+        });
     }
 
     function onDelete(e: React.FormEvent<HTMLFormElement>) {
@@ -40,15 +51,15 @@ export default function AccountSettings() {
             <Heading1 className='mb-4'>Account settings</Heading1>
             <div>
                 <div className='flex justify-between border-theme-500 border-b pb-2'>
-                    <h2 className='text-xl'>Password</h2>
+                    <Heading3>Password</Heading3>
                     <SecondaryButton onClick={onPasswordReset}>Reset</SecondaryButton>
                 </div>
                 <FormInputDescription>Get sent a reset link on Discord.</FormInputDescription>
             </div>
             <div className='mt-12'>
                 <div className='flex justify-between border-theme-500 border-b pb-2'>
-                    <h2 className='text-xl'>Delete account</h2>
-                    <DangerButton onClick={() => setShowDeleteModal(true)} disabled={!session.user}>Delete your account</DangerButton>
+                    <Heading3>Delete account</Heading3>
+                    <DangerButton onClick={() => setShowDeleteModal(true)} disabled={!session.user}>Delete</DangerButton>
                 </div>
                 <FormInputDescription>This action is irreversible! All related data to your account will be deleted.</FormInputDescription>
             </div>
