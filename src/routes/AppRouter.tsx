@@ -17,17 +17,17 @@ const Game = lazy(() => import('../pages/root/game/Game'));
 import { profileLoader } from '../features/profile/loader';
 import Home from '../features/home/HomePage';
 const Search = lazy(() => import('../features/search/SearchPage'));
-import PlatformerList from '../features/platformerList/PlatformerListPage';
-import References from '../pages/root/references/References';
-import Packs from '../features/packs/PacksPage';
-import About from '../features/about/AboutPage';
+const PlatformerList = lazy(() => import('../features/platformerList/PlatformerListPage'));
+const References = lazy(() => import('../pages/root/references/References'));
+const Packs = lazy(() => import('../features/packs/PacksPage'));
+const About = lazy(() => import('../features/about/AboutPage'));
 import CrossroadPack from '../pages/root/packs/packOverview/CrossroadPack';
-import PackOverview from '../features/singlePack/PackOverview';
+const PackOverview = lazy(() => import('../features/singlePack/PackOverview'));
 import Staff from '../pages/StaffPage';
 import LevelPage from '../features/level/LevelPage';
 import Login from '../features/login/LoginPage';
 import SignUp from '../pages/SignupPage';
-import Profile from '../features/profile/ProfilePage';
+const Profile = lazy(() => import('../features/profile/ProfilePage'));
 import Notifications from '../pages/NotificationsPage';
 import Settings from '../pages/root/settings/Settings';
 import AccountSettings from '../pages/root/settings/account/AccountSettings';
@@ -36,14 +36,14 @@ import DiscordSettings from '../pages/root/settings/profileSettings/DiscordSetti
 import SubmissionSettings from '../pages/root/settings/submissionsSettings/SubmissionSettings';
 import Appearance from '../pages/root/settings/appearance/Appearance';
 import Developer from '../pages/root/settings/developer/Developer';
-import List from '../pages/root/list/List';
+const List = lazy(() => import('../pages/root/list/List'));
 import ForgotPassword from '../pages/ForgotPasswordPage';
-import Generators from '../pages/root/generators/Generators';
-import Alphabet from '../pages/root/generators/alphabet/Alphabet';
-import Roulette from '../pages/root/generators/roulette/Roulette';
-import ReverseRoulette from '../pages/root/generators/reverseRoulette/ReverseRoulette';
-import TierRoulette from '../pages/root/generators/tierRoulette/TierRoulette';
-import Decathlon from '../pages/root/generators/decathlon/Decathlon';
+const Generators = lazy(() => import('../pages/root/generators/Generators'));
+const Alphabet = lazy(() => import('../pages/root/generators/alphabet/Alphabet'));
+const Roulette = lazy(() => import('../pages/root/generators/roulette/Roulette'));
+const ReverseRoulette = lazy(() => import('../pages/root/generators/reverseRoulette/ReverseRoulette'));
+const TierRoulette = lazy(() => import('../pages/root/generators/tierRoulette/TierRoulette'));
+const Decathlon = lazy(() => import('../pages/root/generators/decathlon/Decathlon'));
 import BulkSubmit from '../features/bulkSubmit/BulkSubmit';
 import Changelogs from '../features/changelogs/ChangelogsPage';
 import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
@@ -77,7 +77,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
             <Route path='profile' loader={profileLoader} />
             <Route path='profile/:userID' element={<Profile />} />
             <Route path='notifications' element={<Notifications />} />
-            <Route path='game' element={<Suspense><Game /></Suspense>} />
+            <Route path='game' element={<Game />} />
             <Route path='settings' element={<Settings />}>
                 <Route path='account' element={<AccountSettings />} />
                 <Route path='site' element={<ClientSiteSettings />} />
@@ -89,7 +89,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
             <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
             <Route path='list/:listID' element={<List />} />
             <Route path='forgotPassword' element={<ForgotPassword />} />
-            <Route path='generators' element={<Generators />}>
+            <Route path='generators' element={<Suspense fallback={<FloatingLoadingSpinner />}><Generators /></Suspense>}>
                 <Route path='alphabet' element={<Alphabet />} />
                 <Route path='roulette' element={<Roulette />} />
                 <Route path='reverseRoulette' element={<ReverseRoulette />} />

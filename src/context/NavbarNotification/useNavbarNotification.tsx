@@ -34,7 +34,7 @@ function DiscordSyncNotification({ onClose: close }: { onClose: () => void }) {
     const openModal = useSyncDiscordModal();
 
     return (
-        <div className='bg-neutral-500 px-32 h-8 flex justify-between items-center'>
+        <div className='bg-neutral-500 text-theme-text px-32 h-8 flex justify-between items-center'>
             <span>You haven't synced your Discord account to your GDDL account yet.</span>
             <div className='h-full'>
                 <button className='bg-button-discord-primary hover:bg-button-discord-hover active:bg-button-discord-active transition-colors px-2 h-full' onClick={openModal}>sync now</button>

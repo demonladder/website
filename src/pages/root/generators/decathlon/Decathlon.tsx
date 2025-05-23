@@ -45,7 +45,7 @@ export default function Decathlon() {
             <Heading2>Decathlon</Heading2>
             <p>A decathlon is a notoriously difficult challenge as it is very RNG heavy.</p>
             <p>The rules are simple. You will be given 10 random levels which will have to be beaten in ascending difficulty. You cannot see all of the run ahead of time, only the next level in line.</p>
-            <p>Depending the tier of your current hardest, you will be given re-rolls:</p>
+            <p>Depending on the tier of your current hardest, you will be given re-rolls:</p>
             <p>32-35: 0 re-rolls</p>
             <p>27-31: 1 re-roll</p>
             <p>23-26: 2 re-rolls</p>
@@ -54,7 +54,7 @@ export default function Decathlon() {
             <p>10-14: 5 re-rolls</p>
             <p>6-9: 6 re-rolls</p>
             <p>1-5: 7 re-rolls</p>
-            <p>The run will not contain levels you have already beaten.</p>
+            <p>The decathlon will not contain levels you have already beaten.</p>
             <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isLoading}>{data ? 'Re-g' : 'G'}enerate</PrimaryButton>
             {data && <>
                 <p className='my-4'>You have <b>{data.Description.reRolls} re-roll{pluralS(data.Description.reRolls)}</b> left</p>

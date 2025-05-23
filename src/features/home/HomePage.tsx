@@ -35,7 +35,7 @@ export default function Home() {
                         <Body>
                             <p>As there currently aren't enough platformer levels to put them into tiers, we have created this temporary ranking of all the platformer demons. The position of each level is decided by our community until we're able to generalise the levels into tiers.</p>
                             <br />
-                            <PrimaryButton onClick={() => navigate('/platformerList')}>Go to the list</PrimaryButton>
+                            <PrimaryButton onClick={() => navigate('/platformerList')}>Go to list</PrimaryButton>
                         </Body>
                     </Announcement>
                 </Container>
