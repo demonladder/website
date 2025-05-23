@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import { secondsToHumanReadable } from './secondsToHumanReadable';
 
 interface GDDLError {
     message: string | string[];
@@ -20,6 +21,14 @@ export function render({ data }: { data?: Error }) {
 
 export function parseRequest(error: AxiosError<GDDLError>): string {
     if (!error.response) return error.message;
+
+    if (error.response.status === 429) {
+        const retryAfter = error.response.headers['retry-after'] as string;
+        if (retryAfter) {
+            return `Rate limit exceeded. Try again in ${secondsToHumanReadable(parseInt(retryAfter))}.`;
+        }
+        return 'Rate limit exceeded. Try again later.';
+    }
 
     if (Array.isArray(error.response.data.message)) {
         error.response.data.message.slice(1).forEach((message) => {
