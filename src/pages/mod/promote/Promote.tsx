@@ -8,7 +8,7 @@ import renderToastError from '../../../utils/renderToastError';
 import FormGroup from '../../../components/form/FormGroup';
 import PromoteUser from '../../../api/user/PromoteUser';
 
-const permissionOptions: {[key: string]: string} = {
+const permissionOptions = {
     '0': 'No permissions',
     '1': 'List helper',
     '2': 'Developer',
@@ -17,10 +17,11 @@ const permissionOptions: {[key: string]: string} = {
     '5': 'Co-Owner',
     '6': 'Owner',
 };
+type PermissionOption = keyof typeof permissionOptions;
 
 export default function Promote() {
     const [result, setResult] = useState<TinyUser>();
-    const [permissionKey, setPermissionKey] = useState('0');
+    const [permissionKey, setPermissionKey] = useState<PermissionOption>('0');
 
     function submit() {
         if (result === undefined || result === null) {
@@ -28,7 +29,7 @@ export default function Promote() {
             return;
         };
 
-        toast.promise(PromoteUser(result.ID, parseInt(permissionKey)), {
+        void toast.promise(PromoteUser(result.ID, parseInt(permissionKey)), {
             pending: 'Saving',
             success: 'Promoted ' + result.Name,
             error: renderToastError,

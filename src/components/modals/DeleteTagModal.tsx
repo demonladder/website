@@ -21,8 +21,8 @@ export default function DeleteTagModal({ tag, onClose: close }: Props) {
         if (isMutating) return;
         setIsMutating(true);
 
-        toast.promise(DeleteTag(tag.ID).then(() => {
-            queryClient.invalidateQueries(['tags']);
+        void toast.promise(DeleteTag(tag.ID).then(() => {
+            void queryClient.invalidateQueries(['tags']);
             close();
         }).finally(() => {
             setIsMutating(false);
@@ -35,18 +35,18 @@ export default function DeleteTagModal({ tag, onClose: close }: Props) {
 
     return (
         <Modal title='Are you sure?' show={true} onClose={close}>
-            <Modal.Body>
+            <div>
                 <div className='my-6'>
                     <p>This is an irreversible action!</p>
                     <p>All tag submissions using this tag will be deleted! Are you sure you want to delete <b>{tag.Name}</b>?</p>
                 </div>
-            </Modal.Body>
-            <Modal.Footer>
+            </div>
+            <div>
                 <div className='flex float-right round:gap-1'>
                     <PrimaryButton onClick={close}>Cancel</PrimaryButton>
                     <DangerButton onClick={onDelete}>Confirm</DangerButton>
                 </div>
-            </Modal.Footer>
+            </div>
         </Modal>
     );
 }

@@ -14,6 +14,7 @@ const logTypes = {
     warn: 'Warnings',
     error: 'Errors',
 };
+type LogType = keyof typeof logTypes;
 
 const timePeriods = {
     '1h': 'Past hour',
@@ -25,10 +26,11 @@ const timePeriods = {
     '30d': 'Past month',
     'all': 'All time',
 };
+type TimePeriod = keyof typeof timePeriods;
 
 export default function Logs() {
-    const [logType, setLogType] = useState('audit');
-    const [timePeriod, setTimePeriod] = useState('1h');
+    const [logType, setLogType] = useState<LogType>('audit');
+    const [timePeriod, setTimePeriod] = useState<TimePeriod>('1h');
     const [message, lateMessage, setMessage] = useLateValue('', 500);
     const [page, latePage, setPage, setPageImmediate] = useLateValue(1, 500);
 
@@ -37,17 +39,27 @@ export default function Logs() {
         queryFn: () => GetLogs(logType, timePeriod, lateMessage, latePage),
     });
 
+    function onLogTypeChange(key: LogType) {
+        setLogType(key);
+        setPageImmediate(1);
+    }
+
+    function onTimePeriodChange(key: TimePeriod) {
+        setTimePeriod(key);
+        setPageImmediate(1);
+    }
+
     return (
         <div>
             <h3 className='mb-4 text-2xl'>Logs</h3>
             <div className='mb-4'>
                 <div className='mb-2'>
                     <p>Type of log</p>
-                    <Select options={logTypes} activeKey={logType} id='logTypeSelect' onChange={(key) => { setLogType(key); setPageImmediate(1) }} />
+                    <Select options={logTypes} activeKey={logType} id='logTypeSelect' onChange={onLogTypeChange} />
                 </div>
                 <div className='mb-2'>
                     <p>Time period</p>
-                    <Select options={timePeriods} activeKey={timePeriod} id='logTimePeriodSelect' onChange={(key) => { setTimePeriod(key); setPageImmediate(1) }} />
+                    <Select options={timePeriods} activeKey={timePeriod} id='logTimePeriodSelect' onChange={onTimePeriodChange} />
                 </div>
                 <div className='mb-2'>
                     <p>Filter by message</p>

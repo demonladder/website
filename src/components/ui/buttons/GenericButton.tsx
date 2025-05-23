@@ -5,7 +5,7 @@ export interface GenericButtonProps extends DetailedHTMLProps<ButtonHTMLAttribut
     loading?: boolean;
 }
 
-export function Generic({ loading = false, children, ...props}: GenericButtonProps) {
+export function Generic({ loading = false, children, ...props }: GenericButtonProps) {
     if (loading) {
         props.disabled = true;
     }

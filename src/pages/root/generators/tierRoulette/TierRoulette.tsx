@@ -40,7 +40,7 @@ export default function TierRoulette() {
                 </FormGroup>
                 <PrimaryButton onClick={onSubmit}>Generate</PrimaryButton>
             </div>
-            <List levels={rouletteLevels} progress={progress} setProgress={setProgress} />
+            <List levels={rouletteLevels} progress={progress ?? 0} setProgress={setProgress} />
             {rouletteLevels?.length === progress &&
                 <p className='text-center font-bold py-4'>GG, you beat this tier roulette!!!</p>
             }

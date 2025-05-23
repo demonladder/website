@@ -6,6 +6,6 @@ export default function useSelect({ ID, options }: { ID: string, options: { [key
 
     return {
         activeElement: key,
-        Select: (<Select id={ID} options={options} activeKey={key} onChange={setKey} />)
+        Select: (<Select<Record<string, string>> id={ID} options={options} activeKey={key} onChange={setKey} />)
     };
 }

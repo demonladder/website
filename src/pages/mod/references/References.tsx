@@ -144,12 +144,14 @@ function RemoveList({ references, undo }: { references: number[], undo: (ID: num
 
     if (!data) return <LoadingSpinner isLoading={true} />;
 
+    const referencesToChange = references.map((ID) => data.find((r) => r.LevelID === ID)).filter((r) => r !== undefined) as Reference[];
+
     return (
         <div>
             <h3 className='text-xl'>To remove</h3>
             <ul>{
-                references.map((ID) => data.find((r) => r.LevelID === ID)).filter((r) => r !== undefined).map((r) => (
-                    <ChangeLevel data={{ ID: r.LevelID, Name: r.Level.Meta.Name, Tier: r.Tier, Type: ChangeType.Remove }} remove={() => undo(r.LevelID)} key={r!.LevelID} />
+                referencesToChange.map((r) => (
+                    <ChangeLevel data={{ ID: r.LevelID, Name: r.Level.Meta.Name, Tier: r.Tier, Type: ChangeType.Remove }} remove={() => undo(r.LevelID)} key={r.LevelID} />
                 ))
             }</ul>
         </div>

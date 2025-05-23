@@ -101,7 +101,7 @@ export default function Roulette() {
                 <FormInputDescription>Optional. Only include levels that you have not completed.</FormInputDescription>
             </FormGroup>
             <PrimaryButton onClick={submit} loading={generateMutation.isLoading}>Generate</PrimaryButton>
-            <List levels={rouletteLevels} progress={progress} setProgress={setProgress} />
+            <List levels={rouletteLevels} progress={progress!} setProgress={setProgress} />
             {rouletteLevels?.length === progress &&
                 <p className='text-center font-bold py-4'>GG, you beat this roulette!!!</p>
             }

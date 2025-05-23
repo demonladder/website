@@ -115,11 +115,11 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             favoriteLevels: [
                 favoriteLevelSearch1.activeLevel?.ID,
                 favoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined) || null,
+            ].filter((v) => v !== undefined) as number[],
             leastFavoriteLevels: [
                 leastFavoriteLevelSearch1.activeLevel?.ID,
                 leastFavoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined) || null,
+            ].filter((v) => v !== undefined) as number[],
             minPref: parseInt(minPrefRef.current.value) || null,
             maxPref: parseInt(maxPrefRef.current.value) || null,
         });
