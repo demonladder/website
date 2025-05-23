@@ -12,8 +12,21 @@ button {
     }
 }
 
+@custom-variant serif {
+    &[data-font="serif"] {
+        @slot;
+    }
+}
+
+@custom-variant mono {
+    &[data-font="mono"] {
+        @slot;
+    }
+}
+
 @theme {
-    --font-sans: 'Outfit', 'Montserrat', 'sans-serif';
+    --font-outfit: 'Outfit', 'Montserrat', 'sans-serif';
+    --font-gddl-serif: 'Noto Serif', 'Merriweather', 'serif';
 
     --color-primary: #EFA51C;
     --color-secondary: #1a1a1a;
@@ -108,14 +121,6 @@ input.no-spinner::-webkit-inner-spin-button {
 
 label:has(> input[type=checkbox]:disabled) {
     @apply text-gray-400 line-through;
-}
-
-[data-font="mono"] {
-    --font-sans: monospace;
-}
-
-[data-font="serif"] {
-    --font-sans: 'Noto Serif', 'Merriweather', 'serif';
 }
 
 html.inverted {
