@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { NavButton } from '../../components/ui/NavButton';
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
+import Divider from '../../components/divider/Divider';
 
 export default function Mod() {
     return (
@@ -17,25 +18,25 @@ export default function Mod() {
                         <NavButton to='/mod/queue'>Submissions queue</NavButton>
                         <NavButton to='/mod/addSubmission'>Add submission</NavButton>
                         <NavButton to='/mod/editSubmission'>Edit submission</NavButton>
-                        <div className='divider my-3'></div>
+                        <Divider />
                         <p className='text-gray-400 text-sm ps-3'>Users</p>
                         <NavButton to='/mod/manageUser'>Manage user</NavButton>
                         <NavButton to='/mod/signupLinks'>Sign-up links</NavButton>
                         <NavButton to='/mod/createUser'>Create user</NavButton>
                         <NavButton to='/mod/deleteUser'>Delete user</NavButton>
                         <NavButton to='/mod/verification'>Verification</NavButton>
-                        <div className='divider my-3'></div>
+                        <Divider />
                         <p className='text-gray-400 text-sm ps-3'>Packs</p>
                         <NavButton to='/mod/editPack'>Packs</NavButton>
-                        <div className='divider my-3'></div>
+                        <Divider />
                         <p className='text-gray-400 text-sm ps-3'>References</p>
                         <NavButton to='/mod/references'>Edit references</NavButton>
-                        <div className='divider my-3'></div>
+                        <Divider />
                         <p className='text-gray-400 text-sm ps-3'>Levels</p>
                         <NavButton to='/mod/addLevel'>Add/update level</NavButton>
                         <NavButton to='/mod/editLevel'>Edit level</NavButton>
                         <NavButton to='/mod/editTags'>Edit tags</NavButton>
-                        <div className='divider my-3'></div>
+                        <Divider />
                         <p className='text-gray-400 text-sm ps-3'>Settings</p>
                         <NavButton to='/mod/siteSettings'>Site settings</NavButton>
                         <NavButton to='/mod/debugging'>Debugging</NavButton>

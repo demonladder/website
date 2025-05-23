@@ -9,6 +9,7 @@ import NewLabel from '../../../components/NewLabel';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import { getSkills } from '../api/getSkills';
 import Heading2 from '../../../components/headings/Heading2';
+import Divider from '../../../components/divider/Divider';
 
 ChartJS.register(RadialLinearScale);
 
@@ -109,7 +110,7 @@ export default function Skills({ userID }: { userID: number }) {
                     </label>
                 </div>
             </div>
-            <div className='divider my-4'></div>
+            <Divider />
             <div className='mx-auto xl:w-1/2'>
                 <Radar data={chartData} options={{
                     scales: {

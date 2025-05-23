@@ -9,6 +9,7 @@ import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import AutoAccepter from './AutoAccepter';
+import Divider from '../../../components/divider/Divider';
 
 export default function SiteSettings() {
     const queueEditLock = useRef<HTMLInputElement>(null);
@@ -100,7 +101,7 @@ export default function SiteSettings() {
                     <PrimaryButton type='submit' loading={isMutating || isFetching}>Save</PrimaryButton>
                 </form>
             </section>
-            <div className='my-4 divider'></div>
+            <Divider />
             <AutoAccepter />
         </div>
     );

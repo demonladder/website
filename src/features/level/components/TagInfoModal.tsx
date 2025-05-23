@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Modal from '../../../components/Modal';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { useTags } from '../../../hooks/api/tags/useTags';
+import Divider from '../../../components/divider/Divider';
 
 export default function TagInfoModal() {
     const [visible, setVisible] = useState(false);
@@ -19,7 +20,7 @@ export default function TagInfoModal() {
                 <div>
                     <p>Tags describe the general skillsets that are present in this level.</p>
                     <p>You may vote on tags once you have an approved submission for this level.</p>
-                    <div className='divider my-4' />
+                    <Divider />
                     <div>
                         <h4 className='text-xl font-bold'>Available skillsets:</h4>
                         <ul>{

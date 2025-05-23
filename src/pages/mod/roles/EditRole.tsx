@@ -15,6 +15,7 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import Heading2 from '../../../components/headings/Heading2';
 import Heading3 from '../../../components/headings/Heading3';
+import Divider from '../../../components/divider/Divider';
 
 export default function EditRole() {
     const roleID = parseInt(useParams().roleID ?? '');
@@ -96,7 +97,7 @@ export default function EditRole() {
                     ))}
                 </ul>
             </section>
-            <div className='divider my-8' />
+            <Divider />
             <Users roleID={roleID} />
             {role &&
                 <button onClick={() => openDeleteRoleModal(role)} className='mt-8 text-red-500 underline-t'>Delete role "{role?.Name}"</button>

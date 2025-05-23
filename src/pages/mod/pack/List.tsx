@@ -3,6 +3,7 @@ import { Level } from './EditPack';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import usePackLevels from '../../../features/singlePack/hooks/usePackLevels';
 import { GetPackLevelsResponse as PackLevel } from '../../../features/singlePack/api/getPackLevels';
+import Divider from '../../../components/divider/Divider';
 
 interface Props {
     addLevel: (levelID: number, levelName: string, ex?: boolean) => void;
@@ -24,7 +25,7 @@ export default function List({ addLevel, packID, removeLevel }: Props) {
 
     return (
         <div className='mb-6'>
-            <div className='divider my-8'></div>
+            <Divider />
             <h3 className='text-xl'>Levels:</h3>
             <div className='mb-4'>
                 {addLevelSearch.SearchBox}

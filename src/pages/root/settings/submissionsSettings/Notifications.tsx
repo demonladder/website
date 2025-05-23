@@ -10,6 +10,7 @@ import { validateIntInputChange } from '../../../../utils/validators/validateInt
 import GetWants from '../../../../api/user/GetWants';
 import useSession from '../../../../hooks/useSession';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
+import Divider from '../../../../components/divider/Divider';
 
 enum NotificationsBitField {
     Accept = 2 ** 0,
@@ -68,7 +69,7 @@ export default function Notifications() {
 
     return (
         <>
-            <div className='divider my-8 text-gray-400'></div>
+            <Divider />
             <b>Notifications</b>
             <div>
                 <label className='flex items-center gap-2 mb-2'>

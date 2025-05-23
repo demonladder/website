@@ -13,6 +13,7 @@ import renderToastError from '../../../utils/renderToastError';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import PageButtons from '../../../components/PageButtons';
 import Heading3 from '../../../components/headings/Heading3';
+import Divider from '../../../components/divider/Divider';
 
 interface LevelProps {
     data: Reference;
@@ -117,7 +118,7 @@ export default function EditReferences() {
                     <PrimaryButton onClick={addChange}>Add</PrimaryButton>
                 </div>
             </div>
-            <div className='divider my-3'></div>
+            <Divider />
             <div className='flex flex-col gap-2 mb-8'>{
                 data.filter((l) => l.Tier === tier).map((l) => <Level data={l} remove={() => onRemoveReference(l)} key={l.LevelID} />)
             }</div>

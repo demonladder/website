@@ -27,15 +27,15 @@ export default function ManageUserContent() {
     return (
         <>
             <p>Selected user: <b>{fetchedUser.ID} ({fetchedUser.Name})</b></p>
-            <div className='divider my-12 text-gray-500' />
+            <div className='h-[1px] bg-outline-variant my-12 text-gray-500' />
             <EditInformation user={fetchedUser} />
-            <div className='divider my-12 text-gray-500' />
+            <div className='h-[1px] bg-outline-variant my-12 text-gray-500' />
             <Submissions user={fetchedUser} />
-            <div className='divider my-12 text-gray-500' />
+            <div className='h-[1px] bg-outline-variant my-12 text-gray-500' />
             <Roles user={fetchedUser} />
-            <div className='divider my-12 text-gray-500' />
+            <div className='h-[1px] bg-outline-variant my-12 text-gray-500' />
             <Notes user={fetchedUser} />
-            <div className='divider my-12 text-gray-500' />
+            <div className='h-[1px] bg-outline-variant my-12 text-gray-500' />
             <BanHistory user={fetchedUser} />
         </>
     );

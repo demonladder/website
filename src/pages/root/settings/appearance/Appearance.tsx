@@ -7,6 +7,7 @@ import Heading3 from '../../../../components/headings/Heading3';
 import Heading2 from '../../../../components/headings/Heading2';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import CustomTheme from './CustomTheme';
+import Divider from '../../../../components/divider/Divider';
 
 const fontOptions = {
     default: 'Default',
@@ -38,7 +39,7 @@ export default function Appearance() {
     return (
         <>
             <Heading2 className='mb-4'>Appearance</Heading2>
-            <section className='border-b border-theme-500 pb-2'>
+            <section className='pb-2'>
                 <Heading3>Features</Heading3>
                 <label className='flex items-center gap-2'>
                     <CheckBox checked={isBackgroundEnabled} onChange={(e) => setIsBackgroundEnabled(e.target.checked)} />
@@ -47,13 +48,13 @@ export default function Appearance() {
                 <p className='text-theme-400 text-sm'>Get randomized lines that move around in the background, idrk how to describe it.</p>
                 <PrimaryButton className='mt-2' onClick={saveBackground}>Save</PrimaryButton>
             </section>
-            <div className='divider my-8' />
+            <Divider />
             <section>
                 <Heading3>Font</Heading3>
                 <Select id='fontTypeSelect' options={fontOptions} activeKey={fontKey} onChange={onFont} />
                 <FormInputDescription>Choose between the default sans-serif, serif or a monospaced font.</FormInputDescription>
             </section>
-            <div className='divider my-8' />
+            <Divider />
             <section className='mt-12'>
                 <Heading3>Theme</Heading3>
                 <p className='mb-2'>Beige, lilac, seaweed and peach by <b>@vindrue</b></p>
@@ -120,7 +121,7 @@ export default function Appearance() {
                     </li>
                 </ul>
             </section>
-            <div className='divider my-8' />
+            <Divider />
             <CustomTheme />
         </>
     );

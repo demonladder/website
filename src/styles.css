@@ -71,6 +71,30 @@ button {
     --color-role-moderator: #71ffcb;
     --color-role-developer: #cf9cff;
     --color-role-listHelper: #9bff99;
+
+    --color-secondary-container: #E8DEF8;
+}
+
+:root {
+    --primary: #2c6cd4;
+    --on-primary: #ffffff;
+    --on-surface: #1D1B20;
+
+    --secondary-container: var(--color-secondary-container);
+    --on-secondary-container: #4A4458;
+
+    --surface-container: #F3EDF7;
+}
+
+[data-theme="dark"] {
+    --primary: #588bdd;
+    --on-primary: #062A60;
+
+    --secondary-container: #4A4458;
+    --color-secondary-container: var(--secondary-container);
+    --on-secondary-container: #E8DEF8;
+
+    --on-surface: #E6E0E9;
 }
 
 body, #root, #root > div.flex {
@@ -91,10 +115,6 @@ body, #root, #root > div.flex {
 
 .underline-t {
     text-decoration: underline;
-}
-
-.divider {
-    border-bottom: 1px solid currentColor;
 }
 
 input[type=number].no-spinner {

@@ -5,6 +5,7 @@ import Notifications from './Notifications';
 import DiscordRoles from './DiscordRoles';
 import useLocalStorage from '../../../../hooks/useLocalStorage';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
+import Divider from '../../../../components/divider/Divider';
 
 const deviceOptions = {
     pc: 'PC',
@@ -40,7 +41,7 @@ export default function SubmissionSettings() {
                 <FormInputDescription>The default device for all your submissions</FormInputDescription>
             </div>
             <Notifications />
-            <div className='divider my-8 text-theme-400'></div>
+            <Divider />
             <DiscordRoles />
         </section>
     );

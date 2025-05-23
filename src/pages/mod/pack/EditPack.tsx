@@ -15,6 +15,7 @@ import FormInputLabel from '../../../components/form/FormInputLabel';
 import usePack from '../../../features/singlePack/hooks/usePack';
 import List from './List';
 import { GetPackLevelsResponse as PackLevel } from '../../../features/singlePack/api/getPackLevels';
+import Divider from '../../../components/divider/Divider';
 
 function checkChangeEquality(change1: Change, change2: Change): boolean {
     return change1.LevelID === change2.LevelID && change1.PackID === change2.PackID && change1.Type === change2.Type;
@@ -165,7 +166,7 @@ export default function EditPack() {
             }
             {changeList.length > 0 &&
                 <div>
-                    <div className='divider my-8'></div>
+                    <Divider />
                     <h3 className='text-xl'>Changelog</h3>
                     {getIndividualPacks().map((pack) => (
                         <div className='mb-2' key={`packChange_${pack[0]?.PackID || 0}`}>
@@ -181,7 +182,7 @@ export default function EditPack() {
             }
             {hasContent &&
                 <div>
-                    <div className='divider my-8'></div>
+                    <Divider />
                     <DangerButton onClick={() => deleteMutation.mutate(packResult.ID)} loading={deleteMutation.isLoading}>Delete pack</DangerButton>
                 </div>
             }

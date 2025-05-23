@@ -7,6 +7,7 @@ import { BotSettings } from './BotSettings';
 import StatisticLineChart from './StatisticLineChart';
 import { Metrics } from '../../../api/stats/GetStatistic';
 import ms from 'ms';
+import Divider from '../../../components/divider/Divider';
 
 export default function Debugging() {
     function handleError() {
@@ -30,9 +31,9 @@ export default function Debugging() {
                     <p>Self explanatory</p>
                 </div>
             </div>
-            <div className='divider my-4' />
+            <Divider />
             <BotSettings />
-            <div className='divider my-4' />
+            <Divider />
             <h3 className='text-2xl'>Cool graphs</h3>
             <div className='grid grid-cols-2 gap-4'>
                 <StatisticLineChart metricName={Metrics.REQUESTS} title='Amount of requests' />
