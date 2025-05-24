@@ -7,7 +7,7 @@ interface Props {
 export default function IDButton({ id, disabled = false, className }: Props) {
     function onIDClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
-        navigator.clipboard.writeText('' + id);
+        void navigator.clipboard.writeText('' + id);
 
         (e.target as HTMLButtonElement).classList.remove('bg-fade');
         setTimeout(() => {

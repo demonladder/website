@@ -5,7 +5,7 @@ export default function Copy({ text }: { text: string }) {
     const click = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
 
-        navigator.clipboard.writeText(text);
+        void navigator.clipboard.writeText(text);
         toast.success('Copied level ID');
     }, [text]);
 

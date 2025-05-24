@@ -11,7 +11,7 @@ export default function useSyncDiscordModal() {
             ID,
             <SyncDiscordModal onClose={() => closeModal(ID)} />
         );
-    }, []);
+    }, [closeModal, createModal]);
 
     return open;
 }

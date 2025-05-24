@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { NavbarNotificationContext } from './NavbarNotificationContext'
+import React, { useContext } from 'react';
+import { NavbarNotificationContext } from './NavbarNotificationContext';
 
 export default function NavbarNotificationRenderer() {
     const context = useContext(NavbarNotificationContext);

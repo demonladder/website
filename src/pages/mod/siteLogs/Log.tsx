@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import LogResponse from '../../../api/types/LogResponse';
 
-function removeStack(payload: Record<string, any> & { stack?: string }) {
-    const filtered: Record<string, any> = {};
+function removeStack(payload: Record<string, unknown> & { stack?: string }) {
+    const filtered: Record<string, unknown> = {};
 
     for (const key of Object.keys(payload)) {
         if (key !== 'stack') filtered[key] = payload[key];
@@ -15,18 +15,18 @@ function RenderPayload({ payload }: { payload: string | null }) {
     if (payload === null) return;
 
     try {
-        const parsed = JSON.parse(payload);
+        const parsed = JSON.parse(payload) as Record<string, string>;
 
         if (parsed.stack) return (
             <>
-                <pre className='bg-gray-900 p-1 rounded mb-1'>{JSON.stringify(removeStack(parsed), null, 4)}</pre>
-                <pre className='bg-gray-900 p-1 rounded'>{parsed.stack}</pre>
+                <pre className='bg-theme-900 p-1 rounded mb-1'>{JSON.stringify(removeStack(parsed), null, 4)}</pre>
+                <pre className='bg-theme-900 p-1 rounded'>{parsed.stack}</pre>
             </>
         );
 
-        return <pre className='bg-gray-900 p-1 rounded'>{JSON.stringify(parsed, null, 4)}</pre>
-    } catch (err) {
-        return <p>{payload}</p>
+        return <pre className='bg-theme-900 p-1 rounded'>{JSON.stringify(parsed, null, 4)}</pre>;
+    } catch {
+        return <p>{payload}</p>;
     }
 }
 
@@ -39,7 +39,7 @@ export default function Log({ log }: { log: LogResponse }) {
     }
 
     return (
-        <div className={(log.Payload !== null ? 'cursor-pointer' : 'cursor-default') + ' select-none p-2 bg-gray-600 round:rounded'} onClick={toggleOpen}>
+        <div className={(log.Payload !== null ? 'cursor-pointer' : 'cursor-default') + ' select-none p-2 bg-theme-600 round:rounded'} onClick={toggleOpen}>
             <div className='flex justify-between'>
                 <p><code>[{log.LogTime}]</code>: {log.Message} </p>
                 {log.Payload !== null && (collapsed

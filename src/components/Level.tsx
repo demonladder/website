@@ -18,7 +18,7 @@ interface Props {
     selected?: boolean;
 }
 
-function Header() {
+export function Header() {
     return (
         <div className='grid grid-cols-12 font-bold ps-2 cursor-default border-b-2'>
             <Heading4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3'>Level Name</Heading4>
@@ -31,7 +31,7 @@ function Header() {
     );
 }
 
-function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
+export default function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
@@ -62,7 +62,3 @@ function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoy
         </div>
     );
 }
-
-export default Object.assign(Level, {
-    Header,
-});

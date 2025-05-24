@@ -29,8 +29,8 @@ export default class Player extends GameObject {
     constructor() {
         super(0, 6);
 
-        this.speed = Speed.Normal,
-            this.velocity = new P5.Vector(this.speed, 0);
+        this.speed = Speed.Normal;
+        this.velocity = new P5.Vector(this.speed, 0);
         this.prevMouseDown = false;
         this.isDead = false;
 
@@ -46,8 +46,8 @@ export default class Player extends GameObject {
 
     reset() {
         this.position.set(0, 6);
-        this.speed = Speed.Normal,
-            this.velocity = new P5.Vector(this.speed, 0);
+        this.speed = Speed.Normal;
+        this.velocity = new P5.Vector(this.speed, 0);
         this.trail = new Trail(this);
         this.isDead = false;
     }

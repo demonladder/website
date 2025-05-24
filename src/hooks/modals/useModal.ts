@@ -7,5 +7,5 @@ export default function useModal() {
     return {
         createModal: (ID: string, modal: React.ReactNode) => modalContext.addModal({ ID, element: modal }),
         closeModal: (ID: string) => modalContext.removeModal(ID),
-    }
+    };
 }

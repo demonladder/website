@@ -41,7 +41,7 @@ export default function useCookieReadonly(name: string) {
         if (e.detail.name === name) setCookie(readCookie());
     }, [name, readCookie]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+     
     useEventListener('cookie-change', handleCookieChange);
 
     return [cookie, removeCookie, refresh] as const;

@@ -1,5 +1,5 @@
 import APIClient from '../../APIClient';
 
-export default async function CreatePackRequest(name: string){
+export default async function CreatePackRequest(name: string) {
     await APIClient.post('/packs', { name });
 }

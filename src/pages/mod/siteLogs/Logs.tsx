@@ -69,10 +69,10 @@ export default function Logs() {
             {data !== undefined &&
                 <>
                     <div className='flex flex-col gap-2'>
-                        <p>{data?.Count} logs found</p>
-                        {data?.Logs.filter((log) => message === '' || log.Message.toLowerCase().startsWith(message.toLowerCase())).map((log, i) => (<Log log={log} key={`${logType}_${timePeriod}_${i}`} />))}
+                        <p>{data?.count} logs found</p>
+                        {data?.logs.filter((log) => message === '' || log.Message.toLowerCase().startsWith(message.toLowerCase())).map((log, i) => (<Log log={log} key={`${logType}_${timePeriod}_${i}`} />))}
                     </div>
-                    <PageButtons meta={{ total: data?.Count, page, limit: 50 }} onPageChange={setPage} />
+                    <PageButtons meta={{ total: data?.count, page, limit: 50 }} onPageChange={setPage} />
                 </>
             }
         </div>

@@ -16,8 +16,8 @@ export function BotSettings() {
         if (botMutating) return;
 
         setBotMutating(true);
-        ActivateBotRequest().then(() => {
-            queryClient.invalidateQueries(['botStatus']);
+        void ActivateBotRequest().then(() => {
+            void queryClient.invalidateQueries(['botStatus']);
         }).finally(() => {
             setBotMutating(false);
         });
@@ -26,8 +26,8 @@ export function BotSettings() {
         if (botMutating) return;
 
         setBotMutating(true);
-        DeactivateBotRequest().then(() => {
-            queryClient.invalidateQueries(['botStatus']);
+        void DeactivateBotRequest().then(() => {
+            void queryClient.invalidateQueries(['botStatus']);
         }).finally(() => {
             setBotMutating(false);
         });
@@ -36,8 +36,8 @@ export function BotSettings() {
         if (botMutating) return;
 
         setBotMutating(true);
-        UpdateBotCommandsRequest().finally(() => {
-            setBotMutating(false);
+        void UpdateBotCommandsRequest().finally(() => {
+            void setBotMutating(false);
         });
     }
 

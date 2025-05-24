@@ -6,7 +6,7 @@ export default function NavbarNotificationProvider({ children }: { children: Rea
 
     const addNotification = useCallback((ID: string, element: React.ReactNode) => {
         setNotifications((prev) => {
-            if (!prev.find((n) => n.ID === ID)) return [...prev, { ID, element }]
+            if (!prev.find((n) => n.ID === ID)) return [...prev, { ID, element }];
             return prev;
         });
     }, []);

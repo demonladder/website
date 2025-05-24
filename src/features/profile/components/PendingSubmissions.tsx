@@ -4,7 +4,7 @@ import DeletePendingSubmission from '../../../api/submissions/DeletePendingSubmi
 import { UserPendingSubmission } from '../api/getUserPendingSubmissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
-import Level from '../../../components/Level';
+import Level, { Header } from '../../../components/Level';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
@@ -119,7 +119,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
     return (
         <>
             <div className='level-list'>
-                <Level.Header />
+                <Header />
                 {levels.map((p) => (
                     <Level ID={p.LevelID} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />
                 ))}

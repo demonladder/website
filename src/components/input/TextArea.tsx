@@ -1,7 +1,11 @@
-import { forwardRef, DetailedHTMLProps, InputHTMLAttributes } from 'react';
+import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
-type Props = DetailedHTMLProps<InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>;
+interface Props extends DetailedHTMLProps<InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
+    invalid?: boolean;
+}
 
-export default forwardRef<HTMLTextAreaElement, Props & { invalid?: boolean }>(({ invalid, ...props }, ref) => (
-    <textarea {...props} ref={ref} className={'block bg-theme-950/70 p-1 outline-none border-b-2 rounded-none resize-none h-32 w-full' + (invalid ? ' border-red-600' : '')} />
-));
+export default function TextArea({ invalid, ...props}: Props) {
+    return (
+        <textarea {...props} className={'block bg-theme-950/70 p-1 outline-none border-b-2 rounded-none resize-none h-32 w-full' + (invalid ? ' border-red-600' : '')} />
+    );
+}

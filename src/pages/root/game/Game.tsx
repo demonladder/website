@@ -146,7 +146,7 @@ export default function Game() {
 
         return () => {
             document.removeEventListener('keydown', eventListener);
-        }
+        };
     }, []);
 
     return (

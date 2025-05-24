@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import Level from '../../components/Level';
+import Level, { Header } from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
 import SearchLevels from '../../api/level/SearchLevels';
@@ -188,7 +188,7 @@ export default function Search() {
             <LoadingSpinner isLoading={searchStatus === 'loading'} />
             {searchStatus === 'success' &&
                 <div className='my-4'>{searchData.levels.length !== 0 && isListView
-                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' header={<Level.Header />} />
+                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' header={<Header />} />
                     : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
                 }</div>
             }

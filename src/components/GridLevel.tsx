@@ -26,7 +26,7 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
         e.stopPropagation();
         if (!proof) return;
         
-        window.open(proof.startsWith('https://') ? proof : `https://${proof}`, '_blank')
+        window.open(proof.startsWith('https://') ? proof : `https://${proof}`, '_blank');
     }
 
     const roundedRating = rating !== null ? Math.round(rating) : 0;

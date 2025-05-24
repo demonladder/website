@@ -15,7 +15,7 @@ export default function AddLevel() {
             return toast.error('Paste a level ID');
         }
 
-        toast.promise(AddLevelToDatabase(parseInt(input)).then(() => queryClient.invalidateQueries(['level', parseInt(input)])), {
+        void toast.promise(AddLevelToDatabase(parseInt(input)).then(() => queryClient.invalidateQueries(['level', parseInt(input)])), {
             pending: 'Updating database...',
             success: 'Updated!',
             error: renderToastError,
