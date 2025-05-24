@@ -35,7 +35,8 @@ function ProfileButton({ userID }: { userID: number, username: string }) {
             }
             <NotificationButton />
             <div className='ms-2 relative group'>
-                <Link to={`/profile/${userID}`}>
+                <Link to={`/profile/${userID}`} className=' flex items-center gap-2'>
+                    <span>{session.user?.Name}</span>
                     <div className='w-16'>
                         {session.user?.DiscordData?.Avatar
                             ? <img src={pfp || ''} className='rounded-full' />

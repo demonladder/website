@@ -80,6 +80,7 @@ button {
     --on-primary: #ffffff;
     --on-surface: #1D1B20;
 
+    --secondary: #625B71;
     --secondary-container: var(--color-secondary-container);
     --on-secondary-container: #4A4458;
 
@@ -90,6 +91,7 @@ button {
     --primary: #588bdd;
     --on-primary: #062A60;
 
+    --secondary: #CCC2DC;
     --secondary-container: #4A4458;
     --color-secondary-container: var(--secondary-container);
     --on-secondary-container: #E8DEF8;

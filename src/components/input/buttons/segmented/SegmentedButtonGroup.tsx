@@ -1,14 +1,22 @@
+import './segmentedButtonGroup.css';
+
 interface SegmentedButtonProps {
     isActive?: boolean;
     isFirst: boolean;
     isLast: boolean;
+    buttonCount: number;
     children?: React.ReactNode;
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function SegmentedButton({ children, onClick, isActive = false, isFirst, isLast }: SegmentedButtonProps) {
+function SegmentedButton({ children, onClick, isActive = false, isFirst, isLast, buttonCount }: SegmentedButtonProps) {
+    const classes = [];
+    if (isActive) classes.push('selected');
+    if (isFirst) classes.push('first');
+    if (isLast) classes.push('last');
+
     return (
-        <button className={`flex items-center outline ${isFirst ? 'rounded-s-3xl' : ''} ${isLast ? 'rounded-e-3xl' : ''} ps-2 pe-4 h-10 transition-all ${isActive ? 'bg-secondary-container' : ''}`} onClick={onClick}><i className='bx bx-check text-2xl' hidden={!isActive} /> <span className='ps-2'>{children}</span></button>
+        <button className={classes.join(' ')} style={{ width: `${1 / buttonCount * 100}%` }} onClick={onClick}><i className='bx bx-check text-2xl' hidden={!isActive} /> {children}</button>
     );
 }
 
@@ -20,9 +28,9 @@ interface Props<T extends Record<string, string>> {
 
 export default function SegmentedButtonGroup<T extends Record<string, string>>({ options, activeKey, onSetActive }: Props<T>) {
     return (
-        <div className='flex'>
+        <div className='segmented-button-group'>
             {Object.entries(options).map(([key, label], i, arr) => (
-                <SegmentedButton key={key} isActive={activeKey === key} onClick={() => onSetActive?.(key)} isFirst={i === 0} isLast={i === arr.length - 1}>{label}</SegmentedButton>
+                <SegmentedButton key={key} buttonCount={arr.length} isActive={activeKey === key} onClick={() => onSetActive?.(key)} isFirst={i === 0} isLast={i === arr.length - 1}>{label}</SegmentedButton>
             ))}
         </div>
     );
