@@ -41,7 +41,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     const { data, status, refetch: invalidateUser } = useUserQuery(userID, { enabled: session.user !== undefined });
 
     const [name, setName] = useState('');
-    const introductionRef = useRef<HTMLTextAreaElement>(null);
+    const [introduction, setIntroduction] = useState('');
     const [countryKey, setCountryKey] = useState<CountryOptionKey>('-');
     const [pronounKey, setPronounKey] = useState<PronounOptionKey>('-');
     const pronounSelectID = useId();
@@ -63,7 +63,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         if (data === undefined) return;
 
         setName(data.Name);
-        if (introductionRef.current && data.Introduction) introductionRef.current.value = '' + data.Introduction;
+        if (data.Introduction) setIntroduction(data.Introduction);
 
         if (data.Pronouns) {
             if (data.Pronouns !== 'other' && data.Pronouns !== '-') {
@@ -93,9 +93,8 @@ export default function GeneralInformation({ userID }: { userID: number }) {
 
     function onSave(e: React.FormEvent) {
         e.preventDefault();
-        if (!data) return;
+        if (!data) return toast.error('No user data available to update.');
 
-        if (!introductionRef.current) return;
         if (!minPrefRef.current) return;
         if (!maxPrefRef.current) return;
 
@@ -108,7 +107,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         updateMutation.mutate({
             ID: userID,
             name: name,
-            introduction: introductionRef.current.value || null,
+            introduction: introduction || null,
             pronouns,
             countryCode: countryKey === '-' ? null : countryKey,
             hardest: hardestSearch.activeLevel?.ID ?? null,
@@ -136,7 +135,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Introduction</FormInputLabel>
-                <TextArea spellCheck={false} ref={introductionRef} />
+                <TextArea spellCheck={false} value={introduction} onChange={(e) => setIntroduction(e.target.value)} />
                 <FormInputDescription>Your introduction is visible to everyone visiting your profile.</FormInputDescription>
             </FormGroup>
             <FormGroup>
