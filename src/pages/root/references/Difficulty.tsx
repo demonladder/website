@@ -33,9 +33,9 @@ export default function Difficulty({ references, minTier, maxTier, name }: Props
             </div>
             <div className='flex max-sm:flex-col'>
                 {
-                    columns.map((c, i) => <div className='flex flex-col flex-grow' key={`${name}-col-${i}`}>
+                    columns.map((c, si) => <div className='flex flex-col flex-grow' key={`${name}-col-${si}`}>
                         {
-                            c.map((t, i) => <Tier references={t} tier={i + minTier} key={`tier-${t[0].Tier}`} />)
+                            c.map((t, ci) => <Tier references={t} tier={si * 5 + ci + minTier} key={`tier-${t[0].Tier}`} />)
                         }
                     </div>)
                 }
