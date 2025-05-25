@@ -32,7 +32,7 @@ export default function Logs() {
     const [logType, setLogType] = useState<LogType>('audit');
     const [timePeriod, setTimePeriod] = useState<TimePeriod>('1h');
     const [message, lateMessage, setMessage] = useLateValue('', 500);
-    const [page, latePage, setPage, setPageImmediate] = useLateValue(1, 500);
+    const [page, latePage, setPage, setPageImmediate] = useLateValue(0, 500);
 
     const { data } = useQuery({
         queryKey: ['logs', { logType, timePeriod, lateMessage, latePage }],
@@ -41,12 +41,12 @@ export default function Logs() {
 
     function onLogTypeChange(key: LogType) {
         setLogType(key);
-        setPageImmediate(1);
+        setPageImmediate(0);
     }
 
     function onTimePeriodChange(key: TimePeriod) {
         setTimePeriod(key);
-        setPageImmediate(1);
+        setPageImmediate(0);
     }
 
     return (
