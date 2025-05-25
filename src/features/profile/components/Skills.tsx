@@ -33,7 +33,7 @@ type AccuracyOptions = keyof typeof accuracyOptions;
 export default function Skills({ userID }: { userID: number }) {
     const [levelSpanKey, setLevelSpanKey] = useState<LevelSpanOptions>('allTime');
     const [accuracyKey, setAccuracyKey] = useState<AccuracyOptions>('25');
-    const [correctTier, setCorrectTier] = useState(false);
+    const [correctTier, setCorrectTier] = useState(true);
     const correctTierID = useId();
     const [isActive, setIsActive] = useState(false);
 
