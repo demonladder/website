@@ -8,6 +8,7 @@ export interface TierRouletteResponse {
     Meta: {
         Name: string;
     };
+    Name?: string;
 }
 
 export default async function GenerateTierRoulette() {

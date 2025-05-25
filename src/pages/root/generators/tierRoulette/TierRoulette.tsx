@@ -55,7 +55,7 @@ function List({ levels, progress, setProgress }: { levels?: TierRouletteResponse
         <ol className='mt-4 text-xl'>{levels.slice(0, progress + 1).map((l, i) => (
             <li className='even:bg-gray-700 py-4' key={l.ID}>
                 <div className='flex'>
-                    <p className='ps-2 py-1 grow'><b>{i + 1}%</b> <Link to={`/level/${l.ID}`} className='underline'>{l.Meta.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
+                    <p className='ps-2 py-1 grow'><b>{i + 1}%</b> <Link to={`/level/${l.ID}`} className='underline'>{l.Name ?? l.Meta.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.ID} /></i></p>
                     <p className={`w-20 text-center py-1 tier-${l.Rating.toFixed()}`}>{l.Rating.toFixed()}</p>
                     <p className={`w-20 text-center py-1 enj-${(l.Enjoyment ?? -1).toFixed()}`}>{l.Enjoyment?.toFixed() ?? 'N/A'}</p>
                 </div>

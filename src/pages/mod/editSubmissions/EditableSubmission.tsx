@@ -16,6 +16,7 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { validateTier } from '../../../utils/validators/validateTier';
 import { validateEnjoyment } from '../../../utils/validators/validateEnjoyment';
+import DeleteSubmission from '../../../api/submissions/DeleteSubmission';
 
 interface Props {
     submission: Submission;
@@ -68,9 +69,7 @@ export default function EditableSubmission({ submission }: Props) {
     });
 
     const deleteMutation = useMutation({
-        mutationFn: () => APIClient.delete(`/user/${submission.UserID}/submissions/${submission.LevelID}`, {
-            data: { reason: deleteReason },
-        }),
+        mutationFn: () => DeleteSubmission(submission.ID, deleteReason),
         onSuccess: () => queryClient.invalidateQueries(['level', submission.LevelID]),
         onError: (err: AxiosError) => toast.error(render({ data: err })),
     });
