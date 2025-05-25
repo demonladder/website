@@ -66,7 +66,8 @@ export default function Search() {
     });
 
     useEffect(() => {
-        setQuery(savedFilters, 'replace');
+        const params = new URLSearchParams(window.location.search);
+        if (params.size === 0) setQuery(savedFilters, 'replace');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
