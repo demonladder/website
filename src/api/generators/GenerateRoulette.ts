@@ -5,9 +5,10 @@ export interface RouletteResponse {
     Rating: number;
     Enjoyment: number;
     RatingCount: number;
-    Meta: {
+    Meta?: {
         Name: string;
     };
+    Name?: string;
 }
 
 function NaNToNull(value?: number) {
