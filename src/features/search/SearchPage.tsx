@@ -169,8 +169,6 @@ export default function Search() {
         }
     }
 
-    if (searchStatus === 'error') return <Heading2>An error ocurred!</Heading2>;
-
     return (
         <Page>
             <Helmet>
@@ -186,6 +184,7 @@ export default function Search() {
                 <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
             </div>
             <LoadingSpinner isLoading={searchStatus === 'loading'} />
+            {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
             {searchStatus === 'success' &&
                 <div className='my-4'>{searchData.levels.length !== 0 && isListView
                     ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' header={<Header />} />
