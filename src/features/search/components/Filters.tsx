@@ -4,7 +4,7 @@ import { TextInput } from '../../../components/Input';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import RatingFilter from './filters/RatingFilter';
 import EnjoymentFilter from './filters/EnjoymentFilter';
-import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import { NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { QueryParamNames } from '../enums/QueryParamNames';
 import _ from 'lodash';
 import Divider from '../../../components/divider/Divider';
@@ -20,14 +20,15 @@ type Props = {
 };
 
 const difficultyOptions = {
-    [-1]: 'Any',
-    0: 'Official',
-    1: 'Easy',
-    2: 'Medium',
-    3: 'Hard',
-    4: 'Insane',
-    5: 'Extreme',
+    '-1': 'Any',
+    '0': 'Official',
+    '1': 'Easy',
+    '2': 'Medium',
+    '3': 'Hard',
+    '4': 'Insane',
+    '5': 'Extreme',
 };
+type DifficultyOption = keyof typeof difficultyOptions;
 
 const lengthOptions = {
     0: 'Any',
@@ -40,8 +41,13 @@ const lengthOptions = {
 };
 
 export default function Filters({ creator, setCreator, song, setSong, reset, show }: Props) {
-    const [difficulty, setDifficulty] = useQueryParam(QueryParamNames.Difficulty, withDefault(NumberParam, -1));
+    const [difficulty, setDifficulty] = useQueryParam(QueryParamNames.Difficulty, withDefault(StringParam, '-1'));
     const [length, setLength] = useQueryParam(QueryParamNames.Length, withDefault(NumberParam, 0));
+
+    function onDifficultyChange(key: DifficultyOption) {
+        if (key === '-1') setDifficulty(null);
+        else setDifficulty(key);
+    }
 
     return (
         <div className='grid overflow-hidden transition-[grid-template-rows] duration-700' style={{ gridTemplateRows: show ? '1fr' : '0fr', transitionTimingFunction: 'cubic-bezier(0.05, 0.7, 0.1, 1.0)' }}>
@@ -56,7 +62,7 @@ export default function Filters({ creator, setCreator, song, setSong, reset, sho
                         <EnjoymentFilter />
                         <div className='col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-2'>
                             <p>Difficulty:</p>
-                            <Select id='filtersDifficulty' options={difficultyOptions} activeKey={_.clamp(difficulty, -1, 5) as keyof typeof difficultyOptions} onChange={(o) => setDifficulty(o)} />
+                            <Select id='filtersDifficulty' options={difficultyOptions} activeKey={difficulty as DifficultyOption} onChange={onDifficultyChange} />
                         </div>
                         <div className='col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-2'>
                             <p>Creator:</p>
