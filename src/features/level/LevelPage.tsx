@@ -118,7 +118,7 @@ export default function LevelPage() {
                         </div>
                         {session.user &&
                             <>
-                                <PrimaryButton className='text-lg w-full' onClick={() => openSubmitModal(level)}>{voteMeta?.eligible ? 'Edit' : 'Submit'} rating <i className='bx bx-list-plus' /></PrimaryButton>
+                                <PrimaryButton className='text-lg w-full flex justify-center gap-1' onClick={() => openSubmitModal(level)}>{voteMeta?.eligible ? 'Edit' : 'Submit'} rating <i className='bx bx-list-plus self-center' /></PrimaryButton>
                                 <PrimaryButton className='text-lg w-full' onClick={() => openAddListLevelModal(session.user!.ID, levelID)}>Add to list</PrimaryButton>
                             </>
                         }
