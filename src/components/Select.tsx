@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { KeyboardAccessibility } from '../utils/KeyboardAccessibility';
 
-interface Props<T extends { [key: string | number]: string}> {
+interface Props<T extends { [key: string]: string }> {
     options: T;
     activeKey: keyof T;
     onChange: (option: keyof T) => void;

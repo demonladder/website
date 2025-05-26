@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import LevelTagRequest, { TopTags } from '../../../api/level/tags/LevelTagRequest';
 import Select from '../../../components/Select';
-import SendTagVoteRequest from '../../../api/level/tags/SendTagVoteRequest';
+import { sendTagVoteRequest } from '../api/SendTagVoteRequest';
 import { toast } from 'react-toastify';
 import GetTagEligibility from '../../../api/level/tags/GetTagEligibility';
 import TagInfoModal from './TagInfoModal';
@@ -34,17 +34,17 @@ export default function TagBox({ level }: { level: FullLevel }) {
         if (isLoading) return;
         if (tagID === 0) return;
 
-        SendTagVoteRequest(level.ID, tagID).then(() => {
+        sendTagVoteRequest(level.ID, tagID).then(() => {
             void queryClient.invalidateQueries(['level', level.ID, 'tags']);
-        }).catch(() => {
-            toast.error('An error occurred');
+        }).catch((err: Error) => {
+            toast.error(renderToastError.render({ data: err }));
         }).finally(() => {
             setIsLoading(false);
         });
     }
 
     const tagsToDisplay = [];
-    const tagOptions: Record<number, string> = {
+    const tagOptions: Record<string, string> = {
         0: 'Vote tags',
     };
     if (tags !== undefined) {
@@ -80,7 +80,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
             </div>
             {(!isContentLoading && canVote) &&
                 <div className='md:self-center w-full'>
-                    <Select options={tagOptions} activeKey={0} id='voteTag' onChange={onVoteChange} />
+                    <Select options={tagOptions} activeKey={'0'} id='voteTag' onChange={(o) => onVoteChange(parseInt(o))} />
                 </div>
             }
         </div>
@@ -110,7 +110,7 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
     function handleClick() {
         if (!eligible) return toast.error('You are not eligible to vote on skillsets for this level!');
 
-        void SendTagVoteRequest(levelID, submission.TagID).then(() => {
+        void sendTagVoteRequest(levelID, submission.TagID).then(() => {
             void queryClient.invalidateQueries(['level', levelID, 'tags']);
         });
     }
