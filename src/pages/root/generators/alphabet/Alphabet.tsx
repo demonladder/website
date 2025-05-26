@@ -9,7 +9,7 @@ import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
-import { AlphabetResponse, generateAlphabet } from './api/generateAlphabet';
+import { AlphabetResponse, Difficulty, generateAlphabet } from './api/generateAlphabet';
 import { useLocalStorage } from 'usehooks-ts';
 import { Link } from 'react-router-dom';
 import IDButton from '../../../../components/IDButton';
@@ -19,11 +19,11 @@ import renderToastError from '../../../../utils/renderToastError';
 
 const difficultyOptions = {
     '-1': 'Any',
-    'easy': 'Easy',
-    'medium': 'Medium',
-    'hard': 'Hard',
-    'insane': 'Insane',
-    'extreme': 'Extreme',
+    1: 'Easy',
+    2: 'Medium',
+    3: 'Hard',
+    4: 'Insane',
+    5: 'Extreme',
 };
 
 export default function Alphabet() {
@@ -41,7 +41,7 @@ export default function Alphabet() {
             _.clamp(parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0), 1, 35),
             _.clamp(parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0), 0, 10),
             _.clamp(parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0), 0, 10),
-            difficulty !== '-1' ? difficulty : undefined,
+            difficulty !== '-1' ? difficulty as Difficulty : undefined,
             uncompletedOnly
         ),
         onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
