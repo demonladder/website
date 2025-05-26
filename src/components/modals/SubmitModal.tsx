@@ -217,7 +217,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             <p className='my-3'>Make sure to read our guidelines <a href='/about#guidelines' className='text-blue-500' target='_blank'>here</a></p>
             <form onSubmit={(e) => submitForm(e)} autoCorrect='off' autoCapitalize='off' spellCheck='false'>
                 {level.Meta.Length === LevelLengths.PLATFORMER &&
-                    <WarningBox>Platformer submissions are currently restricted; it's not possible to vote for ties yet!</WarningBox>
+                    <WarningBox>Platformer submissions are currently restricted; it's not possible to vote for tiers yet!</WarningBox>
                 }
                 <FormGroup>
                     <FormInputLabel htmlFor='submitRating'>Tier</FormInputLabel>
