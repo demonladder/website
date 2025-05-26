@@ -12,6 +12,8 @@ import { KeyboardAccessibility } from '../../../utils/KeyboardAccessibility';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
+import { removeTagVotes } from '../api/removeTagVotes';
+import renderToastError from '../../../utils/renderToastError';
 
 export default function TagBox({ level }: { level: FullLevel }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -89,11 +91,24 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
     const queryClient = useQueryClient();
     const onContextMenu = useContextMenu([
         { text: 'Vote', onClick: handleClick },
-        { type: 'danger', text: 'Remove votes', permission: PermissionFlags.MANAGE_SUBMISSIONS },
+        { type: 'danger', text: 'Remove votes', onClick: handleRemoveVotes, permission: PermissionFlags.MANAGE_SUBMISSIONS },
     ]);
 
+    function handleRemoveVotes() {
+        void toast.promise(removeTagVotes(levelID, submission.TagID), {
+            pending: 'Removing votes...',
+            success: {
+                render: () => {
+                    void queryClient.invalidateQueries(['level', levelID, 'tags']);
+                    return 'Votes removed successfully';
+                }
+            },
+            error: renderToastError,
+        });
+    }
+
     function handleClick() {
-        if (!eligible) return;
+        if (!eligible) return toast.error('You are not eligible to vote on skillsets for this level!');
 
         void SendTagVoteRequest(levelID, submission.TagID).then(() => {
             void queryClient.invalidateQueries(['level', levelID, 'tags']);
