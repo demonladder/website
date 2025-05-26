@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import DemonLogo, { DifficultyToImgSrc } from '../../components/DemonLogo';
 import { Helmet } from 'react-helmet-async';
@@ -32,7 +32,6 @@ const levelLengths = {
 
 export default function LevelPage() {
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useQueryParam('twoPlayer', withDefault(BooleanParam, false));
-    const navigate = useNavigate();
 
     const session = useSession();
 
@@ -88,12 +87,6 @@ export default function LevelPage() {
         }
     }
 
-    function creatorClicked() {
-        const stored = JSON.parse(sessionStorage.getItem('search.filters') || '{}') as object;
-        sessionStorage.setItem('search.filters', JSON.stringify({ ...stored, creator: level?.Meta.Creator || '' }));
-        navigate('/search');
-    }
-
     return (
         <Page>
             <Helmet>
@@ -106,7 +99,7 @@ export default function LevelPage() {
             </Helmet>
             <div className='mb-1'>
                 <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
-                <h2 className='text-xl md:text-2xl'>by <span className='cursor-pointer' onClick={creatorClicked}>{level.Meta.Creator}</span></h2>
+                <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Creator}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Creator}</a></h2>
             </div>
             <div className='grid grid-cols-12 gap-2'>
                 <div className='col-span-12 lg:col-span-9 grid grid-cols-12 gap-4 p-4 bg-theme-700 border border-theme-outline shadow-md round:rounded-xl'>
