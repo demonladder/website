@@ -24,9 +24,9 @@ export default function BanHistory({ user }: { user: UserResponse }) {
         ID: selectID,
         options: {
             '1w': '1 week',
-            '1m': '1 month',
-            '3m': '3 months',
-            '6m': '6 months',
+            '30d': '1 month',
+            '13w': '3 months',
+            '26w': '6 months',
             '-': 'Permanent',
         },
     });
