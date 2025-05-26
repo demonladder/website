@@ -3,7 +3,6 @@ import { NumberInput, TextInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
@@ -14,15 +13,16 @@ import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import { Difficulties } from '../../../features/level/types/LevelMeta';
+import SendSubmission from '../../../api/submissions/SendSubmission';
 
 const deviceOptions = {
-    '1': 'PC',
-    '2': 'Mobile',
+    'pc': 'PC',
+    'mobile': 'Mobile',
 };
 type DeviceKey = keyof typeof deviceOptions;
 
 export default function AddSubmission() {
-    const [deviceKey, setDeviceKey] = useState<DeviceKey>('1');
+    const [deviceKey, setDeviceKey] = useState<DeviceKey>('pc');
     const [isMutating, setIsMutating] = useState(false);
 
     const [rating, setRating] = useState<number>();
@@ -58,32 +58,23 @@ export default function AddSubmission() {
             rating: rating,
             enjoyment: enjoyment,
             refreshRate,
-            device: parseInt(deviceKey),
+            device: deviceKey,
             proof: proof.length > 0 ? proof : undefined,
         };
 
         // Send
         setIsMutating(true);
         void toast.promise(
-            APIClient.post(`/user/${submission.userID}/submissions/${activeLevel.ID}`, submission).then((res): string => {
+            SendSubmission(submission).then(() => {
                 void queryClient.invalidateQueries(['submissions']);
                 void queryClient.invalidateQueries(['level', activeLevel.ID]);
                 void queryClient.invalidateQueries(['user', submission.userID]);
-
-                return res.data as string;
             }).finally(() => setIsMutating(false)),
             {
                 pending: 'Sending...',
-                success: {
-                    render({ data }) {
-                        if (data === undefined) {
-                            return 'Erm, this is not supposed to appear';
-                        }
-                        return `${data} for ${activeLevel.Meta.Name}!`;
-                    }
-                },
+                success: 'Submission added',
                 error: renderToastError,
-            }
+            },
         );
     }
 
@@ -91,7 +82,7 @@ export default function AddSubmission() {
         setRating(undefined);
         setEnjoyment(undefined);
         setRefreshRate(60);
-        setDeviceKey('1');
+        setDeviceKey('pc');
         setProof('');
         clearActiveLevel();
         markInvalidLevel();
