@@ -44,7 +44,7 @@ function ProfileButton({ userID }: { userID: number, username: string }) {
                         }
                     </div>
                 </Link>
-                <ul className='absolute right-1/2 translate-x-1/2 z-40 bg-theme-600 text-theme-text shadow round:rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity flex flex-col whitespace-nowrap'>
+                <ul className='max-2xl:hidden absolute right-1/2 translate-x-1/2 z-40 bg-theme-600 text-theme-text shadow round:rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity flex flex-col whitespace-nowrap'>
                     <li><Link className='p-2 block round:rounded-t-lg hover:bg-theme-950/40' to={`/profile/${userID}`}>Go to profile</Link></li>
                     <li><Link className='p-2 block hover:bg-theme-950/40' to='/settings/profile'>Settings</Link></li>
                     <li><p className='p-2 round:rounded-b-lg hover:bg-theme-950/40 cursor-pointer transition-colors' onClick={() => void session.logout()}>Log out</p></li>
