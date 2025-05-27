@@ -71,21 +71,9 @@ export default function LevelPage() {
 
     if (level === null) return null;
 
-    let avgRating = '-';
-    let roundedRating = 'Unrated';
-    let standardDeviation = '-';
-    const displayRating = showTwoPlayerStats ? level.TwoPlayerRating : (level.Rating ?? level.DefaultRating);
+    const rating = showTwoPlayerStats ? level.TwoPlayerRating : (level.Rating ?? level.DefaultRating);
     const enjoyment = showTwoPlayerStats ? level.TwoPlayerEnjoyment : level.Enjoyment;
-
-    {
-        const deviation = showTwoPlayerStats ? level.TwoPlayerDeviation : level.Deviation;
-
-        if (displayRating !== null) {
-            avgRating = displayRating.toFixed(2);
-            roundedRating = Math.round(displayRating).toString();
-            standardDeviation = deviation?.toFixed(2) ?? '0';
-        }
-    }
+    const deviation = showTwoPlayerStats ? level.TwoPlayerDeviation : level.Deviation;
 
     return (
         <Page>
@@ -94,7 +82,7 @@ export default function LevelPage() {
                 <meta property='og:type' content='website' />
                 <meta property='og:url' content='https://gdladder.com/' />
                 <meta property='og:title' content={level.Meta.Name} />
-                <meta property='og:description' content={`Tier ${avgRating || '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Creator}`} />
+                <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Creator}`} />
                 <meta property='og:image' content={DifficultyToImgSrc(level.Meta.Difficulty)} />
             </Helmet>
             <div className='mb-1'>
@@ -106,10 +94,10 @@ export default function LevelPage() {
                     <div className='col-span-12 md:col-span-4 xl:col-span-3'>
                         <DemonLogo diff={level.Meta.Difficulty} />
                         <div className='flex text-center'>
-                            <p className={`w-1/2 py-2 tier-${displayRating !== null ? Math.round(displayRating) : '0'}`}>
-                                <span className='text-4xl font-bold'>{roundedRating}</span>
+                            <p className={`w-1/2 py-2 tier-${rating?.toFixed() ?? '0'}`}>
+                                <span className='text-4xl font-bold'>{rating?.toFixed() ?? '-'}</span>
                                 <br />
-                                <span>[{avgRating}]</span>
+                                <span>[{rating?.toFixed(2) ?? '-'}]</span>
                             </p>
                             <p className={'w-1/2 py-2 enj-' + (enjoyment?.toFixed() ?? '-1')}>
                                 <p><span className='text-4xl font-bold'>{enjoyment?.toFixed() ?? '-'}</span></p>
@@ -151,7 +139,7 @@ export default function LevelPage() {
                             </li>
                             <li className='flex justify-between'>
                                 <p>Standard deviation:</p>
-                                <b>{standardDeviation}</b>
+                                <b>{deviation?.toFixed(2) ?? '0'}</b>
                             </li>
                             <li className='flex justify-between'>
                                 <p>Length:</p>
