@@ -54,7 +54,7 @@ export default function Search() {
         [QueryParamNames.MaxDeviation]: NumberParam,
         [QueryParamNames.MinID]: NumberParam,
         [QueryParamNames.MaxID]: NumberParam,
-        [QueryParamNames.TwoPlayer]: BooleanParam,
+        [QueryParamNames.TwoPlayer]: StringParam,
         [QueryParamNames.Update]: StringParam,
         [QueryParamNames.TopSkillset]: StringParam,
         [QueryParamNames.ExcludeCompleted]: BooleanParam,
