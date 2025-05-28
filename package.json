@@ -1,13 +1,14 @@
 {
   "name": "gddl",
   "private": true,
-  "version": "1.13.2",
+  "version": "1.13.4",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
     "test": "mocha",
     "type": "tsc",
     "build": "tsc && vite build",
+    "build:staging": "tsc && vite build --mode staging",
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky"
