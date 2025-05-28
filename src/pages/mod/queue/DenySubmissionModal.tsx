@@ -40,7 +40,7 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
     const denyMutation = useMutation({
         mutationFn: (data: { ID: number, reason?: string }) => DenySubmission(data.ID, data.reason),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['user', submission.UserID, 'submissions', 'pending']);
+            void queryClient.invalidateQueries(['user', submission.UserID]);
             void queryClient.invalidateQueries(['submissionQueue']);
             toast.success('Submission denied!');
             onClose();
