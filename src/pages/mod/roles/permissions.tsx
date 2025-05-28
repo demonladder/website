@@ -104,4 +104,10 @@ export const permissions: Permission[] = [
         Description: 'Allows users to access experimental settings.',
         Flag: PermissionFlags.EXPERIMENTAL,
     },
+    {
+        ID: 17,
+        Name: 'Beta access',
+        Description: 'Allows users to log into the beta subdomain.',
+        Flag: PermissionFlags.BETA_ACCESS,
+    }
 ];

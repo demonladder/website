@@ -16,4 +16,5 @@ export enum PermissionFlags {
     MANAGE_NOTES = 1 << 14,
     ADMIN = 1 << 15,
     SKIP_QUEUE = 1 << 16,
+    BETA_ACCESS = 1 << 17,
 }
