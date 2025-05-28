@@ -10,7 +10,7 @@ const SignupLink = lazy(() => import('../pages/mod/signupLinks/SignupLink'));
 const AddSubmission = lazy(() => import('../pages/mod/addSubmissions/AddSubmissions'));
 const EditSubmission = lazy(() => import('../pages/mod/editSubmissions/EditSubmissions'));
 const CreateUser = lazy(() => import('../pages/mod/createUser/CreateUser'));
-const AddLevel = lazy(() => import('../pages/mod/addLevel/AddLevel'));
+const AddLevel = lazy(() => import('../features/admin/addLevel/AddLevel'));
 const DeleteUser = lazy(() => import('../pages/mod/deleteUser/DeleteUser'));
 const SiteSettings = lazy(() => import('../pages/mod/siteSettings/SiteSettings'));
 const Game = lazy(() => import('../pages/root/game/Game'));

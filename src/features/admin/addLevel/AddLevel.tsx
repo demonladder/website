@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../components/Input';
 import { toast } from 'react-toastify';
-import AddLevelToDatabase from '../../../api/level/AddLevelToDatabase';
+import { addLevelFromGD } from './api/addLevelFromGD';
 import renderToastError from '../../../utils/renderToastError';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -11,18 +11,18 @@ export default function AddLevel() {
     const queryClient = useQueryClient();
 
     function submit() {
-        if (!parseInt(input)) {
-            return toast.error('Paste a level ID');
+        const parsedInput = parseInt(input.trim());
+        if (isNaN(parsedInput) || parsedInput <= 0) {
+            return toast.error('Paste a proper level ID');
         }
 
-        void toast.promise(AddLevelToDatabase(parseInt(input)).then(() => queryClient.invalidateQueries(['level', parseInt(input)])), {
+        void toast.promise(addLevelFromGD(parsedInput).then(() => queryClient.invalidateQueries(['level', parsedInput])), {
             pending: 'Updating database...',
             success: 'Updated!',
             error: renderToastError,
         });
     }
 
-    // input type="number" is stupid when it comes to onChange so I used a text input with custom validation:
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const newVal = e.target.value.trim();
         if (newVal === '') {
