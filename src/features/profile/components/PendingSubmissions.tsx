@@ -20,7 +20,6 @@ import PendingSubmission from '../../../api/types/PendingSubmission';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 import { useUserPendingSubmissions } from '../hooks/useUserPendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
-import Divider from '../../../components/divider/Divider';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Heading2 from '../../../components/headings/Heading2';
 
@@ -51,7 +50,6 @@ export default function PendingSubmissions({ userID }: Props) {
             {status === 'loading' && <LoadingSpinner />}
             {status === 'error' && <p>Error loading submissions</p>}
             {status === 'success' && <>
-                <Divider />
                 {listType === 'inline'
                     ? <InlineList levels={submissionResult.submissions} userID={userID} />
                     : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>

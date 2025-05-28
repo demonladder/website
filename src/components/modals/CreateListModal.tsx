@@ -3,7 +3,7 @@ import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { TextInput } from '../Input';
 import Modal from '../Modal';
-import CreateList from '../../api/list/CreateList';
+import { createList } from '../../features/list/api/createList';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
@@ -23,10 +23,10 @@ export default function CreateListModal({ userID, levelID, onClose: close }: Pro
 
     const queryClient = useQueryClient();
 
-    const createList = useCallback((e: React.FormEvent) => {
+    const onCreateList = useCallback((e: React.FormEvent) => {
         e.preventDefault();
 
-        const promise = CreateList(title, levelID, description).then(() => {
+        const promise = createList(title, levelID, description).then(() => {
             close();
             void queryClient.invalidateQueries(['user', userID, 'lists']);
         });
@@ -40,7 +40,7 @@ export default function CreateListModal({ userID, levelID, onClose: close }: Pro
 
     return (
         <Modal title='Create list' show={true} onClose={close}>
-            <form onSubmit={createList}>
+            <form onSubmit={onCreateList}>
                 <FormGroup>
                     <FormInputLabel>Title</FormInputLabel>
                     <TextInput value={title} onChange={(e) => setTitle(e.target.value.trimStart())} invalid={!title.match(/^[a-zA-Z0-9\s._-]{3,32}$/)} minLength={3} maxLength={32} required />

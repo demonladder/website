@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCallback, useContext } from 'react';
-import List from '../../../api/types/List';
+import { List } from '../../list/types/List';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
 import useSession from '../../../hooks/useSession';
 import { MenuContext } from '../../../components/ui/menuContext/MenuContext';

@@ -17,7 +17,6 @@ import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionM
 import User from '../../../api/types/User';
 import Heading2 from '../../../components/headings/Heading2';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
-import Divider from '../../../components/divider/Divider';
 
 interface Props {
     user: User;
@@ -59,7 +58,6 @@ export default function Submissions({ user }: Props) {
                 <Heading2 id='submissions'>Submissions</Heading2>
                 <SegmentedButtonGroup options={viewOptions} activeKey={listType} onSetActive={(o) => setListType(o)} />
             </div>
-            <Divider />
             <div className='flex items-center gap-2 mb-2 flex-wrap'>
                 <div className='max-md:w-full md:w-60'>
                     <TextInput value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Filter by name...' />

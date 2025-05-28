@@ -21,7 +21,7 @@ interface Props {
 export function Header() {
     return (
         <div className='grid grid-cols-12 font-bold ps-2 cursor-default border-b-2'>
-            <Heading4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3'>Level Name</Heading4>
+            <Heading4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3'>Name</Heading4>
             <Heading4 className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'>Creator</Heading4>
             <Heading4 className='col-span-3 hidden xl:block self-center'>Song</Heading4>
             <Heading4 className='col-span-2 hidden lg:flex justify-center self-center'>ID</Heading4>

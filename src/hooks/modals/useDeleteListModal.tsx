@@ -1,4 +1,4 @@
-import List from '../../api/types/List';
+import { List } from '../../features/list/types/List';
 import DeleteListModal from '../../components/modals/DeleteListModal';
 import useModal from './useModal';
 

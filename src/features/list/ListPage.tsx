@@ -1,29 +1,19 @@
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import ListLevel from './ListLevel';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Level from './components/Level';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import GetList from '../../../api/list/GetList';
-import MoveListLevel from '../../../api/list/MoveListLevel';
-import renderToastError from '../../../utils/renderToastError';
-import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
-import useSession from '../../../hooks/useSession';
-import Page from '../../../components/Page';
-import { editListName } from '../../../api/list/editName';
-import { PermissionFlags } from '../../mod/roles/PermissionFlags';
-import Level from '../../../features/level/types/Level';
-import Heading1 from '../../../components/headings/Heading1';
+import { getList } from './api/getList';
+import { moveListLevel } from './api/moveListLevel';
+import renderToastError from '../../utils/renderToastError';
+import useDeleteListModal from '../../hooks/modals/useDeleteListModal';
+import useSession from '../../hooks/useSession';
+import Page from '../../components/Page';
+import { editListName } from './api/editListName';
+import { PermissionFlags } from '../../pages/mod/roles/PermissionFlags';
+import Heading1 from '../../components/headings/Heading1';
 import { Helmet } from 'react-helmet-async';
-
-export interface IListLevel {
-    ListID: number;
-    LevelID: number;
-    Position: number;
-    AddedAt: string;
-    UpdatedAt: string;
-    Level: Omit<Level, "RatingCount" | "EnjoymentCount" | "SubmissionCount">;
-}
 
 export default function List() {
     const listID = parseInt(useParams().listID ?? '');
@@ -39,7 +29,7 @@ export default function List() {
 
     const { data: list, status } = useQuery({
         queryKey: ['list', listID],
-        queryFn: () => GetList(listID),
+        queryFn: () => getList(listID),
         enabled: validListID,
     });
 
@@ -56,7 +46,7 @@ export default function List() {
         setIsDragLocked(true);
 
         void toast.promise(
-            MoveListLevel(list.ID, oldID, newPosition).then(() => queryClient.invalidateQueries(['list', listID])).finally(() => setIsDragLocked(false)),
+            moveListLevel(list.ID, oldID, newPosition).then(() => queryClient.invalidateQueries(['list', listID])).finally(() => setIsDragLocked(false)),
             {
                 success: 'Moved level',
                 pending: 'Moving...',
@@ -99,7 +89,7 @@ export default function List() {
             <h2 className='text-2xl'>by <Link to={`/profile/${list.OwnerID}`} className='text-blue-400 underline'>{list.Owner.Name}</Link></h2>
             <h3 className='my-2 text-lg'>{list.Description}</h3>
             <ol className='mt-4'>
-                {list.Levels.map((level) => <ListLevel list={list} listLevel={level} setPosition={setPosition} dragLocked={isDragLocked} key={level.LevelID} />)}
+                {list.Levels.map((level) => <Level list={list} listLevel={level} setPosition={setPosition} dragLocked={isDragLocked} key={level.LevelID} />)}
             </ol>
             {list.Levels.length === 0 && (
                 <p><i>This list doesn't have any levels yet</i></p>

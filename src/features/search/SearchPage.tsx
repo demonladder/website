@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Level, { Header } from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
-import SearchLevels from '../../api/level/SearchLevels';
+import { getLevels } from './api/getLevels';
 import { useQuery } from '@tanstack/react-query';
 import PageButtons from '../../components/PageButtons';
 import { GridLevel } from '../../components/GridLevel';
@@ -121,7 +121,7 @@ export default function Search() {
 
     const { status: searchStatus, data: searchData } = useQuery({
         queryKey: ['search', q],
-        queryFn: () => SearchLevels(q),
+        queryFn: () => getLevels(q),
     });
 
     // Reset page to 0 if the search data is empty and the page is greater than 0

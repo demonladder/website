@@ -3,13 +3,13 @@ import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import Modal from '../Modal';
 import { getUserLists } from '../../features/profile/api/getUserLists';
-import List from '../../api/types/List';
+import { List } from '../../features/list/types/List';
 import LoadingSpinner from '../LoadingSpinner';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
 import useCreateListModal from '../../hooks/modals/useCreateListModal';
-import addLevelToList from '../../api/list/addLevelToList';
+import addLevelToList from '../../features/list/api/addLevelToList';
 
 interface Props {
     onClose: () => void;

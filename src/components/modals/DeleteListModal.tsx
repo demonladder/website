@@ -3,10 +3,10 @@ import { DangerButton } from '../ui/buttons/DangerButton';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import Modal from '../Modal';
 import { toast } from 'react-toastify';
-import DeleteList from '../../api/list/DeleteList';
+import { deleteList } from '../../features/list/api/deleteList';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
-import List from '../../api/types/List';
+import { List } from '../../features/list/types/List';
 import { TextInput } from '../Input';
 import { useNavigate } from 'react-router-dom';
 import FormGroup from '../form/FormGroup';
@@ -21,10 +21,10 @@ export default function DeleteListModal({ list, onClose: close }: Props) {
     const [listName, setListName] = useState('');
 
     const navigate = useNavigate();
-    const deleteList = useCallback((e: React.FormEvent) => {
+    const onDeleteList = useCallback((e: React.FormEvent) => {
         e.preventDefault();
 
-        void toast.promise(DeleteList(list.ID).then(() => {
+        void toast.promise(deleteList(list.ID).then(() => {
             void queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
             if (window.location.pathname.includes(`/list/${list.ID}`)) navigate(`/profile/${list.OwnerID}`);
             close();
@@ -45,7 +45,7 @@ export default function DeleteListModal({ list, onClose: close }: Props) {
     return (
         <Modal title='Delete List' show={true} onClose={close}>
             <p>Are you sure you want to delete the list: "{list.Name}"?</p>
-            <form onSubmit={deleteList}>
+            <form onSubmit={onDeleteList}>
                 <FormGroup>
                     <p className='mt-2'>Please type the lists name to continue (case sensitive):</p>
                     <TextInput value={listName} onChange={onListName} placeholder={list.Name} />

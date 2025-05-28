@@ -1,23 +1,23 @@
 import { Link } from 'react-router-dom';
 import DemonLogo from '../../../components/DemonLogo';
-import { IListLevel } from './List';
-import List from '../../../api/types/compounds/List';
 import { useRef, useState } from 'react';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import { toast } from 'react-toastify';
-import RemoveLevel from '../../../api/list/RemoveLevel';
+import { removeLevelFromList } from '../api/removeLevelFromList';
 import renderToastError from '../../../utils/renderToastError';
 import { useQueryClient } from '@tanstack/react-query';
 import useSession from '../../../hooks/useSession';
+import { List } from '../types/List';
+import { GetListResponse } from '../api/getList';
 
 interface Props {
     list: List;
-    listLevel: IListLevel;
+    listLevel: GetListResponse['Levels'][0];
     setPosition: (oldPosition: number, newPosition: number) => void;
     dragLocked: boolean;
 }
 
-export default function ListLevel({ list, listLevel, setPosition, dragLocked }: Props) {
+export default function Level({ list, listLevel, setPosition, dragLocked }: Props) {
     const [isDragged, setIsDragged] = useState(false);
     const [dragOver, setDragOver] = useState(false);
     const itemRef = useRef<HTMLLIElement>(null);
@@ -73,7 +73,7 @@ export default function ListLevel({ list, listLevel, setPosition, dragLocked }: 
     }
 
     function onRemoveLevel() {
-        void toast.promise(RemoveLevel(list.ID, listLevel.LevelID).then(() => {
+        void toast.promise(removeLevelFromList(list.ID, listLevel.LevelID).then(() => {
             void queryClient.invalidateQueries(['list', list.ID]);
             void queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
         }), {

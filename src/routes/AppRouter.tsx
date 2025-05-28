@@ -36,7 +36,7 @@ import DiscordSettings from '../pages/root/settings/profileSettings/DiscordSetti
 import SubmissionSettings from '../pages/root/settings/submissionsSettings/SubmissionSettings';
 import Appearance from '../pages/root/settings/appearance/Appearance';
 import Developer from '../pages/root/settings/developer/Developer';
-const List = lazy(() => import('../pages/root/list/List'));
+const List = lazy(() => import('../features/list/ListPage'));
 import ForgotPassword from '../pages/ForgotPasswordPage';
 const Generators = lazy(() => import('../pages/root/generators/Generators'));
 const Alphabet = lazy(() => import('../pages/root/generators/alphabet/Alphabet'));

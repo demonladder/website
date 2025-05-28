@@ -1,7 +1,7 @@
 import APIClient from '../../APIClient';
 import Level from '../../../features/level/types/Level';
 import LevelMeta from '../../../features/level/types/LevelMeta';
-import List from '../../types/List';
+import { List } from '../../../features/list/types/List';
 import ListLevel from '../../types/ListLevel';
 
 interface DecathlonMetaData {

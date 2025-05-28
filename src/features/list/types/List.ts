@@ -1,4 +1,4 @@
-export default interface List {
+export interface List {
     ID: number;
     Name: string;
     Description: string | null;
@@ -6,6 +6,4 @@ export default interface List {
     AverageTier: number | null;
     MedianTier: number | null;
     OwnerID: number;
-    CreatedAt: string;
-    UpdatedAt: string;
 }
