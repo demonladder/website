@@ -16,20 +16,23 @@ import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import User from '../../../api/types/User';
 import Heading2 from '../../../components/headings/Heading2';
+import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
+import Divider from '../../../components/divider/Divider';
 
 interface Props {
     user: User;
 };
 
-enum EListType {
-    inline = 'inline',
-    grid = 'grid'
-}
+const viewOptions = {
+    inline: 'Inline',
+    grid: 'Grid'
+} as const;
+type ViewOption = keyof typeof viewOptions;
 
 export default function Submissions({ user }: Props) {
     const [page, setPage] = useSessionStorage(`profilePageIndex_${user.ID}`, 0);
     const [sort, setSort] = useState<{ sort: Sorts, sortDirection: string }>({ sort: Sorts.LEVEL_ID, sortDirection: 'asc' });
-    const [listType, setListType] = useLocalStorage<EListType>('profile.listType', EListType.grid);
+    const [listType, setListType] = useLocalStorage<ViewOption>('profile.listType', 'grid');
     const [query, lateQuery, setQuery] = useLateValue('', 500);
     const [onlyIncomplete, setOnlyIncomplete] = useState(false);
 
@@ -52,29 +55,21 @@ export default function Submissions({ user }: Props) {
 
     return (
         <section className='mt-6'>
-            <div className='flex items-center gap-2 mb-2 flex-wrap'>
+            <div className='flex justify-between'>
                 <Heading2 id='submissions'>Submissions</Heading2>
-                <SortMenu set={setSort} />
-                <div className='flex items-center text-black'>
-                    <button className={'w-7 h-7 grid place-items-center ' + (listType === EListType.inline ? 'bg-theme-950 text-white' : 'bg-white')} onClick={() => setListType(EListType.inline)}>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' stroke='currentColor' viewBox='0 0 16 16'>
-                            <path fillRule='evenodd' d='M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z' />
-                        </svg>
-                    </button>
-                    <button className={'w-7 h-7 grid place-items-center ' + (listType === EListType.grid ? 'bg-theme-950 text-white' : 'bg-white')} onClick={() => setListType(EListType.grid)}>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
-                            <path d='M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z' />
-                        </svg>
-                    </button>
-                </div>
-                <button className={'w-7 h-7 grid place-items-center text-black ' + (onlyIncomplete ? 'bg-theme-950 text-white' : 'bg-white')} onClick={() => setOnlyIncomplete((prev) => !prev)}>
-                    <span><b>%</b></span>
-                </button>
+                <SegmentedButtonGroup options={viewOptions} activeKey={listType} onSetActive={(o) => setListType(o)} />
+            </div>
+            <Divider />
+            <div className='flex items-center gap-2 mb-2 flex-wrap'>
                 <div className='max-md:w-full md:w-60'>
                     <TextInput value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Filter by name...' />
                 </div>
+                <SortMenu set={setSort} />
+                <button className={'w-7 h-7 grid place-items-center text-black ' + (onlyIncomplete ? 'bg-theme-950 text-white' : 'bg-white')} onClick={() => setOnlyIncomplete((prev) => !prev)}>
+                    <span><b>%</b></span>
+                </button>
             </div>
-            {listType === EListType.inline ?
+            {listType === 'inline' ?
                 <InlineList levels={submissions} user={user} /> :
                 <GridList levels={submissions} user={user} />
             }
@@ -126,7 +121,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
 
     const navigate = useNavigate();
-    
+
     const setContext = useContextMenu();
     function openContext(e: React.MouseEvent, submission: UserSubmission) {
         e.preventDefault();
