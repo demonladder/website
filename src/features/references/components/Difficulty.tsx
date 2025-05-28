@@ -1,5 +1,5 @@
 import Tier from './Tier';
-import { Reference } from '../../../api/references/getReferences';
+import { Reference } from '../api/getReferences';
 
 interface Props {
     references: Reference[];

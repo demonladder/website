@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Reference } from '../../../api/references/getReferences';
+import { Reference } from '../../../features/references/api/getReferences';
 import ChangeReferences, { Change, ChangeType } from '../../../api/references/ChangeReferences';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import useLevelSearch from '../../../hooks/useLevelSearch';
-import { useReferences } from '../../../api/references/hooks/useReferences';
+import { useReferences } from '../../../features/references/hooks/useReferences';
 import { useMutation } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import renderToastError from '../../../utils/renderToastError';

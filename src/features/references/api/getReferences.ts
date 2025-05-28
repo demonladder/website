@@ -1,4 +1,4 @@
-import APIClient from '../APIClient';
+import APIClient from '../../../api/APIClient';
 
 export interface Reference {
     Tier: number;

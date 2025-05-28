@@ -1,8 +1,8 @@
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import Difficulty from './Difficulty';
-import { useReferences } from '../../../api/references/hooks/useReferences';
-import Page from '../../../components/Page';
-import Heading1 from '../../../components/headings/Heading1';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Difficulty from './components/Difficulty';
+import { useReferences } from './hooks/useReferences';
+import Page from '../../components/Page';
+import Heading1 from '../../components/headings/Heading1';
 import { Helmet } from 'react-helmet-async';
 
 const diffs = [

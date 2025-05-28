@@ -18,7 +18,7 @@ import { profileLoader } from '../features/profile/loader';
 import Home from '../features/home/HomePage';
 const Search = lazy(() => import('../features/search/SearchPage'));
 const PlatformerList = lazy(() => import('../features/platformerList/PlatformerListPage'));
-const References = lazy(() => import('../pages/root/references/References'));
+const References = lazy(() => import('../features/references/References'));
 const Packs = lazy(() => import('../features/packs/PacksPage'));
 const About = lazy(() => import('../features/about/AboutPage'));
 import CrossroadPack from '../pages/root/packs/packOverview/CrossroadPack';

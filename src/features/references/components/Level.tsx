@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Reference } from '../../../api/references/getReferences';
+import { Reference } from '../api/getReferences';
 
 export default function Level({ level }: { level: Reference }) {
     return (
