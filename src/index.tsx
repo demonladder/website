@@ -61,6 +61,6 @@ root.render(
                 </MenuContextProvider>
             </HelmetProvider>
         </QueryClientProvider>
-        <ToastContainer theme='dark' position='bottom-right' />
+        <ToastContainer theme='dark' position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'} />
     </React.StrictMode>
 );
