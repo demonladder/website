@@ -9,6 +9,10 @@ import { useMemo, useState } from 'react';
 import Heading4 from '../../../components/headings/Heading4';
 import { DifficultyToImgSrc } from '../../../components/DemonLogo';
 import { toast } from 'react-toastify';
+import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/useLevelSubmissionSpread';
+import { ratingToWeight, weightedRatingAverage } from '../../../utils/weightedAverage';
+import { average } from '../../../utils/average';
+import standardDeviation from '../../../utils/standardDeviation';
 
 interface Props {
     submission: QueueSubmission;
@@ -19,27 +23,58 @@ export default function Submission({ submission }: Props) {
     const [isProofClicked, setIsProofClicked] = useState(false);
     const [proofClickedAt, setProofClickedAt] = useState<Date>();
 
+    const spread = useLevelSubmissionSpread(submission.LevelID);
+    const ratingsWithSubmission = useMemo(() => {
+        const data = submission.IsSolo ? spread.data?.rating : spread.data?.twoPlayerRating;
+        const ratings = data?.map((rating) => Array.from({ length: rating.Count }, () => rating.Rating)).flat() ?? [];
+        if (submission.Rating !== null) ratings.push(submission.Rating);
+
+        return ratings;
+    }, [spread.data?.rating, spread.data?.twoPlayerRating, submission.IsSolo, submission.Rating]);
+
+    const newSTDDev = useMemo(() => {
+        if (submission.Rating === null) return 0;
+
+        return standardDeviation(ratingsWithSubmission);
+    }, [ratingsWithSubmission, submission.Rating]);
+
+    const newLevelRating = useMemo(() => {
+        if (ratingsWithSubmission.length === 0) return null;
+
+        if (ratingsWithSubmission.length < 5) average(ratingsWithSubmission);
+        return weightedRatingAverage(ratingsWithSubmission);
+    }, [ratingsWithSubmission]);
+
+    const weight = useMemo(() => {
+        if (submission.Rating === null) return;
+        if (newSTDDev === undefined) return 1;
+
+        return ratingToWeight(submission.Rating, average(ratingsWithSubmission)!, newSTDDev);
+    }, [newSTDDev, ratingsWithSubmission, submission.Rating]);
+
     const levelRating = submission.IsSolo ? submission.Level.Rating : submission.Level.TwoPlayerRating;
+
+    const difference = useMemo(() => {
+        if (submission.Rating === null || levelRating === null) return;
+        return Math.abs(submission.Rating - levelRating);
+    }, [submission.Rating, levelRating]);
+
     const standardDeviations = useMemo(() => {
-        const rating = submission.Rating;
-        const levelDeviation = submission.IsSolo ? submission.Level.Deviation : submission.Level.TwoPlayerDeviation;
+        if (difference === undefined) return;
+        if (submission.Level.RatingCount < 5) return 0;
 
-        if (levelRating === null || rating === null || levelDeviation === null) return 0;
-        if (submission.Level.RatingCount < 10) return 0;
-
-        const difference = Math.abs(rating - levelRating);
-        if (difference < 2) return 0;
-
-        return difference / levelDeviation;
-    }, [levelRating, submission.IsSolo, submission.Level.Deviation, submission.Level.RatingCount, submission.Level.TwoPlayerDeviation, submission.Rating]);
+        return difference / newSTDDev;
+    }, [difference, newSTDDev, submission.Level.RatingCount]);
 
     const outlierText = useMemo(() => {
-        if (standardDeviations <= 1.5) return '';
+        if (standardDeviations === undefined) return;
+        if (difference !== undefined && difference <= 2) return;
+        if (standardDeviations <= 1.5) return;
         if (standardDeviations <= 2) return 'Semi-outlier detected!';
         if (standardDeviations <= 3) return 'Outlier detected!';
         if (standardDeviations <= 5) return 'Outlier detected! (rating won\'t count)';
         return 'Possible troll detected!';
-    }, [standardDeviations]);
+    }, [difference, standardDeviations]);
 
     function onProofClick() {
         if (!submission.Proof) return toast.error('No proof URL provided');
@@ -64,19 +99,25 @@ export default function Submission({ submission }: Props) {
                 <p>Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold group' target='_blank' rel='noopener noreferrer'>{submission.User.Name} <i className='bx bx-link-external' /></a></p>
                 <p>Submitted at {submission.DateChanged.replace('+00:00', 'UTC')}</p>
             </div>
-            <div className='grid grid-cols-2 gap-4 max-md:grid-cols-1'>
+            <div className='grid grid-cols-3 gap-4 max-md:grid-cols-1'>
                 <div>
                     <Heading4 className='mb-2'>Submission info</Heading4>
                     <div className='mb-2'>
-                        <p><b>Submitted rating:</b> {submission.Rating ?? 'None'} {standardDeviations > 1.5 &&
+                        <p><b>Submitted rating:</b> {submission.Rating ?? 'None'}</p>
+                        {outlierText &&
                             <span className='bg-yellow-400 text-black px-2 py-1'>{outlierText}</span>
-                        }</p>
+                        }
                         <p><b>Submitted enjoyment:</b> {submission.Enjoyment ?? 'None'}</p>
+                    </div>
+                    <div className='mb-2'>
+                        <p><b>Would deviate by:</b> {standardDeviations?.toFixed(1) ?? '-'}σ</p>
+                        <p><b>Weight:</b> {weight ?? '-'}</p>
                     </div>
                     <div className='mb-2'>
                         <p><b>Device:</b> {submission.Device}</p>
                         <p><b>Refresh rate:</b> {submission.RefreshRate}</p>
                         <p><b>Progress:</b> {submission.Progress ?? 'None'}</p>
+                        <p><b>Attempts:</b> {submission.Attempts ?? 'None'}</p>
                     </div>
                     <div>
                         <span className='font-bold'>Proof: </span>
@@ -99,6 +140,11 @@ export default function Submission({ submission }: Props) {
                     <p><b>Rating count:</b> {submission.Level.RatingCount}</p>
                     <p><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
                     <p><b>Difficulty:</b> <img src={DifficultyToImgSrc(submission.Level.Meta.Difficulty)} width='24' className='inline-block' /></p>
+                </div>
+                <div>
+                    <Heading4 className='mb-2'>Level after accept</Heading4>
+                    <p><b>New rating:</b> {newLevelRating?.toFixed(2) ?? '-'}</p>
+                    <p><b>New deviation:</b> {newSTDDev?.toFixed(2) ?? 0}</p>
                 </div>
             </div>
             <div className='mt-4 flex justify-evenly max-md:flex-col max-md:gap-4'>
