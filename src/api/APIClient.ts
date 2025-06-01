@@ -3,7 +3,7 @@ import ms from 'ms';
 import _ from 'lodash';
 
 const APIClient = axios.create({
-    baseURL: import.meta.env.VITE_SERVER_URL,
+    baseURL: '/api',
     timeout: 10000,
     withCredentials: true,
 });
