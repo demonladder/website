@@ -1,6 +1,4 @@
 import APIClient from '../../../api/APIClient';
-import Level from '../../level/types/Level';
-import LevelMeta from '../../level/types/LevelMeta';
 
 interface Stats {
     users: number;
@@ -12,12 +10,10 @@ interface Stats {
     pendingSubmissions: number;
     recentSubmissions: number;
     oldestQueuedSubmission?: string;
-    topPopularLevels: (Level & { Meta: LevelMeta })[];
     topRaters: {
         UserID: number;
         Name: string;
     }[];
-    packs: number;
 }
 
 export async function getStats() {
