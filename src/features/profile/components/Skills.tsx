@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import Select from '../../../components/Select';
 import { useId, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import NewLabel from '../../../components/NewLabel';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import { getSkills } from '../api/getSkills';
@@ -35,12 +34,10 @@ export default function Skills({ userID }: { userID: number }) {
     const [accuracyKey, setAccuracyKey] = useState<AccuracyOptions>('25');
     const [correctTier, setCorrectTier] = useState(true);
     const correctTierID = useId();
-    const [isActive, setIsActive] = useState(false);
 
     const { data: rawData } = useQuery({
         queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey, accuracy: accuracyKey, correctTier }],
         queryFn: () => getSkills(userID, levelSpanKey.slice(3), accuracyKey, correctTier),
-        enabled: isActive,
     });
 
     const { data: tags } = useTags();
@@ -76,15 +73,6 @@ export default function Skills({ userID }: { userID: number }) {
             },
         ],
     };
-
-    if (!isActive) {
-        return (
-            <section className='mt-6'>
-                <Heading2>Skills <NewLabel ID='userSkills' /></Heading2>
-                <PrimaryButton onClick={() => setIsActive(true)}>Show</PrimaryButton>
-            </section>
-        );
-    }
 
     return (
         <section className='mt-6'>
@@ -126,6 +114,12 @@ export default function Skills({ userID }: { userID: number }) {
                             },
                             min: 0,
                             beginAtZero: true,
+                            ticks: {
+                                callback: (value) => {
+                                    if (typeof value === 'number') return (value * 100).toFixed(2) + '%';
+                                    return value;
+                                },
+                            },
                         },
                     },
                 }} />
