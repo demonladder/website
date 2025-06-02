@@ -6,6 +6,9 @@
     --label-color: var(--on-primary);
     --label-opacity: 100%;
     color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
+    
+    --font-size: 14pt;
+    font-size: var(--font-size);
 
     --layer-color: var(--primary);
     --layer-opacity: 0%;
@@ -14,7 +17,9 @@
     
     --height: 40px;
     height: var(--height);
-    padding: 0 16px;
+
+    --padding: 16px;
+    padding: 0 var(--padding);
     border-radius: calc(var(--height) / 2);
     
     --elevation: 0px;
@@ -23,9 +28,29 @@
     transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
 }
 
+.filled-button.xs {
+    --height: 32px;
+    --padding: 12px;
+}
+.filled-button.md {
+    --height: 56px;
+    --padding: 24px;
+    --font-size: 16pt;
+}
+.filled-button.lg {
+    --height: 96px;
+    --padding: 48px;
+    --font-size: 24pt;
+}
+.filled-button.xl {
+    --height: 136px;
+    --padding: 64px;
+    --font-size: 32pt;
+}
+
 div[data-theme="dark"] .filled-button {
     --primary: #588bdd;
-    --on-primary: #062A60;
+    --on-primary: #021634;
     --on-surface: #E6E0E9;
 }
 
