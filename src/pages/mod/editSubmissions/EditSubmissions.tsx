@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { TextInput } from '../../../components/Input';
 import { useQuery } from '@tanstack/react-query';
 import PageButtons from '../../../components/PageButtons';
@@ -8,7 +8,7 @@ import Submission from '../../../api/types/Submission';
 import { getLevelSubmissions } from '../../../features/level/api/getLevelSubmissions';
 import useLateValue from '../../../hooks/useLateValue';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import { NumberParam, useQueryParam } from 'use-query-params';
+import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import EditableSubmission from './EditableSubmission';
 import { useSubmission } from '../../../components/modals/useSubmission';
 
@@ -19,7 +19,7 @@ export default function EditSubmission() {
     const { activeLevel, SearchBox } = useLevelSearch({ ID: 'addSubmissionSearch', options: { defaultLevel: levelID } });
     const [usernameFilter, lateUsernameFilter, setUsernameFilter] = useLateValue('');
 
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
 
     const { status, data } = useQuery({
         queryKey: ['level', activeLevel?.ID, 'submissions', { page, username: lateUsernameFilter, progressFilterKey: 'all' }],
@@ -31,7 +31,7 @@ export default function EditSubmission() {
     });
 
     useEffect(() => {
-        setPage(1);
+        setPage(0);
         setLevelID(activeLevel?.ID);
         setUserID(undefined);
     }, [activeLevel, setLevelID, setUserID]);
