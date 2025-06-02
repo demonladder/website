@@ -1,0 +1,74 @@
+.text-button {
+    --container-color: var(--primary);
+    --container-opacity: 0%;
+    background-color: color-mix(in oklab, var(--container-color) var(--container-opacity), transparent);
+
+    --label-color: var(--primary);
+    --label-opacity: 100%;
+    color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
+
+    --layer-color: var(--primary);
+    --layer-opacity: 0%;
+
+    position: relative;
+    
+    --height: 40px;
+    height: var(--height);
+    padding: 0 16px;
+    --border-radius: calc(var(--height) / 2);
+    border-radius: var(--border-radius);
+    
+    --elevation: 0px;
+
+    transition-duration: 350ms;
+    transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+}
+
+div[data-theme="dark"] .text-button {
+    --primary: #588bdd;
+    --on-primary: #062A60;
+    --on-surface: #E6E0E9;
+}
+
+.text-button::after {
+    content: '';
+    display: block;
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    transition-duration: 350ms;
+    transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+
+    border-radius: var(--border-radius);
+    background-color: color-mix(in oklab, var(--layer-color) var(--layer-opacity), transparent);
+}
+
+.text-button:focus-visible, .text-button.focused {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.text-button:disabled {
+    --container-color: var(--on-surface);
+    --container-opacity: 10%;
+    --label-color: var(--on-surface);
+    --label-opacity: 38%;
+    pointer-events: none;
+}
+
+.text-button:hover, .text-button.hovered {
+    --layer-color: var(--primary);
+    --layer-opacity: 8%;
+    --label-color: var(--primary);
+}
+
+.text-button:active, .text-button.pressed {
+    --layer-color: var(--primary);
+    --layer-opacity: 10%;
+    --label-color: var(--primary);
+    --border-radius: 12px;
+}
