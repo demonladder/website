@@ -18,6 +18,7 @@ export default function Mod() {
                         <NavButton to='/mod/queue'>Submissions queue</NavButton>
                         <NavButton to='/mod/addSubmission'>Add submission</NavButton>
                         <NavButton to='/mod/editSubmission'>Edit submission</NavButton>
+                        <NavButton to='/mod/mergeSubmissions'>Merge submissions</NavButton>
                         <Divider />
                         <p className='text-gray-400 text-sm ps-3'>Users</p>
                         <NavButton to='/mod/manageUser'>Manage user</NavButton>

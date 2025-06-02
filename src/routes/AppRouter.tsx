@@ -58,6 +58,7 @@ import Logs from '../pages/mod/siteLogs/Logs';
 import Roles from '../pages/mod/roles/Roles';
 import EditRole from '../pages/mod/roles/EditRole';
 import MainLayout from '../layouts/MainLayout';
+import SubmissionMerge from '../features/admin/submissionMerging/SubmissionMerge';
 
 export const router = createBrowserRouter(createRoutesFromElements(
     [
@@ -120,6 +121,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='logs' element={<Logs />} />
                 <Route path='roles' element={<Roles />} />
                 <Route path='roles/:roleID' element={<EditRole />} />
+                <Route path='mergeSubmissions' element={<SubmissionMerge />} />
             </Route>
         </Route>,
     ],
