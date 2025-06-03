@@ -17,6 +17,9 @@ import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { validateTier } from '../../../utils/validators/validateTier';
 import { validateEnjoyment } from '../../../utils/validators/validateEnjoyment';
 import DeleteSubmission from '../../../api/submissions/DeleteSubmission';
+import useUserQuery from '../../../hooks/queries/useUserQuery';
+import Heading3 from '../../../components/headings/Heading3';
+import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 
 interface Props {
     submission: Submission;
@@ -27,6 +30,10 @@ const deviceOptions: { [key: string]: string } = {
     'mobile': 'Mobile',
 };
 type Device = keyof typeof deviceOptions;
+
+function formatDBDateString(date: string) {
+    return date.replace(' +00:00', 'Z').replace(' ', 'T');
+}
 
 export default function EditableSubmission({ submission }: Props) {
     const [rating, setRating] = useState<number | undefined>(submission.Rating ?? undefined);
@@ -40,6 +47,10 @@ export default function EditableSubmission({ submission }: Props) {
     const [secondPlayerID, setSecondPlayerID] = useState<number>();
     const [deleteReason, setDeleteReason] = useState('');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+    const approvedBy = useUserQuery(submission.ApprovedBy ?? 0, {
+        enabled: submission.ApprovedBy !== null,
+    });
 
     const queryClient = useQueryClient();
 
@@ -132,6 +143,34 @@ export default function EditableSubmission({ submission }: Props) {
             <FormGroup className='flex gap-2'>
                 <PrimaryButton type='submit' onClick={submit} disabled={updateMutation.isLoading}>Edit</PrimaryButton>
                 <DangerButton type='button' onClick={() => setShowDeleteConfirm(true)} disabled={deleteMutation.isLoading}>Delete</DangerButton>
+            </FormGroup>
+            <FormGroup>
+                <Heading3>Extra info</Heading3>
+                <div className='grid grid-cols-3'>
+                    {submission.ApprovedBy !== null && <>
+                        <InlineLoadingSpinner isLoading={approvedBy.isLoading} />
+                        {approvedBy.data &&
+                            <div>
+                                <FormInputLabel>Approved by</FormInputLabel>
+                                <div className='flex gap-2'>
+                                    <object data={`https://cdn.discordapp.com/avatars/${approvedBy.data.DiscordData?.ID ?? '-'}/${approvedBy.data.DiscordData?.Avatar ?? '-'}.png`} type='image/png' className='rounded-full size-14'>
+                                        <i className='bx bxs-user-circle text-9xl' />
+                                    </object>
+                                    <p className='text-xl self-center'>{approvedBy.data.Name}</p>
+                                </div>
+                            </div>
+                        }
+                    </>}
+                    <div>
+                        <FormInputLabel>Sent At</FormInputLabel>
+                        <p className='text-lg'>{new Date(formatDBDateString(submission.DateAdded)).toUTCString()}</p>
+                    </div>
+                    <div>
+                        <FormInputLabel>Changed At</FormInputLabel>
+                        <p className='text-lg'>{new Date(formatDBDateString(submission.DateChanged)).toUTCString()}</p>
+                        <FormInputDescription>Last time the submission was edited. If it's the same as Sent At, it means it was auto accepted</FormInputDescription>
+                    </div>
+                </div>
             </FormGroup>
             {showDeleteConfirm &&
                 <div className='mt-4'>
