@@ -1,5 +1,5 @@
 //import map from '../../../../utils/map';
-import Block from '../Block';
+import Block from '../gameObjects/Block';
 import GameObject from '../GameObject';
 import P5 from 'p5';
 

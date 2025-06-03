@@ -1,7 +1,7 @@
 import P5 from 'p5';
-import { pixelsPerBlock } from './constants';
-import GameObject from './GameObject';
-import GameState from './GameState';
+import { pixelsPerBlock } from '../constants';
+import GameObject from '../core/GameObject';
+import GameState from '../GameState';
 
 export default class Spike extends GameObject {
     constructor(x?: number, y?: number) {

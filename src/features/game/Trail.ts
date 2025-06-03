@@ -1,5 +1,5 @@
 import P5 from 'p5';
-import Player from './Player';
+import Player from './gameObjects/Player';
 import { pixelsPerBlock } from './constants';
 
 export default class Trail {

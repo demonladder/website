@@ -1,9 +1,9 @@
 import P5 from 'p5';
-import Trail from './Trail';
-import { camOffset, pixelsPerBlock } from './constants';
-import GameObject from './GameObject';
-import GameState from './GameState';
-import { keysPressed } from './Game';
+import Trail from '../Trail';
+import { camOffset, pixelsPerBlock } from '../constants';
+import GameObject from '../core/GameObject';
+import GameState from '../GameState';
+import { keysPressed } from '../Game';
 
 enum Speed {
     Half = 8.37,

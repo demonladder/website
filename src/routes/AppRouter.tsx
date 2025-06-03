@@ -12,7 +12,7 @@ const CreateUser = lazy(() => import('../pages/mod/createUser/CreateUser'));
 const AddLevel = lazy(() => import('../features/admin/addLevel/AddLevel'));
 const DeleteUser = lazy(() => import('../pages/mod/deleteUser/DeleteUser'));
 const SiteSettings = lazy(() => import('../pages/mod/siteSettings/SiteSettings'));
-const Game = lazy(() => import('../pages/root/game/Game'));
+const Game = lazy(() => import('../features/game/Game'));
 import { profileLoader } from '../features/profile/loader';
 import Home from '../features/home/HomePage';
 const Search = lazy(() => import('../features/search/SearchPage'));

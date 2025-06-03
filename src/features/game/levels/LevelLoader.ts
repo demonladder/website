@@ -1,5 +1,5 @@
 import GameObject from '../GameObject';
-import Spike from '../Spike';
+import Spike from '../gameObjects/Spike';
 
 interface FileObject {
     type: number;

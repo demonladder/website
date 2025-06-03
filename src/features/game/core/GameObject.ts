@@ -1,6 +1,6 @@
 import P5 from 'p5';
 import Hitbox from './Hitbox';
-import { pixelsPerBlock } from './constants';
+import { pixelsPerBlock } from '../constants';
 
 export default abstract class GameObject extends Hitbox {
     position: P5.Vector;
