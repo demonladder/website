@@ -21,18 +21,18 @@ import useContextMenu from '../../components/ui/menuContext/useContextMenu';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useUserColor } from '../../hooks/useUserColor';
 import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
-// import { useReportUserModal } from '../../../hooks/modals/useReportUserModal';
+import { useReportUserModal } from '../../hooks/modals/useReportUserModal';
 
 export default function Profile() {
     const userID = parseInt(useParams().userID ?? '0') || 0;
-    // const openReportUserModal = useReportUserModal();
+    const openReportUserModal = useReportUserModal();
 
     const { status, data: userData, error } = useUserQuery(userID);
     const userColor = useUserColor(userData?.RoleIDs);
 
     const navigate = useNavigate();
     const contextMenu = useContextMenu([
-        // { text: 'Report user', onClick: () => openReportUserModal(userID) },
+        { text: 'Report user', onClick: () => openReportUserModal(userID) },
         { text: 'Copy profile', onClick: () => void navigator.clipboard.writeText(`https://gdladder.com/profile/${userID}`) },
         { text: 'Copy user ID', onClick: () => void navigator.clipboard.writeText(userID.toString()) },
         { text: 'Mod view', onClick: () => navigate(`/mod/manageUser/${userID}`), permission: PermissionFlags.STAFF_DASHBOARD },
