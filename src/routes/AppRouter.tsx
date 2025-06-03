@@ -28,13 +28,13 @@ import Login from '../features/login/LoginPage';
 import SignUp from '../pages/SignupPage';
 const Profile = lazy(() => import('../features/profile/ProfilePage'));
 import Notifications from '../pages/NotificationsPage';
-import Settings from '../pages/root/settings/Settings';
-import AccountSettings from '../pages/root/settings/account/AccountSettings';
-import ClientSiteSettings from '../pages/root/settings/siteSettings/SiteSettings';
-import DiscordSettings from '../pages/root/settings/profileSettings/DiscordSettings';
-import SubmissionSettings from '../pages/root/settings/submissionsSettings/SubmissionSettings';
-import Appearance from '../pages/root/settings/appearance/Appearance';
-import Developer from '../pages/root/settings/developer/Developer';
+import Settings from '../features/settings/Settings';
+import AccountSettings from '../features/settings/account/Account';
+import ClientSiteSettings from '../features/settings/site/Site';
+import ProfileSettings from '../features/settings/profile/Profile';
+import SubmissionSettings from '../features/settings/submissions/SubmissionSettings';
+import Appearance from '../features/settings/appearance/Appearance';
+import Developer from '../features/settings/developer/Developer';
 const List = lazy(() => import('../features/list/ListPage'));
 import ForgotPassword from '../pages/ForgotPasswordPage';
 const Generators = lazy(() => import('../pages/root/generators/Generators'));
@@ -84,7 +84,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='settings' element={<Settings />}>
                     <Route path='account' element={<AccountSettings />} />
                     <Route path='site' element={<ClientSiteSettings />} />
-                    <Route path='profile' element={<DiscordSettings />} />
+                    <Route path='profile' element={<ProfileSettings />} />
                     <Route path='submission' element={<SubmissionSettings />} />
                     <Route path='appearance' element={<Appearance />} />
                     <Route path='developer' element={<Developer />} />

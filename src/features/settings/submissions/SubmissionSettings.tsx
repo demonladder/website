@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { NumberInput } from '../../../../components/Input';
-import Select from '../../../../components/Select';
-import Notifications from './Notifications';
-import DiscordRoles from './DiscordRoles';
-import useLocalStorage from '../../../../hooks/useLocalStorage';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import Divider from '../../../../components/divider/Divider';
+import { NumberInput } from '../../../components/Input';
+import Select from '../../../components/Select';
+import Notifications from './components/Notifications';
+import DiscordRoles from './components/DiscordRoles';
+import useLocalStorage from '../../../hooks/useLocalStorage';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import Divider from '../../../components/divider/Divider';
 
 const deviceOptions = {
     pc: 'PC',

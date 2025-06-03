@@ -11,7 +11,7 @@ import SaveProfile from '../../../../api/user/SaveProfile';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import Select from '../../../../components/Select';
-import { ISO3611Alpha2 } from './ISO3611-1-alpha-2';
+import { ISO3611Alpha2 } from '../ISO3611-1-alpha-2';
 import { useMutation } from '@tanstack/react-query';
 import Heading1 from '../../../../components/headings/Heading1';
 import LoadingSpinner from '../../../../components/LoadingSpinner';

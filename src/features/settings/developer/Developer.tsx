@@ -1,13 +1,13 @@
 import { useRef, useState } from 'react';
-import APIClient from '../../../../api/APIClient';
-import Heading1 from '../../../../components/headings/Heading1';
-import Heading3 from '../../../../components/headings/Heading3';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import APIClient from '../../../api/APIClient';
+import Heading1 from '../../../components/headings/Heading1';
+import Heading3 from '../../../components/headings/Heading3';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useMutation } from '@tanstack/react-query';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { AxiosError } from 'axios';
-import renderToastError from '../../../../utils/renderToastError';
+import renderToastError from '../../../utils/renderToastError';
 import { Id, toast } from 'react-toastify';
 
 async function generateAPIKey(): Promise<string> {

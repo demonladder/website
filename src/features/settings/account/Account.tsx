@@ -1,18 +1,18 @@
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
-import FormGroup from '../../../../components/form/FormGroup';
-import Modal from '../../../../components/Modal';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import FormGroup from '../../../components/form/FormGroup';
+import Modal from '../../../components/Modal';
 import React, { useState } from 'react';
-import { TextInput } from '../../../../components/Input';
-import useSession from '../../../../hooks/useSession';
+import { TextInput } from '../../../components/Input';
+import useSession from '../../../hooks/useSession';
 import { toast } from 'react-toastify';
-import DeleteUserRequest from '../../../../api/user/Delete';
+import DeleteUserRequest from '../../../api/user/Delete';
 import { useMutation } from '@tanstack/react-query';
-import renderToastError from '../../../../utils/renderToastError';
-import Heading1 from '../../../../components/headings/Heading1';
-import { forgotPassword } from '../../../../api/auth/forgotPassword';
-import Heading3 from '../../../../components/headings/Heading3';
+import renderToastError from '../../../utils/renderToastError';
+import Heading1 from '../../../components/headings/Heading1';
+import { forgotPassword } from '../../../api/auth/forgotPassword';
+import Heading3 from '../../../components/headings/Heading3';
 
 export default function AccountSettings() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);

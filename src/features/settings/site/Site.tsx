@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
-import CheckBox from '../../../../components/input/CheckBox';
-import StorageManager from '../../../../utils/StorageManager';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import CheckBox from '../../../components/input/CheckBox';
+import StorageManager from '../../../utils/StorageManager';
+import FormGroup from '../../../components/form/FormGroup';
+import FormInputDescription from '../../../components/form/FormInputDescription';
 
 export default function ClientSiteSettings() {
     const [isRounded, setIsRounded] = useState<boolean>(StorageManager.getIsRounded());
