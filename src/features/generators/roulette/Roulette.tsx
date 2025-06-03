@@ -1,22 +1,22 @@
 import { useState } from 'react';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { TextInput } from '../../../../components/Input';
-import CheckBox from '../../../../components/input/CheckBox';
-import Select from '../../../../components/Select';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import FormGroup from '../../../components/form/FormGroup';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import { TextInput } from '../../../components/Input';
+import CheckBox from '../../../components/input/CheckBox';
+import Select from '../../../components/Select';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import GenerateRoulette, { RouletteResponse } from '../../../../api/generators/GenerateRoulette';
-import useLocalStorage from '../../../../hooks/useLocalStorage';
+import GenerateRoulette, { RouletteResponse } from '../../../api/generators/GenerateRoulette';
+import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Link } from 'react-router-dom';
-import IDButton from '../../../../components/IDButton';
-import useValidNumber from '../../../../hooks/useValidNumber';
-import validateParameter from '../validateParameter';
-import renderToastError from '../../../../utils/renderToastError';
-import Heading2 from '../../../../components/headings/Heading2';
+import IDButton from '../../../components/IDButton';
+import useValidNumber from '../../../hooks/useValidNumber';
+import validateParameter from '../../../utils/validators/validateParameter';
+import renderToastError from '../../../utils/renderToastError';
+import Heading2 from '../../../components/headings/Heading2';
 
 const difficultyOptions = {
     '-1': 'Any',

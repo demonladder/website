@@ -1,5 +1,5 @@
-import APIClient from '../../../../../api/APIClient';
-import { NaNToNull } from '../../../../../utils/NaNToNull';
+import APIClient from '../../../../api/APIClient';
+import { NaNToNull } from '../../../../utils/NaNToNull';
 
 export interface AlphabetResponse {
     ID: number;

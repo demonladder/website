@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import GenerateTierRoulette, { TierRouletteResponse } from '../../../../api/generators/GenerateTierRoulette';
-import useLocalStorage from '../../../../hooks/useLocalStorage';
+import GenerateTierRoulette, { TierRouletteResponse } from '../../../api/generators/GenerateTierRoulette';
+import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Link } from 'react-router-dom';
-import IDButton from '../../../../components/IDButton';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { NumberInput } from '../../../../components/Input';
+import IDButton from '../../../components/IDButton';
+import FormGroup from '../../../components/form/FormGroup';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import { NumberInput } from '../../../components/Input';
 
 export default function TierRoulette() {
     const [rouletteLevels, setRouletteLevels] = useLocalStorage<TierRouletteResponse[] | null>('tierRouletteLevels', null);

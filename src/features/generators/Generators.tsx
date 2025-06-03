@@ -1,6 +1,6 @@
 import { NavLink as Nav, Outlet } from 'react-router-dom';
-import Page from '../../../components/Page';
-import Heading1 from '../../../components/headings/Heading1';
+import Page from '../../components/Page';
+import Heading1 from '../../components/headings/Heading1';
 import { Helmet } from 'react-helmet-async';
 
 export default function Generators() {

@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { NumberInput, TextInput } from '../../../../components/Input';
-import Select from '../../../../components/Select';
-import CheckBox from '../../../../components/input/CheckBox';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import FormGroup from '../../../components/form/FormGroup';
+import FormInputDescription from '../../../components/form/FormInputDescription';
+import FormInputLabel from '../../../components/form/FormInputLabel';
+import { NumberInput, TextInput } from '../../../components/Input';
+import Select from '../../../components/Select';
+import CheckBox from '../../../components/input/CheckBox';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { AlphabetResponse, Difficulty, generateAlphabet } from './api/generateAlphabet';
 import { useLocalStorage } from 'usehooks-ts';
 import { Link } from 'react-router-dom';
-import IDButton from '../../../../components/IDButton';
-import useValidNumber from '../../../../hooks/useValidNumber';
+import IDButton from '../../../components/IDButton';
+import useValidNumber from '../../../hooks/useValidNumber';
 import _ from 'lodash';
-import renderToastError from '../../../../utils/renderToastError';
+import renderToastError from '../../../utils/renderToastError';
 
 const difficultyOptions = {
     '-1': 'Any',

@@ -1,15 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
-import GenerateDecathlon from '../../../../api/generators/decathlon/GenerateDecathlon';
-import GetDecathlon from '../../../../api/generators/decathlon/GetDecathlon';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import GenerateDecathlon from '../../../api/generators/decathlon/GenerateDecathlon';
+import GetDecathlon from '../../../api/generators/decathlon/GetDecathlon';
 import { Link } from 'react-router-dom';
-import IDButton from '../../../../components/IDButton';
-import NextDecathlonLevel from '../../../../api/generators/decathlon/NextDecathlonLevel';
-import ReRollDecathlonLevel from '../../../../api/generators/decathlon/ReRollDecathlonLevel';
+import IDButton from '../../../components/IDButton';
+import NextDecathlonLevel from '../../../api/generators/decathlon/NextDecathlonLevel';
+import ReRollDecathlonLevel from '../../../api/generators/decathlon/ReRollDecathlonLevel';
 import { toast } from 'react-toastify';
-import renderToastError from '../../../../utils/renderToastError';
-import pluralS from '../../../../utils/pluralS';
-import Heading2 from '../../../../components/headings/Heading2';
+import renderToastError from '../../../utils/renderToastError';
+import pluralS from '../../../utils/pluralS';
+import Heading2 from '../../../components/headings/Heading2';
 
 export default function Decathlon() {
     const queryClient = useQueryClient();
