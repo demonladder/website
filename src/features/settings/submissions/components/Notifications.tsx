@@ -60,7 +60,7 @@ export default function Notifications() {
         if (DMNotifs) wantBitField.add(NotificationsBitField.DMs);
         else wantBitField.remove(NotificationsBitField.DMs);
 
-        void toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries(['user', session.user?.ID, 'wants'])), {
+        void toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries({ queryKey: ['user', session.user?.ID, 'wants'] })), {
             pending: 'Saving...',
             success: 'Saved',
             error: renderToastError,

@@ -14,7 +14,7 @@ export default function StatisticLineChart({ metricName, title = 'API data' }: {
 
     return (
         <div className='relative'>
-            <FloatingLoadingSpinner isLoading={status === 'loading'} />
+            <FloatingLoadingSpinner isLoading={status === 'pending'} />
             <GenericLineChart data={chartData} title={title} />
         </div>
     );

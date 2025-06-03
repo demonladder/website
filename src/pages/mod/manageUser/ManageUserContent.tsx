@@ -21,7 +21,7 @@ export default function ManageUserContent() {
     useDocumentTitle(`Editing user ${fetchedUser?.Name ?? '...'}`);
 
     if (userID === undefined) return;
-    if (status === 'loading') return <InlineLoadingSpinner />;
+    if (status === 'pending') return <InlineLoadingSpinner />;
     if (status === 'error') return <p>Error: couldn't fetch user</p>;
 
     return (

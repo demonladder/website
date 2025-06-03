@@ -13,7 +13,7 @@ export default function Packs({ levelID }: Props) {
         queryFn: () => getLevelPacks(levelID),
     });
 
-    if (status === 'loading' || status === 'error') {
+    if (status === 'pending' || status === 'error') {
         return (
             <section className='mt-6'>
                 <h2 className='text-3xl'>Packs</h2>

@@ -114,7 +114,7 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
         setPage(0);
     }, [showTwoPlayerStats, setPage]);
 
-    if (status === 'error' || status === 'loading') return (
+    if (status === 'error' || status === 'pending') return (
         <section className='mt-6'>
             <h2 className='text-3xl'>Submissions</h2>
             <LoadingSpinner />

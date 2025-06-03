@@ -32,8 +32,8 @@ export default function EditInformation({ user }: { user: UserResponse }) {
     const editMutation = useMutation({
         mutationFn: (body: Parameters<typeof saveProfile>[0]) => toast.promise(saveProfile(body), { pending: 'Saving...', success: 'Saved', error: renderToastError }),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['user', user.ID]);
-            void queryClient.invalidateQueries(['userSearch']);
+            void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });
+            void queryClient.invalidateQueries({ queryKey: ['userSearch'] });
         },
     });
 

@@ -44,7 +44,7 @@ export default function SignupLink() {
 
     const queryClient = useQueryClient();
     const genToken = useMutation({
-        mutationFn: async (context: number) => toast.promise(CreateSignupToken(context).then(() => queryClient.invalidateQueries(['signupTokens'])), {
+        mutationFn: async (context: number) => toast.promise(CreateSignupToken(context).then(() => queryClient.invalidateQueries({ queryKey: ['signupTokens'] })), {
             pending: 'Generating...',
             success: 'Generated!',
             error: renderToastError,
@@ -64,7 +64,7 @@ export default function SignupLink() {
             <FormGroup>
                 <FormInputLabel htmlFor='tokenReceiver'>User</FormInputLabel>
                 <UserSearchBox setResult={setResult} id='tokenReceiver' />
-                <PrimaryButton onClick={newLink} disabled={genToken.status === 'loading'}>Generate</PrimaryButton>
+                <PrimaryButton onClick={newLink} disabled={genToken.status === 'pending'}>Generate</PrimaryButton>
             </FormGroup>
             <div className='flex justify-between items-center mt-8'>
                 <p><b>Links</b></p>

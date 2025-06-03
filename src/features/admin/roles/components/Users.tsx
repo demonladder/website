@@ -10,14 +10,14 @@ export default function Users({ roleID }: { roleID: number }) {
     const queryClient = useQueryClient();
     const { data } = useQuery({
         queryKey: ['role', roleID, 'users'],
-        queryFn: () => APIClient.get<{ users: User[]}>(`/roles/${roleID}/users`).then((res) => res.data),
+        queryFn: () => APIClient.get<{ users: User[] }>(`/roles/${roleID}/users`).then((res) => res.data),
     });
 
     function removeUser(userID: number) {
         void toast.promise(
             RemoveRoleFromUser(userID, roleID).then(() => {
-                void queryClient.invalidateQueries(['role', roleID, 'users']);
-                void queryClient.invalidateQueries(['users', userID]);
+                void queryClient.invalidateQueries({ queryKey: ['role', roleID, 'users'] });
+                void queryClient.invalidateQueries({ queryKey: ['users', userID] });
             }),
             {
                 pending: 'Removing role...',

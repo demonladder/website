@@ -22,7 +22,7 @@ export default function PackOverview() {
 
     const [isList, viewButtons] = useLevelView('packs.listView');
 
-    if (status === 'loading' || levelStatus === 'loading') return <FloatingLoadingSpinner />;
+    if (status === 'pending' || levelStatus === 'pending') return <FloatingLoadingSpinner />;
     if (status === 'error' || levelStatus === 'error') return <Page><Heading1>Error: could not fetch pack</Heading1></Page>;
 
     const normalLevels = packLevels.filter((lvl) => !lvl.EX).map((level) => ({ ...level.Level, ID: level.LevelID, Completed: level.Completed }));

@@ -25,7 +25,7 @@ export default function AccountSettings() {
         onSuccess: () => {
             window.location.href = '/';
         },
-        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
+        onError: (error: Error) => void toast.error(renderToastError.render({ data: error })),
     });
 
     function onPasswordReset() {
@@ -74,7 +74,7 @@ export default function AccountSettings() {
                         </FormGroup>
                     </div>
                     <div className='flex justify-end'>
-                        <DangerButton type='submit' disabled={!isNameValid} loading={deleteUserMutation.isLoading}>Delete account</DangerButton>
+                        <DangerButton type='submit' disabled={!isNameValid} loading={deleteUserMutation.isPending}>Delete account</DangerButton>
                     </div>
                 </form>
             </Modal>

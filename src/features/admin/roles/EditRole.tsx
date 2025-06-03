@@ -48,7 +48,7 @@ export default function EditRole() {
 
     const onSave = useCallback(() => {
         setIsMutating(true);
-        void toast.promise(saveRole(roleID, color ? parseInt(color, 16) : null, roleName, tempPermissions).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
+        void toast.promise(saveRole(roleID, color ? parseInt(color, 16) : null, roleName, tempPermissions).then(() => queryClient.invalidateQueries({ queryKey: ['roles'] })).finally(() => setIsMutating(false)), {
             pending: 'Saving role...',
             success: 'Role saved',
             error: renderToastError,

@@ -83,12 +83,13 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = data.MaxPref.toString();
     }, [data]);
 
-    const updateMutation = useMutation(saveProfile, {
+    const updateMutation = useMutation({
+        mutationFn: saveProfile,
         onSuccess: async () => {
             await invalidateUser();
             toast.success('Profile updated successfully!');
         },
-        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
+        onError: (error: Error) => void toast.error(renderToastError.render({ data: error })),
     });
 
     function onSave(e: React.FormEvent) {
@@ -124,7 +125,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         });
     }
 
-    if (status === 'loading') return <LoadingSpinner />;
+    if (status === 'pending') return <LoadingSpinner />;
     if (status === 'error') return <div><Heading1>An error occurred</Heading1></div>;
 
     return (
@@ -185,7 +186,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                     <NumberInput ref={maxPrefRef} />
                 </div>
             </FormGroup>
-            <PrimaryButton type='submit' loading={updateMutation.isLoading}>Update</PrimaryButton>
+            <PrimaryButton type='submit' loading={updateMutation.isPending}>Update</PrimaryButton>
         </form>
     );
 }

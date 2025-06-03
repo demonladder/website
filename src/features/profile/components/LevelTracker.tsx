@@ -23,7 +23,7 @@ export default function LevelTracker({ levelID, title }: Props) {
     return (
         <Tracker>
             <b>{title}:</b>
-            <Link to={'/level/' + levelID} className='underline'><InlineLoadingSpinner isLoading={status === 'loading'} /> {data?.Meta.Name ?? levelID}</Link>
+            <Link to={'/level/' + levelID} className='underline'><InlineLoadingSpinner isLoading={status === 'pending'} /> {data?.Meta.Name ?? levelID}</Link>
         </Tracker>
     );
 }

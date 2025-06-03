@@ -35,7 +35,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
         if (tagID === 0) return;
 
         sendTagVoteRequest(level.ID, tagID).then(() => {
-            void queryClient.invalidateQueries(['level', level.ID, 'tags']);
+            void queryClient.invalidateQueries({ queryKey: ['level', level.ID, 'tags'] });
         }).catch((err: Error) => {
             toast.error(renderToastError.render({ data: err }));
         }).finally(() => {
@@ -59,7 +59,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
         tagsToDisplay.push(...topThreeTags, ...userVotes);
     }
 
-    const isContentLoading = levelTags === undefined || tagStatus === 'loading' || tagFetchStatus === 'fetching';
+    const isContentLoading = levelTags === undefined || tagStatus === 'pending' || tagFetchStatus === 'fetching';
     const canVote = voteMeta?.eligible === true;
 
     return (
@@ -99,7 +99,7 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
             pending: 'Removing votes...',
             success: {
                 render: () => {
-                    void queryClient.invalidateQueries(['level', levelID, 'tags']);
+                    void queryClient.invalidateQueries({ queryKey: ['level', levelID, 'tags'] });
                     return 'Votes removed successfully';
                 },
             },
@@ -111,7 +111,7 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
         if (!eligible) return toast.error('You are not eligible to vote on skillsets for this level!');
 
         void sendTagVoteRequest(levelID, submission.TagID).then(() => {
-            void queryClient.invalidateQueries(['level', levelID, 'tags']);
+            void queryClient.invalidateQueries({ queryKey: ['level', levelID, 'tags'] });
         });
     }
 

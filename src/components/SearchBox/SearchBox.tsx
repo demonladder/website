@@ -72,7 +72,7 @@ export default function SearchBox<T>({ search, onSearchChange, list, getLabel, g
         <div>
             <TextInput value={search} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} invalid={invalid} />
             <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-600 text-theme-text round:rounded-b-lg text-base z-10 shadow-2xl'}>
-                {status === 'loading'
+                {status === 'pending'
                     ? <LoadingSpinner />
                     : ((status === 'error' || list.length === 0)
                         ? <div className='px-2 py-1'><p>No results</p></div>

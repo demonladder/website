@@ -9,7 +9,7 @@ import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 export default function ProfileButtons() {
     const session = useSession();
 
-    if (session.loadStatus === 'loading') return <LoginButton />;
+    if (session.loadStatus === 'pending') return <LoginButton />;
     if (!session.user) return <LoginButton />;
 
     return <ProfileButton userID={session.user.ID} username={session.user.Name} />;

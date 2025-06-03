@@ -16,20 +16,23 @@ interface Props {
 }
 
 export default function Submissions({ user }: Props) {
-    const removeEnjoyments = useMutation(removeUserEnjoyments, {
-        onSuccess: () => toast.success('Enjoyments removed!'),
+    const removeEnjoyments = useMutation({
+        mutationFn: removeUserEnjoyments,
+        onSuccess: () => void toast.success('Enjoyments removed!'),
         onError: (err: AxiosError) => {
             toast.error(renderToastError.render({ data: err }));
         },
     });
 
-    const purgePendingSubmissions = useMutation(deletePendingSubmissions, {
+    const purgePendingSubmissions = useMutation({
+        mutationFn: deletePendingSubmissions,
         onError: (err: AxiosError) => {
             toast.error(renderToastError.render({ data: err }));
         },
     });
 
-    const purgeSubmissions = useMutation(deleteSubmissions, {
+    const purgeSubmissions = useMutation({
+        mutationFn: deleteSubmissions,
         onError: (err: AxiosError) => {
             toast.error(renderToastError.render({ data: err }));
         },
@@ -46,12 +49,12 @@ export default function Submissions({ user }: Props) {
             <div className='mt-12'>
                 <Heading4 className='border-theme-500 border-b pb-2'>Purge pending submissions</Heading4>
                 <FormInputDescription>This action is irreversible! All the users pending submissions will be deleted.</FormInputDescription>
-                <DangerButton onClick={() => purgePendingSubmissions.mutate(user.ID)} loading={purgePendingSubmissions.isLoading}>Purge</DangerButton>
+                <DangerButton onClick={() => purgePendingSubmissions.mutate(user.ID)} loading={purgePendingSubmissions.isPending}>Purge</DangerButton>
             </div>
             <div className='mt-12'>
                 <Heading4 className='border-theme-500 border-b pb-2'>Purge submissions</Heading4>
                 <FormInputDescription>This action is irreversible! All the users submissions will be deleted. Might take a little while if the user has a lot of submissions.</FormInputDescription>
-                <DangerButton onClick={() => purgeSubmissions.mutate(user.ID)} loading={purgeSubmissions.isLoading}>Purge</DangerButton>
+                <DangerButton onClick={() => purgeSubmissions.mutate(user.ID)} loading={purgeSubmissions.isPending}>Purge</DangerButton>
             </div>
         </section>
     );

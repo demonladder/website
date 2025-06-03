@@ -109,7 +109,7 @@ export default function BulkSubmit() {
                 <p>Values wrapped in [ ] are optional. You can use a - as a placeholder for optional values.</p>
             </div>
             <TextArea value={submissions} onChange={(e) => setSubmissions(e.target.value)} placeholder={'Examples:\n64658786 - 10\nichor lazerblitz 8\n3 6 - 120 mobile'} invalid={!isValid} aria-invalid={!isValid} autoCorrect='off' autoFocus={true} />
-            <PrimaryButton onClick={onSubmit} loading={mutation.status === 'loading'}>Submit</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} loading={mutation.status === 'pending'}>Submit</PrimaryButton>
         </Page>
     );
 }

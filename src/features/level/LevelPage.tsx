@@ -47,7 +47,7 @@ export default function LevelPage() {
         queryKey: ['level', levelID, 'tags', 'eligible'],
     });
 
-    if (status === 'loading') {
+    if (status === 'pending') {
         return <Page><FloatingLoadingSpinner /></Page>;
     }
 

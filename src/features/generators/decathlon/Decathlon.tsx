@@ -17,21 +17,21 @@ export default function Decathlon() {
     const generateMutation = useMutation({
         mutationFn: () => toast.promise(GenerateDecathlon, { pending: 'Generating...', success: 'Generated!', error: renderToastError }),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['decathlon']);
+            void queryClient.invalidateQueries({ queryKey: ['decathlon'] });
         },
     });
 
     const nextMutation = useMutation({
         mutationFn: NextDecathlonLevel,
         onSuccess: () => {
-            void queryClient.invalidateQueries(['decathlon']);
+            void queryClient.invalidateQueries({ queryKey: ['decathlon'] });
         },
     });
 
     const reRollMutation = useMutation({
         mutationFn: () => toast.promise(ReRollDecathlonLevel, { pending: 'Rolling...', success: 'Level re-rolled!', error: renderToastError }),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['decathlon']);
+            void queryClient.invalidateQueries({ queryKey: ['decathlon'] });
         },
     });
 
@@ -55,7 +55,7 @@ export default function Decathlon() {
             <p>6-9: 6 re-rolls</p>
             <p>1-5: 7 re-rolls</p>
             <p>The decathlon will not contain levels you have already beaten.</p>
-            <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isLoading}>{data ? 'Re-g' : 'G'}enerate</PrimaryButton>
+            <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>{data ? 'Re-g' : 'G'}enerate</PrimaryButton>
             {data && <>
                 <p className='my-4'>You have <b>{data.Description.reRolls} re-roll{pluralS(data.Description.reRolls)}</b> left</p>
                 <ol className='mt-4 text-xl'>

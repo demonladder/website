@@ -35,8 +35,8 @@ export default function SubmissionMerge() {
 
     const mergeMutation = useMutation({
         mutationFn: () => mergeSubmissions(sourceUser?.ID ?? 0, targetUser?.ID ?? 0, mergeMode),
-        onSuccess: () => toast.success('Submissions merged successfully!'),
-        onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
+        onSuccess: () => void toast.success('Submissions merged successfully!'),
+        onError: (error: AxiosError) => void toast.error(renderToastError.render({ data: error })),
     });
 
     return (
@@ -60,7 +60,7 @@ export default function SubmissionMerge() {
             </div>
             <SegmentedButtonGroup options={mergeOptions} activeKey={mergeMode} onSetActive={setMergeMode} />
             <div className='mt-2 flex justify-end'>
-                <FilledButton sizeVariant='md' onClick={() => mergeMutation.mutate()} disabled={mergeMutation.isLoading}>Merge</FilledButton>
+                <FilledButton sizeVariant='md' onClick={() => mergeMutation.mutate()} disabled={mergeMutation.isPending}>Merge</FilledButton>
             </div>
         </>
     );

@@ -1,15 +1,12 @@
-import { QueryKey, useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getPack } from '../api/getPack';
 import { AxiosError } from 'axios';
+import { UseQueryOptionsWithoutKey } from '../../../types/UseQueryOptionsWithoutKey';
 
-export default function usePack(packID: number, options?: UseQueryOptions<
-    Awaited<ReturnType<typeof getPack>>,
-    AxiosError,
-    Awaited<ReturnType<typeof getPack>>,
-    QueryKey
->) {
-    options = options ?? {};
-    options.queryKey = ['packs', packID];
-    options.queryFn = () => getPack(packID);
-    return useQuery(options);
+export default function usePack(packID: number, options: UseQueryOptionsWithoutKey<Awaited<ReturnType<typeof getPack>>, AxiosError> = {}) {
+    return useQuery({
+        ...options,
+        queryKey: ['packs', packID],
+        queryFn: () => getPack(packID),
+    });
 }

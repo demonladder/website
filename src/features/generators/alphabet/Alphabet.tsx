@@ -44,7 +44,7 @@ export default function Alphabet() {
             difficulty !== '-1' ? difficulty as Difficulty : undefined,
             uncompletedOnly,
         ),
-        onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
+        onError: (error: AxiosError) => void toast.error(renderToastError.render({ data: error })),
         onSuccess: (data) => {
             setLevels(data);
         },
@@ -96,7 +96,7 @@ export default function Alphabet() {
                     </label>
                     <FormInputDescription>Optional. Only include levels that you have not completed.</FormInputDescription>
                 </FormGroup>
-                <PrimaryButton onClick={submit} loading={generateMutation.isLoading}>Generate</PrimaryButton>
+                <PrimaryButton onClick={submit} loading={generateMutation.isPending}>Generate</PrimaryButton>
             </div>
             {levels &&
                 <ol className='mt-4 text-xl'>{levels.map((l) => (

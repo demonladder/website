@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles.css';
 import ms from 'ms';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,9 +17,9 @@ const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
             staleTime: ms('2h'),
-            cacheTime: ms('2h') + ms('5m'),
+            gcTime: ms('2h') + ms('5m'),
             retry: false,
-            keepPreviousData: true,
+            placeholderData: keepPreviousData,
         },
     },
 });

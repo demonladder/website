@@ -22,7 +22,7 @@ export default function DeleteTagModal({ tag, onClose: close }: Props) {
         setIsMutating(true);
 
         void toast.promise(deleteTag(tag.ID).then(() => {
-            void queryClient.invalidateQueries(['tags']);
+            void queryClient.invalidateQueries({ queryKey: ['tags'] });
             close();
         }).finally(() => {
             setIsMutating(false);

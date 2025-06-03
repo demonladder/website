@@ -36,7 +36,7 @@ const diffs = [
 export default function References() {
     const { status, data: referenceDemons } = useReferences();
 
-    if (status === 'loading') return <LoadingSpinner />;
+    if (status === 'pending') return <LoadingSpinner />;
     if (status === 'error') return <Page><Heading1>Error: could not fetch references</Heading1></Page>;
 
     return (

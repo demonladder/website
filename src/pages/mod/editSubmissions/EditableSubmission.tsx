@@ -73,16 +73,16 @@ export default function EditableSubmission({ submission }: Props) {
             isEdit: true,
         }),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['level', submission.LevelID]);
+            void queryClient.invalidateQueries({ queryKey: ['level', submission.LevelID] });
             toast.success('Submission updated!');
         },
-        onError: (err: AxiosError) => toast.error(render({ data: err })),
+        onError: (err: AxiosError) => void toast.error(render({ data: err })),
     });
 
     const deleteMutation = useMutation({
         mutationFn: () => DeleteSubmission(submission.ID, deleteReason),
-        onSuccess: () => queryClient.invalidateQueries(['level', submission.LevelID]),
-        onError: (err: AxiosError) => toast.error(render({ data: err })),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['level', submission.LevelID] }),
+        onError: (err: AxiosError) => void toast.error(render({ data: err })),
     });
 
     const submit = useCallback((e: FormEvent) => {
@@ -141,14 +141,14 @@ export default function EditableSubmission({ submission }: Props) {
                 </FormGroup>
             }
             <FormGroup className='flex gap-2'>
-                <PrimaryButton type='submit' onClick={submit} disabled={updateMutation.isLoading}>Edit</PrimaryButton>
-                <DangerButton type='button' onClick={() => setShowDeleteConfirm(true)} disabled={deleteMutation.isLoading}>Delete</DangerButton>
+                <PrimaryButton type='submit' onClick={submit} disabled={updateMutation.isPending}>Edit</PrimaryButton>
+                <DangerButton type='button' onClick={() => setShowDeleteConfirm(true)} disabled={deleteMutation.isPending}>Delete</DangerButton>
             </FormGroup>
             <FormGroup>
                 <Heading3>Extra info</Heading3>
                 <div className='grid grid-cols-3'>
                     {submission.ApprovedBy !== null && <>
-                        <InlineLoadingSpinner isLoading={approvedBy.isLoading} />
+                        <InlineLoadingSpinner isLoading={approvedBy.isPending} />
                         {approvedBy.data &&
                             <div>
                                 <FormInputLabel>Approved by</FormInputLabel>

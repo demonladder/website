@@ -25,13 +25,14 @@ export default function EditReferences() {
 
     const { status, data, refetch } = useReferences();
 
-    const mutation = useMutation(ChangeReferences, {
+    const mutation = useMutation({
+        mutationFn: ChangeReferences,
         onSuccess: () => {
             setChangeList([]);
             void refetch();
             toast.success('Saved');
         },
-        onError: (err: Error) => toast.error(renderToastError.render({ data: err })),
+        onError: (err: Error) => void toast.error(renderToastError.render({ data: err })),
     });
 
     function onSave() {
@@ -57,15 +58,15 @@ export default function EditReferences() {
         setChangeList((prev) => [...prev, { Tier: reference.Tier, ID: reference.LevelID, Type: 'remove', Name: reference.Level.Meta.Name } as Change]);
     }
 
-    if (status === 'loading') return <LoadingSpinner isLoading={true} />;
+    if (status === 'pending') return <LoadingSpinner isLoading={true} />;
     if (status === 'error') return <Heading3>Something went wrong</Heading3>;
 
     return (
         <div id='edit-references'>
-            <FloatingLoadingSpinner isLoading={mutation.isLoading} />
+            <FloatingLoadingSpinner isLoading={mutation.isPending} />
             <div className='flex justify-between mb-3'>
                 <Heading3 className='mb-3'>Edit References</Heading3>
-                <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} onClick={onSave} disabled={mutation.isLoading}>Save changes</PrimaryButton>
+                <PrimaryButton className={(changeList.length > 0 ? 'block' : 'hidden')} onClick={onSave} disabled={mutation.isPending}>Save changes</PrimaryButton>
             </div>
             <div className=''>
                 <label htmlFor='editReferenceLevelInput'>Level:</label>

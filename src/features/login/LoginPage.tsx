@@ -18,14 +18,14 @@ export default function Login() {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { mutate: submit, isLoading } = useMutation({
+    const { mutate: submit, isPending } = useMutation({
         mutationFn: ({ username, password }: { username: string, password: string }) => toast.promise(accountLogin(username, password), {
             pending: 'Logging in...',
             success: 'Logged in!',
             error: renderToastError,
         }),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['me']);
+            void queryClient.invalidateQueries({ queryKey: ['me'] });
             navigate(-1);
         },
     });
@@ -48,7 +48,7 @@ export default function Login() {
                         <FormInputLabel htmlFor='loginPassword'>Password</FormInputLabel>
                         <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} id='loginPassword' name='password' autoComplete='current-password' autoCapitalize='off' />
                     </FormGroup>
-                    <PrimaryButton type='submit' className='relative mt-4 w-full' loading={isLoading}>Log in</PrimaryButton>
+                    <PrimaryButton type='submit' className='relative mt-4 w-full' loading={isPending}>Log in</PrimaryButton>
                     <div className='mt-8'>
                         <p className='text-center'>
                             Don't have an account? Register <Link to='/signup' className='text-blue-400 underline'>here!</Link>

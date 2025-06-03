@@ -25,7 +25,7 @@ export default function Roles() {
 
     const onCreate = useCallback(() => {
         setIsMutating(true);
-        void toast.promise(createRole(search).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
+        void toast.promise(createRole(search).then(() => queryClient.invalidateQueries({ queryKey: ['roles'] })).finally(() => setIsMutating(false)), {
             pending: 'Creating role...',
             success: 'Role created',
             error: renderToastError,

@@ -39,7 +39,7 @@ export default function EditSubmission() {
         setUserID(s.UserID);
     }
 
-    if (status === 'loading') return (<LoadingSpinner />);
+    if (status === 'pending') return (<LoadingSpinner />);
     if (status === 'error') return 'An error occurred';
 
     return (

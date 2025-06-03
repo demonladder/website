@@ -19,7 +19,7 @@ export default function CrossroadPack() {
 
     const [isList, viewButtons] = useLevelView('packs.listView');
 
-    if (status === 'loading' || levelStatus === 'loading') return <Page><LoadingSpinner /></Page>;
+    if (status === 'pending' || levelStatus === 'pending') return <Page><LoadingSpinner /></Page>;
     if (status === 'error' || levelStatus === 'error') return <Page><Heading1>An error occurred</Heading1></Page>;
 
     const allTypes = packLevels.map((l) => l.Path).filter((t) => t !== undefined);

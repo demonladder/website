@@ -16,7 +16,7 @@ export default function AddLevel() {
             return toast.error('Paste a proper level ID');
         }
 
-        void toast.promise(addLevelFromGD(parsedInput).then(() => queryClient.invalidateQueries(['level', parsedInput])), {
+        void toast.promise(addLevelFromGD(parsedInput).then(() => queryClient.invalidateQueries({ queryKey: ['level', parsedInput] })), {
             pending: 'Updating database...',
             success: 'Updated!',
             error: renderToastError,

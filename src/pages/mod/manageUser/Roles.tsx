@@ -26,15 +26,15 @@ export default function Roles({ user }: { user: UserResponse }) {
         mutationFn: (roleID: number) => AddRoleToUser(user.ID, roleID),
         onSuccess: () => {
             toast.success('Role added!');
-            void queryClient.invalidateQueries(['user', user.ID]);
+            void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });
         },
-        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
+        onError: (error: Error) => void toast.error(renderToastError.render({ data: error })),
     });
 
     const removeRoleMutation = useMutation({
         mutationFn: (roleID: number) => toast.promise(RemoveRoleFromUser(user.ID, roleID), { pending: 'Removing role...', success: 'Role removed', error: renderToastError }),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['user', user.ID]);
+            void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });
         },
     });
 
@@ -48,11 +48,11 @@ export default function Roles({ user }: { user: UserResponse }) {
             <div className='mb-4'>
                 <SearchBox search={addFilter} onSearchChange={setAddFilter} list={unacquiredRoles} setResult={onAddRole} getLabel={(r) => `${r.Icon ?? ''} ${r.Name}`} getName={(r) => r.Name} overWriteInput={false} status='ready' placeholder='Role' id={manageUserAddRoleSearchBox} />
             </div>
-            {rolesQuery.isLoading && <InlineLoadingSpinner />}
+            {rolesQuery.isPending && <InlineLoadingSpinner />}
             {roles !== undefined &&
                 <ul>
                     {roles.map((role) => (
-                        <li className='mt-1' key={role.ID}><DangerButton onClick={() => removeRoleMutation.mutate(role.ID)} loading={removeRoleMutation.isLoading}>X</DangerButton> {role.Icon} {role.Name}</li>
+                        <li className='mt-1' key={role.ID}><DangerButton onClick={() => removeRoleMutation.mutate(role.ID)} loading={removeRoleMutation.isPending}>X</DangerButton> {role.Icon} {role.Name}</li>
                     ))}
                 </ul>
             }

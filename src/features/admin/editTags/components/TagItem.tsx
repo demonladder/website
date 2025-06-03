@@ -48,7 +48,7 @@ export default function TagItem({ dragLocked, tag, selected, onSelect }: Props) 
 
         const droppedID = parseInt(e.dataTransfer.getData('text/plain'));
         const request = reorderTag(droppedID, tag.Ordering).then(() => {
-            void queryClient.invalidateQueries(['tags']);
+            void queryClient.invalidateQueries({ queryKey: ['tags'] });
             onSelect();
         });
 

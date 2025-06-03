@@ -7,11 +7,11 @@ export function useApproveClicked() {
     const queryClient = useQueryClient();
 
     function invalidateQueries(userID: number, levelID: number) {
-        void queryClient.invalidateQueries(['submissionQueue']);
-        void queryClient.invalidateQueries(['stats']);
-        void queryClient.invalidateQueries(['staffLeaderboard']);
-        void queryClient.invalidateQueries(['user', userID, 'submissions']);
-        void queryClient.invalidateQueries(['level', levelID]);
+        void queryClient.invalidateQueries({ queryKey: ['submissionQueue'] });
+        void queryClient.invalidateQueries({ queryKey: ['stats'] });
+        void queryClient.invalidateQueries({ queryKey: ['staffLeaderboard'] });
+        void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions'] });
+        void queryClient.invalidateQueries({ queryKey: ['level', levelID] });
     }
 
     return (ID: number, levelID: number, userID: number, onlyEnjoyment = false, proofReviewTime?: number | null) => {

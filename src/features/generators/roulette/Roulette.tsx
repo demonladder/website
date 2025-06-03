@@ -48,7 +48,7 @@ export default function Roulette() {
             difficulty !== '-1' ? difficulty : undefined,
             excludeCompleted,
         ),
-        onError: (err: AxiosError) => toast.error(renderToastError.render({ data: err })),
+        onError: (err: AxiosError) => void toast.error(renderToastError.render({ data: err })),
         onSuccess: (data) => {
             setRouletteLevels(data);
             setProgress(0);
@@ -100,7 +100,7 @@ export default function Roulette() {
                 </label>
                 <FormInputDescription>Optional. Only include levels that you have not completed.</FormInputDescription>
             </FormGroup>
-            <PrimaryButton onClick={submit} loading={generateMutation.isLoading}>Generate</PrimaryButton>
+            <PrimaryButton onClick={submit} loading={generateMutation.isPending}>Generate</PrimaryButton>
             <List levels={rouletteLevels} progress={progress!} setProgress={setProgress} />
             {rouletteLevels?.length === progress &&
                 <p className='text-center font-bold py-4'>GG, you beat this roulette!!!</p>

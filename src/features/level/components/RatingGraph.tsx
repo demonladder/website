@@ -14,7 +14,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
     const { data, status } = useLevelSubmissionSpread(levelMeta.ID);
     const [showPercentages, setShowPercentages] = useState(false);
 
-    if (status === 'loading' || status === 'error') return (
+    if (status === 'pending' || status === 'error') return (
         <section className='mt-6'>
             <h2 className='text-3xl'>Rating spread</h2>
             <LoadingSpinner />

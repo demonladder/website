@@ -17,7 +17,7 @@ export function BotSettings() {
 
         setBotMutating(true);
         void ActivateBotRequest().then(() => {
-            void queryClient.invalidateQueries(['botStatus']);
+            void queryClient.invalidateQueries({ queryKey: ['botStatus'] });
         }).finally(() => {
             setBotMutating(false);
         });
@@ -27,7 +27,7 @@ export function BotSettings() {
 
         setBotMutating(true);
         void DeactivateBotRequest().then(() => {
-            void queryClient.invalidateQueries(['botStatus']);
+            void queryClient.invalidateQueries({ queryKey: ['botStatus'] });
         }).finally(() => {
             setBotMutating(false);
         });

@@ -49,7 +49,7 @@ export default function EditTags() {
 
         setIsMutating(true);
         void toast.promise(saveTag(selectedTag, nameRef.current.value, descriptionRef.current.value).then(() => {
-            void queryClient.invalidateQueries(['tags']);
+            void queryClient.invalidateQueries({ queryKey: ['tags'] });
         }).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Saved',
@@ -63,7 +63,7 @@ export default function EditTags() {
 
         if (!nameRef.current || !descriptionRef.current) return;
         void toast.promise(createTag(nameRef.current.value, descriptionRef.current.value).then(() => {
-            void queryClient.invalidateQueries(['tags']);
+            void queryClient.invalidateQueries({ queryKey: ['tags'] });
         }).finally(() => {
             setIsMutating(false);
         }), {

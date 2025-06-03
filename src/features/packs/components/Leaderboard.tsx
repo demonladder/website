@@ -21,7 +21,7 @@ export default function Leaderboard({ packID }: { packID?: number }) {
     return (
         <section className='mt-4'>
             <Heading2>Global Leaderboard</Heading2>
-            <LoadingSpinner isLoading={status === 'loading'} />
+            <LoadingSpinner isLoading={status === 'pending'} />
             {status === 'error' && <p>Error: could not fetch leaderboard from server</p>}
             <div className='pe-8'>
                 {packLeaders?.map((contestant) => (<LeaderboardEntry user={contestant.User} sum={contestant.Sum} discordData={contestant.User.DiscordData} highestScore={highestScore} key={'leader_' + contestant.UserID} />))}

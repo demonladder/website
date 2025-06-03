@@ -1,6 +1,6 @@
 //import map from '../../../../utils/map';
 import Block from '../gameObjects/Block';
-import GameObject from '../GameObject';
+import GameObject from '../core/GameObject';
 import P5 from 'p5';
 
 export default function createLevel2(p5: P5): GameObject[] {

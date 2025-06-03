@@ -25,7 +25,7 @@ export default function DeleteListModal({ list, onClose: close }: Props) {
         e.preventDefault();
 
         void toast.promise(deleteList(list.ID).then(() => {
-            void queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
+            void queryClient.invalidateQueries({ queryKey: ['user', list.OwnerID, 'lists'] });
             if (window.location.pathname.includes(`/list/${list.ID}`)) navigate(`/profile/${list.OwnerID}`);
             close();
         }), {

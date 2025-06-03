@@ -14,8 +14,12 @@ export default function Debugging() {
         toast.error('Error occurred');
     }
 
-    const { mutate: fixDeviation, status: fixDeviationStatus } = useMutation(async () => APIClient.post('/tests/fixDeviation', {}, { timeout: ms('20m') }).catch(handleError));
-    const { mutate: restartServer, status: restartServerStatus } = useMutation(async () => APIClient.post('/tests/restartServer', {}).catch(handleError));
+    const { mutate: fixDeviation, status: fixDeviationStatus } = useMutation({
+        mutationFn: async () => APIClient.post('/tests/fixDeviation', {}, { timeout: ms('20m') }).catch(handleError),
+    });
+    const { mutate: restartServer, status: restartServerStatus } = useMutation({
+        mutationFn: async () => APIClient.post('/tests/restartServer', {}).catch(handleError),
+    });
 
     return (
         <div>
@@ -23,11 +27,11 @@ export default function Debugging() {
             <p className='mb-2'>For developer eyes only :P</p>
             <div>
                 <div className='mb-2'>
-                    <SecondaryButton onClick={() => fixDeviation()} disabled={fixDeviationStatus === 'loading'}>Recalculate level stats</SecondaryButton>
+                    <SecondaryButton onClick={() => fixDeviation()} disabled={fixDeviationStatus === 'pending'}>Recalculate level stats</SecondaryButton>
                     <p>Takes like 17 minutes</p>
                 </div>
                 <div className='mb-2'>
-                    <DangerButton onClick={() => restartServer()} disabled={restartServerStatus === 'loading'}>Restart server</DangerButton>
+                    <DangerButton onClick={() => restartServer()} disabled={restartServerStatus === 'pending'}>Restart server</DangerButton>
                     <p>Self explanatory</p>
                 </div>
             </div>

@@ -19,7 +19,7 @@ export default function VerificationRoleSelect() {
     useEffect(() => {
         if (verificationRoleQuery.isSuccess) {
             setVerificationRole(verificationRoleQuery.data.ID.toString());
-        }   
+        }
     }, [verificationRoleQuery.data?.ID, verificationRoleQuery.isSuccess]);
 
     function onSave() {
@@ -30,9 +30,9 @@ export default function VerificationRoleSelect() {
             success: 'Verification role updated',
             error: renderToastError,
         }).then(() => {
-            void queryClient.invalidateQueries(['usersEligibleForVerification']);
-            void queryClient.invalidateQueries(['verificationRole']);
-            void queryClient.invalidateQueries(['verifiedUsers']);
+            void queryClient.invalidateQueries({ queryKey: ['usersEligibleForVerification'] });
+            void queryClient.invalidateQueries({ queryKey: ['verificationRole'] });
+            void queryClient.invalidateQueries({ queryKey: ['verifiedUsers'] });
         });
     }
 

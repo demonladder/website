@@ -12,7 +12,7 @@ export default function EligibleUsers() {
         <section className='mt-8'>
             <Heading3>Eligible Users</Heading3>
             <div>
-                {users.isLoading && <p>Loading...</p>}
+                {users.isPending && <p>Loading...</p>}
                 {users.isError && <p>Error: couldn't fetch eligible users</p>}
                 {users.isSuccess && (
                     <div>

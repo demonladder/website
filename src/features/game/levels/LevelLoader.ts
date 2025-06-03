@@ -1,4 +1,4 @@
-import GameObject from '../GameObject';
+import GameObject from '../core/GameObject';
 import Spike from '../gameObjects/Spike';
 
 interface FileObject {

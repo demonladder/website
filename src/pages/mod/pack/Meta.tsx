@@ -44,8 +44,8 @@ export default function Meta({ packID }: Props) {
         setIsLoading(true);
 
         const request = SavePackMetaRequest(packID, description || undefined, categoryKey, roleID).then(() => {
-            void queryClient.invalidateQueries(['packs']);
-            void queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries({ queryKey: ['packs'] });
+            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
         }).finally(() => {
             setIsLoading(false);
         });

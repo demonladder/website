@@ -15,7 +15,7 @@ export default function TrendingLevels() {
         queryFn: getTrendingLevels,
     });
 
-    if (status === 'loading') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>;
+    if (status === 'pending') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>;
     if (status === 'error') return <div className='xl:col-span-3'>Error, could not fetch trending levels</div>;
 
     return (

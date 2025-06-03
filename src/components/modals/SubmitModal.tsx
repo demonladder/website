@@ -69,7 +69,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
 
     const session = useSession();
 
-    const { data: userSubmission, remove: removeSubmissionData } = useSubmission(level.ID, session.user!.ID, {
+    const { data: userSubmission, refetch: removeSubmissionData } = useSubmission(level.ID, session.user!.ID, {
         enabled: session.user !== undefined,
     });
 
@@ -101,9 +101,9 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             });
         },
         onSuccess: () => {
-            removeSubmissionData();
-            void queryClient.invalidateQueries(['level', level.ID]);
-            if (session.user?.ID !== undefined) void queryClient.invalidateQueries(['user', session.user.ID]);
+            void removeSubmissionData();
+            void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
+            if (session.user?.ID !== undefined) void queryClient.invalidateQueries({ queryKey: ['user', session.user.ID] });
             onClose();
         },
     });
@@ -162,11 +162,11 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         }, {
             onSuccess: (data) => {
                 if (data.wasAuto) {
-                    void queryClient.invalidateQueries(['level', level.ID]);
-                    void queryClient.invalidateQueries(['submission', level.ID, userID]);
-                    if (userID !== undefined) void queryClient.invalidateQueries(['user', userID]);
+                    void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
+                    void queryClient.invalidateQueries({ queryKey: ['submission', level.ID, userID]});
+                    if (userID !== undefined) void queryClient.invalidateQueries({ queryKey: ['user', userID] });
                 } else {
-                    removeSubmissionData();
+                    void removeSubmissionData();
                 }
                 toast.success(data.wasAuto ? 'Submission accepted' : 'Submission queued');
                 onClose();
@@ -280,7 +280,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     </FormGroup>
                 }
                 <FormGroup className='flex justify-between mt-8'>
-                    <button type='button' className='text-red-400 underline-t disabled:text-gray-400' onClick={() => deleteMutation.mutate()} disabled={deleteMutation.status === 'loading'}>delete</button>
+                    <button type='button' className='text-red-400 underline-t disabled:text-gray-400' onClick={() => deleteMutation.mutate()} disabled={deleteMutation.status === 'pending'}>delete</button>
                     <div>
                         <SecondaryButton type='button' onClick={onClose}>Close</SecondaryButton>
                         <PrimaryButton type='submit'>Submit</PrimaryButton>

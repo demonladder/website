@@ -30,14 +30,14 @@ export default function EligibleUser({ userID, submissions, distinctApprovals }:
             error: renderToastError,
         }).then(() => {
             void user.refetch();
-            void queryClient.invalidateQueries(['verifiedUsers']);
-            void queryClient.invalidateQueries(['usersEligibleForVerification']);
+            void queryClient.invalidateQueries({ queryKey: ['verifiedUsers'] });
+            void queryClient.invalidateQueries({ queryKey: ['usersEligibleForVerification'] });
         });
     }
 
     return (
         <div className='bg-theme-600 px-4 py-2 round:rounded-lg relative'>
-            {user.isLoading && <LoadingSpinner />}
+            {user.isPending && <LoadingSpinner />}
             {user.isSuccess && <>
                 <Heading4 className='flex gap-2'>
                     <img src={`https://cdn.discordapp.com/avatars/${user.data.DiscordData?.ID}/${user.data.DiscordData?.Avatar}.png`} className='inline-block w-14 h-14 rounded-full' />

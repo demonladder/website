@@ -71,7 +71,7 @@ export default function BanHistory({ user }: { user: UserResponse }) {
                         <FormInputLabel htmlFor='banReason'>Reason:</FormInputLabel>
                         <TextInput id='banReason' placeholder='Ban reason...' value={reason} onChange={(e) => setReason(e.target.value.trimStart())} required />
                     </FormGroup>
-                    <DangerButton type='submit' disabled={banMutation.isLoading}>Ban</DangerButton>
+                    <DangerButton type='submit' disabled={banMutation.isPending}>Ban</DangerButton>
                 </form>
             </div>
         </section>

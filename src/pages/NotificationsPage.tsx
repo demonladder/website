@@ -22,7 +22,7 @@ export default function Notifications() {
         setIsMutating(true);
 
         const promise = MarkAllReadRequest().then(() => {
-            void queryClient.invalidateQueries(['notifications']);
+            void queryClient.invalidateQueries({ queryKey: ['notifications'] });
         }).finally(() => {
             setIsMutating(false);
         });
@@ -61,7 +61,7 @@ function Notification({ notif }: { notif: NotificationResponse }) {
         if (notif.IsRead) return;
 
         MarkReadNotifications([notif.ID])?.then(() => {
-            void queryClient.invalidateQueries(['notifications']);
+            void queryClient.invalidateQueries({ queryKey: ['notifications'] });
         }).catch(() => {
             toast.error('Failed to mark as read');
         });

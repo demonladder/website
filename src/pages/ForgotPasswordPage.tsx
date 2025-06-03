@@ -14,7 +14,8 @@ export default function ForgotPassword() {
     const [username, setUsername] = useState('');
 
     const toastHandle = useRef<Id | null>(null);
-    const mutation = useMutation(forgotPassword, {
+    const mutation = useMutation({
+        mutationFn: forgotPassword,
         onMutate: () => toastHandle.current = toast.loading('Sending...'),
         onSuccess: () => toast.update(toastHandle.current!, { type: 'success', render: 'DM sent!', autoClose: null, isLoading: false }),
         onError: (err: AxiosError) => toast.update(toastHandle.current!, { type: 'error', render: () => renderToastError.render({ data: err }), autoClose: null, isLoading: false }),
@@ -37,7 +38,7 @@ export default function ForgotPassword() {
                         <FormGroup>
                             <TextInput value={username} onChange={(e) => setUsername(e.target.value)} placeholder='Discord username' autoComplete='discord username' invalid={username.match(/^[a-zA-Z0-9._]{2,32}$/) === null} />
                         </FormGroup>
-                        <PrimaryButton type='submit' disabled={mutation.isLoading}>Send</PrimaryButton>
+                        <PrimaryButton type='submit' disabled={mutation.isPending}>Send</PrimaryButton>
                     </form>
                 </div>
             </div>

@@ -46,7 +46,7 @@ export default function List() {
         setIsDragLocked(true);
 
         void toast.promise(
-            moveListLevel(list.ID, oldID, newPosition).then(() => queryClient.invalidateQueries(['list', listID])).finally(() => setIsDragLocked(false)),
+            moveListLevel(list.ID, oldID, newPosition).then(() => queryClient.invalidateQueries({ queryKey: ['list', listID] })).finally(() => setIsDragLocked(false)),
             {
                 success: 'Moved level',
                 pending: 'Moving...',
@@ -55,7 +55,9 @@ export default function List() {
         );
     }, [list, listID, queryClient, setIsDragLocked]);
 
-    const nameMutation = useMutation(([listID, name]: [number, string]) => editListName(listID, name));
+    const nameMutation = useMutation({
+        mutationFn: ([listID, name]: [number, string]) => editListName(listID, name),
+    });
 
     function onSaveName(e: React.SyntheticEvent) {
         e.preventDefault();
@@ -75,7 +77,7 @@ export default function List() {
     }
 
     if (!validListID || (status === 'error' && list === undefined)) return <Page><Heading1>404: List not found</Heading1></Page>;
-    if (status === 'loading') return <Page><Heading1><LoadingSpinner /></Heading1></Page>;
+    if (status === 'pending') return <Page><Heading1><LoadingSpinner /></Heading1></Page>;
 
     return (
         <Page>

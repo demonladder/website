@@ -40,12 +40,12 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
     const denyMutation = useMutation({
         mutationFn: (data: { ID: number, reason?: string }) => DenySubmission(data.ID, data.reason),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['user', submission.UserID]);
-            void queryClient.invalidateQueries(['submissionQueue']);
+            void queryClient.invalidateQueries({ queryKey: ['user', submission.UserID] });
+            void queryClient.invalidateQueries({ queryKey: ['submissionQueue'] });
             toast.success('Submission denied!');
             onClose();
         },
-        onError: (err: AxiosError) => toast.error(renderToastError.render({ data: err })),
+        onError: (err: AxiosError) => void toast.error(renderToastError.render({ data: err })),
     });
 
     return (
@@ -66,7 +66,7 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
             </div>
             <div className='flex gap-2 justify-end'>
                 <SecondaryButton onClick={() => onClose()}>Close</SecondaryButton>
-                <DangerButton onClick={() => denyMutation.mutate({ ID: submission.ID, reason })} loading={denyMutation.isLoading}>Deny</DangerButton>
+                <DangerButton onClick={() => denyMutation.mutate({ ID: submission.ID, reason })} loading={denyMutation.isPending}>Deny</DangerButton>
             </div>
         </Modal>
     );

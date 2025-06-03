@@ -19,7 +19,7 @@ export default function BetaGuard() {
 
     const mutation = useMutation({
         mutationFn: (key: string) => APIClient.post('/beta/enter', { key }),
-        onError: (err: AxiosError) => toast.error(renderToastError.render({ data: err })),
+        onError: (err: AxiosError) => void toast.error(renderToastError.render({ data: err })),
         onSuccess: (_, key) => {
             setAccessToken(key);
             setHasAccess(true);
@@ -48,9 +48,9 @@ export default function BetaGuard() {
                     <Heading1>GDDL Beta</Heading1>
                     <form onSubmit={handleSubmit} className='my-4'>
                         <TextInput value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder='Access key' />
-                        <PrimaryButton type='submit' disabled={mutation.isLoading}>Enter</PrimaryButton>
+                        <PrimaryButton type='submit' disabled={mutation.isPending}>Enter</PrimaryButton>
                     </form>
-                    {mutation.isLoading && <FloatingLoadingSpinner />}
+                    {mutation.isPending && <FloatingLoadingSpinner />}
                 </div>
             </div>
         );

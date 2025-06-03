@@ -30,7 +30,7 @@ export default function Notes({ user }: { user: UserResponse }) {
             return toast.promise(CreateUserNote(user.ID, newNote.trim()), { pending: 'Creating note...', success: 'Note added', error: renderToastError });
         },
         onSuccess: () => {
-            void queryClient.invalidateQueries(['notes', user.ID]);
+            void queryClient.invalidateQueries({ queryKey: ['notes', user.ID] });
             setNewNote('');
         },
     });
@@ -38,7 +38,7 @@ export default function Notes({ user }: { user: UserResponse }) {
     const deleteNoteMutation = useMutation({
         mutationFn: (noteID: number) => toast.promise(DeleteUserNote(noteID), { pending: 'Deleting note...', success: 'Note deleted', error: renderToastError }),
         onSuccess: () => {
-            void queryClient.invalidateQueries(['notes', user.ID]);
+            void queryClient.invalidateQueries({ queryKey: ['notes', user.ID] });
         },
     });
 
@@ -56,7 +56,7 @@ export default function Notes({ user }: { user: UserResponse }) {
                             </div>
                         </li>
                     ))}
-                    <FloatingLoadingSpinner isLoading={postNoteMutation.isLoading || deleteNoteMutation.isLoading} />
+                    <FloatingLoadingSpinner isLoading={postNoteMutation.isPending || deleteNoteMutation.isPending} />
                 </ul>
                 : <p>No notes</p>
             }
@@ -64,7 +64,7 @@ export default function Notes({ user }: { user: UserResponse }) {
                 <FormInputLabel htmlFor={addID}>Add new note</FormInputLabel>
                 <TextArea id={addID} className='border p-2 w-full' value={newNote} onChange={(e) => setNewNote(e.target.value)} />
                 <div className='flex justify-between'>
-                    <PrimaryButton onClick={() => postNoteMutation.mutate()} loading={postNoteMutation.isLoading} disabled={newNote === ''}>Add</PrimaryButton>
+                    <PrimaryButton onClick={() => postNoteMutation.mutate()} loading={postNoteMutation.isPending} disabled={newNote === ''}>Add</PrimaryButton>
                     <p>{newNote.length}/1000</p>
                 </div>
             </FormGroup>

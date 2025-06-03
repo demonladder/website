@@ -15,7 +15,7 @@ export default function VerifiedUsers() {
 
     return (
         <section className='mt-8'>
-            {users.isLoading && <p>Loading...</p>}
+            {users.isPending && <p>Loading...</p>}
             {users.isError && <p>Error: couldn't fetch verified users</p>}
             {users.isSuccess && (
                 <div>

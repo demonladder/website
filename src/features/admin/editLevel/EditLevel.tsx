@@ -95,16 +95,16 @@ export default function EditLevel() {
                     <FormInputDescription>Must be a YouTube video ID</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
-                    <PrimaryButton onClick={onSubmit} loading={mutation.isLoading}>Save</PrimaryButton>
+                    <PrimaryButton onClick={onSubmit} loading={mutation.isPending}>Save</PrimaryButton>
                 </FormGroup>
             </div>
             <div className='my-8 border-theme-500 border-b-2' />
             <FormGroup>
-                <PrimaryButton onClick={() => recalculateMutation.mutate()} disabled={recalculateMutation.status === 'loading'}>Re-calculate stats</PrimaryButton>
+                <PrimaryButton onClick={() => recalculateMutation.mutate()} disabled={recalculateMutation.status === 'pending'}>Re-calculate stats</PrimaryButton>
                 <FormInputDescription>Should only really be used if an error has occurred in the stat calucation which happens when I do a lil oopsie.</FormInputDescription>
             </FormGroup>
             <FormGroup>
-                <DangerButton onClick={onRemoveLevel} loading={deleteMutation.isLoading}>{confirmRemove ? 'Confirm r' : 'R'}emove level</DangerButton>
+                <DangerButton onClick={onRemoveLevel} loading={deleteMutation.isPending}>{confirmRemove ? 'Confirm r' : 'R'}emove level</DangerButton>
                 <FormInputDescription>If the level gets unrated.</FormInputDescription>
             </FormGroup>
         </div>

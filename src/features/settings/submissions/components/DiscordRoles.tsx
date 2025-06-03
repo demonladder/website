@@ -34,7 +34,8 @@ export default function DiscordRoles() {
     }, [data, data?.roleManagement]);
 
     const toastHandle = useRef<Id | null>(null);
-    const mutation = useMutation(UpdateRoleManagementSettings, {
+    const mutation = useMutation({
+        mutationFn: UpdateRoleManagementSettings,
         onMutate: () => toastHandle.current = toast.loading('Saving...'),
         onSuccess: () => {
             void refetch();
@@ -49,7 +50,7 @@ export default function DiscordRoles() {
             <Select id='hardestManage' options={hardestManageOptions} activeKey={hardestManageKey} onChange={setHardestManageKey} />
             <FormInputDescription>How your role tier roles in the GDDL Discord server will be managed. Switching between these may remove manually set tier roles!</FormInputDescription>
             {session.user !== undefined &&
-                <PrimaryButton loading={status === 'loading' || mutation.isLoading} onClick={() => mutation.mutate(hardestManageKey)} className='mt-2' disabled={hardestManageKey === data?.roleManagement}>Save</PrimaryButton>
+                <PrimaryButton loading={status === 'pending' || mutation.isPending} onClick={() => mutation.mutate(hardestManageKey)} className='mt-2' disabled={hardestManageKey === data?.roleManagement}>Save</PrimaryButton>
             }
         </section>
     );

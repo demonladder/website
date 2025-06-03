@@ -24,9 +24,9 @@ export default function VerifiedUser({ user }: Props) {
         if (!verificationRole.data) return toast.error('Verification role not set');
 
         void toast.promise(RemoveRoleFromUser(user.ID, verificationRole.data.ID).then(() => {
-            void queryClient.invalidateQueries(['verifiedUsers']);
-            void queryClient.invalidateQueries(['usersEligibleForVerification']);
-            void queryClient.invalidateQueries(['user', user.ID]);
+            void queryClient.invalidateQueries({ queryKey: ['verifiedUsers'] });
+            void queryClient.invalidateQueries({ queryKey: ['usersEligibleForVerification'] });
+            void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });
         }), {
             pending: 'Un-verifying user...',
             success: 'User un-verified!',

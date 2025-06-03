@@ -22,8 +22,8 @@ function ListItem({ userID, levelID, list, onClose: close }: { userID: number, l
 
     const onSubmit = useCallback(() => {
         const promise = addLevelToList(levelID, list.ID).then(() => {
-            void queryClient.invalidateQueries(['user', userID, 'lists']);
-            void queryClient.invalidateQueries(['list', list.ID]);
+            void queryClient.invalidateQueries({ queryKey: ['user', userID, 'lists']});
+            void queryClient.invalidateQueries({ queryKey: ['list', list.ID]});
             close();
         });
 
@@ -64,7 +64,7 @@ export default function AddLevelToListModal({ onClose, userID, levelID }: Props)
                         <p>You don't have any lists yet.</p>
                     }
                     <PrimaryButton onClick={() => openCreateListModal(userID, levelID)}>Create new list</PrimaryButton>
-                    <LoadingSpinner isLoading={status === 'loading'} />
+                    <LoadingSpinner isLoading={status === 'pending'} />
                 </>
             }</div>
             <div className='flex float-right'>

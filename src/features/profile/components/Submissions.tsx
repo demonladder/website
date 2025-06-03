@@ -44,7 +44,7 @@ export default function Submissions({ user }: Props) {
         if (submissionResult?.total !== 0 && submissionResult?.submissions.length === 0) setPage(0);
     }, [submissionResult, setPage]);
 
-    if (status === 'loading') return (<LoadingSpinner />);
+    if (status === 'pending') return (<LoadingSpinner />);
 
     const submissions = submissionResult?.submissions;
 

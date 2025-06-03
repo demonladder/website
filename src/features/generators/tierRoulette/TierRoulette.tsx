@@ -16,7 +16,7 @@ export default function TierRoulette() {
 
     const generateMutation = useMutation({
         mutationFn: () => GenerateTierRoulette(),
-        onError: (error: AxiosError) => toast.error((error.response?.data as { error: string })?.error ?? 'An error occurred'),
+        onError: (error: AxiosError) => void toast.error((error.response?.data as { error: string })?.error ?? 'An error occurred'),
         onSuccess: (data) => {
             setRouletteLevels(data);
             setProgress(0);

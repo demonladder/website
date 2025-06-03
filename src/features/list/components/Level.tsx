@@ -74,8 +74,8 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
 
     function onRemoveLevel() {
         void toast.promise(removeLevelFromList(list.ID, listLevel.LevelID).then(() => {
-            void queryClient.invalidateQueries(['list', list.ID]);
-            void queryClient.invalidateQueries(['user', list.OwnerID, 'lists']);
+            void queryClient.invalidateQueries({ queryKey: ['list', list.ID] });
+            void queryClient.invalidateQueries({ queryKey: ['user', list.OwnerID, 'lists'] });
         }), {
             pending: 'Removing level...',
             success: 'Level removed',

@@ -47,7 +47,7 @@ export default function PendingSubmissions({ userID }: Props) {
                 <Heading2 id='pendingSubmissions'>Pending submissions</Heading2>
                 <SegmentedButtonGroup options={viewOptions} activeKey={listType} onSetActive={setListType} />
             </div>
-            {status === 'loading' && <LoadingSpinner />}
+            {status === 'pending' && <LoadingSpinner />}
             {status === 'error' && <p>Error loading submissions</p>}
             {status === 'success' && <>
                 {listType === 'inline'
@@ -98,7 +98,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
 
     function deleteSubmission(submission: PendingSubmission) {
         void toast.promise(DeletePendingSubmission(submission.ID).then(() => {
-            void queryClient.invalidateQueries(['user', userID, 'submissions', 'pending']);
+            void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions', 'pending'] });
             setShowDeleteModal(false);
         }), {
             pending: 'Deleting...',

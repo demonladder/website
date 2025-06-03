@@ -66,9 +66,9 @@ export default function AddSubmission() {
         setIsMutating(true);
         void toast.promise(
             SendSubmission(submission).then(() => {
-                void queryClient.invalidateQueries(['submissions']);
-                void queryClient.invalidateQueries(['level', activeLevel.ID]);
-                void queryClient.invalidateQueries(['user', submission.userID]);
+                void queryClient.invalidateQueries({ queryKey: ['submissions'] });
+                void queryClient.invalidateQueries({ queryKey: ['level', activeLevel.ID] });
+                void queryClient.invalidateQueries({ queryKey: ['user', submission.userID] });
             }).finally(() => setIsMutating(false)),
             {
                 pending: 'Sending...',

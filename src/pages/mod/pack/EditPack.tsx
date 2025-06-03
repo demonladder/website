@@ -101,8 +101,8 @@ export default function EditPack() {
 
         const request = SavePackChangesRequest(changeList).then(() => {
             setChangeList([]);
-            void queryClient.invalidateQueries(['packs']);
-            void queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries({ queryKey: ['packs'] });
+            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
         }).finally(() => {
             setIsLoading(false);
         });
@@ -122,8 +122,8 @@ export default function EditPack() {
         }
         const request = CreatePackRequest(searchQuery).then(() => {
             setChangeList([]);
-            void queryClient.invalidateQueries(['packs']);
-            void queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries({ queryKey: ['packs'] });
+            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
         }).finally(() => {
             setIsLoading(false);
         });
@@ -138,11 +138,11 @@ export default function EditPack() {
     const deleteMutation = useMutation({
         mutationFn: DeletePackRequest,
         onSuccess: () => {
-            void queryClient.invalidateQueries(['packs']);
-            void queryClient.invalidateQueries(['packSearch']);
+            void queryClient.invalidateQueries({ queryKey: ['packs'] });
+            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
             toast.success('Deleted pack');
         },
-        onError: (error: Error) => toast.error(renderToastError.render({ data: error })),
+        onError: (error: Error) => void toast.error(renderToastError.render({ data: error })),
     });
 
     const hasContent = packResult !== undefined && data !== undefined;
@@ -183,7 +183,7 @@ export default function EditPack() {
             {hasContent &&
                 <div>
                     <Divider />
-                    <DangerButton onClick={() => deleteMutation.mutate(packResult.ID)} loading={deleteMutation.isLoading}>Delete pack</DangerButton>
+                    <DangerButton onClick={() => deleteMutation.mutate(packResult.ID)} loading={deleteMutation.isPending}>Delete pack</DangerButton>
                 </div>
             }
         </div>

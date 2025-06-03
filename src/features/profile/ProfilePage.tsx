@@ -38,7 +38,7 @@ export default function Profile() {
         { text: 'Mod view', onClick: () => navigate(`/mod/manageUser/${userID}`), permission: PermissionFlags.STAFF_DASHBOARD },
     ]);
 
-    if (status === 'loading') return <Page><LoadingSpinner /></Page>;
+    if (status === 'pending') return <Page><LoadingSpinner /></Page>;
     if (status === 'error') {
         if ((error as AxiosError).response?.status === 404) {
             return <Page><Heading1>404: User does not exist</Heading1></Page>;

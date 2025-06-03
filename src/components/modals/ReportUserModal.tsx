@@ -28,7 +28,8 @@ export default function ReportUserModal({ userID, onClose }: { userID: number; o
     const { data: user } = useUserQuery(userID);
 
     const toastID = useRef<Id | null>(null);
-    const reportMutation = useMutation(([userID, selectedReason, description]: [number, ReportReason, string]) => reportUser(userID, parseInt(selectedReason), description), {
+    const reportMutation = useMutation({
+        mutationFn: ([userID, selectedReason, description]: [number, ReportReason, string]) => reportUser(userID, parseInt(selectedReason), description),
         onMutate: () => toastID.current = toast.loading('Reporting user...'),
         onSuccess: () => toast.update(toastID.current!, { render: 'User reported successfully!', type: 'success', isLoading: false, autoClose: 5000 }),
         onError: () => toast.update(toastID.current!, { render: 'An error occurred while reporting the user.', type: 'error', isLoading: null, autoClose: null }),

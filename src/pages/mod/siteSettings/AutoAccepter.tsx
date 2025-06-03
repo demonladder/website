@@ -31,25 +31,27 @@ export default function AutoAccepter() {
         setMaxDeviation(data.maxDeviation);
     }, [data]);
 
-    const { mutate, status } = useMutation(async () => {
-        await toast.promise(
-            SaveAutoAcceptSettings({
-                enabled,
-                maxTier,
-                maxDeviation,
-            }),
-            {
-                pending: 'Saving...',
-                success: 'Saved',
-                error: renderToastError,
-            },
-        );
-        await refetch();
+    const { mutate, status } = useMutation({
+        mutationFn: async () => {
+            await toast.promise(
+                SaveAutoAcceptSettings({
+                    enabled,
+                    maxTier,
+                    maxDeviation,
+                }),
+                {
+                    pending: 'Saving...',
+                    success: 'Saved',
+                    error: renderToastError,
+                },
+            );
+            await refetch();
+        },
     });
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (status === 'loading') return;
+        if (status === 'pending') return;
         mutate();
     }
 
@@ -72,7 +74,7 @@ export default function AutoAccepter() {
                     <FormInputDescription>Any submissions that deviate more than this value will not be automatically accepted</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
-                    <PrimaryButton type='submit' loading={status === 'loading'}>Save</PrimaryButton>
+                    <PrimaryButton type='submit' loading={status === 'pending'}>Save</PrimaryButton>
                 </FormGroup>
             </form>
         </section>

@@ -47,14 +47,14 @@ export default function SiteSettings() {
             isAccountCreationLocked: accountCreationLock.current.checked,
             isUserSettingsLocked: userSettingLock.current.checked,
             isAccessTokenEnabled: accessTokenEnabled.current.checked,
-        }).then(() => queryClient.invalidateQueries(['siteSettings'])).finally(() => setIsMutating(false)), {
+        }).then(() => queryClient.invalidateQueries({ queryKey: ['siteSettings'] })).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
             success: 'Settings saved!',
             error: renderToastError,
         });
     }
 
-    const isFetching = status === 'loading' || fetchStatus === 'fetching';
+    const isFetching = status === 'pending' || fetchStatus === 'fetching';
 
     return (
         <div>

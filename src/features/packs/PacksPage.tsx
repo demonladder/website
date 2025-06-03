@@ -14,7 +14,7 @@ export default function Packs() {
         queryFn: getPacks,
     });
 
-    if (status === 'loading') return <Page><LoadingSpinner /></Page>;
+    if (status === 'pending') return <Page><LoadingSpinner /></Page>;
     if (status === 'error') return <Page><p>Error: could not fetch packs from server</p></Page>;
 
     return (

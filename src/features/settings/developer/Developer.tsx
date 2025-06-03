@@ -23,7 +23,8 @@ export default function Developer() {
     const [key, setKey] = useState('');
 
     const generateHandle = useRef<Id | null>();
-    const generateMutation = useMutation(generateAPIKey, {
+    const generateMutation = useMutation({
+        mutationFn: generateAPIKey,
         onMutate: () => generateHandle.current = toast.loading('Generating key...'),
         onSuccess: (data) => {
             setKey(data);
@@ -33,7 +34,8 @@ export default function Developer() {
     });
 
     const resetHandle = useRef<Id | null>();
-    const resetMutation = useMutation(resetAPIKey, {
+    const resetMutation = useMutation({
+        mutationFn: resetAPIKey,
         onMutate: () => resetHandle.current = toast.loading('Resetting API key...'),
         onSuccess: () => {
             setKey('');
@@ -50,8 +52,8 @@ export default function Developer() {
                 <p>You can only have 1 API key at a time. Do not give out this key to anyone as it gives full control over your account!</p>
                 <p>To generate a new API key, click the button below. This will invalidate your current API key if you have one.</p>
                 <div className='flex gap-2 mt-2'>
-                    <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isLoading}>Generate</PrimaryButton>
-                    <DangerButton onClick={() => resetMutation.mutate()} loading={resetMutation.isLoading}>Reset key</DangerButton>
+                    <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>Generate</PrimaryButton>
+                    <DangerButton onClick={() => resetMutation.mutate()} loading={resetMutation.isPending}>Reset key</DangerButton>
                 </div>
                 {key &&
                     <div className='mt-4'>

@@ -36,7 +36,7 @@ export default function Queue() {
     });
 
     function Content() {
-        if (status === 'loading') return <LoadingSpinner />;
+        if (status === 'pending') return <LoadingSpinner />;
         if (status === 'error') return <p>Error: couldn't fetch queue</p>;
 
         if (queue.total === 0) return <h5>Queue empty :D</h5>;

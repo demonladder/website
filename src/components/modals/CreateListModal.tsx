@@ -28,7 +28,7 @@ export default function CreateListModal({ userID, levelID, onClose: close }: Pro
 
         const promise = createList(title, levelID, description).then(() => {
             close();
-            void queryClient.invalidateQueries(['user', userID, 'lists']);
+            return queryClient.invalidateQueries({ queryKey: ['user', userID, 'lists'] });
         });
 
         void toast.promise(promise, {

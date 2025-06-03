@@ -184,7 +184,7 @@ export default function Search() {
                 <SortMenu />
                 <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
             </div>
-            <LoadingSpinner isLoading={searchStatus === 'loading'} />
+            <LoadingSpinner isLoading={searchStatus === 'pending'} />
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
             {searchStatus === 'success' &&
                 <div className='my-4'>{searchData.levels.length !== 0 && isListView
