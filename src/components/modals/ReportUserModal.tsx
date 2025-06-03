@@ -10,6 +10,8 @@ import FormInputLabel from '../form/FormInputLabel';
 import useUserQuery from '../../hooks/queries/useUserQuery';
 import { Id, toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import renderToastError from '../../utils/renderToastError';
 
 const reasons = {
     '0': 'Select a reason',
@@ -32,7 +34,7 @@ export default function ReportUserModal({ userID, onClose }: { userID: number; o
         mutationFn: ([userID, selectedReason, description]: [number, ReportReason, string]) => reportUser(userID, parseInt(selectedReason), description),
         onMutate: () => toastID.current = toast.loading('Reporting user...'),
         onSuccess: () => toast.update(toastID.current!, { render: 'User reported successfully!', type: 'success', isLoading: false, autoClose: 5000 }),
-        onError: () => toast.update(toastID.current!, { render: 'An error occurred while reporting the user.', type: 'error', isLoading: null, autoClose: null }),
+        onError: (error: AxiosError) => toast.update(toastID.current!, { render: renderToastError.render({ data: error }), type: 'error', isLoading: null, autoClose: null }),
     });
 
     function handleSubmit(e: React.FormEvent) {
