@@ -47,7 +47,7 @@ export default function Notifications() {
             }
             <ul className='flex flex-col gap-2 xl:gap-1'>
                 {data?.map((notif) =>
-                    <Notification notif={notif} key={notif.ID} />
+                    <Notification notif={notif} key={notif.ID} />,
                 )}
             </ul>
         </Page>

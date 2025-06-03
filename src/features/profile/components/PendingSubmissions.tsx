@@ -12,7 +12,7 @@ import Modal from '../../../components/Modal';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import { useApproveClicked } from '../../../pages/mod/queue/useApproveClicked';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
@@ -29,7 +29,7 @@ interface Props {
 
 const viewOptions = {
     inline: 'Inline',
-    grid: 'Grid'
+    grid: 'Grid',
 } as const;
 type ViewOption = keyof typeof viewOptions;
 

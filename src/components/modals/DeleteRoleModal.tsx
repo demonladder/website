@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
 import Role from '../../api/types/Role';
-import DeleteRole from '../../api/roles/DeleteRole';
+import { deleteRole } from '../../features/admin/roles/api/deleteRole';
 
 interface Props {
     role: Role;
@@ -17,10 +17,10 @@ interface Props {
 export default function DeleteRoleModal({ role, onClose: close, onSucces }: Props) {
     const queryClient = useQueryClient();
 
-    const deleteRole = useCallback((roleID?: number) => {
+    const onDeleteRole = useCallback((roleID?: number) => {
         if (roleID === undefined) return;
 
-        void toast.promise(DeleteRole(roleID).then(() => {
+        void toast.promise(deleteRole(roleID).then(() => {
             void queryClient.invalidateQueries(['roles']);
             close();
             if (onSucces) onSucces();
@@ -38,7 +38,7 @@ export default function DeleteRoleModal({ role, onClose: close, onSucces }: Prop
             </div>
             <div className='flex place-content-end gap-2'>
                 <SecondaryButton onClick={close}>Close</SecondaryButton>
-                <DangerButton onClick={() => deleteRole(role.ID)}>Delete</DangerButton>
+                <DangerButton onClick={() => onDeleteRole(role.ID)}>Delete</DangerButton>
             </div>
         </Modal>
     );

@@ -18,7 +18,7 @@ const Skills = lazy(() => import('./components/Skills'));
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
 import useContextMenu from '../../components/ui/menuContext/useContextMenu';
-import { PermissionFlags } from '../../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useUserColor } from '../../hooks/useUserColor';
 import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
 // import { useReportUserModal } from '../../../hooks/modals/useReportUserModal';

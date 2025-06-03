@@ -8,4 +8,4 @@ export default interface PackResponse {
     IconName: string;
     Levels: (PackLevel & { Path?: string })[];
     RoleID: string | null;
-};
+}

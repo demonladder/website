@@ -20,11 +20,11 @@ import SegmentedButtonGroup from '../../../components/input/buttons/segmented/Se
 
 interface Props {
     user: User;
-};
+}
 
 const viewOptions = {
     inline: 'Inline',
-    grid: 'Grid'
+    grid: 'Grid',
 } as const;
 type ViewOption = keyof typeof viewOptions;
 

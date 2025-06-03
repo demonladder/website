@@ -7,9 +7,9 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
-import SaveTag from '../../../api/tags/SaveTag';
+import { saveTag } from './api/saveTag';
 import renderToastError from '../../../utils/renderToastError';
-import CreateTag from '../../../api/tags/CreateTag';
+import { createTag } from './api/createTag';
 import useDeleteTagModal from '../../../hooks/modals/useDeleteTagModal';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import TagItem from './components/TagItem';
@@ -48,7 +48,7 @@ export default function EditTags() {
         if (!nameRef.current || !descriptionRef.current) return;
 
         setIsMutating(true);
-        void toast.promise(SaveTag(selectedTag, nameRef.current.value, descriptionRef.current.value).then(() => {
+        void toast.promise(saveTag(selectedTag, nameRef.current.value, descriptionRef.current.value).then(() => {
             void queryClient.invalidateQueries(['tags']);
         }).finally(() => setIsMutating(false)), {
             pending: 'Saving...',
@@ -62,7 +62,7 @@ export default function EditTags() {
         setIsMutating(true);
 
         if (!nameRef.current || !descriptionRef.current) return;
-        void toast.promise(CreateTag(nameRef.current.value, descriptionRef.current.value).then(() => {
+        void toast.promise(createTag(nameRef.current.value, descriptionRef.current.value).then(() => {
             void queryClient.invalidateQueries(['tags']);
         }).finally(() => {
             setIsMutating(false);

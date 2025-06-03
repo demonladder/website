@@ -10,7 +10,7 @@ import Select from '../../../components/Select';
 import useRoles from '../../../hooks/api/useRoles';
 import TwoPlayerButtons from './TwoPlayerButtons';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
-import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import Level from '../types/Level';
 import LevelMeta from '../types/LevelMeta';

@@ -38,7 +38,7 @@ export async function getUserSubmissions({ userID, page = 0, name, sort, sortDir
             sortDirection,
             limit: 16,
             onlyIncomplete: onlyIncomplete === true,
-        }
+        },
     });
 
     return res.data;

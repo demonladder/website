@@ -109,5 +109,5 @@ export const permissions: Permission[] = [
         Name: 'Beta access',
         Description: 'Allows users to log into the beta subdomain.',
         Flag: PermissionFlags.BETA_ACCESS,
-    }
+    },
 ];

@@ -30,7 +30,7 @@ export default function SubmissionMerge() {
         ID: 'searchUser', onUserSelect: (user) => {
             if (!sourceUser) setSourceUser(user);
             else if (!targetUser) setTargetUser(user);
-        }
+        },
     });
 
     const mergeMutation = useMutation({

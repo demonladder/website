@@ -42,7 +42,7 @@ export default function Alphabet() {
             _.clamp(parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0), 0, 10),
             _.clamp(parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0), 0, 10),
             difficulty !== '-1' ? difficulty as Difficulty : undefined,
-            uncompletedOnly
+            uncompletedOnly,
         ),
         onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
         onSuccess: (data) => {

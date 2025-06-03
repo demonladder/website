@@ -4,13 +4,13 @@ import { TextInput } from '../../../components/Input';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetRoles from '../../../api/roles/GetRoles';
+import { getRoles } from '../../../api/roles/getRoles';
 import { permissions } from './permissions';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import SaveRole from '../../../api/roles/SaveRole';
+import { saveRole } from './api/saveRole';
 import useDeleteRoleModal from '../../../hooks/modals/useDeleteRoleModal';
-import Users from './Users';
+import Users from './components/Users';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import Heading2 from '../../../components/headings/Heading2';
@@ -32,7 +32,7 @@ export default function EditRole() {
 
     const { data } = useQuery({
         queryKey: ['roles'],
-        queryFn: GetRoles,
+        queryFn: getRoles,
     });
     const role = useMemo(() => {
         return data?.find((role) => role.ID === roleID);
@@ -48,7 +48,7 @@ export default function EditRole() {
 
     const onSave = useCallback(() => {
         setIsMutating(true);
-        void toast.promise(SaveRole(roleID, color ? parseInt(color, 16) : null, roleName, tempPermissions).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
+        void toast.promise(saveRole(roleID, color ? parseInt(color, 16) : null, roleName, tempPermissions).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
             pending: 'Saving role...',
             success: 'Role saved',
             error: renderToastError,

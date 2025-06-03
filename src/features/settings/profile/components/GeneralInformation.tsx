@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import useLevelSearch from '../../../../hooks/useLevelSearch';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';
-import SaveProfile from '../../../../api/user/SaveProfile';
+import { saveProfile } from '../api/saveProfile';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import Select from '../../../../components/Select';
@@ -83,7 +83,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = data.MaxPref.toString();
     }, [data]);
 
-    const updateMutation = useMutation(SaveProfile, {
+    const updateMutation = useMutation(saveProfile, {
         onSuccess: async () => {
             await invalidateUser();
             toast.success('Profile updated successfully!');
@@ -114,11 +114,11 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             favoriteLevels: [
                 favoriteLevelSearch1.activeLevel?.ID,
                 favoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined) as number[],
+            ].filter((v) => v !== undefined),
             leastFavoriteLevels: [
                 leastFavoriteLevelSearch1.activeLevel?.ID,
                 leastFavoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined) as number[],
+            ].filter((v) => v !== undefined),
             minPref: parseInt(minPrefRef.current.value) || null,
             maxPref: parseInt(maxPrefRef.current.value) || null,
         });

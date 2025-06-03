@@ -21,7 +21,7 @@ const roleDescriptions: Record<Role['ID'], string> = {
     3: 'The GDDL Developers.',
     4: 'The GDDL Moderators. They help keep the chatting environment as neat and tolerable as possible.',
     5: 'The GDDL Admins. They oversee the entirety of the server and bypass restrictions.',
-    6: 'The current owner of GDDL!'
+    6: 'The current owner of GDDL!',
 };
 
 function List({ data, roleID }: { data?: StaffMember[], roleID: number }) {

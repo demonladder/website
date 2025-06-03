@@ -11,7 +11,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import { KeyboardAccessibility } from '../../../utils/KeyboardAccessibility';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
-import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import { removeTagVotes } from '../api/removeTagVotes';
 import renderToastError from '../../../utils/renderToastError';
 
@@ -101,7 +101,7 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
                 render: () => {
                     void queryClient.invalidateQueries(['level', levelID, 'tags']);
                     return 'Votes removed successfully';
-                }
+                },
             },
             error: renderToastError,
         });

@@ -22,6 +22,6 @@ export default function useLevelView(storageKey: string): [boolean, JSX.Element]
                     Grid
                 </button>
             </span>
-        </div>)
+        </div>),
     ];
 }

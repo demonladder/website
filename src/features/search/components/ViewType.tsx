@@ -9,7 +9,7 @@ interface Props {
 export default function ViewType({ isList, onViewList, onViewGrid}: Props) {
     const options = {
         LIST: 'List',
-        GRID: 'Grid'
+        GRID: 'Grid',
     };
 
     function onSetActive(key: keyof typeof options) {

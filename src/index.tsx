@@ -46,7 +46,7 @@ if (import.meta.env.PROD) kofiWidgetOverlay.draw('gddemonladder', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#00b9fe',
-    'floating-chat.donateButton.text-color': '#fff'
+    'floating-chat.donateButton.text-color': '#fff',
 });
 
 root.render(
@@ -62,5 +62,5 @@ root.render(
             </HelmetProvider>
         </QueryClientProvider>
         <ToastContainer theme='dark' position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'} />
-    </React.StrictMode>
+    </React.StrictMode>,
 );

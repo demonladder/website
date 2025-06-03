@@ -26,7 +26,7 @@ export default class Spike extends GameObject {
         p5.triangle(
             x*c, p5.height - y*c,
             x*c + pixelsPerBlock/2, p5.height - (y*c + pixelsPerBlock),
-            x*c + pixelsPerBlock, p5.height - y*c
+            x*c + pixelsPerBlock, p5.height - y*c,
         );
 
         if (GameState.showHitboxes) {

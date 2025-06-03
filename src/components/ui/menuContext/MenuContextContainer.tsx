@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MenuContext } from './MenuContext';
-import { PermissionFlags } from '../../../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../../../features/admin/roles/PermissionFlags';
 import useSession from '../../../hooks/useSession';
 
 export interface ButtonData {

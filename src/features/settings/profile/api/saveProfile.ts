@@ -1,4 +1,4 @@
-import APIClient from '../APIClient';
+import APIClient from '../../../../api/APIClient';
 
 interface UpdateUserDTO {
     ID: number;
@@ -13,6 +13,6 @@ interface UpdateUserDTO {
     maxPref?: number | null;
 }
 
-export default async function SaveProfile(userData: UpdateUserDTO) {
+export async function saveProfile(userData: UpdateUserDTO) {
     await APIClient.patch(`/user/${userData.ID}`, userData);
 }

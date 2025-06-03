@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import APIClient from '../../../api/APIClient';
-import User from '../../../api/types/User';
+import APIClient from '../../../../api/APIClient';
+import User from '../../../../api/types/User';
 import { toast } from 'react-toastify';
-import renderToastError from '../../../utils/renderToastError';
-import RemoveRoleFromUser from '../../../api/user/RemoveRoleFromUser';
-import Heading3 from '../../../components/headings/Heading3';
+import renderToastError from '../../../../utils/renderToastError';
+import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
+import Heading3 from '../../../../components/headings/Heading3';
 
 export default function Users({ roleID }: { roleID: number }) {
     const queryClient = useQueryClient();
@@ -23,7 +23,7 @@ export default function Users({ roleID }: { roleID: number }) {
                 pending: 'Removing role...',
                 success: 'Role removed from user',
                 error: renderToastError,
-            }
+            },
         );
     }
 

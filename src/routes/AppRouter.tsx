@@ -54,8 +54,8 @@ import EditLevel from '../features/admin/editLevel/EditLevel';
 import EditTags from '../features/admin/editTags/EditTags';
 import Debugging from '../pages/mod/debugging/Debugging';
 import Logs from '../pages/mod/siteLogs/Logs';
-import Roles from '../pages/mod/roles/Roles';
-import EditRole from '../pages/mod/roles/EditRole';
+import Roles from '../features/admin/roles/Roles';
+import EditRole from '../features/admin/roles/EditRole';
 import MainLayout from '../layouts/MainLayout';
 import SubmissionMerge from '../features/admin/submissionMerging/SubmissionMerge';
 import AdminLayout from '../features/admin/AdminLayout';
@@ -126,6 +126,6 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='roles/:roleID' element={<EditRole />} />
                 <Route path='mergeSubmissions' element={<SubmissionMerge />} />
             </Route>
-        </Route>
+        </Route>,
     ],
 ));

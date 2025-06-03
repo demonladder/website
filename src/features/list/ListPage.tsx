@@ -11,7 +11,7 @@ import useDeleteListModal from '../../hooks/modals/useDeleteListModal';
 import useSession from '../../hooks/useSession';
 import Page from '../../components/Page';
 import { editListName } from './api/editListName';
-import { PermissionFlags } from '../../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import Heading1 from '../../components/headings/Heading1';
 import { Helmet } from 'react-helmet-async';
 

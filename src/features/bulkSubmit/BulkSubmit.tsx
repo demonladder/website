@@ -75,7 +75,7 @@ export default function BulkSubmit() {
                 setSubmissions(submissions
                     .filter((s) => failedSubmissions.some((f) => f.levelID === s.levelID || (s.levelID === undefined && f.levelName === s.levelName && f.creator === s.creator)))
                     .map((s) => `${s.levelID ?? `${s.levelName as string} ${s.creator as string}`} ${s.tier ?? '-'} ${s.enjoyment ?? '-'} ${s.FPS} ${s.device ?? '-'} ${s.videoProof ?? '-'}`)
-                    .join('\n')
+                    .join('\n'),
                 );
             }
         },

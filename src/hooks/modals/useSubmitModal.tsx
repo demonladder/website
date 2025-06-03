@@ -15,7 +15,7 @@ export default function useSubmitModal() {
             const ID = 'sync-discord';
             createModal(
                 ID,
-                <SyncDiscordModal onClose={() => closeModal(ID)} />
+                <SyncDiscordModal onClose={() => closeModal(ID)} />,
             );
             return;
         }

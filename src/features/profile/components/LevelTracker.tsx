@@ -6,7 +6,7 @@ import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 interface Props {
     levelID: number | null;
     title: string;
-};
+}
 
 export default function LevelTracker({ levelID, title }: Props) {
     const { data, status } = useLevel(levelID);

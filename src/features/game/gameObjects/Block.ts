@@ -29,7 +29,7 @@ export default class Block extends GameObject {
 
         p5.rect(
             x*c, p5.height - (y+1)*c,
-            this.hitboxWidth*c, this.hitboxHeight*c
+            this.hitboxWidth*c, this.hitboxHeight*c,
         );
 
         if (GameState.showHitboxes) {

@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { DangerButton } from '../ui/buttons/DangerButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import Modal from '../Modal';
-import DeleteTag from '../../api/tags/DeleteTag';
+import { deleteTag } from '../../features/admin/editTags/api/deleteTag';
 import renderToastError from '../../utils/renderToastError';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -21,7 +21,7 @@ export default function DeleteTagModal({ tag, onClose: close }: Props) {
         if (isMutating) return;
         setIsMutating(true);
 
-        void toast.promise(DeleteTag(tag.ID).then(() => {
+        void toast.promise(deleteTag(tag.ID).then(() => {
             void queryClient.invalidateQueries(['tags']);
             close();
         }).finally(() => {

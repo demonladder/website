@@ -4,7 +4,7 @@ import NotificationButton from './ui/Notifications';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
-import { PermissionFlags } from '../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 
 export default function ProfileButtons() {
     const session = useSession();

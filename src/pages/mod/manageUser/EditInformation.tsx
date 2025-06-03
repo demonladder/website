@@ -8,7 +8,7 @@ import { validateUsername } from '../../../utils/validators/validateUsername';
 import { UserResponse } from '../../../api/user/GetUser';
 import TextArea from '../../../components/input/TextArea';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import SaveProfile from '../../../api/user/SaveProfile';
+import { saveProfile } from '../../../features/settings/profile/api/saveProfile';
 import renderToastError from '../../../utils/renderToastError';
 import Heading3 from '../../../components/headings/Heading3';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
@@ -30,7 +30,7 @@ export default function EditInformation({ user }: { user: UserResponse }) {
 
     const queryClient = useQueryClient();
     const editMutation = useMutation({
-        mutationFn: (body: Parameters<typeof SaveProfile>[0]) => toast.promise(SaveProfile(body), { pending: 'Saving...', success: 'Saved', error: renderToastError }),
+        mutationFn: (body: Parameters<typeof saveProfile>[0]) => toast.promise(saveProfile(body), { pending: 'Saving...', success: 'Saved', error: renderToastError }),
         onSuccess: () => {
             void queryClient.invalidateQueries(['user', user.ID]);
             void queryClient.invalidateQueries(['userSearch']);

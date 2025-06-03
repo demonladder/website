@@ -42,16 +42,16 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                 </div>
                 <div className='basis-24 relative'>
                     <DemonLogo diff={difficulty} />
-                        <div className='absolute flex text-3xl bottom-0 -left-2 -translate-x-full cursor-help'>
-                            {proof &&
+                    <div className='absolute flex text-3xl bottom-0 -left-2 -translate-x-full cursor-help'>
+                        {proof &&
                                 <div className='self-center px-2 cursor-pointer' onClick={handleProofClick} title='Proof of completion'>
                                     <i className='bx bx-link'></i>
                                 </div>
-                            }
-                            {inPack &&
+                        }
+                        {inPack &&
                                 <i className='bx bx-box' title='This level is in a pack'></i>
-                            }
-                        </div>
+                        }
+                    </div>
                 </div>
             </div>
             <div className={'absolute flex items-end bottom-[-1px] left-[-1px] w-12 h-12 enj-' + roundedEnjoyment.toFixed()} style={{borderRadius: StorageManager.getIsRounded() ? '0 3rem 0 0.75rem' : '0 3rem 0 0'}}>

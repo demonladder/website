@@ -18,7 +18,7 @@ export default function useHash(): [string, (newHash: string) => void] {
         (newHash: string) => {
             if (newHash !== hash) window.location.hash = newHash;
         },
-        [hash]
+        [hash],
     );
 
     return [hash, updateHash];

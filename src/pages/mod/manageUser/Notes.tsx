@@ -32,14 +32,14 @@ export default function Notes({ user }: { user: UserResponse }) {
         onSuccess: () => {
             void queryClient.invalidateQueries(['notes', user.ID]);
             setNewNote('');
-        }
+        },
     });
 
     const deleteNoteMutation = useMutation({
         mutationFn: (noteID: number) => toast.promise(DeleteUserNote(noteID), { pending: 'Deleting note...', success: 'Note deleted', error: renderToastError }),
         onSuccess: () => {
             void queryClient.invalidateQueries(['notes', user.ID]);
-        }
+        },
     });
 
     return (

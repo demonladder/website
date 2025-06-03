@@ -1,7 +1,7 @@
 import APIClient from '../APIClient';
 import { Tag } from '../types/level/Tag';
 
-export default async function GetTags() {
+export async function getTags() {
     const res = await APIClient.get<Tag[]>('/tags');
     return res.data;
 }

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { PermissionFlags } from '../pages/mod/roles/PermissionFlags';
+import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 import { useCallback } from 'react';
 import GetMe from '../api/auth/GetMe';
 import APIClient from '../api/APIClient';

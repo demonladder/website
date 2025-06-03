@@ -21,7 +21,7 @@ export default function SortMenu({ set }: Props) {
     useEffect(() => {
         set({
             sortDirection: sortAscending ? 'asc' : 'desc',
-            sort: sorter
+            sort: sorter,
         });
     }, [sortAscending, sorter, set]);
 

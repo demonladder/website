@@ -1,6 +1,5 @@
 import { ChangeType } from '../../../../api/references/ChangeReferences';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
-import { Reference } from '../../../references/api/getReferences';
 import { useReferences } from '../../../references/hooks/useReferences';
 import ChangeLevel from './ChangeLevel';
 
@@ -14,7 +13,7 @@ export default function RemoveList({ references, undo }: Props) {
 
     if (!data) return <LoadingSpinner isLoading={true} />;
 
-    const referencesToChange = references.map((ID) => data.find((r) => r.LevelID === ID)).filter((r) => r !== undefined) as Reference[];
+    const referencesToChange = references.map((ID) => data.find((r) => r.LevelID === ID)).filter((r) => r !== undefined);
 
     return (
         <div>

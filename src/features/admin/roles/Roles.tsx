@@ -1,19 +1,19 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import GetRoles from '../../../api/roles/GetRoles';
+import { getRoles } from '../../../api/roles/getRoles';
 import { TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import CreateRole from '../../../api/roles/CreateRole';
+import { createRole } from './api/createRole';
 
 export default function Roles() {
     const [search, setSearch] = useState('');
     const [isMutating, setIsMutating] = useState(false);
     const { data } = useQuery({
         queryKey: ['roles'],
-        queryFn: GetRoles,
+        queryFn: getRoles,
     });
 
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function Roles() {
 
     const onCreate = useCallback(() => {
         setIsMutating(true);
-        void toast.promise(CreateRole(search).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
+        void toast.promise(createRole(search).then(() => queryClient.invalidateQueries(['roles'])).finally(() => setIsMutating(false)), {
             pending: 'Creating role...',
             success: 'Role created',
             error: renderToastError,
