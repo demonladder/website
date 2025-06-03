@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, createRoutesFromElements, redirect, Route } from 'react-router-dom';
 import ErrorElement from '../components/ErrorElement';
-const Mod = lazy(() => import('../pages/mod/Mod'));
 import { modLoader as ModLoader } from '../pages/mod/mod.loader';
 const ModIndex = lazy(() => import('../pages/mod/ModIndex'));
 const Queue = lazy(() => import('../pages/mod/queue/Queue'));
@@ -59,47 +58,51 @@ import Roles from '../pages/mod/roles/Roles';
 import EditRole from '../pages/mod/roles/EditRole';
 import MainLayout from '../layouts/MainLayout';
 import SubmissionMerge from '../features/admin/submissionMerging/SubmissionMerge';
+import AdminLayout from '../features/admin/AdminLayout';
+import BetaGuard from '../layouts/BetaGuard';
 
 export const router = createBrowserRouter(createRoutesFromElements(
     [
-        <Route element={<MainLayout />} errorElement={<ErrorElement />}>
-            <Route path='/' element={<Home />} />
-            <Route path='search' element={<Search />} />
-            <Route path='platformerList' element={<PlatformerList />} />
-            <Route path='references' element={<References />} />
-            <Route path='packs' element={<Packs />} />
-            <Route path='about' element={<About />} />
-            <Route path='pack/78' element={<CrossroadPack />} />
-            <Route path='pack/:packID' element={<PackOverview />} />
-            <Route path='staff' element={<Staff />} />
-            <Route path='level/:levelID' element={<LevelPage />} />
-            <Route path='login' element={<Login />} />
-            <Route path='signup' element={<SignUp />} />
-            <Route path='profile' loader={profileLoader} />
-            <Route path='profile/:userID' element={<Profile />} />
-            <Route path='notifications' element={<Notifications />} />
-            <Route path='game' element={<Game />} />
-            <Route path='settings' element={<Settings />}>
-                <Route path='account' element={<AccountSettings />} />
-                <Route path='site' element={<ClientSiteSettings />} />
-                <Route path='profile' element={<DiscordSettings />} />
-                <Route path='submission' element={<SubmissionSettings />} />
-                <Route path='appearance' element={<Appearance />} />
-                <Route path='developer' element={<Developer />} />
-            </Route>
-            <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
-            <Route path='list/:listID' element={<List />} />
-            <Route path='forgotPassword' element={<ForgotPassword />} />
-            <Route path='generators' element={<Suspense fallback={<FloatingLoadingSpinner />}><Generators /></Suspense>}>
-                <Route path='alphabet' element={<Alphabet />} />
-                <Route path='roulette' element={<Roulette />} />
-                <Route path='reverseRoulette' element={<ReverseRoulette />} />
-                <Route path='tierRoulette' element={<TierRoulette />} />
-                <Route path='decathlon' element={<Decathlon />} />
-            </Route>
-            <Route path='bulkSubmit' element={<BulkSubmit />} />
-            <Route path='changeLogs' element={<Changelogs />} />
-            <Route path='mod' element={<Suspense fallback={<FloatingLoadingSpinner />} ><Mod /></Suspense>} loader={ModLoader}>
+        <Route element={<BetaGuard />}>
+            <Route element={<MainLayout />} errorElement={<ErrorElement />}>
+                <Route path='/' element={<Home />} />
+                <Route path='search' element={<Search />} />
+                <Route path='platformerList' element={<PlatformerList />} />
+                <Route path='references' element={<References />} />
+                <Route path='packs' element={<Packs />} />
+                <Route path='about' element={<About />} />
+                <Route path='pack/78' element={<CrossroadPack />} />
+                <Route path='pack/:packID' element={<PackOverview />} />
+                <Route path='staff' element={<Staff />} />
+                <Route path='level/:levelID' element={<LevelPage />} />
+                <Route path='login' element={<Login />} />
+                <Route path='signup' element={<SignUp />} />
+                <Route path='profile' loader={profileLoader} />
+                <Route path='profile/:userID' element={<Profile />} />
+                <Route path='notifications' element={<Notifications />} />
+                <Route path='game' element={<Game />} />
+                <Route path='settings' element={<Settings />}>
+                    <Route path='account' element={<AccountSettings />} />
+                    <Route path='site' element={<ClientSiteSettings />} />
+                    <Route path='profile' element={<DiscordSettings />} />
+                    <Route path='submission' element={<SubmissionSettings />} />
+                    <Route path='appearance' element={<Appearance />} />
+                    <Route path='developer' element={<Developer />} />
+                </Route>
+                <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
+                <Route path='list/:listID' element={<List />} />
+                <Route path='forgotPassword' element={<ForgotPassword />} />
+                <Route path='generators' element={<Suspense fallback={<FloatingLoadingSpinner />}><Generators /></Suspense>}>
+                    <Route path='alphabet' element={<Alphabet />} />
+                    <Route path='roulette' element={<Roulette />} />
+                    <Route path='reverseRoulette' element={<ReverseRoulette />} />
+                    <Route path='tierRoulette' element={<TierRoulette />} />
+                    <Route path='decathlon' element={<Decathlon />} />
+                </Route>
+                <Route path='bulkSubmit' element={<BulkSubmit />} />
+                <Route path='changeLogs' element={<Changelogs />} />
+            </Route>,
+            <Route path='/mod' element={<Suspense fallback={<FloatingLoadingSpinner />}><AdminLayout /></Suspense>} loader={ModLoader} errorElement={<ErrorElement />}>
                 <Route index element={<ModIndex />} />
                 <Route path='queue' element={<Queue />} />
                 <Route path='references' element={<EditReferences />} />
@@ -123,6 +126,6 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='roles/:roleID' element={<EditRole />} />
                 <Route path='mergeSubmissions' element={<SubmissionMerge />} />
             </Route>
-        </Route>,
+        </Route>
     ],
 ));
