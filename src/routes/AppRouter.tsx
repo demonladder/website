@@ -20,7 +20,7 @@ const PlatformerList = lazy(() => import('../features/platformerList/PlatformerL
 const References = lazy(() => import('../features/references/References'));
 const Packs = lazy(() => import('../features/packs/PacksPage'));
 const About = lazy(() => import('../features/about/AboutPage'));
-import CrossroadPack from '../pages/root/packs/packOverview/CrossroadPack';
+import CrossroadPack from '../features/crossroadPack/CrossroadPack';
 const PackOverview = lazy(() => import('../features/singlePack/PackOverview'));
 import Staff from '../pages/StaffPage';
 import LevelPage from '../features/level/LevelPage';

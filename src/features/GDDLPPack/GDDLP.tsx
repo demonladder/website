@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import PackResponse from '../../../../api/pack/responses/PackResponse';
-import Page from '../../../../components/Page';
-import Leaderboard from '../../../../features/packs/components/Leaderboard';
-import GetGDDLPTiers from '../../../../api/pack/requests/GetGDDLPTiers';
-import pluralS from '../../../../utils/pluralS';
-import Heading1 from '../../../../components/headings/Heading1';
+import PackResponse from '../../api/pack/responses/PackResponse';
+import Page from '../../components/Page';
+import Leaderboard from '../packs/components/Leaderboard';
+import GetGDDLPTiers from '../../api/pack/requests/GetGDDLPTiers';
+import pluralS from '../../utils/pluralS';
+import Heading1 from '../../components/headings/Heading1';
 
 interface Props {
     pack: PackResponse;

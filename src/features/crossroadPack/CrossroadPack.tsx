@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
-import Level, { Header } from '../../../../components/Level';
-import useLevelView from '../../../../hooks/useLevelView';
-import { GridLevel } from '../../../../components/GridLevel';
-import GetCrossroadsPackLevels from '../../../../api/pack/requests/GetCrossroadsPackLevels';
-import Page from '../../../../components/Page';
-import { LevelRenderer } from '../../../../components/LevelRenderer';
-import usePack from '../../../../features/singlePack/hooks/usePack';
-import Heading1 from '../../../../components/headings/Heading1';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Level, { Header } from '../../components/Level';
+import useLevelView from '../../hooks/useLevelView';
+import { GridLevel } from '../../components/GridLevel';
+import GetCrossroadsPackLevels from '../../api/pack/requests/GetCrossroadsPackLevels';
+import Page from '../../components/Page';
+import { LevelRenderer } from '../../components/LevelRenderer';
+import usePack from '../singlePack/hooks/usePack';
+import Heading1 from '../../components/headings/Heading1';
 
 export default function CrossroadPack() {
     const { status, data: pack } = usePack(78);
