@@ -12,7 +12,7 @@ import useUserSearch from '../../../hooks/useUserSearch';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
-import { Difficulties } from '../../../features/level/types/LevelMeta';
+import { Difficulties } from '../../level/types/LevelMeta';
 import SendSubmission from '../../../api/submissions/SendSubmission';
 
 const deviceOptions = {

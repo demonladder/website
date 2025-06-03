@@ -11,8 +11,8 @@ import SaveTag from '../../../api/tags/SaveTag';
 import renderToastError from '../../../utils/renderToastError';
 import CreateTag from '../../../api/tags/CreateTag';
 import useDeleteTagModal from '../../../hooks/modals/useDeleteTagModal';
-import ReorderTag from '../../../api/tags/ReorderTag';
 import { useTags } from '../../../hooks/api/tags/useTags';
+import TagItem from './components/TagItem';
 
 export default function EditTags() {
     const [isMutating, setIsMutating] = useState(false);
@@ -105,62 +105,6 @@ export default function EditTags() {
                     : <SecondaryButton onClick={onCreate}>Create</SecondaryButton>
                 }
                 <DangerButton className='ms-2' onClick={onDelete}>Delete</DangerButton>
-            </div>
-        </div>
-    );
-}
-
-function TagItem({ dragLocked, tag, selected, onSelect }: { dragLocked: boolean, tag: Tag, selected: boolean, onSelect: (tag?: Tag) => void }) {
-    const [isBeingDragged, setIsBeingDragged] = useState(false);
-    const [dragOver, setDragOver] = useState(false);
-
-    const queryClient = useQueryClient();
-
-    function dragStartHandler(e: React.DragEvent) {
-        if (dragLocked) {
-            e.preventDefault();
-            return;
-        }
-
-        setIsBeingDragged(true);
-        e.dataTransfer.setData('text/plain', tag.ID.toString());
-        e.stopPropagation();
-    }
-    function dragStopHandler() {
-        setIsBeingDragged(false);
-    }
-
-    function dragOverHandler(e: React.DragEvent) {
-        if (isBeingDragged) return;
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        setDragOver(true);
-    }
-    function dragLeaveHandler(e: React.DragEvent) {
-        e.preventDefault();
-        setDragOver(false);
-    }
-
-    function dropHandler(e: React.DragEvent<HTMLDivElement>) {
-        setDragOver(false);
-
-        const droppedID = parseInt(e.dataTransfer.getData('text/plain'));
-        const request = ReorderTag(droppedID, tag.Ordering).then(() => {
-            void queryClient.invalidateQueries(['tags']);
-            onSelect();
-        });
-
-        void toast.promise(request, {
-            pending: 'Reordering...',
-            success: 'Reordered',
-            error: renderToastError,
-        });
-    }
-
-    return (
-        <div draggable={true} onDrop={dropHandler} onDragEnd={dragStopHandler} onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDragLeave={dragLeaveHandler} className={`${isBeingDragged ? 'opacity-0' : ''} ${dragOver ? 'opacity-50' : ''}`}>
-            <div onClick={() => onSelect(tag)} className={`${selected ? 'bg-blue-600' : 'bg-gray-500'} cursor-grab p-1 text-center round:rounded`}>
-                <p className='select-none'>{tag.Name}</p>
             </div>
         </div>
     );

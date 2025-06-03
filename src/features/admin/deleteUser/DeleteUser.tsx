@@ -20,7 +20,7 @@ export default function DeleteUser() {
     function submit() {
         if (user === undefined) return toast.error('Select a user first!');
 
-        void toast.promise(DeleteUserRequest(user.ID).then(() => queryClient.invalidateQueries(['userSearch'])).finally(() => setShowConfirm(false)), {
+        void toast.promise(DeleteUserRequest(user.ID).then(() => queryClient.invalidateQueries({ queryKey: ['userSearch'] })).finally(() => setShowConfirm(false)), {
             pending: 'Deleting user, this may take a while...',
             success: `Deleted ${user.Name}!`,
             error: renderToastError,

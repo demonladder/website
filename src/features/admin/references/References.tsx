@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Reference } from '../../../features/references/api/getReferences';
+import { Reference } from '../../references/api/getReferences';
 import ChangeReferences, { Change, ChangeType } from '../../../api/references/ChangeReferences';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import useLevelSearch from '../../../hooks/useLevelSearch';
-import { useReferences } from '../../../features/references/hooks/useReferences';
+import { useReferences } from '../../references/hooks/useReferences';
 import { useMutation } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import renderToastError from '../../../utils/renderToastError';
@@ -14,52 +13,9 @@ import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import PageButtons from '../../../components/PageButtons';
 import Heading3 from '../../../components/headings/Heading3';
 import Divider from '../../../components/divider/Divider';
-
-interface LevelProps {
-    data: Reference;
-    remove: () => void;
-}
-
-interface ChangeLevelProps {
-    data: Change;
-    remove: () => void;
-}
-
-function ChangeLevel({ data, remove }: ChangeLevelProps) {
-    const prefix = (data.Type === ChangeType.Remove ? 'from' : 'to');
-
-    return (
-        <div className='flex justify-between'>
-            <div className='flex gap-2 items-center'>
-                <DangerButton onClick={remove}>X</DangerButton>
-                <div className='name'>
-                    <h4 className='break-word'>{data.Name}</h4>
-                    <p>{`${data.Type} ${prefix} tier ${data.Tier}`}</p>
-                </div>
-            </div>
-            <p>{data.ID}</p>
-        </div>
-    );
-}
-
-function Level({ data, remove }: LevelProps) {
-    return (
-        <div className='flex gap-2'>
-            <div className='grow flex justify-between items-center'>
-                <div className='flex gap-2 items-center'>
-                    <DangerButton onClick={remove}>X</DangerButton>
-                    <div>
-                        <h4 className='break-all'>{data.Level.Meta.Name}</h4>
-                        <p>{data.LevelID}</p>
-                    </div>
-                </div>
-            </div>
-            <div className={`w-16 flex justify-center tier-${data.Level.Rating?.toFixed() ?? 0}`}>
-                <p className='self-center'>{data.Level.Rating?.toFixed(2) ?? '-'}</p>
-            </div>
-        </div>
-    );
-}
+import ChangeLevel from './components/ChangeLevel';
+import Level from './components/Level';
+import RemoveList from './components/RemoveList';
 
 export default function EditReferences() {
     const [tier, setTier] = useQueryParam('tier', withDefault(NumberParam, 1));
@@ -135,25 +91,6 @@ export default function EditReferences() {
                 </div>
             }
             <RemoveList references={removeList} undo={(ID) => setRemoveList((prev) => prev.filter((r) => r !== ID))} />
-        </div>
-    );
-}
-
-function RemoveList({ references, undo }: { references: number[], undo: (ID: number) => void }) {
-    const { data } = useReferences();
-
-    if (!data) return <LoadingSpinner isLoading={true} />;
-
-    const referencesToChange = references.map((ID) => data.find((r) => r.LevelID === ID)).filter((r) => r !== undefined) as Reference[];
-
-    return (
-        <div>
-            <h3 className='text-xl'>To remove</h3>
-            <ul>{
-                referencesToChange.map((r) => (
-                    <ChangeLevel data={{ ID: r.LevelID, Name: r.Level.Meta.Name, Tier: r.Tier, Type: ChangeType.Remove }} remove={() => undo(r.LevelID)} key={r.LevelID} />
-                ))
-            }</ul>
         </div>
     );
 }
