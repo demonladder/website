@@ -13,10 +13,14 @@
     --theme-dark-bg-from: #262626;
     --theme-dark-bg-to: #262626;
     --theme-dark-text: #ffffff;
-    --theme-dark-outline: rgba(0, 0, 0, 0);
+    --theme-dark-outline: #5d5d5d;
 
     --theme-dark-footer: #1a1a1a;
     --theme-dark-footer-text: #ffffff;
+}
+
+[data-theme="dark"] {
+    --outline-variant: var(--theme-dark-outline);
 }
 
 [data-theme="dark"] header input {

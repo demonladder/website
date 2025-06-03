@@ -33,7 +33,7 @@ export default function ModIndex() {
     return (
         <div>
             <h3 className='text-2xl mb-3'>Overview</h3>
-            <div className='grid gap-4 grid-cols-1 lg:grid-cols-3 mb-4'>
+            <div className='grid gap-4 grid-cols-1 lg:grid-cols-4 mb-4'>
                 <StatisticTracker value={stats?.pendingSubmissions} label='Pending submissions' />
                 <StatisticTracker value={stats?.submissions} label='Submissions' />
                 <StatisticTracker value={stats?.users} label='Users' />

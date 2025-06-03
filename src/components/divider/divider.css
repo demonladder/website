@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .divider {
-    height: 1px;
+    min-height: 1px;
     background-color: var(--outline-variant);
-    @apply my-4;
+    @apply my-2;
 }

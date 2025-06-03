@@ -43,7 +43,7 @@ export default function EditInformation({ user }: { user: UserResponse }) {
     }
 
     return (
-        <section>
+        <section className='bg-theme-700 border border-theme-outline p-4 rounded-xl'>
             <Heading3>Edit information</Heading3>
             <form className='mt-4' onSubmit={submitHandler}>
                 <FormGroup>
