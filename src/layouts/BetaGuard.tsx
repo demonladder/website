@@ -10,6 +10,7 @@ import { AxiosError } from 'axios';
 import renderToastError from '../utils/renderToastError';
 import { useMutation } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
+import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 
 export default function BetaGuard() {
     const [accessToken, setAccessToken] = useLocalStorage<string>('accessToken');
@@ -34,9 +35,15 @@ export default function BetaGuard() {
         mutation.mutate(inputValue);
     }
 
+    const notifs = useNavbarNotification();
+
     useEffect(() => {
-        if (shouldProtect && accessToken) {
-            mutation.mutate(accessToken);
+        if (shouldProtect) {
+            notifs.warning('You are currently on the beta version of GDDL.');
+
+            if (accessToken) {
+                mutation.mutate(accessToken);
+            }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
