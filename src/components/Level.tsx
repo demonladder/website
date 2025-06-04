@@ -16,7 +16,6 @@ interface Props {
     songName: string;
     onContextMenu?: React.MouseEventHandler;
     selected?: boolean;
-    showcase?: string | null;
 }
 
 export function Header() {
@@ -32,7 +31,7 @@ export function Header() {
     );
 }
 
-export default function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false, showcase }: Props) {
+export default function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
@@ -48,7 +47,7 @@ export default function Level({ ID, rating, defaultRating, actualRating, enjoyme
 
     return (
         <div className={'relative grid grid-cols-12 ps-2 min-h-[48px] text-xl ' + (backgroundClass)} onContextMenu={onContextMenu}>
-            {showcase && <div className='absolute size-full bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url("https://img.youtube.com/vi/${showcase}/hqdefault.jpg")`, maskImage: 'linear-gradient(to right, transparent 20%, black 90%)' }} />}
+            <div className='absolute size-full bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url("https://levelthumbs.prevter.me/thumbnail/${ID}")`, maskImage: 'linear-gradient(to right, transparent 20%, black 90%)' }} />
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
                     <img src='/assets/images/yes tick.webp' className='max-md:w-6 max-md:h-6 w-8 h-8 self-center me-2' alt='' />
