@@ -16,7 +16,7 @@ interface LevelDTO {
     ID: number;
     Rating: number | null;
     Enjoyment: number | null;
-    Showcase: string | null;
+    Showcase?: string | null;
     Meta: {
         Name: string;
         Creator: string;
