@@ -2,15 +2,15 @@ import { useState } from 'react';
 import Heading2 from '../../../components/headings/Heading2';
 import PageButtons from '../../../components/PageButtons';
 import { useAccessTokens } from './hooks/useAccessTokens';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import { generateToken } from './api/generateToken';
 import { useMutation } from '@tanstack/react-query';
-import { revokeToken } from './api/revokeToken';
 import { AxiosError } from 'axios';
 import renderToastError from '../../../utils/renderToastError';
+import AccessToken from './components/AccessToken';
+import { selectText } from '../../../utils/selectText';
 
 export default function BetaAccess() {
     const { data: accessTokens, status, refetch: refetchTokens } = useAccessTokens();
@@ -29,19 +29,8 @@ export default function BetaAccess() {
         await refetchTokens();
     }
 
-    async function onRevokeToken(tokenID: number) {
-        await revokeToken(tokenID);
-        await refetchTokens();
-        toast.success('Token revoked successfully');
-    }
-
     const generateMutation = useMutation({
         mutationFn: onGrantAccess,
-        onError: (error: AxiosError) => void toast.error(renderToastError.render({ data: error })),
-    });
-
-    const revokeMutation = useMutation({
-        mutationFn: onRevokeToken,
         onError: (error: AxiosError) => void toast.error(renderToastError.render({ data: error })),
     });
 
@@ -55,24 +44,17 @@ export default function BetaAccess() {
             </div>
             {generatedToken && (
                 <div className='mt-3'>
-                    <p className='text-green-500'>Token generated: <span className='font-bold'>{generatedToken}</span></p>
+                    <p className='text-green-500'>Token generated: <code className='bg-theme-950 px-2 py-1 rounded-lg outline' onClick={selectText}>{generatedToken}</code></p>
                     <p>Share this token with the user to grant them access.</p>
-                    <p>This token will not appear again if you click away!</p>
+                    <p>For security reasons, this token <b>will not appear again</b> when you click away!</p>
                 </div>
             )}
             {status === 'success' && (
                 <div className='mt-6'>
+                    <PageButtons onPageChange={setPage} meta={{ limit: accessTokens.limit, page, total: accessTokens.total }} />
                     <div className='flex flex-wrap gap-8'>
                         {accessTokens.tokens.map((token) => (
-                            <div className='flex gap-2 bg-theme-700 px-4 py-2 rounded-xl'>
-                                <object data={`https://cdn.discordapp.com/avatars/${token.Owner.DiscordData?.ID ?? '-'}/${token.Owner.DiscordData?.Avatar ?? '-'}.png`} type='image/png' className='rounded-full size-20'>
-                                    <i className='bx bxs-user-circle text-[5rem]' />
-                                </object>
-                                <div className='flex flex-col justify-evenly gap-2 py-2' key={token.ID}>
-                                    <p>{token.Owner.Name}</p>
-                                    <SecondaryButton onClick={() => revokeMutation.mutate(token.ID)} loading={revokeMutation.isPending}>Remove</SecondaryButton>
-                                </div>
-                            </div>
+                            <AccessToken token={token} key={token.ID} />
                         ))}
                     </div>
                     <PageButtons onPageChange={setPage} meta={{ limit: accessTokens.limit, page, total: accessTokens.total }} />
