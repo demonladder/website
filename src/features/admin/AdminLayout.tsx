@@ -23,6 +23,7 @@ export default function AdminLayout() {
                         <div className='px-4 py-6 flex flex-col gap-2 sidebar-wrapper overflow-auto'>
                             <NavButton to='/mod' end={true}>Dashboard</NavButton>
                             <NavButton to='/mod/roles'>Roles</NavButton>
+                            <NavButton to='/mod/beta'>Beta access</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Submissions</p>
                             <NavButton to='/mod/queue'>Submissions queue</NavButton>

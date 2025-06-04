@@ -4,6 +4,7 @@ import ErrorElement from '../components/ErrorElement';
 import { modLoader as ModLoader } from '../pages/mod/mod.loader';
 const ModIndex = lazy(() => import('../pages/mod/ModIndex'));
 const Queue = lazy(() => import('../pages/mod/queue/Queue'));
+const Beta = lazy(() => import('../features/admin/beta/BetaAccess'));
 const EditReferences = lazy(() => import('../features/admin/references/References'));
 const SignupLink = lazy(() => import('../features/admin/signupLinks/SignupLink'));
 const AddSubmission = lazy(() => import('../features/admin/addSubmissions/AddSubmissions'));
@@ -104,6 +105,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
             </Route>,
             <Route path='/mod' element={<Suspense fallback={<FloatingLoadingSpinner />}><AdminLayout /></Suspense>} loader={ModLoader} errorElement={<ErrorElement />}>
                 <Route index element={<ModIndex />} />
+                <Route path='beta' element={<Beta />} />
                 <Route path='queue' element={<Queue />} />
                 <Route path='references' element={<EditReferences />} />
                 <Route path='editPack' element={<EditPack />} />
