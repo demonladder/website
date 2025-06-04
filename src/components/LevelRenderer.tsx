@@ -9,12 +9,14 @@ interface LevelProps {
     inPack: boolean;
     completed: boolean;
     selected?: boolean;
+    showcase?: string | null;
 }
 
 interface LevelDTO {
     ID: number;
     Rating: number | null;
     Enjoyment: number | null;
+    Showcase: string | null;
     Meta: {
         Name: string;
         Creator: string;
@@ -38,7 +40,7 @@ export function LevelRenderer({ element: Element, className, levels, header, sel
     return <div className={className}>
         {header}
         {levels.map((level, i) => (
-            <Element ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Creator} songName={level.Meta.Song.Name} difficulty={level.Meta.Difficulty} inPack={false} completed={level.Completed === 1} selected={(i + 1) === selectedLevel} key={level.ID} />
+            <Element ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Creator} songName={level.Meta.Song.Name} difficulty={level.Meta.Difficulty} inPack={false} completed={level.Completed === 1} selected={(i + 1) === selectedLevel} showcase={level.Showcase} key={level.ID} />
         ))}
     </div>;
 }

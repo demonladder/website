@@ -16,6 +16,7 @@ interface Props {
     songName: string;
     onContextMenu?: React.MouseEventHandler;
     selected?: boolean;
+    showcase?: string | null;
 }
 
 export function Header() {
@@ -31,7 +32,7 @@ export function Header() {
     );
 }
 
-export default function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
+export default function Level({ ID, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false, showcase }: Props) {
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
@@ -46,7 +47,8 @@ export default function Level({ ID, rating, defaultRating, actualRating, enjoyme
     }
 
     return (
-        <div className={'grid grid-cols-12 ps-2 min-h-[48px] text-xl ' + (backgroundClass)} onContextMenu={onContextMenu}>
+        <div className={'relative grid grid-cols-12 ps-2 min-h-[48px] text-xl ' + (backgroundClass)} onContextMenu={onContextMenu}>
+            {showcase && <div className='absolute size-full bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url("https://img.youtube.com/vi/${showcase}/hqdefault.jpg")`, maskImage: 'linear-gradient(to right, transparent 20%, black 90%)' }} />}
             <h4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3 self-center flex'>
                 {completed && StorageManager.getHighlightCompleted() &&
                     <img src='/assets/images/yes tick.webp' className='max-md:w-6 max-md:h-6 w-8 h-8 self-center me-2' alt='' />
@@ -54,11 +56,11 @@ export default function Level({ ID, rating, defaultRating, actualRating, enjoyme
                 <Link to={'/level/' + ID} className='self-center underline break-all whitespace-pre-wrap max-md:text-sm'>{name}</Link>
             </h4>
 
-            <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'><p className='cursor-default'>{creator}</p></div>
-            <div className='col-span-3 hidden xl:block self-center'><p className='cursor-default'>{songName}</p></div>
-            <div className='col-span-2 hidden lg:flex justify-center self-center'><IDButton id={ID} /></div>
-            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{rating !== null ? roundedTier : (defaultRating ?? 'N/A')}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualRating ?? rating)?.toFixed(2) ?? 'N/A'}</p></div>
-            <div className={`group col-span-2 lg:col-span-1 flex justify-center ${enjoymentClass}`}><p className='group-hover:hidden self-center cursor-default'>{enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualEnjoyment ?? enjoyment)?.toFixed(2) ?? 'N/A'}</p></div>
+            <div className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center z-10'><p className='cursor-default'>{creator}</p></div>
+            <div className='col-span-3 hidden xl:block self-center z-10'><p className='cursor-default'>{songName}</p></div>
+            <div className='col-span-2 hidden lg:flex justify-center self-center z-10'><IDButton id={ID} /></div>
+            <div className={`group col-span-2 lg:col-span-1 flex justify-center z-10 ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{rating !== null ? roundedTier : (defaultRating ?? 'N/A')}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualRating ?? rating)?.toFixed(2) ?? 'N/A'}</p></div>
+            <div className={`group col-span-2 lg:col-span-1 flex justify-center z-10 ${enjoymentClass}`}><p className='group-hover:hidden self-center cursor-default'>{enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualEnjoyment ?? enjoyment)?.toFixed(2) ?? 'N/A'}</p></div>
         </div>
     );
 }
