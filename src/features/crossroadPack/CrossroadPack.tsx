@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import Level, { Header } from '../../components/Level';
+import Level from '../../components/Level';
 import useLevelView from '../../hooks/useLevelView';
 import { GridLevel } from '../../components/GridLevel';
 import GetCrossroadsPackLevels from '../../api/pack/requests/GetCrossroadsPackLevels';
@@ -51,7 +51,7 @@ export default function CrossroadPack() {
                 <div className='mt-2' key={type}>
                     <h3 className='text-3xl'>{type} path</h3>
                     {isList
-                        ? <LevelRenderer element={Level} levels={levels.filter((level) => level.Path === type)} className='level-list mb-8' header={<Header />} />
+                        ? <LevelRenderer element={Level} levels={levels.filter((level) => level.Path === type)} className='level-list mb-8' />
                         : <LevelRenderer element={GridLevel} levels={levels.filter((level) => level.Path === type)} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8' />
                     }
                 </div>

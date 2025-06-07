@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import Level, { Header } from '../../components/Level';
+import Level from '../../components/Level';
 import useLevelView from '../../hooks/useLevelView';
 import { GridLevel } from '../../components/GridLevel';
 import Leaderboard from '../packs/components/Leaderboard';
@@ -43,13 +43,13 @@ export default function PackOverview() {
                 {viewButtons}
             </div>
             {isList
-                ? <LevelRenderer element={Level} className='level-list my-3 mb-8' header={<Header />} levels={normalLevels} />
+                ? <LevelRenderer element={Level} className='level-list my-3 mb-8' levels={normalLevels} />
                 : <LevelRenderer element={GridLevel} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8' levels={normalLevels} />
             }
             {exLevels.length > 0 && <>
                 <Heading3 className='mb-3'>The following demons are not required for pack completion:</Heading3>
                 {isList
-                    ? <LevelRenderer element={Level} className='level-list my-3 mb-8' header={<Header />} levels={exLevels} />
+                    ? <LevelRenderer element={Level} className='level-list my-3 mb-8' levels={exLevels} />
                     : <LevelRenderer element={GridLevel} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8' levels={exLevels} />
                 }
             </>}

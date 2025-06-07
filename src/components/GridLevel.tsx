@@ -17,7 +17,7 @@ interface GridProps {
 
 export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, inPack, onContextMenu }: GridProps) {
     const navigate = useNavigate();
-    
+
     function handleClick() {
         navigate(`/level/${ID}`);
     }
@@ -25,15 +25,15 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
     function handleProofClick(e: React.MouseEvent) {
         e.stopPropagation();
         if (!proof) return;
-        
+
         window.open(proof.startsWith('https://') ? proof : `https://${proof}`, '_blank');
     }
 
     const roundedRating = rating !== null ? Math.round(rating) : 0;
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
-    
+
     return (
-        <div className={'relative cursor-pointer p-2 border border-white/0 hover:border-white/100 transition-colors round:rounded-xl tier-' + roundedRating.toFixed()} onClick={handleClick} onContextMenu={onContextMenu}>
+        <div className={'cursor-pointer p-2 outline outline-white/0 hover:outline-white/100 transition-colors round:rounded-xl tier-' + roundedRating.toFixed()} onClick={handleClick} onContextMenu={onContextMenu}>
             <b className='text-xl'><Copy text={ID.toString()} /> {name}</b>
             <div className='flex justify-between text-lg'>
                 <div>
@@ -44,17 +44,17 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                     <DemonLogo diff={difficulty} />
                     <div className='absolute flex text-3xl bottom-0 -left-2 -translate-x-full cursor-help'>
                         {proof &&
-                                <div className='self-center px-2 cursor-pointer' onClick={handleProofClick} title='Proof of completion'>
-                                    <i className='bx bx-link'></i>
-                                </div>
+                            <div className='self-center px-2 cursor-pointer' onClick={handleProofClick} title='Proof of completion'>
+                                <i className='bx bx-link'></i>
+                            </div>
                         }
                         {inPack &&
-                                <i className='bx bx-box' title='This level is in a pack'></i>
+                            <i className='bx bx-box' title='This level is in a pack'></i>
                         }
                     </div>
                 </div>
             </div>
-            <div className={'absolute flex items-end bottom-[-1px] left-[-1px] w-12 h-12 enj-' + roundedEnjoyment.toFixed()} style={{borderRadius: StorageManager.getIsRounded() ? '0 3rem 0 0.75rem' : '0 3rem 0 0'}}>
+            <div className={'absolute flex items-end bottom-[-1px] left-[-1px] w-12 h-12 enj-' + roundedEnjoyment.toFixed()} style={{ borderRadius: StorageManager.getIsRounded() ? '0 3rem 0 0.75rem' : '0 3rem 0 0' }}>
                 <b className='p-2 ps-3'>{enjoyment !== null ? roundedEnjoyment : '-'}</b>
             </div>
         </div>

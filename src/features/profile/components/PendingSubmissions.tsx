@@ -4,7 +4,7 @@ import DeletePendingSubmission from '../../../api/submissions/DeletePendingSubmi
 import { UserPendingSubmission } from '../api/getUserPendingSubmissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
-import Level, { Header } from '../../../components/Level';
+import Level from '../../../components/Level';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
@@ -109,12 +109,13 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
 
     return (
         <>
-            <div className='level-list'>
-                <Header />
+            <ul>
                 {levels.map((p) => (
-                    <Level ID={p.LevelID} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />
+                    <li key={p.LevelID}>
+                        <Level ID={p.LevelID} difficulty={p.Level.Meta.Difficulty} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} />
+                    </li>
                 ))}
-            </div>
+            </ul>
             {clickedSubmission &&
                 <Modal title='Delete submission' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                     <p>Are you sure you want to delete your pending submission for {clickedSubmission.Level.Meta.Name}? (ID: {clickedSubmission.LevelID})</p>

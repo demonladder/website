@@ -6,7 +6,7 @@ import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
-import Level, { Header } from '../../../components/Level';
+import Level from '../../../components/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import { TextInput } from '../../../components/Input';
 import { useNavigate } from 'react-router-dom';
@@ -103,14 +103,13 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
     }
 
     return (
-        <>
-            <div className='level-list'>
-                <Header />
-                {levels.map((p) => (
-                    <Level ID={p.LevelID} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} key={p.LevelID} />
-                ))}
-            </div>
-        </>
+        <ul>
+            {levels.map((p) => (
+                <li key={p.LevelID}>
+                    <Level ID={p.LevelID} difficulty={p.Level.Meta.Difficulty} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} />
+                </li>
+            ))}
+        </ul>
     );
 }
 

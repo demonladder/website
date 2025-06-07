@@ -22,7 +22,7 @@ export default function ClientSiteSettings() {
     return (
         <main>
             <h2 className='text-3xl'>Settings</h2>
-            <p className='mb-4'>There's not much here yet, but have a cookie <span className='inline-block'><img width='32px' src='/assets/images/oreo.jpg' /></span></p>
+            <p className='mb-4'>There's not much here yet, but have a cookie <span className='inline-block'><img width='32px' src='/images/oreo.jpg' /></span></p>
             <form className='text-lg'>
                 <FormGroup>
                     <label className='flex items-center gap-2'>

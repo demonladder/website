@@ -148,3 +148,10 @@ label:has(> input[type=checkbox]:disabled) {
 html.inverted {
     filter: invert(100%);
 }
+
+.level-thumbnail {
+    --mask-start-at: 30%;
+}
+.level-thumbnail:is(:where(.group):hover *) {
+    --mask-start-at: 20%;
+}

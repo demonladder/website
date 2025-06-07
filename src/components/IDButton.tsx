@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 interface Props {
     id: number,
     disabled?: boolean,
@@ -8,6 +10,7 @@ export default function IDButton({ id, disabled = false, className }: Props) {
     function onIDClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
         void navigator.clipboard.writeText('' + id);
+        toast.success('Copied to clipboard');
 
         (e.target as HTMLButtonElement).classList.remove('bg-fade');
         setTimeout(() => {
