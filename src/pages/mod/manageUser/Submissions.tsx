@@ -39,7 +39,7 @@ export default function Submissions({ user }: Props) {
     });
 
     return (
-        <section>
+        <section className='bg-theme-700 border border-theme-outline p-4 round:rounded-xl'>
             <Heading3 className='mb-8'>Actions</Heading3>
             <div>
                 <Heading4 className='border-theme-500 border-b pb-2'>Remove enjoyments</Heading4>

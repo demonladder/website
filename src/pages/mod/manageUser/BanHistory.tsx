@@ -49,7 +49,7 @@ export default function BanHistory({ user }: { user: UserResponse }) {
     }
 
     return (
-        <section>
+        <section className='bg-theme-700 border border-theme-outline p-4 round:rounded-xl'>
             <Heading3>Ban history</Heading3>
             <div>
                 {banQuery.data?.map((record) => (

@@ -33,7 +33,7 @@ export default function BanRecord({ record }: Props) {
     }
 
     return (
-        <div className='bg-theme-500 mb-3 p-3 round:rounded-lg grid grid-cols-1 xl:grid-cols-3 gap-4'>
+        <div className='bg-theme-500 mb-3 p-3 round:rounded-lg grid shadow-lg grid-cols-1 xl:grid-cols-2 gap-4'>
             <div>
                 <p>Banned on <b>{record.BanStart}</b></p>
                 <p>Banned until <b>{record.BanStop}</b></p>
@@ -42,8 +42,6 @@ export default function BanRecord({ record }: Props) {
             <div>
                 <p>User banned by {record.StaffID ? <UserLink userID={record.StaffID} /> : '-'}</p>
                 <p>Ban reason: {record.Reason || 'None specified'}</p>
-            </div>
-            <div>
                 <p>Status: {isActive ? 'Active' : 'Inactive'}</p>
                 {isActive && <DangerButton onClick={onRevoke} disabled={isLoading}>Revoke</DangerButton>}
             </div>
