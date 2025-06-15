@@ -1,69 +1,166 @@
 .tonal-button {
-    --container-color: var(--secondary-container);
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: var(--fast-spatial-transition);
+
+    --container-color: var(--color-secondary-container);
     --container-opacity: 100%;
     background-color: color-mix(in oklab, var(--container-color) var(--container-opacity), transparent);
 
-    --label-color: var(--on-secondary-container);
+    --label-color: var(--color-on-secondary-container);
     --label-opacity: 100%;
     color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
 
     --layer-color: var(--on-secondary-container);
     --layer-opacity: 0%;
 
-    position: relative;
-    
-    --height: 40px;
-    height: var(--height);
-    padding: 0 16px;
-    --border-radius: calc(var(--height) / 2);
-    border-radius: var(--border-radius);
-    
-    --elevation: 0px;
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        pointer-events: none;
+        inset: 0;
 
-    transition-duration: 350ms;
-    transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
-}
+        transition: inherit;
 
-.tonal-button::after {
-    content: '';
-    display: block;
-    position: absolute;
-    pointer-events: none;
-    inset: 0;
+        border-radius: inherit;
+        background-color: color-mix(in oklab, var(--layer-color) var(--layer-opacity), transparent);
+    }
 
-    transition-duration: 350ms;
-    transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+    &:disabled {
+        --container-color: var(--on-surface);
+        --container-opacity: 10%;
+        --label-color: var(--on-surface);
+        --label-opacity: 38%;
+        pointer-events: none;
+    }
 
-    border-radius: var(--border-radius);
-    background-color: color-mix(in oklab, var(--layer-color) var(--layer-opacity), transparent);
-}
+    &:hover {
+        --layer-opacity: 8%;
+        box-shadow: 0px 2px 3px black;
+    }
 
-.tonal-button:disabled {
-    --container-color: var(--on-surface);
-    --container-opacity: 10%;
-    --label-color: var(--on-surface);
-    --label-opacity: 38%;
-    pointer-events: none;
-}
+    &:focus-visible {
+        --layer-opacity: 10%;
+        outline: 3px solid var(--primary);
+        outline-offset: 2px;
+    }
 
-.tonal-button:hover {
-    --layer-color: var(--on-secondary-container);
-    --layer-opacity: 8%;
-    --label-color: var(--on-secondary-container);
-    --elevation: 1px;
-}
+    &:active {
+        --layer-color: var(--on-secondary-container);
+        --layer-opacity: 10%;
+        --border-radius: 12px;
+    }
 
-.tonal-button:focus-visible {
-    --layer-color: var(--on-secondary-container);
-    --layer-opacity: 10%;
-    --label-color: var(--on-secondary-container);
-    outline: 3px solid var(--primary);
-    outline-offset: 2px;
-}
+    /* SIZING */
+    &.xs {
+        height: 32px;
+        border-radius: 12px;
+        font-size: 14px;
+        gap: 4px;
+        padding: 0px 12px;
 
-.tonal-button:active {
-    --layer-color: var(--on-secondary-container);
-    --layer-opacity: 10%;
-    --border-radius: 12px;
-    --elevation: 0px;
+        .round & {
+            border-radius: 32px;
+        }
+
+        &:active, &.selected {
+            border-radius: 8px;
+        }
+
+        & .icon {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &.sm {
+        height: 40px;
+        border-radius: 12px;
+        font-size: 14px;
+        gap: 8px;
+        padding: 0px 16px;
+
+        .round & {
+            border-radius: 40px;
+        }
+
+        &:active, &.selected {
+            border-radius: 8px;
+        }
+
+        & .icon {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &.md {
+        height: 56px;
+        border-radius: 16px;
+        font-size: 16px;
+        gap: 8px;
+        padding: 0px 16px;
+
+        .round & {
+            border-radius: 56px;
+        }
+
+        &:active, &.selected {
+            border-radius: 12px;
+        }
+
+        & .icon {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &.lg {
+        height: 96px;
+        border-radius: 28px;
+        font-size: 24px;
+        gap: 12px;
+        padding: 0px 48px;
+
+        .round & {
+            border-radius: 96px;
+        }
+
+        &:active, &.selected {
+            border-radius: 12px;
+        }
+
+        & .icon {
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &.xl {
+        height: 136px;
+        border-radius: 28px;
+        font-size: 32px;
+        gap: 16px;
+        padding: 0px 48px;
+
+        .round & {
+            border-radius: 136px;
+        }
+
+        &:active, &.selected {
+            border-radius: 16px;
+        }
+
+        & .icon {
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+        }
+    }
 }

@@ -1,0 +1,192 @@
+.icon-button {
+    position: relative;
+    transition-property: all;
+    transition-duration: 350ms;
+    transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.90);
+
+    --container-color: black;
+    --container-opacity: 0%;
+    background-color: color-mix(in oklab, var(--container-color) var(--container-opacity), transparent);
+
+    --label-color: var(--color-on-surface-variant);
+    --label-opacity: 100%;
+    color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
+
+    --state-color: var(--color-on-surface-variant);
+    --state-opacity: 0%;
+
+    &.disabled {
+        pointer-events: none;
+    }
+
+    &::before {
+        content: '';
+        transition: inherit;
+        position: absolute;
+        inset: 0;
+        background-color: color-mix(in oklab, var(--state-color) var(--state-opacity), transparent);
+        border-radius: inherit;
+    }
+
+    &:hover::before {
+        --state-opacity: 8%;
+    }
+
+    &:active::before {
+        --state-opacity: 10%;
+    }
+
+    &.filled {
+        --container-color: var(--color-primary);
+        --container-opacity: 100%;
+        --label-color: var(--color-on-primary);
+        --state-color: var(--color-on-primary);
+
+        &.disabled {
+            --container-opacity: 10%;
+            --label-opacity: 38%;
+        }
+    }
+
+    &.tonal {
+        --container-color: var(--color-secondary-container);
+        --container-opacity: 100%;
+        --label-color: var(--color-on-secondary-container);
+        --state-color: var(--color-on-secondary-container);
+
+        &.disabled {
+            --container-color: var(--color-on-surface);
+            --container-opacity: 10%;
+
+            --label-color: var(--color-on-surface);
+            --label-opacity: 38%;
+        }
+    }
+
+    &.outlined {
+        --label-color: var(--color-on-surface-variant);
+        --state-color: var(--color-on-surface-variant);
+
+        outline: solid 2px var(--outline-variant);
+
+        &.disabled {
+            --label-color: var(--color-on-surface);
+            --label-opacity: 38%;
+        }
+    }
+
+    &.xs {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+        border-radius: 12px;
+
+        .round & {
+            border-radius: 32px;
+        }
+
+        &.thin {
+            width: 28px;
+        }
+
+        &.wide {
+            width: 40px;
+        }
+
+        &:active, &.selected {
+            border-radius: 8px;
+        }
+    }
+
+    &.sm {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        border-radius: 12px;
+
+        .round & {
+            border-radius: 40px;
+        }
+
+        &.thin {
+            width: 32px;
+        }
+
+        &.wide {
+            width: 52px;
+        }
+
+        &:active, &.selected {
+            border-radius: 8px;
+        }
+    }
+
+    &.md {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+        border-radius: 16px;
+
+        .round & {
+            border-radius: 56px;
+        }
+
+        &.thin {
+            width: 48px;
+        }
+
+        &.wide {
+            width: 72px;
+        }
+
+        &:active, &.selected {
+            border-radius: 12px;
+        }
+    }
+
+    &.lg {
+        width: 96px;
+        height: 96px;
+        font-size: 32px;
+        border-radius: 28px;
+
+        .round & {
+            border-radius: 96px;
+        }
+
+        &.thin {
+            width: 64px;
+        }
+
+        &.wide {
+            width: 128px;
+        }
+
+        &:active, &.selected {
+            border-radius: 16px;
+        }
+    }
+
+    &.xl {
+        width: 136px;
+        height: 136px;
+        font-size: 32px;
+        border-radius: 28px;
+
+        .round & {
+            border-radius: 136px;
+        }
+
+        &.thin {
+            width: 104px;
+        }
+
+        &.wide {
+            width: 184px;
+        }
+
+        &:active, &.selected {
+            border-radius: 16px;
+        }
+    }
+}

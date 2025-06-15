@@ -1,67 +1,69 @@
 .segmented-button-group {
     display: flex;
-}
+    gap: 2px;
 
-/* Enabled */
-.segmented-button-group button {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid var(--sys-outline);
+    /* Enabled */
+    & button {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    padding-left: 16px;
-    padding-right: 16px;
-    height: 40px;
-    color: var(--on-surface);
+        padding: 0 20px;
+        height: 32px;
+        border-radius: 4px;
 
-    --layer-opacity: 0%;
-    --layer-color: var(--on-surface);
+        transition: var(--fast-spatial-transition);
 
-    transition-duration: 350ms;
-    transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
-}
-.segmented-button-group button.first {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-.segmented-button-group button.last {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
+        --container-color: var(--color-secondary);
+        --container-opacity: 100%;
+        background-color: color-mix(in oklab, var(--container-color) var(--container-opacity), transparent);
 
-.segmented-button-group button.selected {
-    background-color: var(--secondary-container);
-    color: var(--on-secondary-container);
-}
+        --label-color: var(--color-on-secondary);
+        --label-opacity: 100%;
+        color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
 
-/* State layer */
-.segmented-button-group button::after {
-    content: '';
-    display: block;
-    position: absolute;
-    pointer-events: none;
-    inset: 0;
+        --state-color: var(--color-on-surface-variant);
+        --state-opacity: 0%;
 
-    transition-duration: 350ms;
-    transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+        .round &:not(.selected) {
+            &.first {
+                border-top-left-radius: 16px;
+                border-bottom-left-radius: 16px;
+            }
+            &.last {
+                border-top-right-radius: 16px;
+                border-bottom-right-radius: 16px;
+            }
+        }
 
-    background-color: var(--layer-color);
-    opacity: var(--layer-opacity);
-}
-.segmented-button-group button.first::after {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-.segmented-button-group button.last::after {
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+        /* State layer */
+        &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            pointer-events: none;
+            inset: 0;
+            border-radius: inherit;
+
+            transition: inherit;
+
+            background-color: var(--state-color);
+            opacity: var(--state-opacity);
+        }
+
+        &.selected, &:active {
+            border-radius: 32px;
+            --container-color: var(--color-secondary-container);
+            --label-color: var(--color-on-secondary-container);
+        }
+    }
 }
 
 /* Disabled */
 .segmented-button-group button:disabled {
-    border-color: color-mix(in oklab, var(--on-surface) 10%, transparent);
-    color: color-mix(in oklab, var(--on-surface) 38%, transparent);
+    border-color: color-mix(in oklab, var(--color-on-surface) 10%, transparent);
+    color: color-mix(in oklab, var(--color-on-surface) 38%, transparent);
 }
 
 /* Hover */
@@ -69,18 +71,18 @@
     --layer-opacity: 8%;
 }
 .segmented-button-group button.selected:hover {
-    --layer-color: var(--on-secondary-container);
+    --layer-color: var(--color-on-secondary-container);
 }
 
 /* Focused */
 .segmented-button-group button:focus-visible {
-    outline: 3px solid var(--secondary);
+    outline: 3px solid var(--color-secondary);
     outline-offset: 2px;
     --layer-opacity: 10%;
 }
 .segmented-button-group button.selected:focus-visible {
-    color: var(--on-secondary-container);
-    --layer-color: var(--on-secondary-container);
+    color: var(--color-on-secondary-container);
+    --layer-color: var(--color-on-secondary-container);
 }
 
 /* Pressed */
@@ -88,6 +90,6 @@
     --layer-opacity: 10%;
 }
 .segmented-button-group button.selected:active {
-    color: var(--on-secondary-container);
-    --layer-color: var(--on-secondary-container);
+    color: var(--color-on-secondary-container);
+    --layer-color: var(--color-on-secondary-container);
 }
