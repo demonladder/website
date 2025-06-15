@@ -180,20 +180,20 @@ export default function Search() {
                 <SearchInput onKeyDown={onKeyDown} value={name} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} placeholder='Search level...' />
             </div>
             <Filters creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
-            <div className='flex justify-between mt-4'>
+            <div className='flex flex-wrap justify-between mt-4 gap-2'>
                 <SortMenu />
                 <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
             </div>
             <LoadingSpinner isLoading={searchStatus === 'pending'} />
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
-            {searchStatus === 'success' &&
+            {searchStatus === 'success' && <>
                 <div className='my-4'>{searchData.levels.length !== 0 && isListView
                     ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' />
                     : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
                 }</div>
-            }
-            {searchData && <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />}
-            {searchData !== undefined && <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>}
+                <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />
+                {searchData.total > 5 && <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>}
+            </>}
         </Page>
     );
 }

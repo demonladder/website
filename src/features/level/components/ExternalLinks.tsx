@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import axios from 'axios';
 import { pluralWas } from '../../../utils/pluralS';
-import { Difficulties } from '../types/LevelMeta';
 
 interface SFHResponseDataObject {
     _id: string;
@@ -20,7 +19,7 @@ interface SFHResponseDataObject {
 
 function LinkButton({ link, message }: { link: string, message: string }) {
     return (
-        <a href={link} target='_blank' rel='noopener noreferrer' className='px-4 py-2 bg-theme-500 shadow-md round:rounded-md border border-white/0 hover:border-white/100 transition-colors'>{message} <i className='bx bx-link-external float-right pt-1' /></a>
+        <a href={link} target='_blank' rel='noopener noreferrer' className='px-4 py-2 bg-theme-500 shadow-md round:rounded-md outline outline-white/0 hover:outline-white/100 transition-colors'>{message} <i className='bx bx-link-external float-right pt-1' /></a>
     );
 }
 
@@ -29,12 +28,6 @@ interface Props {
 }
 
 export default function ExternalLinks({ level }: Props) {
-    const { data: aredl } = useQuery({
-        queryKey: ['aredl', level.ID],
-        queryFn: () => axios.get<{ position: number }>(`https://api.aredl.net/api/aredl/levels/${level.ID}`).then((res) => res.data),
-        enabled: level.Meta.Difficulty === Difficulties.Extreme,
-    });
-
     const { data: pointercrateData } = useQuery({
         queryKey: ['pointercrate', level.ID],
         queryFn: () => axios.get<{ name: string, position: number, level_id: number, publisher: { name: string } }[]>(`https://pointercrate.com/api/v2/demons?name=${level.Meta.Name}`).then((res) => res.data),
@@ -55,8 +48,8 @@ export default function ExternalLinks({ level }: Props) {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-2'>
                 <LinkButton link={`https://gdbrowser.com/${level.ID}`} message='GDBrowser' />
                 <LinkButton link={`https://www.youtube.com/results?search_query=geometry+dash+${level.Meta.Name.toLowerCase().replace(' ', '+')}`} message='Search on youtube' />
-                {aredl !== undefined &&
-                    <LinkButton link={`https://aredl.net/list/${level.ID}`} message={`AREDL - #${aredl.position}`} />
+                {level.AREDLPosition !== undefined &&
+                    <LinkButton link={`https://aredl.net/list/${level.ID}`} message={`AREDL - #${level.AREDLPosition}`} />
                 }
                 {pointercrate !== undefined &&
                     <LinkButton link={`https://pointercrate.com/demonlist/${pointercrate.position}`} message={`Pointercrate - #${pointercrate.position}`} />

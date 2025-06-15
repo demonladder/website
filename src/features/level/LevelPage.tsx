@@ -8,18 +8,17 @@ import Packs from './components/Packs';
 import Submissions from './components/Submissions';
 import { AxiosError } from 'axios';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
-import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import TagBox from './components/TagBox';
 import RatingGraph from './components/RatingGraph';
-import { TagEligibility } from '../../api/level/tags/GetTagEligibility';
 import Showcase from './components/Showcase';
 import ExternalLinks from './components/ExternalLinks';
-import useAddListLevelModal from '../../hooks/modals/useAddListLevelModal';
 import useSubmitModal from '../../hooks/modals/useSubmitModal';
-import useSession from '../../hooks/useSession';
 import Page from '../../components/Page';
 import { BooleanParam, useQueryParam, withDefault } from 'use-query-params';
 import Heading1 from '../../components/headings/Heading1';
+import FAB from '../../components/input/buttons/FAB/FAB';
+import IconButton from '../../components/input/buttons/icon/IconButton';
+import Surface from '../../components/Surface';
 
 const levelLengths = {
     1: 'Tiny',
@@ -33,18 +32,12 @@ const levelLengths = {
 export default function LevelPage() {
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useQueryParam('twoPlayer', withDefault(BooleanParam, false));
 
-    const session = useSession();
-
-    const openAddListLevelModal = useAddListLevelModal();
     const openSubmitModal = useSubmitModal();
 
     const levelID = parseInt(useParams().levelID ?? '0');
     const { status, data: level, error } = useQuery({
         queryKey: ['level', levelID],
         queryFn: () => getLevel(levelID),
-    });
-    const { data: voteMeta } = useQuery<TagEligibility>({
-        queryKey: ['level', levelID, 'tags', 'eligible'],
     });
 
     if (status === 'pending') {
@@ -73,7 +66,6 @@ export default function LevelPage() {
 
     const rating = showTwoPlayerStats ? level.TwoPlayerRating : (level.Rating ?? level.DefaultRating);
     const enjoyment = showTwoPlayerStats ? level.TwoPlayerEnjoyment : level.Enjoyment;
-    const deviation = showTwoPlayerStats ? level.TwoPlayerDeviation : level.Deviation;
 
     return (
         <Page>
@@ -85,9 +77,13 @@ export default function LevelPage() {
                 <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Creator}`} />
                 <meta property='og:image' content={DifficultyToImgSrc(level.Meta.Difficulty)} />
             </Helmet>
-            <div className='mb-1'>
-                <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
-                <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Creator}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Creator}</a></h2>
+            <FAB variant='large' color='primary' onClick={() => openSubmitModal(level)}><i className='bx bx-list-plus' /></FAB>
+            <div className='flex justify-between items-center'>
+                <div className='mb-1'>
+                    <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
+                    <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Creator}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Creator}</a></h2>
+                </div>
+                <IconButton color='standard' size='md'><i className='bx bx-dots-vertical-rounded' /></IconButton>
             </div>
             <div className='grid grid-cols-12 gap-2'>
                 <div className='col-span-12 lg:col-span-9 grid grid-cols-12 gap-4 p-4 bg-theme-700 border border-theme-outline shadow-md round:rounded-xl'>
@@ -104,12 +100,6 @@ export default function LevelPage() {
                                 <p><span>[{enjoyment?.toFixed(2) ?? '-'}]</span></p>
                             </p>
                         </div>
-                        {session.user &&
-                            <>
-                                <PrimaryButton className='text-lg w-full flex justify-center gap-1' onClick={() => openSubmitModal(level)}>{voteMeta?.eligible ? 'Edit' : 'Submit'} rating <i className='bx bx-list-plus self-center' /></PrimaryButton>
-                                <PrimaryButton className='text-lg w-full' onClick={() => openAddListLevelModal(session.user!.ID, levelID)}>Add to list</PrimaryButton>
-                            </>
-                        }
                     </div>
                     <section className='hidden md:block xl:hidden col-span-8'>
                         <h3 className='text-2xl xl:mb-2'>Description</h3>
@@ -120,32 +110,44 @@ export default function LevelPage() {
                             <p className='text-2xl xl:mb-2'>Description</p>
                             <p className='text-lg break-all'>{level.Meta.Description || <i>No description</i>}</p>
                         </div>
-                        <div className='bg-theme-600 shadow-xs p-2 round:rounded-lg mt-4'>
-                            <p className='text-lg'>
-                                {level.Meta.Song.Name}
+                        <div>
+                            <Surface variant='600' className='mb-2'>
+                                <p className='text-lg'>
+                                    {level.Meta.Song.Name}
+                                    {level.Meta.SongID > 0 &&
+                                        <a href={`https://www.newgrounds.com/audio/listen/${level.Meta.SongID}`} target='_blank' rel='noopener noreferrer' className='float-right me-1 text-2xl'><i className='bx bx-link-external' /></a>
+                                    }
+                                </p>
+                                <p className='text-base'>by {level.Meta.Song.Author}</p>
                                 {level.Meta.SongID > 0 &&
-                                    <a href={`https://www.newgrounds.com/audio/listen/${level.Meta.SongID}`} target='_blank' rel='noopener noreferrer' className='float-right me-1 text-2xl'><i className='bx bx-link-external' /></a>
+                                    <p className='mt-2 text-xs'><span className='text-theme-300'>Song ID:</span> {level.Meta.SongID} <span className='ms-2 text-theme-300'>Size:</span> {level.Meta.Song.Size}</p>
                                 }
-                            </p>
-                            <p className='text-base'>by {level.Meta.Song.Author}</p>
-                            {level.Meta.SongID > 0 &&
-                                <p className='mt-2 text-xs'><span className='text-theme-300'>Song ID:</span> {level.Meta.SongID} <span className='ms-2 text-theme-300'>Size:</span> {level.Meta.Song.Size}</p>
-                            }
+                            </Surface>
+                            <div className='md:text-lg flex justify-around gap-1'>
+                                <Surface variant='600'>
+                                    <p>Position</p>
+                                    <p><b>#{level.DifficultyIndex ?? '-'}</b></p>
+                                </Surface>
+                                <Surface variant='600'>
+                                    <p>Popularity</p>
+                                    <p><b>#{level.PopularityIndex ?? '-'}</b></p>
+                                </Surface>
+                                <Surface variant='600'>
+                                    <p>Members</p>
+                                    <p><b>{level.SubmissionCount}</b></p>
+                                </Surface>
+                                <Surface variant='600'>
+                                    <p>Length</p>
+                                    <p><b>{levelLengths[level.Meta.Length]}</b></p>
+                                </Surface>
+                                {level.ID > 3 &&
+                                    <Surface variant='600'>
+                                        <p>ID</p>
+                                        <IDButton className='font-bold' id={level.ID} />
+                                    </Surface>
+                                }
+                            </div>
                         </div>
-                        <ul className='md:text-lg flex flex-col gap-1'>
-                            <li className='flex justify-between'>
-                                <p>Level ID:</p>
-                                <IDButton className='font-bold' id={level.ID} />
-                            </li>
-                            <li className='flex justify-between'>
-                                <p>Standard deviation:</p>
-                                <b>{deviation?.toFixed(2) ?? '0'}</b>
-                            </li>
-                            <li className='flex justify-between'>
-                                <p>Length:</p>
-                                <b>{levelLengths[level.Meta.Length]}</b>
-                            </li>
-                        </ul>
                     </div>
                 </div>
                 <div className='col-span-12 lg:col-span-3'>
@@ -154,7 +156,7 @@ export default function LevelPage() {
             </div>
             <Submissions level={level} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <RatingGraph levelMeta={level.Meta} twoPlayer={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
-            <Packs levelID={levelID} />
+            <Packs levelID={levelID} meta={level.Meta} />
             <Showcase level={level} />
             <ExternalLinks level={level} />
         </Page>

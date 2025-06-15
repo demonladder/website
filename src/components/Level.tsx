@@ -45,9 +45,6 @@ export default function Level({ ID, difficulty, rating, defaultRating, actualRat
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
-    const tierClass = 'tier-' + roundedTier;
-    const enjoymentClass = 'enj-' + roundedEnjoyment;
-
     const navigate = useNavigate();
 
     return (
@@ -69,8 +66,8 @@ export default function Level({ ID, difficulty, rating, defaultRating, actualRat
                         </div>
                     </div>
                     <div className='flex text-3xl text-shadow-lg'>
-                        <div className={`flex justify-center w-14 lg:w-28 ${tierClass}`}><p className='group-hover:hidden self-center cursor-default'>{rating !== null ? roundedTier : (defaultRating ?? 'N/A')}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualRating ?? rating)?.toFixed(2) ?? 'N/A'}</p></div>
-                        <div className={`flex justify-center w-14 lg:w-28 ${enjoymentClass}`}><p className='group-hover:hidden self-center cursor-default'>{enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualEnjoyment ?? enjoyment)?.toFixed(2) ?? 'N/A'}</p></div>
+                        <div className={`flex justify-center w-14 lg:w-28 tier-${roundedTier}`}><p className='group-hover:hidden self-center cursor-default'>{rating !== null ? roundedTier : (defaultRating ?? 'N/A')}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualRating ?? rating)?.toFixed(2) ?? 'N/A'}</p></div>
+                        <div className={`flex justify-center w-14 lg:w-28 enj-${roundedEnjoyment}`}><p className='group-hover:hidden self-center cursor-default'>{enjoyment !== null ? roundedEnjoyment : 'N/A'}</p><p className='hidden group-hover:block self-center cursor-default'>{(actualEnjoyment ?? enjoyment)?.toFixed(2) ?? 'N/A'}</p></div>
                     </div>
                 </div>
             </div>
