@@ -5,8 +5,7 @@ import PageButtons from '../../../components/PageButtons';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
-import { Submission as ISubmission, getLevelSubmissions } from '../api/getLevelSubmissions';
-import Select from '../../../components/Select';
+import { Submission as ISubmission, SubmissionSort, getLevelSubmissions } from '../api/getLevelSubmissions';
 import useRoles from '../../../hooks/api/useRoles';
 import TwoPlayerButtons from './TwoPlayerButtons';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
@@ -14,8 +13,20 @@ import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import Level from '../types/Level';
 import LevelMeta from '../types/LevelMeta';
-import pluralS from '../../../utils/pluralS';
-import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import { createEnumParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import Heading2 from '../../../components/headings/Heading2';
+import Select from '../../../components/input/select/Select';
+import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
+
+const sorts: Record<SubmissionSort, string> = {
+    attempts: 'Attempts',
+    dateAdded: 'Date',
+    rating: 'Rating',
+    enjoyment: 'Enjoyment',
+    progress: 'Progress',
+    refreshRate: 'Refresh rate',
+    username: 'Username',
+};
 
 interface SubmissionProps {
     level: Level & { Meta: LevelMeta };
@@ -27,6 +38,12 @@ const progressFilterOptions = {
     all: 'all',
     incomplete: 'users with progress',
 };
+
+const sortDirections = {
+    asc: 'Asc',
+    desc: 'Desc',
+} as const;
+type SortDirections = keyof typeof sortDirections;
 
 function Submission({ level, submission }: SubmissionProps) {
     const { data: roles } = useRoles();
@@ -53,8 +70,8 @@ function Submission({ level, submission }: SubmissionProps) {
     if (submission.Attempts) title.push(`Attempts: ${submission.Attempts}`);
     if (submission.Device === 'Mobile') title.push('Completed on mobile');
 
-    const shortenedName = submission.User.Name.length > 20 ? submission.User.Name.slice(0, 20) + '...' : submission.User.Name;
-    const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > 20) ? submission.SecondaryUser.Name.slice(0, 20) + '...' : submission.SecondaryUser?.Name;
+    const shortenedName = submission.User.Name.length > 18 ? submission.User.Name.slice(0, 18) + '...' : submission.User.Name;
+    const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > 18) ? submission.SecondaryUser.Name.slice(0, 18) + '...' : submission.SecondaryUser?.Name;
 
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
     const navigate = useNavigate();
@@ -104,10 +121,12 @@ interface SubmissionsProps {
 export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlayerStats }: SubmissionsProps) {
     const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
     const [progressFilterKey, setProgressFilterKey] = useState<keyof typeof progressFilterOptions>('victors');
+    const [sorter, setSorter] = useQueryParam<SubmissionSort>('sort', withDefault(createEnumParam(Object.values(SubmissionSort)), SubmissionSort.DATE_ADDED));
+    const [sortDirection, setSortDirection] = useState<SortDirections>('asc');
 
     const { data: submissions, status } = useQuery({
-        queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey, twoPlayer: showTwoPlayerStats }],
-        queryFn: () => getLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, limit: 24, page }),
+        queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey, twoPlayer: showTwoPlayerStats, sorter, sortDirection }],
+        queryFn: () => getLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, sort: sorter, sortDirection, limit: 24, page }),
     });
 
     useEffect(() => {
@@ -116,24 +135,23 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
 
     if (status === 'error' || status === 'pending') return (
         <section className='mt-6'>
-            <h2 className='text-3xl'>Submissions</h2>
+            <Heading2>Submissions</Heading2>
             <LoadingSpinner />
         </section>
     );
 
     return (
         <section className='mt-6'>
-            <h2 className='text-3xl'>{submissions.total} Submission{pluralS(submissions.total)}</h2>
+            <Heading2>Submissions</Heading2>
             <TwoPlayerButtons levelMeta={level.Meta} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
-            <div className='flex'>
-                <p className='me-1'>Showing</p>
-                <div className='max-w-xs grow'>
-                    <Select options={progressFilterOptions} activeKey={progressFilterKey} onChange={setProgressFilterKey} id='submissionsProgressFilter' />
-                </div>
+            <div className='flex flex-wrap gap-2 mb-2'>
+                <Select label={`Sort by: ${sorts[sorter]}`} icon={<i className='bx bx-sort' />} options={sorts} onOption={setSorter} />
+                <SegmentedButtonGroup options={sortDirections} activeKey={sortDirection} onSetActive={setSortDirection} />
+                <Select options={progressFilterOptions} label={<>Showing: <b>{progressFilterKey}</b></>} onOption={setProgressFilterKey} id='submissionsProgressFilter' />
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
                 {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.UserID} />)}
-                {submissions.submissions.length === 0 ? <p className='mb-0'>This level does not have any submissions</p> : null}
+                {submissions.submissions.length === 0 ? <p className='mb-0'>No submissions available!</p> : null}
             </div>
             <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
         </section>
