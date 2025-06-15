@@ -8,14 +8,12 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 export default function ClientSiteSettings() {
     const [isRounded, setIsRounded] = useState<boolean>(StorageManager.getIsRounded());
     const [highlightCompleted, setHighlightCompleted] = useState<boolean>(StorageManager.getHighlightCompleted());
-    const [useExperimental, setUseExperimental] = useState<boolean>(StorageManager.getUseExperimental());
 
     function onSave(e: React.FormEvent) {
         e.preventDefault();
 
         StorageManager.setRounded(isRounded);
         StorageManager.setHighlightCompleted(highlightCompleted);
-        StorageManager.setUseExperimental(useExperimental);
         location.reload();
     }
 
@@ -37,13 +35,6 @@ export default function ClientSiteSettings() {
                         Highlight completed levels
                     </label>
                     <FormInputDescription>Adds a checkmark and green background to levels in list view.</FormInputDescription>
-                </FormGroup>
-                <FormGroup>
-                    <label className='flex items-center gap-2'>
-                        <CheckBox checked={useExperimental} onChange={(e) => setUseExperimental(e.target.checked)} />
-                        Experimental features
-                    </label>
-                    <FormInputDescription>This unlocks beta features that are not yet fully polished!</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <PrimaryButton type='submit' onClick={onSave}>Save</PrimaryButton>

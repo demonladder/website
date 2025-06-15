@@ -57,15 +57,6 @@ export default {
         localStorage.setItem('isRounded', JSON.stringify(state));
     },
 
-    getUseExperimental() {
-        const storage = localStorage.getItem('useExperimental');
-        if (storage === null) return false;
-        return JSON.parse(storage) === true;
-    },
-    setUseExperimental(state: boolean) {
-        localStorage.setItem('useExperimental', JSON.stringify(state));
-    },
-
     getSettings(): Settings {
         const defaulSettings = generateDefaultSettings();
         const storage = localStorage.getItem('settings');

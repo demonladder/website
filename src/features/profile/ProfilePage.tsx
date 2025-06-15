@@ -2,7 +2,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
 import Submissions from './components/Submissions';
-import StorageManager from '../../utils/StorageManager';
 import ProfileTypeIcon from '../../components/ProfileTypeIcon';
 import LevelTracker from './components/LevelTracker';
 import { AxiosError } from 'axios';
@@ -13,8 +12,7 @@ import Lists from './components/Lists';
 import PendingSubmissions from './components/PendingSubmissions';
 import useUserQuery from '../../hooks/queries/useUserQuery';
 import flagEmoji from '../../utils/flagEmoji';
-import { lazy, Suspense } from 'react';
-const Skills = lazy(() => import('./components/Skills'));
+import Skills from './components/Skills';
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
 import useContextMenu from '../../components/ui/menuContext/useContextMenu';
@@ -138,9 +136,7 @@ export default function Profile() {
             <Submissions user={userData} />
             <PendingSubmissions userID={userID} />
             <Lists userID={userID} />
-            {StorageManager.getUseExperimental() &&
-                <Suspense fallback={<LoadingSpinner />}><Skills userID={userID} /></Suspense>
-            }
+            <Skills userID={userID} />
             <Rankings userID={userID} />
         </Page>
     );
