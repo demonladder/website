@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import Page from '../components/Page';
 import { Link } from 'react-router-dom';
-import ProfileTypeIcon from '../components/ProfileTypeIcon';
+import UserRoleIcon from '../components/UserRoleIcon';
 import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
 import GetStaff, { StaffMember } from '../api/user/StaffMember';
 import Role from '../api/types/Role';
@@ -33,7 +33,7 @@ function List({ data, roleID }: { data?: StaffMember[], roleID: number }) {
         <div className='p-4 round:rounded-lg mb-2 grid grid-cols-2 lg:grid-cols-4 gap-8'>
             <span className='max-lg:hidden'></span>
             <div className={`text-right break-words text-permission-${roleID}`}>
-                <h3 className='text-3xl font-bold'>{roleTitles[roleID]} <ProfileTypeIcon roles={[]} /></h3>
+                <h3 className='text-3xl font-bold'>{roleTitles[roleID]} <UserRoleIcon roles={[]} /></h3>
                 <p>{roleDescriptions[roleID] || 'Description'}</p>
             </div>
             <ul>

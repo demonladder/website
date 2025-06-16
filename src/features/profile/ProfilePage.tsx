@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
 import Submissions from './components/Submissions';
-import ProfileTypeIcon from '../../components/ProfileTypeIcon';
+import UserRoleIcon from '../../components/UserRoleIcon';
 import LevelTracker from './components/LevelTracker';
 import { AxiosError } from 'axios';
 import Tracker from './components/Tracker';
@@ -73,7 +73,11 @@ export default function Profile() {
                     <img src={pfp} className='inline w-20 h-20 rounded-full' />
                 }
                 <div className='flex flex-col'>
-                    <Heading1 className='max-sm:basis-full' style={{ color: userColor ? `#${userColor.toString(16).padStart(6, '0')}` : undefined }}>{flagEmoji(userData.CountryCode)} {userData.Name} <ProfileTypeIcon roles={userData.Roles} /></Heading1>
+                    <div className='flex items-center gap-2 max-sm:flex-col text-4xl'>
+                        {flagEmoji(userData.CountryCode)}
+                        <Heading1 className='max-sm:basis-full' style={userColor ? { color: `#${userColor.toString(16).padStart(6, '0')}` } : {}}>{userData.Name}</Heading1>
+                        <UserRoleIcon roles={userData.Roles} />
+                    </div>
                     <p>
                         {userData.Pronouns &&
                             <span className='me-1'>{userData.Pronouns}</span>
