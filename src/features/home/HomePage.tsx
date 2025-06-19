@@ -7,6 +7,7 @@ import Title from '../../components/announcement/Title';
 import Body from '../../components/announcement/Body';
 import TrendingLevels from './components/TrendingLevels';
 import PopularLevels from './components/PopularLevels';
+import Supporters from './components/Supporters';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -25,11 +26,11 @@ export default function Home() {
                         </Body>
                     </Announcement>
                 </Container>
-                <iframe src='https://discord.com/widget?id=741568423485767721&theme=dark' className='shadow-lg' width={350} height={500} sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts' />
+                <Supporters />
                 <TrendingLevels />
-                <IndexStats />
+                <iframe src='https://discord.com/widget?id=741568423485767721&theme=dark' className='shadow-lg w-full row-span-2' height={450} sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts' />
                 <PopularLevels />
-                <Container className='xl:col-span-3'>
+                <Container className='xl:col-span-2'>
                     <Announcement>
                         <Title>Our platformer list</Title>
                         <Body>
@@ -39,6 +40,7 @@ export default function Home() {
                         </Body>
                     </Announcement>
                 </Container>
+                <IndexStats />
             </div>
         </main>
     );

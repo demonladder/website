@@ -16,7 +16,7 @@ export default function IndexStats() {
     });
 
     return (
-        <Container className='xl:row-span-3'>
+        <Container className='xl:col-span-2'>
             <h2 className='text-4xl'>Stats</h2>
             {status === 'success' &&
                 <div className='flex gap-8 flex-wrap'>
