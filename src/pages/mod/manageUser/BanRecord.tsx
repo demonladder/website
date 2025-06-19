@@ -19,7 +19,7 @@ export default function BanRecord({ record }: Props) {
     function onRevoke() {
         setIsloading(true);
 
-        const promise = revokeBan(record.BanID).then(() => {
+        const promise = revokeBan(record.UserID).then(() => {
             record.BanStop = new Date().toISOString().replace('T', ' ').replace('Z', ' +00:00');
         }).finally(() => {
             setIsloading(false);

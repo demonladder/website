@@ -1,5 +1,5 @@
 import APIClient from '../../APIClient';
 
-export async function revokeBan(banID: number) {
-    await APIClient.patch(`/bans/${banID}/revoke`);
+export async function revokeBan(userID: number) {
+    await APIClient.delete(`/bans/${userID}`);
 }
