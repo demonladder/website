@@ -1,3 +1,5 @@
+import { Device } from '../core/enums/device.enum';
+
 export default interface Submission {
     ID: number;
     LevelID: number;
@@ -5,7 +7,7 @@ export default interface Submission {
     Rating: number | null;
     Enjoyment: number | null;
     RefreshRate: number;
-    Device: string;
+    Device: Device;
     Proof: string | null;
     IsSolo: boolean;
     SecondPlayerID: number | null;

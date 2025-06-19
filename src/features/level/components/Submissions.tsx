@@ -14,18 +14,19 @@ import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionM
 import Level from '../types/Level';
 import LevelMeta from '../types/LevelMeta';
 import { createEnumParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import { Device } from '../../../api/core/enums/device.enum';
 import Heading2 from '../../../components/headings/Heading2';
 import Select from '../../../components/input/select/Select';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 
 const sorts: Record<SubmissionSort, string> = {
-    attempts: 'Attempts',
-    dateAdded: 'Date',
-    rating: 'Rating',
-    enjoyment: 'Enjoyment',
-    progress: 'Progress',
-    refreshRate: 'Refresh rate',
-    username: 'Username',
+    [SubmissionSort.DATE_ADDED]: 'Date added',
+    [SubmissionSort.RATING]: 'Rating',
+    [SubmissionSort.ENJOYMENT]: 'Enjoyment',
+    [SubmissionSort.REFRESH_RATE]: 'Refresh rate',
+    [SubmissionSort.PROGRESS]: 'Progress',
+    [SubmissionSort.ATTEMPTS]: 'Attempts',
+    [SubmissionSort.USERNAME]: 'Username',
 };
 
 interface SubmissionProps {
@@ -59,7 +60,7 @@ function Submission({ level, submission }: SubmissionProps) {
 
     const linkDestination = `/profile/${submission.UserID}`;
 
-    const hasWidgets = submission.Proof !== null || submission.Device === 'Mobile';
+    const hasWidgets = submission.Proof !== null || submission.Device === Device.MOBILE;
 
     const title: string[] = [];
     title.push(submission.User.Name);
@@ -68,7 +69,7 @@ function Submission({ level, submission }: SubmissionProps) {
     title.push(`${submission.RefreshRate}fps`);
     title.push(`Progress: ${submission.Progress}%`);
     if (submission.Attempts) title.push(`Attempts: ${submission.Attempts}`);
-    if (submission.Device === 'Mobile') title.push('Completed on mobile');
+    if (submission.Device === Device.MOBILE) title.push('Completed on mobile');
 
     const shortenedName = submission.User.Name.length > 18 ? submission.User.Name.slice(0, 18) + '...' : submission.User.Name;
     const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > 18) ? submission.SecondaryUser.Name.slice(0, 18) + '...' : submission.SecondaryUser?.Name;
@@ -97,7 +98,7 @@ function Submission({ level, submission }: SubmissionProps) {
             </Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-theme-500 pe-2'>
-                    {submission.Device === 'Mobile' &&
+                    {submission.Device === Device.MOBILE &&
                         <i className='bx bx-mobile-alt' />
                     }
                     {submission.Proof &&

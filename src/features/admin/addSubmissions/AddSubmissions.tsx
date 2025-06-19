@@ -14,15 +14,15 @@ import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import { Difficulties } from '../../level/types/LevelMeta';
 import SendSubmission from '../../../api/submissions/SendSubmission';
+import { Device } from '../../../api/core/enums/device.enum';
 
-const deviceOptions = {
+const deviceOptions: Record<Device, string> = {
     'pc': 'PC',
     'mobile': 'Mobile',
 };
-type DeviceKey = keyof typeof deviceOptions;
 
 export default function AddSubmission() {
-    const [deviceKey, setDeviceKey] = useState<DeviceKey>('pc');
+    const [deviceKey, setDeviceKey] = useState(Device.PC);
     const [isMutating, setIsMutating] = useState(false);
 
     const [rating, setRating] = useState<number>();
@@ -82,7 +82,7 @@ export default function AddSubmission() {
         setRating(undefined);
         setEnjoyment(undefined);
         setRefreshRate(60);
-        setDeviceKey('pc');
+        setDeviceKey(Device.PC);
         setProof('');
         clearActiveLevel();
         markInvalidLevel();
