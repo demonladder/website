@@ -42,7 +42,7 @@ declare const kofiWidgetOverlay: {
     draw: (username: string, options: Record<string, string>) => void;
 };
 
-if (import.meta.env.PROD) kofiWidgetOverlay.draw('gddemonladder', {
+kofiWidgetOverlay.draw('gddemonladder', {
     'type': 'floating-chat',
     'floating-chat.donateButton.text': 'Donate',
     'floating-chat.donateButton.background-color': '#00b9fe',
