@@ -71,8 +71,9 @@ export default function List() {
         });
     }
 
+    const canEdit = session.user?.ID === list?.OwnerID || session.hasPermission(PermissionFlags.MANAGE_LISTS);
     function onNameClicked() {
-        if (session.user?.ID !== list?.OwnerID && !session.hasPermission(PermissionFlags.MANAGE_LISTS)) return;
+        if (!canEdit) return;
         setIsEditingName(true);
     }
 
@@ -85,11 +86,16 @@ export default function List() {
                 <title>GDDL | List | {list.Name}</title>
             </Helmet>
             {!isEditingName
-                ? <Heading1 onClick={onNameClicked}>{list.Name}</Heading1>
+                ? <Heading1 onClick={onNameClicked}>{list.Name} {canEdit && <i className='bx bxs-pencil cursor-text' />}</Heading1>
                 : <form onSubmit={onSaveName}><input type='text' value={name} onChange={(e) => setName(e.target.value)} className='text-4xl font-bold block w-full outline-none' autoFocus onBlur={onSaveName} /></form>
             }
             <h2 className='text-2xl'>by <Link to={`/profile/${list.OwnerID}`} className='text-blue-400 underline'>{list.Owner.Name}</Link></h2>
-            <h3 className='my-2 text-lg'>{list.Description}</h3>
+            {list.Description &&
+                <h3 className='my-2 text-lg'>{list.Description}</h3>
+            }
+            {!list.Description && canEdit &&
+                <p className='italic text-theme-400'>Click to add a description</p>
+            }
             <ol className='mt-4'>
                 {list.Levels.map((level) => <Level list={list} listLevel={level} setPosition={setPosition} dragLocked={isDragLocked} key={level.LevelID} />)}
             </ol>
