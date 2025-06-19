@@ -12,7 +12,7 @@
     --label-opacity: 100%;
     color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
 
-    --layer-color: var(--on-secondary-container);
+    --layer-color: var(--color-on-secondary-container);
     --layer-opacity: 0%;
 
     &::before {
@@ -43,12 +43,11 @@
 
     &:focus-visible {
         --layer-opacity: 10%;
-        outline: 3px solid var(--primary);
+        outline: 3px solid var(--color-primary);
         outline-offset: 2px;
     }
 
     &:active {
-        --layer-color: var(--on-secondary-container);
         --layer-opacity: 10%;
         --border-radius: 12px;
     }
