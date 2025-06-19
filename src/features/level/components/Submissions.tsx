@@ -16,6 +16,7 @@ import Level from '../types/Level';
 import LevelMeta from '../types/LevelMeta';
 import pluralS from '../../../utils/pluralS';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import { Device } from '../../../api/core/enums/device.enum';
 
 interface SubmissionProps {
     level: Level & { Meta: LevelMeta };
@@ -42,7 +43,7 @@ function Submission({ level, submission }: SubmissionProps) {
 
     const linkDestination = `/profile/${submission.UserID}`;
 
-    const hasWidgets = submission.Proof !== null || submission.Device === 'Mobile';
+    const hasWidgets = submission.Proof !== null || submission.Device === Device.MOBILE;
 
     const title: string[] = [];
     title.push(submission.User.Name);
@@ -51,7 +52,7 @@ function Submission({ level, submission }: SubmissionProps) {
     title.push(`${submission.RefreshRate}fps`);
     title.push(`Progress: ${submission.Progress}%`);
     if (submission.Attempts) title.push(`Attempts: ${submission.Attempts}`);
-    if (submission.Device === 'Mobile') title.push('Completed on mobile');
+    if (submission.Device === Device.MOBILE) title.push('Completed on mobile');
 
     const shortenedName = submission.User.Name.length > 20 ? submission.User.Name.slice(0, 20) + '...' : submission.User.Name;
     const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > 20) ? submission.SecondaryUser.Name.slice(0, 20) + '...' : submission.SecondaryUser?.Name;
@@ -80,7 +81,7 @@ function Submission({ level, submission }: SubmissionProps) {
             </Link>
             {hasWidgets &&
                 <span className='flex gap-1 items-center bg-theme-500 pe-2'>
-                    {submission.Device === 'Mobile' &&
+                    {submission.Device === Device.MOBILE &&
                         <i className='bx bx-mobile-alt' />
                     }
                     {submission.Proof &&

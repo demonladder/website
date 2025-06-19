@@ -22,6 +22,7 @@ import DeleteSubmission from '../../api/submissions/DeleteSubmission';
 import { Difficulties, LevelLengths } from '../../features/level/types/LevelMeta';
 import { useSubmission } from './useSubmission';
 import FormGroup from '../form/FormGroup';
+import { Device } from '../../api/core/enums/device.enum';
 
 interface Props {
     level: FullLevel;
@@ -45,18 +46,17 @@ const enjoymentOptions = {
 };
 type EnjoymentOptions = keyof typeof enjoymentOptions;
 
-const deviceOptions = {
+const deviceOptions: Record<Device, string> = {
     pc: 'PC',
     mobile: 'Mobile',
 };
-type DeviceOptions = keyof typeof deviceOptions;
 
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
 
 export default function SubmitModal({ onClose, level, userID }: Props) {
     const [tier, setTier] = useState<string>('');
     const [enjoymentKey, setEnjoymentKey] = useState<EnjoymentOptions>('-1');
-    const [deviceKey, setDeviceKey] = useState<DeviceOptions>(JSON.parse(localStorage.getItem('defaultDevice') ?? '"pc"') as DeviceOptions);
+    const [deviceKey, setDeviceKey] = useState(JSON.parse(localStorage.getItem('defaultDevice') ?? '"pc"') as Device);
     const [refreshRate, setRefreshRate] = useState(StorageManager.getSettings().submission.defaultRefreshRate.toString());
     const [proof, setProof] = useState('');
     const [progress, setProgress] = useState('');
@@ -81,7 +81,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         if (userSubmission.Rating !== null) setTier(userSubmission.Rating.toString());
         if (userSubmission.Enjoyment !== null) setEnjoymentKey(userSubmission.Enjoyment.toString() as EnjoymentOptions);
         setRefreshRate(userSubmission.RefreshRate.toString());
-        setDeviceKey(userSubmission.Device === 'Mobile' ? 'mobile' : 'pc');
+        setDeviceKey(userSubmission.Device);
         if (userSubmission.Proof !== null) setProof(userSubmission.Proof.toString());
         setProgress(userSubmission.Progress.toString());
         if (userSubmission.Attempts !== null) setAttempts(userSubmission.Attempts.toString());

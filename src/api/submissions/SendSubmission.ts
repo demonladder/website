@@ -1,11 +1,12 @@
 import APIClient from '../APIClient';
+import { Device } from '../core/enums/device.enum';
 
 interface SubmitDTO {
     levelID: number;
     rating?: number;
     enjoyment?: number;
     refreshRate?: number;
-    device?: 'pc' | 'mobile';
+    device?: Device;
     proof?: string;
     progress?: number;
     attempts?: number;
