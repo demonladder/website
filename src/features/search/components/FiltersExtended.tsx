@@ -113,7 +113,7 @@ export default function FiltersExtended() {
                 <div className='col-span-12 md:col-span-6 xl:col-span-6'>
                     <p className='form-label m-0'>Level ID:</p>
                     <div className='flex items-center'>
-                        <NumberInput className='num-lg' value={minID ?? undefined} min='1' max='500000000' onChange={(e) => setMinID(NaNToNull(parseInt(e.target.value)))} />
+                        <TextInput className='num-lg' value={minID ?? undefined} min='1' max='500000000' onChange={(e) => setMinID(NaNToNull(parseInt(e.target.value)))} />
                         <p className='m-0 mx-2'>to</p>
                         <TextInput className='num-lg' value={maxID ?? undefined} min='1' max='500000000' onChange={(e) => setMaxID(NaNToNull(parseInt(e.target.value)))} />
                     </div>
