@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Heading3 from '../../../../components/headings/Heading3';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 import Heading4 from '../../../../components/headings/Heading4';
 import Heading1 from '../../../../components/headings/Heading1';
 import Heading2 from '../../../../components/headings/Heading2';
 import Heading5 from '../../../../components/headings/Heading5';
-// import { TextInput } from '../../../../components/Input';
-// import FormInputDescription from '../../../../components/form/FormInputDescription';
-// import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { selectText } from '../../../../utils/selectText';
+import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
 
 function getRandomColorString() {
     const letters = '0123456789ABCDEF';
@@ -38,7 +37,23 @@ export default function CustomTheme() {
     const [footer, setFooter] = useState(getRandomColorString());
     const [footerText, setFooterText] = useState(getRandomColorString());
 
-    // const [themeName, setThemeName] = useState('custom');
+    const theme = useMemo(() => ({
+        '400': gradient400,
+        '500': gradient500,
+        '600': gradient600,
+        '700': gradient700,
+        '800': gradient800,
+        '900': gradient900,
+        '950': gradient950,
+        'header': header,
+        'header-text': headerText,
+        'bg-from': bodyFrom,
+        'bg-to': bodyTo,
+        'text': bodyText,
+        'outline': outline,
+        'footer': footer,
+        'footer-text': footerText,
+    }), [bodyFrom, bodyText, bodyTo, footer, footerText, gradient400, gradient500, gradient600, gradient700, gradient800, gradient900, gradient950, header, headerText, outline]);
 
     return (
         <section>
@@ -83,32 +98,12 @@ export default function CustomTheme() {
                 <ColorPicker color={footer} setColor={setFooter}>Footer</ColorPicker>
                 <ColorPicker color={footerText} setColor={setFooterText}>Footer text</ColorPicker>
             </div>
-            {/* <Heading4 className='mt-4'>Export</Heading4>
-            <div>
-                <FormInputLabel>Theme name</FormInputLabel>
-                <TextInput value={themeName} onChange={(e) => setThemeName(e.target.value.toLowerCase().replaceAll(' ', '-'))} pattern='^[a-z-]{1,32}$' />
-                <FormInputDescription>all lowercase, no spaces</FormInputDescription>
+            <Heading4 className='mt-4'>Export</Heading4>
+            <div className='flex gap-2'>
+                <TonalButton size='sm'>Export</TonalButton>
+                <TonalButton size='sm'>Import</TonalButton>
             </div>
-            <div>
-                <pre>--theme-{themeName}-400: {gradient400};</pre>
-                <pre>--theme-{themeName}-500: {gradient500};</pre>
-                <pre>--theme-{themeName}-600: {gradient600};</pre>
-                <pre>--theme-{themeName}-700: {gradient700};</pre>
-                <pre>--theme-{themeName}-800: {gradient800};</pre>
-                <pre>--theme-{themeName}-900: {gradient900};</pre>
-                <pre>--theme-{themeName}-950: {gradient950};</pre>
-
-                <pre>--theme-{themeName}-header: {header};</pre>
-                <pre>--theme-{themeName}-header-text: {headerText};</pre>
-
-                <pre>--theme-{themeName}-bg-from: {bodyFrom};</pre>
-                <pre>--theme-{themeName}-bg-to: {bodyTo};</pre>
-                <pre>--theme-{themeName}-text: {bodyText};</pre>
-                <pre>--theme-{themeName}-outline: {outline};</pre>
-
-                <pre>--theme-{themeName}-footer: {footer};</pre>
-                <pre>--theme-{themeName}-footer-text: {footerText};</pre>
-            </div> */}
+            <pre className='bg-theme-700 p-2 border border-theme-400 rounded-md' onClick={selectText}>{JSON.stringify(theme, null, 4)}</pre>
         </section>
     );
 }
