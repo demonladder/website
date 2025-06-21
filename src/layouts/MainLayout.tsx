@@ -1,3 +1,5 @@
+'bg-refreshRate-60 bg-refreshRate-75 bg-refreshRate-120 bg-refreshRate-144 bg-refreshRate-240 bg-refreshRate-360 text-permission-0 text-permission-1 text-permission-2 text-permission-3 text-permission-4 text-permission-5 text-permission-6';  // Include these classes in the final CSS bundle
+
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ModalProvider from '../context/ModalProvider';
@@ -166,21 +168,6 @@ export default function MainLayout() {
                 <div ref={containerRef} className='relative flex flex-col'>
                     <Header />
                     <NavbarNotificationRenderer />
-                    <div className='hidden'>{/* Force Tailwind to include these colors. This is to reduce the final css bundle size. */}
-                        <p className='bg-refreshRate-60'>60</p>
-                        <p className='bg-refreshRate-75'>75</p>
-                        <p className='bg-refreshRate-120'>120</p>
-                        <p className='bg-refreshRate-144'>144</p>
-                        <p className='bg-refreshRate-240'>240</p>
-                        <p className='bg-refreshRate-360'>360</p>
-                        <p className='text-permission-0'>0</p>
-                        <p className='text-permission-1'>1</p>
-                        <p className='text-permission-2'>2</p>
-                        <p className='text-permission-3'>3</p>
-                        <p className='text-permission-4'>4</p>
-                        <p className='text-permission-5'>5</p>
-                        <p className='text-permission-6'>6</p>
-                    </div>
                     <div className='flex-grow over text-theme-text'>
                         <Suspense fallback={<div className='flex justify-center items-center h-screen'><i className='bx bx-loader-alt bx-spin text-4xl' /></div>}>
                             <Outlet />
