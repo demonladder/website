@@ -30,7 +30,7 @@ interface LevelDTO {
 
 interface Props {
     element: React.ComponentType<LevelProps>;
-    className: string;
+    className?: string;
     levels: LevelDTO[];
     selectedLevel?: number;
 }

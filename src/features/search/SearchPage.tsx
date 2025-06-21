@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Level from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
@@ -9,7 +9,6 @@ import { GridLevel } from '../../components/GridLevel';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
 import { useLazyQueryParam } from '../../hooks/useLazyQueryParam';
-import { stripFalsyProperties } from '../../utils/stripFalsyProperties';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { QueryParamNames } from './enums/QueryParamNames';
 import { LevelRenderer } from '../../components/LevelRenderer';
@@ -22,6 +21,9 @@ import SearchInput from '../../components/input/search/Search';
 import ViewType from './components/ViewType';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import pluralS from '../../utils/pluralS';
+import { TextInput } from '../../components/Input';
+import IconButton from '../../components/input/buttons/icon/IconButton';
+import { useShortcut } from 'react-keybind';
 
 // TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {
@@ -31,6 +33,7 @@ interface SavedFilters {
 
 export default function Search() {
     const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('levelFilters', {});
+    const [limit, setLimit] = useLocalStorage('searchLimit', 16);
 
     const [name, lazyName, setName] = useLazyQueryParam(QueryParamNames.Name, savedFilters[QueryParamNames.Name] ?? '');
     const [creator, lazyCreator, setCreator] = useLazyQueryParam(QueryParamNames.Creator, '');
@@ -65,6 +68,25 @@ export default function Search() {
         [QueryParamNames.InPack]: BooleanParam,
     });
 
+    const { registerShortcut, unregisterShortcut } = useShortcut()!;
+    const searchInputRef = useRef<HTMLInputElement | null>(null);
+    const scrollToSearchInput = useCallback(() => {
+        if (searchInputRef.current) {
+            searchInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => searchInputRef.current?.focus(), 1000);
+        }
+    }, []);
+
+    // Register the shortcut to focus the search input
+    useEffect(() => {
+        const keybinds = ['ctrl+k', 'cmd+k'];
+        registerShortcut(scrollToSearchInput, keybinds, 'Search', 'Search levels');
+        return () => {
+            unregisterShortcut(keybinds);
+        };
+    }, [registerShortcut, scrollToSearchInput, unregisterShortcut]);
+
+    // Populate q from the search parameters on initial load
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         if (params.size === 0) setQuery(savedFilters, 'replace');
@@ -73,18 +95,16 @@ export default function Search() {
 
     const generateQ = useCallback((name: string, creator: string, song: string) => {
         return {
-            ...stripFalsyProperties({
-                name,
-                creator,
-                song,
-            }),
-            page: query.page,
-            sort: query.sort,
-            sortDirection: query.dir,
-            minRating: query.r,
-            maxRating: query.R,
-            minEnjoyment: query.e,
-            maxEnjoyment: query.E,
+            name: name ? name : undefined,
+            creator: creator ? creator : undefined,
+            song: song ? song : undefined,
+            page: query[QueryParamNames.Page],
+            sort: query[QueryParamNames.Sort],
+            sortDirection: query[QueryParamNames.SortDirection],
+            minRating: query[QueryParamNames.MinRating],
+            maxRating: query[QueryParamNames.MaxRating],
+            minEnjoyment: query[QueryParamNames.MinEnjoyment],
+            maxEnjoyment: query[QueryParamNames.MaxEnjoyment],
             difficulty: query[QueryParamNames.Difficulty],
             length: query[QueryParamNames.Length],
             minSubmissionCount: query[QueryParamNames.MinSubmissionCount],
@@ -115,7 +135,7 @@ export default function Search() {
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
     const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
-    useEffect(() => {
+    const onSearch = useCallback(() => {
         setQ(generateQ(lazyName, lazyCreator, lazySong));
     }, [generateQ, lazyName, lazyCreator, lazySong, setQ]);
 
@@ -166,6 +186,8 @@ export default function Search() {
                 if (level) {
                     navigate('/level/' + level.ID);
                 }
+            } else {
+                onSearch();
             }
         }
     }
@@ -176,23 +198,28 @@ export default function Search() {
                 <title>GDDL | Search</title>
             </Helmet>
             <Heading1 className='mb-2'>Levels</Heading1>
-            <div className='flex gap-4 items-center'>
-                <SearchInput onKeyDown={onKeyDown} value={name} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} placeholder='Search level...' />
+            <div className='flex gap-2 items-center'>
+                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={name} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search level...' />
+                <IconButton color='filled' onClick={onSearch}><i className='bx bx-search' /></IconButton>
             </div>
             <Filters creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
             <div className='flex flex-wrap justify-between mt-4 gap-2'>
                 <SortMenu />
-                <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
+                <div className='flex items-center gap-2'>
+                    <p>Results per page:</p>
+                    <TextInput value={limit} onChange={(e) => setLimit(parseInt(e.target.value))} min='1' max='25' style={{ width: '3rem' }} className='text-center' />
+                    <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
+                </div>
             </div>
             <LoadingSpinner isLoading={searchStatus === 'pending'} />
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
             {searchStatus === 'success' && <>
                 <div className='my-4'>{searchData.levels.length !== 0 && isListView
-                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='level-list' />
+                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} />
                     : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
                 }</div>
                 <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />
-                {searchData.total > 5 && <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>}
+                <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>
             </>}
         </Page>
     );
