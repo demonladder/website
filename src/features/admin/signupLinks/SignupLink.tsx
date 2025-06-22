@@ -1,52 +1,21 @@
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import GetSignupTokens from '../../../api/signupToken/GetSignupTokens';
-import SignupToken from '../../../api/types/SignupToken';
+import { useMutation } from '@tanstack/react-query';
 import CreateSignupToken from '../../../api/signupToken/SignupToken';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import UserSearchBox from '../../../components/UserSearchBox';
 import { TinyUser } from '../../../api/types/TinyUser';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import User from '../../../api/types/User';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import FormGroup from '../../../components/form/FormGroup';
-
-function Token({ token, user }: { token: SignupToken, user: User }) {
-    const link = `https://gdladder.com/signup?key=${token.Token}&name=${user.Name}`;
-
-    function linkClick(e: React.MouseEvent<HTMLParagraphElement>) {
-        void navigator.clipboard.writeText(link);
-
-        (e.target as Element).classList.remove('bg-fade');
-        setTimeout(() => {
-            (e.target as Element).classList.add('bg-fade');
-        }, 10);
-    }
-
-    return (
-        <div>
-            <p><b>{user.Name}:</b></p>
-            <p className='break-words cursor-pointer inline underline' onClick={linkClick}>{link}</p>
-        </div>
-    );
-}
 
 export default function SignupLink() {
     const [result, setResult] = useState<TinyUser>();
 
-    const { data: tokens, refetch } = useQuery({
-        queryKey: ['signupTokens'],
-        queryFn: GetSignupTokens,
-    });
-
-    const queryClient = useQueryClient();
     const genToken = useMutation({
-        mutationFn: async (context: number) => toast.promise(CreateSignupToken(context).then(() => queryClient.invalidateQueries({ queryKey: ['signupTokens'] })), {
+        mutationFn: async (context: number) => toast.promise(CreateSignupToken(context), {
             pending: 'Generating...',
-            success: 'Generated!',
+            success: 'Sent!',
             error: renderToastError,
         }),
     });
@@ -59,26 +28,13 @@ export default function SignupLink() {
 
     return (
         <div>
-            <h3 className='mb-4 text-2xl'>Create Sign-up Link</h3>
-            <p className='mb-4'>Generate a one-time sign-up link for an existing user. Anyone with the link can create a password for the listed username.</p>
+            <h3 className='mb-4 text-2xl'>Password reset</h3>
+            <p className='mb-4'>Send a one-time reset link to a user. The link will be sent through Discord so the target user should have DMs open and share a server with the bot.</p>
             <FormGroup>
                 <FormInputLabel htmlFor='tokenReceiver'>User</FormInputLabel>
                 <UserSearchBox setResult={setResult} id='tokenReceiver' />
-                <PrimaryButton onClick={newLink} disabled={genToken.status === 'pending'}>Generate</PrimaryButton>
+                <PrimaryButton onClick={newLink} disabled={genToken.status === 'pending'}>Send</PrimaryButton>
             </FormGroup>
-            <div className='flex justify-between items-center mt-8'>
-                <p><b>Links</b></p>
-                <SecondaryButton onClick={() => void refetch()} disabled={tokens === undefined}>Refresh</SecondaryButton>
-            </div>
-            <div className='flex flex-col gap-4'>
-                {(tokens !== undefined)
-                    ? tokens.map((token) => <Token token={token} user={token.User} key={token.Token} />)
-                    : <LoadingSpinner />
-                }
-            </div>
-            {tokens?.length === 0 &&
-                <p className='text-center'>No links found.</p>
-            }
         </div>
     );
 }
