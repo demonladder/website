@@ -12,6 +12,7 @@ import noise3D from '../utils/noise/noise3D';
 import { useWindowSize } from 'usehooks-ts';
 import useResizeObserver from '@react-hook/resize-observer';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
+import APIClient from '../api/APIClient';
 
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -127,7 +128,7 @@ export default function MainLayout() {
     }, [draw, isBackgroundEnabled, windowSize.height, windowSize.width]);
 
     useResizeObserver(containerRef, setup);
-    const { error: notifyError } = useNavbarNotification();
+    const { error: notifyError, warning: notifyWarning } = useNavbarNotification();
 
     useEffect(() => {
         const url = new URLSearchParams(location.search);
@@ -136,6 +137,13 @@ export default function MainLayout() {
             if (error === 'already_linked') notifyError('This Discord account is already linked to another GDDL account.');
             else if (error === 'mismatching_discord_id') notifyError('The Discord account linked to this GDDL account does not match the Discord account you are trying to link with.');
         }
+
+        APIClient.get<string>('/announcements')
+            .then((res) => {
+                notifyWarning(res.data);
+            })
+            .catch(() => { });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
