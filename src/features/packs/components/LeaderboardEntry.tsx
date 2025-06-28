@@ -16,16 +16,16 @@ export function LeaderboardEntry({ sum, discordData, user, highestScore }: { sum
     const blue = profileColor & 0xff;
 
     const brightness = 255 - Math.sqrt(0.299 * red ** 2 + 0.587 * green ** 2 + 0.114 * blue ** 2);
-    const textCol = brightness < 128 ? 0 : 255;
+    const textCol = brightness < 128 ? 'black' : 'white';
 
     return (
-        <div className='mt-[2px] max-md:text-xs'>
-            <Link to={`/profile/${user.ID}`} style={{ width: width + '%', backgroundColor: `#${profileColor.toString(16)}` }} className='inline-block relative h-10 bg-gray-500 round:rounded-xl'>
-                {discordData?.Avatar &&
-                    <object data={pfp} type='image/png' className='rounded-full w-10 -ms-12' />}
-                <span className='absolute right-2 top-1/2 -translate-y-1/2 overflow-hidden' style={{ color: `rgb(${textCol}, ${textCol}, ${textCol})` }}>{user.Name}</span>
+        <div className='mt-2 max-md:text-xs grid grid-cols-[auto_1fr_auto] gap-2'>
+            <object data={pfp} type='image/png' className='rounded-full size-10' />
+            <Link to={`/profile/${user.ID}`} style={{ width: width + '%', backgroundColor: `#${profileColor.toString(16)}` }} className='flex items-center ps-2 relative h-10 bg-gray-500 round:rounded-xl'>
+                <span style={{ color: textCol }}>{user.Name}</span>
                 <span className='absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full'>{sum}%</span>
             </Link>
+            <span className='opacity-0'>{sum}%</span>
         </div>
     );
 }

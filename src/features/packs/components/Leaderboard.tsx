@@ -7,7 +7,7 @@ import { LeaderboardEntry } from './LeaderboardEntry';
 
 export default function Leaderboard({ packID }: { packID?: number }) {
     const { data: packLeaders, status } = useQuery({
-        queryKey: ['packLeaders', packID],
+        queryKey: ['pack', packID, 'leaders'],
         queryFn: () => getGlobalPackLeaders(packID),
     });
 
