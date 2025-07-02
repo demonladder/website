@@ -28,3 +28,12 @@ runMigration('2', () => {
         localStorage.removeItem('settings.submissions.defaultDevice');
     }
 });
+
+runMigration('3', () => {
+    const stored = localStorage.getItem('accessToken');
+    if (!stored) return;
+
+    if (!stored.startsWith('"')) {
+        localStorage.removeItem('accessToken');
+    }
+});
