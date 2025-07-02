@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../components/Input';
-import Select from '../../../components/Select';
 import TextArea from '../../../components/input/TextArea';
 import renderToastError from '../../../utils/renderToastError';
 import SavePackMetaRequest from '../../../api/packs/requests/SavePackDescriptionRequest';
@@ -12,6 +11,7 @@ import LoadingSpinner from '../../../components/LoadingSpinner';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormGroup from '../../../components/form/FormGroup';
 import usePack from '../../../features/singlePack/hooks/usePack';
+import Select from '../../../components/input/select/Select';
 
 interface Props {
     packID: number;
@@ -43,7 +43,7 @@ export default function Meta({ packID }: Props) {
         if (isLoading) return;
         setIsLoading(true);
 
-        const request = SavePackMetaRequest(packID, description || undefined, categoryKey, roleID).then(() => {
+        const request = SavePackMetaRequest(packID, categoryKey, description || undefined, roleID).then(() => {
             void queryClient.invalidateQueries({ queryKey: ['packs'] });
             void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
         }).finally(() => {
@@ -72,7 +72,7 @@ export default function Meta({ packID }: Props) {
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Category</FormInputLabel>
-                <Select options={categories} activeKey={categoryKey} onChange={(k) => setCategoryKey(k)} id='editPackCategory' />
+                <Select options={categories} label={packsData.categories.find((category) => category.ID === categoryKey)?.Name ?? 'Unknown'} onOption={setCategoryKey} id='editPackCategory' />
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Role ID</FormInputLabel>

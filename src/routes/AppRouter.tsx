@@ -54,13 +54,13 @@ import Verification from '../features/admin/verification/Verification';
 import EditLevel from '../features/admin/editLevel/EditLevel';
 import EditTags from '../features/admin/editTags/EditTags';
 import Debugging from '../pages/mod/debugging/Debugging';
-import Logs from '../pages/mod/siteLogs/Logs';
 import Roles from '../features/admin/roles/Roles';
 import EditRole from '../features/admin/roles/EditRole';
 import MainLayout from '../layouts/MainLayout';
 import SubmissionMerge from '../features/admin/submissionMerging/SubmissionMerge';
 import AdminLayout from '../features/admin/AdminLayout';
 import BetaGuard from '../layouts/BetaGuard';
+import AuditLogs from '../features/admin/audit-logs/AuditLogs';
 
 export const router = createBrowserRouter(createRoutesFromElements(
     [
@@ -105,6 +105,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
             </Route>,
             <Route path='/mod' element={<Suspense fallback={<FloatingLoadingSpinner />}><AdminLayout /></Suspense>} loader={ModLoader} errorElement={<ErrorElement />}>
                 <Route index element={<ModIndex />} />
+                <Route path='audit-logs' element={<AuditLogs />} />
                 <Route path='beta' element={<Beta />} />
                 <Route path='queue' element={<Queue />} />
                 <Route path='references' element={<EditReferences />} />
@@ -123,7 +124,6 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='editTags' element={<EditTags />} />
                 <Route path='siteSettings' element={<SiteSettings />} />
                 <Route path='debugging' element={<Debugging />} />
-                <Route path='logs' element={<Logs />} />
                 <Route path='roles' element={<Roles />} />
                 <Route path='roles/:roleID' element={<EditRole />} />
                 <Route path='mergeSubmissions' element={<SubmissionMerge />} />

@@ -38,6 +38,9 @@ export default function AdminLayout() {
                             <NavButton to='/mod/deleteUser'>Delete user</NavButton>
                             <NavButton to='/mod/verification'>Verification</NavButton>
                             <Divider />
+                            <p className='text-gray-400 text-sm ps-3'>Moderation</p>
+                            <NavButton to='/mod/audit-logs'>Audit logs</NavButton>
+                            <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Packs</p>
                             <NavButton to='/mod/editPack'>Packs</NavButton>
                             <Divider />
