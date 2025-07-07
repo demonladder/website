@@ -11,10 +11,6 @@ import Divider from '../../../components/divider/Divider';
 import Heading2 from '../../../components/headings/Heading2';
 
 type Props = {
-    creator: string,
-    setCreator: (value: string) => void,
-    song: string,
-    setSong: (value: string) => void,
     reset: () => void,
     show: boolean,
 };
@@ -40,7 +36,9 @@ const lengthOptions = {
     6: 'Platformer',
 };
 
-export default function Filters({ creator, setCreator, song, setSong, reset, show }: Props) {
+export default function Filters({ reset, show }: Props) {
+    const [creator, setCreator] = useQueryParam(QueryParamNames.Creator, withDefault(StringParam, ''));
+    const [song, setSong] = useQueryParam(QueryParamNames.Song, withDefault(StringParam, ''));
     const [difficulty, setDifficulty] = useQueryParam(QueryParamNames.Difficulty, withDefault(StringParam, '-1'));
     const [length, setLength] = useQueryParam(QueryParamNames.Length, withDefault(NumberParam, 0));
 

@@ -8,7 +8,6 @@ import PageButtons from '../../components/PageButtons';
 import { GridLevel } from '../../components/GridLevel';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
-import { useLazyQueryParam } from '../../hooks/useLazyQueryParam';
 import { QueryParamNames } from './enums/QueryParamNames';
 import { LevelRenderer } from '../../components/LevelRenderer';
 import Heading1 from '../../components/headings/Heading1';
@@ -34,11 +33,10 @@ export default function Search() {
     const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('levelFilters', {});
     const [limit, setLimit] = useLocalStorage('searchLimit', 16);
 
-    const [name, lazyName, setName] = useLazyQueryParam(QueryParamNames.Name, savedFilters[QueryParamNames.Name] ?? '');
-    const [creator, lazyCreator, setCreator] = useLazyQueryParam(QueryParamNames.Creator, '');
-    const [song, lazySong, setSong] = useLazyQueryParam(QueryParamNames.Song, '');
-
     const [query, setQuery] = useQueryParams({
+        [QueryParamNames.Name]: withDefault(StringParam, savedFilters[QueryParamNames.Name] ?? ''),
+        [QueryParamNames.Creator]: withDefault(StringParam, ''),
+        [QueryParamNames.Song]: withDefault(StringParam, ''),
         [QueryParamNames.Page]: withDefault(NumberParam, 0),
         [QueryParamNames.Sort]: withDefault(StringParam, 'ID'),
         [QueryParamNames.SortDirection]: withDefault(StringParam, 'asc'),
@@ -71,8 +69,8 @@ export default function Search() {
     const searchInputRef = useRef<HTMLInputElement | null>(null);
     const scrollToSearchInput = useCallback(() => {
         if (searchInputRef.current) {
-            searchInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => searchInputRef.current?.focus(), 1000);
+            searchInputRef.current.scrollIntoView({ behavior: 'instant', block: 'center' });
+            setTimeout(() => searchInputRef.current?.focus(), 100);
         }
     }, []);
 
@@ -85,62 +83,25 @@ export default function Search() {
         };
     }, [registerShortcut, scrollToSearchInput, unregisterShortcut]);
 
-    // Populate q from the search parameters on initial load
+    // Load state from the URL search parameters on initial mount
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         if (params.size === 0) setQuery(savedFilters, 'replace');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const generateQ = useCallback((name: string, creator: string, song: string) => {
-        return {
-            name: name ? name : undefined,
-            creator: creator ? creator : undefined,
-            song: song ? song : undefined,
-            page: query[QueryParamNames.Page],
-            sort: query[QueryParamNames.Sort],
-            sortDirection: query[QueryParamNames.SortDirection],
-            minRating: query[QueryParamNames.MinRating],
-            maxRating: query[QueryParamNames.MaxRating],
-            minEnjoyment: query[QueryParamNames.MinEnjoyment],
-            maxEnjoyment: query[QueryParamNames.MaxEnjoyment],
-            difficulty: query[QueryParamNames.Difficulty],
-            length: query[QueryParamNames.Length],
-            minSubmissionCount: query[QueryParamNames.MinSubmissionCount],
-            maxSubmissionCount: query[QueryParamNames.MaxSubmissionCount],
-            minEnjoymentCount: query[QueryParamNames.MinEnjoymentCount],
-            maxEnjoymentCount: query[QueryParamNames.MaxEnjoymentCount],
-            minDeviation: query[QueryParamNames.MinDeviation],
-            maxDeviation: query[QueryParamNames.MaxDeviation],
-            minID: query[QueryParamNames.MinID],
-            maxID: query[QueryParamNames.MaxID],
-            twoPlayer: query[QueryParamNames.TwoPlayer],
-            topSkillset: query[QueryParamNames.TopSkillset],
-            excludeCompleted: query[QueryParamNames.ExcludeCompleted],
-            excludeUnrated: query[QueryParamNames.ExcludeUnrated],
-            excludeUnratedEnjoyment: query[QueryParamNames.ExcludeUnratedEnjoyment],
-            excludeRated: query[QueryParamNames.ExcludeRated],
-            excludeRatedEnjoyment: query[QueryParamNames.ExcludeRatedEnjoyment],
-            isInPack: query[QueryParamNames.InPack],
-        };
-    }, [query]);
-
     function reset() {
         setSavedFilters({});
         setQuery({}, 'replace');
     }
 
-    const [q, setQ] = useSessionStorage('searchQuery', generateQ(name, creator, song));
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
     const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
-    const onSearch = useCallback(() => {
-        setQ(generateQ(lazyName, lazyCreator, lazySong));
-    }, [generateQ, lazyName, lazyCreator, lazySong, setQ]);
-
-    const { status: searchStatus, data: searchData } = useQuery({
-        queryKey: ['search', q],
-        queryFn: () => getLevels(q),
+    const { status: searchStatus, data: searchData, refetch: onSearch } = useQuery({
+        queryKey: ['search', query],
+        queryFn: () => getLevels(query),
+        enabled: false,
     });
 
     // Reset page to 0 if the search data is empty and the page is greater than 0
@@ -157,19 +118,17 @@ export default function Search() {
     // Persist filters to session storage
     useEffect(() => {
         setSavedFilters(query);
-        setSavedFilters((prev) => ({
-            ...prev,
-            [QueryParamNames.Name]: lazyName,
-            [QueryParamNames.Creator]: lazyCreator,
-            [QueryParamNames.Song]: lazySong,
-        }));
-    }, [lazyCreator, lazyName, lazySong, query, setSavedFilters]);
+    }, [query, setSavedFilters]);
 
     function onNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setName(e.target.value);
-        setQuery({ ...query, [QueryParamNames.Page]: 0 });
+        setQuery({
+            ...query,
+            [QueryParamNames.Name]: e.target.value,
+            [QueryParamNames.Page]: 0,
+        });
     }
 
+    // Up and down arrow key navigation
     const [selection, setSelection] = useState(0);
     const navigate = useNavigate();
     function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -186,7 +145,7 @@ export default function Search() {
                     navigate('/level/' + level.ID);
                 }
             } else {
-                onSearch();
+                void onSearch();
             }
         }
     }
@@ -198,10 +157,10 @@ export default function Search() {
             </Helmet>
             <Heading1 className='mb-2'>Levels</Heading1>
             <div className='flex gap-2 items-center'>
-                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={name} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search level...' />
-                <IconButton color='filled' onClick={onSearch}><i className='bx bx-search' /></IconButton>
+                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={query[QueryParamNames.Name]} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search level...' />
+                <IconButton color='filled' onClick={() => void onSearch()}><i className='bx bx-search' /></IconButton>
             </div>
-            <Filters creator={creator} setCreator={setCreator} song={song} setSong={setSong} reset={reset} show={showFilters} />
+            <Filters reset={reset} show={showFilters} />
             <div className='flex flex-wrap justify-between mt-4 gap-2'>
                 <SortMenu />
                 <div className='flex items-center gap-2'>
