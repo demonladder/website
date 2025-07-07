@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Level from '../../components/Level';
+import Level, { LevelSkeleton } from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
 import { getLevels } from './api/getLevels';
@@ -9,7 +9,6 @@ import { GridLevel } from '../../components/GridLevel';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
 import { useLazyQueryParam } from '../../hooks/useLazyQueryParam';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import { QueryParamNames } from './enums/QueryParamNames';
 import { LevelRenderer } from '../../components/LevelRenderer';
 import Heading1 from '../../components/headings/Heading1';
@@ -211,8 +210,14 @@ export default function Search() {
                     <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
                 </div>
             </div>
-            <LoadingSpinner isLoading={searchStatus === 'pending'} />
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
+            {searchStatus === 'pending' &&
+                <div>
+                    {Array.from({ length: limit ?? 16 }, (_, i) => (
+                        <LevelSkeleton key={`${i}`} />
+                    ))}
+                </div>
+            }
             {searchStatus === 'success' && <>
                 <div className='my-4'>{searchData.levels.length !== 0 && isListView
                     ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} />

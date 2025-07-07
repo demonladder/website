@@ -74,3 +74,26 @@ export default function Level({ ID, difficulty, rating, defaultRating, actualRat
         </div>
     );
 }
+
+export function LevelSkeleton() {
+    return (
+        <div className='flex justify-between h-20'>
+            <div className='flex gap-4 z-10 items-center'>
+                <span className='size-16 bg-theme-500 rounded-full' />
+                <span className='h-6 w-64 bg-theme-500 rounded shimmer' />
+            </div>
+            <div className='flex gap-4 z-10'>
+                <div className='self-center hidden lg:block'>
+                    <div className='flex flex-col gap-2' style={{ textShadow: '1px 2px 0px black, 0px 1px 10px black' }}>
+                        <span className='h-4 w-20 ms-auto bg-theme-500 rounded shimmer' />
+                        <span className='h-4 w-40 bg-theme-500 rounded shimmer' />
+                    </div>
+                </div>
+                <div className='flex text-3xl text-shadow-lg'>
+                    <div className={`flex justify-center w-14 lg:w-28 bg-theme-500`}></div>
+                    <div className={`flex justify-center w-14 lg:w-28 bg-theme-500`}></div>
+                </div>
+            </div>
+        </div>
+    );
+}
