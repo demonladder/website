@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { getStats } from '../../features/home/api/getStats';
-import GetHealthStats from '../../api/stats/GetHealthStats';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import StaffLeaderboard from './StaffLeaderboard';
@@ -25,10 +24,6 @@ export default function ModIndex() {
         queryKey: ['stats'],
         queryFn: getStats,
     });
-    const { data: logCounts } = useQuery({
-        queryKey: ['stats', 'health'],
-        queryFn: GetHealthStats,
-    });
 
     return (
         <div>
@@ -37,8 +32,6 @@ export default function ModIndex() {
                 <StatisticTracker value={stats?.pendingSubmissions} label='Pending submissions' />
                 <StatisticTracker value={stats?.submissions} label='Submissions' />
                 <StatisticTracker value={stats?.users} label='Users' />
-                <StatisticTracker value={logCounts?.warns} label='Warnings in the past 24h' />
-                <StatisticTracker value={logCounts?.errors} label='Errors in the past 24h' />
             </div>
             <StaffLeaderboard />
         </div>
