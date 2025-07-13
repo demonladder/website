@@ -38,13 +38,13 @@ function formatDBDateString(date: string) {
 export default function EditableSubmission({ submission }: Props) {
     const [rating, setRating] = useState<number | undefined>(submission.Rating ?? undefined);
     const [enjoyment, setEnjoyment] = useState<number | undefined>(submission.Enjoyment ?? undefined);
-    const [proof, setProof] = useState('');
+    const [proof, setProof] = useState(submission.Proof ?? '');
     const [refreshRate, setRefreshRate] = useState(submission.RefreshRate.toString());
     const [deviceKey, setDeviceKey] = useState<Device>(submission.Device.toLowerCase());
     const [progress, setProgress] = useState(submission.Progress.toString());
     const [attempts, setAttempts] = useState(submission.Attempts?.toString() ?? '');
-    const [wasSolo, setWasSolo] = useState(true);
-    const [secondPlayerID, setSecondPlayerID] = useState<number>();
+    const [wasSolo, setWasSolo] = useState(submission.IsSolo);
+    const [secondPlayerID, setSecondPlayerID] = useState(submission.SecondPlayerID ?? undefined);
     const [deleteReason, setDeleteReason] = useState('');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
