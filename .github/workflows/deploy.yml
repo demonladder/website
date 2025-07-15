@@ -33,13 +33,7 @@ jobs:
         VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
         VITE_SESSION_ID_NAME: ${{ vars.VITE_SESSION_ID_NAME }}
         VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
-  
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment: staging
 
-    steps:
     - name: Prepare SSH key
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key.pem
