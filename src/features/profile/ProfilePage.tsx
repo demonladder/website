@@ -70,9 +70,9 @@ export default function Profile() {
             </Helmet>
             <div className='mb-2 flex gap-4'>
                 {userData.DiscordData?.Avatar &&
-                    <img src={pfp} className='inline w-20 h-20 rounded-full' />
+                    <img src={pfp} className='inline size-20 rounded-full' />
                 }
-                <div className='flex flex-col'>
+                <div className='flex flex-col gap-1 justify-center'>
                     <div className='flex items-center gap-2 max-sm:flex-col text-4xl'>
                         {flagEmoji(userData.CountryCode)}
                         <Heading1 className='max-sm:basis-full' style={userColor ? { color: `#${userColor.toString(16).padStart(6, '0')}` } : {}}>{userData.Name}</Heading1>
