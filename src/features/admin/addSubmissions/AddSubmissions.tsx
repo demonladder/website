@@ -9,7 +9,6 @@ import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import useUserSearch from '../../../hooks/useUserSearch';
-import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import { Difficulties } from '../../level/types/LevelMeta';
@@ -126,7 +125,7 @@ export default function AddSubmission() {
                 </div>
                 <div>
                     <FormInputLabel htmlFor='addSubmissionProof'>Proof:</FormInputLabel>
-                    <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} invalid={!validateProof(proof, activeLevel)} />
+                    <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} invalid={!validateProof(proof, activeLevel?.Meta.Difficulty)} />
                     <FormInputDescription>Optional. Has to a valid URL.</FormInputDescription>
                 </div>
             </div>
@@ -152,6 +151,6 @@ function validateRefreshRate(FPS: number) {
     return FPS >= 30;
 }
 
-function validateProof(proof: string, level?: FullLevel) {
-    return !(level?.Meta.Difficulty === Difficulties.Extreme && proof.length === 0);
+function validateProof(proof: string, difficulty?: Difficulties) {
+    return !(difficulty === Difficulties.Extreme && proof.length === 0);
 }

@@ -52,7 +52,7 @@ export default function Level({ ID, difficulty, rating, defaultRating, actualRat
             <div className='absolute size-full bg-cover bg-center bg-no-repeat transition-all opacity-60 group-hover:opacity-100 focus-visible:opacity-100 level-thumbnail' style={{ backgroundImage: `url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")`, maskImage: 'linear-gradient(to right, transparent var(--mask-start-at, 40%), black 90%)' }} />
             <div className='flex justify-between h-20'>
                 <div className='flex gap-4 z-10 items-center'>
-                    <img src={DifficultyToImgSrc(difficulty)} alt={`${difficulty} demon face`} className='size-16' />
+                    <img src={DifficultyToImgSrc(difficulty)} alt={`${difficulty} demon face`} className='w-16' />
                     <p className='text-lg lg:text-[26.4px]'><b>{name}</b> by {creator}</p>
                     {completed && StorageManager.getHighlightCompleted() &&
                         <YesTick className='size-6 lg:size-8' />
