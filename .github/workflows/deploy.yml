@@ -1,0 +1,52 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ "beta" ]
+  pull_request:
+    branches: [ "beta" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install deps
+      run: npm ci
+
+    - name: Build
+      run: npm run build:staging
+
+    - name: Prepare SSH key
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Delete index.html
+      run: |
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm /home/ubuntu/gddl-beta/dist/index.html"
+
+    - name: Delete assets
+      run: |
+        ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm -rf /home/ubuntu/gddl-beta/dist/assets"
+
+    - name: Transfer index.html
+      run: |
+        scp -i private_key.pem -o StrictHostKeyChecking=no ./dist/index.html ubuntu@34.249.48.77:/home/ubuntu/gddl-beta/dist/index.html
+
+    - name: Transfer assets
+      run: |
+        scp -i private_key.pem -o StrictHostKeyChecking=no ./dist/assets ubuntu@34.249.48.77:/home/ubuntu/gddl-beta/dist/assets
