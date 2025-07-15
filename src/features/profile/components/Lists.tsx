@@ -27,6 +27,7 @@ export default function Lists({ userID }: Props) {
         if (userID !== session.user?.ID) return;
 
         e.preventDefault();
+        e.stopPropagation();
 
         menuContext?.setMenuData({
             x: e.clientX,
