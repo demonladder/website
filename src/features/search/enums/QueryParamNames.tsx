@@ -1,5 +1,4 @@
 export enum QueryParamNames {
-    Page = 'page',
     Sort = 'sort',
     SortDirection = 'dir',
     Name = 'name',

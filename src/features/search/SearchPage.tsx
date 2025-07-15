@@ -19,25 +19,25 @@ import SearchInput from '../../components/input/search/Search';
 import ViewType from './components/ViewType';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import pluralS from '../../utils/pluralS';
-import { TextInput } from '../../components/Input';
+import { NumberInput } from '../../components/Input';
 import IconButton from '../../components/input/buttons/icon/IconButton';
 import { useShortcut } from 'react-keybind';
 
 // TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {
-    [QueryParamNames.Name]: string;
-    [QueryParamNames.Page]: number;
+    [QueryParamNames.Name]: string | null;
 }
 
 export default function Search() {
     const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('levelFilters', {});
-    const [limit, setLimit] = useLocalStorage('searchLimit', 16);
+    const [page, setPage] = useSessionStorage('level-search-page', 0);
+    const [limit, setLimit] = useSessionStorage('level-search-limit', 12);
+    const [limitDisplay, setLimitDisplay] = useState<string | number>(limit);
 
     const [query, setQuery] = useQueryParams({
-        [QueryParamNames.Name]: withDefault(StringParam, savedFilters[QueryParamNames.Name] ?? ''),
-        [QueryParamNames.Creator]: withDefault(StringParam, ''),
-        [QueryParamNames.Song]: withDefault(StringParam, ''),
-        [QueryParamNames.Page]: withDefault(NumberParam, 0),
+        [QueryParamNames.Name]: StringParam,
+        [QueryParamNames.Creator]: StringParam,
+        [QueryParamNames.Song]: StringParam,
         [QueryParamNames.Sort]: withDefault(StringParam, 'ID'),
         [QueryParamNames.SortDirection]: withDefault(StringParam, 'asc'),
         [QueryParamNames.MinRating]: NumberParam,
@@ -98,22 +98,29 @@ export default function Search() {
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
     const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
-    const { status: searchStatus, data: searchData, refetch: onSearch } = useQuery({
-        queryKey: ['search', query],
-        queryFn: () => getLevels(query),
+    const { status: searchStatus, data: searchData, refetch } = useQuery({
+        queryKey: ['search', { ...query, limit, page }],
+        queryFn: () => getLevels({ ...query, limit, page }),
         enabled: false,
+        placeholderData: undefined,
     });
+    const [isInitialLoad, setIsInitialLoad] = useState(searchData === undefined);
+
+    const onSearch = useCallback(async () => {
+        setIsInitialLoad(false);
+        await refetch();
+    }, [refetch]);
 
     // Reset page to 0 if the search data is empty and the page is greater than 0
     useEffect(() => {
         if (searchData) {
-            if (searchData.total < (query.page - 1) * searchData.limit) {
-                setQuery({ ...query, page: 0 });
+            if (searchData.total < (page) * searchData.limit) {
+                setPage(0);
             }
 
             setSelection(0);
         }
-    }, [searchData, query, setQuery]);
+    }, [searchData, query, setQuery, page, setPage]);
 
     // Persist filters to session storage
     useEffect(() => {
@@ -124,8 +131,8 @@ export default function Search() {
         setQuery({
             ...query,
             [QueryParamNames.Name]: e.target.value,
-            [QueryParamNames.Page]: 0,
         });
+        setPage(0);
     }
 
     // Up and down arrow key navigation
@@ -150,30 +157,41 @@ export default function Search() {
         }
     }
 
+    useEffect(() => {
+        void onSearch();
+    }, [onSearch, page, limit]);
+
+    function onLimitChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const parsed = parseInt(e.target.value);
+        if (isNaN(parsed) || parsed < 1 || parsed > 25) {
+            setLimitDisplay(limit);
+            return;
+        }
+        setLimit(parsed);
+    }
+
     return (
         <Page>
             <Helmet>
                 <title>GDDL | Search</title>
             </Helmet>
             <Heading1 className='mb-2'>Levels</Heading1>
-            <div className='flex gap-2 items-center'>
-                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={query[QueryParamNames.Name]} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search level...' />
+            <div className={'flex gap-2 items-center transition-all ' + (isInitialLoad ? ' my-28' : '')}>
+                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={query[QueryParamNames.Name] ?? ''} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search by name or ID' />
                 <IconButton color='filled' onClick={() => void onSearch()}><i className='bx bx-search' /></IconButton>
             </div>
             <Filters reset={reset} show={showFilters} />
-            <div className='flex flex-wrap justify-between mt-4 gap-2'>
+            <div className={'flex flex-wrap justify-between mt-4 gap-2 transition-opacity' + (isInitialLoad ? ' opacity-0' : '')}>
                 <SortMenu />
                 <div className='flex items-center gap-2'>
-                    <p>Results per page:</p>
-                    <TextInput value={limit} onChange={(e) => setLimit(parseInt(e.target.value))} min='1' max='25' style={{ width: '3rem' }} className='text-center' />
                     <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
                 </div>
             </div>
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
-            {searchStatus === 'pending' &&
-                <div>
-                    {Array.from({ length: limit ?? 16 }, (_, i) => (
-                        <LevelSkeleton key={`${i}`} />
+            {searchStatus === 'pending' && !isInitialLoad &&
+                <div className='my-4'>
+                    {Array.from({ length: limit }, (_, i) => (
+                        <LevelSkeleton key={i} />
                     ))}
                 </div>
             }
@@ -182,7 +200,11 @@ export default function Search() {
                     ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} />
                     : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
                 }</div>
-                <PageButtons onPageChange={(page) => setQuery({ [QueryParamNames.Page]: page })} meta={{ ...searchData, page: query.page }} />
+                <PageButtons onPageChange={setPage} meta={{ ...searchData, page }} />
+                <div className='flex items-center justify-center gap-2 my-2'>
+                    <p>Per page:</p>
+                    <NumberInput value={limitDisplay} onChange={(e) => setLimitDisplay(e.target.value)} onBlur={onLimitChange} min='1' max='25' style={{ width: '3rem' }} centered={true} disableSpinner={true} />
+                </div>
                 <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>
             </>}
         </Page>
