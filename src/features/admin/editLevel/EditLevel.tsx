@@ -14,6 +14,7 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 import RecalculateStats from '../../../api/level/RecalculateStats';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import RemoveLevel from '../../../api/level/RemoveLevel';
+import { useLevel } from '../../level/hooks/useLevel';
 
 export default function EditLevel() {
     const [hash, setHash] = useHash();
@@ -24,12 +25,14 @@ export default function EditLevel() {
     const showcaseID = useId();
     const [confirmRemove, setConfirmRemove] = useState(false);
 
+    const { data: level } = useLevel(activeLevel?.ID ?? null);
+
     useEffect(() => {
-        setDefaultRating(activeLevel?.DefaultRating?.toString() ?? '');
-        setShowcase(activeLevel?.Showcase ?? '');
-        if (activeLevel) setHash(activeLevel.ID.toString());
+        setDefaultRating(level?.DefaultRating?.toString() ?? '');
+        setShowcase(level?.Showcase ?? '');
+        if (level) setHash(level.ID.toString());
         setConfirmRemove(false);
-    }, [activeLevel?.ID, activeLevel, setHash]);
+    }, [activeLevel, setHash, level]);
 
     function onShowcase(e: React.ChangeEvent<HTMLInputElement>) {
         setShowcase(e.target.value);
@@ -92,7 +95,15 @@ export default function EditLevel() {
                 <FormGroup className='mt-1'>
                     <FormInputLabel htmlFor={showcaseID}>Showcase link</FormInputLabel>
                     <TextInput id={showcaseID} value={showcase} onChange={onShowcase} />
-                    <FormInputDescription>Must be a YouTube video ID</FormInputDescription>
+                    <FormInputDescription>- Must be a YouTube video ID</FormInputDescription>
+                    <FormInputDescription>- At least 720p</FormInputDescription>
+                    <FormInputDescription>- No LDMs</FormInputDescription>
+                    <FormInputDescription>- Must show the entire level, no intros</FormInputDescription>
+                    <FormInputDescription>- Follows the main path</FormInputDescription>
+                    <FormInputDescription>- No visual effect overlays</FormInputDescription>
+                    <FormInputDescription>- No clicks</FormInputDescription>
+                    <FormInputDescription>- No texture pack for level elements</FormInputDescription>
+                    <FormInputDescription>- Uses the appropriate NONG if applicable</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <PrimaryButton onClick={onSubmit} loading={mutation.isPending}>Save</PrimaryButton>
