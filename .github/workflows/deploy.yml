@@ -55,4 +55,4 @@ jobs:
 
     - name: Transfer assets
       run: |
-        scp -i private_key.pem -o StrictHostKeyChecking=no -r ./dist/assets ubuntu@34.249.48.77:/home/ubuntu/gddl-beta/dist/assets/
+        scp -r -i private_key.pem -o StrictHostKeyChecking=no ./dist/assets ubuntu@34.249.48.77:/home/ubuntu/gddl-beta/dist/assets/
