@@ -27,7 +27,7 @@ export default function ManageUserContent() {
     return (
         <>
             <p>Selected user: <b>{fetchedUser.ID} ({fetchedUser.Name})</b></p>
-            <div className='grid grid-cols-2 gap-6'>
+            <div className='grid lg:grid-cols-2 gap-6'>
                 <EditInformation user={fetchedUser} />
                 <Submissions user={fetchedUser} />
                 <Roles user={fetchedUser} />
