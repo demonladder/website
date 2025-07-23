@@ -6,16 +6,21 @@ import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 
-export default function ProfileButtons() {
+export default function ProfileButtons({ size }: { size?: 'small' | 'large' }) {
     const session = useSession();
 
     if (session.loadStatus === 'pending') return <LoginButton />;
     if (!session.user) return <LoginButton />;
 
-    return <ProfileButton userID={session.user.ID} username={session.user.Name} />;
+    return <ProfileButton userID={session.user.ID} size={size} />;
 }
 
-function ProfileButton({ userID }: { userID: number, username: string }) {
+interface Props {
+    userID: number;
+    size?: 'small' | 'large';
+}
+
+function ProfileButton({ userID, size = 'large' }: Props) {
     const session = useSession();
 
     const { discordSync } = useNavbarNotification();
@@ -23,32 +28,34 @@ function ProfileButton({ userID }: { userID: number, username: string }) {
         if (session.user && !session.user.DiscordData) {
             discordSync();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const pfp = `https://cdn.discordapp.com/avatars/${session.user?.DiscordData?.ID ?? '-'}/${session.user?.DiscordData?.Avatar ?? '-'}.png`;
 
     return (
-        <div className='flex items-center gap-1'>
-            {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
-                <Link to='/mod'><i className='bx bx-shield-quarter text-2xl' /></Link>
+        <div className='flex sm:items-center gap-1 max-sm:flex-col'>
+            {size === 'large' &&
+                <NotificationButton />
             }
-            <NotificationButton />
             <div className='ms-2 relative group'>
-                <Link to={`/profile/${userID}`} className=' flex items-center gap-2'>
-                    <span>{session.user?.Name}</span>
-                    <div className='w-16'>
+                <Link to={`/profile/${userID}`}>
+                    <div className={size === 'large' ? 'size-14' : 'size-12'}>
                         {session.user?.DiscordData?.Avatar
-                            ? <img src={pfp || ''} className='rounded-full' />
+                            ? <img src={pfp} className='rounded-full' />
                             : <DemonLogo diff={session.user?.Hardest?.Meta.Difficulty} />
                         }
                     </div>
                 </Link>
-                <ul className='max-2xl:hidden absolute right-1/2 translate-x-1/2 z-40 bg-theme-600 text-theme-text shadow round:rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity flex flex-col whitespace-nowrap'>
-                    <li><Link className='p-2 block round:rounded-t-lg hover:bg-theme-950/40' to={`/profile/${userID}`}>Go to profile</Link></li>
-                    <li><Link className='p-2 block hover:bg-theme-950/40' to='/settings/profile'>Settings</Link></li>
-                    <li><p className='p-2 round:rounded-b-lg hover:bg-theme-950/40 cursor-pointer transition-colors' onClick={() => void session.logout()}>Log out</p></li>
-                </ul>
+                <div className='max-2xl:hidden absolute opacity-0 right-0 z-40 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity'>
+                    <ul className='mt-1 bg-theme-600 text-theme-text shadow round:rounded-lg flex flex-col whitespace-nowrap'>
+                        <li><Link className='p-2 block round:rounded-t-lg hover:bg-theme-950/40' to={`/profile/${userID}`}>Go to profile</Link></li>
+                        <li><Link className='p-2 block hover:bg-theme-950/40' to='/settings/profile'>Settings</Link></li>
+                        <li><Link className='p-2 block hover:bg-theme-950/40' to='/notifications'>Notifications</Link></li>
+                        {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) && <li><Link className='p-2 block hover:bg-theme-950/40' to='/mod'>Staff dashboard</Link></li>}
+                        <li><p className='p-2 round:rounded-b-lg hover:bg-theme-950/40 cursor-pointer transition-colors' onClick={() => void session.logout()}>Log out</p></li>
+                    </ul>
+                </div>
             </div>
         </div>
     );

@@ -68,7 +68,7 @@ export default function AdminLayout() {
                             <li><Link to='/settings/site' className='m-2 p-2'><i className='bx bxs-cog text-xl mt-2' /></Link></li>
                         </ul>
                         <ul>
-                            <li><ProfileButtons /></li>
+                            <li><ProfileButtons size='small' /></li>
                         </ul>
                     </nav>
                     <main className='col-start-2 from-theme-bg-from to-theme-bg-to bg-linear-to-br text-theme-text p-6 relative'>
