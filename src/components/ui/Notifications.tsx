@@ -16,7 +16,8 @@ export default function NotificationButton() {
         if (showNotifications) {
             void notifications.refetch();
         }
-    }, [notifications, showNotifications]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showNotifications]);
 
     const deleteMutation = useMutation({
         mutationFn: deleteNotification,
@@ -43,6 +44,9 @@ export default function NotificationButton() {
                                 <i className='bx bx-refresh text-2xl' />
                             </button>
                         </div>
+                        {notifications.data?.length === 0 && (
+                            <p className='p-4 text-theme-400'>No notifications</p>
+                        )}
                         <ul className='pt-2 max-h-96 overflow-y-auto scrollbar-thin'>
                             {notifications.data?.map((notification) => (
                                 <li key={notification.ID} className='py-2 hover:bg-theme-800'>
