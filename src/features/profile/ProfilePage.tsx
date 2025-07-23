@@ -20,6 +20,7 @@ import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useUserColor } from '../../hooks/useUserColor';
 import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
 import { useReportUserModal } from '../../hooks/modals/useReportUserModal';
+import { useMemo } from 'react';
 
 export default function Profile() {
     const userID = parseInt(useParams().userID ?? '0') || 0;
@@ -36,6 +37,18 @@ export default function Profile() {
         { text: 'Mod view', onClick: () => navigate(`/mod/manageUser/${userID}`), permission: PermissionFlags.STAFF_DASHBOARD },
     ]);
 
+    const pref = useMemo(() => {
+        if (userData === undefined) return <InlineLoadingSpinner />;
+
+        const { MinPref: minPref, MaxPref: maxPref } = userData;
+
+        if (minPref === null && maxPref === null) return <span className='text-theme-400'>None</span>;
+        if (minPref !== null && maxPref === null) return `>${minPref - 1}`;
+        if (minPref === null && maxPref !== null) return `<${maxPref + 1}`;
+
+        return `${minPref} to ${maxPref}`;
+    }, [userData]);
+
     if (status === 'pending') return <Page><LoadingSpinner /></Page>;
     if (status === 'error') {
         if ((error as AxiosError).response?.status === 404) {
@@ -46,18 +59,6 @@ export default function Profile() {
     }
 
     if (userData === undefined) return <Page><p>No user data</p></Page>;
-
-    function calcPref() {
-        if (userData === undefined) return <InlineLoadingSpinner />;
-
-        const { MinPref: minPref, MaxPref: maxPref } = userData;
-
-        if (minPref === null && maxPref === null) return <span className='text-theme-400'>None</span>;
-        if (minPref !== null && maxPref === null) return `>${minPref - 1}`;
-        if (minPref === null && maxPref !== null) return `<${maxPref + 1}`;
-
-        return `${minPref} to ${maxPref}`;
-    }
 
     const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png`;
 
@@ -89,16 +90,20 @@ export default function Profile() {
                 </div>
             </div>
             <section className='flex max-sm:flex-col' onContextMenu={(e) => e.stopPropagation()}>
-                <div className='bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full sm:w-1/3'>
+                <div className='flex grow flex-col bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full min-h-40 sm:w-2/3'>
                     <p><b>Introduction:</b></p>
-                    <p className='border-b-2 h-24 overflow-auto'>{userData.Introduction}</p>
+                    <textarea readOnly={true} className='border-b-2 block grow overflow-auto scrollbar-thin w-full outline-0' value={userData.Introduction ?? ''} />
                 </div>
-                <div className='p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow grid items-center grid-cols-1 lg:grid-cols-2 gap-x-3 max-md:gap-y-2'>
+                <div className='sm:w-1/3 p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow flex flex-col gap-y-2'>
                     <LevelTracker levelID={userData.HardestID} title='Hardest' />
                     <Tracker>
                         <b>Tier preference:</b>
-                        <p>{calcPref()}</p>
+                        <p>{pref}</p>
                     </Tracker>
+                    <div className='flex flex-wrap justify-between'>
+                        <b>Average enjoyment:</b>
+                        <p>{userData.AverageEnjoyment?.toFixed(1) ?? '-'}</p>
+                    </div>
                     <Tracker>
                         <b>Favorites:</b>
                         <div>
@@ -122,19 +127,13 @@ export default function Profile() {
                         <p>{userData.SubmissionCount}</p>
                     </Tracker>
                     <Tracker>
+                        <b>Pending submissions:</b>
+                        <p>{userData.PendingSubmissionCount}</p>
+                    </Tracker>
+                    <Tracker>
                         <b>Total attempts:</b>
                         <p>{userData.TotalAttempts ?? 0}</p>
                     </Tracker>
-                    <a href='#pendingSubmissions'>
-                        <Tracker>
-                            <b>Pending submissions:</b>
-                            <p>{userData.PendingSubmissionCount}</p>
-                        </Tracker>
-                    </a>
-                    <div className='flex flex-wrap justify-between'>
-                        <b>Average enjoyment:</b>
-                        <p>{userData.AverageEnjoyment?.toFixed(1) ?? '-'}</p>
-                    </div>
                 </div>
             </section>
             <Submissions user={userData} />
