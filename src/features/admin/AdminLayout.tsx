@@ -8,9 +8,11 @@ import ProfileButtons from '../../components/ProfileButtons';
 import Divider from '../../components/divider/Divider';
 import './adminLayout.css';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
+import { useWindowSize } from 'usehooks-ts';
 
 export default function AdminLayout() {
-    const [hideSidebar, setHideSidebar] = useState(false);
+    const windowSize = useWindowSize();
+    const [hideSidebar, setHideSidebar] = useState(windowSize.width < 1024);
 
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
