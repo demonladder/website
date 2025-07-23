@@ -6,6 +6,7 @@ import NavItem from './NavItem';
 import useUserSearch from '../../hooks/useUserSearch';
 import useSession from '../../hooks/useSession';
 import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
+import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
 
 export default function HeaderThin() {
     const [navOpen, setNavOpen] = useState(false);
@@ -36,10 +37,11 @@ export default function HeaderThin() {
                             <NavItem route={route} size={'thin'} key={`headerRoute_${i}`} />
                         ))}
                     </div>
-                    <div className='flex max-sm:flex-col sm:items-center gap-4 pb-4'>
+                    <div className='flex max-sm:flex-col sm:items-center gap-2 pb-4'>
                         <div className='my-4'>
                             {userSearch.SearchBox}
                         </div>
+                        {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) && <Link className='ps-2 text-xl' to='/mod'><i className='bx bx-shield-quarter' /> Dashboard</Link>}
                         <ProfileButtons />
                         <SecondaryButton onClick={() => void session.logout()}>Log out</SecondaryButton>
                     </div>
