@@ -34,7 +34,7 @@ export default function Search() {
     const [limit, setLimit] = useSessionStorage('level-search-limit', 12);
     const [limitDisplay, setLimitDisplay] = useState<string | number>(limit);
 
-    const [query, setQuery] = useQueryParams({
+    const [queryParams, setQueryParams] = useQueryParams({
         [QueryParamNames.Name]: StringParam,
         [QueryParamNames.Creator]: StringParam,
         [QueryParamNames.Song]: StringParam,
@@ -86,30 +86,26 @@ export default function Search() {
     // Load state from the URL search parameters on initial mount
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        if (params.size === 0) setQuery(savedFilters, 'replace');
+        if (params.size === 0) setQueryParams(savedFilters, 'replace');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function reset() {
         setSavedFilters({});
-        setQuery({}, 'replace');
+        setQueryParams({}, 'replace');
     }
 
     const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
     const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
-    const { status: searchStatus, data: searchData, refetch } = useQuery({
-        queryKey: ['search', { ...query, limit, page }],
-        queryFn: () => getLevels({ ...query, limit, page }),
-        enabled: false,
-        placeholderData: undefined,
+    const { status: searchStatus, data: searchData } = useQuery({
+        queryKey: ['search', { ...savedFilters, limit, page }],
+        queryFn: () => getLevels({ ...savedFilters, limit, page }),
     });
-    const [isInitialLoad, setIsInitialLoad] = useState(searchData === undefined);
 
-    const onSearch = useCallback(async () => {
-        setIsInitialLoad(false);
-        await refetch();
-    }, [refetch]);
+    const onSearch = useCallback(() => {
+        setSavedFilters(queryParams);
+    }, [queryParams, setSavedFilters]);
 
     // Reset page to 0 if the search data is empty and the page is greater than 0
     useEffect(() => {
@@ -120,19 +116,13 @@ export default function Search() {
 
             setSelection(0);
         }
-    }, [searchData, query, setQuery, page, setPage]);
+    }, [searchData, queryParams, setQueryParams, page, setPage]);
 
-    // Persist filters to session storage
-    useEffect(() => {
-        setSavedFilters(query);
-    }, [query, setSavedFilters]);
-
-    function onNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setQuery({
-            ...query,
-            [QueryParamNames.Name]: e.target.value,
+    function onNameChange(newName: string) {
+        setQueryParams({
+            ...queryParams,
+            [QueryParamNames.Name]: newName,
         });
-        setPage(0);
     }
 
     // Up and down arrow key navigation
@@ -157,9 +147,9 @@ export default function Search() {
         }
     }
 
-    useEffect(() => {
-        void onSearch();
-    }, [onSearch, page, limit]);
+    // useEffect(() => {
+    //     void onSearch();
+    // }, [onSearch, page, limit]);
 
     function onLimitChange(e: React.ChangeEvent<HTMLInputElement>) {
         const parsed = parseInt(e.target.value);
@@ -176,19 +166,19 @@ export default function Search() {
                 <title>GDDL | Search</title>
             </Helmet>
             <Heading1 className='mb-2'>Levels</Heading1>
-            <div className={'flex gap-2 items-center transition-all ' + (isInitialLoad ? ' my-28' : '')}>
-                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={query[QueryParamNames.Name] ?? ''} onChange={onNameChange} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search by name or ID' />
+            <div className='flex gap-2 items-center transition-all'>
+                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={queryParams[QueryParamNames.Name] ?? ''} onChange={(e) => onNameChange(e.target.value)} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search by name or ID' />
                 <IconButton color='filled' onClick={() => void onSearch()}><i className='bx bx-search' /></IconButton>
             </div>
             <Filters reset={reset} show={showFilters} />
-            <div className={'flex flex-wrap justify-between mt-4 gap-2 transition-opacity' + (isInitialLoad ? ' opacity-0' : '')}>
+            <div className='flex flex-wrap justify-between mt-4 gap-2 transition-opacity'>
                 <SortMenu />
                 <div className='flex items-center gap-2'>
                     <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
                 </div>
             </div>
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
-            {searchStatus === 'pending' && !isInitialLoad &&
+            {searchStatus === 'pending' &&
                 <div className='my-4'>
                     {Array.from({ length: limit }, (_, i) => (
                         <LevelSkeleton key={i} />
