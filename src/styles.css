@@ -107,6 +107,10 @@ button {
     scrollbar-color: var(--color-theme-header) var(--color-theme-950);
 }
 
+.scrollbar-thin {
+    scrollbar-width: thin;
+}
+
 body, #root, #root > div.flex {
     min-height: 100vh;
 }
