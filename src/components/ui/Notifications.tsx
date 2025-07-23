@@ -1,12 +1,66 @@
-import { Link } from 'react-router-dom';
-import { useUnreadNotifications } from '../../hooks/api/notifications/useUnreadNotifications';
+import { useEffect, useState } from 'react';
+import { useNotifications } from '../../features/notifications/hooks/useNotifications';
+import Heading4 from '../headings/Heading4';
+import { secondsToHumanReadable } from '../../utils/secondsToHumanReadable';
+import { useMutation } from '@tanstack/react-query';
+import { deleteNotification } from '../../features/notifications/api/deleteNotification';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import renderToastError from '../../utils/renderToastError';
 
 export default function NotificationButton() {
-    const { data } = useUnreadNotifications();
+    const [showNotifications, setShowNotifications] = useState(false);
+    const notifications = useNotifications();
+
+    useEffect(() => {
+        if (showNotifications) {
+            void notifications.refetch();
+        }
+    }, [notifications, showNotifications]);
+
+    const deleteMutation = useMutation({
+        mutationFn: deleteNotification,
+        onSuccess: () => {
+            void notifications.refetch();
+        },
+        onError: (err: AxiosError) => {
+            toast.error(renderToastError.render({ data: err }));
+        },
+    });
 
     return (
-        <Link to='/notifications' className='text-theme-header-text'>
-            <i className={`bx ${data?.length ? 'bxs-envelope' : 'bx-envelope-open'} text-2xl`} />
-        </Link>
+        <div className='relative'>
+            <button className='text-3xl hover:bg-black/8 active:bg-black/12 rounded-full size-12 transition-colors' onClick={() => setShowNotifications((prev) => !prev)}>
+                <i className={`bx ${notifications.data?.filter((n) => !n.IsRead).length ? 'bxs-bell' : 'bx-bell'}`} />
+            </button>
+            {showNotifications && (
+                <>
+                    <div className='fixed z-30 inset-0' onClick={() => setShowNotifications(false)}></div>
+                    <div className='absolute z-30 right-0 bg-theme-700 text-theme-text border border-theme-400 rounded-lg shadow-lg w-md'>
+                        <div className='flex justify-between items-center px-4 py-2 border-b border-theme-400'>
+                            <Heading4>Notifications</Heading4>
+                            <button className='text-theme-text hover:text-theme-text/80 transition-colors' onClick={() => void notifications.refetch()}>
+                                <i className='bx bx-refresh text-2xl' />
+                            </button>
+                        </div>
+                        <ul className='pt-2 max-h-96 overflow-y-auto scrollbar-thin'>
+                            {notifications.data?.map((notification) => (
+                                <li key={notification.ID} className='py-2 hover:bg-theme-800'>
+                                    <div className='px-4 flex justify-between items-center'>
+                                        <div>
+                                            <p>{notification.Message}</p>
+                                            <p className='text-sm text-theme-400'>{secondsToHumanReadable(Math.floor((Date.now() - notification.SentAt.getTime()) / 1000))} ago</p>
+                                        </div>
+                                        <button className='text-theme-400 hover:text-theme-400/80 transition-colors p-1' onClick={() => deleteMutation.mutate(notification.ID)}>
+                                            <i className='bx bxs-trash' />
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </>
+            )}
+        </div>
     );
 }

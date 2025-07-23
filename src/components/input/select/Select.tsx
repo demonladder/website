@@ -42,8 +42,8 @@ export default function Select<S extends Record<string, string>, K = S[keyof S]>
 
     return (
         <>
-            {show && <div className='absolute inset-0 z-30' onClick={() => setShow(false)} />}
-            <div className='relative inline-block z-40' id={id}>
+            {show && <div className='absolute inset-0 z-10' onClick={() => setShow(false)} />}
+            <div className='relative inline-block z-20' id={id}>
                 <TonalButton size='xs' icon={icon} isSelected={show} onClick={() => setShow((prev) => !prev)}>{label}</TonalButton>
                 <ul ref={menuRef} className={'absolute z-50 py-2 rounded round:rounded-lg min-w-28 max-w-60 bg-theme-600 transition-opacity ' + (show ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
                     {Object.entries(options).map(([key, value]) => (
