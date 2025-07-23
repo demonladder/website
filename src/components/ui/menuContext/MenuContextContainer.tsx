@@ -4,9 +4,9 @@ import { PermissionFlags } from '../../../features/admin/roles/PermissionFlags';
 import useSession from '../../../hooks/useSession';
 
 export interface ButtonData {
-    text: React.ReactNode;
+    text?: React.ReactNode;
     onClick?: React.MouseEventHandler;
-    type?: 'info' | 'danger';
+    type?: 'info' | 'danger' | 'divider';
     disabled?: boolean;
     ID?: string;
     requireSession?: boolean;
@@ -63,15 +63,15 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         <MenuContext.Provider value={{ menuData, setMenuData }}>
             {children}
             {menuData &&
-                <div ref={menuRef} className='fixed w-36 z-50 bg-theme-900 text-theme-text round:rounded shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
-                    <ul>{filteredButtons?.map((b) => (
-                        <li key={b.ID}>
-                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start my-1 px-2 py-1 disabled:text-theme-400 disabled:line-through ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600')} disabled={b.disabled}>
+                <div ref={menuRef} className='fixed w-36 z-50 bg-theme-900 text-theme-text rounded-lg border border-theme-400 shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
+                    <ul className='p-1'>{filteredButtons?.map((b) => b.type === 'divider'
+                        ? <li key={b.ID} className='bg-theme-500 mx-4 h-0.5 my-1' />
+                        : <li key={b.ID}>
+                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start px-4 py-1 disabled:text-theme-400 disabled:line-through rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600')} disabled={b.disabled}>
                                 {b.text}
                             </button>
-                        </li>
-                    ))
-                    }</ul>
+                        </li>,
+                    )}</ul>
                 }</div>
             }
         </MenuContext.Provider>

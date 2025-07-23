@@ -17,6 +17,8 @@ import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionM
 import User from '../../../api/types/User';
 import Heading2 from '../../../components/headings/Heading2';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
+import { PermissionFlags } from '../../admin/roles/PermissionFlags';
+import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 
 interface Props {
     user: User;
@@ -82,6 +84,7 @@ export default function Submissions({ user }: Props) {
 function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
+    const openSubmitModal = useSubmitModal();
 
     const navigate = useNavigate();
 
@@ -96,8 +99,10 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
             buttons: [
                 { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
                 { text: 'Add to list', onClick: () => openAddListLevelModal(user.ID, submission.LevelID) },
+                { type: 'divider' },
                 { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
-                { text: 'Delete', type: 'danger', userID: submission.UserID, onClick: () => openDeleteSubmissionModal(submission.Level, { ...submission, User: user }) },
+                { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
+                { text: 'Delete', type: 'danger', userID: submission.UserID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(submission.Level, { ...submission, User: user }) },
             ],
         });
     }
@@ -116,6 +121,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
 function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
+    const openSubmitModal = useSubmitModal();
 
     const navigate = useNavigate();
 
@@ -130,7 +136,9 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
             buttons: [
                 { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
                 { text: 'Add to list', onClick: () => openAddListLevelModal(user.ID, submission.LevelID) },
+                { type: 'divider' },
                 { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
+                { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
                 { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.Level, { ...submission, User: user }), userID: submission.UserID },
             ],
         });
