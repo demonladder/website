@@ -9,6 +9,8 @@ import 'swiper/css/scrollbar';
 import { getPopularLevels, LevelPreviewDTO } from '../api/getPopularLevels';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 import DemonLogo from '../../../components/DemonLogo';
+import Heading2 from '../../../components/headings/Heading2';
+import Heading4 from '../../../components/headings/Heading4';
 
 export default function PopularLevels() {
     const { data, status } = useQuery({
@@ -21,7 +23,7 @@ export default function PopularLevels() {
 
     return (
         <div className='xl:col-span-3'>
-            <h2 className='text-3xl'>All-time Popular Levels <i className='bx bxs-hot' /></h2>
+            <Heading2 className='flex items-center gap-2'><i className='bx bxs-hot pt-1' /> All-time Popular Levels</Heading2>
             <Swiper
                 slidesPerView={1}
                 spaceBetween={10}
@@ -49,11 +51,11 @@ export function LevelPreview({ level, index }: { level: LevelPreviewDTO, index: 
     return (
         <Link to={`/level/${level.ID}`} className='bg-theme-800 shadow border border-theme-outline round:rounded-lg p-3 flex items-center gap-2'>
             <DemonLogo diff={level.Meta.Difficulty} width='96' />
-            <div className='flex flex-col'>
-                <h3 className='text-xl'>{index}. {level.Meta.Name}</h3>
-                <div>
-                    <span className={`round:rounded-s px-3 tier-${level.Rating?.toFixed() ?? '0'}`}>{level.Rating?.toFixed() ?? '-'}</span>
-                    <span className={`round:rounded-e px-3 enj-${level.Enjoyment?.toFixed() ?? '-'}`}>{level.Enjoyment?.toFixed()}</span>
+            <div className='flex flex-col gap-0.5'>
+                <Heading4>#{index} {level.Meta.Name}</Heading4>
+                <div className='text-lg'>
+                    <span className={`round:rounded-s px-4 py-1 tier-${level.Rating?.toFixed() ?? '0'}`}>{level.Rating?.toFixed() ?? '-'}</span>
+                    <span className={`round:rounded-e px-4 py-1 enj-${level.Enjoyment?.toFixed() ?? '-'}`}>{level.Enjoyment?.toFixed()}</span>
                 </div>
             </div>
         </Link>

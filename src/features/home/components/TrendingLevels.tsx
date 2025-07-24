@@ -8,6 +8,7 @@ import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 import { LevelPreview } from './PopularLevels';
+import Heading2 from '../../../components/headings/Heading2';
 
 export default function TrendingLevels() {
     const { data, status } = useQuery({
@@ -20,7 +21,7 @@ export default function TrendingLevels() {
 
     return (
         <div className='xl:col-span-3'>
-            <h2 className='text-3xl'>Trending Levels <i className='bx bx-trending-up' /></h2>
+            <Heading2 className='flex items-center gap-2'><i className='bx bx-trending-up pt-1' /> Trending Levels</Heading2>
             <Swiper
                 slidesPerView={1}
                 spaceBetween={10}

@@ -3,11 +3,11 @@ import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import IndexStats from './components/IndexStats';
-import Title from '../../components/announcement/Title';
 import Body from '../../components/announcement/Body';
 import TrendingLevels from './components/TrendingLevels';
 import PopularLevels from './components/PopularLevels';
 import Supporters from './components/Supporters';
+import Heading2 from '../../components/headings/Heading2';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function Home() {
             <div className='container mx-auto py-4 grid grid-cols-1 xl:grid-cols-4 gap-8'>
                 <Container className='xl:col-span-3'>
                     <Announcement>
-                        <Title>The project to improve demon difficulties</Title>
+                        <Heading2>The project to improve demon difficulties</Heading2>
                         <Body>
                             The addition of demon difficulties in 2.1 was great. However, it isn't enough! With levels with varying skillsets, sometimes only 5 different categories isn't enough to differentiate an easier level in this category to another. Compare Cataclysm to Bloodlust, DeCode to The Nightmare, Windy Landscape to ICDX… argh (pain misery despair)! 5 demon difficulties just isn't enough. This project divides all demons into 35 tiers, based on difficulty. Here, the community votes are gathered to determine the tiers of every single demon and the results are published right here for everyone to see, making it easier to find your perfect demon to beat or compare a certain demon to another.
                             <br />
@@ -32,7 +32,7 @@ export default function Home() {
                 <PopularLevels />
                 <Container className='xl:col-span-2'>
                     <Announcement>
-                        <Title>Our platformer list</Title>
+                        <Heading2>Our platformer list</Heading2>
                         <Body>
                             <p>As there currently aren't enough platformer levels to put them into tiers, we have created this temporary ranking of all the platformer demons. The position of each level is decided by our community until we're able to generalise the levels into tiers.</p>
                             <br />
