@@ -1,11 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import { useApproveClicked } from './useApproveClicked';
 import { levelLengthToString } from '../../../features/level/types/LevelMeta';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Heading4 from '../../../components/headings/Heading4';
 import { DifficultyToImgSrc } from '../../../components/DemonLogo';
 import { toast } from 'react-toastify';
@@ -13,6 +12,10 @@ import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/u
 import { ratingToWeight, weightedRatingAverage } from '../../../utils/weightedAverage';
 import { average } from '../../../utils/average';
 import standardDeviation from '../../../utils/standardDeviation';
+import TonalButton from '../../../components/input/buttons/tonal/TonalButton';
+import FilledButton from '../../../components/input/buttons/filled/FilledButton';
+import { secondsToHumanReadable } from '../../../utils/secondsToHumanReadable';
+import useSessionStorage from '../../../hooks/useSessionStorage';
 
 interface Props {
     submission: QueueSubmission;
@@ -20,8 +23,8 @@ interface Props {
 
 export default function Submission({ submission }: Props) {
     const showDenyModal = useDenySubmissionModal();
-    const [isProofClicked, setIsProofClicked] = useState(false);
-    const [proofClickedAt, setProofClickedAt] = useState<Date>();
+    const [isProofClicked, setIsProofClicked] = useSessionStorage(`queue.${submission.ID}.isProofClicked`, false); 
+    const [proofClickedAt, setProofClickedAt] = useSessionStorage(`queue.${submission.ID}.proofClickedAt`, 'undefined');
 
     const spread = useLevelSubmissionSpread(submission.LevelID);
     const ratingsWithSubmission = useMemo(() => {
@@ -70,34 +73,42 @@ export default function Submission({ submission }: Props) {
         if (standardDeviations === undefined) return;
         if (difference !== undefined && difference <= 2) return;
         if (standardDeviations <= 1.5) return;
-        if (standardDeviations <= 2) return 'Semi-outlier detected!';
-        if (standardDeviations <= 3) return 'Outlier detected!';
-        if (standardDeviations <= 5) return 'Outlier detected! (rating won\'t count)';
-        return 'Possible troll detected!';
+        if (standardDeviations <= 2) return <><i className='bx bxs-error'></i> Semi-outlier detected!</>;
+        if (standardDeviations <= 3) return <><i className='bx bxs-error'></i> Outlier detected!</>;
+        if (standardDeviations <= 5) return <><i className='bx bxs-error'></i> Outlier detected! (rating won't count)</>;
+        return <><i className='bx bxs-error'></i> Possible troll detected!</>;
     }, [difference, standardDeviations]);
 
     function onProofClick() {
         if (!submission.Proof) return toast.error('No proof URL provided');
 
         setIsProofClicked(true);
-        setProofClickedAt(new Date());
+        setProofClickedAt(new Date().toISOString());
         window.open(submission.Proof, '_blank', 'noopener,noreferrer');
     }
 
     function getProofReviewTime() {
         if (!proofClickedAt) return null;
-        return new Date().getTime() - proofClickedAt.getTime();
+        return new Date().getTime() - new Date(proofClickedAt).getTime();
     }
 
     const navigate = useNavigate();
     const approveSubmission = useApproveClicked();
 
+    const secondsAgo = Math.floor((Date.now() - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000);
+
     return (
         <li className={`round:rounded-2xl bg-linear-to-br tier-${submission.Rating ?? 0} from-tier-${submission.Rating ?? 0} to-tier-${levelRating?.toFixed() ?? 0} p-3 my-2 text-lg`}>
+            <div className='flex items-center gap-2 mb-2 cursor-pointer' onClick={() => navigate(`/level/${submission.LevelID}`)}>
+                <img src={DifficultyToImgSrc(submission.Level.Meta.Difficulty, '64')} />
+                <div>
+                    <p className='font-bold text-3xl'>{submission.Level.Meta.Name}</p>
+                    <p>by {submission.Level.Meta.Creator}</p>
+                </div>
+            </div>
             <div className='mb-3'>
-                <Link to={`/level/${submission.LevelID}`} className='text-2xl font-bold underline'>{submission.Level.Meta.Name} <span className='text-lg font-normal'>by {submission.Level.Meta.Creator}</span></Link>
-                <p>Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold group' target='_blank' rel='noopener noreferrer'>{submission.User.Name} <i className='bx bx-link-external' /></a></p>
-                <p>Submitted at {submission.DateChanged.replace('+00:00', 'UTC')}</p>
+                <p><i className='bx bxs-user' /> Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold group' target='_blank' rel='noopener noreferrer'>{submission.User.Name} <i className='bx bx-link-external' /></a></p>
+                <p><i className='bx bxs-time-five' /> Submitted at <b>{submission.DateChanged.replace('+00:00', 'UTC')}</b> ({secondsToHumanReadable(secondsAgo)} ago)</p>
             </div>
             <div className='grid grid-cols-3 gap-4 max-md:grid-cols-1'>
                 <div>
@@ -114,16 +125,20 @@ export default function Submission({ submission }: Props) {
                         <p><b>Weight:</b> {weight ?? '-'}</p>
                     </div>
                     <div className='mb-2'>
-                        <p><b>Device:</b> {submission.Device}</p>
-                        <p><b>Refresh rate:</b> {submission.RefreshRate}</p>
-                        <p><b>Progress:</b> {submission.Progress ?? 'None'}</p>
-                        <p><b>Attempts:</b> {submission.Attempts ?? 'None'}</p>
+                        <p><i className='bx bx-devices' /> <b>Device:</b> {submission.Device}</p>
+                        <p><i className='bx bx-refresh' /> <b>Refresh rate:</b> {submission.RefreshRate}</p>
+                        <p><i className='bx bx-time-five' /> <b>Progress:</b> {submission.Progress}%</p>
+                        <p><i className='bx bx-flag' /> <b>Attempts:</b> {submission.Attempts ?? 'Not specified'}</p>
                     </div>
                     <div>
-                        <span className='font-bold'>Proof: </span>
+                        <span className='font-bold'><i className='bx bx-movie' /> Proof: </span>
                         <span className='break-all group'>
                             {submission.Proof
-                                ? <button onClick={onProofClick} className='underline'>{submission.Proof} <i className='bx bx-link-external' /></button>
+                                ? <>
+                                    <button onClick={onProofClick} className='underline'>{submission.Proof} <i className='bx bx-link-external' /></button>
+                                    <br />
+                                    <span className='bg-yellow-400 text-black px-1'>View proof to accept!</span>
+                                </>
                                 : 'None'
                             }
                         </span>
@@ -139,7 +154,6 @@ export default function Submission({ submission }: Props) {
                     <p><b>Deviation:</b> {submission.Level.Deviation?.toFixed(2) ?? 0}</p>
                     <p><b>Rating count:</b> {submission.Level.RatingCount}</p>
                     <p><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
-                    <p><b>Difficulty:</b> <img src={DifficultyToImgSrc(submission.Level.Meta.Difficulty)} width='24' className='inline-block' /></p>
                 </div>
                 <div>
                     <Heading4 className='mb-2'>Level after accept</Heading4>
@@ -148,8 +162,8 @@ export default function Submission({ submission }: Props) {
                 </div>
             </div>
             <div className='mt-4 flex justify-evenly max-md:flex-col max-md:gap-4'>
-                <PrimaryButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</PrimaryButton>
-                <PrimaryButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</PrimaryButton>
+                <FilledButton sizeVariant='md' disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</FilledButton>
+                {submission.Rating !== null && <TonalButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</TonalButton>}
                 <DangerButton className='px-3 py-2' onClick={() => showDenyModal(submission)}>Deny</DangerButton>
                 <DangerButton className='px-3 h- py-2' onClick={() => navigate(`/mod/manageUser/${submission.UserID}`)}>Mod view</DangerButton>
             </div>

@@ -29,9 +29,9 @@
     }
 
     &:disabled {
-        --container-color: var(--on-surface);
+        --container-color: var(--color-on-surface);
         --container-opacity: 10%;
-        --label-color: var(--on-surface);
+        --label-color: var(--color-on-surface);
         --label-opacity: 38%;
         pointer-events: none;
     }

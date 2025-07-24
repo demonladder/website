@@ -2,14 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import GetSubmissionQueue from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Submission from './Submission';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import Select from '../../../components/Select';
-import { useState } from 'react';
 import PageButtons from '../../../components/PageButtons';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
-import Heading2 from '../../../components/headings/Heading2';
-import { NumberEnumParam } from '../../../utils/NumberEnumParam';
+import Heading1 from '../../../components/headings/Heading1';
+import useSessionStorage from '../../../hooks/useSessionStorage';
+import pluralS from '../../../utils/pluralS';
 
 const proofFilterOptions = {
     all: 'All',
@@ -18,21 +17,13 @@ const proofFilterOptions = {
     noProof: 'No proof',
 };
 
-const limitOptions = {
-    5: '5',
-    15: '15',
-    30: '30',
-    50: '50',
-};
-
 export default function Queue() {
-    const [proofFilter, setProofFilter] = useState<keyof typeof proofFilterOptions>('all');
-    const [limit, setLimit] = useQueryParam('limit', withDefault(NumberEnumParam(limitOptions), 5));
+    const [proofFilter, setProofFilter] = useSessionStorage<keyof typeof proofFilterOptions>('queue.filter', 'all');
     const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
 
-    const { status, isFetching, data: queue, refetch: refetchQueue } = useQuery({
-        queryKey: ['submissionQueue', { limit, page, proofFilter }],
-        queryFn: () => GetSubmissionQueue(proofFilter, limit!, page),
+    const { status, isFetching, data: queue } = useQuery({
+        queryKey: ['submissionQueue', { page, proofFilter }],
+        queryFn: () => GetSubmissionQueue(proofFilter, 5, page),
     });
 
     function Content() {
@@ -47,12 +38,7 @@ export default function Queue() {
     return (
         <div>
             <FloatingLoadingSpinner isLoading={isFetching} />
-            <div className='flex justify-between'>
-                <Heading2 className='mb-3'>Submissions</Heading2>
-                <div>
-                    <PrimaryButton className='flex items-center gap-1' onClick={() => void refetchQueue()} disabled={isFetching}>Refresh <i className='bx bx-refresh' /></PrimaryButton>
-                </div>
-            </div>
+            <Heading1 className='mb-3'>Pending submissions</Heading1>
             <div className='flex gap-4 max-lg:flex-col'>
                 <div className='flex gap-2'>
                     <p>Filtering</p>
@@ -60,15 +46,10 @@ export default function Queue() {
                         <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
                     </div>
                 </div>
-                <div className='flex gap-2'>
-                    <p>Submission amount</p>
-                    <div className='w-40'>
-                        <Select id='submissionQueueLimit' options={limitOptions} activeKey={limit!} onChange={setLimit} />
-                    </div>
-                </div>
             </div>
             <Content />
-            <PageButtons meta={{ limit: limit!, page, total: queue?.total ?? 0 }} onPageChange={(p) => setPage(p)} />
+            <PageButtons meta={{ limit: 5, page, total: queue?.total ?? 0 }} onPageChange={(p) => setPage(p)} />
+            <p className='text-center'><b>{queue?.total ?? 0}</b> submission{pluralS(queue?.total ?? 0)} found</p>
         </div>
     );
 }
