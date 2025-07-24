@@ -67,7 +67,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                     <ul className='p-1'>{filteredButtons?.map((b) => b.type === 'divider'
                         ? <li key={b.ID} className='bg-theme-500 mx-4 h-0.5 my-1' />
                         : <li key={b.ID}>
-                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start px-4 py-1 disabled:text-theme-400 disabled:line-through rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600')} disabled={b.disabled}>
+                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start px-4 py-1 rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600') + (b.disabled ? ' text-theme-400 line-through pointer-events-none' : '')}>
                                 {b.text}
                             </button>
                         </li>,
