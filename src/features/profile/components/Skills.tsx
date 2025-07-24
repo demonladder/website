@@ -9,6 +9,7 @@ import { useTags } from '../../../hooks/api/tags/useTags';
 import { getSkills } from '../api/getSkills';
 import Heading2 from '../../../components/headings/Heading2';
 import Divider from '../../../components/divider/Divider';
+import { useInView } from 'react-intersection-observer';
 
 ChartJS.register(RadialLinearScale);
 
@@ -30,6 +31,7 @@ const accuracyOptions = {
 type AccuracyOptions = keyof typeof accuracyOptions;
 
 export default function Skills({ userID }: { userID: number }) {
+    const { ref, inView } = useInView();
     const [levelSpanKey, setLevelSpanKey] = useState<LevelSpanOptions>('allTime');
     const [accuracyKey, setAccuracyKey] = useState<AccuracyOptions>('25');
     const [correctTier, setCorrectTier] = useState(true);
@@ -38,6 +40,7 @@ export default function Skills({ userID }: { userID: number }) {
     const { data: rawData } = useQuery({
         queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey, accuracy: accuracyKey, correctTier }],
         queryFn: () => getSkills(userID, levelSpanKey.slice(3), accuracyKey, correctTier),
+        enabled: inView,
     });
 
     const { data: tags } = useTags();
@@ -75,7 +78,7 @@ export default function Skills({ userID }: { userID: number }) {
     };
 
     return (
-        <section className='mt-6'>
+        <section className='mt-6' ref={ref}>
             <Heading2>Skills <NewLabel ID='userSkills' /></Heading2>
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-4'>
                 <div>

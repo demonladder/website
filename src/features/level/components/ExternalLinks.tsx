@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import axios from 'axios';
 import { pluralWas } from '../../../utils/pluralS';
+import { useInView } from 'react-intersection-observer';
+import Heading2 from '../../../components/headings/Heading2';
 
 interface SFHResponseDataObject {
     _id: string;
@@ -28,14 +30,18 @@ interface Props {
 }
 
 export default function ExternalLinks({ level }: Props) {
+    const { ref, inView } = useInView();
+
     const { data: pointercrateData } = useQuery({
         queryKey: ['pointercrate', level.ID],
         queryFn: () => axios.get<{ name: string, position: number, level_id: number, publisher: { name: string } }[]>(`https://pointercrate.com/api/v2/demons?name=${level.Meta.Name}`).then((res) => res.data),
+        enabled: inView,
     });
 
     const { data: SFHData } = useQuery({
         queryKey: ['songfilehub', level.ID],
         queryFn: () => axios.get<SFHResponseDataObject[]>(`https://api.songfilehub.com/songs?levelID=${level.ID}&states=rated`).then((res) => res.data),
+        enabled: inView,
     });
 
     const pointercrate = pointercrateData?.find((l) => l.level_id === level.ID)
@@ -43,8 +49,8 @@ export default function ExternalLinks({ level }: Props) {
         ?? pointercrateData?.find((l) => l.name === level.Meta.Name && (l.publisher.name ? l.publisher.name === level.Meta.Creator : true));
 
     return (
-        <div className='mt-6'>
-            <h2 className='text-3xl mb-2' id='levelShowcase'>External links</h2>
+        <section className='mt-6' ref={ref}>
+            <Heading2 id='levelShowcase'>External links</Heading2>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-2'>
                 <LinkButton link={`https://gdbrowser.com/${level.ID}`} message='GDBrowser' />
                 <LinkButton link={`https://www.youtube.com/results?search_query=geometry+dash+${level.Meta.Name.toLowerCase().replace(' ', '+')}`} message='Search on youtube' />
@@ -67,6 +73,6 @@ export default function ExternalLinks({ level }: Props) {
                     </ul>
                 </div>
             }
-        </div>
+        </section>
     );
 }

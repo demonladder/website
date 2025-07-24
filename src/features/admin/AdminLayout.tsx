@@ -57,6 +57,7 @@ export default function AdminLayout() {
                             <p className='text-gray-400 text-sm ps-3'>Settings</p>
                             <NavButton to='/mod/siteSettings'>Site settings</NavButton>
                             <NavButton to='/mod/debugging'>Debugging</NavButton>
+                            <div className='py-6' />
                         </div>
                     </aside>
                     <nav className='col-start-2 bg-theme-header text-theme-header-text px-6 h-14 flex items-center justify-between border-b border-theme-outline'>

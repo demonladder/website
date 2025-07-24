@@ -20,9 +20,10 @@ async function getSubmissionSpread(levelID: number) {
     };
 }
 
-export function useLevelSubmissionSpread(levelID: number) {
+export function useLevelSubmissionSpread(levelID: number, enabled = true) {
     return useQuery({
         queryKey: ['level', levelID, 'submissions', 'spread'],
         queryFn: () => getSubmissionSpread(levelID),
+        enabled,
     });
 }

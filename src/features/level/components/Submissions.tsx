@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import PageButtons from '../../../components/PageButtons';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import { Submission as ISubmission, SubmissionSort, getLevelSubmissions } from '../api/getLevelSubmissions';
@@ -137,7 +136,9 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
     if (status === 'error' || status === 'pending') return (
         <section className='mt-6'>
             <Heading2>Submissions</Heading2>
-            <LoadingSpinner />
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
+                {Array.from({ length: 24 }).map((_, i) => <SubmissionSkeleton key={i} />)}
+            </div>
         </section>
     );
 
@@ -156,5 +157,11 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
             </div>
             <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
         </section>
+    );
+}
+
+function SubmissionSkeleton() {
+    return (
+        <div className='min-h-[46px] round:rounded-md shimmer' />
     );
 }

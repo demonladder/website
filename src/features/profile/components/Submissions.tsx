@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Sorts, UserSubmission, getUserSubmissions } from '../api/getUserSubmissions';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
-import Level from '../../../components/Level';
+import Level, { LevelSkeleton } from '../../../components/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import { TextInput } from '../../../components/Input';
 import { useNavigate } from 'react-router-dom';
@@ -46,14 +45,6 @@ export default function Submissions({ user }: Props) {
         if (submissionResult?.total !== 0 && submissionResult?.submissions.length === 0) setPage(0);
     }, [submissionResult, setPage]);
 
-    if (status === 'pending') return (<LoadingSpinner />);
-
-    const submissions = submissionResult?.submissions;
-
-    if (submissions === undefined || submissionResult === undefined) {
-        return;
-    }
-
     return (
         <section className='mt-6'>
             <div className='flex justify-between'>
@@ -69,14 +60,17 @@ export default function Submissions({ user }: Props) {
                     <span><b>%</b></span>
                 </button>
             </div>
-            {listType === 'inline' ?
-                <InlineList levels={submissions} user={user} /> :
-                <GridList levels={submissions} user={user} />
-            }
-            {submissions.length === 0 &&
-                <p>No levels</p>
-            }
-            <PageButtons onPageChange={setPage} meta={{ ...submissionResult, page }} />
+            {status === 'pending' && Array.from({ length: 16 }).map((_, i) => <LevelSkeleton key={i} />)}
+            {status === 'success' && <>
+                {listType === 'inline' ?
+                    <InlineList levels={submissionResult.submissions} user={user} /> :
+                    <GridList levels={submissionResult.submissions} user={user} />
+                }
+                {submissionResult.submissions.length === 0 &&
+                    <p>No levels</p>
+                }
+                <PageButtons onPageChange={setPage} meta={{ ...submissionResult, page }} />
+            </>}
         </section>
     );
 }

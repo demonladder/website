@@ -2,7 +2,9 @@ import TwoPlayerButtons from './TwoPlayerButtons';
 import LevelMeta from '../types/LevelMeta';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/useLevelSubmissionSpread';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Heading2 from '../../../components/headings/Heading2';
 
 interface Props {
     levelMeta: LevelMeta;
@@ -11,54 +13,53 @@ interface Props {
 }
 
 export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStats }: Props) {
-    const { data, status } = useLevelSubmissionSpread(levelMeta.ID);
+    const { ref, inView } = useInView();
+    const { data, status } = useLevelSubmissionSpread(levelMeta.ID, inView);
     const [showPercentages, setShowPercentages] = useState(false);
 
-    if (status === 'pending' || status === 'error') return (
-        <section className='mt-6'>
-            <h2 className='text-3xl'>Rating spread</h2>
-            <LoadingSpinner />
-        </section>
-    );
-
-    const ratingData = twoPlayer ? data.twoPlayerRating : data.rating;
-    const totalRatings = ratingData.reduce((acc, cur) => acc + cur.Count, 0);
-    const maxRatingCount = ratingData.reduce((acc, cur) => Math.max(acc, cur.Count), 0);
-    const lowestRating = ratingData.reduce((acc, cur) => Math.min(acc, cur.Rating), ratingData.at(0)?.Rating ?? 1);
-    const highestRating = ratingData.reduce((acc, cur) => Math.max(acc, cur.Rating), ratingData.at(0)?.Rating ?? 35);
+    const ratingData = twoPlayer ? data?.twoPlayerRating : data?.rating;
+    const totalRatings = ratingData?.reduce((acc, cur) => acc + cur.Count, 0) ?? 1;
+    const maxRatingCount = ratingData?.reduce((acc, cur) => Math.max(acc, cur.Count), 0) ?? 1;
 
     // Fill the gaps in the rating data
-    const filledRatingData = [...ratingData];
-    for (let i = lowestRating; i <= highestRating; i++) {
-        if (!ratingData.find((d) => d.Rating === i)) {
-            filledRatingData.push({ Rating: i, Count: 0 });
+    const filledRatingData = useMemo(() => {
+        if (!ratingData) return [];
+        const lowestRating = ratingData.reduce((acc, cur) => Math.min(acc, cur.Rating), ratingData.at(0)?.Rating ?? 1);
+        const highestRating = ratingData.reduce((acc, cur) => Math.max(acc, cur.Rating), ratingData.at(0)?.Rating ?? 35);
+
+        const filledData = [...ratingData];
+        for (let i = lowestRating; i <= highestRating; i++) {
+            if (!ratingData.find((d) => d.Rating === i)) {
+                filledData.push({ Rating: i, Count: 0 });
+            }
         }
-    }
+        return filledData.sort((a, b) => a.Rating - b.Rating);
+    }, [ratingData]);
 
-    filledRatingData.sort((a, b) => a.Rating - b.Rating);
+    const enjoymentData = twoPlayer ? data?.twoPlayerEnjoyment : data?.enjoyment;
+    const totalEnjoyments = enjoymentData?.reduce((acc, cur) => acc + cur.Count, 0) ?? 1;
+    const maxEnjoymentCount = enjoymentData?.reduce((acc, cur) => Math.max(acc, cur.Count), 0) ?? 1;
 
-    const enjoymentData = twoPlayer ? data.twoPlayerEnjoyment : data.enjoyment;
-    const totalEnjoyments = enjoymentData.reduce((acc, cur) => acc + cur.Count, 0);
-    const maxEnjoymentCount = enjoymentData.reduce((acc, cur) => Math.max(acc, cur.Count), 0);
-    const lowestEnjoyment = enjoymentData.reduce((acc, cur) => Math.min(acc, cur.Enjoyment), enjoymentData.at(0)?.Enjoyment ?? 0);
-    const highestEnjoyment = enjoymentData.reduce((acc, cur) => Math.max(acc, cur.Enjoyment), enjoymentData.at(0)?.Enjoyment ?? 10);
+    const filledEnjoymentData = useMemo(() => {
+        if (!enjoymentData) return [];
+        const lowestEnjoyment = enjoymentData.reduce((acc, cur) => Math.min(acc, cur.Enjoyment), enjoymentData.at(0)?.Enjoyment ?? 0);
+        const highestEnjoyment = enjoymentData.reduce((acc, cur) => Math.max(acc, cur.Enjoyment), enjoymentData.at(0)?.Enjoyment ?? 10);
 
-    const filledEnjoymentData = [...enjoymentData];
-    for (let i = lowestEnjoyment; i <= highestEnjoyment; i++) {
-        if (!enjoymentData.find((d) => d.Enjoyment === i)) {
-            filledEnjoymentData.push({ Enjoyment: i, Count: 0 });
+        const filledData = [...enjoymentData];
+        for (let i = lowestEnjoyment; i <= highestEnjoyment; i++) {
+            if (!enjoymentData.find((d) => d.Enjoyment === i)) {
+                filledData.push({ Enjoyment: i, Count: 0 });
+            }
         }
-    }
-
-    filledEnjoymentData.sort((a, b) => a.Enjoyment - b.Enjoyment);
-
-    if (!ratingData.length && !enjoymentData.length) return;
+        return filledData.sort((a, b) => a.Enjoyment - b.Enjoyment);
+    }, [enjoymentData]);
 
     return (
-        <section className='mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 border-gray-500 border-y py-6'>
-            {ratingData.length > 0 &&
+        <section className='mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 border-gray-500 border-y py-6' ref={ref}>
+            {status === 'pending' && <LoadingSpinner />}
+            {status === 'success' &&
                 <div>
-                    <h2 className='text-3xl mb-1'>Rating spread</h2>
+                    <Heading2>Rating spread</Heading2>
                     <TwoPlayerButtons levelMeta={levelMeta} showTwoPlayerStats={twoPlayer} setShowTwoPlayerStats={setShowTwoPlayerStats} />
                     <table className='mt-2'>
                         <tbody>
@@ -84,9 +85,9 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                     </table>
                 </div>
             }
-            {enjoymentData.length > 0 &&
+            {(enjoymentData ?? []).length > 0 &&
                 <div>
-                    <h2 className='text-3xl mb-1'>Enjoyment spread</h2>
+                    <Heading2>Enjoyment spread</Heading2>
                     <TwoPlayerButtons levelMeta={levelMeta} showTwoPlayerStats={twoPlayer} setShowTwoPlayerStats={setShowTwoPlayerStats} />
                     <table className='mt-2'>
                         <tbody>
