@@ -1,29 +1,28 @@
-export default function DemonLogo({ diff, ...props }: { diff?: number | string } & React.ImgHTMLAttributes<HTMLImageElement>) {
+import { Difficulties } from '../features/level/types/LevelMeta';
+
+export default function DemonLogo({ diff, ...props }: { diff?: number | Difficulties } & Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'>) {
     return (
-        <div className='relative'>
-            <img src={DifficultyToImgSrc(diff)} {...props} className=' z-10' />
-            {/* <img src='/images/feature.png' className='' /> */}
-        </div>
+        <img src={DifficultyToImgSrc(diff)} {...props} />
     );
 }
 
-export function DifficultyToImgSrc(diff?: string | number) {
+export function DifficultyToImgSrc(diff?: Difficulties | number, size: '64' | '160' = '160') {
     switch (diff) {
-        case 'Easy':
+        case Difficulties.Easy:
         case 1:
-            return '/images/demon_logos/edemon.png';
-        case 'Medium':
+            return `/images/demon_logos/easy_${size}.png`;
+        case Difficulties.Medium:
         case 2:
-            return '/images/demon_logos/mdemon.png';
-        default:
-        case 'Hard':
+            return `/images/demon_logos/medium_${size}.png`;
+        case Difficulties.Official:
+        case Difficulties.Hard:
         case 3:
-            return '/images/demon_logos/hdemon.png';
-        case 'Insane':
+            return `/images/demon_logos/hard_${size}.png`;
+        case Difficulties.Insane:
         case 4:
-            return '/images/demon_logos/idemon.png';
-        case 'Extreme':
+            return `/images/demon_logos/insane_${size}.png`;
+        case Difficulties.Extreme:
         case 5:
-            return '/images/demon_logos/exdemon.png';
+            return `/images/demon_logos/extreme_${size}.png`;
     }
 }

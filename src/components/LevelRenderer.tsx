@@ -1,3 +1,5 @@
+import { Difficulties } from '../features/level/types/LevelMeta';
+
 interface LevelProps {
     ID: number;
     rating: number | null;
@@ -5,7 +7,7 @@ interface LevelProps {
     name: string;
     creator: string;
     songName: string;
-    difficulty: string;
+    difficulty: Difficulties;
     inPack: boolean;
     completed: boolean;
     selected?: boolean;
@@ -23,7 +25,7 @@ interface LevelDTO {
         Song: {
             Name: string;
         };
-        Difficulty: string;
+        Difficulty: Difficulties;
     };
     Completed: 0 | 1;
 }

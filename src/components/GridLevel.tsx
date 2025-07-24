@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import DemonLogo from './DemonLogo';
 import StorageManager from '../utils/StorageManager';
 import Copy from './Copy';
+import { Difficulties } from '../features/level/types/LevelMeta';
 
 interface GridProps {
     ID: number;
@@ -10,7 +11,7 @@ interface GridProps {
     proof?: string | null;
     name: string;
     creator: string;
-    difficulty: string;
+    difficulty: Difficulties;
     inPack: boolean;
     onContextMenu?: (e: React.MouseEvent) => void;
 }

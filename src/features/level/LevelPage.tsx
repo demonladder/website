@@ -79,16 +79,18 @@ export default function LevelPage() {
             </Helmet>
             <FAB variant='large' color='primary' onClick={() => openSubmitModal(level)}><i className='bx bx-list-plus' /></FAB>
             <div className='flex justify-between items-center'>
-                <div className='mb-1'>
-                    <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
-                    <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Creator}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Creator}</a></h2>
+                <div className='flex items-center gap-2'>
+                    <DemonLogo diff={level.Meta.Difficulty} className='size-32' />
+                    <div className='mb-1'>
+                        <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
+                        <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Creator}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Creator}</a></h2>
+                    </div>
                 </div>
                 <IconButton color='standard' size='md'><i className='bx bx-dots-vertical-rounded' /></IconButton>
             </div>
             <div className='grid grid-cols-12 gap-2'>
                 <div className='col-span-12 lg:col-span-9 grid grid-cols-12 gap-4 p-4 bg-theme-700 border border-theme-outline shadow-md round:rounded-xl'>
                     <div className='col-span-12 md:col-span-4 xl:col-span-3'>
-                        <DemonLogo diff={level.Meta.Difficulty} />
                         <div className='flex text-center'>
                             <p className={`w-1/2 py-2 tier-${rating?.toFixed() ?? '0'}`}>
                                 <span className='text-4xl font-bold'>{rating?.toFixed() ?? '-'}</span>
