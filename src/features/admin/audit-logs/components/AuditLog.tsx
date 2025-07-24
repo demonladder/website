@@ -31,7 +31,7 @@ export default function AuditLog({ log }: Props) {
         <div className={'border border-theme-500 bg-theme-800 p-2 my-2 round:rounded-xl ' + (hasChanges ? 'cursor-pointer' : '')} onClick={() => setShowDetails((prev) => hasChanges && !prev)}>
             <div className='flex justify-between items-center'>
                 <div className='flex gap-2'>
-                    <img className='rounded-full size-14' src={`${import.meta.env.VITE_SERVER_URL}/api/user/${log.userID}/discord-pfp`} alt='' />
+                    <img className='rounded-full size-14' src={`/api/user/${log.userID}/discord-pfp`} alt='' />
                     <div>
                         <Heading3>{getEvent(log)}</Heading3>
                         <p className='text-theme-400'>{new Date(log.createdAt.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</p>
