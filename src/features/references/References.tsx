@@ -40,7 +40,7 @@ export default function References() {
     if (status === 'error') return <Page><Heading1>Error: could not fetch references</Heading1></Page>;
 
     return (
-        <div className='max-w-[95%] overflow-x-scroll mx-auto my-4'>
+        <div className='max-w-[95%] overflow-x-scroll scrollbar-thin mx-auto my-4'>
             <Helmet>
                 <title>GDDL | References</title>
             </Helmet>

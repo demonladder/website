@@ -22,7 +22,7 @@ export default function AdminLayout() {
                         <div className='h-14 flex items-center justify-center border-b border-white/20'>
                             <p>GDDL Dashboard</p>
                         </div>
-                        <div className='px-4 py-6 flex flex-col gap-2 sidebar-wrapper overflow-auto'>
+                        <div className='px-4 py-6 flex flex-col gap-2 sidebar-wrapper overflow-auto scrollbar-thin'>
                             <NavButton to='/mod' end={true}>Dashboard</NavButton>
                             <NavButton to='/mod/queue'>Queue</NavButton>
                             <Divider />
