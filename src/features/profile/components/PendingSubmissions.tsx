@@ -22,6 +22,7 @@ import { useUserPendingSubmissions } from '../hooks/useUserPendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Heading2 from '../../../components/headings/Heading2';
+import useSession from '../../../hooks/useSession';
 
 interface Props {
     userID: number,
@@ -69,6 +70,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const openAddListLevelModal = useAddListLevelModal();
     const openDenySubmissionModal = useDenySubmissionModal();
+    const session = useSession();
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -87,10 +89,11 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
             y: e.clientY,
             buttons: [
                 { text: 'View level', onClick: () => navigate(`/level/${submission.LevelID}`) },
-                { text: 'Add to list', onClick: () => openAddListLevelModal(submission.UserID, submission.LevelID) },
+                { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.LevelID), requireSession: true },
+                { type: 'divider' },
                 { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
                 { text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.ID, submission.LevelID, submission.UserID), permission: PermissionFlags.MANAGE_SUBMISSIONS },
-                { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true), userID: submission.UserID },
+                { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true), userID: submission.UserID, permission: PermissionFlags.MANAGE_SUBMISSIONS },
                 { text: 'Deny', type: 'danger', onClick: () => openDenySubmissionModal(submission), permission: PermissionFlags.MANAGE_SUBMISSIONS },
             ],
         });

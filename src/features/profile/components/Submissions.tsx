@@ -18,6 +18,7 @@ import Heading2 from '../../../components/headings/Heading2';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useSubmitModal from '../../../hooks/modals/useSubmitModal';
+import useSession from '../../../hooks/useSession';
 
 interface Props {
     user: User;
@@ -79,6 +80,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
     const openSubmitModal = useSubmitModal();
+    const session = useSession();
 
     const navigate = useNavigate();
 
@@ -92,7 +94,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
             y: e.clientY,
             buttons: [
                 { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
-                { text: 'Add to list', onClick: () => openAddListLevelModal(user.ID, submission.LevelID) },
+                { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.LevelID), requireSession: true },
                 { type: 'divider' },
                 { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
                 { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
@@ -116,6 +118,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
     const openSubmitModal = useSubmitModal();
+    const session = useSession();
 
     const navigate = useNavigate();
 
@@ -129,7 +132,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
             y: e.clientY,
             buttons: [
                 { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
-                { text: 'Add to list', onClick: () => openAddListLevelModal(user.ID, submission.LevelID) },
+                { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.LevelID), requireSession: true },
                 { type: 'divider' },
                 { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
                 { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
