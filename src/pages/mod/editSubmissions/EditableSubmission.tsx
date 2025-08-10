@@ -20,9 +20,10 @@ import DeleteSubmission from '../../../api/submissions/DeleteSubmission';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
 import Heading3 from '../../../components/headings/Heading3';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import User from '../../../api/types/User';
 
 interface Props {
-    submission: Submission;
+    submission: Submission & { User: User };
 }
 
 const deviceOptions: { [key: string]: string } = {
@@ -95,6 +96,9 @@ export default function EditableSubmission({ submission }: Props) {
 
     return (
         <form onSubmit={submit}>
+            <FormGroup>
+                <p>Editing <b>{submission.User.Name}s</b> submission</p>
+            </FormGroup>
             <FormGroup>
                 <FormInputLabel htmlFor='addSubmissionTier'>Tier</FormInputLabel>
                 <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} min='1' max='35' invalid={invalidRating && invalidEnjoyment} />

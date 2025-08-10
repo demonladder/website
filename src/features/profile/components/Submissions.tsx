@@ -98,7 +98,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
                 { type: 'divider' },
                 { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
                 { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
-                { text: 'Delete', type: 'danger', userID: submission.UserID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(submission.Level, { ...submission, User: user }) },
+                { text: 'Delete', type: 'danger', userID: submission.UserID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(submission.UserID, submission.LevelID, submission.ID, user.Name) },
             ],
         });
     }
@@ -136,7 +136,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
                 { type: 'divider' },
                 { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
                 { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
-                { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.Level, { ...submission, User: user }), userID: submission.UserID },
+                { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.UserID, submission.LevelID, submission.ID, user.Name), userID: submission.UserID },
             ],
         });
     }

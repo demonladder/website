@@ -111,7 +111,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='references' element={<EditReferences />} />
                 <Route path='editPack' element={<EditPack />} />
                 <Route path='addSubmission' element={<AddSubmission />} />
-                <Route path='editSubmission' element={<EditSubmission />} />
+                <Route path='editSubmission/:submissionID' element={<EditSubmission />} />
                 <Route path='manageUser' element={<ManageUser />}>
                     <Route path=':userID' element={<ManageUserContent />} />
                 </Route>

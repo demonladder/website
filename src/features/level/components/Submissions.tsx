@@ -79,7 +79,7 @@ function Submission({ level, submission }: SubmissionProps) {
         { text: 'View user', onClick: () => navigate(linkDestination) },
         { text: 'View proof', icon: <i className='bx bx-link-external' />, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
         { type: 'divider', permission: PermissionFlags.MANAGE_SUBMISSIONS },
-        { text: 'Mod view', onClick: () => navigate(`/mod/editSubmission?levelID=${level.ID}&userID=${submission.User.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+        { text: 'Mod view', onClick: () => navigate(`/mod/editSubmission/${submission.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
         { text: 'Delete', icon: <i className='bx bx-trash' />, type: 'danger', onClick: () => openDeleteSubmissionModal(submission.User.ID, level.ID, submission.ID, submission.User.Name), permission: PermissionFlags.MANAGE_SUBMISSIONS },
     ]);
 

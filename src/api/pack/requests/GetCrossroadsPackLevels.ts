@@ -15,6 +15,7 @@ interface PackLevelDTO {
             Name: LevelMeta['Name'];
             Creator: LevelMeta['Creator'];
             Difficulty: LevelMeta['Difficulty'];
+            Rarity: LevelMeta['Rarity'];
             Song: {
                 Name: Song['Name'];
             };
@@ -30,6 +31,7 @@ export interface GetCrossroadsPackLevels {
         Name: LevelMeta['Name'];
         Creator: LevelMeta['Creator'];
         Difficulty: LevelMeta['Difficulty'];
+        Rarity: LevelMeta['Rarity'];
         Song: {
             Name: Song['Name'];
         };
@@ -48,6 +50,7 @@ export default async function GetCrossroadsPackLevels(): Promise<GetCrossroadsPa
             Name: level.Level.Meta.Name,
             Creator: level.Level.Meta.Creator,
             Difficulty: level.Level.Meta.Difficulty,
+            Rarity: level.Level.Meta.Rarity,
             Song: {
                 Name: level.Level.Meta.Song.Name,
             },
