@@ -90,8 +90,8 @@ export default function LevelPage() {
                 </div>
                 <IconButton color='standard' size='md'><i className='bx bx-dots-vertical-rounded' /></IconButton>
             </div>
-            <div className='flex max-md:flex-col gap-2'>
-                <div className='flex max-md:flex-col gap-4 md:w-9/12'>
+            <div className='flex max-md:flex-col gap-2 my-2'>
+                <div className='flex max-md:flex-col gap-4 md:w-8/12'>
                     <div className='h-full flex text-center'>
                         <div className={`flex items-center tier-${rating?.toFixed() ?? '0'}`}>
                             <p className={`grow w-28 py-2`}>
@@ -113,45 +113,45 @@ export default function LevelPage() {
                         <p className='text-lg'>{level.Meta.Description || <i>No description</i>}</p>
                     </section>
                 </div>
-                <Surface variant='700' className='md:w-3/12'>
-                    <Surface variant='600' className='mb-2'>
-                        <p className='text-lg'>
-                            {level.Meta.Song.Name}
-                            {level.Meta.SongID > 0 &&
-                                <a href={`https://www.newgrounds.com/audio/listen/${level.Meta.SongID}`} target='_blank' rel='noopener noreferrer' className='float-right me-1 text-2xl'><i className='bx bx-link-external' /></a>
-                            }
-                        </p>
-                        <p className='text-base'>by {level.Meta.Song.Author}</p>
-                        {level.Meta.SongID > 0 &&
-                            <p className='mt-2 text-xs'><span className='text-theme-300'>Song ID:</span> {level.Meta.SongID} <span className='ms-2 text-theme-300'>Size:</span> {level.Meta.Song.Size}</p>
-                        }
-                    </Surface>
-                    <div className='md:text-lg flex flex-wrap justify-around gap-1'>
-                        <Surface variant='600'>
-                            <p>Position</p>
-                            <p><b>#{level.DifficultyIndex ?? '-'}</b></p>
-                        </Surface>
-                        <Surface variant='600'>
-                            <p>Popularity</p>
-                            <p><b>#{level.PopularityIndex ?? '-'}</b></p>
-                        </Surface>
-                        <Surface variant='600'>
-                            <p>Members</p>
-                            <p><b>{level.SubmissionCount}</b></p>
-                        </Surface>
-                        <Surface variant='600'>
-                            <p>Length</p>
-                            <p><b>{levelLengths[level.Meta.Length]}</b></p>
-                        </Surface>
-                        {level.ID > 3 &&
-                            <Surface variant='600'>
-                                <p>ID</p>
-                                <IDButton className='font-bold' id={level.ID} />
-                            </Surface>
-                        }
-                    </div>
-                </Surface>
             </div>
+            <Surface variant='700' className='flex gap-2 my-2'>
+                <Surface variant='600' className='w-1/3 mb-2'>
+                    <p className='text-lg'>
+                        {level.Meta.Song.Name}
+                        {level.Meta.SongID > 0 &&
+                            <a href={`https://www.newgrounds.com/audio/listen/${level.Meta.SongID}`} target='_blank' rel='noopener noreferrer' className='float-right me-1 text-2xl'><i className='bx bx-link-external' /></a>
+                        }
+                    </p>
+                    <p className='text-base'>by {level.Meta.Song.Author}</p>
+                    {level.Meta.SongID > 0 &&
+                        <p className='mt-2 text-xs'><span className='text-theme-300'>Song ID:</span> {level.Meta.SongID} <span className='ms-2 text-theme-300'>Size:</span> {level.Meta.Song.Size}</p>
+                    }
+                </Surface>
+                <div className='grow md:text-lg flex flex-wrap justify-around items-center gap-1'>
+                    <Surface variant='600'>
+                        <p>Position</p>
+                        <p><b>#{level.DifficultyIndex ?? '-'}</b></p>
+                    </Surface>
+                    <Surface variant='600'>
+                        <p>Popularity</p>
+                        <p><b>#{level.PopularityIndex ?? '-'}</b></p>
+                    </Surface>
+                    <Surface variant='600'>
+                        <p>Members</p>
+                        <p><b>{level.SubmissionCount}</b></p>
+                    </Surface>
+                    <Surface variant='600'>
+                        <p>Length</p>
+                        <p><b>{levelLengths[level.Meta.Length]}</b></p>
+                    </Surface>
+                    {level.ID > 3 &&
+                        <Surface variant='600'>
+                            <p>ID</p>
+                            <IDButton className='font-bold' id={level.ID} />
+                        </Surface>
+                    }
+                </div>
+            </Surface>
             <TagBox level={level} />
             <Submissions level={level} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <RatingGraph levelMeta={level.Meta} twoPlayer={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
