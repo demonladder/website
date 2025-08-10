@@ -112,7 +112,7 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
         <div onClick={handleClick} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} tabIndex={0} onContextMenu={onContextMenu} className={(eligible ? 'cursor-pointer hover:border-white ' : '') + 'px-2 py-1 group round:rounded-lg select-none relative border ' + (submission.HasVoted ? 'bg-blue-600/25 border-blue-400' : 'bg-theme-600 border-theme-600  transition-colors')}>
             <span>{submission.Tag.Name} {submission.ReactCount}</span>
             {submission.Tag.Description &&
-                <div className='pointer-events-none absolute z-20 w-56 opacity-0 group-hover:opacity-100 transition-opacity left-1/2 top-full -translate-x-1/2 translate-y-1 bg-theme-500 border border-theme-400 round:rounded-lg shadow-lg px-2 py-1'>{submission.Tag.Description}</div>
+                <div className='pointer-events-none absolute z-30 w-56 opacity-0 group-hover:opacity-100 transition-opacity left-1/2 top-full -translate-x-1/2 translate-y-1 bg-theme-500 border border-theme-400 round:rounded-lg shadow-lg px-2 py-1'>{submission.Tag.Description}</div>
             }
         </div>
     );
