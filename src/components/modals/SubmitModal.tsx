@@ -214,7 +214,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
 
     return (
         <Modal title='Submit rating' show={true} onClose={onClose}>
-            <p className='my-3'>Make sure to read our guidelines <a href='/about#guidelines' className='text-blue-500' target='_blank'>here</a></p>
+            <p className='my-3'>Make sure read and understood our <a href='/about#guidelines' className='text-blue-500' target='_blank'>rating guidelines</a></p>
             <form onSubmit={(e) => submitForm(e)} autoCorrect='off' autoCapitalize='off' spellCheck='false'>
                 {level.Meta.Length === LevelLengths.PLATFORMER &&
                     <WarningBox>Platformer submissions are currently restricted; it's not possible to vote for tiers yet!</WarningBox>
@@ -280,7 +280,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     </FormGroup>
                 }
                 <FormGroup className='flex justify-between mt-8'>
-                    <button type='button' className='text-red-400 underline-t disabled:text-gray-400' onClick={() => deleteMutation.mutate()} disabled={deleteMutation.status === 'pending'}>delete</button>
+                    <button type='button' className={'text-red-400 underline-t disabled:text-gray-400 ' + (userSubmission ? '' : 'opacity-0 pointer-events-none')} onClick={() => deleteMutation.mutate()} disabled={deleteMutation.status === 'pending'}>delete</button>
                     <div>
                         <SecondaryButton type='button' onClick={onClose}>Close</SecondaryButton>
                         <PrimaryButton type='submit'>Submit</PrimaryButton>
