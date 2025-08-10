@@ -93,9 +93,9 @@ export default function EditLevel() {
                     <NumberInput id={defaultRatingID} value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > 35 || parseInt(defaultRating) < 1} />
                 </FormGroup>
                 <FormGroup className='mt-1'>
-                    <FormInputLabel htmlFor={showcaseID}>Showcase link</FormInputLabel>
+                    <FormInputLabel htmlFor={showcaseID}>Showcase</FormInputLabel>
                     <TextInput id={showcaseID} value={showcase} onChange={onShowcase} />
-                    <FormInputDescription>- Must be a YouTube video ID</FormInputDescription>
+                    <FormInputDescription>- Must be a YouTube video <b>ID</b></FormInputDescription>
                     <FormInputDescription>- At least 720p</FormInputDescription>
                     <FormInputDescription>- No LDMs</FormInputDescription>
                     <FormInputDescription>- Must show the entire level, no intros</FormInputDescription>
