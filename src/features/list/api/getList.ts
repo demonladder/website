@@ -1,4 +1,4 @@
-import { Difficulties } from '../../level/types/LevelMeta';
+import { Difficulties, Rarity } from '../../level/types/LevelMeta';
 import { List } from '../types/List';
 import APIClient from '../../../api/APIClient';
 import User from '../../../api/types/User';
@@ -20,6 +20,7 @@ export interface GetListResponse extends List {
                 Name: string;
                 Creator: string;
                 Difficulty: Difficulties;
+                Rarity: Rarity;
             }
         }
     }[];

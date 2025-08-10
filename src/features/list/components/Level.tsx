@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import useSession from '../../../hooks/useSession';
 import { List } from '../types/List';
 import { GetListResponse } from '../api/getList';
+import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
 
 interface Props {
     list: List;
@@ -103,9 +104,7 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
                     }
                 </div>
                 <Link to={`/level/${listLevel.LevelID}`} className='col-span-11 flex grow bg-theme-700 hover:bg-theme-600'>
-                    <div className='w-2/12 lg:w-1/12 p-2 self-center'>
-                        <DemonFace diff={listLevel.Level.Meta?.Difficulty} />
-                    </div>
+                    <DemonFace diff={listLevel.Level.Meta?.Difficulty} rarity={listLevel.Level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
                     <div className='self-center text-sm lg:text-xl mx-6'>
                         <h3 className='lg:text-2xl font-bold break-all whitespace-pre-wrap'>{listLevel.Level.Meta?.Name}</h3>
                         <p className='text-gray-300'><i>{listLevel.Level.Meta?.Creator}</i></p>
