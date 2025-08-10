@@ -9,6 +9,7 @@ export interface LevelPreviewDTO {
     Meta: {
         Name: string;
         Difficulty: LevelMeta['Difficulty'];
+        Rarity: LevelMeta['Rarity'];
     }
 }
 
