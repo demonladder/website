@@ -5,40 +5,51 @@ import Modal from '../Modal';
 import DeleteSubmission from '../../api/submissions/DeleteSubmission';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
-import Submission from '../../api/types/Submission';
-import LevelMeta from '../../features/level/types/LevelMeta';
-import Level from '../../features/level/types/Level';
-import User from '../../api/types/User';
+import FormGroup from '../form/FormGroup';
+import FormInputLabel from '../form/FormInputLabel';
+import { TextInput } from '../Input';
+import { useId, useState } from 'react';
 
 interface Props {
-    level: Level & { Meta: LevelMeta };
-    submission: Submission & { User: User };
+    levelID: number;
+    userID: number;
+    submissionID: number;
+    username: string;
     onClose: () => void;
 }
 
-export default function DeleteSubmissionModal({ level, submission, onClose: close }: Props) {
+export default function DeleteSubmissionModal({ userID, levelID, submissionID, username, onClose: close }: Props) {
+    const [deleteReason, setDeleteReason] = useState('');
+    const deleteInputID = useId();
     const queryClient = useQueryClient();
-    const { UserID: userID, LevelID: levelID } = submission;
 
-    function deleteSubmission() {
-        void toast.promise(DeleteSubmission(submission.ID).then(() => {
+    function deleteSubmission(e: React.FormEvent) {
+        e.preventDefault();
+
+        void toast.promise(DeleteSubmission(submissionID, deleteReason).then(() => {
             void queryClient.invalidateQueries({ queryKey: ['level', levelID] });
             void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions'] });
             close();
         }), {
             pending: 'Deleting...',
-            success: 'Deleted a submission for ' + level.Meta.Name,
+            success: 'Submission deleted ',
             error: renderToastError,
         });
     }
 
     return (
         <Modal title='Delete submission' show={true} onClose={close}>
-            <p>Are you sure you want to delete <b>{submission.User.Name}s</b> submission for <b>{level.Meta.Name}</b> <span className={`py-1 px-2 rounded tier-${level.Rating?.toFixed(0) ?? '0'}`}>{level.Rating?.toFixed(0) ?? ' - '}</span> ?</p>
-            <div className='flex place-content-end gap-2 mt-4'>
-                <SecondaryButton onClick={close}>Close</SecondaryButton>
-                <DangerButton onClick={() => deleteSubmission()}>Delete</DangerButton>
-            </div>
+            <p>Are you sure you want to delete <b>{username}s</b> submission?</p>
+            <form onSubmit={deleteSubmission}>
+                <FormGroup>
+                    <FormInputLabel htmlFor={deleteInputID}>Reason</FormInputLabel>
+                    <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} id={deleteInputID} required minLength={1} />
+                </FormGroup>
+                <div className='flex place-content-end gap-2 mt-4'>
+                    <SecondaryButton type='button' onClick={close}>Close</SecondaryButton>
+                    <DangerButton type='submit'>Delete</DangerButton>
+                </div>
+            </form>
         </Modal>
     );
 }

@@ -1,19 +1,15 @@
-import Level from '../../features/level/types/Level';
-import LevelMeta from '../../features/level/types/LevelMeta';
-import Submission from '../../api/types/Submission';
-import User from '../../api/types/User';
 import DeleteSubmissionModal from '../../components/modals/DeleteSubmissionModal';
 import useModal from './useModal';
 
 export default function useDeleteSubmissionModal() {
     const { createModal, closeModal } = useModal();
 
-    function open(level: Level & { Meta: LevelMeta }, submission: Submission & { User: User }) {
-        const ID = `deleteSubmission-${submission.UserID}-${submission.LevelID}`;
+    function open(userID: number, levelID: number, submissionID: number, username: string) {
+        const ID = `deleteSubmission-${userID}-${levelID}`;
 
         createModal(
             ID,
-            <DeleteSubmissionModal onClose={() => closeModal(ID)} level={level} submission={submission} />,
+            <DeleteSubmissionModal onClose={() => closeModal(ID)} userID={userID} levelID={levelID} submissionID={submissionID} username={username} />,
         );
     }
 

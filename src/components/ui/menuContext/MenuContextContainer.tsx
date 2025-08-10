@@ -5,6 +5,7 @@ import useSession from '../../../hooks/useSession';
 
 export interface ButtonData {
     text?: React.ReactNode;
+    icon?: React.ReactNode;
     onClick?: React.MouseEventHandler;
     type?: 'info' | 'danger' | 'divider';
     disabled?: boolean;
@@ -63,11 +64,12 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         <MenuContext.Provider value={{ menuData, setMenuData }}>
             {children}
             {menuData &&
-                <div ref={menuRef} className='fixed w-36 z-50 bg-theme-900 text-theme-text rounded-lg border border-theme-400 shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
+                <div ref={menuRef} className='fixed z-50 bg-theme-900 text-theme-text rounded-lg border border-theme-400 shadow-2xl' style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}>{
                     <ul className='p-1'>{filteredButtons?.map((b) => b.type === 'divider'
-                        ? <li key={b.ID} className='bg-theme-500 mx-4 h-0.5 my-1' />
+                        ? <li key={b.ID} className='bg-theme-500 mx-2 h-0.5 my-1' />
                         : <li key={b.ID}>
-                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start px-4 py-1 rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600') + (b.disabled ? ' text-theme-400 line-through pointer-events-none' : '')}>
+                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start pe-4 py-1 rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600') + (b.disabled ? ' text-theme-400 line-through pointer-events-none' : '')}>
+                                <span className='inline-block w-4 mx-2'>{b.icon}</span>
                                 {b.text}
                             </button>
                         </li>,
