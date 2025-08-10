@@ -13,11 +13,12 @@ interface GridProps {
     name: string;
     creator: string;
     difficulty: Difficulties;
+    rarity: Rarity;
     inPack: boolean;
     onContextMenu?: (e: React.MouseEvent) => void;
 }
 
-export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, inPack, onContextMenu }: GridProps) {
+export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, rarity, inPack, onContextMenu }: GridProps) {
     const navigate = useNavigate();
 
     function handleClick() {
@@ -55,7 +56,7 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                     </div>
                 </div>
                 <div className='self-center'>
-                    <DemonFace diff={difficulty} rarity={Rarity.MYTHIC} size={DemonLogoSizes.MEDIUM} />
+                    <DemonFace diff={difficulty} rarity={rarity} size={DemonLogoSizes.MEDIUM} />
                 </div>
             </div>
         </div>
