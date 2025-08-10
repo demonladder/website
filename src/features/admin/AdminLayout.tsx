@@ -28,7 +28,6 @@ export default function AdminLayout() {
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Submissions</p>
                             <NavButton to='/mod/addSubmission'>Add submission</NavButton>
-                            <NavButton to='/mod/editSubmission'>Edit submission</NavButton>
                             <NavButton to='/mod/mergeSubmissions'>Merge submissions</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Users</p>
