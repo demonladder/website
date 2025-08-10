@@ -1,4 +1,4 @@
-import DemonLogo from './DemonLogo';
+import DemonFace from './DemonFace';
 import { Link } from 'react-router-dom';
 import NotificationButton from './ui/Notifications';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
@@ -43,7 +43,7 @@ function ProfileButton({ userID, size = 'large' }: Props) {
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
                         {session.user?.DiscordData?.Avatar
                             ? <img src={pfp} className='rounded-full' />
-                            : <DemonLogo diff={session.user?.Hardest?.Meta.Difficulty} />
+                            : <DemonFace diff={session.user?.Hardest?.Meta.Difficulty} />
                         }
                     </div>
                 </Link>

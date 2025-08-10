@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import DemonLogo, { DifficultyToImgSrc } from '../../components/DemonLogo';
+import DemonFace from '../../components/DemonFace';
+import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
+import { difficultyToImgSrc } from '../../utils/difficultyToImgSrc';
 import { Helmet } from 'react-helmet-async';
 import { getLevel } from './api/getLevel';
 import IDButton from '../../components/IDButton';
@@ -75,12 +77,12 @@ export default function LevelPage() {
                 <meta property='og:url' content='https://gdladder.com/' />
                 <meta property='og:title' content={level.Meta.Name} />
                 <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Creator}`} />
-                <meta property='og:image' content={DifficultyToImgSrc(level.Meta.Difficulty)} />
+                <meta property='og:image' content={difficultyToImgSrc(level.Meta.Difficulty)} />
             </Helmet>
             <FAB variant='large' color='primary' onClick={() => openSubmitModal(level)}><i className='bx bx-list-plus' /></FAB>
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>
-                    <DemonLogo diff={level.Meta.Difficulty} className='size-32' />
+                    <DemonFace meta={level.Meta} size={DemonLogoSizes.MEDIUM} />
                     <div className='mb-1'>
                         <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
                         <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Creator}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Creator}</a></h2>
@@ -91,13 +93,13 @@ export default function LevelPage() {
             <div className='grid grid-cols-12 gap-2'>
                 <div className='col-span-12 lg:col-span-9 grid grid-cols-12 gap-4 p-4 bg-theme-700 border border-theme-outline shadow-md round:rounded-xl'>
                     <div className='col-span-12 md:col-span-4 xl:col-span-3'>
-                        <div className='flex text-center'>
-                            <p className={`w-1/2 py-2 tier-${rating?.toFixed() ?? '0'}`}>
+                        <div className='h-full flex flex-col text-center'>
+                            <p className={`grow py-2 tier-${rating?.toFixed() ?? '0'}`}>
                                 <span className='text-4xl font-bold'>{rating?.toFixed() ?? '-'}</span>
                                 <br />
                                 <span>[{rating?.toFixed(2) ?? '-'}]</span>
                             </p>
-                            <p className={'w-1/2 py-2 enj-' + (enjoyment?.toFixed() ?? '-1')}>
+                            <p className={'grow py-2 enj-' + (enjoyment?.toFixed() ?? '-1')}>
                                 <p><span className='text-4xl font-bold'>{enjoyment?.toFixed() ?? '-'}</span></p>
                                 <p><span>[{enjoyment?.toFixed(2) ?? '-'}]</span></p>
                             </p>

@@ -6,7 +6,8 @@ import { levelLengthToString } from '../../../features/level/types/LevelMeta';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 import { useMemo } from 'react';
 import Heading4 from '../../../components/headings/Heading4';
-import { DifficultyToImgSrc } from '../../../components/DemonLogo';
+import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
+import { difficultyToImgSrc } from '../../../utils/difficultyToImgSrc';
 import { toast } from 'react-toastify';
 import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/useLevelSubmissionSpread';
 import { ratingToWeight, weightedRatingAverage } from '../../../utils/weightedAverage';
@@ -100,7 +101,7 @@ export default function Submission({ submission }: Props) {
     return (
         <li className={`round:rounded-2xl bg-linear-to-br tier-${submission.Rating ?? 0} from-tier-${submission.Rating ?? 0} to-tier-${levelRating?.toFixed() ?? 0} p-3 my-2 text-lg`}>
             <div className='flex items-center gap-2 mb-2 cursor-pointer' onClick={() => navigate(`/level/${submission.LevelID}`)}>
-                <img src={DifficultyToImgSrc(submission.Level.Meta.Difficulty, '64')} />
+                <img src={difficultyToImgSrc(submission.Level.Meta.Difficulty, DemonLogoSizes.SMALL)} />
                 <div>
                     <p className='font-bold text-3xl'>{submission.Level.Meta.Name}</p>
                     <p>by {submission.Level.Meta.Creator}</p>

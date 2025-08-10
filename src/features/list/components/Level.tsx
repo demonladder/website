@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import DemonLogo from '../../../components/DemonLogo';
+import DemonFace from '../../../components/DemonFace';
 import { useRef, useState } from 'react';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import { toast } from 'react-toastify';
@@ -104,7 +104,7 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
                 </div>
                 <Link to={`/level/${listLevel.LevelID}`} className='col-span-11 flex grow bg-theme-700 hover:bg-theme-600'>
                     <div className='w-2/12 lg:w-1/12 p-2 self-center'>
-                        <DemonLogo diff={listLevel.Level.Meta?.Difficulty} />
+                        <DemonFace diff={listLevel.Level.Meta?.Difficulty} />
                     </div>
                     <div className='self-center text-sm lg:text-xl mx-6'>
                         <h3 className='lg:text-2xl font-bold break-all whitespace-pre-wrap'>{listLevel.Level.Meta?.Name}</h3>

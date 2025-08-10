@@ -107,7 +107,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
         <ul>
             {levels.map((p) => (
                 <li key={p.LevelID}>
-                    <Level ID={p.LevelID} difficulty={p.Level.Meta.Difficulty} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} />
+                    <Level ID={p.LevelID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} />
                 </li>
             ))}
         </ul>

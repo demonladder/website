@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import Level from '../../components/Level';
 import useLevelView from '../../hooks/useLevelView';
 import { GridLevel } from '../../components/GridLevel';
 import Leaderboard from '../packs/components/Leaderboard';
-import { getPackLevels } from './api/getPackLevels';
+import usePackLevels from './hooks/usePackLevels';
 import Page from '../../components/Page';
 import usePack from './hooks/usePack';
 import { LevelRenderer } from '../../components/LevelRenderer';
@@ -15,10 +14,7 @@ import Heading3 from '../../components/headings/Heading3';
 export default function PackOverview() {
     const packID = parseInt(useParams().packID ?? '') || 0;
     const { status, data: pack } = usePack(packID);
-    const { status: levelStatus, data: packLevels } = useQuery({
-        queryKey: ['packs', packID, 'levels'],
-        queryFn: () => getPackLevels(packID),
-    });
+    const { status: levelStatus, data: packLevels } = usePackLevels(packID);
 
     const [isList, viewButtons] = useLevelView('packs.listView');
 

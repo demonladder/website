@@ -2,13 +2,16 @@ import IDButton from './IDButton';
 import { useNavigate } from 'react-router-dom';
 import StorageManager from '../utils/StorageManager';
 import Heading4 from './headings/Heading4';
-import { DifficultyToImgSrc } from './DemonLogo';
+import DemonFace from './DemonFace';
+import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
 import YesTick from './images/YesTick';
-import { Difficulties } from '../features/level/types/LevelMeta';
+import { Difficulties, Rarity } from '../features/level/types/LevelMeta';
+import { IDMapper } from '../utils/IDMapper';
 
 interface Props {
     ID: number;
     difficulty: Difficulties;
+    rarity: Rarity;
     rating: number | null;
     defaultRating?: number | null;
     actualRating?: number | null;
@@ -35,14 +38,7 @@ export function Header() {
     );
 }
 
-function IDMapper(ID: number) {
-    if (ID > 3) return ID;
-    if (ID === 1) return 14;
-    if (ID === 2) return 18;
-    if (ID === 3) return 20;
-}
-
-export default function Level({ ID, difficulty, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
+export default function Level({ ID, difficulty, rarity, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
@@ -53,7 +49,7 @@ export default function Level({ ID, difficulty, rating, defaultRating, actualRat
             <div className='absolute size-full bg-cover bg-center bg-no-repeat transition-all opacity-60 group-hover:opacity-100 focus-visible:opacity-100 level-thumbnail' style={{ backgroundImage: `url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")`, maskImage: 'linear-gradient(to right, transparent var(--mask-start-at, 40%), black 90%)' }} />
             <div className='flex justify-between h-20'>
                 <div className='flex gap-4 z-10 items-center'>
-                    <img src={DifficultyToImgSrc(difficulty, '64')} alt={`${difficulty} demon face`} className='w-16' />
+                    <DemonFace meta={{ Difficulty: difficulty, Rarity: rarity }} size={DemonLogoSizes.SMALL} />
                     <p className='text-lg lg:text-[26.4px]'><b>{name}</b> by {creator}</p>
                     {completed && StorageManager.getHighlightCompleted() &&
                         <YesTick className='size-6 lg:size-8' />

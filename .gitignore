@@ -5,6 +5,8 @@ sslcert
 .VSCodeCounter
 build/
 
+public/**/*.js
+
 # Logs
 logs
 *.log

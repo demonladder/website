@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import DemonLogo from '../../../components/DemonLogo';
+import DemonFace from '../../../components/DemonFace';
 import IDButton from '../../../components/IDButton';
 import { ListEntry } from '../api/getPlatformerList';
 
@@ -13,7 +13,7 @@ export function PlatformerListLevel({ level }: { level: ListEntry; }) {
             </div>
             <div className='col-span-11 flex grow gap-2 lg:gap-6 bg-gray-700'>
                 <div className='w-3/12 lg:w-1/12 p-2 self-center'>
-                    <DemonLogo diff={level.Level.Meta.Difficulty} />
+                    <DemonFace diff={level.Level.Meta.Difficulty} />
                 </div>
                 <div className='self-center text-sm lg:text-xl'>
                     <Link to={'/level/' + level.LevelID} className='font-bold underline break-all whitespace-pre-wrap'>{level.Level.Meta.Name}</Link>

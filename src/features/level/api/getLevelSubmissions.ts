@@ -2,8 +2,12 @@ import APIClient from '../../../api/APIClient';
 import ISubmission from '../../../api/types/Submission';
 import User from '../../../api/types/User';
 
-export type Submission = (ISubmission & {
-    User: User,
+export type Submission = (Omit<ISubmission, 'UserID' | 'LevelID'> & {
+    User: {
+        ID: number;
+        Name: string;
+        RoleIDs: string;
+    },
     SecondaryUser?: User,
 });
 
@@ -44,6 +48,7 @@ export async function getLevelSubmissions({ twoPlayer, levelID, page = 1, progre
         progressFilter,
         sort,
         sortDirection,
+        properties: 'total,limit,page,submissions(ID,Rating,Enjoyment,RefreshRate,Device,Proof,IsSolo,SecondPlayerID,Progress,Attempts,DateAdded,User(ID,Name,RoleIDs),SecondaryUser)',
     } });
     return res.data;
 }

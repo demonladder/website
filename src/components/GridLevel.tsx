@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import DemonLogo from './DemonLogo';
-import StorageManager from '../utils/StorageManager';
+import DemonFace from './DemonFace';
+import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
 import Copy from './Copy';
-import { Difficulties } from '../features/level/types/LevelMeta';
+import { Difficulties, Rarity } from '../features/level/types/LevelMeta';
+import { IDMapper } from '../utils/IDMapper';
 
 interface GridProps {
     ID: number;
@@ -29,34 +30,33 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
 
         window.open(proof.startsWith('https://') ? proof : `https://${proof}`, '_blank');
     }
-
+ 
     const roundedRating = rating !== null ? Math.round(rating) : 0;
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
     return (
-        <div className={'cursor-pointer p-2 outline outline-white/0 hover:outline-white/100 transition-colors round:rounded-xl tier-' + roundedRating.toFixed()} onClick={handleClick} onContextMenu={onContextMenu}>
-            <b className='text-xl'><Copy text={ID.toString()} /> {name}</b>
-            <div className='flex justify-between text-lg'>
-                <div>
-                    <p>by {creator}</p>
-                    <p className='pb-10'>Tier {rating !== null ? (<b>{roundedRating}</b>) : 'not rated'}</p>
-                </div>
-                <div className='basis-24 relative'>
-                    <DemonLogo diff={difficulty} />
-                    <div className='absolute flex text-3xl bottom-0 -left-2 -translate-x-full cursor-help'>
+        <div className='relative group cursor-pointer' onClick={handleClick} onContextMenu={onContextMenu}>
+            <div className='absolute size-full inset-0 bg-cover round:rounded-xl bg-center transition-all opacity-40 group-hover:opacity-80 focus-visible:opacity-80 level-thumbnail' style={{ backgroundImage: `url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")` }} />
+            <div className='flex justify-between min-h-40'>
+                <div className='z-10 p-2 flex flex-col gap-2 justify-between'>
+                    <div>
+                        <p><b className='text-xl text-shadow-lg'><Copy text={ID.toString()} /> {name}</b></p>
+                        <p>by {creator}</p>
+                    </div>
+                    <div className='flex gap-1 items-center'>
+                        <p><b className={`px-2 py-1 text-lg rounded tier-${roundedRating}`}>{rating?.toFixed() ?? '-'}</b></p>
+                        <p><b className={`px-2 py-1 text-lg rounded enj-${roundedEnjoyment}`}>{enjoyment?.toFixed() ?? '-'}</b></p>
                         {proof &&
-                            <div className='self-center px-2 cursor-pointer' onClick={handleProofClick} title='Proof of completion'>
-                                <i className='bx bx-link'></i>
-                            </div>
+                            <i className='bx bx-link p-1 cursor-pointer rounded transition-colors hover:bg-theme-500 text-xl' onClick={handleProofClick} title='Proof of completion' />
                         }
                         {inPack &&
-                            <i className='bx bx-box' title='This level is in a pack'></i>
+                            <i className='bx bx-box text-2xl p-1' title='This level is in a pack' />
                         }
                     </div>
                 </div>
-            </div>
-            <div className={'absolute flex items-end bottom-[-1px] left-[-1px] w-12 h-12 enj-' + roundedEnjoyment.toFixed()} style={{ borderRadius: StorageManager.getIsRounded() ? '0 3rem 0 0.75rem' : '0 3rem 0 0' }}>
-                <b className='p-2 ps-3'>{enjoyment !== null ? roundedEnjoyment : '-'}</b>
+                <div className='self-center'>
+                    <DemonFace diff={difficulty} rarity={Rarity.MYTHIC} size={DemonLogoSizes.MEDIUM} />
+                </div>
             </div>
         </div>
     );

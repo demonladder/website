@@ -36,4 +36,13 @@ export default interface LevelMeta {
     Length: LevelLengths;
     IsTwoPlayer: boolean;
     Difficulty: Difficulties;
+    Rarity: Rarity;
+}
+
+export enum Rarity {
+    STAR = 0,
+    FEATURE = 1,
+    EPIC = 2,
+    LEGENDARY = 3,
+    MYTHIC = 4,
 }

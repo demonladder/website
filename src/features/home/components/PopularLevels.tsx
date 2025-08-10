@@ -8,7 +8,7 @@ import 'swiper/css/autoplay';
 import 'swiper/css/scrollbar';
 import { getPopularLevels, LevelPreviewDTO } from '../api/getPopularLevels';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
-import DemonLogo from '../../../components/DemonLogo';
+import DemonFace from '../../../components/DemonFace';
 import Heading2 from '../../../components/headings/Heading2';
 import Heading4 from '../../../components/headings/Heading4';
 
@@ -50,7 +50,7 @@ export default function PopularLevels() {
 export function LevelPreview({ level, index }: { level: LevelPreviewDTO, index: number }) {
     return (
         <Link to={`/level/${level.ID}`} className='bg-theme-800 shadow border border-theme-outline round:rounded-lg p-3 flex items-center gap-2'>
-            <DemonLogo diff={level.Meta.Difficulty} width='96' />
+            <DemonFace diff={level.Meta.Difficulty} />
             <div className='flex flex-col gap-0.5'>
                 <Heading4>#{index} {level.Meta.Name}</Heading4>
                 <div className='text-lg'>

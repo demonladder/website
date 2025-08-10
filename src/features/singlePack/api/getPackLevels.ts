@@ -12,6 +12,7 @@ export type GetPackLevelsResponse = PackLevel & {
             Name: LevelMeta['Name'],
             Creator: LevelMeta['Creator'],
             Difficulty: LevelMeta['Difficulty'],
+            Rarity: LevelMeta['Rarity'],
             Song: {
                 Name: string,
             },

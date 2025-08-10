@@ -1,12 +1,13 @@
 import { Difficulties } from '../features/level/types/LevelMeta';
 
-export default function DemonLogo({ diff, ...props }: { diff?: number | Difficulties } & Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'>) {
-    return (
-        <img src={DifficultyToImgSrc(diff)} {...props} />
-    );
+export enum DemonLogoSizes {
+    SMALL = 64,
+    MEDIUM = 128,
+    LARGE = 160,
+    EXTRA_LARGE = 190,
 }
 
-export function DifficultyToImgSrc(diff?: Difficulties | number, size: '64' | '160' = '160') {
+export function difficultyToImgSrc(diff?: Difficulties | number, size: DemonLogoSizes = DemonLogoSizes.EXTRA_LARGE) {
     switch (diff) {
         case Difficulties.Easy:
         case 1:
