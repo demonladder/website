@@ -6,7 +6,6 @@ import UserRoleIcon from '../../components/UserRoleIcon';
 import LevelTracker from './components/LevelTracker';
 import { AxiosError } from 'axios';
 import Tracker from './components/Tracker';
-import LevelResolvableText from '../../components/LevelResolvableText';
 import Rankings from './components/Rankings';
 import Lists from './components/Lists';
 import PendingSubmissions from './components/PendingSubmissions';
@@ -105,24 +104,6 @@ export default function Profile() {
                         <b>Average enjoyment:</b>
                         <p>{userData.AverageEnjoyment?.toFixed(1) ?? '-'}</p>
                     </div>
-                    <Tracker>
-                        <b>Favorites:</b>
-                        <div>
-                            {userData.Favorite.length === 0 &&
-                                <p className='text-theme-400'>None</p>
-                            }
-                            {userData.Favorite.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.Favorite.length - 1 === i} key={`userFavorites_${userData.ID}_${i}`} />))}
-                        </div>
-                    </Tracker>
-                    <Tracker>
-                        <b>Least favorites:</b>
-                        <div>
-                            {userData.LeastFavorite.length === 0 &&
-                                <p className='text-theme-400'>None</p>
-                            }
-                            {userData.LeastFavorite.map((favorite, i) => (<LevelResolvableText levelID={favorite} isLast={userData.LeastFavorite.length - 1 === i} key={`userLeastFavorites_${userData.ID}_${i}`} />))}
-                        </div>
-                    </Tracker>
                     <Tracker>
                         <b>Total submissions:</b>
                         <p>{userData.SubmissionCount}</p>
