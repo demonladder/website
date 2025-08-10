@@ -12,6 +12,7 @@ import { saveProfile } from '../../../features/settings/profile/api/saveProfile'
 import renderToastError from '../../../utils/renderToastError';
 import Heading3 from '../../../components/headings/Heading3';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { unlinkUserDiscord } from './api/unlinkUserDiscord';
 
 export default function EditInformation({ user }: { user: UserResponse }) {
     const nameID = useId();
@@ -42,6 +43,17 @@ export default function EditInformation({ user }: { user: UserResponse }) {
         editMutation.mutate({ ID: user.ID, name: newName, introduction: newIntroduction });
     }
 
+    const unlinkMutation = useMutation({
+        mutationFn: unlinkUserDiscord,
+    });
+    function handleUnlink() {
+        const handle = toast.loading('Unlinking...');
+        unlinkMutation.mutate(user.ID, {
+            onSuccess: () => toast.update(handle, { render: 'Account unlinked', type: 'success', isLoading: false, autoClose: 3000 }),
+            onError: (err) => toast.update(handle, { render: renderToastError.render({ data: err }), type: 'error', isLoading: false, autoClose: 3000 }),
+        });
+    }
+
     return (
         <section className='bg-theme-700 border border-theme-outline p-4 round:rounded-xl'>
             <Heading3>Edit information</Heading3>
@@ -64,7 +76,7 @@ export default function EditInformation({ user }: { user: UserResponse }) {
                 <p>ID: <b>{user.DiscordData?.ID}</b></p>
                 <p>Username: <b>{user.DiscordData?.Username}</b></p>
                 <p>Display name: <b>{user.DiscordData?.Name}</b></p>
-                <SecondaryButton onClick={() => toast.warn('Not implemented yet')}>Un-link</SecondaryButton>
+                <SecondaryButton onClick={() => handleUnlink()}>Un-link</SecondaryButton>
             </div>
         </section>
     );
