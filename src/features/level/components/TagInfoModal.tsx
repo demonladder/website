@@ -15,7 +15,7 @@ export default function TagInfoModal() {
 
     return (
         <>
-            <i className='bx bx-info-circle cursor-pointer' onClick={openModal} />
+            <i className='bx bx-info-circle cursor-pointer self-center text-2xl' onClick={openModal} />
             <Modal title='Skillset explanation' show={visible} onClose={() => setVisible(false)}>
                 <div>
                     <p>Tags describe the general skillsets that are present in this level.</p>

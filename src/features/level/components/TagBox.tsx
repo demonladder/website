@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import LevelTagRequest, { TopTags } from '../../../api/level/tags/LevelTagRequest';
-import Select from '../../../components/Select';
 import { sendTagVoteRequest } from '../api/SendTagVoteRequest';
 import { toast } from 'react-toastify';
 import GetTagEligibility from '../../../api/level/tags/GetTagEligibility';
@@ -14,10 +13,10 @@ import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import { removeTagVotes } from '../api/removeTagVotes';
 import renderToastError from '../../../utils/renderToastError';
+import Select from '../../../components/input/select/Select';
 
 export default function TagBox({ level }: { level: FullLevel }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [showAllTags, setShowAllTags] = useState(false);
 
     const queryClient = useQueryClient();
     const { data: levelTags } = useQuery({
@@ -63,24 +62,18 @@ export default function TagBox({ level }: { level: FullLevel }) {
     const canVote = voteMeta?.eligible === true;
 
     return (
-        <div className='text-xl h-full bg-theme-700 border border-theme-outline shadow-md p-4 round:rounded-xl flex flex-col justify-between'>
-            <div className='grow'>
-                <h3 className='mb-2'><TagInfoModal /> Top skillsets:</h3>
-                <div className='flex max-sm:flex-col lg:flex-col gap-2 text-lg'>
-                    {!isContentLoading
-                        ? <>
-                            {(showAllTags ? levelTags : tagsToDisplay).map((t, i) => (<Tag levelID={level.ID} submission={t} eligible={voteMeta?.eligible} key={`tagSubmission_${level.ID}_${i}`} />))}
-                            {levelTags.length === 0 && (<span>None yet</span>)}
-                            {levelTags.length > 3 && <button onClick={() => setShowAllTags((prev) => !prev)} className='py-2'><span className='underline'>Show {showAllTags ? 'less' : 'more'}</span></button>}
-                        </>
-                        : <span className='mt-4 text-xl'><LoadingSpinner /></span>
-                    }
-
-                </div>
-            </div>
+        <div className='text-xl bg-theme-700 border border-theme-outline shadow-md p-2 mt-2 round:rounded-xl flex flex-wrap gap-2'>
+            <TagInfoModal />
+            {!isContentLoading
+                ? <>
+                    {levelTags.map((t, i) => (<Tag levelID={level.ID} submission={t} eligible={voteMeta?.eligible} key={`tagSubmission_${level.ID}_${i}`} />))}
+                    {levelTags.length === 0 && (<span>None yet</span>)}
+                </>
+                : <span className='mt-4 text-xl'><LoadingSpinner /></span>
+            }
             {(!isContentLoading && canVote) &&
-                <div className='md:self-center w-full'>
-                    <Select options={tagOptions} activeKey={'0'} id='voteTag' onChange={(o) => onVoteChange(parseInt(o))} />
+                <div className='self-center'>
+                    <Select label={<i className='bx bx-plus-circle' />} options={tagOptions} id='voteTag' onOption={(o) => onVoteChange(parseInt(o))} />
                 </div>
             }
         </div>

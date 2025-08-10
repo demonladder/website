@@ -90,74 +90,69 @@ export default function LevelPage() {
                 </div>
                 <IconButton color='standard' size='md'><i className='bx bx-dots-vertical-rounded' /></IconButton>
             </div>
-            <div className='grid grid-cols-12 gap-2'>
-                <div className='col-span-12 lg:col-span-9 grid grid-cols-12 gap-4 p-4 bg-theme-700 border border-theme-outline shadow-md round:rounded-xl'>
-                    <div className='col-span-12 md:col-span-4 xl:col-span-3'>
-                        <div className='h-full flex flex-col text-center'>
-                            <p className={`grow py-2 tier-${rating?.toFixed() ?? '0'}`}>
+            <div className='flex max-md:flex-col gap-2'>
+                <div className='flex max-md:flex-col gap-4 md:w-9/12'>
+                    <div className='h-full flex text-center'>
+                        <div className={`flex items-center tier-${rating?.toFixed() ?? '0'}`}>
+                            <p className={`grow w-28 py-2`}>
                                 <span className='text-4xl font-bold'>{rating?.toFixed() ?? '-'}</span>
                                 <br />
                                 <span>[{rating?.toFixed(2) ?? '-'}]</span>
                             </p>
-                            <p className={'grow py-2 enj-' + (enjoyment?.toFixed() ?? '-1')}>
-                                <p><span className='text-4xl font-bold'>{enjoyment?.toFixed() ?? '-'}</span></p>
-                                <p><span>[{enjoyment?.toFixed(2) ?? '-'}]</span></p>
+                        </div>
+                        <div className={`flex items-center enj-${enjoyment?.toFixed() ?? '-1'}`}>
+                            <p className={`grow w-28 py-2`}>
+                                <span className='text-4xl font-bold'>{enjoyment?.toFixed() ?? '-'}</span>
+                                <br />
+                                <span>[{enjoyment?.toFixed(2) ?? '-'}]</span>
                             </p>
                         </div>
                     </div>
-                    <section className='hidden md:block xl:hidden col-span-8'>
+                    <section className='col-span-8'>
                         <h3 className='text-2xl xl:mb-2'>Description</h3>
                         <p className='text-lg'>{level.Meta.Description || <i>No description</i>}</p>
                     </section>
-                    <div className='col-span-12 xl:col-span-9 flex flex-col justify-between'>
-                        <div className='md:hidden xl:block'>
-                            <p className='text-2xl xl:mb-2'>Description</p>
-                            <p className='text-lg break-all'>{level.Meta.Description || <i>No description</i>}</p>
-                        </div>
-                        <div>
-                            <Surface variant='600' className='mb-2'>
-                                <p className='text-lg'>
-                                    {level.Meta.Song.Name}
-                                    {level.Meta.SongID > 0 &&
-                                        <a href={`https://www.newgrounds.com/audio/listen/${level.Meta.SongID}`} target='_blank' rel='noopener noreferrer' className='float-right me-1 text-2xl'><i className='bx bx-link-external' /></a>
-                                    }
-                                </p>
-                                <p className='text-base'>by {level.Meta.Song.Author}</p>
-                                {level.Meta.SongID > 0 &&
-                                    <p className='mt-2 text-xs'><span className='text-theme-300'>Song ID:</span> {level.Meta.SongID} <span className='ms-2 text-theme-300'>Size:</span> {level.Meta.Song.Size}</p>
-                                }
+                </div>
+                <Surface variant='700' className='md:w-3/12'>
+                    <Surface variant='600' className='mb-2'>
+                        <p className='text-lg'>
+                            {level.Meta.Song.Name}
+                            {level.Meta.SongID > 0 &&
+                                <a href={`https://www.newgrounds.com/audio/listen/${level.Meta.SongID}`} target='_blank' rel='noopener noreferrer' className='float-right me-1 text-2xl'><i className='bx bx-link-external' /></a>
+                            }
+                        </p>
+                        <p className='text-base'>by {level.Meta.Song.Author}</p>
+                        {level.Meta.SongID > 0 &&
+                            <p className='mt-2 text-xs'><span className='text-theme-300'>Song ID:</span> {level.Meta.SongID} <span className='ms-2 text-theme-300'>Size:</span> {level.Meta.Song.Size}</p>
+                        }
+                    </Surface>
+                    <div className='md:text-lg flex flex-wrap justify-around gap-1'>
+                        <Surface variant='600'>
+                            <p>Position</p>
+                            <p><b>#{level.DifficultyIndex ?? '-'}</b></p>
+                        </Surface>
+                        <Surface variant='600'>
+                            <p>Popularity</p>
+                            <p><b>#{level.PopularityIndex ?? '-'}</b></p>
+                        </Surface>
+                        <Surface variant='600'>
+                            <p>Members</p>
+                            <p><b>{level.SubmissionCount}</b></p>
+                        </Surface>
+                        <Surface variant='600'>
+                            <p>Length</p>
+                            <p><b>{levelLengths[level.Meta.Length]}</b></p>
+                        </Surface>
+                        {level.ID > 3 &&
+                            <Surface variant='600'>
+                                <p>ID</p>
+                                <IDButton className='font-bold' id={level.ID} />
                             </Surface>
-                            <div className='md:text-lg flex justify-around gap-1'>
-                                <Surface variant='600'>
-                                    <p>Position</p>
-                                    <p><b>#{level.DifficultyIndex ?? '-'}</b></p>
-                                </Surface>
-                                <Surface variant='600'>
-                                    <p>Popularity</p>
-                                    <p><b>#{level.PopularityIndex ?? '-'}</b></p>
-                                </Surface>
-                                <Surface variant='600'>
-                                    <p>Members</p>
-                                    <p><b>{level.SubmissionCount}</b></p>
-                                </Surface>
-                                <Surface variant='600'>
-                                    <p>Length</p>
-                                    <p><b>{levelLengths[level.Meta.Length]}</b></p>
-                                </Surface>
-                                {level.ID > 3 &&
-                                    <Surface variant='600'>
-                                        <p>ID</p>
-                                        <IDButton className='font-bold' id={level.ID} />
-                                    </Surface>
-                                }
-                            </div>
-                        </div>
+                        }
                     </div>
-                </div>
-                <div className='col-span-12 lg:col-span-3'>
-                    <TagBox level={level} />
-                </div>
+                </Surface>
             </div>
+            <TagBox level={level} />
             <Submissions level={level} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <RatingGraph levelMeta={level.Meta} twoPlayer={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <Packs levelID={levelID} meta={level.Meta} />
