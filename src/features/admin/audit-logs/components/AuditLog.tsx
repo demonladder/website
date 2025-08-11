@@ -17,6 +17,8 @@ function getEvent(log: IAuditLog) {
             return <><b>{log.userID}</b> updated user <b>{log.targetID}</b></>;
         case AuditEvents.PASSWORD_RESET_LINK_CREATE:
             return <><b>{log.userID}</b> created a password reset link for themselves</>;
+        case AuditEvents.USER_ROLE_UPDATE:
+            return <><b>{log.userID}</b> updated roles of user <b>{log.targetID}</b></>;
         default:
             return `Unknown event (${log.event})`;
     }
