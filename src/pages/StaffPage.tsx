@@ -3,7 +3,7 @@ import Page from '../components/Page';
 import { Link } from 'react-router-dom';
 import UserRoleIcon from '../components/UserRoleIcon';
 import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
-import GetStaff, { StaffMember } from '../api/user/StaffMember';
+import GetStaff from '../api/user/StaffMember';
 import Role from '../api/types/Role';
 import Heading1 from '../components/headings/Heading1';
 
@@ -24,11 +24,7 @@ const roleDescriptions: Record<Role['ID'], string> = {
     6: 'The current owner of GDDL!',
 };
 
-function List({ data, roleID }: { data?: StaffMember[], roleID: number }) {
-    const filtered = data?.filter((s) => s.Roles.includes(roleID)) ?? [];
-
-    if (filtered.length === 0 && data !== undefined) return;
-
+function List({ data, roleID }: { data?: { ID: number, Name: string }[], roleID: number }) {
     return (
         <div className='p-4 round:rounded-lg mb-2 grid grid-cols-2 lg:grid-cols-4 gap-8'>
             <span className='max-lg:hidden'></span>
@@ -37,7 +33,7 @@ function List({ data, roleID }: { data?: StaffMember[], roleID: number }) {
                 <p>{roleDescriptions[roleID] || 'Description'}</p>
             </div>
             <ul>
-                {filtered.map((s, i) => <li key={`staffList_${roleID}_${i}`}>
+                {data?.map((s, i) => <li key={`staffList_${roleID}_${i}`}>
                     <Link to={`/profile/${s.ID}`} className='underline'>{s.Name}</Link>
                 </li>)}
             </ul>
@@ -46,7 +42,7 @@ function List({ data, roleID }: { data?: StaffMember[], roleID: number }) {
 }
 
 export default function Staff() {
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, status } = useQuery({
         queryKey: ['staff'],
         queryFn: GetStaff,
     });
@@ -55,13 +51,15 @@ export default function Staff() {
         <Page>
             <Heading1 className='mb-4'>Current staff members</Heading1>
             <FloatingLoadingSpinner isLoading={isLoading} />
-            <div>
-                <List data={data} roleID={6} />
-                <List data={data} roleID={5} />
-                <List data={data} roleID={4} />
-                <List data={data} roleID={3} />
-                <List data={data} roleID={2} />
-            </div>
+            {status === 'success' &&
+                <div>
+                    <List data={data.find((role) => role.ID === 6)?.users} roleID={6} />
+                    <List data={data.find((role) => role.ID === 5)?.users} roleID={5} />
+                    <List data={data.find((role) => role.ID === 4)?.users} roleID={4} />
+                    <List data={data.find((role) => role.ID === 3)?.users} roleID={3} />
+                    <List data={data.find((role) => role.ID === 2)?.users} roleID={2} />
+                </div>
+            }
         </Page>
     );
 }

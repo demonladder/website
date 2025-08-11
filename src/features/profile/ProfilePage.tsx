@@ -26,7 +26,7 @@ export default function Profile() {
     const openReportUserModal = useReportUserModal();
 
     const { status, data: userData, error } = useUserQuery(userID);
-    const userColor = useUserColor(userData?.RoleIDs);
+    const userColor = useUserColor(userID);
 
     const navigate = useNavigate();
     const contextMenu = useContextMenu([

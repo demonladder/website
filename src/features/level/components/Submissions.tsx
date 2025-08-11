@@ -47,8 +47,8 @@ type SortDirections = keyof typeof sortDirections;
 
 function Submission({ level, submission }: SubmissionProps) {
     const { data: roles } = useRoles();
-    const userRoles = roles && submission.User.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
-    const secondaryUserRoles = roles && submission.SecondaryUser?.RoleIDs.split(',').map(Number).map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
+    const userRoles = roles && submission.User.Roles.map((r) => roles.find(role => role.ID === r.ID)).filter((r) => r !== undefined);
+    const secondaryUserRoles = roles && submission.SecondaryUser?.Roles.map((r) => roles.find(role => role.ID === r.ID)).filter((r) => r !== undefined);
 
     // Find the highest non-null role color
     const iconRole = userRoles?.sort((a, b) => (a?.Ordering ?? 0) - (b?.Ordering ?? 0)).filter((r) => r?.Color !== null).at(0) ?? null;

@@ -1,17 +1,14 @@
 import APIClient from '../APIClient';
+import Role from '../types/Role';
 
-export interface StaffMember {
-    ID: number;
-    Name: string;
-    Roles: number[];
+interface GetStaffResponse extends Role {
+    users: {
+        ID: number;
+        Name: string;
+    }[];
 }
 
-export default async function GetStaff(): Promise<StaffMember[]> {
-    const res = await APIClient.get<{ ID: number, Name: string, RoleIDs: string }[]>('/staff');
-
-    return res.data.map((s) => ({
-        ID: s.ID,
-        Name: s.Name,
-        Roles: s.RoleIDs.split(',').map((r) => parseInt(r)),
-    }));
+export default async function GetStaff() {
+    const res = await APIClient.get<GetStaffResponse[]>('/staff');
+    return res.data;
 }

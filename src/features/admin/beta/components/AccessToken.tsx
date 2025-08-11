@@ -12,6 +12,7 @@ interface Props {
     token: {
         ID: number;
         Owner: {
+            ID: number;
             Name: string;
             RoleIDs: string;
             DiscordData?: {
@@ -25,7 +26,7 @@ interface Props {
 
 export default function AccessToken({ token }: Props) {
     const queryClient = useQueryClient();
-    const userColor = useUserColor(token.Owner.RoleIDs);
+    const userColor = useUserColor(token.Owner.ID);
 
     async function onRevokeToken(tokenID: number) {
         await revokeToken(tokenID);

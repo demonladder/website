@@ -1,7 +1,6 @@
 export default interface User {
     ID: number;
     Name: string;
-    RoleIDs: string;
     HardestID: number | null;
     Favorite: number[];
     LeastFavorite: number[];

@@ -1,14 +1,17 @@
 import APIClient from '../../../api/APIClient';
 import ISubmission from '../../../api/types/Submission';
-import User from '../../../api/types/User';
 
 export type Submission = (Omit<ISubmission, 'UserID' | 'LevelID'> & {
     User: {
         ID: number;
         Name: string;
-        RoleIDs: string;
+        Roles: { ID: number }[];
     },
-    SecondaryUser?: User,
+    SecondaryUser?: {
+        ID: number;
+        Name: string;
+        Roles: { ID: number }[];
+    },
 });
 
 interface GetLevelSubmissionsResponse {
@@ -40,15 +43,17 @@ interface GetLevelSubmissionsRequest {
 }
 
 export async function getLevelSubmissions({ twoPlayer, levelID, page = 1, progressFilter = 'victors', limit, sort, sortDirection, username }: GetLevelSubmissionsRequest) {
-    const res = await APIClient.get<GetLevelSubmissionsResponse>(`/level/${levelID}/submissions`, { params: {
-        page,
-        limit,
-        twoPlayer,
-        username: username || undefined,
-        progressFilter,
-        sort,
-        sortDirection,
-        properties: 'total,limit,page,submissions(ID,Rating,Enjoyment,RefreshRate,Device,Proof,IsSolo,SecondPlayerID,Progress,Attempts,DateAdded,User(ID,Name,RoleIDs),SecondaryUser)',
-    } });
+    const res = await APIClient.get<GetLevelSubmissionsResponse>(`/level/${levelID}/submissions`, {
+        params: {
+            page,
+            limit,
+            twoPlayer,
+            username: username || undefined,
+            progressFilter,
+            sort,
+            sortDirection,
+            properties: 'total,limit,page,submissions(ID,Rating,Enjoyment,RefreshRate,Device,Proof,IsSolo,SecondPlayerID,Progress,Attempts,DateAdded,User(ID,Name,Roles),SecondaryUser)',
+        },
+    });
     return res.data;
 }

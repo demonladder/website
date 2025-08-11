@@ -11,16 +11,17 @@ import renderToastError from '../../../utils/renderToastError';
 import RemoveRoleFromUser from '../../../api/user/RemoveRoleFromUser';
 import { UserResponse } from '../../../api/user/GetUser';
 import Heading3 from '../../../components/headings/Heading3';
+import { useUserRoles } from '../../../hooks/useUserRoles';
 
 export default function Roles({ user }: { user: UserResponse }) {
     const queryClient = useQueryClient();
     const rolesQuery = useRoles();
 
-    const roles = rolesQuery.data?.filter((r) => user.RoleIDs.includes(r.ID.toString()));
+    const { data: userRoles } = useUserRoles(user.ID);
 
     const manageUserAddRoleSearchBox = useId();
     const [addFilter, setAddFilter] = useState<string>('');
-    const unacquiredRoles = rolesQuery.data?.filter((r) => !user.RoleIDs.includes(r.ID.toString())).filter((r) => r.Name.toLowerCase().includes(addFilter.toLowerCase())) ?? [];
+    const unacquiredRoles = rolesQuery.data?.filter((r) => !userRoles?.find((ur) => ur.ID === r.ID)).filter((r) => r.Name.toLowerCase().includes(addFilter.toLowerCase())) ?? [];
 
     const addRoleMutation = useMutation({
         mutationFn: (roleID: number) => AddRoleToUser(user.ID, roleID),
@@ -49,9 +50,9 @@ export default function Roles({ user }: { user: UserResponse }) {
                 <SearchBox search={addFilter} onSearchChange={setAddFilter} list={unacquiredRoles} setResult={onAddRole} getLabel={(r) => `${r.Icon ?? ''} ${r.Name}`} getName={(r) => r.Name} overWriteInput={false} status='ready' placeholder='Role' id={manageUserAddRoleSearchBox} />
             </div>
             {rolesQuery.isPending && <InlineLoadingSpinner />}
-            {roles !== undefined &&
+            {userRoles !== undefined &&
                 <ul>
-                    {roles.map((role) => (
+                    {userRoles.map((role) => (
                         <li className='mt-1' key={role.ID}><DangerButton onClick={() => removeRoleMutation.mutate(role.ID)} loading={removeRoleMutation.isPending}>X</DangerButton> {role.Icon} {role.Name}</li>
                     ))}
                 </ul>

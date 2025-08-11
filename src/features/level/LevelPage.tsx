@@ -137,7 +137,7 @@ export default function LevelPage() {
                         <p><b>#{level.PopularityIndex ?? '-'}</b></p>
                     </Surface>
                     <Surface variant='600'>
-                        <p>Members</p>
+                        <p>Submitters</p>
                         <p><b>{level.SubmissionCount}</b></p>
                     </Surface>
                     <Surface variant='600'>

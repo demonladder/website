@@ -37,7 +37,6 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                     LeastFavorite: user.LeastFavorite,
                     MaxPref: user.MaxPref,
                     MinPref: user.MinPref,
-                    RoleIDs: user.RoleIDs,
                     CountryCode: user.CountryCode,
                     Pronouns: user.Pronouns,
                 });
