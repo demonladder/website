@@ -1,4 +1,5 @@
 import APIClient from '../../../api/APIClient';
+import { Device } from '../../../api/core/enums/device.enum';
 
 export interface BulkSubmission {
     levelID?: number;
@@ -7,7 +8,7 @@ export interface BulkSubmission {
     tier?: number;
     enjoyment?: number;
     FPS?: number;
-    device: 'pc' | 'mobile';
+    device: Device;
     videoProof?: string;
 }
 

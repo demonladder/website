@@ -16,5 +16,5 @@ interface IAppContext extends Partial<AppSettings> {
 }
 
 export const AppContext = createContext({
-    set: () => toast.error('Missing app context')
+    set: () => toast.error('Missing app context'),
 } as IAppContext);

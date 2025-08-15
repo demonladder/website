@@ -127,7 +127,7 @@ export default function MainLayout() {
         }
 
         requestAnimationFrame(update);
-    }, [draw, windowSize.height, windowSize.width]);
+    }, [app.enableBackground, draw, windowSize.height, windowSize.width]);
 
     useResizeObserver(containerRef, setup);
     const { error: notifyError, warning: notifyWarning } = useNavbarNotification();

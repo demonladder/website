@@ -25,7 +25,7 @@ function parseIntParam(val?: string | null, def?: number): number | undefined {
     return parseInt(val);
 }
 
-function parseSubmissions(submissions: string, { defaultDevice, defaultRefreshRate }: { defaultRefreshRate: number, defaultDevice: Device }) {
+function parseSubmissions(submissions: string, { defaultRefreshRate }: { defaultRefreshRate: number }) {
     const lines = submissions.split('\n').map((l) => l.trim()).filter((l) => l !== '');
     if (lines.length === 0) return [];
 
@@ -49,13 +49,12 @@ function parseSubmissions(submissions: string, { defaultDevice, defaultRefreshRa
         const tier = parseIntParam(params[1 + paramOffset]);
         const enjoyment = parseIntParam(params[2 + paramOffset]);
         const FPS = parseIntParam(params[3 + paramOffset]) ?? defaultRefreshRate;
-        const device = parseValue(params[4 + paramOffset]) ?? defaultDevice;
+        const device = parseValue(params[4 + paramOffset]) === 'pc' ? Device.PC : Device.MOBILE;
         const videoProof = parseValue(params[5 + paramOffset]);
 
         if (tier === null && enjoyment === null) throw new Error('Tier and enjoyment are required. Supply one or both.');
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-        return { levelID, levelName, creator, tier, enjoyment, FPS, device: device as 'pc' | 'mobile', videoProof };
+        return { levelID, levelName, creator, tier, enjoyment, FPS, device, videoProof };
     });
 }
 
@@ -87,8 +86,8 @@ export default function BulkSubmit() {
     });
 
     const onSubmit = useCallback(() => {
-        mutation.mutate(parseSubmissions(submissions, { defaultDevice: app.defaultDevice ?? Device.PC, defaultRefreshRate: app.defaultRefreshRate ?? 60 }));
-    }, [submissions, mutation]);
+        mutation.mutate(parseSubmissions(submissions, { defaultRefreshRate: app.defaultRefreshRate ?? 60 }));
+    }, [mutation, submissions, app.defaultRefreshRate]);
 
     const isValid = useMemo(() => {
         if (!submissions) return true;

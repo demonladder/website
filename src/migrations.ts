@@ -45,10 +45,10 @@ runMigration('4', () => {
 });
 
 runMigration('5', () => {
-    const defaultDevice = JSON.parse(localStorage.getItem('defaultDevice') ?? '"pc"');
-    const defaultRefreshRate = JSON.parse(localStorage.getItem('settings') ?? '{}')?.submission?.defaultRefreshRate ?? 60;
+    const defaultDevice = JSON.parse(localStorage.getItem('defaultDevice') ?? '"pc"') as string;
+    const defaultRefreshRate = (JSON.parse(localStorage.getItem('settings') ?? '{}') as { submission?: { defaultRefreshRate?: number } })?.submission?.defaultRefreshRate ?? 60;
 
-    const app = JSON.parse(localStorage.getItem('app') ?? '{}');
+    const app = JSON.parse(localStorage.getItem('app') ?? '{}') as Record<string, number | string>;
 
     if (!app.defaultRefreshRate) app.defaultRefreshRate = defaultRefreshRate;
     if (!app.defaultDevice) app.defaultDevice = defaultDevice;
