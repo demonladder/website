@@ -43,13 +43,10 @@ export default function TagBox({ level }: { level: FullLevel }) {
     }
 
     const tagsToDisplay = [];
-    const tagOptions: Record<string, string> = {
-        0: 'Vote tags',
-    };
+    const tagOptions: Record<string, string> = { };
     if (tags !== undefined) {
         tags.forEach((t) => tagOptions[t.ID] = t.Name);
     }
-    tagOptions[-1] = '-Remove all-';
 
     if (levelTags !== undefined) {
         const topThreeTags = levelTags.slice(0, 3);
@@ -62,7 +59,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
     const canVote = voteMeta?.eligible === true;
 
     return (
-        <div className='text-xl bg-theme-700 border border-theme-outline shadow-md p-2 mt-2 round:rounded-xl flex flex-wrap gap-2'>
+        <div className='bg-theme-700 border border-theme-outline shadow-md p-2 mt-2 round:rounded-xl flex flex-wrap gap-2'>
             <TagInfoModal />
             {!isContentLoading
                 ? <>
@@ -73,7 +70,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
             }
             {(!isContentLoading && canVote) &&
                 <div className='self-center'>
-                    <Select label={<i className='bx bx-plus-circle' />} options={tagOptions} id='voteTag' onOption={(o) => onVoteChange(parseInt(o))} />
+                    <Select label={<i className='bx bx-plus text-xl' />} options={tagOptions} id='voteTag' onOption={(o) => onVoteChange(parseInt(o))} />
                 </div>
             }
         </div>
@@ -109,7 +106,7 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number, submi
     }
 
     return (
-        <div onClick={handleClick} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} tabIndex={0} onContextMenu={onContextMenu} className={(eligible ? 'cursor-pointer hover:border-white ' : '') + 'px-2 py-1 group round:rounded-lg select-none relative border ' + (submission.HasVoted ? 'bg-blue-600/25 border-blue-400' : 'bg-theme-600 border-theme-600  transition-colors')}>
+        <div onClick={handleClick} onKeyDown={KeyboardAccessibility.onSelect(handleClick)} tabIndex={0} onContextMenu={onContextMenu} className={(eligible ? 'cursor-pointer hover:border-white ' : '') + 'text-xl px-2 py-1 group round:rounded-lg select-none relative border ' + (submission.HasVoted ? 'bg-blue-600/25 border-blue-400' : 'bg-theme-600 border-theme-600  transition-colors')}>
             <span>{submission.Tag.Name} {submission.ReactCount}</span>
             {submission.Tag.Description &&
                 <div className='pointer-events-none absolute z-30 w-56 opacity-0 group-hover:opacity-100 transition-opacity left-1/2 top-full -translate-x-1/2 translate-y-1 bg-theme-500 border border-theme-400 round:rounded-lg shadow-lg px-2 py-1'>{submission.Tag.Description}</div>
