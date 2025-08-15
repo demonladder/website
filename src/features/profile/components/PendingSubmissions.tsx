@@ -23,6 +23,7 @@ import useUserQuery from '../../../hooks/queries/useUserQuery';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Heading2 from '../../../components/headings/Heading2';
 import useSession from '../../../hooks/useSession';
+import PageButtons from '../../../components/PageButtons';
 
 interface Props {
     userID: number,
@@ -36,8 +37,9 @@ type ViewOption = keyof typeof viewOptions;
 
 export default function PendingSubmissions({ userID }: Props) {
     const [listType, setListType] = useLocalStorage<ViewOption>('profile.listType', 'grid');
+    const [page, setPage] = useState(0);
 
-    const { status, data: submissionResult } = useUserPendingSubmissions(userID);
+    const { status, data: submissionResult } = useUserPendingSubmissions(userID, { page });
     const user = useUserQuery(userID);
 
     if (user.data?.PendingSubmissionCount === 0) return;
@@ -60,6 +62,7 @@ export default function PendingSubmissions({ userID }: Props) {
                 {submissionResult.submissions.length === 0 &&
                     <p>No levels</p>
                 }
+                <PageButtons onPageChange={setPage} meta={{ page, limit: submissionResult.limit, total: submissionResult.total }} />
             </>}
         </div>
     );
@@ -115,7 +118,7 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
             <ul>
                 {levels.map((p) => (
                     <li key={p.LevelID}>
-                        <Level ID={p.LevelID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} onContextMenu={(e) => openContext(e, p)} />
+                        <Level ID={p.LevelID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} songName={p.Level.Meta.Song.Name} position={p.Position} onContextMenu={(e) => openContext(e, p)} />
                     </li>
                 ))}
             </ul>

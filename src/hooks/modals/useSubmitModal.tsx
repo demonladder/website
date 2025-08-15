@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { FullLevel } from '../../api/types/compounds/FullLevel';
 import SubmitModal from '../../components/modals/SubmitModal';
 import useModal from './useModal';
 import SyncDiscordModal from '../../components/modals/SyncDiscordModal';
@@ -10,7 +9,7 @@ export default function useSubmitModal() {
 
     const session = useSession();
 
-    const open = useCallback((level: FullLevel) => {
+    const open = useCallback((level: Parameters<typeof SubmitModal>[0]['level']) => {
         if (!session?.user?.DiscordData) {
             const ID = 'sync-discord';
             createModal(

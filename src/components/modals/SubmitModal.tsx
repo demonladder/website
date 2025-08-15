@@ -6,7 +6,6 @@ import { NumberInput, URLInput } from '../Input';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
-import { FullLevel } from '../../api/types/compounds/FullLevel';
 import renderToastError from '../../utils/renderToastError';
 import { validateIntChange, validateIntInputChange } from '../../utils/validators/validateIntChange';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -25,7 +24,15 @@ import { Device } from '../../api/core/enums/device.enum';
 import { useApp } from '../../context/app/useApp';
 
 interface Props {
-    level: FullLevel;
+    level: {
+        ID: number;
+        Rating: number | null;
+        Meta: {
+            Difficulty: Difficulties;
+            Length: LevelLengths;
+            IsTwoPlayer: boolean;
+        };
+    };
     userID?: number;
     onClose: () => void;
 }
@@ -164,7 +171,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             onSuccess: (data) => {
                 if (data.wasAuto) {
                     void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
-                    void queryClient.invalidateQueries({ queryKey: ['submission', level.ID, userID]});
+                    void queryClient.invalidateQueries({ queryKey: ['submission', level.ID, userID] });
                     if (userID !== undefined) void queryClient.invalidateQueries({ queryKey: ['user', userID] });
                 } else {
                     void removeSubmissionData();

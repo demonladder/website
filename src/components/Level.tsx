@@ -22,9 +22,10 @@ interface Props {
     songName: string;
     onContextMenu?: React.MouseEventHandler;
     selected?: boolean;
+    position?: number;
 }
 
-export default function Level({ ID, difficulty, rarity, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
+export default function Level({ ID, difficulty, rarity, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, position, songName, completed = false, onContextMenu, selected = false }: Props) {
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
@@ -39,10 +40,15 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
             <div className='flex justify-between h-20'>
                 <div className='flex gap-4 z-10 items-center'>
                     <DemonFace meta={{ Difficulty: difficulty, Rarity: rarity }} size={DemonLogoSizes.SMALL} />
-                    <p className='text-lg lg:text-[26.4px]'><b>{name}</b> by {creator}</p>
-                    {completed && app.highlightCompleted &&
-                        <YesTick className='size-6 lg:size-8' />
-                    }
+                    <div className='flex flex-col'>
+                        <p className='text-lg lg:text-[26.4px]'><b>{name}</b> by {creator}</p>
+                        {completed && app.highlightCompleted &&
+                            <YesTick className='size-6 lg:size-8' />
+                        }
+                        {position !== undefined &&
+                            <p className='text-xl text-gray-400'>Queue: #{position}</p>
+                        }
+                    </div>
                 </div>
                 <div className='flex gap-4 z-10'>
                     <div className='self-center hidden lg:block'>
