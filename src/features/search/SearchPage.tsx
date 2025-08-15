@@ -83,10 +83,15 @@ export default function Search() {
         };
     }, [registerShortcut, scrollToSearchInput, unregisterShortcut]);
 
+    const onSearch = useCallback(() => {
+        setSavedFilters(queryParams);
+    }, [queryParams, setSavedFilters]);
+
     // Load state from the URL search parameters on initial mount
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         if (params.size === 0) setQueryParams(savedFilters, 'replace');
+        onSearch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -102,10 +107,6 @@ export default function Search() {
         queryKey: ['search', { ...savedFilters, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }],
         queryFn: () => getLevels({ ...savedFilters, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }),
     });
-
-    const onSearch = useCallback(() => {
-        setSavedFilters(queryParams);
-    }, [queryParams, setSavedFilters]);
 
     // Reset page to 0 if the search data is empty and the page is greater than 0
     useEffect(() => {
