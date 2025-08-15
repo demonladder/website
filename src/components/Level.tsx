@@ -1,6 +1,5 @@
 import IDButton from './IDButton';
 import { useNavigate } from 'react-router-dom';
-import Heading4 from './headings/Heading4';
 import DemonFace from './DemonFace';
 import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
 import YesTick from './images/YesTick';
@@ -25,19 +24,6 @@ interface Props {
     selected?: boolean;
 }
 
-export function Header() {
-    return (
-        <div className='grid grid-cols-12 font-bold ps-2 cursor-default border-b-2'>
-            <Heading4 className='col-span-8 sm:col-span-8 lg:col-span-6 xl:col-span-3'>Name</Heading4>
-            <Heading4 className='col-span-2 xl:col-span-2 hidden lg:inline-block self-center'>Creator</Heading4>
-            <Heading4 className='col-span-3 hidden xl:block self-center'>Song</Heading4>
-            <Heading4 className='col-span-2 hidden lg:flex justify-center self-center'>ID</Heading4>
-            <Heading4 className='col-span-2 lg:col-span-1 flex justify-center'><p>Tier</p></Heading4>
-            <Heading4 className='col-span-2 lg:col-span-1 flex justify-center'><p>Enj.</p></Heading4>
-        </div>
-    );
-}
-
 export default function Level({ ID, difficulty, rarity, rating, defaultRating, actualRating, enjoyment, actualEnjoyment, name, creator, songName, completed = false, onContextMenu, selected = false }: Props) {
     const roundedTier = Math.round(rating ?? defaultRating ?? 0);
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
@@ -46,8 +32,10 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
     const app = useApp();
 
     return (
-        <div className={'relative group cursor-pointer outline-offset-4 round:rounded-xl focus-visible:outline-2' + (selected ? ' outline-2 z-20' : '')} onClick={() => navigate('/level/' + ID)} onContextMenu={onContextMenu} tabIndex={0}>
-            <div className='absolute size-full bg-cover bg-center bg-no-repeat transition-all opacity-60 group-hover:opacity-100 focus-visible:opacity-100 level-thumbnail' style={{ backgroundImage: `url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")`, maskImage: 'linear-gradient(to right, transparent var(--mask-start-at, 40%), black 90%)' }} />
+        <div className={'relative group cursor-pointer outline-offset-4 round:rounded-xl focus-visible:outline-2' + (selected ? ' outline-2 z-20' : '') + (app.enableLevelThumbnails ? '' : (completed ? ' odd:bg-green-700 even:bg-green-500' : ' odd:bg-theme-700 even:bg-theme-500'))} onClick={() => navigate('/level/' + ID)} onContextMenu={onContextMenu} tabIndex={0}>
+            {app.enableLevelThumbnails &&
+                <div className='absolute size-full bg-cover bg-center bg-no-repeat transition-all opacity-60 group-hover:opacity-100 focus-visible:opacity-100 level-thumbnail' style={{ backgroundImage: `url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")`, maskImage: 'linear-gradient(to right, transparent var(--mask-start-at, 40%), black 90%)' }} />
+            }
             <div className='flex justify-between h-20'>
                 <div className='flex gap-4 z-10 items-center'>
                     <DemonFace meta={{ Difficulty: difficulty, Rarity: rarity }} size={DemonLogoSizes.SMALL} />
