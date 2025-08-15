@@ -42,7 +42,7 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
     return (
         <div className='relative group cursor-pointer' onClick={handleClick} onContextMenu={onContextMenu}>
             {app.enableLevelThumbnails &&
-                <div className='absolute size-full inset-0 bg-cover round:rounded-xl bg-center transition-all opacity-40 group-hover:opacity-80 focus-visible:opacity-80 level-thumbnail' style={{ backgroundImage: `url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")` }} />
+                <img className='absolute size-full inset-0 object-cover round:rounded-xl object-center transition-all opacity-40 group-hover:opacity-80 focus-visible:opacity-80 level-thumbnail' src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}`} loading='lazy' />
             }
             <div className={'flex justify-between min-h-40' + (app.enableLevelThumbnails ? '' : (' round:rounded-xl ' + (completed && app.highlightCompleted ? 'bg-gradient-to-br from-green-600 via-green-500 to-green-600' : 'bg-theme-600')))}>
                 <div className='z-10 p-2 flex flex-col gap-2 justify-between'>
