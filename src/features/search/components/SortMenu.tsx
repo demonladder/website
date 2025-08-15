@@ -1,6 +1,7 @@
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Select from '../../../components/input/select/Select';
+import { QueryParamNames } from '../enums/QueryParamNames';
 
 const sorts = {
     ID: 'Level ID',
@@ -22,7 +23,7 @@ type SortDirections = keyof typeof sortDirections;
 
 export default function SortMenu() {
     const [sorter, setSorter] = useQueryParam('sort', withDefault(StringParam, 'ID'));
-    const [sortDirection, setSortDirection] = useQueryParam('dir', withDefault(StringParam, 'asc'));
+    const [sortDirection, setSortDirection] = useQueryParam(QueryParamNames.SortDirection, withDefault(StringParam, 'asc'));
 
     return (
         <div className='max-md:grow flex items-center gap-2'>

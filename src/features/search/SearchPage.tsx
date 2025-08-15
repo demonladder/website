@@ -99,8 +99,8 @@ export default function Search() {
     const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
     const { status: searchStatus, data: searchData } = useQuery({
-        queryKey: ['search', { ...savedFilters, limit, page }],
-        queryFn: () => getLevels({ ...savedFilters, limit, page }),
+        queryKey: ['search', { ...savedFilters, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }],
+        queryFn: () => getLevels({ ...savedFilters, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }),
     });
 
     const onSearch = useCallback(() => {
