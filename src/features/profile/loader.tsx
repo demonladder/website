@@ -1,8 +1,8 @@
 import { redirect } from 'react-router-dom';
-import StorageManager from '../../utils/StorageManager';
+import APIClient from '../../api/APIClient';
 
-export function profileLoader() {
-    if (StorageManager.hasSession()) return redirect(`/profile/${StorageManager.getUser()!.userID}`);
-
-    return redirect('/signup');
+export async function profileLoader() {
+    return APIClient.get('/user/me')
+        .then(() => null)
+        .catch(() => redirect('/signup'))
 }

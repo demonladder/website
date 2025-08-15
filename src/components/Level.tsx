@@ -1,12 +1,12 @@
 import IDButton from './IDButton';
 import { useNavigate } from 'react-router-dom';
-import StorageManager from '../utils/StorageManager';
 import Heading4 from './headings/Heading4';
 import DemonFace from './DemonFace';
 import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
 import YesTick from './images/YesTick';
 import { Difficulties, Rarity } from '../features/level/types/LevelMeta';
 import { IDMapper } from '../utils/IDMapper';
+import { useApp } from '../context/app/useApp';
 
 interface Props {
     ID: number;
@@ -43,6 +43,7 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
     const navigate = useNavigate();
+    const app = useApp();
 
     return (
         <div className={'relative group cursor-pointer outline-offset-4 round:rounded-xl focus-visible:outline-2' + (selected ? ' outline-2 z-20' : '')} onClick={() => navigate('/level/' + ID)} onContextMenu={onContextMenu} tabIndex={0}>
@@ -51,7 +52,7 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
                 <div className='flex gap-4 z-10 items-center'>
                     <DemonFace meta={{ Difficulty: difficulty, Rarity: rarity }} size={DemonLogoSizes.SMALL} />
                     <p className='text-lg lg:text-[26.4px]'><b>{name}</b> by {creator}</p>
-                    {completed && StorageManager.getHighlightCompleted() &&
+                    {completed && app.highlightCompleted &&
                         <YesTick className='size-6 lg:size-8' />
                     }
                 </div>

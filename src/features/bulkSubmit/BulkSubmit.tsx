@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import TextArea from '../../components/input/TextArea';
 import { toast } from 'react-toastify';
-import StorageManager from '../../utils/StorageManager';
 import { useMutation } from '@tanstack/react-query';
 import { BulkSubmission, submitBulk } from './api/submitBulk';
 import { render } from '../../utils/renderToastError';
@@ -11,6 +10,8 @@ import { validateTier } from '../../utils/validators/validateTier';
 import { validateEnjoyment } from '../../utils/validators/validateEnjoyment';
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
+import { Device } from '../../api/core/enums/device.enum';
+import { useApp } from '../../context/app/useApp';
 
 function parseValue(val?: string): string | undefined {
     if (val === undefined || val === '-') return undefined;
@@ -24,7 +25,7 @@ function parseIntParam(val?: string | null, def?: number): number | undefined {
     return parseInt(val);
 }
 
-function parseSubmissions(submissions: string) {
+function parseSubmissions(submissions: string, { defaultDevice, defaultRefreshRate }: { defaultRefreshRate: number, defaultDevice: Device }) {
     const lines = submissions.split('\n').map((l) => l.trim()).filter((l) => l !== '');
     if (lines.length === 0) return [];
 
@@ -47,8 +48,8 @@ function parseSubmissions(submissions: string) {
         }
         const tier = parseIntParam(params[1 + paramOffset]);
         const enjoyment = parseIntParam(params[2 + paramOffset]);
-        const FPS = parseIntParam(params[3 + paramOffset]) ?? StorageManager.getSettings().submission.defaultRefreshRate;
-        const device = parseValue(params[4 + paramOffset]) ?? StorageManager.getSettings().submission.defaultDevice === 'mobile' ? 'mobile' : 'pc';
+        const FPS = parseIntParam(params[3 + paramOffset]) ?? defaultRefreshRate;
+        const device = parseValue(params[4 + paramOffset]) ?? defaultDevice;
         const videoProof = parseValue(params[5 + paramOffset]);
 
         if (tier === null && enjoyment === null) throw new Error('Tier and enjoyment are required. Supply one or both.');
@@ -60,6 +61,7 @@ function parseSubmissions(submissions: string) {
 
 export default function BulkSubmit() {
     const [submissions, setSubmissions] = useState('');
+    const app = useApp();
 
     const mutation = useMutation({
         mutationFn: (ctx: BulkSubmission[]) => submitBulk(ctx),
@@ -85,7 +87,7 @@ export default function BulkSubmit() {
     });
 
     const onSubmit = useCallback(() => {
-        mutation.mutate(parseSubmissions(submissions));
+        mutation.mutate(parseSubmissions(submissions, { defaultDevice: app.defaultDevice ?? Device.PC, defaultRefreshRate: app.defaultRefreshRate ?? 60 }));
     }, [submissions, mutation]);
 
     const isValid = useMemo(() => {

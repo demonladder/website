@@ -8,7 +8,6 @@ import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import { FullLevel } from '../../api/types/compounds/FullLevel';
 import renderToastError from '../../utils/renderToastError';
-import StorageManager from '../../utils/StorageManager';
 import { validateIntChange, validateIntInputChange } from '../../utils/validators/validateIntChange';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import WarningBox from '../message/WarningBox';
@@ -23,6 +22,7 @@ import { Difficulties, LevelLengths } from '../../features/level/types/LevelMeta
 import { useSubmission } from './useSubmission';
 import FormGroup from '../form/FormGroup';
 import { Device } from '../../api/core/enums/device.enum';
+import { useApp } from '../../context/app/useApp';
 
 interface Props {
     level: FullLevel;
@@ -54,10 +54,11 @@ const deviceOptions: Record<Device, string> = {
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
 
 export default function SubmitModal({ onClose, level, userID }: Props) {
+    const app = useApp();
     const [tier, setTier] = useState<string>('');
     const [enjoymentKey, setEnjoymentKey] = useState<EnjoymentOptions>('-1');
-    const [deviceKey, setDeviceKey] = useState(JSON.parse(localStorage.getItem('defaultDevice') ?? '"pc"') as Device);
-    const [refreshRate, setRefreshRate] = useState(StorageManager.getSettings().submission.defaultRefreshRate.toString());
+    const [deviceKey, setDeviceKey] = useState(app.defaultDevice ?? Device.PC);
+    const [refreshRate, setRefreshRate] = useState((app.defaultRefreshRate ?? 60).toString());
     const [proof, setProof] = useState('');
     const [progress, setProgress] = useState('');
     const [attempts, setAttempts] = useState('');
@@ -179,7 +180,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     function onBlur(e: React.FocusEvent<HTMLInputElement>) {
         const newVal = validateIntChange(e.target.value);
         if (newVal === undefined) {
-            setRefreshRate(StorageManager.getSettings().submission.defaultRefreshRate.toString());
+            setRefreshRate((app.defaultRefreshRate ?? 60).toString());
             return;
         }
 

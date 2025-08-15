@@ -1,21 +1,10 @@
-import { useState } from 'react';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import CheckBox from '../../../components/input/CheckBox';
-import StorageManager from '../../../utils/StorageManager';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputDescription from '../../../components/form/FormInputDescription';
+import { useApp } from '../../../context/app/useApp';
 
 export default function ClientSiteSettings() {
-    const [isRounded, setIsRounded] = useState<boolean>(StorageManager.getIsRounded());
-    const [highlightCompleted, setHighlightCompleted] = useState<boolean>(StorageManager.getHighlightCompleted());
-
-    function onSave(e: React.FormEvent) {
-        e.preventDefault();
-
-        StorageManager.setRounded(isRounded);
-        StorageManager.setHighlightCompleted(highlightCompleted);
-        location.reload();
-    }
+    const app = useApp();
 
     return (
         <main>
@@ -24,20 +13,17 @@ export default function ClientSiteSettings() {
             <form className='text-lg'>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
-                        <CheckBox checked={isRounded} onChange={(e) => setIsRounded(e.target.checked)} />
-                        Rounded corners
+                        <CheckBox checked={app.enableLevelThumbnails} onChange={(e) => app.set('enableLevelThumbnails', e.target.checked)} />
+                        Level thumbnails
                     </label>
-                    <FormInputDescription>Gives pretty much everything round corners.</FormInputDescription>
+                    <FormInputDescription>Replace the background of levels with a thumbnail of the level.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
-                        <CheckBox checked={highlightCompleted} onChange={(e) => setHighlightCompleted(e.target.checked)} />
+                        <CheckBox checked={app.highlightCompleted} onChange={(e) => app.set('highlightCompleted', e.target.checked)} />
                         Highlight completed levels
                     </label>
                     <FormInputDescription>Adds a checkmark and green background to levels in list view.</FormInputDescription>
-                </FormGroup>
-                <FormGroup>
-                    <PrimaryButton type='submit' onClick={onSave}>Save</PrimaryButton>
                 </FormGroup>
             </form>
         </main>

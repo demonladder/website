@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import Select from '../../../components/Select';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import StorageManager from '../../../utils/StorageManager';
 import Heading3 from '../../../components/headings/Heading3';
 import Heading2 from '../../../components/headings/Heading2';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import CustomTheme from './components/CustomTheme';
 import Divider from '../../../components/divider/Divider';
 import ThemeSelect from './components/ThemeSelect';
+import FormGroup from '../../../components/form/FormGroup';
+import { useApp } from '../../../context/app/useApp';
+import FilledButton from '../../../components/input/buttons/filled/FilledButton';
 
 const fontOptions = {
     default: 'Default',
@@ -18,13 +19,9 @@ const fontOptions = {
 type FontOptionKey = keyof typeof fontOptions;
 
 export default function Appearance() {
-    const [isBackgroundEnabled, setIsBackgroundEnabled] = useState(StorageManager.getUseBackground());
     const [fontKey, setFontKey] = useState<FontOptionKey>((localStorage.getItem('font') ?? 'default') as FontOptionKey);
-
-    function saveBackground() {
-        StorageManager.setUseBackground(isBackgroundEnabled);
-        location.reload();
-    }
+    const app = useApp();
+    const [enableBackgroundInitial] = useState(app.enableBackground);
 
     function onFont(type: FontOptionKey) {
         document.documentElement.setAttribute('data-font', type);
@@ -38,11 +35,22 @@ export default function Appearance() {
             <section className='pb-2'>
                 <Heading3>Features</Heading3>
                 <label className='flex items-center gap-2'>
-                    <CheckBox checked={isBackgroundEnabled} onChange={(e) => setIsBackgroundEnabled(e.target.checked)} />
+                    <CheckBox checked={app.enableBackground} onChange={(e) => app.set('enableBackground', e.target.checked)} />
                     Animated background
                 </label>
                 <p className='text-theme-400 text-sm'>Get randomized lines that move around in the background, idrk how to describe it.</p>
-                <PrimaryButton className='mt-2' onClick={saveBackground}>Save</PrimaryButton>
+                <FormGroup>
+                    <label className='flex items-center gap-2'>
+                        <CheckBox checked={app.isRounded} onChange={(e) => app.set('isRounded', e.target.checked)} />
+                        Rounded corners
+                    </label>
+                    <FormInputDescription>Gives pretty much everything round corners.</FormInputDescription>
+                </FormGroup>
+                {app.enableBackground !== enableBackgroundInitial &&
+                    <FormGroup>
+                        <FilledButton onClick={() => window.location.reload()}>Reload</FilledButton>
+                    </FormGroup>
+                }
             </section>
             <Divider />
             <section>

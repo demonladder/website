@@ -60,7 +60,7 @@ export default function Profile() {
 
     if (userData === undefined) return <Page><p>No user data</p></Page>;
 
-    const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png`;
+    const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png?size=80`;
 
     return (
         <Page onContextMenu={contextMenu} key={userID}>

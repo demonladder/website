@@ -37,3 +37,27 @@ runMigration('3', () => {
         localStorage.removeItem('accessToken');
     }
 });
+
+runMigration('4', () => {
+    localStorage.removeItem('isRounded');
+    localStorage.removeItem('highlightCompleted');
+    localStorage.removeItem('background');
+});
+
+runMigration('5', () => {
+    const defaultDevice = JSON.parse(localStorage.getItem('defaultDevice') ?? '"pc"');
+    const defaultRefreshRate = JSON.parse(localStorage.getItem('settings') ?? '{}')?.submission?.defaultRefreshRate ?? 60;
+
+    const app = JSON.parse(localStorage.getItem('app') ?? '{}');
+
+    if (!app.defaultRefreshRate) app.defaultRefreshRate = defaultRefreshRate;
+    if (!app.defaultDevice) app.defaultDevice = defaultDevice;
+
+    localStorage.setItem('app', JSON.stringify(app));
+    localStorage.removeItem('defaultDevice');
+    localStorage.removeItem('settings');
+});
+
+runMigration('6', () => {
+    localStorage.removeItem('token');
+});

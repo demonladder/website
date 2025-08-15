@@ -3,18 +3,19 @@ import { NumberInput } from '../../../components/Input';
 import Select from '../../../components/Select';
 import Notifications from './components/Notifications';
 import DiscordRoles from './components/DiscordRoles';
-import useLocalStorage from '../../../hooks/useLocalStorage';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import Divider from '../../../components/divider/Divider';
+import { useApp } from '../../../context/app/useApp';
+import { Device } from '../../../api/core/enums/device.enum';
 
 const deviceOptions = {
-    pc: 'PC',
-    mobile: 'Mobile',
-} as const;
+    [Device.PC]: 'PC',
+    [Device.MOBILE]: 'Mobile',
+} as Record<Device, string>;
 
 export default function SubmissionSettings() {
-    const [defaultFPS, setDefaultFPS] = useLocalStorage('settings.submissions.defaultFPS', 60);
-    const [defaultDevice, setDefaultDevice] = useLocalStorage<keyof typeof deviceOptions>('defaultDevice', 'pc');
+    const app = useApp();
+    const [defaultFPS, setDefaultFPS] = useState(app.defaultRefreshRate ?? 60);
     const [FPSInvalid, setFPSInvalid] = useState(false);
 
     function updateFPS(e: React.ChangeEvent<HTMLInputElement>) {
@@ -24,6 +25,8 @@ export default function SubmissionSettings() {
 
         if (isNaN(parsed) || parsed < 30) {
             setFPSInvalid(true);
+        } else {
+            app.set('defaultRefreshRate', parsed);
         }
     }
 
@@ -37,7 +40,7 @@ export default function SubmissionSettings() {
             </div>
             <div>
                 <label htmlFor='submitDevice'><b>Default device</b></label>
-                <Select id='submitDevice' options={deviceOptions} activeKey={defaultDevice ?? 'pc'} onChange={setDefaultDevice} />
+                <Select id='submitDevice' options={deviceOptions} activeKey={app.defaultDevice ?? Device.PC} onChange={(device) => app.set('defaultDevice', device)} />
                 <FormInputDescription>The default device for all your submissions</FormInputDescription>
             </div>
             <Notifications />
