@@ -4,6 +4,7 @@ import GetStaffLeaderboard, { StaffLeaderboardRecord } from '../../api/staffLead
 import pluralS from '../../utils/pluralS';
 import { useState } from 'react';
 import { pickRandom } from '../../utils/pickRandom';
+import Heading2 from '../../components/headings/Heading2';
 
 function StaffLeaderboardEntry({ data, highestScore }: { data: StaffLeaderboardRecord, highestScore?: number }) {
     if (highestScore === undefined) return (<LoadingSpinner />);
@@ -41,8 +42,8 @@ export default function StaffLeaderboard() {
     const filteredData = view === 'allTime' ? data?.allTime : data?.monthly;
 
     return (
-        <section className='mt-4'>
-            <h2 className='text-3xl'>Leaderboard</h2>
+        <section className='mt-8'>
+            <Heading2>Point leaderboard</Heading2>
             <p>You get more points the higher the tier of the level is</p>
             <p>Bonus points for proof (Remember to check it)</p>
             <p>Points are also awarded for denied submissions so no mindlessly approving submissions</p>

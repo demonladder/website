@@ -33,11 +33,12 @@ function SuggestShowcase({ levelID }: { levelID: number }) {
     const [suggestion, setSuggestion] = useState('');
 
     const submitMutation = useMutation({
-        mutationFn: (videoID: string) => APIClient.post(`/level/${levelID}/showcase/suggestion`, { videoID }),
+        mutationFn: (videoID: string) => APIClient.post(`/showcase`, { videoID, levelID }),
     });
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        if (submitMutation.isPending) return;
 
         const url = new URL(suggestion);
         let videoID: string | undefined;

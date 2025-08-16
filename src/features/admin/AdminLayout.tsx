@@ -9,15 +9,17 @@ import Divider from '../../components/divider/Divider';
 import './adminLayout.css';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { useWindowSize } from 'usehooks-ts';
+import { useApp } from '../../context/app/useApp';
 
 export default function AdminLayout() {
     const windowSize = useWindowSize();
     const [hideSidebar, setHideSidebar] = useState(windowSize.width < 1024);
+    const app = useApp();
 
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
             <ModalProvider>
-                <div className='relative grid grid-rows-[auto_1fr_auto] grid-cols-[auto_1fr] max-w-screen min-h-screen'>
+                <div className={'relative grid grid-rows-[auto_1fr_auto] grid-cols-[auto_1fr] max-w-screen min-h-screen' + (app.isRounded ? ' round' : '')}>
                     <aside className={'row-span-3 bg-theme-950 text-theme-text sticky top-0 bottom-0 max-h-screen w-2xs transition-all' + (hideSidebar ? ' -ms-72' : '')}>
                         <div className='h-14 flex items-center justify-center border-b border-white/20'>
                             <p>GDDL Dashboard</p>

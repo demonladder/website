@@ -29,10 +29,15 @@ export default function NotificationButton() {
         },
     });
 
+    const unreadNotifications = notifications.data?.filter((notification) => !notification.IsRead).length ?? 0;
+
     return (
         <div className='relative'>
-            <button className='text-3xl hover:bg-black/8 active:bg-black/12 rounded-full size-12 transition-colors' onClick={() => setShowNotifications((prev) => !prev)}>
+            <button className='relative text-3xl hover:bg-black/8 active:bg-black/12 rounded-full size-12 transition-colors' onClick={() => setShowNotifications((prev) => !prev)}>
                 <i className={`bx ${notifications.data?.filter((n) => !n.IsRead).length ? 'bxs-bell' : 'bx-bell'}`} />
+                {unreadNotifications > 0 &&
+                    <span className='absolute top-0 right-0 bg-red-500 text-base text-white rounded-full size-6'>{unreadNotifications}</span>
+                }
             </button>
             {showNotifications && (
                 <>
