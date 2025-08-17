@@ -70,9 +70,9 @@ export default function Profile() {
                 <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
             </Helmet>
             <div className='mb-2 flex gap-4'>
-                {userData.DiscordData?.Avatar &&
-                    <img src={pfp} className='inline size-20 rounded-full' />
-                }
+                <object type='image/png' data={pfp} className='inline size-20 rounded-full'>
+                    <i className='bx bxs-user-circle text-[80px]' />
+                </object>
                 <div className='grow flex flex-col gap-1 justify-center'>
                     <div className='flex items-center gap-2 text-4xl'>
                         {flagEmoji(userData.CountryCode)}
