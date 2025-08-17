@@ -45,8 +45,8 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                         <p>by {creator}</p>
                     </div>
                     <div className='flex gap-1 items-center'>
-                        <p><b className={`px-2 py-1 text-lg rounded tier-${roundedRating}`}>{rating?.toFixed() ?? '-'}</b></p>
-                        <p><b className={`px-2 py-1 text-lg rounded enj-${roundedEnjoyment}`}>{enjoyment?.toFixed() ?? '-'}</b></p>
+                        <p><b className={`px-2 py-1 text-xl shadow rounded tier-${roundedRating}`}>{rating?.toFixed() ?? '-'}</b></p>
+                        <p><b className={`px-2 py-1 text-xl shadow rounded enj-${roundedEnjoyment}`}>{enjoyment?.toFixed() ?? '-'}</b></p>
                         {proof &&
                             <i className='bx bx-link p-1 cursor-pointer rounded transition-colors hover:bg-theme-500 text-xl' onClick={handleProofClick} title='Proof of completion' />
                         }

@@ -20,7 +20,7 @@ interface Props {
     completed?: boolean;
     name: string;
     creator: string;
-    songName: string;
+    songName?: string;
     onContextMenu?: React.MouseEventHandler;
     selected?: boolean;
 }
@@ -59,7 +59,7 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
                     <div className='self-center hidden lg:block'>
                         <div className='flex flex-col text-end' style={{ textShadow: '1px 2px 0px black, 0px 1px 10px black' }}>
                             {ID > 3 && <p>ID: <IDButton id={ID} /></p>}
-                            <p>song: <b>{songName}</b></p>
+                            {songName && <p>song: <b>{songName}</b></p>}
                         </div>
                     </div>
                     <div className='flex text-3xl text-shadow-lg'>

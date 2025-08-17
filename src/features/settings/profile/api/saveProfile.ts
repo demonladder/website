@@ -7,8 +7,6 @@ interface UpdateUserDTO {
     pronouns?: string | null;
     countryCode?: string | null;
     hardest?: number | null;
-    favoriteLevels?: number[] | null;
-    leastFavoriteLevels?: number[] | null;
     minPref?: number | null;
     maxPref?: number | null;
 }

@@ -50,12 +50,6 @@ export default function GeneralInformation({ userID }: { userID: number }) {
 
     const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.HardestID } });
 
-    const favoriteLevelSearch1 = useLevelSearch({ ID: 'profileFavorite1', options: { defaultLevel: data?.Favorite[0] } });
-    const favoriteLevelSearch2 = useLevelSearch({ ID: 'profileFavorite2', options: { defaultLevel: data?.Favorite[1] } });
-
-    const leastFavoriteLevelSearch2 = useLevelSearch({ ID: 'profileLeastFavorite2', options: { defaultLevel: data?.LeastFavorite[1] } });
-    const leastFavoriteLevelSearch1 = useLevelSearch({ ID: 'profileLeastFavorite1', options: { defaultLevel: data?.LeastFavorite[0] } });
-
     const minPrefRef = useRef<HTMLInputElement>(null);
     const maxPrefRef = useRef<HTMLInputElement>(null);
 
@@ -112,14 +106,6 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             pronouns,
             countryCode: countryKey === '-' ? null : countryKey,
             hardest: hardestSearch.activeLevel?.ID ?? null,
-            favoriteLevels: [
-                favoriteLevelSearch1.activeLevel?.ID,
-                favoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined),
-            leastFavoriteLevels: [
-                leastFavoriteLevelSearch1.activeLevel?.ID,
-                leastFavoriteLevelSearch2.activeLevel?.ID,
-            ].filter((v) => v !== undefined),
             minPref: parseInt(minPrefRef.current.value) || null,
             maxPref: parseInt(maxPrefRef.current.value) || null,
         });
@@ -154,29 +140,10 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                 <Select options={countryOptions} activeKey={countryKey} onChange={setCountryKey} id={countrySelectID} />
                 <FormInputDescription>Where are you from?</FormInputDescription>
             </FormGroup>
-            <div className='border-b border-b-theme-500 my-12' />
             <FormGroup>
                 <FormInputLabel>Hardest level</FormInputLabel>
                 {hardestSearch.SearchBox}
                 <FormInputDescription>What is the hardest level you have completed? Does not automatically update!</FormInputDescription>
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel>Favorite levels</FormInputLabel>
-                <div className='mb-2'>
-                    {favoriteLevelSearch1.SearchBox}
-                </div>
-                <div className='mb-2'>
-                    {favoriteLevelSearch2.SearchBox}
-                </div>
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel>Least favorite levels</FormInputLabel>
-                <div className='mb-2'>
-                    {leastFavoriteLevelSearch1.SearchBox}
-                </div>
-                <div className='mb-2'>
-                    {leastFavoriteLevelSearch2.SearchBox}
-                </div>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Tier preference</FormInputLabel>

@@ -105,7 +105,7 @@ export default function SortMenu({ set }: Props) {
                             </label>
                             <label htmlFor={Sorts.RECENCY} className='flex items-center gap-2 select-none'>
                                 <RadioButton id={Sorts.RECENCY} name='sort' checked={sorter === Sorts.RECENCY} onChange={handleSortMenu} />
-                                Recency
+                                Date added
                             </label>
                         </div>
                     </div>

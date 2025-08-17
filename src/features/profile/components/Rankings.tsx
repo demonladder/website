@@ -2,10 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Heading2 from '../../../components/headings/Heading2';
 import { getUserRankings } from '../api/getUserRankings';
-
-interface Props {
-    userID: number;
-}
+import { useParams } from 'react-router-dom';
 
 function percentToRank(percent: number): string {
     if (percent >= 100) return 'S';
@@ -40,7 +37,16 @@ function Rank({ tier, count, total }: { tier?: string, count: number, total: num
     );
 }
 
-export default function Rankings({ userID }: Props) {
+export default function RankingsWrapper() {
+    const userID = useParams().userID ?? '';
+    const parsed = parseInt(userID);
+
+    if (isNaN(parsed)) return;
+
+    return <Rankings userID={parsed} />;
+}
+
+function Rankings({ userID }: { userID: number }) {
     const { data } = useQuery({
         queryKey: ['user', userID, 'rankings'],
         queryFn: () => getUserRankings(userID),

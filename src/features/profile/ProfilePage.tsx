@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, Outlet, NavLink as RRNavLink, useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
 import Submissions from './components/Submissions';
@@ -6,7 +6,6 @@ import UserRoleIcon from '../../components/UserRoleIcon';
 import LevelTracker from './components/LevelTracker';
 import { AxiosError } from 'axios';
 import Tracker from './components/Tracker';
-import Rankings from './components/Rankings';
 import Lists from './components/Lists';
 import PendingSubmissions from './components/PendingSubmissions';
 import useUserQuery from '../../hooks/queries/useUserQuery';
@@ -120,11 +119,24 @@ export default function Profile() {
                     </Tracker>
                 </div>
             </section>
+            <nav className='my-8'>
+                <ul>
+                    <NavLink to='favorites'>Favorites</NavLink>
+                    <NavLink to='pending-submissions'>Pending submissions</NavLink>
+                    <NavLink to='lists'>Lists</NavLink>
+                    <NavLink to='skills'>Skills</NavLink>
+                    <NavLink to='rankings'>Rankings</NavLink>
+                </ul>
+            </nav>
+            <Outlet />
             <Submissions user={userData} />
             <PendingSubmissions userID={userID} />
             <Lists userID={userID} />
             <Skills userID={userID} />
-            <Rankings userID={userID} />
         </Page>
     );
+}
+
+function NavLink({ to, children }: { to: string, children?: React.ReactNode }) {
+    return <RRNavLink className={({ isActive }) => 'px-4 py-1 text-2xl transition-colors ' + (isActive ? 'bg-theme-600 border-b-2' : 'hover:bg-theme-700')} to={to}>{children}</RRNavLink>;
 }

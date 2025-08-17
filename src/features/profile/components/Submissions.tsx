@@ -19,6 +19,7 @@ import SegmentedButtonGroup from '../../../components/input/buttons/segmented/Se
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 import useSession from '../../../hooks/useSession';
+import { copyText } from '../../../utils/copyText';
 
 interface Props {
     user: User;
@@ -96,9 +97,12 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
                 { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
                 { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.LevelID), requireSession: true },
                 { type: 'divider' },
-                { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
+                { text: 'Copy level ID', onClick: () => copyText(submission.LevelID.toString()), icon: <i className='bx bx-clipboard' /> },
+                { text: 'Copy submission ID', onClick: () => copyText(submission.ID.toString()), icon: <i className='bx bx-clipboard' /> },
+                { type: 'divider' },
+                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof, icon: <i className='bx bx-link-external' /> },
                 { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
-                { text: 'Delete', type: 'danger', userID: submission.UserID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(submission.UserID, submission.LevelID, submission.ID, user.Name) },
+                { text: 'Delete', type: 'danger', userID: submission.UserID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(submission.UserID, submission.LevelID, submission.ID, user.Name), icon: <i className='bx bx-trash' /> },
             ],
         });
     }
@@ -134,9 +138,12 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
                 { text: 'Go to level', onClick: () => navigate(`/level/${submission.LevelID}`) },
                 { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.LevelID), requireSession: true },
                 { type: 'divider' },
-                { text: <>View proof <i className='bx bx-link-external' /></>, onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
+                { text: 'Copy level ID', onClick: () => copyText(submission.LevelID.toString()), icon: <i className='bx bx-clipboard' /> },
+                { text: 'Copy submission ID', onClick: () => copyText(submission.ID.toString()), icon: <i className='bx bx-clipboard' /> },
+                { type: 'divider' },
+                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof, icon: <i className='bx bx-link-external' /> },
                 { text: 'Edit', userID: submission.UserID, onClick: () => openSubmitModal(submission.Level) },
-                { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.UserID, submission.LevelID, submission.ID, user.Name), userID: submission.UserID },
+                { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission.UserID, submission.LevelID, submission.ID, user.Name), userID: submission.UserID, icon: <i className='bx bx-trash' /> },
             ],
         });
     }

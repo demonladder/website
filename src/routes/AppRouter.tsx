@@ -61,6 +61,8 @@ import SubmissionMerge from '../features/admin/submissionMerging/SubmissionMerge
 import AdminLayout from '../features/admin/AdminLayout';
 import BetaGuard from '../layouts/BetaGuard';
 import AuditLogs from '../features/admin/audit-logs/AuditLogs';
+import FavoriteLevels from '../features/profile/components/LevelPreferences';
+import Rankings from '../features/profile/components/Rankings';
 
 export const router = createBrowserRouter(createRoutesFromElements(
     [
@@ -79,7 +81,10 @@ export const router = createBrowserRouter(createRoutesFromElements(
                 <Route path='login' element={<Login />} />
                 <Route path='signup' element={<SignUp />} />
                 <Route path='profile' loader={profileLoader} />
-                <Route path='profile/:userID' element={<Profile />} />
+                <Route path='profile/:userID' element={<Profile />}>
+                    <Route path='favorites' element={<FavoriteLevels />} />
+                    <Route path='rankings' element={<Rankings />} />
+                </Route>
                 <Route path='notifications' element={<Notifications />} />
                 <Route path='game' element={<Game />} />
                 <Route path='settings' element={<Settings />}>

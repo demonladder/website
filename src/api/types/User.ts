@@ -2,8 +2,6 @@ export default interface User {
     ID: number;
     Name: string;
     HardestID: number | null;
-    Favorite: number[];
-    LeastFavorite: number[];
     MinPref: number | null;
     MaxPref: number | null;
     Introduction: string | null;
