@@ -108,10 +108,12 @@ export default function Profile() {
                         <b>Total submissions:</b>
                         <p>{userData.SubmissionCount}</p>
                     </Tracker>
-                    <Tracker>
-                        <b>Pending submissions:</b>
-                        <p>{userData.PendingSubmissionCount}</p>
-                    </Tracker>
+                    {userData.PendingSubmissionCount > 0 &&
+                        <Tracker>
+                            <b>Pending submissions:</b>
+                            <p>{userData.PendingSubmissionCount}</p>
+                        </Tracker>
+                    }
                     <Tracker>
                         <b>Total attempts:</b>
                         <p>{userData.TotalAttempts ?? 0}</p>

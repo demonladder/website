@@ -38,7 +38,7 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
 
     const queryClient = useQueryClient();
     const denyMutation = useMutation({
-        mutationFn: (data: { ID: number, reason?: string }) => DenySubmission(data.ID, data.reason),
+        mutationFn: (data: { ID: number, reason: string }) => DenySubmission(data.ID, data.reason),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['user', submission.UserID] });
             void queryClient.invalidateQueries({ queryKey: ['submissionQueue'] });
@@ -48,9 +48,14 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
         onError: (err: AxiosError) => void toast.error(renderToastError.render({ data: err })),
     });
 
+    function onDeny(e: React.FormEvent) {
+        e.preventDefault();
+        denyMutation.mutate({ ID: submission.ID, reason });
+    }
+
     return (
         <Modal title='Deny reason' show={true} onClose={() => onClose()}>
-            <div>
+            <form onSubmit={onDeny}>
                 <FormGroup>
                     <FormInputLabel htmlFor='denyReason'>Select a type</FormInputLabel>
                     <Select id='denyReason' options={denyReasons} activeKey={denyReason} onChange={setDenyReason} height='36' />
@@ -59,15 +64,16 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
                 {['custom', 'hacked'].includes(denyReason) &&
                     <FormGroup>
                         <FormInputLabel htmlFor='customDenyReason'>Write a reason</FormInputLabel>
-                        <TextInput value={reason} onChange={(e) => setReason(e.target.value.trimStart())} id='customDenyReason' placeholder='Reason...' />
-                        <FormInputDescription>Optional.</FormInputDescription>
+                        <TextInput value={reason} onChange={(e) => setReason(e.target.value.trimStart())} id='customDenyReason' placeholder='Reason...' required />
                     </FormGroup>
                 }
-            </div>
-            <div className='flex gap-2 justify-end'>
-                <SecondaryButton onClick={() => onClose()}>Close</SecondaryButton>
-                <DangerButton onClick={() => denyMutation.mutate({ ID: submission.ID, reason })} loading={denyMutation.isPending}>Deny</DangerButton>
-            </div>
+                <FormGroup>
+                    <div className='flex gap-2 justify-end'>
+                        <SecondaryButton type='button' onClick={() => onClose()}>Close</SecondaryButton>
+                        <DangerButton type='submit' loading={denyMutation.isPending}>Deny</DangerButton>
+                    </div>
+                </FormGroup>
+            </form>
         </Modal>
     );
 }
