@@ -12,6 +12,7 @@ export interface SearchLevelRequest {
     limit?: number;
     name?: string | null;
     page: number;
+    sortDirection?: string;
 }
 
 export interface SearchLevelResponse {

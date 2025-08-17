@@ -1,15 +1,24 @@
 import APIClient from '../../../api/APIClient';
-import Level from '../../level/types/Level';
-import LevelMeta from '../../level/types/LevelMeta';
-import Song from '../../level/types/Song';
 import Submission from '../../../api/types/Submission';
+import { Difficulties, LevelLengths, Rarity } from '../../level/types/LevelMeta';
 
 export type UserSubmission = Submission & {
-    Level: Level & {
-        Meta: LevelMeta & {
-            Song: Song,
-        },
-    },
+    Level: {
+        ID: number;
+        Rating: number | null;
+        Enjoyment: number | null;
+        Meta: {
+            Name: string;
+            Creator: string;
+            Difficulty: Difficulties;
+            Length: LevelLengths;
+            Rarity: Rarity;
+            IsTwoPlayer: boolean;
+            Song: {
+                Name: string;
+            };
+        };
+    };
 };
 
 export interface GetUserSubmissionsResponses {

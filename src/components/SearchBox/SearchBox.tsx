@@ -71,7 +71,7 @@ export default function SearchBox<T>({ search, onSearchChange, list, getLabel, g
     return (
         <div>
             <TextInput value={search} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} invalid={invalid} />
-            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-600 text-theme-text round:rounded-b-lg text-base z-10 shadow-2xl'}>
+            <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-900 p-1 border border-t-0 border-theme-400 text-theme-text round:rounded-b-lg text-base z-10 shadow-2xl'}>
                 {status === 'pending'
                     ? <LoadingSpinner />
                     : ((status === 'error' || list.length === 0)

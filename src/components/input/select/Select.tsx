@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import TonalButton from '../buttons/tonal/TonalButton';
+import { useEventListener } from 'usehooks-ts';
 
 interface Props<S, K> {
     label: string | React.ReactNode;
@@ -12,6 +13,7 @@ interface Props<S, K> {
 export default function Select<S extends Record<string, string>, K = S[keyof S]>({ label, icon, options, onOption, id }: Props<S, K>) {
     const [show, setShow] = useState(false);
     const menuRef = useRef<HTMLUListElement>(null);
+    const [filter, setFilter] = useState('');
 
     function onClick(key: K) {
         setShow((prev) => !prev);
@@ -32,23 +34,20 @@ export default function Select<S extends Record<string, string>, K = S[keyof S]>
         }
     }
 
-    useEffect(() => {
-        window.addEventListener('mousemove', mouseMove);
-
-        return () => {
-            window.removeEventListener('mousemove', mouseMove);
-        };
-    }, []);
+    useEventListener('mousemove', mouseMove);
 
     return (
         <>
-            {show && <div className='absolute inset-0 z-10' onClick={() => setShow(false)} />}
-            <div className='relative inline-block z-20' id={id}>
+            {show && <div className='absolute inset-0 z-30' onClick={() => setShow(false)} />}
+            <div className='relative inline-block' id={id}>
                 <TonalButton size='xs' icon={icon} isSelected={show} onClick={() => setShow((prev) => !prev)}>{label}</TonalButton>
-                <ul ref={menuRef} className={'absolute z-50 py-2 rounded round:rounded-lg min-w-28 max-w-60 bg-theme-600 transition-opacity ' + (show ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
-                    {Object.entries(options).map(([key, value]) => (
+                <ul ref={menuRef} className={'absolute z-40 p-1 round:rounded-lg min-w-28 bg-theme-900 border border-theme-400 shadow-2xl transition-opacity ' + (show ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+                    <li>
+                        <input type='text' className='w-full px-4 py-1 outline-none' value={filter} onChange={(e) => setFilter(e.target.value)} placeholder='Search...' />
+                    </li>
+                    {Object.entries(options).filter(([_, value]) => value.toLowerCase().startsWith(filter.toLowerCase())).map(([key, value]) => (
                         <li key={key}>
-                            <button className='h-12 px-3 text-start w-full hover:bg-theme-700 transition-colors' onClick={() => onClick(key as K)}>{value}</button>
+                            <button className='px-4 py-1 text-start w-full hover:bg-theme-700 round:rounded transition-colors' onClick={() => onClick(key as K)}>{value}</button>
                         </li>
                     ))}
                 </ul>

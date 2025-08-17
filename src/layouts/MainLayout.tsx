@@ -8,20 +8,20 @@ import Header from './header/Header';
 import NavbarNotificationRenderer from '../context/NavbarNotification/NavbarNotificationRenderer';
 import { Outlet } from 'react-router-dom';
 import Footer from './footer/Footer';
-import StorageManager from '../utils/StorageManager';
 import { Suspense, useCallback, useEffect, useRef } from 'react';
 import noise3D from '../utils/noise/noise3D';
 import { useWindowSize } from 'usehooks-ts';
 import useResizeObserver from '@react-hook/resize-observer';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 import APIClient from '../api/APIClient';
+import { useApp } from '../context/app/useApp';
 
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const points = useRef<{ x: number, y: number }[]>([]);
     const lines = useRef<[number, number][]>([]);
-    const isBackgroundEnabled = StorageManager.getUseBackground();
+    const app = useApp();
 
     const variance = 100;
     const movementSpeed = 0.1;
@@ -72,7 +72,7 @@ export default function MainLayout() {
 
     const windowSize = useWindowSize();
     const setup = useCallback(() => {
-        if (!isBackgroundEnabled) return;
+        if (!app.enableBackground) return;
 
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -127,7 +127,7 @@ export default function MainLayout() {
         }
 
         requestAnimationFrame(update);
-    }, [draw, isBackgroundEnabled, windowSize.height, windowSize.width]);
+    }, [app.enableBackground, draw, windowSize.height, windowSize.width]);
 
     useResizeObserver(containerRef, setup);
     const { error: notifyError, warning: notifyWarning } = useNavbarNotification();
@@ -167,13 +167,13 @@ export default function MainLayout() {
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
             <ModalProvider>
                 <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to' />
-                {isBackgroundEnabled &&
+                {app.enableBackground &&
                     <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
                 }
                 <Helmet>
                     <title>GD Demon Ladder</title>
                 </Helmet>
-                <div ref={containerRef} className='relative flex flex-col'>
+                <div ref={containerRef} className={'relative flex flex-col ' + (app.isRounded ? 'round' : '')}>
                     <Header />
                     <NavbarNotificationRenderer />
                     <div className='flex-grow over text-theme-text'>

@@ -109,7 +109,7 @@ export default function Submission({ submission }: Props) {
             </div>
             <div className='mb-3'>
                 <p><i className='bx bxs-user' /> Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold group' target='_blank' rel='noopener noreferrer'>{submission.User.Name} <i className='bx bx-link-external' /></a></p>
-                <p><i className='bx bxs-time-five' /> Submitted at <b>{submission.DateChanged.replace('+00:00', 'UTC')}</b> ({secondsToHumanReadable(secondsAgo)} ago)</p>
+                <p><i className='bx bxs-time-five' /> Submitted at <b>{new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</b> ({secondsToHumanReadable(secondsAgo)} ago)</p>
             </div>
             <div className='grid grid-cols-3 gap-4 max-md:grid-cols-1'>
                 <div>
