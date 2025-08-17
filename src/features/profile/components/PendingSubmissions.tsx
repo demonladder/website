@@ -23,6 +23,8 @@ import useUserQuery from '../../../hooks/queries/useUserQuery';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Heading2 from '../../../components/headings/Heading2';
 import useSession from '../../../hooks/useSession';
+import useDeletePendingSubmissionModal from '../../../hooks/modals/useDeletePendingSubmissionModal';
+import User from '../../../api/types/User';
 import PageButtons from '../../../components/PageButtons';
 
 interface Props {
@@ -52,12 +54,10 @@ export default function PendingSubmissions({ userID }: Props) {
             </div>
             {status === 'pending' && <LoadingSpinner />}
             {status === 'error' && <p>Error loading submissions</p>}
-            {status === 'success' && <>
+            {status === 'success' && user.data && <>
                 {listType === 'inline'
                     ? <InlineList levels={submissionResult.submissions} userID={userID} />
-                    : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-                        {submissionResult.submissions.map((p) => <GridLevel ID={p.LevelID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} inPack={false} key={p.LevelID} />)}
-                    </div>
+                    : <GridList levels={submissionResult.submissions} user={user.data} />
                 }
                 {submissionResult.submissions.length === 0 &&
                     <p>No levels</p>
@@ -132,5 +132,47 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
                 </Modal>
             }
         </>
+    );
+}
+
+function GridList({ levels, user }: { levels: UserPendingSubmission[], user: User }) {
+    const openAddListLevelModal = useAddListLevelModal();
+    const openDenySubmissionModal = useDenySubmissionModal();
+    const openDeleteSubmissionModal = useDeletePendingSubmissionModal();
+    const session = useSession();
+
+    const navigate = useNavigate();
+
+    const approveSubmission = useApproveClicked();
+
+    const setContext = useContextMenu();
+    function openContext(e: React.MouseEvent, submission: UserPendingSubmission) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setContext({
+            x: e.clientX,
+            y: e.clientY,
+            buttons: [
+                { text: 'View level', onClick: () => navigate(`/level/${submission.LevelID}`) },
+                { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.LevelID), requireSession: true },
+                { type: 'divider' },
+                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
+                { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal(submission, user.Name), userID: submission.UserID, permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                { type: 'divider', permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                { text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.ID, submission.LevelID, submission.UserID), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                { text: 'Deny', type: 'danger', onClick: () => openDenySubmissionModal(submission), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+            ],
+        });
+    }
+
+    return (
+        <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
+            {levels.map((p) => (
+                <li key={p.LevelID}>
+                    <GridLevel ID={p.LevelID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} enjoyment={p.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Creator} inPack={false} onContextMenu={(e) => openContext(e, p)} />
+                </li>
+            ))}
+        </ul>
     );
 }
