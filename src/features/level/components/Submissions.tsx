@@ -17,6 +17,7 @@ import { Device } from '../../../api/core/enums/device.enum';
 import Heading2 from '../../../components/headings/Heading2';
 import Select from '../../../components/input/select/Select';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
+import { useWindowSize } from 'usehooks-ts';
 
 const sorts: Record<SubmissionSort, string> = {
     [SubmissionSort.DATE_ADDED]: 'Date added',
@@ -57,7 +58,7 @@ function Submission({ level, submission }: SubmissionProps) {
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
 
-    const linkDestination = `/profile/${submission.User.ID}`;
+    const linkDestination = `/profile/${submission.UserID}`;
 
     const hasWidgets = submission.Proof !== null || submission.Device === Device.MOBILE;
 
@@ -69,7 +70,8 @@ function Submission({ level, submission }: SubmissionProps) {
     if (submission.Attempts) title.push(`Attempts: ${submission.Attempts}`);
     if (submission.Device === Device.MOBILE) title.push('Completed on mobile');
 
-    const MAX_NAME_LENGTH = 17;
+    const winSize = useWindowSize();
+    const MAX_NAME_LENGTH = (winSize.width < 1536 && winSize.width >= 1280) ? 9 : 17;
     const shortenedName = submission.User.Name.length > MAX_NAME_LENGTH ? submission.User.Name.slice(0, MAX_NAME_LENGTH) + '...' : submission.User.Name;
     const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > MAX_NAME_LENGTH) ? submission.SecondaryUser.Name.slice(0, MAX_NAME_LENGTH) + '...' : submission.SecondaryUser?.Name;
 
@@ -80,7 +82,7 @@ function Submission({ level, submission }: SubmissionProps) {
         { text: 'View proof', icon: <i className='bx bx-link-external' />, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
         { type: 'divider', permission: PermissionFlags.MANAGE_SUBMISSIONS },
         { text: 'Mod view', onClick: () => navigate(`/mod/editSubmission/${submission.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
-        { text: 'Delete', icon: <i className='bx bx-trash' />, type: 'danger', onClick: () => openDeleteSubmissionModal(submission.User.ID, level.ID, submission.ID, submission.User.Name), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+        { text: 'Delete', icon: <i className='bx bx-trash' />, type: 'danger', onClick: () => openDeleteSubmissionModal(submission.UserID, level.ID, submission.ID, submission.User.Name), permission: PermissionFlags.MANAGE_SUBMISSIONS },
     ]);
 
     return (
@@ -93,7 +95,10 @@ function Submission({ level, submission }: SubmissionProps) {
                         <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
                         <p className={secondaryIconRole ? 'font-bold' : ''} style={secondaryIconRole?.Color ? { color: `#${secondaryIconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedSecondaryName} {secondaryIconRole?.Icon}</p>
                     </>
-                    : <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
+                    : <div className='flex items-center gap-1'>
+                        {submission.User.DiscordData && <object type='image/png' data={`https://cdn.discordapp.com/avatars/${submission.User.DiscordData.ID}/${submission.User.DiscordData.Avatar}?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block'></object>}
+                        <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
+                    </div>
                 }
             </Link>
             {hasWidgets &&
@@ -153,7 +158,7 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
                 <Select options={progressFilterOptions} label={<>Showing: <b>{progressFilterKey}</b></>} onOption={setProgressFilterKey} id='submissionsProgressFilter' />
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
-                {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.User.ID} />)}
+                {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.UserID} />)}
                 {submissions.submissions.length === 0 ? <p className='mb-0'>No submissions available!</p> : null}
             </div>
             <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />

@@ -1,6 +1,6 @@
 export enum QueryParamNames {
     Sort = 'sort',
-    SortDirection = 'dir',
+    SortDirection = 'sortDirection',
     Name = 'name',
     Creator = 'creator',
     Song = 'song',

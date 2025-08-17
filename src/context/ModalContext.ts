@@ -5,13 +5,13 @@ export interface Modal {
     element: React.ReactNode;
 }
 
-interface Context {
+interface IModalContext {
     modals: Modal[];
     addModal: (modal: Modal) => void;
     removeModal: (ID: string) => void;
 }
 
-const defaultContext: Context = {
+const defaultContext: IModalContext = {
     modals: [],
     addModal: () => { },
     removeModal: () => { },

@@ -6,12 +6,12 @@ import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/re
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import StorageManager from './utils/StorageManager';
 import MenuContextProvider from './components/ui/menuContext/MenuContextContainer';
 import { HelmetProvider } from 'react-helmet-async';
 import NavbarNotificationProvider from './context/NavbarNotification/NavbarNotificationProvider';
 import './migrations';
 import App from './App';
+import AppProvider from './context/app/AppProvider';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -36,7 +36,6 @@ document.documentElement.setAttribute('data-font', localStorage.getItem('font') 
 
 const rootElement = document.getElementById('root') ?? createRoot();
 const root = ReactDOM.createRoot(rootElement);
-if (StorageManager.getIsRounded()) rootElement.classList.add('round');
 
 declare const kofiWidgetOverlay: {
     draw: (username: string, options: Record<string, string>) => void;
@@ -52,14 +51,16 @@ kofiWidgetOverlay.draw('gddemonladder', {
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <HelmetProvider>
-                <MenuContextProvider>
-                    <NavbarNotificationProvider>
-                        <App />
-                        <ReactQueryDevtools initialIsOpen={false} />
-                    </NavbarNotificationProvider>
-                </MenuContextProvider>
-            </HelmetProvider>
+            <AppProvider>
+                <HelmetProvider>
+                    <MenuContextProvider>
+                        <NavbarNotificationProvider>
+                            <App />
+                            <ReactQueryDevtools initialIsOpen={false} />
+                        </NavbarNotificationProvider>
+                    </MenuContextProvider>
+                </HelmetProvider>
+            </AppProvider>
         </QueryClientProvider>
         <ToastContainer theme='dark' position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'} />
     </React.StrictMode>,

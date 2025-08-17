@@ -1,10 +1,26 @@
 import APIClient from '../../../api/APIClient';
-import Level from '../../level/types/Level';
-import LevelMeta from '../../level/types/LevelMeta';
+import { Difficulties, LevelLengths, Rarity } from '../../level/types/LevelMeta';
 import PendingSubmission from '../../../api/types/PendingSubmission';
-import Song from '../../level/types/Song';
 
-export type UserPendingSubmission = PendingSubmission & { Level: Level & { Meta: LevelMeta & { Song: Song; }; }; };
+export type UserPendingSubmission = PendingSubmission & {
+    Position?: number,
+    Level: {
+        ID: number;
+        Rating: number | null;
+        Enjoyment: number | null;
+        Meta: {
+            Name: string;
+            Creator: string;
+            Difficulty: Difficulties;
+            Length: LevelLengths;
+            Rarity: Rarity;
+            IsTwoPlayer: boolean;
+            Song: {
+                Name: string;
+            };
+        };
+    };
+};
 
 interface GetUserPendingSubmissionsResponse {
     total: number;
@@ -13,7 +29,11 @@ interface GetUserPendingSubmissionsResponse {
     submissions: UserPendingSubmission[];
 }
 
-export async function getUserPendingSubmissions(userID: number) {
-    const res = await APIClient.get<GetUserPendingSubmissionsResponse>(`/user/${userID}/submissions`, { params: { pending: true } });
+export interface GetUserPendingSubmissionOptions {
+    page?: number;
+}
+
+export async function getUserPendingSubmissions(userID: number, options?: GetUserPendingSubmissionOptions) {
+    const res = await APIClient.get<GetUserPendingSubmissionsResponse>(`/user/${userID}/submissions`, { params: { pending: true, sort: 'dateChanged', page: options?.page, limit: 12 } });
     return res.data;
 }

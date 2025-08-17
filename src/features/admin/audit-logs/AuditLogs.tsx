@@ -12,7 +12,7 @@ export default function AuditLogs() {
             <div className='flex justify-between'>
                 <Heading2>Audit log</Heading2>
                 <div>
-                    <TonalButton size='sm' icon={<i className='bx bx-revision' />} onClick={() => auditLogs.refetch()}>Refresh</TonalButton>
+                    <TonalButton size='sm' icon={<i className='bx bx-revision' />} onClick={() => void auditLogs.refetch()}>Refresh</TonalButton>
                 </div>
             </div>
             {auditLogs.isSuccess &&

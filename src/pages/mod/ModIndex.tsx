@@ -3,6 +3,8 @@ import { getStats } from '../../features/home/api/getStats';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import StaffLeaderboard from './StaffLeaderboard';
+import Showcases from '../../features/admin/index/components/Showcases';
+import Heading1 from '../../components/headings/Heading1';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -27,12 +29,13 @@ export default function ModIndex() {
 
     return (
         <div>
-            <h3 className='text-2xl mb-3'>Overview</h3>
+            <Heading1 className='mb-3'>Dashboard</Heading1>
             <div className='grid gap-4 grid-cols-1 lg:grid-cols-4 mb-4'>
                 <StatisticTracker value={stats?.pendingSubmissions} label='Pending submissions' />
                 <StatisticTracker value={stats?.submissions} label='Submissions' />
                 <StatisticTracker value={stats?.users} label='Users' />
             </div>
+            <Showcases />
             <StaffLeaderboard />
         </div>
     );

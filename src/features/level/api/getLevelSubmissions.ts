@@ -1,18 +1,20 @@
 import APIClient from '../../../api/APIClient';
 import ISubmission from '../../../api/types/Submission';
 
-export type Submission = (Omit<ISubmission, 'UserID' | 'LevelID'> & {
+export type Submission = ISubmission & {
     User: {
-        ID: number;
         Name: string;
         Roles: { ID: number }[];
+        DiscordData?: {
+            ID: string;
+            Avatar: string;
+        };
     },
     SecondaryUser?: {
-        ID: number;
         Name: string;
         Roles: { ID: number }[];
     },
-});
+};
 
 interface GetLevelSubmissionsResponse {
     total: number,
@@ -52,7 +54,6 @@ export async function getLevelSubmissions({ twoPlayer, levelID, page = 1, progre
             progressFilter,
             sort,
             sortDirection,
-            properties: 'total,limit,page,submissions(ID,Rating,Enjoyment,RefreshRate,Device,Proof,IsSolo,SecondPlayerID,Progress,Attempts,DateAdded,User(ID,Name,Roles),SecondaryUser)',
         },
     });
     return res.data;
