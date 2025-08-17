@@ -69,7 +69,8 @@ function Submission({ level, submission }: SubmissionProps) {
     if (submission.Attempts) title.push(`Attempts: ${submission.Attempts}`);
     if (submission.Device === Device.MOBILE) title.push('Completed on mobile');
 
-    const MAX_NAME_LENGTH = 17;
+    const winSize = useWindowSize();
+    const MAX_NAME_LENGTH = (winSize.width < 1536 && winSize.width >= 1280) ? 9 : 17;
     const shortenedName = submission.User.Name.length > MAX_NAME_LENGTH ? submission.User.Name.slice(0, MAX_NAME_LENGTH) + '...' : submission.User.Name;
     const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > MAX_NAME_LENGTH) ? submission.SecondaryUser.Name.slice(0, MAX_NAME_LENGTH) + '...' : submission.SecondaryUser?.Name;
 
