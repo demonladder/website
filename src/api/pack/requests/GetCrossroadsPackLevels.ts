@@ -2,6 +2,7 @@ import APIClient from '../../APIClient';
 import Level from '../../../features/level/types/Level';
 import LevelMeta from '../../../features/level/types/LevelMeta';
 import Song from '../../../features/level/types/Song';
+import { Publisher } from '../../types/Publisher';
 
 interface PackLevelDTO {
     LevelID: number;
@@ -13,11 +14,13 @@ interface PackLevelDTO {
         Enjoyment: Level['Enjoyment'];
         Meta: {
             Name: LevelMeta['Name'];
-            Creator: LevelMeta['Creator'];
             Difficulty: LevelMeta['Difficulty'];
             Rarity: LevelMeta['Rarity'];
             Song: {
                 Name: Song['Name'];
+            };
+            Publisher: {
+                name: Publisher['name'];
             };
         };
     };
@@ -29,11 +32,13 @@ export interface GetCrossroadsPackLevels {
     Enjoyment: Level['Enjoyment'];
     Meta: {
         Name: LevelMeta['Name'];
-        Creator: LevelMeta['Creator'];
         Difficulty: LevelMeta['Difficulty'];
         Rarity: LevelMeta['Rarity'];
         Song: {
             Name: Song['Name'];
+        };
+        Publisher: {
+            name: Publisher['name'];
         };
     };
     Path: string;
@@ -48,11 +53,13 @@ export default async function GetCrossroadsPackLevels(): Promise<GetCrossroadsPa
         Enjoyment: level.Level.Enjoyment,
         Meta: {
             Name: level.Level.Meta.Name,
-            Creator: level.Level.Meta.Creator,
             Difficulty: level.Level.Meta.Difficulty,
             Rarity: level.Level.Meta.Rarity,
             Song: {
                 Name: level.Level.Meta.Song.Name,
+            },
+            Publisher: {
+                name: level.Level.Meta.Publisher.name,
             },
         },
         Path: level.Path,

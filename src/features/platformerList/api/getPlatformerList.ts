@@ -4,8 +4,18 @@ import LevelMeta from '../../level/types/LevelMeta';
 import PlatformerList from '../types/PlatformerList';
 
 export interface ListEntry extends PlatformerList {
-    Level: Level & {
-        Meta: LevelMeta;
+    Level: {
+        ID: number;
+        Rating: Level['Rating'];
+        Enjoyment: Level['Enjoyment'];
+        Meta: {
+            Name: string;
+            Difficulty: LevelMeta['Difficulty'];
+            Rarity: LevelMeta['Rarity'];
+            Publisher: {
+                name: string;
+            };
+        };
     };
 }
 

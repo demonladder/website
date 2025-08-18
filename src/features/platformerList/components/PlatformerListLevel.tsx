@@ -17,7 +17,7 @@ export function PlatformerListLevel({ level }: { level: ListEntry; }) {
                 </div>
                 <div className='self-center text-sm lg:text-xl'>
                     <Link to={'/level/' + level.LevelID} className='font-bold underline break-all whitespace-pre-wrap'>{level.Level.Meta.Name}</Link>
-                    <p><i>{level.Level.Meta.Creator}</i></p>
+                    <p><i>{level.Level.Meta.Publisher.name}</i></p>
                     <IDButton id={level.LevelID} />
                 </div>
                 <div className={`ms-auto w-10 lg:w-32 lg:h-32 grid place-items-center group enj-${roundedEnjoyment}`}>

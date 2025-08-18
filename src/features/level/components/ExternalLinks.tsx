@@ -45,8 +45,8 @@ export default function ExternalLinks({ level }: Props) {
     });
 
     const pointercrate = pointercrateData?.find((l) => l.level_id === level.ID)
-        ?? pointercrateData?.find((l) => l.publisher.name === level.Meta.Creator)
-        ?? pointercrateData?.find((l) => l.name === level.Meta.Name && (l.publisher.name ? l.publisher.name === level.Meta.Creator : true));
+        ?? pointercrateData?.find((l) => l.publisher.name === level.Meta.Publisher?.name)
+        ?? pointercrateData?.find((l) => l.name === level.Meta.Name && (l.publisher.name ? l.publisher.name === level.Meta.Publisher?.name : true));
 
     return (
         <section className='mt-6' ref={ref}>

@@ -104,7 +104,7 @@ export default function Submission({ submission }: Props) {
                 <img src={difficultyToImgSrc(submission.Level.Meta.Difficulty, DemonLogoSizes.SMALL)} />
                 <div>
                     <p className='font-bold text-3xl'>{submission.Level.Meta.Name}</p>
-                    <p>by {submission.Level.Meta.Creator}</p>
+                    <p>by {submission.Level.Meta.Publisher.name}</p>
                 </div>
             </div>
             <div className='mb-3'>

@@ -6,7 +6,11 @@ import User from '../types/User';
 
 export type QueueSubmission = PendingSubmission & {
     Level: Level & {
-        Meta: LevelMeta;
+        Meta: LevelMeta & {
+            Publisher: {
+                name: string;
+            };
+        };
     };
     User: User;
 };
