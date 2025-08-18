@@ -46,7 +46,7 @@ export default function Showcases() {
                         <div className='flex p-2 bg-theme-700 border border-theme-600 round:rounded-2xl'>
                             <DemonFace diff={suggestion.level.Meta.Difficulty} rarity={suggestion.level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
                             <div className='mt-4 grow'>
-                                <Heading3><Link to={`/level/${suggestion.levelID}`}><b>{suggestion.level.Meta.Name}</b> by {suggestion.level.Meta.Creator}</Link></Heading3>
+                                <Heading3><Link to={`/level/${suggestion.levelID}`}><b>{suggestion.level.Meta.Name}</b> by {suggestion.level.Meta.Publisher?.name ?? '(-)'}</Link></Heading3>
                                 <p>Suggested by: <Link to={`/profile/${suggestion.userID}`}>{suggestion.user.Name}</Link></p>
                                 <p className='text-theme-400'>{new Date(suggestion.updatedAt.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</p>
                                 <iframe className='w-full my-2' height='400' src={`https://www.youtube.com/embed/${suggestion.videoID}`} title='GDDL 5' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerPolicy='strict-origin-when-cross-origin' allowFullScreen />

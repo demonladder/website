@@ -30,13 +30,14 @@ export enum Difficulties {
 export default interface LevelMeta {
     ID: number;
     Name: string;
-    Creator: string;
     Description: string | null;
     SongID: number;
     Length: LevelLengths;
     IsTwoPlayer: boolean;
     Difficulty: Difficulties;
     Rarity: Rarity;
+    PublisherID: number;
+    UploadedAt: string | null;
 }
 
 export enum Rarity {

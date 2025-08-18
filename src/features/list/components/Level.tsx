@@ -107,7 +107,7 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
                     <DemonFace diff={listLevel.Level.Meta?.Difficulty} rarity={listLevel.Level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
                     <div className='self-center text-sm lg:text-xl mx-6'>
                         <h3 className='lg:text-2xl font-bold break-all whitespace-pre-wrap'>{listLevel.Level.Meta?.Name}</h3>
-                        <p className='text-gray-300'><i>{listLevel.Level.Meta?.Creator}</i></p>
+                        <p className='text-gray-300'><i>{listLevel.Level.Meta?.Publisher?.name}</i></p>
                     </div>
                     <div className={'ms-auto w-8 lg:w-32 lg:h-32 grid place-items-center group ' + ratingClass}>
                         <p className='lg:text-3xl group-hover:hidden '>{listLevel.Level.Rating !== null ? roundedRating : 'N/A'}</p>

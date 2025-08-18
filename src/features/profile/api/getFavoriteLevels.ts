@@ -8,10 +8,12 @@ export interface GetFavoriteLevelsResponse {
     Showcase: string | null;
     Meta: {
         Name: string;
-        Creator: string;
         Difficulty: Difficulties;
         Rarity: Rarity;
-    }
+        Publisher?: {
+            name: string;
+        };
+    };
 }
 
 export async function getFavoriteLevels(userID: number) {

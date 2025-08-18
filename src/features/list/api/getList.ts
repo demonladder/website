@@ -18,11 +18,13 @@ export interface GetListResponse extends List {
             Enjoyment: number | null;
             Meta: {
                 Name: string;
-                Creator: string;
                 Difficulty: Difficulties;
                 Rarity: Rarity;
-            }
-        }
+                Publisher?: {
+                    name: string;
+                };
+            };
+        };
     }[];
 }
 

@@ -76,7 +76,7 @@ export default function LevelPage() {
                 <meta property='og:type' content='website' />
                 <meta property='og:url' content='https://gdladder.com/' />
                 <meta property='og:title' content={level.Meta.Name} />
-                <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Creator}`} />
+                <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Publisher?.name ?? 'unknown'}`} />
                 <meta property='og:image' content={difficultyToImgSrc(level.Meta.Difficulty)} />
             </Helmet>
             <FAB variant='large' color='primary' onClick={() => openSubmitModal(level)}><i className='bx bx-list-plus' /></FAB>
@@ -85,7 +85,10 @@ export default function LevelPage() {
                     <DemonFace meta={level.Meta} size={DemonLogoSizes.MEDIUM} />
                     <div className='mb-1'>
                         <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
-                        <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Creator}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Creator}</a></h2>
+                        {level.Meta.Publisher 
+                            ? <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Publisher.name}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Publisher.name}</a></h2>
+                            : <h2 className='text-xl md:text-2xl'>by (-)</h2>
+                        }
                     </div>
                 </div>
                 <IconButton color='standard' size='md'><i className='bx bx-dots-vertical-rounded' /></IconButton>

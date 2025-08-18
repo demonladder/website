@@ -18,7 +18,7 @@ interface Props {
     actualEnjoyment?: number | null;
     completed?: boolean;
     name: string;
-    creator: string;
+    creator?: string;
     songName?: string;
     onContextMenu?: React.MouseEventHandler;
     selected?: boolean;
@@ -41,10 +41,13 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
                 <div className='flex gap-4 z-10 items-center'>
                     <DemonFace meta={{ Difficulty: difficulty, Rarity: rarity }} size={DemonLogoSizes.SMALL} />
                     <div className='flex flex-col'>
-                        <p className='text-lg lg:text-[26.4px]'><b>{name}</b> by {creator}</p>
-                        {completed && app.highlightCompleted &&
-                            <YesTick className='size-6 lg:size-8' />
-                        }
+                        <p className='text-lg lg:text-[26.4px]'>
+                            <b>{name}</b>
+                            {creator && <span> by {creator}</span>}
+                            {completed && app.highlightCompleted &&
+                                <YesTick className='inline-block ms-2 size-6 lg:size-8' />
+                            }
+                        </p>
                         {position !== undefined &&
                             <p className='text-xl text-gray-400'>Queue: #{position}</p>
                         }

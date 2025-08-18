@@ -23,18 +23,20 @@ export interface SearchLevelResponse {
     InPack: 0 | 1;
     Meta: {
         Name: string;
-        Creator: string;
         Difficulty: Difficulties;
         Rarity: Rarity;
         Song: {
             Name: string;
+        };
+        Publisher?: {
+            name: string;
         };
     };  
 }
 
 export async function getLevels(q: SearchLevelRequest): Promise<SearchInfo> {
     const res = await APIClient.get<SearchInfo>('/level/search', {
-        params: { limit: 16, ...q, properties: 'total,limit,page,levels(ID,Rating,Enjoyment,Showcase,Completed,InPack,Meta(Name,Creator,Difficulty,Rarity,Song(Name)))' },
+        params: { limit: 16, ...q, properties: 'total,limit,page,levels(ID,Rating,Enjoyment,Showcase,Completed,InPack,Meta(Name,Creator,Difficulty,Rarity,Song(Name),Publisher))' },
     });
     return res.data;
 }

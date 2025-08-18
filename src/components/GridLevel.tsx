@@ -13,7 +13,7 @@ interface GridProps {
     enjoyment: number | null;
     proof?: string | null;
     name: string;
-    creator: string;
+    creator?: string;
     difficulty: Difficulties;
     rarity: Rarity;
     completed?: boolean;
@@ -52,7 +52,9 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                                 <YesTick className='inline-block ms-1 mb-1 size-6' />
                             }
                         </p>
-                        <p>by {creator}</p>
+                        {creator &&
+                            <p>by {creator}</p>
+                        }
                     </div>
                     <div className='flex gap-1 items-center'>
                         <p><b className={`px-2 py-1 text-xl shadow rounded tier-${roundedRating}`}>{rating?.toFixed() ?? '-'}</b></p>

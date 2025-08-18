@@ -57,6 +57,6 @@ function LeastFavoriteLevels({ userID }: { userID: number }) {
 
 function FavoriteLevel({ level }: { level: GetFavoriteLevelsResponse }) {
     return (
-        <Level ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Creator} difficulty={level.Meta.Difficulty} rarity={level.Meta.Rarity} />
+        <Level ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Publisher?.name} difficulty={level.Meta.Difficulty} rarity={level.Meta.Rarity} />
     );
 }

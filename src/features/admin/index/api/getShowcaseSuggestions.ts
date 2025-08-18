@@ -13,9 +13,11 @@ interface GetShowcaseSuggestionsResponse {
         Enjoyment: number | null;
         Meta: {
             Name: string;
-            Creator: string;
             Difficulty: Difficulties;
             Rarity: Rarity;
+            Publisher?: {
+                name: string;
+            };
         };
     };
     user: {

@@ -9,13 +9,15 @@ export type UserSubmission = Submission & {
         Enjoyment: number | null;
         Meta: {
             Name: string;
-            Creator: string;
             Difficulty: Difficulties;
             Length: LevelLengths;
             Rarity: Rarity;
             IsTwoPlayer: boolean;
             Song: {
                 Name: string;
+            };
+            Publisher?: {
+                name: string;
             };
         };
     };
