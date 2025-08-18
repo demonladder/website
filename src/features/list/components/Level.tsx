@@ -28,7 +28,7 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
     const isListOwner = list.OwnerID === session.user?.ID;
 
     const fixedRating = listLevel.Level.Rating?.toFixed(2);
-    const roundedRating = listLevel.Level.Rating !== null ? Math.round(listLevel.Level.Rating) : -1;
+    const roundedRating = listLevel.Level.Rating !== null ? Math.round(listLevel.Level.Rating) : 0;
     const ratingClass = `tier-${roundedRating}`;
 
     const fixedEnjoyment = listLevel.Level.Enjoyment?.toFixed(2);
