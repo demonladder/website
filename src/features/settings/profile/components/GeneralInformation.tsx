@@ -60,7 +60,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
         if (data.Introduction) setIntroduction(data.Introduction);
 
         if (data.Pronouns) {
-            if (data.Pronouns !== 'other' && data.Pronouns !== '-') {
+            if (data.Pronouns !== '-' && Object.keys(pronounOptions).includes(data.Pronouns)) {
                 setPronounKey(data.Pronouns as PronounOptionKey);
             } else {
                 setPronounKey('other');
