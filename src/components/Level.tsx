@@ -39,10 +39,11 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
             }
             <div className='flex justify-between h-20'>
                 <div className='flex gap-4 z-10 items-center'>
-                    <DemonFace meta={{ Difficulty: difficulty, Rarity: rarity }} size={DemonLogoSizes.SMALL} />
+                    <DemonFace diff={difficulty} rarity={rarity} size={DemonLogoSizes.SMALL} />
                     <div className='flex flex-col'>
                         <p className='text-lg lg:text-[26.4px]'>
                             <b>{name}</b>
+                            <br className='md:hidden' />
                             {creator && <span> by {creator}</span>}
                             {completed && app.highlightCompleted &&
                                 <YesTick className='inline-block ms-2 size-6 lg:size-8' />
