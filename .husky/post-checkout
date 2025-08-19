@@ -1,0 +1,11 @@
+oldrev=$1
+newrev=$2
+
+if [ -n "$oldrev" ] && [ -n "$newrev" ]; then
+  if git diff --name-only $oldrev $newrev | grep -qE 'package(-lock)?\.json$'; then
+    echo "package.json changed — running npm install..."
+    npm install
+  else
+    echo "No dependency changes detected, skipping npm install"
+  fi
+fi
