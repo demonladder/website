@@ -62,7 +62,7 @@ export default function Skills({ userID }: { userID: number }) {
         }
 
         const order = [1, 2, 3, 4, 5, 6, 7, 8, 17, 9, 10, 11, 18, 12, 13, 14, 16, 19, 20, 15];
-        return merged.sort((a, b) => order.indexOf(a.ordering) - order.indexOf(b.ordering)).filter((t) => [1, 2, 3, 4, 5, 6, 7, 20].includes(t.ID));
+        return merged.sort((a, b) => order.indexOf(a.ID) - order.indexOf(b.ID));
     }, [rawData, tags]);
 
     const chartData: ChartData<'radar'> = {
