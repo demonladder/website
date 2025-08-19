@@ -17,7 +17,6 @@ import { Device } from '../../../api/core/enums/device.enum';
 import Heading2 from '../../../components/headings/Heading2';
 import Select from '../../../components/input/select/Select';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
-import { useWindowSize } from 'usehooks-ts';
 
 const sorts: Record<SubmissionSort, string> = {
     [SubmissionSort.DATE_ADDED]: 'Date added',
@@ -70,9 +69,9 @@ function Submission({ level, submission }: SubmissionProps) {
     if (submission.Attempts) title.push(`Attempts: ${submission.Attempts}`);
     if (submission.Device === Device.MOBILE) title.push('Completed on mobile');
 
-    const winSize = useWindowSize();
-    const MAX_NAME_LENGTH = (winSize.width < 1536 && winSize.width >= 1280) ? 9 : 17;
-    const shortenedName = submission.User.Name.length > MAX_NAME_LENGTH ? submission.User.Name.slice(0, MAX_NAME_LENGTH) + '...' : submission.User.Name;
+    const MAX_NAME_LENGTH = 17;
+    const username = submission.User.Name;
+    const shortenedName = username.length > MAX_NAME_LENGTH ? username.slice(0, MAX_NAME_LENGTH) + '...' : username;
     const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > MAX_NAME_LENGTH) ? submission.SecondaryUser.Name.slice(0, MAX_NAME_LENGTH) + '...' : submission.SecondaryUser?.Name;
 
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
@@ -86,10 +85,10 @@ function Submission({ level, submission }: SubmissionProps) {
     ]);
 
     return (
-        <div onContextMenu={openContext} title={title.join('\n')} className='text-sm lg:text-lg flex select-none round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow'>
-            <Link className={`flex items-center justify-center w-10 lg:w-14 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
-            <Link className={`flex items-center justify-center w-10 lg:w-14 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
-            <Link className='p-2 flex-grow bg-theme-500' to={linkDestination}>
+        <div onContextMenu={openContext} title={title.join('\n')} className='text-lg flex select-none round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow'>
+            <Link className={`flex items-center justify-center basis-14 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`} to={linkDestination}>{submission.Rating || '-'}</Link>
+            <Link className={`flex items-center justify-center basis-14 p-2 text-center enj-${enj}`} to={linkDestination}>{enjText}</Link>
+            <Link className='p-2 flex-grow bg-theme-500 shrink overflow-hidden' to={linkDestination}>
                 {submission.SecondaryUser
                     ? <>
                         <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
@@ -157,7 +156,7 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
                 <SegmentedButtonGroup options={sortDirections} activeKey={sortDirection} onSetActive={setSortDirection} />
                 <Select options={progressFilterOptions} label={<>Showing: <b>{progressFilterKey}</b></>} onOption={setProgressFilterKey} id='submissionsProgressFilter' />
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2'>
                 {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.UserID} />)}
                 {submissions.submissions.length === 0 ? <p className='mb-0'>No submissions available!</p> : null}
             </div>
