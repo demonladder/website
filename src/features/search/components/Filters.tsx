@@ -4,7 +4,7 @@ import { TextInput } from '../../../components/Input';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import RatingFilter from './filters/RatingFilter';
 import EnjoymentFilter from './filters/EnjoymentFilter';
-import { NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { createEnumParam, NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { QueryParamNames } from '../enums/QueryParamNames';
 import _ from 'lodash';
 import Divider from '../../../components/divider/Divider';
@@ -16,13 +16,13 @@ type Props = {
 };
 
 const difficultyOptions = {
-    '-1': 'Any',
-    '0': 'Official',
-    '1': 'Easy',
-    '2': 'Medium',
-    '3': 'Hard',
-    '4': 'Insane',
-    '5': 'Extreme',
+    '0': 'Any',
+    '1': 'Official',
+    '2': 'Easy',
+    '3': 'Medium',
+    '4': 'Hard',
+    '5': 'Insane',
+    '6': 'Extreme',
 };
 type DifficultyOption = keyof typeof difficultyOptions;
 
@@ -39,11 +39,11 @@ const lengthOptions = {
 export default function Filters({ reset, show }: Props) {
     const [creator, setCreator] = useQueryParam(QueryParamNames.Creator, withDefault(StringParam, ''));
     const [song, setSong] = useQueryParam(QueryParamNames.Song, withDefault(StringParam, ''));
-    const [difficulty, setDifficulty] = useQueryParam(QueryParamNames.Difficulty, withDefault(StringParam, '-1'));
+    const [difficulty, setDifficulty] = useQueryParam(QueryParamNames.Difficulty, withDefault(createEnumParam(['0', '1', '2', '3', '4', '5', '6']), '0'));
     const [length, setLength] = useQueryParam(QueryParamNames.Length, withDefault(NumberParam, 0));
 
     function onDifficultyChange(key: DifficultyOption) {
-        if (key === '-1') setDifficulty(null);
+        if (key === '0') setDifficulty(undefined);
         else setDifficulty(key);
     }
 

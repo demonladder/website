@@ -44,7 +44,7 @@ export default function Search() {
         [QueryParamNames.MaxRating]: NumberParam,
         [QueryParamNames.MinEnjoyment]: NumberParam,
         [QueryParamNames.MaxEnjoyment]: NumberParam,
-        [QueryParamNames.Difficulty]: NumberParam,
+        [QueryParamNames.Difficulty]: StringParam,
         [QueryParamNames.Length]: NumberParam,
         [QueryParamNames.MinSubmissionCount]: NumberParam,
         [QueryParamNames.MaxSubmissionCount]: NumberParam,
@@ -104,8 +104,8 @@ export default function Search() {
     const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
     const { status: searchStatus, data: searchData } = useQuery({
-        queryKey: ['search', { ...savedFilters, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }],
-        queryFn: () => getLevels({ ...savedFilters, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }),
+        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }],
+        queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }),
     });
 
     // Reset page to 0 if the search data is empty and the page is greater than 0

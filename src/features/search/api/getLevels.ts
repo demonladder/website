@@ -13,6 +13,7 @@ export interface SearchLevelRequest {
     name?: string | null;
     page: number;
     sortDirection?: string;
+    difficulty?: number;
 }
 
 export interface SearchLevelResponse {
