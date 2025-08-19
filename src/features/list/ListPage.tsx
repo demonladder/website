@@ -13,7 +13,6 @@ import Page from '../../components/Page';
 import { editListName } from './api/editListName';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import Heading1 from '../../components/headings/Heading1';
-import { Helmet } from 'react-helmet-async';
 
 export default function List() {
     const listID = parseInt(useParams().listID ?? '');
@@ -82,9 +81,7 @@ export default function List() {
 
     return (
         <Page>
-            <Helmet>
-                <title>GDDL | List | {list.Name}</title>
-            </Helmet>
+            <title>GDDL | List | {list.Name}</title>
             {!isEditingName
                 ? <Heading1 onClick={onNameClicked}>{list.Name} {canEdit && <i className='bx bxs-pencil cursor-text' />}</Heading1>
                 : <form onSubmit={onSaveName}><input type='text' value={name} onChange={(e) => setName(e.target.value)} className='text-4xl font-bold block w-full outline-none' autoFocus onBlur={onSaveName} /></form>

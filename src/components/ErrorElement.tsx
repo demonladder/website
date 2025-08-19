@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { SecondaryButton } from './ui/buttons/SecondaryButton';
-import { Helmet } from 'react-helmet-async';
 import Header from '../layouts/header/Header';
 import Footer from '../layouts/footer/Footer';
 import Page from './Page';
@@ -11,9 +10,7 @@ export default function ErrorElement() {
 
     return (
         <div className='relative flex flex-col'>
-            <Helmet>
-                <title>Oops, an error occured</title>
-            </Helmet>
+            <title>Oops, an error occured</title>
             <Header />
             <Page>
                 <div className='grid place-items-center' style={{ height: '100vh' }}>

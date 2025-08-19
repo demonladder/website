@@ -1,14 +1,11 @@
 import { NavLink as Nav, Outlet } from 'react-router-dom';
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
-import { Helmet } from 'react-helmet-async';
 
 export default function Generators() {
     return (
         <Page>
-            <Helmet>
-                <title>GDDL | Generators</title>
-            </Helmet>
+            <title>GDDL | Generators</title>
             <Heading1>Generators</Heading1>
             <p>Generators are fun tools to make lists. You can use them straight away or save the results for later</p>
             <div className='grid gap-2 grid-cols-1 md:grid-cols-2 2xl:grid-cols-5 my-8 text-xl'>

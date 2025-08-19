@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { Helmet } from 'react-helmet-async';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Level from '../../components/Level';
 import useLevelView from '../../hooks/useLevelView';
@@ -29,14 +28,12 @@ export default function CrossroadPack() {
 
     return (
         <Page>
-            <Helmet>
-                <title>{'GDDL - ' + pack.Name}</title>
-                <meta property='og:type' content='website' />
-                <meta property='og:site_name' content='GD Demon Ladder' />
-                <meta property='og:title' content={pack.Name} />
-                <meta property='og:url' content='https://gdladder.com/pack/78' />
-                <meta property='og:description' content='The project to improve demon difficulties' />
-            </Helmet>
+            <title>{'GDDL - ' + pack.Name}</title>
+            <meta property='og:type' content='website' />
+            <meta property='og:site_name' content='GD Demon Ladder' />
+            <meta property='og:title' content={pack.Name} />
+            <meta property='og:url' content='https://gdladder.com/pack/78' />
+            <meta property='og:description' content='The project to improve demon difficulties' />
             <div className='flex gap-2 mb-4'>
                 <div>
                     {pack.IconName && <img src={'/packIcons/' + pack.IconName} style={{ minWidth: '64px' }} />}

@@ -1,6 +1,5 @@
 import { Link, Outlet, /*NavLink as RRNavLink,*/ useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { Helmet } from 'react-helmet-async';
 import Submissions from './components/Submissions';
 import UserRoleIcon from '../../components/UserRoleIcon';
 import LevelTracker from './components/LevelTracker';
@@ -65,11 +64,9 @@ export default function Profile() {
 
     return (
         <Page onContextMenu={contextMenu} key={userID}>
-            <Helmet>
-                <title>{'GDDL - ' + userData.Name}</title>
-                <meta property='og:title' content={userData.Name} />
-                <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
-            </Helmet>
+            <title>{'GDDL - ' + userData.Name}</title>
+            <meta property='og:title' content={userData.Name} />
+            <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
             <div className='mb-2 flex gap-4'>
                 <object type='image/png' data={pfp} className='inline size-20 rounded-full'>
                     <i className='bx bxs-user-circle text-[80px]' />

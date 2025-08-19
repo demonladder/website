@@ -12,7 +12,6 @@ import { QueryParamNames } from './enums/QueryParamNames';
 import { LevelRenderer } from '../../components/LevelRenderer';
 import Heading1 from '../../components/headings/Heading1';
 import Heading2 from '../../components/headings/Heading2';
-import { Helmet } from 'react-helmet-async';
 import Page from '../../components/Page';
 import { useNavigate } from 'react-router-dom';
 import SearchInput from '../../components/input/search/Search';
@@ -163,9 +162,7 @@ export default function Search() {
 
     return (
         <Page>
-            <Helmet>
-                <title>GDDL | Search</title>
-            </Helmet>
+            <title>GDDL | Search</title>
             <Heading1 className='mb-2'>Levels</Heading1>
             <div className='flex gap-2 items-center transition-all'>
                 <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={queryParams[QueryParamNames.Name] ?? ''} onChange={(e) => onNameChange(e.target.value)} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search by name or ID' />

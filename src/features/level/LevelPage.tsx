@@ -3,7 +3,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
 import { difficultyToImgSrc } from '../../utils/difficultyToImgSrc';
-import { Helmet } from 'react-helmet-async';
 import { getLevel } from './api/getLevel';
 import IDButton from '../../components/IDButton';
 import Packs from './components/Packs';
@@ -94,21 +93,19 @@ export default function LevelPage() {
 
     return (
         <Page>
-            <Helmet>
-                <title>{`${level.Meta.Name}`}</title>
-                <meta property='og:type' content='website' />
-                <meta property='og:url' content='https://gdladder.com/' />
-                <meta property='og:title' content={level.Meta.Name} />
-                <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Publisher?.name ?? 'unknown'}`} />
-                <meta property='og:image' content={difficultyToImgSrc(level.Meta.Difficulty)} />
-            </Helmet>
+            <title>{`${level.Meta.Name}`}</title>
+            <meta property='og:type' content='website' />
+            <meta property='og:url' content='https://gdladder.com/' />
+            <meta property='og:title' content={level.Meta.Name} />
+            <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Publisher?.name ?? 'unknown'}`} />
+            <meta property='og:image' content={difficultyToImgSrc(level.Meta.Difficulty)} />
             <FAB variant='large' color='primary' onClick={() => openSubmitModal(level)}><i className='bx bx-list-plus' /></FAB>
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>
                     <DemonFace meta={level.Meta} size={DemonLogoSizes.MEDIUM} />
                     <div className='mb-1'>
                         <Heading1 className='break-all'>{level.Meta.Name}</Heading1>
-                        {level.Meta.Publisher 
+                        {level.Meta.Publisher
                             ? <h2 className='text-xl md:text-2xl'>by <a href={`/search?creator=${level.Meta.Publisher.name}`} target='_blank' rel='noopener noreferrer'>{level.Meta.Publisher.name}</a></h2>
                             : <h2 className='text-xl md:text-2xl'>by (-)</h2>
                         }

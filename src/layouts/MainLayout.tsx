@@ -3,7 +3,6 @@
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ModalProvider from '../context/ModalProvider';
-import { Helmet } from 'react-helmet-async';
 import Header from './header/Header';
 import NavbarNotificationRenderer from '../context/NavbarNotification/NavbarNotificationRenderer';
 import { Outlet } from 'react-router-dom';
@@ -170,9 +169,7 @@ export default function MainLayout() {
                 {app.enableBackground &&
                     <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
                 }
-                <Helmet>
-                    <title>GD Demon Ladder</title>
-                </Helmet>
+                <title>GD Demon Ladder</title>
                 <div ref={containerRef} className={'relative flex flex-col ' + (app.isRounded ? 'round' : '')}>
                     <Header />
                     <NavbarNotificationRenderer />

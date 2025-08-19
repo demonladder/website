@@ -7,7 +7,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MenuContextProvider from './components/ui/menuContext/MenuContextContainer';
-import { HelmetProvider } from 'react-helmet-async';
 import NavbarNotificationProvider from './context/NavbarNotification/NavbarNotificationProvider';
 import './migrations';
 import App from './App';
@@ -52,14 +51,12 @@ root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
             <AppProvider>
-                <HelmetProvider>
-                    <MenuContextProvider>
-                        <NavbarNotificationProvider>
-                            <App />
-                            <ReactQueryDevtools initialIsOpen={false} />
-                        </NavbarNotificationProvider>
-                    </MenuContextProvider>
-                </HelmetProvider>
+                <MenuContextProvider>
+                    <NavbarNotificationProvider>
+                        <App />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </NavbarNotificationProvider>
+                </MenuContextProvider>
             </AppProvider>
         </QueryClientProvider>
         <ToastContainer theme='dark' position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'} />
