@@ -61,3 +61,11 @@ runMigration('5', () => {
 runMigration('6', () => {
     localStorage.removeItem('token');
 });
+
+runMigration('7', () => {
+    const app = JSON.parse(localStorage.getItem('app') ?? '{}') as Record<string, number | string | boolean>;
+    if (app.enableLevelThumbnails === undefined) app.enableLevelThumbnails = true;
+    if (app.highlightCompleted === undefined) app.highlightCompleted = true;
+    if (app.isRounded === undefined) app.isRounded = true;
+    localStorage.setItem('app', JSON.stringify(app));
+});
