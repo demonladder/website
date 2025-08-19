@@ -1,4 +1,4 @@
-import { Link, Outlet, NavLink as RRNavLink, useNavigate, useParams } from 'react-router-dom';
+import { Link, Outlet, /*NavLink as RRNavLink,*/ useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { Helmet } from 'react-helmet-async';
 import Submissions from './components/Submissions';
@@ -19,6 +19,8 @@ import { useUserColor } from '../../hooks/useUserColor';
 import InlineLoadingSpinner from '../../components/InlineLoadingSpinner';
 import { useReportUserModal } from '../../hooks/modals/useReportUserModal';
 import { useMemo } from 'react';
+import LevelPreferences from './components/LevelPreferences';
+import RankingsWrapper from './components/Rankings';
 
 export default function Profile() {
     const userID = parseInt(useParams().userID ?? '0') || 0;
@@ -119,7 +121,7 @@ export default function Profile() {
                     </Tracker>
                 </div>
             </section>
-            <nav className='my-8'>
+            {/* <nav className='my-8'>
                 <ul>
                     <NavLink to='favorites'>Favorites</NavLink>
                     <NavLink to='pending-submissions'>Pending submissions</NavLink>
@@ -127,16 +129,18 @@ export default function Profile() {
                     <NavLink to='skills'>Skills</NavLink>
                     <NavLink to='rankings'>Rankings</NavLink>
                 </ul>
-            </nav>
+            </nav> */}
             <Outlet />
+            <LevelPreferences />
             <Submissions user={userData} />
             <PendingSubmissions userID={userID} />
             <Lists userID={userID} />
             <Skills userID={userID} />
+            <RankingsWrapper />
         </Page>
     );
 }
 
-function NavLink({ to, children }: { to: string, children?: React.ReactNode }) {
-    return <RRNavLink className={({ isActive }) => 'px-4 py-1 text-2xl transition-colors ' + (isActive ? 'bg-theme-600 border-b-2' : 'hover:bg-theme-700')} to={to}>{children}</RRNavLink>;
-}
+// function NavLink({ to, children }: { to: string, children?: React.ReactNode }) {
+//     return <RRNavLink className={({ isActive }) => 'px-4 py-1 text-2xl transition-colors ' + (isActive ? 'bg-theme-600 border-b-2' : 'hover:bg-theme-700')} to={to}>{children}</RRNavLink>;
+// }

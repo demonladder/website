@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
 import { difficultyToImgSrc } from '../../utils/difficultyToImgSrc';
@@ -21,6 +21,11 @@ import Heading1 from '../../components/headings/Heading1';
 import FAB from '../../components/input/buttons/FAB/FAB';
 import IconButton from '../../components/input/buttons/icon/IconButton';
 import Surface from '../../components/Surface';
+import APIClient from '../../api/APIClient';
+import useSession from '../../hooks/useSession';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import useAddListLevelModal from '../../hooks/modals/useAddListLevelModal';
 
 const levelLengths = {
     1: 'Tiny',
@@ -33,13 +38,31 @@ const levelLengths = {
 
 export default function LevelPage() {
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useQueryParam('twoPlayer', withDefault(BooleanParam, false));
-
+    const [showExtra, setShowExtra] = useState(false);
+    
     const openSubmitModal = useSubmitModal();
+    const openAddListLevelModal = useAddListLevelModal();
 
     const levelID = parseInt(useParams().levelID ?? '0');
     const { status, data: level, error } = useQuery({
         queryKey: ['level', levelID],
         queryFn: () => getLevel(levelID),
+    });
+
+    const session = useSession();
+    const addFavoriteMutation = useMutation({
+        mutationFn: (levelID: number) => APIClient.post(`/user/${session.user?.ID}/favorites`, { levelID }),
+        onSuccess: () => {
+            toast.success('Added as favorite');
+            setShowExtra(false);
+        },
+    });
+    const addLeastFavoriteMutation = useMutation({
+        mutationFn: (levelID: number) => APIClient.post(`/user/${session.user?.ID}/least-favorites`, { levelID }),
+        onSuccess: () => {
+            toast.success('Added as least favorite');
+            setShowExtra(false);
+        },
     });
 
     if (status === 'pending') {
@@ -91,7 +114,18 @@ export default function LevelPage() {
                         }
                     </div>
                 </div>
-                <IconButton color='standard' size='md'><i className='bx bx-dots-vertical-rounded' /></IconButton>
+                <div className='relative'>
+                    <IconButton color='outline' size='md' onClick={() => setShowExtra((prev) => !prev)}><i className='bx bx-dots-vertical-rounded' /></IconButton>
+                    {showExtra &&
+                        <div className='absolute min-w-max right-0 bg-theme-900 border border-theme-400 round:rounded-lg'>
+                            <ul className='p-1'>
+                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addFavoriteMutation.mutate(levelID)}>Add favorite</button></li>
+                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addLeastFavoriteMutation.mutate(levelID)}>Add least favorite</button></li>
+                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => session.user && openAddListLevelModal(session.user.ID, levelID)}>Add to list</button></li>
+                            </ul>
+                        </div>
+                    }
+                </div>
             </div>
             <div className='flex max-md:flex-col gap-2 my-2'>
                 <div className='flex max-md:flex-col gap-4 md:w-8/12'>
