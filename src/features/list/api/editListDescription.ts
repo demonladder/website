@@ -1,7 +1,7 @@
 import APIClient from '../../../api/APIClient';
 import { List } from '../types/List';
 
-export async function editListDescription(listID: number, description: string) {
+export async function editListDescription(listID: number, description: string | null) {
     const res = await APIClient.patch<List>(`/list/${listID}`, {
         description,
     });

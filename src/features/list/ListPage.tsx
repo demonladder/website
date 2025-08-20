@@ -1,8 +1,8 @@
-import { Link, useParams } from 'react-router';
+import { Link, useLoaderData } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Level from './components/Level';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import { moveListLevel } from './api/moveListLevel';
 import renderToastError from '../../utils/renderToastError';
@@ -18,13 +18,14 @@ import { editListDescription } from './api/editListDescription';
 import { AxiosError } from 'axios';
 import { useList } from './hooks/useList';
 import TonalButton from '../../components/input/buttons/tonal/TonalButton';
+import { type List } from './types/List';
 
 export default function List() {
-    const listID = parseInt(useParams().listID ?? '');
-    const validListID = !isNaN(listID);
+    const loadedData = useLoaderData<List>();
+    const listID = loadedData.ID;
     const [isDragLocked, setIsDragLocked] = useState(false);
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+    const [name, setName] = useState(loadedData.Name);
+    const [description, setDescription] = useState(loadedData.Description ?? '');
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
 
@@ -33,14 +34,7 @@ export default function List() {
 
     const queryClient = useQueryClient();
 
-    const { data: list, status, getData: getCachedListData } = useList(listID);
-
-    useEffect(() => {
-        if (list) {
-            setName(list.Name);
-            setDescription(list.Description ?? '');
-        }
-    }, [list]);
+    const { data: list, status } = useList(listID);
 
     const setPosition = useCallback((oldPosition: number, newPosition: number) => {
         if (oldPosition === newPosition) return;
@@ -65,22 +59,21 @@ export default function List() {
     });
 
     const saveDescriptionMutation = useMutation({
-        mutationFn: ([listID, description]: [number, string]) => editListDescription(listID, description),
+        mutationFn: ([listID, description]: [number, string | null]) => editListDescription(listID, description),
         onMutate: ([_, description]) => {
             setIsEditingDescription(false);
-            const data = getCachedListData();
-            const oldDescription = data?.Description;
-            if (data) data.Description = description;
+            const oldDescription = list?.Description;
+            if (list) list.Description = description;
             return oldDescription;
         },
-        onSuccess: (list) => {
-            const data = getCachedListData();
-            if (data) data.Description = list.Description;
+        onSuccess: (newList) => {
+            if (list) list.Description = newList.Description;
+            setDescription(newList.Description ?? '');
+            toast.success('Description saved');
         },
         onError: (error: AxiosError, _, context) => {
             toast.error(renderToastError.render({ data: error }));
-            const data = getCachedListData();
-            if (data) data.Description = context ?? null;
+            if (list) list.Description = context ?? null;
             setIsEditingDescription(true);
         },
     });
@@ -104,6 +97,7 @@ export default function List() {
     }
 
     function onSaveDescription() {
+        if (description.length === 0) return saveDescriptionMutation.mutate([listID, null]);
         if (!/^[a-zA-Z0-9\s.&,'_-]+$/.test(description)) return toast.error('Description can only contain letters, numbers, spaces, , . _ - & \'');
         saveDescriptionMutation.mutate([listID, description]);
     }
@@ -113,7 +107,7 @@ export default function List() {
         setDescription(list?.Description ?? '');
     }
 
-    if (!validListID || (status === 'error' && list === undefined)) return <Page><Heading1>404: List not found</Heading1></Page>;
+    if (status === 'error') return <Page><Heading1>404: List not found</Heading1></Page>;
     if (status === 'pending') return <Page><Heading1><LoadingSpinner /></Heading1></Page>;
 
     return (

@@ -63,8 +63,10 @@ import BetaGuard from '../layouts/BetaGuard';
 import AuditLogs from '../features/admin/audit-logs/AuditLogs';
 import FavoriteLevels from '../features/profile/components/LevelPreferences';
 import Rankings from '../features/profile/components/Rankings';
+import { listLoader } from '../features/list/list.loader';
+import { QueryClient } from '@tanstack/react-query';
 
-export const router = createBrowserRouter(createRoutesFromElements(
+export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
         <Route element={<BetaGuard />}>
             <Route element={<MainLayout />} errorElement={<ErrorElement />}>
@@ -96,7 +98,7 @@ export const router = createBrowserRouter(createRoutesFromElements(
                     <Route path='developer' element={<Developer />} />
                 </Route>
                 <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
-                <Route path='list/:listID' element={<List />} />
+                <Route path='list/:listID' element={<List />} loader={listLoader(queryClient)} />
                 <Route path='forgotPassword' element={<ForgotPassword />} />
                 <Route path='generators' element={<Suspense fallback={<FloatingLoadingSpinner />}><Generators /></Suspense>}>
                     <Route path='alphabet' element={<Alphabet />} />
