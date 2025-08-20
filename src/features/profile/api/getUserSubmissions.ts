@@ -2,7 +2,11 @@ import APIClient from '../../../api/APIClient';
 import Submission from '../../../api/types/Submission';
 import { Difficulties, LevelLengths, Rarity } from '../../level/types/LevelMeta';
 
-export type UserSubmission = Submission & {
+export type UserSubmission = {
+    ID: number;
+    Rating: Submission['Rating'];
+    Enjoyment: Submission['Enjoyment'];
+    Proof: Submission['Proof'];
     Level: {
         ID: number;
         Rating: number | null;
