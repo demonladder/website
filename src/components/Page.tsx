@@ -1,6 +1,10 @@
 import Container from './Container';
 
-export default function Page({ children, onContextMenu, ...props }: Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>, 'className'>) {
+interface Props extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>, 'className'> {
+    title?: string;
+}
+
+export default function Page({ title, children, onContextMenu, ...props }: Props) {
     const rand = Math.random();
     const randomImages = [
         'https://i.pinimg.com/736x/15/fc/13/15fc131659dd9f08bc15060dc030a7bb.jpg',
@@ -12,6 +16,7 @@ export default function Page({ children, onContextMenu, ...props }: Omit<React.D
 
     return (
         <main {...props} className='relative py-4'>
+            {title && <title>{title}</title>}
             {rand < 0.01 &&
                 <img src={randomImages[Math.floor(Math.random() * randomImages.length)]} className='absolute opacity-[2%] z-10 top-0 left-1/2 -translate-x-1/2 h-full pointer-events-none' />
             }
