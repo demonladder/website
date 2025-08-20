@@ -3,8 +3,8 @@ import { Device } from '../core/enums/device.enum';
 
 interface SubmitDTO {
     levelID: number;
-    rating?: number;
-    enjoyment?: number;
+    rating?: number | null;
+    enjoyment?: number | null;
     refreshRate?: number;
     device?: Device;
     proof?: string;

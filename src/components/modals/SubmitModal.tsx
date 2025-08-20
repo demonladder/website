@@ -124,9 +124,9 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         e.preventDefault();
 
         const rating = validateIntChange(tier);
-        const enjoyment = enjoymentKey === '-1' ? undefined : parseInt(enjoymentKey);
+        const enjoyment = enjoymentKey === '-1' ? null : parseInt(enjoymentKey);
 
-        if (rating !== undefined) {
+        if (rating !== null) {
             if (rating < 1 || rating > 35) {
                 return toast.error('Rating must be between 1 and 35!');
             }
@@ -134,7 +134,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             if (rating >= 21 && !proof) {
                 return toast.error('Proof is required if you want to rate a level 21 or higher!');
             }
-        } else if (enjoyment === undefined) {
+        } else if (enjoyment === null) {
             return toast.error('Rating and enjoyment can\'t both be empty!');
         }
 
@@ -186,12 +186,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
 
     function onBlur(e: React.FocusEvent<HTMLInputElement>) {
         const newVal = validateIntChange(e.target.value);
-        if (newVal === undefined) {
-            setRefreshRate((app.defaultRefreshRate ?? 60).toString());
-            return;
-        }
-
-        setRefreshRate(newVal.toString());
+        setRefreshRate(newVal?.toString() ?? (app.defaultRefreshRate ?? 60).toString());
     }
 
     function FPSChange(e: React.ChangeEvent<HTMLInputElement>) {

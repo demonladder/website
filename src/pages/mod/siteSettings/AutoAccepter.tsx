@@ -65,7 +65,7 @@ export default function AutoAccepter() {
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Max tier</FormInputLabel>
-                    <NumberInput value={maxTier} onChange={(e) => setMaxTier(validateIntChange(e.target.value))} />
+                    <NumberInput value={maxTier} onChange={(e) => setMaxTier(validateIntChange(e.target.value) ?? undefined)} />
                     <FormInputDescription>Any submissions for levels above this tier will not be automatically accepted</FormInputDescription>
                 </FormGroup>
                 <FormGroup>

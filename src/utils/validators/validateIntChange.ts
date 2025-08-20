@@ -1,5 +1,5 @@
-export function validateIntChange(number: string): number | undefined {
-    if (isNaN(parseInt(number))) return undefined;
+export function validateIntChange(number: string): number | null {
+    if (isNaN(parseInt(number))) return null;
 
     return parseInt(number);
 }
