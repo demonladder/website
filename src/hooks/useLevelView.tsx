@@ -1,6 +1,6 @@
 import useLocalStorage from './useLocalStorage';
 
-export default function useLevelView(storageKey: string): [boolean, JSX.Element] {
+export default function useLevelView(storageKey: string): [boolean, React.ReactElement] {
     const [isList, setIsList] = useLocalStorage(storageKey, true);
 
     function onViewList() {

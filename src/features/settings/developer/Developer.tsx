@@ -22,7 +22,7 @@ async function resetAPIKey(): Promise<void> {
 export default function Developer() {
     const [key, setKey] = useState('');
 
-    const generateHandle = useRef<Id | null>();
+    const generateHandle = useRef<Id>(null);
     const generateMutation = useMutation({
         mutationFn: generateAPIKey,
         onMutate: () => generateHandle.current = toast.loading('Generating key...'),
@@ -33,7 +33,7 @@ export default function Developer() {
         onError: (err: AxiosError) => toast.update(generateHandle.current!, { render: renderToastError.render({ data: err }), autoClose: null, type: 'error', isLoading: false }),
     });
 
-    const resetHandle = useRef<Id | null>();
+    const resetHandle = useRef<Id>(null);
     const resetMutation = useMutation({
         mutationFn: resetAPIKey,
         onMutate: () => resetHandle.current = toast.loading('Resetting API key...'),
