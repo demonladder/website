@@ -28,7 +28,7 @@ const denyReasons = {
 type DenyReason = keyof typeof denyReasons;
 
 interface Props {
-    submission: PendingSubmission;
+    submission: Pick<PendingSubmission, 'ID' | 'UserID'>;
     onClose: () => void;
 }
 

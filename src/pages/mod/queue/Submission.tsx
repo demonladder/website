@@ -104,7 +104,7 @@ export default function Submission({ submission }: Props) {
                 <img src={difficultyToImgSrc(submission.Level.Meta.Difficulty, DemonLogoSizes.SMALL)} />
                 <div>
                     <p className='font-bold text-3xl'>{submission.Level.Meta.Name}</p>
-                    <p>by {submission.Level.Meta.Publisher.name}</p>
+                    <p>by {submission.Level.Meta.Publisher?.name ?? '(-)'}</p>
                 </div>
             </div>
             <div className='mb-3'>
@@ -152,7 +152,7 @@ export default function Submission({ submission }: Props) {
                 <div>
                     <Heading4 className='mb-2'>Level info</Heading4>
                     <p><b>Rating:</b> {(submission.IsSolo ? submission.Level.Rating : submission.Level.TwoPlayerRating)?.toFixed(2) ?? 'None'}</p>
-                    <p><b>Deviation:</b> {submission.Level.Deviation?.toFixed(2) ?? 0}</p>
+                    <p><b>Deviation:</b> {(submission.IsSolo ? submission.Level.Deviation : submission.Level.TwoPlayerDeviation)?.toFixed(2) ?? 0}</p>
                     <p><b>Rating count:</b> {submission.Level.RatingCount}</p>
                     <p><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
                 </div>
