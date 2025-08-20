@@ -1,10 +1,9 @@
 import { Link, useParams } from 'react-router';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Level from './components/Level';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getList } from './api/getList';
 import { moveListLevel } from './api/moveListLevel';
 import renderToastError from '../../utils/renderToastError';
 import useDeleteListModal from '../../hooks/modals/useDeleteListModal';
@@ -13,27 +12,34 @@ import Page from '../../components/Page';
 import { editListName } from './api/editListName';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import Heading1 from '../../components/headings/Heading1';
+import TextArea from '../../components/input/TextArea';
+import FilledButton from '../../components/input/buttons/filled/FilledButton';
+import { editListDescription } from './api/editListDescription';
+import { AxiosError } from 'axios';
+import { useList } from './hooks/useList';
+import TonalButton from '../../components/input/buttons/tonal/TonalButton';
 
 export default function List() {
     const listID = parseInt(useParams().listID ?? '');
     const validListID = !isNaN(listID);
     const [isDragLocked, setIsDragLocked] = useState(false);
     const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [isEditingName, setIsEditingName] = useState(false);
+    const [isEditingDescription, setIsEditingDescription] = useState(false);
 
     const openDeleteModal = useDeleteListModal();
     const session = useSession();
 
     const queryClient = useQueryClient();
 
-    const { data: list, status } = useQuery({
-        queryKey: ['list', listID],
-        queryFn: () => getList(listID),
-        enabled: validListID,
-    });
+    const { data: list, status, getData: getCachedListData } = useList(listID);
 
     useEffect(() => {
-        if (list) setName(list.Name);
+        if (list) {
+            setName(list.Name);
+            setDescription(list.Description ?? '');
+        }
     }, [list]);
 
     const setPosition = useCallback((oldPosition: number, newPosition: number) => {
@@ -58,6 +64,27 @@ export default function List() {
         mutationFn: ([listID, name]: [number, string]) => editListName(listID, name),
     });
 
+    const saveDescriptionMutation = useMutation({
+        mutationFn: ([listID, description]: [number, string]) => editListDescription(listID, description),
+        onMutate: ([_, description]) => {
+            setIsEditingDescription(false);
+            const data = getCachedListData();
+            const oldDescription = data?.Description;
+            if (data) data.Description = description;
+            return oldDescription;
+        },
+        onSuccess: (list) => {
+            const data = getCachedListData();
+            if (data) data.Description = list.Description;
+        },
+        onError: (error: AxiosError, _, context) => {
+            toast.error(renderToastError.render({ data: error }));
+            const data = getCachedListData();
+            if (data) data.Description = context ?? null;
+            setIsEditingDescription(true);
+        },
+    });
+
     function onSaveName(e: React.SyntheticEvent) {
         e.preventDefault();
         setIsEditingName(false);
@@ -76,22 +103,40 @@ export default function List() {
         setIsEditingName(true);
     }
 
+    function onSaveDescription() {
+        if (!/^[a-zA-Z0-9\s.&,'_-]+$/.test(description)) return toast.error('Description can only contain letters, numbers, spaces, , . _ - & \'');
+        saveDescriptionMutation.mutate([listID, description]);
+    }
+
+    function onCancelDescription() {
+        setIsEditingDescription(false);
+        setDescription(list?.Description ?? '');
+    }
+
     if (!validListID || (status === 'error' && list === undefined)) return <Page><Heading1>404: List not found</Heading1></Page>;
     if (status === 'pending') return <Page><Heading1><LoadingSpinner /></Heading1></Page>;
 
     return (
-        <Page>
-            <title>GDDL | List | {list.Name}</title>
+        <Page title={`GDDL | List | ${list.Name}`}>
             {!isEditingName
                 ? <Heading1 onClick={onNameClicked}>{list.Name} {canEdit && <i className='bx bxs-pencil cursor-text' />}</Heading1>
                 : <form onSubmit={onSaveName}><input type='text' value={name} onChange={(e) => setName(e.target.value)} className='text-4xl font-bold block w-full outline-none' autoFocus onBlur={onSaveName} /></form>
             }
             <h2 className='text-2xl'>by <Link to={`/profile/${list.OwnerID}`} className='text-blue-400 underline'>{list.Owner.Name}</Link></h2>
-            {list.Description &&
-                <h3 className='my-2 text-lg'>{list.Description}</h3>
+            {description && !isEditingDescription &&
+                <h3 className='my-2 text-lg' onClick={() => setIsEditingDescription(true)}>{description} {canEdit && <i className='bx bxs-pencil cursor-text' />}</h3>
             }
-            {!list.Description && canEdit &&
-                <p className='italic text-theme-400'>Click to add a description</p>
+            {!isEditingDescription && !description && canEdit &&
+                <p className='italic text-theme-400' onClick={() => setIsEditingDescription(true)}>Click to add a description</p>
+            }
+            {isEditingDescription &&
+                <>
+                    <TextArea value={description} onChange={(e) => setDescription(e.target.value)} autoFocus />
+                    <div className='mt-2 flex gap-1 justify-end'>
+                        <TonalButton size='sm' onClick={onCancelDescription}>Cancel</TonalButton>
+                        <FilledButton onClick={onSaveDescription}>Save</FilledButton>
+                    </div>
+                </>
             }
             <ol className='mt-4'>
                 {list.Levels.map((level) => <Level list={list} listLevel={level} setPosition={setPosition} dragLocked={isDragLocked} key={level.LevelID} />)}

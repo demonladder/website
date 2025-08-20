@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router';
 import FormGroup from '../form/FormGroup';
 
 interface Props {
-    list: List;
+    list: Pick<List, 'ID' | 'Name' | 'OwnerID'>;
     onClose: () => void;
 }
 

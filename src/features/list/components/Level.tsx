@@ -12,7 +12,7 @@ import { GetListResponse } from '../api/getList';
 import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
 
 interface Props {
-    list: List;
+    list: Pick<List, 'ID' | 'OwnerID'>;
     listLevel: GetListResponse['Levels'][0];
     setPosition: (oldPosition: number, newPosition: number) => void;
     dragLocked: boolean;
