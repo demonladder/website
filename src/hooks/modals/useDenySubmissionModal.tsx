@@ -5,7 +5,7 @@ import useModal from './useModal';
 export default function useDenySubmissionModal() {
     const { createModal, closeModal } = useModal();
 
-    function open(submission: PendingSubmission) {
+    function open(submission: Pick<PendingSubmission, 'ID' | 'UserID' | 'LevelID'>) {
         const ID = `denySubmission-${submission.UserID}-${submission.LevelID}`;
 
         createModal(

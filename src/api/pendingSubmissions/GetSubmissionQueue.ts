@@ -3,16 +3,15 @@ import Level from '../../features/level/types/Level';
 import LevelMeta from '../../features/level/types/LevelMeta';
 import PendingSubmission from '../types/PendingSubmission';
 import User from '../types/User';
+import { Publisher } from '../types/Publisher';
 
-export type QueueSubmission = PendingSubmission & {
-    Level: Level & {
-        Meta: LevelMeta & {
-            Publisher: {
-                name: string;
-            };
+export type QueueSubmission = Pick<PendingSubmission, 'ID' | 'UserID' | 'LevelID' | 'Rating' | 'Enjoyment' | 'Device' | 'RefreshRate' | 'Proof' | 'Progress' | 'Attempts' | 'IsSolo' | 'SecondPlayerID' | 'DateChanged'> & {
+    Level: Pick<Level, 'Rating' | 'TwoPlayerRating' | 'Deviation' | 'TwoPlayerDeviation' | 'RatingCount'> & {
+        Meta: Pick<LevelMeta, 'Name' | 'Difficulty' | 'Length' | 'IsTwoPlayer'> & {
+            Publisher: Pick<Publisher, 'name'> | null;
         };
     };
-    User: User;
+    User: Pick<User, 'Name'>;
 };
 
 interface PendingSubmissionInfo {
