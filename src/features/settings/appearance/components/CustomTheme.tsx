@@ -1,12 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Heading3 from '../../../../components/headings/Heading3';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 import Heading4 from '../../../../components/headings/Heading4';
 import Heading1 from '../../../../components/headings/Heading1';
 import Heading2 from '../../../../components/headings/Heading2';
 import Heading5 from '../../../../components/headings/Heading5';
-import { selectText } from '../../../../utils/selectText';
 import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
+import { useTheme } from '../../../../context/theme/useTheme';
+import TextButton from '../../../../components/input/buttons/text/TextButton';
+import { toast } from 'react-toastify';
 
 function getRandomColorString() {
     const letters = '0123456789ABCDEF';
@@ -18,26 +20,28 @@ function getRandomColorString() {
 }
 
 export default function CustomTheme() {
-    const [gradient400, setGradient400] = useState(getRandomColorString());
-    const [gradient500, setGradient500] = useState(getRandomColorString());
-    const [gradient600, setGradient600] = useState(getRandomColorString());
-    const [gradient700, setGradient700] = useState(getRandomColorString());
-    const [gradient800, setGradient800] = useState(getRandomColorString());
-    const [gradient900, setGradient900] = useState(getRandomColorString());
-    const [gradient950, setGradient950] = useState(getRandomColorString());
+    const theme = useTheme();
 
-    const [header, setHeader] = useState(getRandomColorString());
-    const [headerText, setHeaderText] = useState(getRandomColorString());
+    const [gradient400, setGradient400] = useState(theme.theme['400'] ?? getRandomColorString());
+    const [gradient500, setGradient500] = useState(theme.theme['500'] ?? getRandomColorString());
+    const [gradient600, setGradient600] = useState(theme.theme['600'] ?? getRandomColorString());
+    const [gradient700, setGradient700] = useState(theme.theme['700'] ?? getRandomColorString());
+    const [gradient800, setGradient800] = useState(theme.theme['800'] ?? getRandomColorString());
+    const [gradient900, setGradient900] = useState(theme.theme['900'] ?? getRandomColorString());
+    const [gradient950, setGradient950] = useState(theme.theme['950'] ?? getRandomColorString());
 
-    const [bodyFrom, setBodyFrom] = useState(getRandomColorString());
-    const [bodyTo, setBodyTo] = useState(getRandomColorString());
-    const [bodyText, setBodyText] = useState(getRandomColorString());
-    const [outline, setOutline] = useState(getRandomColorString());
+    const [header, setHeader] = useState(theme.theme['header'] ?? getRandomColorString());
+    const [headerText, setHeaderText] = useState(theme.theme['header-text'] ?? getRandomColorString());
 
-    const [footer, setFooter] = useState(getRandomColorString());
-    const [footerText, setFooterText] = useState(getRandomColorString());
+    const [bodyFrom, setBodyFrom] = useState(theme.theme['bg-from'] ?? getRandomColorString());
+    const [bodyTo, setBodyTo] = useState(theme.theme['bg-to'] ?? getRandomColorString());
+    const [bodyText, setBodyText] = useState(theme.theme['text'] ?? getRandomColorString());
+    const [outline, setOutline] = useState(theme.theme['outline'] ?? getRandomColorString());
 
-    const theme = useMemo(() => ({
+    const [footer, setFooter] = useState(theme.theme['footer'] ?? getRandomColorString());
+    const [footerText, setFooterText] = useState(theme.theme['footer-text'] ?? getRandomColorString());
+
+    const customTheme = {
         '400': gradient400,
         '500': gradient500,
         '600': gradient600,
@@ -53,7 +57,45 @@ export default function CustomTheme() {
         'outline': outline,
         'footer': footer,
         'footer-text': footerText,
-    }), [bodyFrom, bodyText, bodyTo, footer, footerText, gradient400, gradient500, gradient600, gradient700, gradient800, gradient900, gradient950, header, headerText, outline]);
+    };
+
+    function onImport(e: React.ChangeEvent<HTMLInputElement>) {
+        e.target.files?.item(0)?.text().then((text) => {
+            try {
+                const parsed = JSON.parse(text) as unknown;
+                if (typeof parsed !== 'object') return toast.error('File is not a GDDL theme');
+                if (Array.isArray(parsed)) return toast.error('File is not a GDDL theme');
+
+                function get(color: string) {
+                    const value = (parsed as Record<string, unknown>)[color];
+                    if (typeof value !== 'string') throw new Error('File is not a GDDL theme');
+                    return value;
+                }
+
+                theme.set({
+                    '400': get('400'),
+                    '500': get('500'),
+                    '600': get('600'),
+                    '700': get('700'),
+                    '800': get('800'),
+                    '900': get('900'),
+                    '950': get('950'),
+                    'header': get('header'),
+                    'header-text': get('header-text'),
+                    'bg-from': get('bg-from'),
+                    'bg-to': get('bg-to'),
+                    'text': get('text'),
+                    'outline': get('outline'),
+                    'footer': get('footer'),
+                    'footer-text': get('footer-text'),
+                });
+            } catch {
+                toast.error('Unable to parse file');
+            }
+        }).catch(() => {
+            toast.error('Could\'t parse text');
+        });
+    }
 
     return (
         <section>
@@ -78,7 +120,7 @@ export default function CustomTheme() {
                 <div style={{ backgroundColor: footer, color: footerText }} className='px-16 py-4'>Footer</div>
             </div>
             <Heading4 className='mt-4'>Select colors</Heading4>
-            <div className='grid grid-cols-5 gap-8'>
+            <div className='grid grid-cols-5 gap-x-8 gap-y-4 mt-8'>
                 <ColorPicker color={gradient400} setColor={setGradient400}>Gradient 400</ColorPicker>
                 <ColorPicker color={gradient500} setColor={setGradient500}>Gradient 500</ColorPicker>
                 <ColorPicker color={gradient600} setColor={setGradient600}>Gradient 600</ColorPicker>
@@ -86,24 +128,30 @@ export default function CustomTheme() {
                 <ColorPicker color={gradient800} setColor={setGradient800}>Gradient 800</ColorPicker>
                 <ColorPicker color={gradient900} setColor={setGradient900}>Gradient 900</ColorPicker>
                 <ColorPicker color={gradient950} setColor={setGradient950}>Gradient 950</ColorPicker>
-
+            </div>
+            <div className='grid grid-cols-5 gap-x-8 gap-y-4 mt-8'>
                 <ColorPicker color={header} setColor={setHeader}>Header</ColorPicker>
                 <ColorPicker color={headerText} setColor={setHeaderText}>Header text</ColorPicker>
-
+            </div>
+            <div className='grid grid-cols-5 gap-x-8 gap-y-4 mt-8'>
                 <ColorPicker color={bodyFrom} setColor={setBodyFrom}>Body from</ColorPicker>
                 <ColorPicker color={bodyTo} setColor={setBodyTo}>Body to</ColorPicker>
                 <ColorPicker color={bodyText} setColor={setBodyText}>Body text</ColorPicker>
                 <ColorPicker color={outline} setColor={setOutline}>Outline</ColorPicker>
-
+            </div>
+            <div className='grid grid-cols-5 gap-x-8 gap-y-4 mt-8'>
                 <ColorPicker color={footer} setColor={setFooter}>Footer</ColorPicker>
                 <ColorPicker color={footerText} setColor={setFooterText}>Footer text</ColorPicker>
             </div>
-            <Heading4 className='mt-4'>Export</Heading4>
-            <div className='flex gap-2'>
-                <TonalButton size='sm'>Export</TonalButton>
-                <TonalButton size='sm'>Import</TonalButton>
+            <div className='flex justify-end gap-2 mt-4'>
+                <div className='relative'>
+                    <TextButton>Import</TextButton>
+                    <input type='file' className='absolute inset-0 opacity-0 cursor-pointer' onChange={onImport} />
+                </div>
+                <a className='flex items-center h-10 px-4 hover:bg-theme-500 transition-colors rounded-[20px]' download='theme.json' href={`data:application/json;charset=utf8,${encodeURIComponent(JSON.stringify(theme.theme))}`}>Download</a>
+                <TonalButton size='sm' onClick={() => theme.setEnabled(!theme.enabled)}>{theme.enabled ? 'Disable' : 'Use'}</TonalButton>
+                <TonalButton size='sm' onClick={() => theme.set(customTheme)}>Save</TonalButton>
             </div>
-            <pre className='bg-theme-700 p-2 border border-theme-400 rounded-md' onClick={selectText}>{JSON.stringify(theme, null, 4)}</pre>
         </section>
     );
 }

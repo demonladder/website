@@ -170,7 +170,7 @@ export default function MainLayout() {
                     <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
                 }
                 <title>GD Demon Ladder</title>
-                <div ref={containerRef} className={'relative flex flex-col ' + (app.isRounded ? 'round' : '')}>
+                <div ref={containerRef} className={'min-h-dvh relative flex flex-col ' + (app.isRounded ? 'round' : '')}>
                     <Header />
                     <NavbarNotificationRenderer />
                     <div className='flex-grow over text-theme-text'>

@@ -1,9 +1,13 @@
 import Heading3 from '../../../../components/headings/Heading3';
+import { useTheme } from '../../../../context/theme/useTheme';
 
 export default function ThemeSelect() {
-    function onTheme(theme: string) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
+    const theme = useTheme();
+
+    function onTheme(themeName: string) {
+        document.documentElement.setAttribute('data-theme', themeName);
+        localStorage.setItem('theme', themeName);
+        theme.setEnabled(false);
     }
 
     return (
