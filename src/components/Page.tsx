@@ -13,7 +13,7 @@ export default function Page({ children, onContextMenu, ...props }: Omit<React.D
     return (
         <main {...props} className='relative py-4'>
             {rand < 0.01 &&
-                <img src={randomImages[Math.floor(Math.random() * randomImages.length)]} className='absolute opacity-[2%] z-10 top-0 left-1/2 -translate-x-1/2 h-full' />
+                <img src={randomImages[Math.floor(Math.random() * randomImages.length)]} className='absolute opacity-[2%] z-10 top-0 left-1/2 -translate-x-1/2 h-full pointer-events-none' />
             }
             <Container onContextMenu={onContextMenu}>
                 {children}
