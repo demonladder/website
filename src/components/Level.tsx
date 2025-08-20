@@ -1,5 +1,5 @@
 import IDButton from './IDButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import DemonFace from './DemonFace';
 import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
 import YesTick from './images/YesTick';

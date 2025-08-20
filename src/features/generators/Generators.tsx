@@ -1,4 +1,4 @@
-import { NavLink as Nav, Outlet } from 'react-router-dom';
+import { NavLink as Nav, Outlet } from 'react-router';
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
 

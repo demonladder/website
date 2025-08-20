@@ -1,5 +1,5 @@
 import { Components } from 'react-markdown';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Heading1 from '../components/headings/Heading1';
 import Heading2 from '../components/headings/Heading2';
 

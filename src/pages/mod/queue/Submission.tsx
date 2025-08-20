@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import { useApproveClicked } from './useApproveClicked';

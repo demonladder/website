@@ -3,7 +3,7 @@ import { getRoles } from '../../../api/roles/getRoles';
 import { TextInput } from '../../../components/Input';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useCallback, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import { createRole } from './api/createRole';

@@ -1,6 +1,6 @@
 import Heading2 from '../../../components/headings/Heading2';
 import useUserSearch from '../../../hooks/useUserSearch';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router';
 
 export default function ManageUser() {
     const navigate = useNavigate();

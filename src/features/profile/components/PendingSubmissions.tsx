@@ -5,7 +5,7 @@ import { UserPendingSubmission } from '../api/getUserPendingSubmissions';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import Modal from '../../../components/Modal';

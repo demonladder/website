@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
 import { List } from '../../features/list/types/List';
 import { TextInput } from '../Input';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import FormGroup from '../form/FormGroup';
 
 interface Props {

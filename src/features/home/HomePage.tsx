@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';

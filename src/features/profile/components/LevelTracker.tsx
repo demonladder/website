@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Tracker from './Tracker';
 import { useLevel } from '../../level/hooks/useLevel';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';

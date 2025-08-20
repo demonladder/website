@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Page from '../../components/Page';
 
 function ListItem({ children }: { children: React.ReactNode }) {

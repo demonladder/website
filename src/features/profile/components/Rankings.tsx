@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import Heading2 from '../../../components/headings/Heading2';
 import { getUserRankings } from '../api/getUserRankings';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 function percentToRank(percent: number): string {
     if (percent >= 100) return 'S';

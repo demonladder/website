@@ -1,4 +1,4 @@
-import { redirect } from 'react-router-dom';
+import { redirect } from 'react-router';
 import { permissionsFromRoles } from '../../utils/permissionsFromRoles';
 import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
 import GetMe from '../../api/auth/GetMe';

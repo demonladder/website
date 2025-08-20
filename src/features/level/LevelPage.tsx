@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';

@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import GenerateDecathlon from '../../../api/generators/decathlon/GenerateDecathlon';
 import GetDecathlon from '../../../api/generators/decathlon/GetDecathlon';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import IDButton from '../../../components/IDButton';
 import NextDecathlonLevel from '../../../api/generators/decathlon/NextDecathlonLevel';
 import ReRollDecathlonLevel from '../../../api/generators/decathlon/ReRollDecathlonLevel';

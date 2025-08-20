@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../components/Input';
 import { useCallback, useEffect, useMemo, useState } from 'react';

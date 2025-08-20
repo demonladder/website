@@ -7,7 +7,7 @@ import { DemonLogoSizes } from '../../../../utils/difficultyToImgSrc';
 import Heading3 from '../../../../components/headings/Heading3';
 import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
 import TextButton from '../../../../components/input/buttons/text/TextButton';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { acceptShowcaseSuggestion } from '../api/acceptShowcaseSuggestion';
 import { deleteShowcaseSuggestion } from '../api/deleteShowcaseSuggestion';

@@ -1,6 +1,6 @@
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import EditableSubmission from './EditableSubmission';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import getSubmission from '../../../api/submissions/getSubmission';
 import Heading2 from '../../../components/headings/Heading2';

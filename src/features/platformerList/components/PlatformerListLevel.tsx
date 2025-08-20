@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import DemonFace from '../../../components/DemonFace';
 import IDButton from '../../../components/IDButton';
 import { ListEntry } from '../api/getPlatformerList';

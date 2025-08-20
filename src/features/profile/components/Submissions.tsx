@@ -8,7 +8,7 @@ import { GridLevel } from '../../../components/GridLevel';
 import Level, { LevelSkeleton } from '../../../components/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import { TextInput } from '../../../components/Input';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import useLateValue from '../../../hooks/useLateValue';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';

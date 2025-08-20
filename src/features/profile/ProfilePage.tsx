@@ -1,4 +1,4 @@
-import { Link, Outlet, /*NavLink as RRNavLink,*/ useNavigate, useParams } from 'react-router-dom';
+import { Link, Outlet, /*NavLink as RRNavLink,*/ useNavigate, useParams } from 'react-router';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Submissions from './components/Submissions';
 import UserRoleIcon from '../../components/UserRoleIcon';

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import useUserQuery from '../hooks/queries/useUserQuery';
 
 export default function UserLink({ userID }: { userID: number }) {

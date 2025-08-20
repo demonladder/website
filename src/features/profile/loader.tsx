@@ -1,4 +1,4 @@
-import { redirect } from 'react-router-dom';
+import { redirect } from 'react-router';
 import APIClient from '../../api/APIClient';
 
 export async function profileLoader() {

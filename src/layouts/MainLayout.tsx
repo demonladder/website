@@ -5,7 +5,7 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ModalProvider from '../context/ModalProvider';
 import Header from './header/Header';
 import NavbarNotificationRenderer from '../context/NavbarNotification/NavbarNotificationRenderer';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import Footer from './footer/Footer';
 import { Suspense, useCallback, useEffect, useRef } from 'react';
 import noise3D from '../utils/noise/noise3D';

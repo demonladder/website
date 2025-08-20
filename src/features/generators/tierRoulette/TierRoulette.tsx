@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import GenerateTierRoulette, { TierRouletteResponse } from '../../../api/generators/GenerateTierRoulette';
 import useLocalStorage from '../../../hooks/useLocalStorage';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import IDButton from '../../../components/IDButton';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputLabel from '../../../components/form/FormInputLabel';

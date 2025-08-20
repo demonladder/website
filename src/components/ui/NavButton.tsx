@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 export function NavButton({ to, end = false, children }: { to: string; end?: boolean; children: React.ReactNode; }) {
     return (

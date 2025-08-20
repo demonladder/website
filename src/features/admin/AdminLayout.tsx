@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router';
 import { QueryParamProvider } from 'use-query-params';
 import ModalProvider from '../../context/ModalProvider';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';

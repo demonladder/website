@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import Level from '../../components/Level';
 import useLevelView from '../../hooks/useLevelView';
 import { GridLevel } from '../../components/GridLevel';

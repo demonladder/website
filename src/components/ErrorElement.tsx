@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { SecondaryButton } from './ui/buttons/SecondaryButton';
 import Header from '../layouts/header/Header';
 import Footer from '../layouts/footer/Footer';

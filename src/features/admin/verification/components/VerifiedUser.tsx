@@ -5,7 +5,7 @@ import renderToastError from '../../../../utils/renderToastError';
 import Heading4 from '../../../../components/headings/Heading4';
 import { UserStat } from './UserStat';
 import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
 import DiscordUserData from '../../../../api/types/DiscordUserData';
 import { useVerificationRole } from '../hooks/useVerificationRole';

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import Heading2 from '../../../components/headings/Heading2';
 import Surface from '../../../components/Surface';
 import { getSupporters } from '../api/getSupporters';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 function Supporter({ supporter }: { supporter: { ID: number, name: string } }) {
     return (

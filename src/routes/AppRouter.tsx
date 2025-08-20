@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, createRoutesFromElements, redirect, Route } from 'react-router-dom';
+import { createBrowserRouter, createRoutesFromElements, redirect, Route } from 'react-router';
 import ErrorElement from '../components/ErrorElement';
 import { modLoader as ModLoader } from '../pages/mod/mod.loader';
 const ModIndex = lazy(() => import('../pages/mod/ModIndex'));

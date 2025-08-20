@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { PasswordInput, TextInput } from '../components/Input';
 import { PrimaryButton } from '../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';

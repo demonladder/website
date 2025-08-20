@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import DemonFace from '../../../components/DemonFace';
 import { useRef, useState } from 'react';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';

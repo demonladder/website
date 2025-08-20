@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import EditInformation from './EditInformation';
 import Notes from './Notes';
 import Roles from './Roles';

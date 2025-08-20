@@ -1,5 +1,5 @@
 import DemonFace from './DemonFace';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import NotificationButton from './ui/Notifications';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 import { useEffect } from 'react';

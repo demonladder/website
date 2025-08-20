@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Heading4 from '../../../../components/headings/Heading4';
 import LoadingSpinner from '../../../../components/LoadingSpinner';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';

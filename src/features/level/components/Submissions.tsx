@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import PageButtons from '../../../components/PageButtons';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';

@@ -13,7 +13,7 @@ import { LevelRenderer } from '../../components/LevelRenderer';
 import Heading1 from '../../components/headings/Heading1';
 import Heading2 from '../../components/headings/Heading2';
 import Page from '../../components/Page';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import SearchInput from '../../components/input/search/Search';
 import ViewType from './components/ViewType';
 import useLocalStorage from '../../hooks/useLocalStorage';

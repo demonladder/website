@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { AlphabetResponse, Difficulty, generateAlphabet } from './api/generateAlphabet';
 import { useLocalStorage } from 'usehooks-ts';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import IDButton from '../../../components/IDButton';
 import useValidNumber from '../../../hooks/useValidNumber';
 import _ from 'lodash';

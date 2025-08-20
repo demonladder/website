@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { PasswordInput, TextInput } from '../../components/Input';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { useState } from 'react';

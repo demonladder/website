@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { TextInput } from '../components/Input';
 import { PrimaryButton } from '../components/ui/buttons/PrimaryButton';

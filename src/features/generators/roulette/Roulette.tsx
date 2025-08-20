@@ -11,7 +11,7 @@ import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import GenerateRoulette, { RouletteResponse } from '../../../api/generators/GenerateRoulette';
 import useLocalStorage from '../../../hooks/useLocalStorage';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import IDButton from '../../../components/IDButton';
 import useValidNumber from '../../../hooks/useValidNumber';
 import validateParameter from '../../../utils/validators/validateParameter';

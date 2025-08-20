@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import BlankAnchor from '../../components/ui/BlankAnchor';
 
 export default function Footer() {

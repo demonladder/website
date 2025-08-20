@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { NavButton } from '../../components/ui/NavButton';
 import Page from '../../components/Page';
 
