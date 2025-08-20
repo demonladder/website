@@ -1,11 +1,11 @@
-import { DetailedHTMLProps, InputHTMLAttributes, forwardRef } from 'react';
+import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
 interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     invalid?: boolean;
 }
 
-function Input({ ref, invalid = false, ...props }: InputProps) {
-    return <input {...props} ref={ref} className={'outline-none rounded-none caret-current border-b-2 border-current bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />;
+function Input({ invalid = false, ...props }: InputProps) {
+    return <input {...props} className={'outline-none rounded-none caret-current border-b-2 border-current bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (invalid ? ' border-red-600' : '')} />;
 }
 
 export function TextInput(props: Omit<InputProps, 'type'>) {
@@ -26,9 +26,9 @@ interface INumberInput extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputEl
     invalid?: boolean,
 }
 
-export const NumberInput = forwardRef<HTMLInputElement, INumberInput>(({ disableSpinner, centered, invalid = false, ...props }, ref) => (
-    <input {...props} ref={ref} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />
-));
+export function NumberInput({ disableSpinner, centered, invalid = false, ...props }: INumberInput) {
+    return <input {...props} type='number' className={'outline-none rounded-none caret-current border-b-2 border-current bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' + (disableSpinner ? ' no-spinner' : '') + (centered ? ' text-center pe-2' : '') + (invalid ? ' border-red-600' : '')} />;
+}
 
 export function RadioButton(props: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
     return (

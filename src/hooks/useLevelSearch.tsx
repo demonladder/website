@@ -11,7 +11,6 @@ interface LevelSearchOptions {
 
 interface Props {
     ID: string,
-    ref?: React.Ref<HTMLInputElement>,
     required?: boolean;
     options?: LevelSearchOptions,
 }
