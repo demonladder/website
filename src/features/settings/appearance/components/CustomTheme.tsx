@@ -72,7 +72,7 @@ export default function CustomTheme() {
                     return value;
                 }
 
-                theme.set({
+                const importedTheme = {
                     '400': get('400'),
                     '500': get('500'),
                     '600': get('600'),
@@ -88,7 +88,24 @@ export default function CustomTheme() {
                     'outline': get('outline'),
                     'footer': get('footer'),
                     'footer-text': get('footer-text'),
-                });
+                };
+
+                theme.set(importedTheme);
+                setGradient400(importedTheme[400]);
+                setGradient500(importedTheme[500]);
+                setGradient600(importedTheme[600]);
+                setGradient700(importedTheme[700]);
+                setGradient800(importedTheme[800]);
+                setGradient900(importedTheme[900]);
+                setGradient950(importedTheme[950]);
+                setHeader(importedTheme['header']);
+                setHeaderText(importedTheme['header-text']);
+                setBodyFrom(importedTheme['bg-from']);
+                setBodyTo(importedTheme['bg-to']);
+                setBodyText(importedTheme['text']);
+                setOutline(importedTheme['outline']);
+                setFooter(importedTheme['footer']);
+                setFooterText(importedTheme['footer-text']);
             } catch {
                 toast.error('Unable to parse file');
             }
