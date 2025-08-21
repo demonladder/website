@@ -22,24 +22,17 @@ const levelSpanOptions = {
 };
 type LevelSpanOptions = keyof typeof levelSpanOptions;
 
-const accuracyOptions = {
-    '25': 'High',
-    '15': 'Medium',
-    '5': 'Low',
-    '1': 'Lowest',
-};
-type AccuracyOptions = keyof typeof accuracyOptions;
-
 export default function Skills({ userID }: { userID: number }) {
     const { ref, inView } = useInView();
     const [levelSpanKey, setLevelSpanKey] = useState<LevelSpanOptions>('allTime');
-    const [accuracyKey, setAccuracyKey] = useState<AccuracyOptions>('25');
-    const [correctTier, setCorrectTier] = useState(true);
+    const [correctTier, setCorrectTier] = useState(false);
     const correctTierID = useId();
+    const [adjustRarity, setAdjustRarity] = useState(true);
+    const adjustRarityID = useId();
 
     const { data: rawData } = useQuery({
-        queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey, accuracy: accuracyKey, correctTier }],
-        queryFn: () => getSkills(userID, levelSpanKey.slice(3), accuracyKey, correctTier),
+        queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey.slice(3), tierCorrection: correctTier, adjustRarity }],
+        queryFn: () => getSkills(userID, { levelSpan: levelSpanKey.slice(3), tierCorrection: correctTier, adjustRarity }),
         enabled: inView,
     });
 
@@ -88,16 +81,17 @@ export default function Skills({ userID }: { userID: number }) {
                     </div>
                 </div>
                 <div>
-                    <label htmlFor='skillAccuracy'>Accuracy:</label>
-                    <div className='max-w-xs'>
-                        <Select options={accuracyOptions} activeKey={accuracyKey} id='skillAccuracy' onChange={setAccuracyKey} />
-                    </div>
-                </div>
-                <div>
                     <p>Tier normalization:</p>
                     <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' htmlFor={correctTierID}>
                         <CheckBox id={correctTierID} checked={correctTier} onChange={() => setCorrectTier((prev) => !prev)} />
                         Adjust for level tier
+                    </label>
+                </div>
+                <div>
+                    <p>Rarity adjustment:</p>
+                    <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' htmlFor={adjustRarityID}>
+                        <CheckBox id={adjustRarityID} checked={adjustRarity} onChange={() => setAdjustRarity((prev) => !prev)} />
+                        Adjust for skillset rarity
                     </label>
                 </div>
             </div>
