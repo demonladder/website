@@ -137,7 +137,7 @@ export default function CustomTheme() {
                 <div style={{ backgroundColor: footer, color: footerText }} className='px-16 py-4'>Footer</div>
             </div>
             <Heading4 className='mt-4'>Select colors</Heading4>
-            <div className='grid grid-cols-5 gap-x-8 gap-y-4 mt-8'>
+            <div className='grid grid-cols-5 gap-x-8 gap-y-4'>
                 <ColorPicker color={gradient400} setColor={setGradient400}>Gradient 400</ColorPicker>
                 <ColorPicker color={gradient500} setColor={setGradient500}>Gradient 500</ColorPicker>
                 <ColorPicker color={gradient600} setColor={setGradient600}>Gradient 600</ColorPicker>
