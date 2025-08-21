@@ -162,10 +162,10 @@ export default function CustomTheme() {
             </div>
             <div className='flex justify-end gap-2 mt-4'>
                 <div className='relative'>
-                    <TextButton>Import</TextButton>
+                    <TextButton outline={true}>Import</TextButton>
                     <input type='file' className='absolute inset-0 opacity-0 cursor-pointer' onChange={onImport} />
                 </div>
-                <a className='flex items-center h-10 px-4 hover:bg-theme-500 transition-colors rounded-[20px]' download='theme.json' href={`data:application/json;charset=utf8,${encodeURIComponent(JSON.stringify(theme.theme))}`}>Download</a>
+                <a className='text-button outlined flex items-center' download='theme.json' href={`data:application/json;charset=utf8,${encodeURIComponent(JSON.stringify(theme.theme))}`}>Download</a>
                 <TonalButton size='sm' onClick={() => theme.setEnabled(!theme.enabled)}>{theme.enabled ? 'Disable' : 'Use'}</TonalButton>
                 <TonalButton size='sm' onClick={() => theme.set(customTheme)}>Save</TonalButton>
             </div>

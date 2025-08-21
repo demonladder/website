@@ -22,6 +22,17 @@
 
     transition-duration: 350ms;
     transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+
+    &.outlined {
+        --state-color: var(--color-on-surface-variant);
+
+        outline: solid 2px var(--outline-variant);
+
+        &.disabled {
+            --label-color: var(--color-on-surface);
+            --label-opacity: 38%;
+        }
+    }
 }
 
 div[data-theme="dark"] .text-button {
