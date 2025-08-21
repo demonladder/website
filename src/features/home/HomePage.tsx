@@ -21,7 +21,7 @@ export default function Home() {
         if (width >= 1280) return width - 1280;
         if (width >= 1024) return width - 1024;
         if (width >= 768) return width - 768;
-        if (width >= 560) return width - 560;
+        if (width >= 640) return width - 560;
         return 0;
     })(winSize.width);
 

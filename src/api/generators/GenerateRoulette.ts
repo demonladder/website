@@ -2,8 +2,8 @@ import APIClient from '../APIClient';
 
 export interface RouletteResponse {
     ID: number;
-    Rating: number;
-    Enjoyment: number;
+    Rating: number | null;
+    Enjoyment: number | null;
     RatingCount: number;
     Meta?: {
         Name: string;
