@@ -27,7 +27,7 @@ export default function Home() {
 
     return (
         <main>
-            <div className='container mx-auto my-10'><Heading1>Celebrating GDDLs 5 year anniversary</Heading1></div>
+            <div className='container mx-auto my-10'><Heading1>Celebrating GDDL's 5-year anniversary</Heading1></div>
             <iframe className='mx-auto' width={winSize.width - margin} height={(winSize.width - margin) / 16 * 9} src='https://www.youtube.com/embed/wbGyG7ovHaA' title='GDDL 5' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerPolicy='strict-origin-when-cross-origin' allowFullScreen />
             <div className='container mx-auto py-4 grid grid-cols-1 xl:grid-cols-4 gap-8'>
                 <Container className='xl:col-span-3'>
