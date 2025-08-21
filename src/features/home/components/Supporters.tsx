@@ -22,7 +22,7 @@ export default function Supporters() {
         <Surface variant='800' size='xl'>
             <Heading2 className='mb-4 text-center'>Supporters</Heading2>
             {status === 'success' &&
-                <ul className='flex gap-2 overflow-y-auto max-h-[400px]' style={{ scrollbarWidth: 'thin' }}>
+                <ul className='flex flex-wrap gap-2 overflow-y-auto max-h-[400px]' style={{ scrollbarWidth: 'thin' }}>
                     {supporters.map((supporter) => (
                         <Supporter supporter={supporter} key={supporter.ID} />
                     ))}
