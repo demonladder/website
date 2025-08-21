@@ -2,7 +2,7 @@ import { NavLink } from 'react-router';
 import { Route } from './types/Route';
 
 interface Props {
-    onClose: () => void;
+    onClose?: () => void;
     route: Route;
     size: 'wide' | 'thin';
 }
