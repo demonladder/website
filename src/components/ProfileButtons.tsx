@@ -6,21 +6,22 @@ import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 
-export default function ProfileButtons({ size }: { size?: 'small' | 'large' }) {
+export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();
 
     if (session.loadStatus === 'pending') return <LoginButton />;
     if (!session.user) return <LoginButton />;
 
-    return <ProfileButton userID={session.user.ID} size={size} />;
+    return <ProfileButton onClick={onClick} userID={session.user.ID} size={size} />;
 }
 
 interface Props {
+    onClick?: () => void;
     userID: number;
     size?: 'small' | 'large';
 }
 
-function ProfileButton({ userID, size = 'large' }: Props) {
+function ProfileButton({ onClick, userID, size = 'large' }: Props) {
     const session = useSession();
 
     const { discordSync } = useNavbarNotification();
@@ -39,7 +40,7 @@ function ProfileButton({ userID, size = 'large' }: Props) {
                 <NotificationButton />
             }
             <div className='ms-2 relative group'>
-                <Link to={`/profile/${userID}`}>
+                <Link to={`/profile/${userID}`} onClick={onClick}>
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
                         {session.user?.DiscordData?.Avatar
                             ? <img src={pfp} className='rounded-full' />
