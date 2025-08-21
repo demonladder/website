@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { Link } from 'react-router';
 import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
 import { useApproveClicked } from './useApproveClicked';
 import { levelLengthToString } from '../../../features/level/types/LevelMeta';
@@ -24,7 +23,7 @@ interface Props {
 
 export default function Submission({ submission }: Props) {
     const showDenyModal = useDenySubmissionModal();
-    const [isProofClicked, setIsProofClicked] = useSessionStorage(`queue.${submission.ID}.isProofClicked`, false); 
+    const [isProofClicked, setIsProofClicked] = useSessionStorage(`queue.${submission.ID}.isProofClicked`, false);
     const [proofClickedAt, setProofClickedAt] = useSessionStorage(`queue.${submission.ID}.proofClickedAt`, 'undefined');
 
     const spread = useLevelSubmissionSpread(submission.LevelID);
@@ -93,20 +92,19 @@ export default function Submission({ submission }: Props) {
         return new Date().getTime() - new Date(proofClickedAt).getTime();
     }
 
-    const navigate = useNavigate();
     const approveSubmission = useApproveClicked();
 
     const secondsAgo = Math.floor((Date.now() - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000);
 
     return (
         <li className={`round:rounded-2xl bg-linear-to-br tier-${submission.Rating ?? 0} from-tier-${submission.Rating ?? 0} to-tier-${levelRating?.toFixed() ?? 0} p-3 my-2 text-lg`}>
-            <div className='flex items-center gap-2 mb-2 cursor-pointer' onClick={() => navigate(`/level/${submission.LevelID}`)}>
+            <Link className='flex items-center gap-2 mb-2 cursor-pointer' to={`/level/${submission.LevelID}`}>
                 <img src={difficultyToImgSrc(submission.Level.Meta.Difficulty, DemonLogoSizes.SMALL)} />
                 <div>
                     <p className='font-bold text-3xl'>{submission.Level.Meta.Name}</p>
                     <p>by {submission.Level.Meta.Publisher?.name ?? '(-)'}</p>
                 </div>
-            </div>
+            </Link>
             <div className='mb-3'>
                 <p><i className='bx bxs-user' /> Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold group' target='_blank' rel='noopener noreferrer'>{submission.User.Name} <i className='bx bx-link-external' /></a></p>
                 <p><i className='bx bxs-time-five' /> Submitted at <b>{new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</b> ({secondsToHumanReadable(secondsAgo)} ago)</p>
@@ -138,7 +136,7 @@ export default function Submission({ submission }: Props) {
                                 ? <>
                                     <button onClick={onProofClick} className='underline'>{submission.Proof} <i className='bx bx-link-external' /></button>
                                     <br />
-                                    <span className='bg-yellow-400 text-black px-1'>View proof to accept!</span>
+                                    {!isProofClicked && <span className='bg-yellow-400 text-black px-1'>View proof to accept!</span>}
                                 </>
                                 : 'None'
                             }
@@ -165,8 +163,8 @@ export default function Submission({ submission }: Props) {
             <div className='mt-4 flex justify-evenly max-md:flex-col max-md:gap-4'>
                 <FilledButton sizeVariant='md' disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</FilledButton>
                 {submission.Rating !== null && <TonalButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</TonalButton>}
-                <DangerButton className='px-3 py-2' onClick={() => showDenyModal(submission)}>Deny</DangerButton>
-                <DangerButton className='px-3 h- py-2' onClick={() => navigate(`/mod/manageUser/${submission.UserID}`)}>Mod view</DangerButton>
+                <button className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3' onClick={() => showDenyModal(submission)}>Deny</button>
+                <Link to={`/mod/manageUser/${submission.UserID}`} className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3'>Mod view</Link>
             </div>
         </li>
     );

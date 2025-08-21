@@ -1,7 +1,6 @@
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import Announcement from '../../components/announcement/Announcement';
 import Container from '../../components/Container';
-import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import IndexStats from './components/IndexStats';
 import Body from '../../components/announcement/Body';
 import TrendingLevels from './components/TrendingLevels';
@@ -12,8 +11,6 @@ import { useWindowSize } from 'usehooks-ts';
 import Heading1 from '../../components/headings/Heading1';
 
 export default function Home() {
-    const navigate = useNavigate();
-
     const winSize = useWindowSize();
 
     const margin = ((width: number): number => {
@@ -37,7 +34,7 @@ export default function Home() {
                             The addition of demon difficulties in 2.1 was great. However, it isn't enough! With levels with varying skillsets, sometimes only 5 different categories isn't enough to differentiate an easier level in this category to another. Compare Cataclysm to Bloodlust, DeCode to The Nightmare, Windy Landscape to ICDX… argh (pain misery despair)! 5 demon difficulties just isn't enough. This project divides all demons into 35 tiers, based on difficulty. Here, the community votes are gathered to determine the tiers of every single demon and the results are published right here for everyone to see, making it easier to find your perfect demon to beat or compare a certain demon to another.
                             <br />
                             <br />
-                            <PrimaryButton onClick={() => navigate('/about')}>Learn more</PrimaryButton>
+                            <Link to={'/about'} className='text-blue-500'>Learn more</Link>
                         </Body>
                     </Announcement>
                 </Container>
@@ -51,7 +48,7 @@ export default function Home() {
                         <Body>
                             <p>As there currently aren't enough platformer levels to put them into tiers, we have created this temporary ranking of all the platformer demons. The position of each level is decided by our community until we're able to generalise the levels into tiers.</p>
                             <br />
-                            <PrimaryButton onClick={() => navigate('/platformerList')}>Go to list</PrimaryButton>
+                            <Link to={'/platformerList'} className='text-blue-500'>Go to list</Link>
                         </Body>
                     </Announcement>
                 </Container>
