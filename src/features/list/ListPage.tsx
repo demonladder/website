@@ -98,7 +98,7 @@ export default function List() {
 
     function onSaveDescription() {
         if (description.length === 0) return saveDescriptionMutation.mutate([listID, null]);
-        if (!/^[a-zA-Z0-9\s.&,'_-]+$/.test(description)) return toast.error('Description can only contain letters, numbers, spaces, , . _ - & \'');
+        if (!/^[a-zA-Z0-9\s.&,'*_-]+$/.test(description)) return toast.error('Description can only contain letters, numbers, spaces, , . _ - & \' *');
         saveDescriptionMutation.mutate([listID, description]);
     }
 
