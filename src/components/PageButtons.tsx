@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { clamp } from '../utils/clamp';
 import IconButton from './input/buttons/icon/IconButton';
 import { NumberInput } from './Input';
@@ -16,6 +16,10 @@ export interface PageMeta {
 
 export default function PageButtons({ onPageChange, meta }: Props) {
     const [page, setPage] = useState(((meta?.page ?? 0) + 1).toString());
+
+    useEffect(() => {
+        if (meta) setPage((meta.page + 1).toString());
+    }, [meta, meta?.page]);
 
     if (meta === undefined) return;
 

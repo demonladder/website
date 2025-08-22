@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import PageButtons from '../../../components/PageButtons';
@@ -12,7 +12,7 @@ import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import Level from '../types/Level';
 import LevelMeta from '../types/LevelMeta';
-import { createEnumParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import { createEnumParam, useQueryParam, withDefault } from 'use-query-params';
 import { Device } from '../../../api/core/enums/device.enum';
 import Heading2 from '../../../components/headings/Heading2';
 import Select from '../../../components/input/select/Select';
@@ -117,13 +117,14 @@ function Submission({ level, submission }: SubmissionProps) {
 }
 
 interface SubmissionsProps {
+    page: number;
+    setPage: (page: number) => void;
     level: FullLevel;
     showTwoPlayerStats: boolean;
     setShowTwoPlayerStats: (show: boolean) => void;
 }
 
-export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlayerStats }: SubmissionsProps) {
-    const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
+export default function Submissions({ page, setPage, level, showTwoPlayerStats, setShowTwoPlayerStats }: SubmissionsProps) {
     const [progressFilterKey, setProgressFilterKey] = useState<keyof typeof progressFilterOptions>('victors');
     const [sorter, setSorter] = useQueryParam<SubmissionSort>('sort', withDefault(createEnumParam(Object.values(SubmissionSort)), SubmissionSort.DATE_ADDED));
     const [sortDirection, setSortDirection] = useState<SortDirections>('asc');
@@ -132,10 +133,6 @@ export default function Submissions({ level, showTwoPlayerStats, setShowTwoPlaye
         queryKey: ['level', level.ID, 'submissions', { page, progressFilterKey, twoPlayer: showTwoPlayerStats, sorter, sortDirection }],
         queryFn: () => getLevelSubmissions({ twoPlayer: showTwoPlayerStats, levelID: level.ID, progressFilter: progressFilterKey, sort: sorter, sortDirection, limit: 24, page }),
     });
-
-    useEffect(() => {
-        setPage(0);
-    }, [showTwoPlayerStats, setPage]);
 
     if (status === 'error' || status === 'pending') return (
         <section className='mt-6'>

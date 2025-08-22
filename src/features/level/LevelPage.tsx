@@ -11,7 +11,7 @@ import Showcase from './components/Showcase';
 import ExternalLinks from './components/ExternalLinks';
 import useSubmitModal from '../../hooks/modals/useSubmitModal';
 import Page from '../../components/Page';
-import { BooleanParam, useQueryParam, withDefault } from 'use-query-params';
+import { BooleanParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import Heading1 from '../../components/headings/Heading1';
 import FAB from '../../components/input/buttons/FAB/FAB';
 import IconButton from '../../components/input/buttons/icon/IconButton';
@@ -36,6 +36,14 @@ export default function LevelPage() {
     const level = useLoaderData<FullLevel>();
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useQueryParam('twoPlayer', withDefault(BooleanParam, false));
     const [showExtra, setShowExtra] = useState(false);
+    const [submissionPage, setSubmissionPage] = useQueryParam('page', withDefault(NumberParam, 0));
+
+    function onShowTwoPlayerStats(state: boolean) {
+        if (showTwoPlayerStats === state) return;
+
+        setShowTwoPlayerStats((prev) => !prev);
+        setSubmissionPage(0);
+    }
 
     const openSubmitModal = useSubmitModal();
     const openAddListLevelModal = useAddListLevelModal();
@@ -149,8 +157,8 @@ export default function LevelPage() {
                 </div>
             </Surface>
             <TagBox level={level} />
-            <Submissions level={level} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
-            <RatingGraph levelMeta={level.Meta} twoPlayer={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
+            <Submissions page={submissionPage} setPage={setSubmissionPage} level={level} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={onShowTwoPlayerStats} />
+            <RatingGraph levelMeta={level.Meta} twoPlayer={showTwoPlayerStats} setShowTwoPlayerStats={onShowTwoPlayerStats} />
             <Packs levelID={level.ID} meta={level.Meta} />
             <Showcase level={level} />
             <ExternalLinks level={level} />
