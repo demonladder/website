@@ -65,12 +65,13 @@ import Rankings from '../features/profile/components/Rankings';
 import { listLoader } from '../features/list/list.loader';
 import { QueryClient } from '@tanstack/react-query';
 import { levelLoader } from '../features/level/level.loader';
+import { searchLoader } from '../features/search/search.loader';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
         <Route element={<MainLayout />} errorElement={<ErrorElement />}>
             <Route path='/' element={<Home />} />
-            <Route path='search' element={<Search />} />
+            <Route path='search' element={<Search />} loader={searchLoader} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />
             <Route path='packs' element={<Packs />} />

@@ -28,10 +28,11 @@ interface SavedFilters {
 }
 
 export default function Search() {
-    const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('levelFilters', {});
+    const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('level-filters', {});
     const [page, setPage] = useSessionStorage('level-search-page', 0);
     const [limit, setLimit] = useSessionStorage('level-search-limit', 12);
     const [limitDisplay, setLimitDisplay] = useState<string | number>(limit);
+    const [showFilters, setShowFilters] = useSessionStorage('show-filters', false);
 
     const [queryParams, setQueryParams] = useQueryParams({
         [QueryParamNames.Name]: StringParam,
@@ -84,22 +85,14 @@ export default function Search() {
 
     const onSearch = useCallback(() => {
         setSavedFilters(queryParams);
-    }, [queryParams, setSavedFilters]);
-
-    // Load state from the URL search parameters on initial mount
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.size === 0) setQueryParams(savedFilters, 'replace');
-        onSearch();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        setShowFilters(false);
+    }, [queryParams, setSavedFilters, setShowFilters]);
 
     function reset() {
         setSavedFilters({});
         setQueryParams({}, 'replace');
     }
 
-    const [showFilters, setShowFilters] = useSessionStorage('showFilters', false);
     const [isListView, setIsListView] = useLocalStorage('search.listView', true);
 
     const { status: searchStatus, data: searchData } = useQuery({
@@ -116,7 +109,7 @@ export default function Search() {
 
             setSelection(0);
         }
-    }, [searchData, queryParams, setQueryParams, page, setPage]);
+    }, [page, searchData, setPage]);
 
     function onNameChange(newName: string) {
         setQueryParams({
@@ -139,17 +132,13 @@ export default function Search() {
             if (selection > 0) {
                 const level = searchData?.levels[selection - 1];
                 if (level) {
-                    navigate('/level/' + level.ID);
+                    void navigate('/level/' + level.ID);
                 }
             } else {
                 void onSearch();
             }
         }
     }
-
-    // useEffect(() => {
-    //     void onSearch();
-    // }, [onSearch, page, limit]);
 
     function onLimitChange(e: React.ChangeEvent<HTMLInputElement>) {
         const parsed = parseInt(e.target.value);
