@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { useCallback, useContext } from 'react';
 import { List } from '../../list/types/List';
 import useDeleteListModal from '../../../hooks/modals/useDeleteListModal';
@@ -16,7 +16,6 @@ export default function Lists({ userID }: Props) {
     const openDeleteListModal = useDeleteListModal();
     const { ref, inView } = useInView();
 
-    const navigate = useNavigate();
     const session = useSession();
 
     const lookingAtOwnPage = userID === session.user?.ID;
@@ -37,11 +36,11 @@ export default function Lists({ userID }: Props) {
             x: e.clientX,
             y: e.clientY,
             buttons: [
-                { text: 'Info', onClick: () => navigate(`/list/${list.ID}`) },
+                { text: 'Info', to: `/list/${list.ID}` },
                 { text: 'Delete', type: 'danger', onClick: () => openDeleteListModal(list) },
             ],
         });
-    }, [menuContext, navigate, openDeleteListModal, session.user?.ID, userID]);
+    }, [menuContext, openDeleteListModal, session.user?.ID, userID]);
 
     return (
         <section className='mt-6' ref={ref}>

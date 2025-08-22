@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import PageButtons from '../../../components/PageButtons';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
@@ -75,12 +75,11 @@ function Submission({ level, submission }: SubmissionProps) {
     const shortenedSecondaryName = (submission.SecondaryUser && submission.SecondaryUser.Name.length > MAX_NAME_LENGTH) ? submission.SecondaryUser.Name.slice(0, MAX_NAME_LENGTH) + '...' : submission.SecondaryUser?.Name;
 
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
-    const navigate = useNavigate();
     const openContext = useContextMenu([
-        { text: 'View user', onClick: () => navigate(linkDestination) },
+        { text: 'View user', to: linkDestination },
         { text: 'View proof', icon: <i className='bx bx-link-external' />, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
         { type: 'divider', permission: PermissionFlags.MANAGE_SUBMISSIONS },
-        { text: 'Mod view', onClick: () => navigate(`/mod/editSubmission/${submission.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+        { text: 'Mod view', to: `/mod/editSubmission/${submission.ID}`, permission: PermissionFlags.MANAGE_SUBMISSIONS },
         { text: 'Delete', icon: <i className='bx bx-trash' />, type: 'danger', onClick: () => openDeleteSubmissionModal(submission.UserID, level.ID, submission.ID, submission.User.Name), permission: PermissionFlags.MANAGE_SUBMISSIONS },
     ]);
 

@@ -8,7 +8,6 @@ import { GridLevel } from '../../../components/GridLevel';
 import Level, { LevelSkeleton } from '../../../components/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import { TextInput } from '../../../components/Input';
-import { useNavigate } from 'react-router';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import useLateValue from '../../../hooks/useLateValue';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
@@ -83,8 +82,6 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
     const openSubmitModal = useSubmitModal();
     const session = useSession();
 
-    const navigate = useNavigate();
-
     const setContext = useContextMenu();
     function openContext(e: React.MouseEvent, submission: UserSubmission) {
         e.preventDefault();
@@ -94,7 +91,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
             x: e.clientX,
             y: e.clientY,
             buttons: [
-                { text: 'Go to level', onClick: () => navigate(`/level/${submission.Level.ID}`) },
+                { text: 'Go to level', to: `/level/${submission.Level.ID}` },
                 { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID), requireSession: true },
                 { type: 'divider' },
                 { text: 'Copy level ID', onClick: () => copyText(submission.Level.ID.toString()), icon: <i className='bx bx-clipboard' /> },
@@ -102,7 +99,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
                 { type: 'divider' },
                 { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof, icon: <i className='bx bx-link-external' /> },
                 { text: 'Edit', userID: user.ID, onClick: () => openSubmitModal(submission.Level) },
-                { text: 'Edit (staff)', onClick: () => navigate(`/mod/editSubmission/${submission.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                { text: 'Edit (staff)', to: `/mod/editSubmission/${submission.ID}`, permission: PermissionFlags.MANAGE_SUBMISSIONS },
                 { text: 'Delete', type: 'danger', userID: user.ID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(user.ID, submission.Level.ID, submission.ID, user.Name), icon: <i className='bx bx-trash' /> },
             ],
         });
@@ -125,8 +122,6 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
     const openSubmitModal = useSubmitModal();
     const session = useSession();
 
-    const navigate = useNavigate();
-
     const setContext = useContextMenu();
     function openContext(e: React.MouseEvent, submission: UserSubmission) {
         e.preventDefault();
@@ -136,7 +131,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
             x: e.clientX,
             y: e.clientY,
             buttons: [
-                { text: 'Go to level', onClick: () => navigate(`/level/${submission.Level.ID}`) },
+                { text: 'Go to level', to: `/level/${submission.Level.ID}` },
                 { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID), requireSession: true },
                 { type: 'divider' },
                 { text: 'Copy level ID', onClick: () => copyText(submission.Level.ID.toString()), icon: <i className='bx bx-clipboard' /> },
@@ -144,7 +139,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
                 { type: 'divider' },
                 { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof, icon: <i className='bx bx-link-external' /> },
                 { text: 'Edit', userID: user.ID, onClick: () => openSubmitModal(submission.Level) },
-                { text: 'Edit (staff)', onClick: () => navigate(`/mod/editSubmission/${submission.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                { text: 'Edit (staff)', to: `/mod/editSubmission/${submission.ID}`, permission: PermissionFlags.MANAGE_SUBMISSIONS },
                 { text: 'Delete', type: 'danger', userID: user.ID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(user.ID, submission.Level.ID, submission.ID, user.Name), icon: <i className='bx bx-trash' /> },
             ],
         });
@@ -152,7 +147,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
 
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-            {levels.map((p) => <GridLevel ID={p.Level.ID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Publisher?.name} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} inPack={false} onContextMenu={(e) => openContext(e, p)} key={p.Level.ID} />)}
+            {levels.map((p) => <GridLevel ID={p.Level.ID} rating={p.Rating} enjoyment={p.Enjoyment} proof={p.Proof} name={p.Level.Meta.Name} creator={p.Level.Meta.Publisher?.name} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} date={p.DateAdded} onContextMenu={(e) => openContext(e, p)} key={p.Level.ID} />)}
         </div>
     );
 }

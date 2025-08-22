@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData, /*NavLink as RRNavLink,*/ useNavigate } from 'react-router';
+import { Link, Outlet, useLoaderData/*, NavLink as RRNavLink*/ } from 'react-router';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Submissions from './components/Submissions';
 import UserRoleIcon from '../../components/UserRoleIcon';
@@ -30,13 +30,12 @@ export default function Profile() {
     const { status, data: userData, error } = useUserQuery(userID);
     const userColor = useUserColor(userID);
 
-    const navigate = useNavigate();
     const contextMenu = useContextMenu([
         { text: 'Copy profile', onClick: () => void navigator.clipboard.writeText(`https://gdladder.com/profile/${userID}`) },
         { text: 'Copy user ID', onClick: () => void navigator.clipboard.writeText(userID.toString()) },
         { type: 'divider' },
         { text: 'Report user', onClick: () => openReportUserModal(userID) },
-        { text: 'Mod view', onClick: () => navigate(`/mod/manageUser/${userID}`), permission: PermissionFlags.STAFF_DASHBOARD },
+        { text: 'Mod view', to: `/mod/manageUser/${userID}`, permission: PermissionFlags.STAFF_DASHBOARD },
     ]);
 
     const pref = useMemo(() => {

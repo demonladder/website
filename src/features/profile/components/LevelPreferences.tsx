@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import Heading2 from '../../../components/headings/Heading2';
 import { getFavoriteLevels, GetFavoriteLevelsResponse, getLeastFavoriteLevels } from '../api/getFavoriteLevels';
 import Level, { LevelSkeleton } from '../../../components/Level';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import APIClient from '../../../api/APIClient';
 import useSession from '../../../hooks/useSession';
@@ -66,11 +66,10 @@ function FavoriteLevel({ level, userID, isFavorite }: { level: GetFavoriteLevels
         mutationFn: () => APIClient.delete(`/user/${session.user?.ID}/${isFavorite ? 'favorites' : 'least-favorites'}`, { data: { levelID: level.ID } }),
         onSuccess: () => toast.success('Removed level'),
     });
-    const navigate = useNavigate();
     const openAddListLevelModal = useAddListLevelModal();
 
     const onContextMenu = useContextMenu([
-        { text: 'Go to level', onClick: () => navigate(`/level/${level.ID}`) },
+        { text: 'Go to level', to: `/level/${level.ID}` },
         { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, level.ID), requireSession: true },
         { type: 'divider', userID },
         { type: 'danger', text: 'Remove', onClick: () => deleteMutation.mutate(), userID },

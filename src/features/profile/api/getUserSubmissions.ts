@@ -7,6 +7,7 @@ export type UserSubmission = {
     Rating: Submission['Rating'];
     Enjoyment: Submission['Enjoyment'];
     Proof: Submission['Proof'];
+    DateAdded: Submission['DateAdded'];
     Level: {
         ID: number;
         Rating: number | null;
@@ -29,7 +30,7 @@ export type UserSubmission = {
 
 export interface GetUserSubmissionsResponses {
     total: number;
-    limit: number,
+    limit: number;
     page: number;
     submissions: UserSubmission[];
 }
@@ -44,7 +45,21 @@ export enum Sorts {
     RECENCY = 'recency',
 }
 
-export async function getUserSubmissions({ userID, page = 0, name, sort, sortDirection, onlyIncomplete }: { userID: number, page?: number, name?: string, sort: Sorts, sortDirection: string, onlyIncomplete?: boolean }) {
+export async function getUserSubmissions({
+    userID,
+    page = 0,
+    name,
+    sort,
+    sortDirection,
+    onlyIncomplete,
+}: {
+    userID: number;
+    page?: number;
+    name?: string;
+    sort: Sorts;
+    sortDirection: string;
+    onlyIncomplete?: boolean;
+}) {
     const res = await APIClient.get<GetUserSubmissionsResponses>(`/user/${userID}/submissions`, {
         params: {
             page,
