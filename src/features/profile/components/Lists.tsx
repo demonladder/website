@@ -6,6 +6,7 @@ import useSession from '../../../hooks/useSession';
 import { MenuContext } from '../../../components/ui/menuContext/MenuContext';
 import Heading2 from '../../../components/headings/Heading2';
 import { useUserLists } from '../hooks/useUserLists';
+import { useInView } from 'react-intersection-observer';
 
 interface Props {
     userID: number;
@@ -13,13 +14,16 @@ interface Props {
 
 export default function Lists({ userID }: Props) {
     const openDeleteListModal = useDeleteListModal();
+    const { ref, inView } = useInView();
 
     const navigate = useNavigate();
     const session = useSession();
 
     const lookingAtOwnPage = userID === session.user?.ID;
 
-    const { data: lists } = useUserLists(userID);
+    const { data: lists } = useUserLists(userID, {
+        enabled: inView,
+    });
 
     const menuContext = useContext(MenuContext);
 
@@ -40,7 +44,7 @@ export default function Lists({ userID }: Props) {
     }, [menuContext, navigate, openDeleteListModal, session.user?.ID, userID]);
 
     return (
-        <section className='mt-6'>
+        <section className='mt-6' ref={ref}>
             <Heading2 id='lists'>Lists</Heading2>
             {(lists?.length ?? 0) > 0
                 ? (
