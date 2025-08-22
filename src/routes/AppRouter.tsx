@@ -64,6 +64,7 @@ import FavoriteLevels from '../features/profile/components/LevelPreferences';
 import Rankings from '../features/profile/components/Rankings';
 import { listLoader } from '../features/list/list.loader';
 import { QueryClient } from '@tanstack/react-query';
+import { levelLoader } from '../features/level/level.loader';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
@@ -78,7 +79,7 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
                 <Route path='pack/78' element={<CrossroadPack />} />
                 <Route path='pack/:packID' element={<PackOverview />} />
                 <Route path='staff' element={<Staff />} />
-                <Route path='level/:levelID' element={<LevelPage />} />
+                <Route path='level/:levelID' element={<LevelPage />} loader={levelLoader(queryClient)} />
                 <Route path='login' element={<Login />} />
                 <Route path='signup' element={<SignUp />} />
                 <Route path='profile' loader={profileLoader(queryClient)} />

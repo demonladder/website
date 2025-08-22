@@ -1,14 +1,11 @@
-import { useParams } from 'react-router';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useLoaderData } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
 import { difficultyToImgSrc } from '../../utils/difficultyToImgSrc';
-import { getLevel } from './api/getLevel';
 import IDButton from '../../components/IDButton';
 import Packs from './components/Packs';
 import Submissions from './components/Submissions';
-import { AxiosError } from 'axios';
-import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import TagBox from './components/TagBox';
 import RatingGraph from './components/RatingGraph';
 import Showcase from './components/Showcase';
@@ -25,6 +22,7 @@ import useSession from '../../hooks/useSession';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import useAddListLevelModal from '../../hooks/modals/useAddListLevelModal';
+import { FullLevel } from '../../api/types/compounds/FullLevel';
 
 const levelLengths = {
     1: 'Tiny',
@@ -36,17 +34,12 @@ const levelLengths = {
 };
 
 export default function LevelPage() {
+    const level = useLoaderData<FullLevel>();
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useQueryParam('twoPlayer', withDefault(BooleanParam, false));
     const [showExtra, setShowExtra] = useState(false);
-    
+
     const openSubmitModal = useSubmitModal();
     const openAddListLevelModal = useAddListLevelModal();
-
-    const levelID = parseInt(useParams().levelID ?? '0');
-    const { status, data: level, error } = useQuery({
-        queryKey: ['level', levelID],
-        queryFn: () => getLevel(levelID),
-    });
 
     const session = useSession();
     const addFavoriteMutation = useMutation({
@@ -63,28 +56,6 @@ export default function LevelPage() {
             setShowExtra(false);
         },
     });
-
-    if (status === 'pending') {
-        return <Page><FloatingLoadingSpinner /></Page>;
-    }
-
-    if (status === 'error') {
-        if (error instanceof AxiosError) {
-            if (error.response?.status === 404) {
-                return (
-                    <Page>
-                        <Heading1>404: Level not found!</Heading1>
-                    </Page>
-                );
-            }
-        }
-
-        return (
-            <Page>
-                <Heading1>An error ocurred</Heading1>
-            </Page>
-        );
-    }
 
     if (level === null) return null;
 
@@ -116,9 +87,9 @@ export default function LevelPage() {
                     {showExtra &&
                         <div className='absolute min-w-max right-0 bg-theme-900 border border-theme-400 round:rounded-lg'>
                             <ul className='p-1'>
-                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addFavoriteMutation.mutate(levelID)}>Add favorite</button></li>
-                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addLeastFavoriteMutation.mutate(levelID)}>Add least favorite</button></li>
-                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => session.user && openAddListLevelModal(session.user.ID, levelID)}>Add to list</button></li>
+                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addFavoriteMutation.mutate(level.ID)}>Add favorite</button></li>
+                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addLeastFavoriteMutation.mutate(level.ID)}>Add least favorite</button></li>
+                                <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => session.user && openAddListLevelModal(session.user.ID, level.ID)}>Add to list</button></li>
                             </ul>
                         </div>
                     }
@@ -189,7 +160,7 @@ export default function LevelPage() {
             <TagBox level={level} />
             <Submissions level={level} showTwoPlayerStats={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
             <RatingGraph levelMeta={level.Meta} twoPlayer={showTwoPlayerStats} setShowTwoPlayerStats={setShowTwoPlayerStats} />
-            <Packs levelID={levelID} meta={level.Meta} />
+            <Packs levelID={level.ID} meta={level.Meta} />
             <Showcase level={level} />
             <ExternalLinks level={level} />
         </Page>
