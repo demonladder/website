@@ -69,47 +69,45 @@ import { levelLoader } from '../features/level/level.loader';
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
         <Route element={<MainLayout />} errorElement={<ErrorElement />}>
-            <Route errorElement={<ErrorElement />}>
-                <Route path='/' element={<Home />} />
-                <Route path='search' element={<Search />} />
-                <Route path='platformerList' element={<PlatformerList />} />
-                <Route path='references' element={<References />} />
-                <Route path='packs' element={<Packs />} />
-                <Route path='about' element={<About />} />
-                <Route path='pack/78' element={<CrossroadPack />} />
-                <Route path='pack/:packID' element={<PackOverview />} />
-                <Route path='staff' element={<Staff />} />
-                <Route path='level/:levelID' element={<LevelPage />} loader={levelLoader(queryClient)} />
-                <Route path='login' element={<Login />} />
-                <Route path='signup' element={<SignUp />} />
-                <Route path='profile' loader={profileLoader(queryClient)} />
-                <Route path='profile/:userID' element={<Profile />} loader={profileLoader(queryClient)}>
-                    <Route path='favorites' element={<FavoriteLevels />} />
-                    <Route path='rankings' element={<Rankings />} />
-                </Route>
-                <Route path='notifications' element={<Notifications />} />
-                <Route path='game' element={<Game />} />
-                <Route path='settings' element={<Settings />}>
-                    <Route path='account' element={<AccountSettings />} />
-                    <Route path='site' element={<ClientSiteSettings />} />
-                    <Route path='profile' element={<ProfileSettings />} />
-                    <Route path='submission' element={<SubmissionSettings />} />
-                    <Route path='appearance' element={<Appearance />} />
-                    <Route path='developer' element={<Developer />} />
-                </Route>
-                <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
-                <Route path='list/:listID' element={<List />} loader={listLoader(queryClient)} />
-                <Route path='forgotPassword' element={<ForgotPassword />} />
-                <Route path='generators' element={<Suspense fallback={<FloatingLoadingSpinner />}><Generators /></Suspense>}>
-                    <Route path='alphabet' element={<Alphabet />} />
-                    <Route path='roulette' element={<Roulette />} />
-                    <Route path='reverseRoulette' element={<ReverseRoulette />} />
-                    <Route path='tierRoulette' element={<TierRoulette />} />
-                    <Route path='decathlon' element={<Decathlon />} />
-                </Route>
-                <Route path='bulkSubmit' element={<BulkSubmit />} />
-                <Route path='changeLogs' element={<Changelogs />} />
+            <Route path='/' element={<Home />} />
+            <Route path='search' element={<Search />} />
+            <Route path='platformerList' element={<PlatformerList />} />
+            <Route path='references' element={<References />} />
+            <Route path='packs' element={<Packs />} />
+            <Route path='about' element={<About />} />
+            <Route path='pack/78' element={<CrossroadPack />} />
+            <Route path='pack/:packID' element={<PackOverview />} />
+            <Route path='staff' element={<Staff />} />
+            <Route path='level/:levelID' element={<LevelPage />} loader={levelLoader(queryClient)} />
+            <Route path='login' element={<Login />} />
+            <Route path='signup' element={<SignUp />} />
+            <Route path='profile' loader={profileLoader(queryClient)} />
+            <Route path='profile/:userID' element={<Profile />} loader={profileLoader(queryClient)}>
+                <Route path='favorites' element={<FavoriteLevels />} />
+                <Route path='rankings' element={<Rankings />} />
             </Route>
+            <Route path='notifications' element={<Notifications />} />
+            <Route path='game' element={<Game />} />
+            <Route path='settings' element={<Settings />}>
+                <Route path='account' element={<AccountSettings />} />
+                <Route path='site' element={<ClientSiteSettings />} />
+                <Route path='profile' element={<ProfileSettings />} />
+                <Route path='submission' element={<SubmissionSettings />} />
+                <Route path='appearance' element={<Appearance />} />
+                <Route path='developer' element={<Developer />} />
+            </Route>
+            <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
+            <Route path='list/:listID' element={<List />} loader={listLoader(queryClient)} />
+            <Route path='forgotPassword' element={<ForgotPassword />} />
+            <Route path='generators' element={<Suspense fallback={<FloatingLoadingSpinner />}><Generators /></Suspense>}>
+                <Route path='alphabet' element={<Alphabet />} />
+                <Route path='roulette' element={<Roulette />} />
+                <Route path='reverseRoulette' element={<ReverseRoulette />} />
+                <Route path='tierRoulette' element={<TierRoulette />} />
+                <Route path='decathlon' element={<Decathlon />} />
+            </Route>
+            <Route path='bulkSubmit' element={<BulkSubmit />} />
+            <Route path='changeLogs' element={<Changelogs />} />
         </Route>,
         <Route path='/mod' element={<Suspense fallback={<FloatingLoadingSpinner />}><AdminLayout /></Suspense>} loader={ModLoader} errorElement={<ErrorElement />}>
             <Route index element={<ModIndex />} />
