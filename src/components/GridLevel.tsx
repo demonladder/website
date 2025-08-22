@@ -6,6 +6,7 @@ import { Difficulties, Rarity } from '../features/level/types/LevelMeta';
 import { IDMapper } from '../utils/IDMapper';
 import { useApp } from '../context/app/useApp';
 import YesTick from './images/YesTick';
+import './GridLevel.css';
 
 interface GridProps {
     ID: number;
@@ -17,16 +18,17 @@ interface GridProps {
     difficulty: Difficulties;
     rarity: Rarity;
     completed?: boolean;
-    inPack: boolean;
+    inPack?: boolean;
+    date?: string;
     onContextMenu?: (e: React.MouseEvent) => void;
 }
 
-export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, rarity, completed = false, inPack, onContextMenu }: GridProps) {
+export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, rarity, completed = false, inPack = false, date, onContextMenu }: GridProps) {
     const navigate = useNavigate();
     const app = useApp();
 
     function handleClick() {
-        navigate(`/level/${ID}`);
+        void navigate(`/level/${ID}`);
     }
 
     function handleProofClick(e: React.MouseEvent) {
@@ -40,14 +42,11 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
     return (
-        <div className='relative group cursor-pointer' onClick={handleClick} onContextMenu={onContextMenu}>
-            {app.enableLevelThumbnails &&
-                <img className='absolute size-full inset-0 object-cover round:rounded-xl object-center transition-all opacity-40 group-hover:opacity-80 focus-visible:opacity-80 level-thumbnail' src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}`} loading='lazy' />
-            }
-            <div className={'flex justify-between min-h-40' + (app.enableLevelThumbnails ? '' : (' round:rounded-xl ' + (completed && app.highlightCompleted ? 'bg-gradient-to-br from-green-600 via-green-500 to-green-600' : 'bg-theme-600')))}>
-                <div className='z-10 p-2 flex flex-col gap-2 justify-between'>
+        <div className='grid-level relative group cursor-pointer min-h-40 round:rounded-xl' onClick={handleClick} onContextMenu={onContextMenu} style={{ backgroundImage: app.enableLevelThumbnails ? `linear-gradient(rgba(0, 0, 0, var(--image-opacity)), rgba(0, 0, 0, var(--image-opacity))), url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")` : undefined }}>
+            <div className={'p-2 ' + (app.enableLevelThumbnails ? '' : (' round:rounded-xl ' + (completed && app.highlightCompleted ? 'bg-gradient-to-br from-green-600 via-green-500 to-green-600' : 'bg-theme-600')))}>
+                <div className='flex justify-between'>
                     <div>
-                        <p><b className={'text-xl text-shadow-lg' + (completed && app.highlightCompleted ? ' text-green-400 text-shadow-green-200/20' : '')}><Copy text={ID.toString()} /> {name}</b>
+                        <p><b className={'text-xl text-shadow-lg break-all' + (completed && app.highlightCompleted ? ' text-green-400 text-shadow-green-200/20' : '')}><Copy text={ID.toString()} /> {name}</b>
                             {completed && app.highlightCompleted &&
                                 <YesTick className='inline-block ms-1 mb-1 size-6' />
                             }
@@ -56,7 +55,12 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                             <p>by {creator}</p>
                         }
                     </div>
-                    <div className='flex gap-1 items-center'>
+                    <div className='self-center'>
+                        <DemonFace diff={difficulty} rarity={rarity} size={DemonLogoSizes.MEDIUM} />
+                    </div>
+                </div>
+                <div className='flex justify-between'>
+                    <div className='flex gap-1'>
                         <p><b className={`px-2 py-1 text-xl shadow rounded tier-${roundedRating}`}>{rating?.toFixed() ?? '-'}</b></p>
                         <p><b className={`px-2 py-1 text-xl shadow rounded enj-${roundedEnjoyment}`}>{enjoyment?.toFixed() ?? '-'}</b></p>
                         {proof &&
@@ -66,11 +70,12 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                             <i className='bx bx-box text-2xl p-1' title='This level is in a pack' />
                         }
                     </div>
-                </div>
-                <div className='self-center'>
-                    <DemonFace diff={difficulty} rarity={rarity} size={DemonLogoSizes.MEDIUM} />
+                    {date &&
+                        <p className='text-shadow'>{new Date(date.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleDateString()}</p>
+                    }
                 </div>
             </div>
+            <div></div>
         </div>
     );
 }

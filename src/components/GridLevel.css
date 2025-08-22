@@ -1,0 +1,11 @@
+.grid-level {
+    --image-opacity: 0.4;
+
+    background-size: cover;
+    background-position: center;
+    transition: all 0.3s;
+
+    &:hover {
+        --image-opacity: 0.2;
+    }
+}
