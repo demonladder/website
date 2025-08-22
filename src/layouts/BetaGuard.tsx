@@ -1,4 +1,3 @@
-import { Outlet } from 'react-router';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { TextInput } from '../components/Input';
 import { PrimaryButton } from '../components/ui/buttons/PrimaryButton';
@@ -12,7 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 
-export default function BetaGuard() {
+export default function BetaGuard({ children }: { children?: React.ReactNode }) {
     const [accessToken, setAccessToken] = useLocalStorage<string>('accessToken');
     const [inputValue, setInputValue] = useState(accessToken ?? '');
     const [hasAccess, setHasAccess] = useState(false);
@@ -45,7 +44,7 @@ export default function BetaGuard() {
                 mutation.mutate(accessToken);
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (shouldProtect && !hasAccess) {
@@ -63,5 +62,5 @@ export default function BetaGuard() {
         );
     }
 
-    return <Outlet />;
+    return children;
 }

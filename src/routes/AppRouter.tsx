@@ -59,7 +59,6 @@ import EditRole from '../features/admin/roles/EditRole';
 import MainLayout from '../layouts/MainLayout';
 import SubmissionMerge from '../features/admin/submissionMerging/SubmissionMerge';
 import AdminLayout from '../features/admin/AdminLayout';
-import BetaGuard from '../layouts/BetaGuard';
 import AuditLogs from '../features/admin/audit-logs/AuditLogs';
 import FavoriteLevels from '../features/profile/components/LevelPreferences';
 import Rankings from '../features/profile/components/Rankings';
@@ -68,8 +67,8 @@ import { QueryClient } from '@tanstack/react-query';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
-        <Route element={<BetaGuard />}>
-            <Route element={<MainLayout />} errorElement={<ErrorElement />}>
+        <Route element={<MainLayout />} errorElement={<ErrorElement />}>
+            <Route errorElement={<ErrorElement />}>
                 <Route path='/' element={<Home />} />
                 <Route path='search' element={<Search />} />
                 <Route path='platformerList' element={<PlatformerList />} />
@@ -109,32 +108,32 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
                 </Route>
                 <Route path='bulkSubmit' element={<BulkSubmit />} />
                 <Route path='changeLogs' element={<Changelogs />} />
-            </Route>,
-            <Route path='/mod' element={<Suspense fallback={<FloatingLoadingSpinner />}><AdminLayout /></Suspense>} loader={ModLoader} errorElement={<ErrorElement />}>
-                <Route index element={<ModIndex />} />
-                <Route path='audit-logs' element={<AuditLogs />} />
-                <Route path='beta' element={<Beta />} />
-                <Route path='queue' element={<Queue />} />
-                <Route path='references' element={<EditReferences />} />
-                <Route path='editPack' element={<EditPack />} />
-                <Route path='addSubmission' element={<AddSubmission />} />
-                <Route path='editSubmission/:submissionID' element={<EditSubmission />} />
-                <Route path='manageUser' element={<ManageUser />}>
-                    <Route path=':userID' element={<ManageUserContent />} />
-                </Route>
-                <Route path='createUser' element={<CreateUser />} />
-                <Route path='deleteUser' element={<DeleteUser />} />
-                <Route path='signupLinks' element={<SignupLink />} />
-                <Route path='verification' element={<Verification />} />
-                <Route path='addLevel' element={<AddLevel />} />
-                <Route path='editLevel' element={<EditLevel />} />
-                <Route path='editTags' element={<EditTags />} />
-                <Route path='siteSettings' element={<SiteSettings />} />
-                <Route path='debugging' element={<Debugging />} />
-                <Route path='roles' element={<Roles />} />
-                <Route path='roles/:roleID' element={<EditRole />} />
-                <Route path='mergeSubmissions' element={<SubmissionMerge />} />
             </Route>
+        </Route>,
+        <Route path='/mod' element={<Suspense fallback={<FloatingLoadingSpinner />}><AdminLayout /></Suspense>} loader={ModLoader} errorElement={<ErrorElement />}>
+            <Route index element={<ModIndex />} />
+            <Route path='audit-logs' element={<AuditLogs />} />
+            <Route path='beta' element={<Beta />} />
+            <Route path='queue' element={<Queue />} />
+            <Route path='references' element={<EditReferences />} />
+            <Route path='editPack' element={<EditPack />} />
+            <Route path='addSubmission' element={<AddSubmission />} />
+            <Route path='editSubmission/:submissionID' element={<EditSubmission />} />
+            <Route path='manageUser' element={<ManageUser />}>
+                <Route path=':userID' element={<ManageUserContent />} />
+            </Route>
+            <Route path='createUser' element={<CreateUser />} />
+            <Route path='deleteUser' element={<DeleteUser />} />
+            <Route path='signupLinks' element={<SignupLink />} />
+            <Route path='verification' element={<Verification />} />
+            <Route path='addLevel' element={<AddLevel />} />
+            <Route path='editLevel' element={<EditLevel />} />
+            <Route path='editTags' element={<EditTags />} />
+            <Route path='siteSettings' element={<SiteSettings />} />
+            <Route path='debugging' element={<Debugging />} />
+            <Route path='roles' element={<Roles />} />
+            <Route path='roles/:roleID' element={<EditRole />} />
+            <Route path='mergeSubmissions' element={<SubmissionMerge />} />
         </Route>,
     ],
 ));

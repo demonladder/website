@@ -1,27 +1,25 @@
-import { useNavigate } from 'react-router';
-import { SecondaryButton } from './ui/buttons/SecondaryButton';
-import Header from '../layouts/header/Header';
-import Footer from '../layouts/footer/Footer';
+import { Link, useRouteError } from 'react-router';
 import Page from './Page';
 import Heading1 from './headings/Heading1';
+import TonalButton from './input/buttons/tonal/TonalButton';
 
 export default function ErrorElement() {
-    const navigate = useNavigate();
+    const error = useRouteError();
 
     return (
-        <div className='relative flex flex-col'>
-            <title>Oops, an error occured</title>
-            <Header />
-            <Page>
-                <div className='grid place-items-center' style={{ height: '100vh' }}>
+        <Page title='Oops, an error occured'>
+            <div className='grid place-items-center'>
+                <div className='flex flex-col gap-4 items-center'>
+                    <Heading1>Shoot dang, something went wrong!</Heading1>
                     <div className='text-center'>
-                        <Heading1>Shoot dang, something went wrong!</Heading1>
-                        <p className='text-lg'>Is this where people typically say "404 not found"?</p>
-                        <SecondaryButton onClick={() => navigate('/')}>Home</SecondaryButton>
+                        <p className='text-lg'>There was an error trying to load the page.</p>
+                        {error instanceof Error &&
+                            <p>Error message: <b>{error.message}</b></p>
+                        }
                     </div>
+                    <Link to='/'><TonalButton size='xs'>Home</TonalButton></Link>
                 </div>
-            </Page>
-            <Footer />
-        </div>
+            </div>
+        </Page>
     );
 }
