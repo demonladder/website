@@ -1,4 +1,4 @@
-import { Link, Outlet, /*NavLink as RRNavLink,*/ useNavigate, useParams } from 'react-router';
+import { Link, Outlet, useLoaderData, /*NavLink as RRNavLink,*/ useNavigate } from 'react-router';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Submissions from './components/Submissions';
 import UserRoleIcon from '../../components/UserRoleIcon';
@@ -20,9 +20,11 @@ import { useReportUserModal } from '../../hooks/modals/useReportUserModal';
 import { useMemo } from 'react';
 import LevelPreferences from './components/LevelPreferences';
 import RankingsWrapper from './components/Rankings';
+import User from '../../api/types/User';
 
 export default function Profile() {
-    const userID = parseInt(useParams().userID ?? '0') || 0;
+    const loadedData = useLoaderData<User>();
+    const userID = loadedData.ID;
     const openReportUserModal = useReportUserModal();
 
     const { status, data: userData, error } = useUserQuery(userID);
@@ -58,15 +60,10 @@ export default function Profile() {
         return <Page><Heading1>An error ocurred</Heading1></Page>;
     }
 
-    if (userData === undefined) return <Page><p>No user data</p></Page>;
-
     const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png?size=80`;
 
     return (
-        <Page onContextMenu={contextMenu} key={userID}>
-            <title>{'GDDL - ' + userData.Name}</title>
-            <meta property='og:title' content={userData.Name} />
-            <meta property='og:url' content={`https://gdladder.com/profile/${userID}`} />
+        <Page onContextMenu={contextMenu} title={`GDDL - ${loadedData.Name}`} key={userID}>
             <div className='mb-2 flex gap-4'>
                 <object type='image/png' data={pfp} className='inline size-20 rounded-full'>
                     <i className='bx bxs-user-circle text-[80px]' />

@@ -82,8 +82,8 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
                 <Route path='level/:levelID' element={<LevelPage />} />
                 <Route path='login' element={<Login />} />
                 <Route path='signup' element={<SignUp />} />
-                <Route path='profile' loader={profileLoader} />
-                <Route path='profile/:userID' element={<Profile />}>
+                <Route path='profile' loader={profileLoader(queryClient)} />
+                <Route path='profile/:userID' element={<Profile />} loader={profileLoader(queryClient)}>
                     <Route path='favorites' element={<FavoriteLevels />} />
                     <Route path='rankings' element={<Rankings />} />
                 </Route>

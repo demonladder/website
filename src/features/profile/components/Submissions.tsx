@@ -102,6 +102,7 @@ function InlineList({ levels, user }: { levels: (UserSubmission)[], user: User }
                 { type: 'divider' },
                 { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof, icon: <i className='bx bx-link-external' /> },
                 { text: 'Edit', userID: user.ID, onClick: () => openSubmitModal(submission.Level) },
+                { text: 'Edit (staff)', onClick: () => navigate(`/mod/editSubmission/${submission.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
                 { text: 'Delete', type: 'danger', userID: user.ID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(user.ID, submission.Level.ID, submission.ID, user.Name), icon: <i className='bx bx-trash' /> },
             ],
         });
@@ -143,6 +144,7 @@ function GridList({ levels, user }: { levels: UserSubmission[], user: User }) {
                 { type: 'divider' },
                 { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof, icon: <i className='bx bx-link-external' /> },
                 { text: 'Edit', userID: user.ID, onClick: () => openSubmitModal(submission.Level) },
+                { text: 'Edit (staff)', onClick: () => navigate(`/mod/editSubmission/${submission.ID}`), permission: PermissionFlags.MANAGE_SUBMISSIONS },
                 { text: 'Delete', type: 'danger', userID: user.ID, permission: PermissionFlags.MANAGE_SUBMISSIONS, onClick: () => openDeleteSubmissionModal(user.ID, submission.Level.ID, submission.ID, user.Name), icon: <i className='bx bx-trash' /> },
             ],
         });
