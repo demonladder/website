@@ -32,6 +32,17 @@ export default function usePackSearch({ ID }: Props) {
         activePack,
         searchQuery: search,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox<ListType> search={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({ ...d, label: d.Name })) || []} onDelayedChange={setSearchQuery} setResult={setActivePack} status={status} invalid={isInvalid} />),
+        SearchBox: (<SearchBox<ListType>
+            getLabel={(r) => r.Name}
+            getName={(r) => r.Name}
+            value={search}
+            onChange={setSearch}
+            onDebouncedChange={setSearchQuery}
+            id={ID}
+            list={data?.map((d) => ({ ...d, label: d.Name })) || []}
+            onResult={setActivePack}
+            status={status}
+            invalid={isInvalid}
+        />),
     };
 }

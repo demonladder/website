@@ -38,23 +38,20 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                     CountryCode: user.CountryCode,
                     Pronouns: user.Pronouns,
                 });
-                setSearch(user.Name);
             }).catch(console.error);
         }
     }, [userID]);
 
     useEffect(() => {
         setIsInvalid(false);
-    }, [search, activeUser]);
+    }, [activeUser]);
 
     const clear = useCallback(() => {
-        setSearch('');
         setSearchQuery('');
         setActiveUser(undefined);
     }, []);
 
     const setQuery = useCallback((value: string) => {
-        setSearch(value);
         setSearchQuery(value);
     }, []);
 
@@ -68,11 +65,11 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         setQuery,
         clear,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox search={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onSearchChange={setSearch} id={ID} list={data?.map((d) => ({
+        SearchBox: (<SearchBox value={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onChange={setSearch} onDebouncedChange={setSearchQuery} id={ID} list={data?.map((d) => ({
             ...d,
             label: d.Name,
-        })) || []} onDelayedChange={setSearchQuery} setResult={onSetResult} status={status} placeholder='Search user...' invalid={isInvalid} />),
-    }), [activeUser, setQuery, clear, search, ID, data, onSetResult, status, isInvalid]);
+        })) || []} onResult={onSetResult} status={status} placeholder='Search user...' invalid={isInvalid} />),
+    }), [activeUser, setQuery, clear, search, setSearch, ID, data, onSetResult, status, isInvalid]);
 
     return result;
 }

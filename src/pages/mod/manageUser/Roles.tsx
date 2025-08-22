@@ -47,7 +47,18 @@ export default function Roles({ user }: { user: UserResponse }) {
         <section className='bg-theme-700 border border-theme-outline p-4 round:rounded-xl'>
             <Heading3>Roles</Heading3>
             <div className='mb-4'>
-                <SearchBox search={addFilter} onSearchChange={setAddFilter} list={unacquiredRoles} setResult={onAddRole} getLabel={(r) => `${r.Icon ?? ''} ${r.Name}`} getName={(r) => r.Name} overWriteInput={false} status='ready' placeholder='Role' id={manageUserAddRoleSearchBox} />
+                <SearchBox
+                    value={addFilter}
+                    onChange={setAddFilter}
+                    list={unacquiredRoles}
+                    onResult={onAddRole}
+                    getLabel={(r) => `${r.Icon ?? ''} ${r.Name}`}
+                    getName={(r) => r.Name}
+                    overWriteInput={false}
+                    status='ready'
+                    placeholder='Role'
+                    id={manageUserAddRoleSearchBox}
+                />
             </div>
             {rolesQuery.isPending && <InlineLoadingSpinner />}
             {userRoles !== undefined &&

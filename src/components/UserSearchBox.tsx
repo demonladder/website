@@ -15,7 +15,7 @@ interface UserType extends TinyUser {
 }
 
 export default function UserSearchBox({ setResult, id, invalid = false }: Props) {
-    const [search, setSearch] = useState('');
+    const [text, setText] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
     const { status, data: users = [] } = useQuery({
@@ -23,5 +23,17 @@ export default function UserSearchBox({ setResult, id, invalid = false }: Props)
         queryFn: () => SearchUser(searchQuery),
     });
 
-    return <SearchBox<UserType> search={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onSearchChange={setSearch} id={id} list={users.map((d) => ({...d, label: d.Name}))} onDelayedChange={setSearchQuery} setResult={setResult} status={status} placeholder='Search user...' invalid={invalid} />;
+    return <SearchBox<UserType>
+        getLabel={(r) => r.Name}
+        getName={(r) => r.Name}
+        value={text}
+        onChange={setText}
+        onDebouncedChange={setSearchQuery}
+        id={id}
+        list={users.map((d) => ({ ...d, label: d.Name }))}
+        onResult={setResult}
+        status={status}
+        placeholder='Search user...'
+        invalid={invalid}
+    />;
 }

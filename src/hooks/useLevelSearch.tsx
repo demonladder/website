@@ -39,7 +39,7 @@ export default function useLevelSearch({ ID, required = false, options = {} }: P
 
     useEffect(() => {
         if (!defaultData) return;
-        
+
         if (ref.current) ref.current.value = defaultData?.Meta.Name;
         setSearch(defaultData?.Meta.Name);
         setActiveLevel(defaultData);
@@ -61,7 +61,19 @@ export default function useLevelSearch({ ID, required = false, options = {} }: P
         setQuery,
         clear,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox<SearchLevelResponse> search={search} getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Publisher?.name}`} getName={(r) => r.Meta.Name} onSearchChange={setSearch} id={ID} list={data?.levels ?? []} onDelayedChange={setSearchQuery} setResult={setActiveLevel} status={status} invalid={isInvalid || (required && !activeLevel)} placeholder={defaultData?.Meta.Name} />),
+        SearchBox: (<SearchBox<SearchLevelResponse>
+            getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Publisher?.name}`}
+            getName={(r) => r.Meta.Name}
+            value={search}
+            onChange={setSearch}
+            onDebouncedChange={setSearchQuery}
+            id={ID}
+            list={data?.levels ?? []}
+            onResult={setActiveLevel}
+            status={status}
+            invalid={isInvalid || (required && !activeLevel)}
+            placeholder={defaultData?.Meta.Name}
+        />),
         value: search,
     };
 }

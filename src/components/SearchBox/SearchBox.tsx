@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import SearchResult from './SearchResult';
+import { useEventListener } from 'usehooks-ts';
 import { TextInput } from '../Input';
 
 interface Props<T> {
-    search: string;
-    onSearchChange: (search: string) => void;
+    value?: string;
+    onChange: (search: string) => void;
+    onDebouncedChange?: (search: string) => void;
     list: T[];
-    onDelayedChange?: (a: string) => void;
-    setResult: (result: T | undefined) => void;
+    onResult: (result: T | undefined) => void;
     status: string;
     id?: string;
     placeholder?: string;
@@ -22,42 +23,35 @@ interface Props<T> {
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox<T>({ search, onSearchChange, list, getLabel, getName, onDelayedChange, setResult, status, id, placeholder = 'Search...', invalid = false, overWriteInput = true }: Props<T>) {
+export default function SearchBox<T>({ value = '', onChange: setChange, onDebouncedChange, list, getLabel, getName, onResult: setResult, status, id, placeholder = 'Search...', invalid = false, overWriteInput = true }: Props<T>) {
     const [visible, setVisible] = useState(false);  // State of the search results
-
-    // When the search changes, wait a bit before telling the parent
-    const [timer, setTimer] = useState<NodeJS.Timeout>();
-    function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setResult(undefined);
-
-        onSearchChange(e.target.value);
-
-        if (onDelayedChange === undefined) return;
-        clearTimeout(timer);
-        setTimer(setTimeout(() => {
-            onDelayedChange(e.target.value);
-        }, 300));
-    }
+    const timer = useRef<NodeJS.Timeout>(null);
 
     useEffect(() => {
-        function onClick(e: MouseEvent) {
-            if (id === undefined) return;
+        if (!onDebouncedChange) return;
 
-            if (e.target !== document.getElementById(id)) {
-                setVisible(false);
-            }
-        }
-
-        document.addEventListener('click', onClick);
+        if (timer.current) clearTimeout(timer.current);
+        timer.current = setTimeout(() => {
+            setResult(undefined);
+            onDebouncedChange(value);
+        }, 500);
 
         return () => {
-            document.removeEventListener('click', onClick);
+            if (timer.current) clearTimeout(timer.current);
         };
-    }, [id]);
+    }, [onDebouncedChange, setChange, setResult, value]);
+
+    useEventListener('click', (e) => {
+        if (id === undefined) return;
+
+        if (e.target !== document.getElementById(id)) {
+            setVisible(false);
+        }
+    });
 
     // When the user clicks a result, set search state and pass the clicked result to parent
     function handleClick(r: T) {
-        if (overWriteInput) onSearchChange(getName(r));
+        if (overWriteInput) setChange(getName(r));
         setResult(r);
         setVisible(false);
     }
@@ -70,7 +64,7 @@ export default function SearchBox<T>({ search, onSearchChange, list, getLabel, g
 
     return (
         <div>
-            <TextInput value={search} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={onChange} onFocus={() => setVisible(true)} invalid={invalid} />
+            <TextInput value={value} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={(e) => setChange(e.target.value)} onFocus={() => setVisible(true)} invalid={invalid} />
             <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-900 p-1 border border-t-0 border-theme-400 text-theme-text round:rounded-b-lg text-base z-10 shadow-2xl'}>
                 {status === 'pending'
                     ? <LoadingSpinner />
