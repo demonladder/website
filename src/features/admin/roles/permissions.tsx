@@ -27,16 +27,27 @@ export const permissions: Permission[] = [
         Flag: PermissionFlags.SKIP_QUEUE,
     },
     {
-        ID: 2,
-        Name: 'Password links',
-        Description: 'Allows users to create sign-up/password reset links.',
-        Flag: PermissionFlags.PASSWORD_LINKS,
-    },
-    {
         ID: 14,
         Name: 'Manage notes',
         Description: 'Allows users to create, delete and edit notes.',
         Flag: PermissionFlags.MANAGE_NOTES,
+    },
+    {
+        ID: 18,
+        Name: 'Signup links',
+        Description: 'Allows users to create, delete and edit notes.',
+        Flag: PermissionFlags.CREATE_SIGNUP_TOKEN,
+    },
+    {
+        ID: 19,
+        Name: 'View audit log',
+        Flag: PermissionFlags.VIEW_AUDIT_LOG,
+    },
+    {
+        ID: 19,
+        Name: 'Manage favorite levels',
+        Description: 'Allows users to add or delete levels from users\' preferences',
+        Flag: PermissionFlags.MANAGE_FAVORITE_LEVELS,
     },
     {
         ID: 11,

@@ -17,4 +17,7 @@ export enum PermissionFlags {
     ADMIN = 1 << 15,
     SKIP_QUEUE = 1 << 16,
     BETA_ACCESS = 1 << 17,
+    CREATE_SIGNUP_TOKEN = 1 << 18,
+    VIEW_AUDIT_LOG = 1 << 19,
+    MANAGE_FAVORITE_LEVELS = 1 << 20,
 }
