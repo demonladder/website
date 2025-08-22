@@ -5,7 +5,7 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ModalProvider from '../context/ModalProvider';
 import Header from './header/Header';
 import NavbarNotificationRenderer from '../context/NavbarNotification/NavbarNotificationRenderer';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigation } from 'react-router';
 import Footer from './footer/Footer';
 import { Suspense, useCallback, useEffect, useRef } from 'react';
 import noise3D from '../utils/noise/noise3D';
@@ -14,6 +14,7 @@ import useResizeObserver from '@react-hook/resize-observer';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 import APIClient from '../api/APIClient';
 import { useApp } from '../context/app/useApp';
+import GlobalSpinner from '../components/GlobalSpinner';
 
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -21,6 +22,8 @@ export default function MainLayout() {
     const points = useRef<{ x: number, y: number }[]>([]);
     const lines = useRef<[number, number][]>([]);
     const app = useApp();
+    const navigation = useNavigation();
+    const isNavigating = Boolean(navigation.location);
 
     const variance = 100;
     const movementSpeed = 0.1;
@@ -170,16 +173,17 @@ export default function MainLayout() {
                     <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
                 }
                 <title>GD Demon Ladder</title>
-                <div ref={containerRef} className={'min-h-dvh relative flex flex-col ' + (app.isRounded ? 'round' : '')}>
+                <div ref={containerRef} className='min-h-dvh relative flex flex-col'>
                     <Header />
                     <NavbarNotificationRenderer />
-                    <div className='flex-grow over text-theme-text'>
-                        <Suspense fallback={<div className='flex justify-center items-center h-screen'><i className='bx bx-loader-alt bx-spin text-4xl' /></div>}>
-                            <Outlet />
-                        </Suspense>
-                    </div>
+                    <Suspense fallback={<div className='flex justify-center items-center h-screen'><i className='bx bx-loader-alt bx-spin text-4xl' /></div>}>
+                        <Outlet />
+                    </Suspense>
                     <Footer />
                 </div>
+                {isNavigating &&
+                    <GlobalSpinner />
+                }
             </ModalProvider>
         </QueryParamProvider>
     );

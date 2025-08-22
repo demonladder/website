@@ -17,7 +17,7 @@ export default function Page({ title, children, onContextMenu, ...props }: Props
     const [imageRoll] = useState(Math.floor(Math.random() * randomImages.length));
 
     return (
-        <main {...props} className='relative py-4'>
+        <main {...props} className='grow relative py-4'>
             {title && <title>{title}</title>}
             {rand < 0.01 &&
                 <img src={randomImages[imageRoll]} className='absolute opacity-[2%] z-10 top-0 left-1/2 -translate-x-1/2 h-full pointer-events-none' />
