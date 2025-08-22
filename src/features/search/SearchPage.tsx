@@ -65,6 +65,11 @@ export default function Search() {
         [QueryParamNames.InPack]: BooleanParam,
     });
 
+    useEffect(() => {
+        setQueryParams(savedFilters);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const { registerShortcut, unregisterShortcut } = useShortcut()!;
     const searchInputRef = useRef<HTMLInputElement | null>(null);
     const scrollToSearchInput = useCallback(() => {
