@@ -2,10 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MenuContext } from './MenuContext';
 import { PermissionFlags } from '../../../features/admin/roles/PermissionFlags';
 import useSession from '../../../hooks/useSession';
+import { Link } from 'react-router';
 
 export interface ButtonData {
     text?: React.ReactNode;
     icon?: React.ReactNode;
+    to?: string;
     onClick?: React.MouseEventHandler;
     type?: 'info' | 'danger' | 'divider';
     disabled?: boolean;
@@ -68,10 +70,16 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                     <ul className='p-1'>{filteredButtons?.map((b) => b.type === 'divider'
                         ? <li key={b.ID} className='bg-theme-500 mx-2 h-0.5 my-1' />
                         : <li key={b.ID}>
-                            <button onClick={(e) => handleClick(e, b)} className={'w-full text-start pe-4 py-1 rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600') + (b.disabled ? ' text-theme-400 line-through pointer-events-none' : '')}>
-                                <span className='inline-block w-4 mx-2'>{b.icon}</span>
-                                {b.text}
-                            </button>
+                            {b.to
+                                ? <Link to={b.to} onClick={() => setMenuData(undefined)} className={'inline-block w-full text-start pe-4 py-1 rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600') + (b.disabled ? ' text-theme-400 line-through pointer-events-none' : '')}>
+                                    <span className='inline-block w-4 mx-2'>{b.icon}</span>
+                                    {b.text}
+                                </Link>
+                                : <button onClick={(e) => handleClick(e, b)} className={'w-full text-start pe-4 py-1 rounded ' + (!(b.type === 'danger') ? 'hover:bg-theme-700' : 'hover:bg-red-600') + (b.disabled ? ' text-theme-400 line-through pointer-events-none' : '')}>
+                                    <span className='inline-block w-4 mx-2'>{b.icon}</span>
+                                    {b.text}
+                                </button>
+                            }
                         </li>,
                     )}</ul>
                 }</div>

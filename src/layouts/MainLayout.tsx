@@ -15,6 +15,7 @@ import useNavbarNotification from '../context/NavbarNotification/useNavbarNotifi
 import APIClient from '../api/APIClient';
 import { useApp } from '../context/app/useApp';
 import GlobalSpinner from '../components/GlobalSpinner';
+import MenuContextProvider from '../components/ui/menuContext/MenuContextContainer';
 
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -167,24 +168,26 @@ export default function MainLayout() {
 
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
-            <ModalProvider>
-                <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to' />
-                {app.enableBackground &&
-                    <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
-                }
-                <title>GD Demon Ladder</title>
-                <div ref={containerRef} className='min-h-dvh relative flex flex-col'>
-                    <Header />
-                    <NavbarNotificationRenderer />
-                    <Suspense fallback={<div className='flex justify-center items-center h-screen'><i className='bx bx-loader-alt bx-spin text-4xl' /></div>}>
-                        <Outlet />
-                    </Suspense>
-                    <Footer />
-                </div>
-                {isNavigating &&
-                    <GlobalSpinner />
-                }
-            </ModalProvider>
+            <MenuContextProvider>
+                <ModalProvider>
+                    <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to' />
+                    {app.enableBackground &&
+                        <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
+                    }
+                    <title>GD Demon Ladder</title>
+                    <div ref={containerRef} className='min-h-dvh relative flex flex-col'>
+                        <Header />
+                        <NavbarNotificationRenderer />
+                        <Suspense fallback={<div className='flex justify-center items-center h-screen'><i className='bx bx-loader-alt bx-spin text-4xl' /></div>}>
+                            <Outlet />
+                        </Suspense>
+                        <Footer />
+                    </div>
+                    {isNavigating &&
+                        <GlobalSpinner />
+                    }
+                </ModalProvider>
+            </MenuContextProvider>
         </QueryParamProvider>
     );
 }
