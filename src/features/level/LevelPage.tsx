@@ -2,7 +2,6 @@ import { useLoaderData } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
-import { difficultyToImgSrc } from '../../utils/difficultyToImgSrc';
 import IDButton from '../../components/IDButton';
 import Packs from './components/Packs';
 import Submissions from './components/Submissions';
@@ -57,19 +56,11 @@ export default function LevelPage() {
         },
     });
 
-    if (level === null) return null;
-
     const rating = showTwoPlayerStats ? level.TwoPlayerRating : (level.Rating ?? level.DefaultRating);
     const enjoyment = showTwoPlayerStats ? level.TwoPlayerEnjoyment : level.Enjoyment;
 
     return (
-        <Page>
-            <title>{`${level.Meta.Name}`}</title>
-            <meta property='og:type' content='website' />
-            <meta property='og:url' content='https://gdladder.com/' />
-            <meta property='og:title' content={level.Meta.Name} />
-            <meta property='og:description' content={`Tier ${rating?.toFixed() ?? '-'}, enjoyment ${enjoyment?.toFixed(2) ?? '-'}\nby ${level.Meta.Publisher?.name ?? 'unknown'}`} />
-            <meta property='og:image' content={difficultyToImgSrc(level.Meta.Difficulty)} />
+        <Page title={`${level.Meta.Name}`}>
             <FAB variant='large' color='primary' onClick={() => openSubmitModal(level)}><i className='bx bx-list-plus' /></FAB>
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>
