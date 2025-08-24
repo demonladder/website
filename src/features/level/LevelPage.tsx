@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router';
+import { Link, useLoaderData } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
@@ -22,6 +22,7 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import useAddListLevelModal from '../../hooks/modals/useAddListLevelModal';
 import { FullLevel } from '../../api/types/compounds/FullLevel';
+import { PermissionFlags } from '../admin/roles/PermissionFlags';
 
 const levelLengths = {
     1: 'Tiny',
@@ -89,6 +90,9 @@ export default function LevelPage() {
                                 <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addFavoriteMutation.mutate(level.ID)}>Add favorite</button></li>
                                 <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addLeastFavoriteMutation.mutate(level.ID)}>Add least favorite</button></li>
                                 <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => session.user && openAddListLevelModal(session.user.ID, level.ID)}>Add to list</button></li>
+                                {session.hasPermission(PermissionFlags.MANAGE_SUBMISSIONS) &&
+                                    <li><Link to={`/mod/edit-level/${level.ID}`}><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700'>Edit</button></Link></li>
+                                }
                             </ul>
                         </div>
                     }

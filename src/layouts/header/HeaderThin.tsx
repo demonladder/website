@@ -15,7 +15,8 @@ export default function HeaderThin() {
     const userSearch = useUserSearch({
         ID: searchID,
         onUserSelect: (user) => {
-            navigate('/profile/' + user.ID);
+            void navigate('/profile/' + user.ID);
+            setNavOpen(false);
         },
     });
     const session = useSession();

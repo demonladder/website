@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
-import LevelTagRequest, { TopTags } from '../../../api/level/tags/LevelTagRequest';
+import { TopTags, getLevelTags } from '../api/getLevelTags';
 import { sendTagVoteRequest } from '../api/SendTagVoteRequest';
 import { toast } from 'react-toastify';
-import GetTagEligibility from '../../../api/level/tags/GetTagEligibility';
+import { getTagEligibility } from '../api/getTagEligibility';
 import TagInfoModal from './TagInfoModal';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import { KeyboardAccessibility } from '../../../utils/KeyboardAccessibility';
@@ -21,12 +21,12 @@ export default function TagBox({ level }: { level: FullLevel }) {
     const queryClient = useQueryClient();
     const { data: levelTags } = useQuery({
         queryKey: ['level', level.ID, 'tags'],
-        queryFn: () => LevelTagRequest(level.ID),
+        queryFn: () => getLevelTags(level.ID),
     });
     const { data: tags, status: tagStatus, fetchStatus: tagFetchStatus } = useTags();
     const { data: voteMeta } = useQuery({
         queryKey: ['level', level.ID, 'tags', 'eligible'],
-        queryFn: () => GetTagEligibility(level.ID),
+        queryFn: () => getTagEligibility(level.ID),
     });
 
     function onVoteChange(tagID: number) {
@@ -43,7 +43,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
     }
 
     const tagsToDisplay = [];
-    const tagOptions: Record<string, string> = { };
+    const tagOptions: Record<string, string> = {};
     if (tags !== undefined) {
         tags.forEach((t) => tagOptions[t.ID] = t.Name);
     }

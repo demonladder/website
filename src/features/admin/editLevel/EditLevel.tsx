@@ -1,66 +1,66 @@
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { NumberInput, TextInput } from '../../../components/Input';
-import useLevelSearch from '../../../hooks/useLevelSearch';
 import { validateIntInputChange } from '../../../utils/validators/validateIntChange';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import UpdateLevel from '../../../api/level/UpdateLevel';
-import useHash from '../../../hooks/useHash';
-import { useMutation } from '@tanstack/react-query';
+import { updateLevel } from './api/updateLevel';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputDescription from '../../../components/form/FormInputDescription';
-import RecalculateStats from '../../../api/level/RecalculateStats';
+import { recalculateLevelStats } from './api/recalculateStats';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import RemoveLevel from '../../../api/level/RemoveLevel';
-import { useLevel } from '../../level/hooks/useLevel';
+import { removeLevel } from './api/removeLevel';
+import { Link, useLoaderData } from 'react-router';
+import Heading1 from '../../../components/headings/Heading1';
+import type { FullLevel } from '../../../api/types/compounds/FullLevel';
 
 export default function EditLevel() {
-    const [hash, setHash] = useHash();
-    const { activeLevel, SearchBox } = useLevelSearch({ ID: 'editLevelSearch', required: true, options: { defaultLevel: parseInt(hash) || null } });
-    const [defaultRating, setDefaultRating] = useState('');
+    const level = useLoaderData<FullLevel>();
+    const [defaultRating, setDefaultRating] = useState(level.DefaultRating?.toString() ?? '');
     const defaultRatingID = useId();
-    const [showcase, setShowcase] = useState('');
+    const [showcase, setShowcase] = useState(level.Showcase ?? '');
     const showcaseID = useId();
     const [confirmRemove, setConfirmRemove] = useState(false);
-
-    const { data: level } = useLevel(activeLevel?.ID ?? null);
-
-    useEffect(() => {
-        setDefaultRating(level?.DefaultRating?.toString() ?? '');
-        setShowcase(level?.Showcase ?? '');
-        if (level) setHash(level.ID.toString());
-        setConfirmRemove(false);
-    }, [activeLevel, setHash, level]);
+    const queryClient = useQueryClient();
 
     function onShowcase(e: React.ChangeEvent<HTMLInputElement>) {
         setShowcase(e.target.value);
     }
 
     const mutation = useMutation({
-        mutationFn: ([levelID, data]: Parameters<typeof UpdateLevel>) => toast.promise(UpdateLevel(levelID, data), {
+        mutationFn: ([levelID, data]: Parameters<typeof updateLevel>) => toast.promise(updateLevel(levelID, data), {
             pending: 'Updating...',
             success: 'Saved!',
             error: renderToastError,
         }),
+        onSuccess: (data) => {
+            level.Showcase = data.Showcase;
+            level.DefaultRating = data.DefaultRating;
+        },
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (levelID: number) => toast.promise(RemoveLevel(levelID), {
+        mutationFn: (levelID: number) => toast.promise(removeLevel(levelID), {
             pending: 'Removing...',
             success: 'Removed!',
             error: renderToastError,
         }),
+        onSuccess: () => {
+            queryClient.removeQueries({
+                queryKey: ['level', level.ID],
+            });
+        },
     });
 
-    function onSubmit() {
-        if (!activeLevel) return;
-        mutation.mutate([activeLevel.ID, { defaultRating, showcase }]);
+    function onSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        mutation.mutate([level.ID, { defaultRating, showcase }]);
     }
 
     const recalculateMutation = useMutation({
-        mutationFn: () => toast.promise(RecalculateStats(activeLevel?.ID ?? 0), {
+        mutationFn: () => toast.promise(recalculateLevelStats(level.ID), {
             pending: 'Recalculating...',
             success: 'Recalculated!',
             error: renderToastError,
@@ -71,23 +71,19 @@ export default function EditLevel() {
     });
 
     function onRemoveLevel() {
-        if (!activeLevel) return;
         if (!confirmRemove) {
             setConfirmRemove(true);
             return;
         }
 
-        deleteMutation.mutate(activeLevel.ID);
+        deleteMutation.mutate(level.ID);
     }
 
     return (
         <div>
-            <h3 className='text-2xl mb-4'>Edit Level</h3>
-            <div>
-                <FormInputLabel>Level:</FormInputLabel>
-                {SearchBox}
-            </div>
-            <div className='mt-4'>
+            <Heading1>Edit Level</Heading1>
+            <p>You're currently editing <Link to={`/level/${level.ID}`}><b>{level.Meta.Name}</b></Link> by {level.Meta.Publisher?.name ?? '(-)'}</p>
+            <form onSubmit={onSubmit} className='mt-4'>
                 <FormGroup>
                     <FormInputLabel htmlFor={defaultRatingID}>Default rating</FormInputLabel>
                     <NumberInput id={defaultRatingID} value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > 35 || parseInt(defaultRating) < 1} />
@@ -106,9 +102,9 @@ export default function EditLevel() {
                     <FormInputDescription>- Uses the appropriate NONG if applicable</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
-                    <PrimaryButton onClick={onSubmit} loading={mutation.isPending}>Save</PrimaryButton>
+                    <PrimaryButton type='submit' loading={mutation.isPending}>Save</PrimaryButton>
                 </FormGroup>
-            </div>
+            </form>
             <div className='my-8 border-theme-500 border-b-2' />
             <FormGroup>
                 <PrimaryButton onClick={() => recalculateMutation.mutate()} disabled={recalculateMutation.status === 'pending'}>Re-calculate stats</PrimaryButton>

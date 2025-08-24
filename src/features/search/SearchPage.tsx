@@ -155,11 +155,10 @@ export default function Search() {
     }
 
     return (
-        <Page>
-            <title>GDDL | Search</title>
+        <Page title='GDDL | Search'>
             <Heading1 className='mb-2'>Levels</Heading1>
             <div className='flex gap-2 items-center transition-all'>
-                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={queryParams[QueryParamNames.Name] ?? ''} onChange={(e) => onNameChange(e.target.value)} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search by name or ID' />
+                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={queryParams[QueryParamNames.Name] ?? ''} onChange={(e) => onNameChange(e.target.value.trimStart().slice(0, 22))} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search by name or ID' />
                 <IconButton color='filled' onClick={() => void onSearch()}><i className='bx bx-search' /></IconButton>
             </div>
             <Filters reset={reset} show={showFilters} />
@@ -180,7 +179,7 @@ export default function Search() {
             {searchStatus === 'success' && <>
                 <div className='my-4'>{searchData.levels.length !== 0 && isListView
                     ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} />
-                    : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' />
+                    : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' selectedLevel={selection} />
                 }</div>
                 <PageButtons onPageChange={setPage} meta={{ ...searchData, page }} />
                 <div className='flex items-center justify-center gap-2 my-2'>

@@ -23,7 +23,7 @@ interface Props<T> {
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox<T>({ value = '', onChange: setChange, onDebouncedChange, list, getLabel, getName, onResult: setResult, status, id, placeholder = 'Search...', invalid = false, overWriteInput = true }: Props<T>) {
+export default function SearchBox<T>({ value = '', onChange: setChange, onDebouncedChange, list, getLabel, onResult: setResult, status, id, placeholder = 'Search...', invalid = false }: Props<T>) {
     const [visible, setVisible] = useState(false);  // State of the search results
     const timer = useRef<NodeJS.Timeout>(null);
 
@@ -51,7 +51,6 @@ export default function SearchBox<T>({ value = '', onChange: setChange, onDeboun
 
     // When the user clicks a result, set search state and pass the clicked result to parent
     function handleClick(r: T) {
-        if (overWriteInput) setChange(getName(r));
         setResult(r);
         setVisible(false);
     }

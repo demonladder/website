@@ -20,10 +20,11 @@ interface GridProps {
     completed?: boolean;
     inPack?: boolean;
     date?: string;
+    selected?: boolean;
     onContextMenu?: (e: React.MouseEvent) => void;
 }
 
-export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, rarity, completed = false, inPack = false, date, onContextMenu }: GridProps) {
+export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, rarity, completed = false, inPack = false, date, selected = false, onContextMenu }: GridProps) {
     const navigate = useNavigate();
     const app = useApp();
 
@@ -42,7 +43,7 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
     return (
-        <div className='grid-level relative group cursor-pointer min-h-40 round:rounded-xl' onClick={handleClick} onContextMenu={onContextMenu} style={{ backgroundImage: app.enableLevelThumbnails ? `linear-gradient(rgba(0, 0, 0, var(--image-opacity)), rgba(0, 0, 0, var(--image-opacity))), url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")` : undefined }}>
+        <div className={'grid-level relative group cursor-pointer min-h-40 round:rounded-xl' + (selected ? ' outline' : '')} onClick={handleClick} onContextMenu={onContextMenu} style={{ backgroundImage: app.enableLevelThumbnails ? `linear-gradient(rgba(0, 0, 0, var(--image-opacity)), rgba(0, 0, 0, var(--image-opacity))), url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")` : undefined }}>
             <div className={'p-2 ' + (app.enableLevelThumbnails ? '' : (' round:rounded-xl ' + (completed && app.highlightCompleted ? 'bg-gradient-to-br from-green-600 via-green-500 to-green-600' : 'bg-theme-600')))}>
                 <div className='flex justify-between'>
                     <div>

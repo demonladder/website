@@ -127,7 +127,7 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
             <Route path='signupLinks' element={<SignupLink />} />
             <Route path='verification' element={<Verification />} />
             <Route path='addLevel' element={<AddLevel />} />
-            <Route path='editLevel' element={<EditLevel />} />
+            <Route path='edit-level/:levelID' element={<EditLevel />} loader={levelLoader(queryClient)} />
             <Route path='editTags' element={<EditTags />} />
             <Route path='siteSettings' element={<SiteSettings />} />
             <Route path='debugging' element={<Debugging />} />

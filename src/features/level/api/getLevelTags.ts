@@ -1,5 +1,5 @@
-import APIClient from '../../APIClient';
-import { Tag } from '../../types/level/Tag';
+import APIClient from '../../../api/APIClient';
+import { Tag } from '../../../api/types/level/Tag';
 
 export interface TagSubmission extends Tag {
     LevelID: number;
@@ -14,6 +14,6 @@ export interface TopTags {
     Tag: Omit<Tag, 'TagID'> & { ID: number };
 }
 
-export default async function LevelTagRequest(levelID: number) {
+export async function getLevelTags(levelID: number) {
     return await APIClient.get<TopTags[]>(`/level/${levelID}/tags`).then((res) => res.data);
 }
