@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { secondsToHumanReadable } from './secondsToHumanReadable';
 
-interface GDDLError {
+export interface GDDLError {
     message: string | string[];
     error: string;
     statusCode: number;
@@ -37,5 +37,9 @@ export function parseRequest(error: AxiosError<GDDLError>): string {
         return error.response.data.message[0];
     }
 
-    return error.response.data.message ?? error.response.data.error ?? `[${error.response.status ?? -1}]: An error occurred`;
+    return (
+        error.response.data.message ??
+        error.response.data.error ??
+        `[${error.response.status ?? -1}]: An error occurred`
+    );
 }
