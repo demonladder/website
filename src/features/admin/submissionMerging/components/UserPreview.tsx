@@ -13,7 +13,7 @@ export default function UserPreview({ userID, onUnSet }: Props) {
         <div>
             {user.isSuccess && (
                 <>
-                    <object data={`https://cdn.discordapp.com/avatars/${user.data.DiscordData?.ID ?? '-'}/${user.data.DiscordData?.Avatar ?? '-'}.png`} type='image/png' className='rounded-full mx-auto'>
+                    <object data={`/api/user/${user.data.ID}/pfp?size=256`} type='image/png' className='rounded-full mx-auto'>
                         <i className='bx bxs-user-circle text-9xl' />
                     </object>
                     <p className='text-2xl mb-2'>{user.data.Name}</p>

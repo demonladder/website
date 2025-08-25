@@ -29,10 +29,9 @@ export default function AccountSettings() {
     });
 
     function onPasswordReset() {
-        const name = session.user?.DiscordData?.Username;
-        if (!name) return toast.error('You must be logged in to reset your password!');
+        if (!session.user) return toast.error('You must be logged in to reset your password!');
 
-        void toast.promise(forgotPassword(name), {
+        void toast.promise(forgotPassword(), {
             pending: 'Sending password reset link...',
             success: 'Password reset link sent!',
             error: renderToastError,

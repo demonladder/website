@@ -14,10 +14,6 @@ interface GetAccessTokensResponse {
             ID: number;
             Name: string;
             RoleIDs: string;
-            DiscordData?: {
-                ID: string;
-                Avatar: string;
-            };
         };
     }[];
 }

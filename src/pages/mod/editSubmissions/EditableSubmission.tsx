@@ -157,8 +157,8 @@ export default function EditableSubmission({ submission }: Props) {
                             <div>
                                 <FormInputLabel>Approved by</FormInputLabel>
                                 <div className='flex gap-2'>
-                                    <object data={`https://cdn.discordapp.com/avatars/${approvedBy.data.DiscordData?.ID ?? '-'}/${approvedBy.data.DiscordData?.Avatar ?? '-'}.png`} type='image/png' className='rounded-full size-14'>
-                                        <i className='bx bxs-user-circle text-9xl' />
+                                    <object data={`/api/user/${approvedBy.data.ID}/pfp?size=56`} type='image/png' className='rounded-full size-14'>
+                                        <i className='bx bxs-user-circle text-6xl' />
                                     </object>
                                     <p className='text-xl self-center'>{approvedBy.data.Name}</p>
                                 </div>

@@ -5,6 +5,7 @@ import useNavbarNotification from '../context/NavbarNotification/useNavbarNotifi
 import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
+import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
 
 export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();
@@ -32,8 +33,6 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const pfp = `https://cdn.discordapp.com/avatars/${session.user?.DiscordData?.ID ?? '-'}/${session.user?.DiscordData?.Avatar ?? '-'}.png`;
-
     return (
         <div className='flex sm:items-center gap-1 max-sm:flex-col'>
             {size === 'large' &&
@@ -42,10 +41,9 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
             <div className='ms-2 relative group'>
                 <Link to={`/profile/${userID}`} onClick={onClick}>
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
-                        {session.user?.DiscordData?.Avatar
-                            ? <img src={pfp} className='rounded-full' />
-                            : <DemonFace diff={session.user?.Hardest?.Meta.Difficulty} />
-                        }
+                        <object data={`/api/user/${userID}/pfp?size=56`} type='image/png' className='rounded-full'>
+                            <DemonFace diff={session.user?.Hardest?.Meta.Difficulty} size={DemonLogoSizes.SMALL} />
+                        </object>
                     </div>
                 </Link>
                 <div className='max-2xl:hidden absolute opacity-0 right-0 z-40 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity'>

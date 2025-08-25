@@ -37,7 +37,9 @@ export default function VerifiedUser({ user }: Props) {
     return (
         <div className='bg-theme-600 px-4 py-2 round:rounded-lg relative'>
             <Heading4 className='flex gap-2'>
-                <img src={`https://cdn.discordapp.com/avatars/${user.DiscordData?.ID}/${user.DiscordData?.Avatar}.png`} className='inline-block w-14 h-14 rounded-full' />
+                <object data={`/api/user/${user.ID}/pfp?size=56`} type='image/png' className='inline-block size-14 rounded-full'>
+                    <i className='bx bxs-user-circle text-6xl' />
+                </object>
                 <div className='flex flex-col justify-around'>
                     <Link to={`/profile/${user.ID}`} className='underline'>{user.Name}</Link>
                 </div>

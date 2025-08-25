@@ -94,7 +94,7 @@ function Submission({ level, submission }: SubmissionProps) {
                         <p className={secondaryIconRole ? 'font-bold' : ''} style={secondaryIconRole?.Color ? { color: `#${secondaryIconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedSecondaryName} {secondaryIconRole?.Icon}</p>
                     </>
                     : <div className='flex items-center gap-1'>
-                        {submission.User.DiscordData && <object type='image/png' data={`https://cdn.discordapp.com/avatars/${submission.User.DiscordData.ID}/${submission.User.DiscordData.Avatar}?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block'></object>}
+                        <object type='image/png' data={`/api/user/${submission.UserID}/pfp?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block'></object>
                         <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
                     </div>
                 }

@@ -59,12 +59,10 @@ export default function Profile() {
         return <Page><Heading1>An error ocurred</Heading1></Page>;
     }
 
-    const pfp = `https://cdn.discordapp.com/avatars/${userData.DiscordData?.ID}/${userData.DiscordData?.Avatar}.png?size=80`;
-
     return (
         <Page onContextMenu={contextMenu} title={`GDDL - ${loadedData.Name}`} key={userID}>
             <div className='mb-2 flex gap-4'>
-                <object type='image/png' data={pfp} className='inline size-20 rounded-full'>
+                <object type='image/png' data={`/api/user/${loadedData.ID}/pfp?size=80`} className='inline size-20 rounded-full'>
                     <i className='bx bxs-user-circle text-[80px]' />
                 </object>
                 <div className='grow flex flex-col gap-1 justify-center'>

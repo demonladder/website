@@ -40,7 +40,9 @@ export default function EligibleUser({ userID, submissions, distinctApprovals }:
             {user.isPending && <LoadingSpinner />}
             {user.isSuccess && <>
                 <Heading4 className='flex gap-2'>
-                    <img src={`https://cdn.discordapp.com/avatars/${user.data.DiscordData?.ID}/${user.data.DiscordData?.Avatar}.png`} className='inline-block w-14 h-14 rounded-full' />
+                    <object data={`/api/user/${user.data.ID}/pfp?size=56`} type='image/png' className='inline-block size-14 rounded-full'>
+                        <i className='bx bxs-user-circle text-6xl' />
+                    </object>
                     <div className='flex flex-col justify-around'>
                         <Link to={`/profile/${userID}`} className='underline'>{user.data.Name}</Link>
                         {user.data.CompletedPacks.length > 0 &&

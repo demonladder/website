@@ -77,7 +77,6 @@ export default function EditInformation({ user }: { user: UserResponse }) {
                     ? <>
                         <p>ID: <b>{user.DiscordData.ID}</b></p>
                         <p>Username: <b>{user.DiscordData.Username}</b></p>
-                        <p>Display name: <b>{user.DiscordData.Name}</b></p>
                     </>
                     : <p>User's profile is not linked to any Discord account!</p>
                 }

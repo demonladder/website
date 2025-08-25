@@ -20,10 +20,10 @@ export default function ProfileSettings() {
         <section>
             <h2 className='text-3xl'>Profile settings</h2>
             <div className='flex max-md:flex-col-reverse gap-2'>
-                <div className='md:w-2/3'>
+                <div className='md:w-3/4'>
                     <GeneralInformation userID={session.user.ID} />
                 </div>
-                <div className='md:w-1/3 round:rounded-lg md:px-4 py-2'>
+                <div className='md:w-1/4 round:rounded-lg md:px-4 py-2'>
                     <DiscordSync />
                 </div>
             </div>

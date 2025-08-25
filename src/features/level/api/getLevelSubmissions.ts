@@ -5,22 +5,18 @@ export type Submission = ISubmission & {
     User: {
         Name: string;
         Roles: { ID: number }[];
-        DiscordData?: {
-            ID: string;
-            Avatar: string;
-        };
-    },
+    };
     SecondaryUser?: {
         Name: string;
         Roles: { ID: number }[];
-    },
+    };
 };
 
 interface GetLevelSubmissionsResponse {
-    total: number,
-    limit: number,
-    page: number,
-    submissions: Submission[],
+    total: number;
+    limit: number;
+    page: number;
+    submissions: Submission[];
 }
 
 export enum SubmissionSort {
@@ -44,7 +40,16 @@ interface GetLevelSubmissionsRequest {
     sortDirection?: 'asc' | 'desc';
 }
 
-export async function getLevelSubmissions({ twoPlayer, levelID, page = 1, progressFilter = 'victors', limit, sort, sortDirection, username }: GetLevelSubmissionsRequest) {
+export async function getLevelSubmissions({
+    twoPlayer,
+    levelID,
+    page = 1,
+    progressFilter = 'victors',
+    limit,
+    sort,
+    sortDirection,
+    username,
+}: GetLevelSubmissionsRequest) {
     const res = await APIClient.get<GetLevelSubmissionsResponse>(`/level/${levelID}/submissions`, {
         params: {
             page,

@@ -15,10 +15,6 @@ interface Props {
             ID: number;
             Name: string;
             RoleIDs: string;
-            DiscordData?: {
-                ID: string;
-                Avatar?: string;
-            };
         };
         uses: number;
     };
@@ -41,7 +37,7 @@ export default function AccessToken({ token }: Props) {
 
     return (
         <div className='flex gap-2 bg-theme-700 shadow-lg px-4 py-2 rounded-xl'>
-            <object data={`https://cdn.discordapp.com/avatars/${token.Owner.DiscordData?.ID ?? '-'}/${token.Owner.DiscordData?.Avatar ?? '-'}.png`} type='image/png' className='rounded-full size-28'>
+            <object data={`/api/user/${token.Owner.ID}/pfp?size=112`} type='image/png' className='rounded-full size-28'>
                 <i className='bx bxs-user-circle text-[7rem]' />
             </object>
             <div className='flex flex-col justify-evenly gap-2 py-2'>

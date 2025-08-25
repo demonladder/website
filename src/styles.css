@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "./styles/colors.css";
-@import "./styles/themes.css";
+@import 'tailwindcss';
+@import './styles/colors.css';
+@import './styles/themes.css';
 
 button {
     cursor: pointer;
@@ -19,13 +19,13 @@ button {
 }
 
 @custom-variant serif {
-    &[data-font="serif"] {
+    &[data-font='serif'] {
         @slot;
     }
 }
 
 @custom-variant mono {
-    &[data-font="mono"] {
+    &[data-font='mono'] {
         @slot;
     }
 }
@@ -36,20 +36,20 @@ button {
 
     --color-primary: #2c6cd4;
     --color-on-primary: #ffffff;
-    
+
     --color-secondary: #4f4f4f;
     --color-on-secondary: #ffffff;
 
-    --color-secondary-container: #E8DEF8;
-    --color-on-secondary-container: #5b5569;
+    --color-secondary-container: #f4e7f9;
+    --color-on-secondary-container: #200c4e;
 
-    --color-tertiary: #7D5260;
+    --color-tertiary: #7d5260;
     --color-on-tertiary: #ffffff;
 
     --color-on-surface: #edeaf0;
     --color-on-surface-variant: #868589;
 
-    --color-outline-variant: #CAC4D0;
+    --color-outline-variant: #cac4d0;
 
     --color-header-200: #ffc530;
 
@@ -59,7 +59,7 @@ button {
     --color-gray-800: #2b2b2b;
     --color-gray-900: #262626;
     --color-gray-950: #1a1a1a;
-    
+
     --color-button-primary-1: #2c6cd4;
     --color-button-primary-2: #225bb8;
     --color-button-primary-3: #184a99;
@@ -93,13 +93,13 @@ button {
     --color-role-developer: #cf9cff;
     --color-role-listHelper: #9bff99;
 
-    --fast-spatial-transition: all 350ms cubic-bezier(0.42, 1.67, 0.21, 0.90);
-    --default-spatial-transition: all 500ms cubic-bezier(0.38, 1.21, 0.22, 1.00);
+    --fast-spatial-transition: all 350ms cubic-bezier(0.42, 1.67, 0.21, 0.9);
+    --default-spatial-transition: all 500ms cubic-bezier(0.38, 1.21, 0.22, 1);
     --slow-spatial-transition: all 650ms cubic-bezier(0.39, 1.29, 0.35, 0.98);
 
-    --fast-effect-transition: all 150ms cubic-bezier(0.31, 0.94, 0.34, 1.00);
-    --default-effect-transition: all 200ms cubic-bezier(0.34, 0.80, 0.34, 1.00);
-    --slow-effect-transition: all 300ms cubic-bezier(0.34, 0.88, 0.34, 1.00);
+    --fast-effect-transition: all 150ms cubic-bezier(0.31, 0.94, 0.34, 1);
+    --default-effect-transition: all 200ms cubic-bezier(0.34, 0.8, 0.34, 1);
+    --slow-effect-transition: all 300ms cubic-bezier(0.34, 0.88, 0.34, 1);
 }
 
 :root {
@@ -111,7 +111,9 @@ button {
     scrollbar-width: thin;
 }
 
-body, #root, #root > div.flex {
+body,
+#root,
+#root > div.flex {
     min-height: 100vh;
 }
 
@@ -121,7 +123,7 @@ body, #root, #root > div.flex {
     background-position: 50% 100%;
     transition: background-size 100ms ease-in-out;
     /*padding: 0;*/
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
 .underline:hover {
     background-size: 100% 2px;
@@ -131,7 +133,7 @@ body, #root, #root > div.flex {
     text-decoration: underline;
 }
 
-input[type=number].no-spinner {
+input[type='number'].no-spinner {
     -moz-appearance: textfield;
     appearance: textfield;
 }
@@ -153,7 +155,7 @@ input.no-spinner::-webkit-inner-spin-button {
     }
 }
 
-label:has(> input[type=checkbox]:disabled) {
+label:has(> input[type='checkbox']:disabled) {
     @apply text-gray-400 line-through;
 }
 
