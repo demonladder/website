@@ -24,7 +24,7 @@ export default function HeaderThin() {
     return (
         <header className='bg-theme-header text-theme-header-text gap-x-8'>
             <div className='flex justify-between'>
-                <Link to='/' className='font-bold text-3xl'><img src='/banner.webp' width='300' /></Link>
+                <Link to='/' className='font-bold text-3xl'><img src='/banner-300.webp' width='300' height='103' /></Link>
                 <button onClick={() => setNavOpen((prev) => !prev)} className='px-8'>
                     <svg width='32px' height='32px' viewBox='0 0 32 32' stroke='currentColor' strokeWidth='2'>
                         <path d='M3 5h29M3 16h29M3 27h29' />
