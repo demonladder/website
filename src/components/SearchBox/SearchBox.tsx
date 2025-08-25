@@ -26,20 +26,20 @@ interface Props<T> {
 export default function SearchBox<T>({ value = '', onChange: setChange, onDebouncedChange, list, getLabel, onResult: setResult, status, id, placeholder = 'Search...', invalid = false }: Props<T>) {
     const [visible, setVisible] = useState(false);  // State of the search results
     const timer = useRef<NodeJS.Timeout>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (!onDebouncedChange) return;
 
         if (timer.current) clearTimeout(timer.current);
         timer.current = setTimeout(() => {
-            setResult(undefined);
             onDebouncedChange(value);
         }, 500);
 
         return () => {
             if (timer.current) clearTimeout(timer.current);
         };
-    }, [onDebouncedChange, setChange, setResult, value]);
+    }, [onDebouncedChange, setChange, value]);
 
     useEventListener('click', (e) => {
         if (id === undefined) return;
@@ -50,20 +50,24 @@ export default function SearchBox<T>({ value = '', onChange: setChange, onDeboun
     });
 
     // When the user clicks a result, set search state and pass the clicked result to parent
-    function handleClick(r: T) {
+    function handleClick(r: T | undefined) {
         setResult(r);
         setVisible(false);
     }
 
     function keyDown(event: React.KeyboardEvent) {
         if (event.key === 'Enter') {
-            handleClick(list[0]);
+            const firstEntry = list.at(0);
+            if (value !== '') setResult(firstEntry);
+            else setResult(undefined);
+            if (inputRef.current) inputRef.current.blur();
+            setVisible(false);
         }
     }
 
     return (
         <div>
-            <TextInput value={value} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={(e) => setChange(e.target.value)} onFocus={() => setVisible(true)} invalid={invalid} />
+            <TextInput ref={inputRef} value={value} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={(e) => setChange(e.target.value)} onFocus={() => setVisible(true)} invalid={invalid} />
             <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-900 p-1 border border-t-0 border-theme-400 text-theme-text round:rounded-b-lg text-base z-10 shadow-2xl'}>
                 {status === 'pending'
                     ? <LoadingSpinner />

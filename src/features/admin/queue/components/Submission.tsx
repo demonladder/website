@@ -16,6 +16,7 @@ import TonalButton from '../../../../components/input/buttons/tonal/TonalButton'
 import FilledButton from '../../../../components/input/buttons/filled/FilledButton';
 import { secondsToHumanReadable } from '../../../../utils/secondsToHumanReadable';
 import useSessionStorage from '../../../../hooks/useSessionStorage';
+import { NumberParam, useQueryParam } from 'use-query-params';
 
 interface Props {
     submission: QueueSubmission;
@@ -92,6 +93,12 @@ export default function Submission({ submission }: Props) {
         return new Date().getTime() - new Date(proofClickedAt).getTime();
     }
 
+    const [queueLevelIDFilter, setQueueLevelIDFilter] = useQueryParam('levelID', NumberParam);
+    function onFilter(levelID: number) {
+        if (queueLevelIDFilter === levelID) setQueueLevelIDFilter(undefined);
+        else setQueueLevelIDFilter(levelID);
+    }
+
     const approveSubmission = useApproveClicked();
 
     const secondsAgo = Math.floor((Date.now() - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000);
@@ -152,7 +159,8 @@ export default function Submission({ submission }: Props) {
                     <p><b>Rating:</b> {(submission.IsSolo ? submission.Level.Rating : submission.Level.TwoPlayerRating)?.toFixed(2) ?? 'None'}</p>
                     <p><b>Deviation:</b> {(submission.IsSolo ? submission.Level.Deviation : submission.Level.TwoPlayerDeviation)?.toFixed(2) ?? 0}</p>
                     <p><b>Rating count:</b> {submission.Level.RatingCount}</p>
-                    <p><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
+                    <p className='mb-1'><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
+                    <TonalButton onClick={() => onFilter(submission.LevelID)} size={'xs'}>Filter queue by this level</TonalButton>
                 </div>
                 <div>
                     <Heading4 className='mb-2'>Level after accept</Heading4>
@@ -163,8 +171,8 @@ export default function Submission({ submission }: Props) {
             <div className='mt-4 flex justify-evenly max-md:flex-col max-md:gap-4'>
                 <FilledButton sizeVariant='md' disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</FilledButton>
                 {submission.Rating !== null && <TonalButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</TonalButton>}
-                <button className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3' onClick={() => showDenyModal(submission)}>Deny</button>
-                <Link to={`/mod/manageUser/${submission.UserID}`} className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3'>Mod view</Link>
+                <button className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3 text-white' onClick={() => showDenyModal(submission)}>Deny</button>
+                <Link to={`/mod/manageUser/${submission.UserID}`} className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3 text-white'>Mod view</Link>
             </div>
         </li>
     );

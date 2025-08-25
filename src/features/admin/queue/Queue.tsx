@@ -9,6 +9,7 @@ import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import Heading1 from '../../../components/headings/Heading1';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import pluralS from '../../../utils/pluralS';
+import LevelSearchBox from '../../../components/SearchBox/LevelSearchBox';
 
 const proofFilterOptions = {
     all: 'All',
@@ -20,10 +21,11 @@ const proofFilterOptions = {
 export default function Queue() {
     const [proofFilter, setProofFilter] = useSessionStorage<keyof typeof proofFilterOptions>('queue.filter', 'all');
     const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
+    const [levelID, setLevelID] = useQueryParam('levelID', NumberParam);
 
     const { status, isFetching, data: queue } = useQuery({
-        queryKey: ['submissionQueue', { page, proofFilter }],
-        queryFn: () => getPendingSubmissions(proofFilter, 5, page),
+        queryKey: ['submissionQueue', { page, proofFilter, levelID }],
+        queryFn: () => getPendingSubmissions({ proofFilter, limit: 5, page, levelID: levelID ?? undefined }),
     });
 
     function Content() {
@@ -39,12 +41,15 @@ export default function Queue() {
         <div>
             <FloatingLoadingSpinner isLoading={isFetching} />
             <Heading1 className='mb-3'>Pending submissions</Heading1>
-            <div className='flex gap-4 max-lg:flex-col'>
-                <div className='flex gap-2'>
-                    <p>Filtering</p>
-                    <div className='w-40'>
-                        <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
-                    </div>
+            <p><b>Filters</b></p>
+            <div className='grid grid-cols-4 gap-2'>
+                <div>
+                    <p>Proof</p>
+                    <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
+                </div>
+                <div>
+                    <p>Level</p>
+                    <LevelSearchBox ID='queueLevelSearch' onLevel={(level) => setLevelID(level?.ID)} />
                 </div>
             </div>
             <Content />

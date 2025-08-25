@@ -34,9 +34,21 @@ interface PendingSubmissionInfo {
     submissions: QueueSubmission[];
 }
 
-export async function getPendingSubmissions(proofFilter: string, limit = 5, page = 0): Promise<PendingSubmissionInfo> {
+interface GetPendingSubmissionsOptions {
+    limit?: number;
+    page?: number;
+    proofFilter?: string;
+    levelID?: number;
+}
+
+export async function getPendingSubmissions({
+    levelID,
+    proofFilter,
+    limit = 5,
+    page = 0,
+}: GetPendingSubmissionsOptions): Promise<PendingSubmissionInfo> {
     const res = await APIClient.get<PendingSubmissionInfo>('/submissions/pending', {
-        params: { limit, page, proofFilter },
+        params: { limit, page, levelID, proofFilter },
     });
     return res.data;
 }

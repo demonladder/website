@@ -5,17 +5,13 @@ import { getLevels, SearchLevelResponse } from '../features/search/api/getLevels
 import SearchBox from '../components/SearchBox/SearchBox';
 
 interface LevelSearchOptions {
+    required?: boolean;
     inPack?: boolean;
     defaultLevel?: number | null;
+    onLevel: (level: SearchLevelResponse | undefined) => void;
 }
 
-interface Props {
-    ID: string,
-    required?: boolean;
-    options?: LevelSearchOptions,
-}
-
-export default function useLevelSearch({ ID, required = false, options = {} }: Props) {
+export default function useLevelSearch(ID: string, { required = false, defaultLevel, inPack, onLevel }: LevelSearchOptions) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -25,12 +21,12 @@ export default function useLevelSearch({ ID, required = false, options = {} }: P
 
     const { data, status } = useQuery({
         queryKey: ['levelSearch', searchQuery],
-        queryFn: () => getLevels({ ...options, name: searchQuery, limit: 5, page: 0 }),
+        queryFn: () => getLevels({ inPack, name: searchQuery, limit: 5, page: 0 }),
     });
 
     const { data: defaultData } = useQuery({
-        queryKey: ['level', options.defaultLevel],
-        queryFn: () => getLevel(options.defaultLevel || null),
+        queryKey: ['level', defaultLevel],
+        queryFn: () => getLevel(defaultLevel ?? null),
     });
 
     useEffect(() => {
@@ -69,7 +65,7 @@ export default function useLevelSearch({ ID, required = false, options = {} }: P
             onDebouncedChange={setSearchQuery}
             id={ID}
             list={data?.levels ?? []}
-            onResult={setActiveLevel}
+            onResult={onLevel}
             status={status}
             invalid={isInvalid || (required && !activeLevel)}
             placeholder={defaultData?.Meta.Name}
