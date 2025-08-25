@@ -59,7 +59,7 @@ export default function SortMenu({ set }: Props) {
                     </svg>
                 }
             </button>
-            <div ref={resultsRef} className='absolute left-1/2 -translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
+            <div ref={resultsRef} className='absolute left-0 sm:left-1/2 sm:-translate-x-1/2 grid overflow-hidden transition-[grid-template-rows]' style={{ gridTemplateRows: show ? '1fr' : '0fr' }}>
                 <div className='min-h-0 bg-theme-600 w-max'>
                     <div className='p-3 flex flex-col gap-2'>
                         <div className='columns-2'>
