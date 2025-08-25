@@ -43,7 +43,7 @@ function FavoriteLevels({ userID }: { userID: number }) {
             {status === 'success' && (
                 app.levelViewType === LevelViewType.LIST
                     ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)
-                    : <div className='grid grid-cols-4 gap-2'>
+                    : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
                         {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)}
                     </div>
             )}
@@ -67,7 +67,7 @@ function LeastFavoriteLevels({ userID }: { userID: number }) {
             {status === 'success' && (
                 app.levelViewType === LevelViewType.LIST
                     ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />)
-                    : <div className='grid grid-cols-4 gap-2'>
+                    : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
                         {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />)}
                     </div>
             )}
