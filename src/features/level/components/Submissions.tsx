@@ -57,7 +57,7 @@ function Submission({ level, submission }: SubmissionProps) {
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
 
-    const linkDestination = `/profile/${submission.UserID}`;
+    const linkDestination = `/profile/${submission.User.ID}`;
 
     const hasWidgets = submission.Proof !== null || submission.Device === Device.MOBILE;
 
@@ -80,7 +80,7 @@ function Submission({ level, submission }: SubmissionProps) {
         { text: 'View proof', icon: <i className='bx bx-link-external' />, onClick: () => window.open(submission.Proof!, '_blank'), disabled: submission.Proof === null || submission.Proof === '' },
         { type: 'divider', permission: PermissionFlags.MANAGE_SUBMISSIONS },
         { text: 'Mod view', to: `/mod/editSubmission/${submission.ID}`, permission: PermissionFlags.MANAGE_SUBMISSIONS },
-        { text: 'Delete', icon: <i className='bx bx-trash' />, type: 'danger', onClick: () => openDeleteSubmissionModal(submission.UserID, level.ID, submission.ID, submission.User.Name), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+        { text: 'Delete', icon: <i className='bx bx-trash' />, type: 'danger', onClick: () => openDeleteSubmissionModal(submission.User.ID, level.ID, submission.ID, submission.User.Name), permission: PermissionFlags.MANAGE_SUBMISSIONS },
     ]);
 
     return (
@@ -94,7 +94,7 @@ function Submission({ level, submission }: SubmissionProps) {
                         <p className={secondaryIconRole ? 'font-bold' : ''} style={secondaryIconRole?.Color ? { color: `#${secondaryIconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedSecondaryName} {secondaryIconRole?.Icon}</p>
                     </>
                     : <div className='flex items-center gap-1'>
-                        <object type='image/png' data={`/api/user/${submission.UserID}/pfp?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block'></object>
+                        <object type='image/png' data={`/api/user/${submission.User.ID}/pfp?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block'></object>
                         <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
                     </div>
                 }
@@ -153,7 +153,7 @@ export default function Submissions({ page, setPage, level, showTwoPlayerStats, 
                 <Select options={progressFilterOptions} label={<>Showing: <b>{progressFilterKey}</b></>} onOption={setProgressFilterKey} id='submissionsProgressFilter' />
             </div>
             <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2'>
-                {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.UserID} />)}
+                {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.User.ID} />)}
                 {submissions.submissions.length === 0 ? <p className='mb-0'>No submissions available!</p> : null}
             </div>
             <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />

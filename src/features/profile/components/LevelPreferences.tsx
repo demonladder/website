@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Heading2 from '../../../components/headings/Heading2';
 import { getFavoriteLevels, GetFavoriteLevelsResponse, getLeastFavoriteLevels } from '../api/getFavoriteLevels';
 import Level, { LevelSkeleton } from '../../../components/Level';
@@ -11,6 +11,8 @@ import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import { GridLevel } from '../../../components/GridLevel';
 import { useApp } from '../../../context/app/useApp';
 import { LevelViewType } from '../../../context/app/AppContext';
+import type { AxiosError } from 'axios';
+import renderToastError from '../../../utils/renderToastError';
 
 export default function LevelPreferences() {
     const userID = useParams().userID;
@@ -64,9 +66,9 @@ function LeastFavoriteLevels({ userID }: { userID: number }) {
             {status === 'pending' && <LevelSkeleton />}
             {status === 'success' && (
                 app.levelViewType === LevelViewType.LIST
-                    ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)
+                    ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />)
                     : <div className='grid grid-cols-4 gap-2'>
-                        {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)}
+                        {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />)}
                     </div>
             )}
         </section>
@@ -75,9 +77,17 @@ function LeastFavoriteLevels({ userID }: { userID: number }) {
 
 function FavoriteLevel({ level, userID, isFavorite }: { level: GetFavoriteLevelsResponse, userID: number, isFavorite: boolean }) {
     const session = useSession();
+    const queryClient = useQueryClient();
     const deleteMutation = useMutation({
-        mutationFn: () => APIClient.delete(`/user/${session.user?.ID}/${isFavorite ? 'favorites' : 'least-favorites'}`, { data: { levelID: level.ID } }),
-        onSuccess: () => toast.success('Removed level'),
+        mutationFn: (levelID: number) => APIClient.delete(`/user/${session.user?.ID}/${isFavorite ? 'favorites' : 'least-favorites'}`, { data: { levelID } }),
+        onSuccess: (_, levelID) => {
+            toast.success('Removed level');
+            const queryKey = ['user', userID, isFavorite ? 'favorites' : 'least-favorites'];
+            const cache = queryClient.getQueryData<{ ID: number }[]>(queryKey);
+            if (!cache) return;
+            queryClient.setQueryData(queryKey, cache.filter((level) => level.ID !== levelID));
+        },
+        onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
     });
     const openAddListLevelModal = useAddListLevelModal();
 
@@ -85,7 +95,7 @@ function FavoriteLevel({ level, userID, isFavorite }: { level: GetFavoriteLevels
         { text: 'Go to level', to: `/level/${level.ID}` },
         { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, level.ID), requireSession: true },
         { type: 'divider', userID },
-        { type: 'danger', text: 'Remove', onClick: () => deleteMutation.mutate(), userID },
+        { type: 'danger', text: 'Remove', onClick: () => deleteMutation.mutate(level.ID), userID },
     ]);
 
     const app = useApp();

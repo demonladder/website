@@ -1,5 +1,4 @@
 import { Link, useLoaderData } from 'react-router';
-import { useMutation } from '@tanstack/react-query';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
 import IDButton from '../../components/IDButton';
@@ -16,13 +15,13 @@ import Heading1 from '../../components/headings/Heading1';
 import FAB from '../../components/input/buttons/FAB/FAB';
 import IconButton from '../../components/input/buttons/icon/IconButton';
 import Surface from '../../components/Surface';
-import APIClient from '../../api/APIClient';
 import useSession from '../../hooks/useSession';
-import { toast } from 'react-toastify';
 import { useState } from 'react';
 import useAddListLevelModal from '../../hooks/modals/useAddListLevelModal';
 import { FullLevel } from '../../api/types/compounds/FullLevel';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
+import { useAddFavoriteMutation } from './hooks/useAddFavoriteMutation';
+import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation';
 
 const levelLengths = {
     1: 'Tiny',
@@ -50,17 +49,13 @@ export default function LevelPage() {
     const openAddListLevelModal = useAddListLevelModal();
 
     const session = useSession();
-    const addFavoriteMutation = useMutation({
-        mutationFn: (levelID: number) => APIClient.post(`/user/${session.user?.ID}/favorites`, { levelID }),
+    const addFavoriteMutation = useAddFavoriteMutation({
         onSuccess: () => {
-            toast.success('Added as favorite');
             setShowExtra(false);
         },
     });
-    const addLeastFavoriteMutation = useMutation({
-        mutationFn: (levelID: number) => APIClient.post(`/user/${session.user?.ID}/least-favorites`, { levelID }),
+    const addLeastFavoriteMutation = useAddLeastFavoriteMutation({
         onSuccess: () => {
-            toast.success('Added as least favorite');
             setShowExtra(false);
         },
     });

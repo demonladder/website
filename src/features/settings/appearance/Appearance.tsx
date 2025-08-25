@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import Select from '../../../components/Select';
 import Heading3 from '../../../components/headings/Heading3';
-import Heading2 from '../../../components/headings/Heading2';
+import Heading1 from '../../../components/headings/Heading1';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import CustomTheme from './components/CustomTheme';
 import Divider from '../../../components/divider/Divider';

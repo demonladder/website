@@ -1,15 +1,29 @@
 import APIClient from '../../../api/APIClient';
 import ISubmission from '../../../api/types/Submission';
 
-export type Submission = ISubmission & {
+export type Submission = Pick<
+    ISubmission,
+    | 'ID'
+    | 'Rating'
+    | 'Enjoyment'
+    | 'RefreshRate'
+    | 'Device'
+    | 'Proof'
+    | 'IsSolo'
+    | 'Progress'
+    | 'Attempts'
+    | 'DateAdded'
+> & {
     User: {
+        ID: number;
         Name: string;
         Roles: { ID: number }[];
     };
-    SecondaryUser?: {
+    SecondaryUser: {
+        ID: number;
         Name: string;
         Roles: { ID: number }[];
-    };
+    } | null;
 };
 
 interface GetLevelSubmissionsResponse {
