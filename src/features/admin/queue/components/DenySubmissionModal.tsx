@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../components/form/FormInputLabel';
-import { TextInput } from '../../../components/Input';
-import Modal from '../../../components/Modal';
-import Select from '../../../components/Select';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
-import PendingSubmission from '../../../api/types/PendingSubmission';
+import FormGroup from '../../../../components/form/FormGroup';
+import FormInputDescription from '../../../../components/form/FormInputDescription';
+import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { TextInput } from '../../../../components/Input';
+import Modal from '../../../../components/Modal';
+import Select from '../../../../components/Select';
+import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
+import PendingSubmission from '../../../../api/types/PendingSubmission';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import DenySubmission from '../../../api/submissions/DenySubmission';
+import DenySubmission from '../../../../api/submissions/DenySubmission';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import renderToastError from '../../../utils/renderToastError';
+import renderToastError from '../../../../utils/renderToastError';
 
 const denyReasons = {
     'missingProof': 'Missing proof',

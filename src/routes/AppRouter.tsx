@@ -3,7 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, redirect, Route } from '
 import ErrorElement from '../components/ErrorElement';
 import { modLoader as ModLoader } from '../pages/mod/mod.loader';
 const ModIndex = lazy(() => import('../pages/mod/ModIndex'));
-const Queue = lazy(() => import('../pages/mod/queue/Queue'));
+const Queue = lazy(() => import('../features/admin/queue/Queue'));
 const Beta = lazy(() => import('../features/admin/beta/BetaAccess'));
 const EditReferences = lazy(() => import('../features/admin/references/References'));
 const SignupLink = lazy(() => import('../features/admin/signupLinks/SignupLink'));

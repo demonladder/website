@@ -1,21 +1,21 @@
 import { Link } from 'react-router';
-import { QueueSubmission } from '../../../api/pendingSubmissions/GetSubmissionQueue';
-import { useApproveClicked } from './useApproveClicked';
-import { levelLengthToString } from '../../../features/level/types/LevelMeta';
-import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
+import { QueueSubmission } from '../api/getPendingSubmissions';
+import { useApproveClicked } from '../hooks/useApproveClicked';
+import { levelLengthToString } from '../../../level/types/LevelMeta';
+import useDenySubmissionModal from '../../../../hooks/modals/useDenySubmissionModal';
 import { useMemo } from 'react';
-import Heading4 from '../../../components/headings/Heading4';
-import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
-import { difficultyToImgSrc } from '../../../utils/difficultyToImgSrc';
+import Heading4 from '../../../../components/headings/Heading4';
+import { DemonLogoSizes } from '../../../../utils/difficultyToImgSrc';
+import { difficultyToImgSrc } from '../../../../utils/difficultyToImgSrc';
 import { toast } from 'react-toastify';
-import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/useLevelSubmissionSpread';
-import { ratingToWeight, weightedRatingAverage } from '../../../utils/weightedAverage';
-import { average } from '../../../utils/average';
-import standardDeviation from '../../../utils/standardDeviation';
-import TonalButton from '../../../components/input/buttons/tonal/TonalButton';
-import FilledButton from '../../../components/input/buttons/filled/FilledButton';
-import { secondsToHumanReadable } from '../../../utils/secondsToHumanReadable';
-import useSessionStorage from '../../../hooks/useSessionStorage';
+import { useLevelSubmissionSpread } from '../../../../hooks/api/level/submissions/useLevelSubmissionSpread';
+import { ratingToWeight, weightedRatingAverage } from '../../../../utils/weightedAverage';
+import { average } from '../../../../utils/average';
+import standardDeviation from '../../../../utils/standardDeviation';
+import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
+import FilledButton from '../../../../components/input/buttons/filled/FilledButton';
+import { secondsToHumanReadable } from '../../../../utils/secondsToHumanReadable';
+import useSessionStorage from '../../../../hooks/useSessionStorage';
 
 interface Props {
     submission: QueueSubmission;

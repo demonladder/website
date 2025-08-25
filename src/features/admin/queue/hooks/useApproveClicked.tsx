@@ -1,6 +1,6 @@
-import ApproveSubmission from '../../../api/submissions/ApproveSubmission';
+import { approveSubmission } from '../api/approveSubmission';
 import { toast } from 'react-toastify';
-import renderToastError from '../../../utils/renderToastError';
+import renderToastError from '../../../../utils/renderToastError';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function useApproveClicked() {
@@ -15,7 +15,7 @@ export function useApproveClicked() {
     }
 
     return (ID: number, levelID: number, userID: number, onlyEnjoyment = false, proofReviewTime?: number | null) => {
-        void toast.promise(ApproveSubmission(ID, onlyEnjoyment, proofReviewTime).then(() => invalidateQueries(userID, levelID)), {
+        void toast.promise(approveSubmission(ID, onlyEnjoyment, proofReviewTime).then(() => invalidateQueries(userID, levelID)), {
             pending: 'Approving...',
             success: 'Approved!',
             error: renderToastError,

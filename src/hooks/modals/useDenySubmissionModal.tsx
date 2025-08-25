@@ -1,4 +1,4 @@
-import DenySubmissionModal from '../../pages/mod/queue/DenySubmissionModal';
+import DenySubmissionModal from '../../features/admin/queue/components/DenySubmissionModal';
 import useModal from './useModal';
 
 export default function useDenySubmissionModal() {

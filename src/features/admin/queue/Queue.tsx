@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import GetSubmissionQueue from '../../../api/pendingSubmissions/GetSubmissionQueue';
+import { getPendingSubmissions } from './api/getPendingSubmissions';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import Submission from './Submission';
+import Submission from './components/Submission';
 import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
 import Select from '../../../components/Select';
 import PageButtons from '../../../components/PageButtons';
@@ -23,7 +23,7 @@ export default function Queue() {
 
     const { status, isFetching, data: queue } = useQuery({
         queryKey: ['submissionQueue', { page, proofFilter }],
-        queryFn: () => GetSubmissionQueue(proofFilter, 5, page),
+        queryFn: () => getPendingSubmissions(proofFilter, 5, page),
     });
 
     function Content() {
