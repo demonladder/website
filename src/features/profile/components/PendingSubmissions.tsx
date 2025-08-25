@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import DeletePendingSubmission from '../../../api/submissions/DeletePendingSubmission';
 import { UserPendingSubmission } from '../api/getUserPendingSubmissions';
-import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level from '../../../components/Level';
 import { toast } from 'react-toastify';
@@ -19,25 +18,20 @@ import PendingSubmission from '../../../api/types/PendingSubmission';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 import { useUserPendingSubmissions } from '../hooks/useUserPendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
-import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Heading2 from '../../../components/headings/Heading2';
 import useSession from '../../../hooks/useSession';
 import useDeletePendingSubmissionModal from '../../../hooks/modals/useDeletePendingSubmissionModal';
 import User from '../../../api/types/User';
 import PageButtons from '../../../components/PageButtons';
+import { useApp } from '../../../context/app/useApp';
+import { LevelViewType } from '../../../context/app/AppContext';
 
 interface Props {
     userID: number,
 }
 
-const viewOptions = {
-    inline: 'Inline',
-    grid: 'Grid',
-} as const;
-type ViewOption = keyof typeof viewOptions;
-
 export default function PendingSubmissions({ userID }: Props) {
-    const [listType, setListType] = useLocalStorage<ViewOption>('profile.listType', 'grid');
+    const app = useApp();
     const [page, setPage] = useState(0);
 
     const { status, data: submissionResult } = useUserPendingSubmissions(userID, { page });
@@ -47,14 +41,11 @@ export default function PendingSubmissions({ userID }: Props) {
 
     return (
         <div className='mt-6'>
-            <div className='flex justify-between gap-2'>
-                <Heading2 id='pendingSubmissions'>Pending submissions</Heading2>
-                <SegmentedButtonGroup options={viewOptions} activeKey={listType} onSetActive={setListType} />
-            </div>
+            <Heading2 id='pendingSubmissions'>Pending submissions</Heading2>
             {status === 'pending' && <LoadingSpinner />}
             {status === 'error' && <p>Error loading submissions</p>}
             {status === 'success' && user.data && <>
-                {listType === 'inline'
+                {app.levelViewType === LevelViewType.LIST
                     ? <InlineList levels={submissionResult.submissions} userID={userID} />
                     : <GridList levels={submissionResult.submissions} user={user.data} />
                 }

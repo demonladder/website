@@ -2,6 +2,11 @@ import { createContext } from 'react';
 import { toast } from 'react-toastify';
 import { Device } from '../../api/core/enums/device.enum';
 
+export enum LevelViewType {
+    GRID = 'grid',
+    LIST = 'list',
+}
+
 export interface AppSettings {
     defaultDevice: Device;
     defaultRefreshRate: number;
@@ -9,6 +14,7 @@ export interface AppSettings {
     enableBackground: boolean;
     isRounded: boolean;
     highlightCompleted: boolean;
+    levelViewType: LevelViewType;
 }
 
 interface IAppContext extends Partial<AppSettings> {

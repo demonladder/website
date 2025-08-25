@@ -31,7 +31,7 @@ export default function Appearance() {
 
     return (
         <>
-            <Heading2 className='mb-4'>Appearance</Heading2>
+            <Heading1 className='mb-4'>Appearance</Heading1>
             <section className='pb-2'>
                 <Heading3>Features</Heading3>
                 <label className='flex items-center gap-2'>

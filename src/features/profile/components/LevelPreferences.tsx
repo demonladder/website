@@ -8,6 +8,9 @@ import APIClient from '../../../api/APIClient';
 import useSession from '../../../hooks/useSession';
 import { toast } from 'react-toastify';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
+import { GridLevel } from '../../../components/GridLevel';
+import { useApp } from '../../../context/app/useApp';
+import { LevelViewType } from '../../../context/app/AppContext';
 
 export default function LevelPreferences() {
     const userID = useParams().userID;
@@ -27,6 +30,7 @@ function FavoriteLevels({ userID }: { userID: number }) {
         queryKey: ['user', userID, 'favorites'],
         queryFn: () => getFavoriteLevels(userID),
     });
+    const app = useApp();
 
     if (data && data.length === 0) return;
 
@@ -34,9 +38,13 @@ function FavoriteLevels({ userID }: { userID: number }) {
         <section className='mt-6'>
             <Heading2>Favorite levels</Heading2>
             {status === 'pending' && <LevelSkeleton />}
-            {status === 'success' &&
-                data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)
-            }
+            {status === 'success' && (
+                app.levelViewType === LevelViewType.LIST
+                    ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)
+                    : <div className='grid grid-cols-4 gap-2'>
+                        {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)}
+                    </div>
+            )}
         </section>
     );
 }
@@ -46,6 +54,7 @@ function LeastFavoriteLevels({ userID }: { userID: number }) {
         queryKey: ['user', userID, 'least-favorites'],
         queryFn: () => getLeastFavoriteLevels(userID),
     });
+    const app = useApp();
 
     if (data && data.length === 0) return;
 
@@ -53,9 +62,13 @@ function LeastFavoriteLevels({ userID }: { userID: number }) {
         <section className='mt-6'>
             <Heading2>Least favorite levels</Heading2>
             {status === 'pending' && <LevelSkeleton />}
-            {status === 'success' &&
-                data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />)
-            }
+            {status === 'success' && (
+                app.levelViewType === LevelViewType.LIST
+                    ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)
+                    : <div className='grid grid-cols-4 gap-2'>
+                        {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)}
+                    </div>
+            )}
         </section>
     );
 }
@@ -75,7 +88,13 @@ function FavoriteLevel({ level, userID, isFavorite }: { level: GetFavoriteLevels
         { type: 'danger', text: 'Remove', onClick: () => deleteMutation.mutate(), userID },
     ]);
 
-    return (
+    const app = useApp();
+
+    if (app.levelViewType === LevelViewType.LIST) return (
         <Level onContextMenu={onContextMenu} ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Publisher?.name} difficulty={level.Meta.Difficulty} rarity={level.Meta.Rarity} />
+    );
+
+    return (
+        <GridLevel onContextMenu={onContextMenu} ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Publisher?.name} difficulty={level.Meta.Difficulty} rarity={level.Meta.Rarity} />
     );
 }

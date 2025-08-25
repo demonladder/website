@@ -7,6 +7,7 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 import Divider from '../../../components/divider/Divider';
 import { useApp } from '../../../context/app/useApp';
 import { Device } from '../../../api/core/enums/device.enum';
+import Heading1 from '../../../components/headings/Heading1';
 
 const deviceOptions = {
     [Device.PC]: 'PC',
@@ -32,7 +33,7 @@ export default function SubmissionSettings() {
 
     return (
         <section>
-            <h2 className='text-3xl mb-4'>Submission settings</h2>
+            <Heading1 className='mb-4'>Submission settings</Heading1>
             <div>
                 <label htmlFor='defaultRefreshRateInput'><b>Default FPS</b></label>
                 <NumberInput id='defaultRefreshRateInput' value={defaultFPS} onChange={updateFPS} invalid={FPSInvalid} />

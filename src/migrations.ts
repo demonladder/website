@@ -12,8 +12,10 @@ runMigration('0', () => {
     if (device === null) return;
 
     switch (device) {
-        case '"1"': return localStorage.setItem('settings.submissions.defaultDevice', JSON.stringify('pc'));
-        case '"2"': return localStorage.setItem('settings.submissions.defaultDevice', JSON.stringify('mobile'));
+        case '"1"':
+            return localStorage.setItem('settings.submissions.defaultDevice', JSON.stringify('pc'));
+        case '"2"':
+            return localStorage.setItem('settings.submissions.defaultDevice', JSON.stringify('mobile'));
     }
 });
 
@@ -46,7 +48,9 @@ runMigration('4', () => {
 
 runMigration('5', () => {
     const defaultDevice = JSON.parse(localStorage.getItem('defaultDevice') ?? '"pc"') as string;
-    const defaultRefreshRate = (JSON.parse(localStorage.getItem('settings') ?? '{}') as { submission?: { defaultRefreshRate?: number } })?.submission?.defaultRefreshRate ?? 60;
+    const defaultRefreshRate =
+        (JSON.parse(localStorage.getItem('settings') ?? '{}') as { submission?: { defaultRefreshRate?: number } })
+            ?.submission?.defaultRefreshRate ?? 60;
 
     const app = JSON.parse(localStorage.getItem('app') ?? '{}') as Record<string, number | string>;
 
@@ -67,5 +71,15 @@ runMigration('7', () => {
     if (app.enableLevelThumbnails === undefined) app.enableLevelThumbnails = true;
     if (app.highlightCompleted === undefined) app.highlightCompleted = true;
     if (app.isRounded === undefined) app.isRounded = true;
+    localStorage.setItem('app', JSON.stringify(app));
+});
+
+runMigration('8', () => {
+    localStorage.removeItem('profile.listType');
+    localStorage.removeItem('search.listView');
+    localStorage.removeItem('packs.listView');
+
+    const app = JSON.parse(localStorage.getItem('app') ?? '{}') as Record<string, number | string | boolean>;
+    if (app.levelViewType === undefined) app.levelViewType = 'grid';
     localStorage.setItem('app', JSON.stringify(app));
 });

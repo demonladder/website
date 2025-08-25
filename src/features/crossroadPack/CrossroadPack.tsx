@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Level from '../../components/Level';
-import useLevelView from '../../hooks/useLevelView';
 import { GridLevel } from '../../components/GridLevel';
 import GetCrossroadsPackLevels from '../../api/pack/requests/GetCrossroadsPackLevels';
 import Page from '../../components/Page';
 import { LevelRenderer } from '../../components/LevelRenderer';
 import usePack from '../singlePack/hooks/usePack';
 import Heading1 from '../../components/headings/Heading1';
+import { useApp } from '../../context/app/useApp';
+import { LevelViewType } from '../../context/app/AppContext';
 
 export default function CrossroadPack() {
     const { status, data: pack } = usePack(78);
@@ -15,8 +16,7 @@ export default function CrossroadPack() {
         queryKey: ['packs', 78, 'levels'],
         queryFn: GetCrossroadsPackLevels,
     });
-
-    const [isList, viewButtons] = useLevelView('packs.listView');
+    const app = useApp();
 
     if (status === 'pending' || levelStatus === 'pending') return <Page><LoadingSpinner /></Page>;
     if (status === 'error' || levelStatus === 'error') return <Page><Heading1>An error occurred</Heading1></Page>;
@@ -43,11 +43,10 @@ export default function CrossroadPack() {
                     <p>{pack.Description}</p>
                 </div>
             </div>
-            <div>{viewButtons}</div>
             {types.map((type) => (
                 <div className='mt-2' key={type}>
                     <h3 className='text-3xl'>{type} path</h3>
-                    {isList
+                    {app.levelViewType === LevelViewType.LIST
                         ? <LevelRenderer element={Level} levels={levels.filter((level) => level.Path === type)} className='level-list mb-8' />
                         : <LevelRenderer element={GridLevel} levels={levels.filter((level) => level.Path === type)} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-3 mb-8' />
                     }

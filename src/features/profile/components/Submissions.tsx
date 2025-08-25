@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Sorts, UserSubmission, getUserSubmissions } from '../api/getUserSubmissions';
 import PageButtons from '../../../components/PageButtons';
 import SortMenu from './SortMenu';
-import useLocalStorage from '../../../hooks/useLocalStorage';
 import { GridLevel } from '../../../components/GridLevel';
 import Level, { LevelSkeleton } from '../../../components/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
@@ -14,26 +13,21 @@ import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import User from '../../../api/types/User';
 import Heading2 from '../../../components/headings/Heading2';
-import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 import useSession from '../../../hooks/useSession';
 import { copyText } from '../../../utils/copyText';
+import { useApp } from '../../../context/app/useApp';
+import { LevelViewType } from '../../../context/app/AppContext';
 
 interface Props {
     user: User;
 }
 
-const viewOptions = {
-    inline: 'Inline',
-    grid: 'Grid',
-} as const;
-type ViewOption = keyof typeof viewOptions;
-
 export default function Submissions({ user }: Props) {
     const [page, setPage] = useSessionStorage(`profilePageIndex_${user.ID}`, 0);
     const [sort, setSort] = useState<{ sort: Sorts, sortDirection: string }>({ sort: Sorts.LEVEL_ID, sortDirection: 'asc' });
-    const [listType, setListType] = useLocalStorage<ViewOption>('profile.listType', 'grid');
+    const app = useApp();
     const [query, lateQuery, setQuery] = useLateValue('', 500);
     const [onlyIncomplete, setOnlyIncomplete] = useState(false);
 
@@ -48,10 +42,7 @@ export default function Submissions({ user }: Props) {
 
     return (
         <section className='mt-6'>
-            <div className='flex justify-between'>
-                <Heading2 id='submissions'>Submissions</Heading2>
-                <SegmentedButtonGroup options={viewOptions} activeKey={listType} onSetActive={(o) => setListType(o)} />
-            </div>
+            <Heading2 id='submissions'>Submissions</Heading2>
             <div className='flex items-center gap-2 mb-2 flex-wrap'>
                 <div className='max-md:w-full md:w-60'>
                     <TextInput value={query} onChange={(e) => setQuery(e.target.value)} placeholder='Filter by name...' />
@@ -63,7 +54,7 @@ export default function Submissions({ user }: Props) {
             </div>
             {status === 'pending' && Array.from({ length: 16 }).map((_, i) => <LevelSkeleton key={i} />)}
             {status === 'success' && <>
-                {listType === 'inline' ?
+                {app.levelViewType === LevelViewType.LIST ?
                     <InlineList levels={submissionResult.submissions} user={user} /> :
                     <GridList levels={submissionResult.submissions} user={user} />
                 }

@@ -15,12 +15,12 @@ import Heading2 from '../../components/headings/Heading2';
 import Page from '../../components/Page';
 import { useNavigate } from 'react-router';
 import SearchInput from '../../components/input/search/Search';
-import ViewType from './components/ViewType';
-import useLocalStorage from '../../hooks/useLocalStorage';
 import pluralS from '../../utils/pluralS';
 import { NumberInput } from '../../components/Input';
 import IconButton from '../../components/input/buttons/icon/IconButton';
 import { useShortcut } from 'react-keybind';
+import { useApp } from '../../context/app/useApp';
+import { LevelViewType } from '../../context/app/AppContext';
 
 // TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {
@@ -33,6 +33,7 @@ export default function Search() {
     const [limit, setLimit] = useSessionStorage('level-search-limit', 12);
     const [limitDisplay, setLimitDisplay] = useState<string | number>(limit);
     const [showFilters, setShowFilters] = useSessionStorage('show-filters', false);
+    const app = useApp();
 
     const [queryParams, setQueryParams] = useQueryParams({
         [QueryParamNames.Name]: StringParam,
@@ -98,8 +99,6 @@ export default function Search() {
         setQueryParams({}, 'replace');
     }
 
-    const [isListView, setIsListView] = useLocalStorage('search.listView', true);
-
     const { status: searchStatus, data: searchData } = useQuery({
         queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }],
         queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }),
@@ -162,12 +161,7 @@ export default function Search() {
                 <IconButton color='filled' onClick={() => void onSearch()}><i className='bx bx-search' /></IconButton>
             </div>
             <Filters reset={reset} show={showFilters} />
-            <div className='flex flex-wrap justify-between mt-4 gap-2 transition-opacity'>
-                <SortMenu />
-                <div className='flex items-center gap-2'>
-                    <ViewType isList={isListView!} onViewList={() => setIsListView(true)} onViewGrid={() => setIsListView(false)} />
-                </div>
-            </div>
+            <SortMenu />
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
             {searchStatus === 'pending' &&
                 <div className='my-4'>
@@ -177,7 +171,7 @@ export default function Search() {
                 </div>
             }
             {searchStatus === 'success' && <>
-                <div className='my-4'>{searchData.levels.length !== 0 && isListView
+                <div className='my-4'>{searchData.levels.length !== 0 && app.levelViewType === LevelViewType.LIST
                     ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} />
                     : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' selectedLevel={selection} />
                 }</div>
