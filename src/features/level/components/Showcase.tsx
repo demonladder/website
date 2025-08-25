@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import APIClient from '../../../api/APIClient';
 import renderToastError from '../../../utils/renderToastError';
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 
 interface Props {
     level: FullLevel;
@@ -21,9 +22,7 @@ export default function Showcase({ level }: Props) {
     return (
         <div className='mt-6'>
             <Heading2 className='mb-2' id='levelShowcase'>Showcase</Heading2>
-            <div className='relative w-full overflow-hidden pt-[56%]'>
-                <iframe className='absolute inset-0 w-full h-full' src={`https://www.youtube-nocookie.com/embed/${level.Showcase}`} title={`Showcase video for ${level.Meta.Name}`} allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerPolicy='strict-origin-when-cross-origin' allowFullScreen={true} />
-            </div>
+            <LiteYouTubeEmbed id={level.Showcase} title={`Showcase video for ${level.Meta.Name}`} />
         </div>
     );
 }

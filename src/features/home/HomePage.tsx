@@ -9,6 +9,7 @@ import Supporters from './components/Supporters';
 import Heading2 from '../../components/headings/Heading2';
 import { useWindowSize } from 'usehooks-ts';
 import Heading1 from '../../components/headings/Heading1';
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 
 export default function Home() {
     const winSize = useWindowSize();
@@ -24,8 +25,11 @@ export default function Home() {
 
     return (
         <main>
+            <meta name='description' content='Rate Geometry Dash levels by difficulty and fun. See community averages to find the best levels to challenge or enjoy.' />
             <div className='container mx-auto my-10'><Heading1>Celebrating GDDL's 5-year anniversary</Heading1></div>
-            <iframe className='mx-auto' width={winSize.width - margin} height={(winSize.width - margin) / 16 * 9} src='https://www.youtube.com/embed/wbGyG7ovHaA' title='GDDL 5' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerPolicy='strict-origin-when-cross-origin' allowFullScreen />
+            <div style={{ margin: `0 ${margin / 2}px` }}>
+                <LiteYouTubeEmbed id='wbGyG7ovHaA' title='GDDL 5' />
+            </div>
             <div className='container mx-auto py-4 grid grid-cols-1 xl:grid-cols-4 gap-8'>
                 <Container className='xl:col-span-3'>
                     <Announcement>
@@ -34,7 +38,7 @@ export default function Home() {
                             The addition of demon difficulties in 2.1 was great. However, it isn't enough! With levels with varying skillsets, sometimes only 5 different categories isn't enough to differentiate an easier level in this category to another. Compare Cataclysm to Bloodlust, DeCode to The Nightmare, Windy Landscape to ICDX… argh (pain misery despair)! 5 demon difficulties just isn't enough. This project divides all demons into 35 tiers, based on difficulty. Here, the community votes are gathered to determine the tiers of every single demon and the results are published right here for everyone to see, making it easier to find your perfect demon to beat or compare a certain demon to another.
                             <br />
                             <br />
-                            <Link to={'/about'} className='text-blue-500'>Learn more</Link>
+                            <Link to={'/about'} className='text-blue-500'>About us</Link>
                         </Body>
                     </Announcement>
                 </Container>
