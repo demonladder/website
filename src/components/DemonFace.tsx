@@ -32,7 +32,7 @@ export default function DemonFace(props: Props) {
 
     return (
         <div className={`inline-block relative ${sizeClass}`}>
-            {rarity !== Rarity.STAR && <img src={`/images/rarity/${r}_${size}.png`} className='absolute' />}
+            {rarity !== Rarity.STAR && <img src={`/images/rarity/${r}_${size}.webp`} className='absolute' />}
             <img src={difficultyToImgSrc(diff, size)} className='absolute' />
         </div>
     );
