@@ -7,6 +7,7 @@ import useUserSearch from '../../hooks/useUserSearch';
 import useSession from '../../hooks/useSession';
 import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
 import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
+import { useNotifications } from '../../features/notifications/hooks/useNotifications';
 
 export default function HeaderThin() {
     const [navOpen, setNavOpen] = useState(false);
@@ -20,11 +21,12 @@ export default function HeaderThin() {
         },
     });
     const session = useSession();
+    const notifications = useNotifications();
 
     return (
         <header className='bg-theme-header text-theme-header-text gap-x-8'>
             <div className='flex justify-between'>
-                <Link to='/' className='font-bold text-3xl'><img src='/banner-300.webp' width='300' height='103' /></Link>
+                <Link to='/' className='font-bold text-3xl' onClick={() => setNavOpen(false)}><img src='/banner-300.webp' width='300' height='103' /></Link>
                 <button onClick={() => setNavOpen((prev) => !prev)} className='px-8'>
                     <svg width='32px' height='32px' viewBox='0 0 32 32' stroke='currentColor' strokeWidth='2'>
                         <path d='M3 5h29M3 16h29M3 27h29' />
@@ -42,8 +44,9 @@ export default function HeaderThin() {
                         <div className='my-4'>
                             {userSearch.SearchBox}
                         </div>
-                        {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) && <Link className='ps-2 text-xl' to='/mod' onClick={() => setNavOpen(false)}><i className='bx bx-shield-quarter' /> Dashboard</Link>}
-                        <ProfileButtons onClick={() => setNavOpen(false)} />
+                        {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) && <Link className='text-xl' to='/mod' onClick={() => setNavOpen(false)}><i className='bx bx-shield-quarter' /> Dashboard</Link>}
+                        <Link to='/notifications' className='text-xl' onClick={() => setNavOpen(false)}><i className={`bx ${notifications.data?.filter((n) => !n.IsRead).length ? 'bxs-bell' : 'bx-bell'}`} /> Notifications</Link>
+                        <ProfileButtons onClick={() => setNavOpen(false)} size='small' />
                         <SecondaryButton onClick={() => void session.logout()}>Log out</SecondaryButton>
                     </div>
                 </nav>

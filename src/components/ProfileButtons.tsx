@@ -35,13 +35,11 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
 
     return (
         <div className='flex sm:items-center gap-1 max-sm:flex-col'>
-            {size === 'large' &&
-                <NotificationButton />
-            }
+            {size === 'large' && <NotificationButton />}
             <div className='ms-2 relative group'>
                 <Link to={`/profile/${userID}`} onClick={onClick}>
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
-                        <object data={`/api/user/${userID}/pfp?size=56`} type='image/png' className='rounded-full'>
+                        <object data={`/api/user/${userID}/pfp?size=56`} width={size === 'small' ? '48' : '56'} height={size === 'small' ? '48' : '56'} type='image/png' className='rounded-full'>
                             <DemonFace diff={session.user?.Hardest?.Meta.Difficulty} size={DemonLogoSizes.SMALL} />
                         </object>
                     </div>
