@@ -31,7 +31,7 @@ export default function AddSubmission() {
 
     const queryClient = useQueryClient();
 
-    const { activeLevel, markInvalid: markInvalidLevel, SearchBox, clear: clearActiveLevel } = useLevelSearch({ ID: 'addSubmissionSearch' });
+    const { activeLevel, markInvalid: markInvalidLevel, SearchBox, clear: clearActiveLevel } = useLevelSearch('addSubmissionSearch');
     const userSearch = useUserSearch({
         ID: 'addSubmissionUserSearch',
     });

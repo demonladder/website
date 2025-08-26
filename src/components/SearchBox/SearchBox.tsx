@@ -9,7 +9,7 @@ interface Props<T> {
     onChange: (search: string) => void;
     onDebouncedChange?: (search: string) => void;
     list: T[];
-    onResult: (result: T | undefined) => void;
+    onResult?: (result: T | undefined) => void;
     status: string;
     id?: string;
     placeholder?: string;
@@ -51,15 +51,15 @@ export default function SearchBox<T>({ value = '', onChange: setChange, onDeboun
 
     // When the user clicks a result, set search state and pass the clicked result to parent
     function handleClick(r: T | undefined) {
-        setResult(r);
+        setResult?.(r);
         setVisible(false);
     }
 
     function keyDown(event: React.KeyboardEvent) {
         if (event.key === 'Enter') {
             const firstEntry = list.at(0);
-            if (value !== '') setResult(firstEntry);
-            else setResult(undefined);
+            if (value !== '') setResult?.(firstEntry);
+            else setResult?.(undefined);
             if (inputRef.current) inputRef.current.blur();
             setVisible(false);
         }

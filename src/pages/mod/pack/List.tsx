@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function List({ addLevel, packID, removeLevel }: Props) {
-    const addLevelSearch = useLevelSearch({ ID: 'editPacksAddSearch' });
+    const addLevelSearch = useLevelSearch('editPacksAddSearch', {});
     const levelFilter = addLevelSearch.value;
 
     const { data } = usePackLevels(packID);

@@ -39,7 +39,7 @@ export default function EditReferences() {
         mutation.mutate(changeList);
     }
 
-    const { activeLevel, SearchBox } = useLevelSearch({ ID: 'editReferenceLevelInput' });
+    const { activeLevel, SearchBox } = useLevelSearch('editReferenceLevelInput');
     function addChange() {
         if (!activeLevel) return;
         if (activeLevel.Rating === null) return;

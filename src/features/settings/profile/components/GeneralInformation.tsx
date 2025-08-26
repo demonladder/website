@@ -48,7 +48,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     const [customPronouns, setCustomPronouns] = useState('');
     const countrySelectID = useId();
 
-    const hardestSearch = useLevelSearch({ ID: 'profileSettingsHardest', options: { defaultLevel: data?.HardestID } });
+    const hardestSearch = useLevelSearch('profileSettingsHardest', { defaultLevel: data?.HardestID });
 
     const minPrefRef = useRef<HTMLInputElement>(null);
     const maxPrefRef = useRef<HTMLInputElement>(null);

@@ -8,10 +8,10 @@ interface LevelSearchOptions {
     required?: boolean;
     inPack?: boolean;
     defaultLevel?: number | null;
-    onLevel: (level: SearchLevelResponse | undefined) => void;
+    onLevel?: (level: SearchLevelResponse | undefined) => void;
 }
 
-export default function useLevelSearch(ID: string, { required = false, defaultLevel, inPack, onLevel }: LevelSearchOptions) {
+export default function useLevelSearch(ID: string, { required = false, defaultLevel, inPack, onLevel }: LevelSearchOptions = {}) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -52,6 +52,11 @@ export default function useLevelSearch(ID: string, { required = false, defaultLe
         setSearchQuery(query);
     }
 
+    function onResult(level?: SearchLevelResponse) {
+        setActiveLevel(level);
+        onLevel?.(level);
+    }
+
     return {
         activeLevel,
         setQuery,
@@ -65,7 +70,7 @@ export default function useLevelSearch(ID: string, { required = false, defaultLe
             onDebouncedChange={setSearchQuery}
             id={ID}
             list={data?.levels ?? []}
-            onResult={onLevel}
+            onResult={onResult}
             status={status}
             invalid={isInvalid || (required && !activeLevel)}
             placeholder={defaultData?.Meta.Name}
