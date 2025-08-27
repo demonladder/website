@@ -17,6 +17,10 @@ import { useApp } from '../context/app/useApp';
 import GlobalSpinner from '../components/GlobalSpinner';
 import MenuContextProvider from '../components/ui/menuContext/MenuContextContainer';
 
+declare const kofiWidgetOverlay: {
+    draw: (username: string, options: Record<string, string>) => void;
+};
+
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -134,6 +138,21 @@ export default function MainLayout() {
 
     useResizeObserver(containerRef, setup);
     const { error: notifyError, warning: notifyWarning } = useNavbarNotification();
+
+    useEffect(() => {
+        kofiWidgetOverlay.draw('gddemonladder', {
+            'type': 'floating-chat',
+            'floating-chat.donateButton.text': 'Donate',
+            'floating-chat.donateButton.background-color': '#00b9fe',
+            'floating-chat.donateButton.text-color': '#fff',
+        });
+        const widget = document.querySelector('[id^="kofi-widget-overlay-"');
+        widget?.classList.remove('opacity-0');
+
+        return () => {
+            widget?.classList.add('opacity-0');
+        };
+    }, []);
 
     useEffect(() => {
         const url = new URLSearchParams(location.search);
