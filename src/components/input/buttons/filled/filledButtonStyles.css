@@ -6,7 +6,7 @@
     --label-color: var(--color-on-primary);
     --label-opacity: 100%;
     color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
-    
+
     --font-size: 14pt;
     font-size: var(--font-size);
 
@@ -14,14 +14,14 @@
     --layer-opacity: 0%;
 
     position: relative;
-    
+
     --height: 40px;
     height: var(--height);
 
     --padding: 16px;
     padding: 0 var(--padding);
     border-radius: calc(var(--height) / 2);
-    
+
     --elevation: 0px;
 
     transition-duration: 350ms;
@@ -65,7 +65,8 @@
     background-color: color-mix(in oklab, var(--layer-color) var(--layer-opacity), transparent);
 }
 
-.filled-button:focus-visible, .filled-button.focused {
+.filled-button:focus-visible,
+.filled-button.focused {
     outline: 3px solid var(--primary);
     outline-offset: 2px;
 }
@@ -78,13 +79,15 @@
     pointer-events: none;
 }
 
-.filled-button:hover, .filled-button.hovered {
+.filled-button:hover,
+.filled-button.hovered {
     --layer-color: var(--color-on-primary);
     --layer-opacity: 8%;
     --elevation: 1px;
 }
 
-.filled-button:active, .filled-button.pressed {
+.filled-button:active,
+.filled-button.pressed {
     --layer-color: var(--color-on-primary);
     --layer-opacity: 10%;
     border-radius: 12px;

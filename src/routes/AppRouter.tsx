@@ -66,9 +66,14 @@ import { listLoader } from '../features/list/list.loader';
 import { QueryClient } from '@tanstack/react-query';
 import { levelLoader } from '../features/level/level.loader';
 import { searchLoader } from '../features/search/search.loader';
+import OAuth2Layout from '../layouts/oauth2/OAuth2';
+import Authorize from '../features/oauth2/authorize/authorize.page';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
+        <Route element={<OAuth2Layout />} path='/oauth2'>
+            <Route element={<Authorize />} path='authorize' />
+        </Route>,
         <Route element={<MainLayout />} errorElement={<ErrorElement />}>
             <Route path='/' element={<Home />} />
             <Route path='search' element={<Search />} loader={searchLoader} />
