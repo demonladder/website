@@ -35,17 +35,6 @@ document.documentElement.setAttribute('data-font', localStorage.getItem('font') 
 const rootElement = document.getElementById('root') ?? createRoot();
 const root = ReactDOM.createRoot(rootElement);
 
-declare const kofiWidgetOverlay: {
-    draw: (username: string, options: Record<string, string>) => void;
-};
-
-kofiWidgetOverlay.draw('gddemonladder', {
-    'type': 'floating-chat',
-    'floating-chat.donateButton.text': 'Donate',
-    'floating-chat.donateButton.background-color': '#00b9fe',
-    'floating-chat.donateButton.text-color': '#fff',
-});
-
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
