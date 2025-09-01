@@ -9,6 +9,9 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { AxiosError } from 'axios';
 import renderToastError from '../../../utils/renderToastError';
 import { Id, toast } from 'react-toastify';
+import Divider from '../../../components/divider/Divider';
+import { Link } from 'react-router';
+import { routes } from '../../../routes/route-definitions';
 
 async function generateAPIKey(): Promise<string> {
     const res = await APIClient.post<string>('/apiKey');
@@ -62,6 +65,9 @@ export default function Developer() {
                         <FormInputDescription>Copy this key now, as it will dissappear once you leave this page!</FormInputDescription>
                     </div>
                 }
+                <Divider />
+                <Heading3>Applications</Heading3>
+                <Link to={routes.developer.applications} className='text-blue-500'>Go to applications</Link>
             </div>
         </div>
     );

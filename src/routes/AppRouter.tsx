@@ -68,14 +68,19 @@ import { levelLoader } from '../features/level/level.loader';
 import { searchLoader } from '../features/search/search.loader';
 import OAuth2Layout from '../layouts/oauth2/OAuth2';
 import Authorize from '../features/oauth2/authorize/authorize.page';
+import { AuthorizeLoader } from '../features/oauth2/authorize/authorize.loader';
+import Invalid from '../features/oauth2/invalid/invalid.page';
+import Applications from '../features/applications/applications.page';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
         <Route element={<OAuth2Layout />} path='/oauth2'>
-            <Route element={<Authorize />} path='authorize' />
+            <Route element={<Authorize />} path='authorize' loader={AuthorizeLoader} />
+            <Route element={<Invalid />} path='invalid' />
         </Route>,
         <Route element={<MainLayout />} errorElement={<ErrorElement />}>
             <Route path='/' element={<Home />} />
+            <Route path='developer/applications' element={<Applications />} />
             <Route path='search' element={<Search />} loader={searchLoader} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />

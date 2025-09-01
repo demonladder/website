@@ -39,11 +39,11 @@ APIClient.interceptors.response.use(undefined, (error: AxiosError) => {
         error.response.data = {
             ...(error.response.data as object),
             error: _.sample([
-                'Seriously, what makes you think it\'s gonna work now?',
+                "Seriously, what makes you think it's gonna work now?",
                 'Patience is a virtue, dumbass.',
                 'Insanity is doing the same thing over and over expecting a different result.',
-                'Go play Tidal Wave while you\'re bored',
-                'If you try again one more time I\'m going to fucking steal your fingers',
+                "Go play Tidal Wave while you're bored",
+                "If you try again one more time I'm going to fucking steal your fingers",
                 'stop',
                 'Has life lost all meaning or why are you still trying?',
                 'You have been banned from clicking for 24 hours, please try again tomorrow',
