@@ -130,6 +130,13 @@ export default function Search() {
         }
     }
 
+    const reduced = searchData?.pages.reduce((acc, cur) => ({
+        total: acc.total,
+        limit: cur.limit,
+        page: cur.page,
+        levels: [...acc.levels, ...cur.levels],
+    }));
+
     return (
         <Page title='GDDL | Search'>
             <Heading1 className='mb-2'>Levels</Heading1>
@@ -149,14 +156,12 @@ export default function Search() {
             }
             {searchStatus === 'success' && <>
                 <p className='text-center my-4'><b>{searchData.pages[0].total}</b> level{pluralS(searchData.pages[0].total)} found</p>
-                {searchData.pages.map((group, i) => (
-                    <React.Fragment key={i}>
-                        <div>{app.levelViewType === LevelViewType.LIST
-                            ? <LevelRenderer element={Level} levels={group.levels} selectedLevel={selection} />
-                            : <LevelRenderer element={GridLevel} levels={group.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' selectedLevel={selection} />
-                        }</div>
-                    </React.Fragment>
-                ))}
+                {reduced &&
+                    <div>{app.levelViewType === LevelViewType.LIST
+                        ? <LevelRenderer element={Level} levels={reduced?.levels} selectedLevel={selection} />
+                        : <LevelRenderer element={GridLevel} levels={reduced?.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' selectedLevel={selection} />
+                    }</div>
+                }
                 {hasNextPage &&
                     <div className='flex justify-center'>
                         <button className='rounded-full px-4 py-2 my-4 bg-theme-500' onClick={() => void fetchNextPage()}>Load more</button>
