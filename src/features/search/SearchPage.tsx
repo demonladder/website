@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Level, { LevelSkeleton } from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
@@ -130,12 +130,12 @@ export default function Search() {
         }
     }
 
-    const reduced = searchData?.pages.reduce((acc, cur) => ({
+    const reduced = useMemo(() => searchData?.pages.reduce((acc, cur) => ({
         total: acc.total,
         limit: cur.limit,
         page: cur.page,
         levels: [...acc.levels, ...cur.levels],
-    }));
+    })), [searchData?.pages]);
 
     return (
         <Page title='GDDL | Search'>
