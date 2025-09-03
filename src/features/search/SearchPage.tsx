@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Level, { LevelSkeleton } from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
 import { getLevels } from './api/getLevels';
-import { useQuery } from '@tanstack/react-query';
-import PageButtons from '../../components/PageButtons';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { GridLevel } from '../../components/GridLevel';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
@@ -16,7 +15,6 @@ import Page from '../../components/Page';
 import { useNavigate } from 'react-router';
 import SearchInput from '../../components/input/search/Search';
 import pluralS from '../../utils/pluralS';
-import { NumberInput } from '../../components/Input';
 import IconButton from '../../components/input/buttons/icon/IconButton';
 import { useShortcut } from 'react-keybind';
 import { useApp } from '../../context/app/useApp';
@@ -29,9 +27,6 @@ interface SavedFilters {
 
 export default function Search() {
     const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('level-filters', {});
-    const [page, setPage] = useSessionStorage('level-search-page', 0);
-    const [limit, setLimit] = useSessionStorage('level-search-limit', 12);
-    const [limitDisplay, setLimitDisplay] = useState<string | number>(limit);
     const [showFilters, setShowFilters] = useSessionStorage('show-filters', false);
     const app = useApp();
 
@@ -99,21 +94,12 @@ export default function Search() {
         setQueryParams({}, 'replace');
     }
 
-    const { status: searchStatus, data: searchData } = useQuery({
-        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }],
-        queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], limit, page }),
+    const { status: searchStatus, data: searchData, hasNextPage, fetchNextPage } = useInfiniteQuery({
+        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sortDirection: queryParams[QueryParamNames.SortDirection] }],
+        queryFn: ({ pageParam }) => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], page: pageParam }),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => (lastPage.page + 1) * lastPage.limit > lastPage.total ? null : lastPage.page + 1,
     });
-
-    // Reset page to 0 if the search data is empty and the page is greater than 0
-    useEffect(() => {
-        if (searchData) {
-            if (searchData.total < (page) * searchData.limit) {
-                setPage(0);
-            }
-
-            setSelection(0);
-        }
-    }, [page, searchData, setPage]);
 
     function onNameChange(newName: string) {
         setQueryParams({
@@ -128,13 +114,13 @@ export default function Search() {
     function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
-            setSelection((prev) => Math.min(prev + 1, searchData?.levels.length ?? 0));
+            setSelection((prev) => Math.min(prev + 1, searchData?.pages.at(0)?.levels.length ?? 0));
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
             setSelection((prev) => Math.max(prev - 1, 0));
         } else if (e.key === 'Enter') {
             if (selection > 0) {
-                const level = searchData?.levels[selection - 1];
+                const level = searchData?.pages.at(0)?.levels[selection - 1];
                 if (level) {
                     void navigate('/level/' + level.ID);
                 }
@@ -142,15 +128,6 @@ export default function Search() {
                 void onSearch();
             }
         }
-    }
-
-    function onLimitChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const parsed = parseInt(e.target.value);
-        if (isNaN(parsed) || parsed < 1 || parsed > 25) {
-            setLimitDisplay(limit);
-            return;
-        }
-        setLimit(parsed);
     }
 
     return (
@@ -165,22 +142,26 @@ export default function Search() {
             {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
             {searchStatus === 'pending' &&
                 <div className='my-4'>
-                    {Array.from({ length: limit }, (_, i) => (
+                    {Array.from({ length: 12 }, (_, i) => (
                         <LevelSkeleton key={i} />
                     ))}
                 </div>
             }
             {searchStatus === 'success' && <>
-                <div className='my-4'>{searchData.levels.length !== 0 && app.levelViewType === LevelViewType.LIST
-                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} />
-                    : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' selectedLevel={selection} />
-                }</div>
-                <PageButtons onPageChange={setPage} meta={{ ...searchData, page }} />
-                <div className='flex items-center justify-center gap-2 my-2'>
-                    <p>Per page:</p>
-                    <NumberInput value={limitDisplay} onChange={(e) => setLimitDisplay(e.target.value)} onBlur={onLimitChange} min='1' max='25' style={{ width: '3rem' }} centered={true} disableSpinner={true} />
-                </div>
-                <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>
+                <p className='text-center my-4'><b>{searchData.pages[0].total}</b> level{pluralS(searchData.pages[0].total)} found</p>
+                {searchData.pages.map((group, i) => (
+                    <React.Fragment key={i}>
+                        <div>{app.levelViewType === LevelViewType.LIST
+                            ? <LevelRenderer element={Level} levels={group.levels} selectedLevel={selection} />
+                            : <LevelRenderer element={GridLevel} levels={group.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' selectedLevel={selection} />
+                        }</div>
+                    </React.Fragment>
+                ))}
+                {hasNextPage &&
+                    <div className='flex justify-center'>
+                        <button className='rounded-full px-4 py-2 my-4 bg-theme-500' onClick={() => void fetchNextPage()}>Load more</button>
+                    </div>
+                }
             </>}
         </Page>
     );
