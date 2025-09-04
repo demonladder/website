@@ -4,8 +4,7 @@ import useNavbarNotification from '../context/NavbarNotification/useNavbarNotifi
 import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
-import DemonFace from './DemonFace';
-import { DemonLogoSizes, difficultyToImgSrc } from '../utils/difficultyToImgSrc';
+import { difficultyToImgSrc } from '../utils/difficultyToImgSrc';
 
 export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();
