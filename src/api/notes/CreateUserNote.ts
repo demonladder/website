@@ -1,8 +1,8 @@
 import APIClient from '../APIClient';
 
-export default async function CreateUserNote(targetID: number, content: string) {
+export default async function CreateUserNote(forUserID: number, content: string) {
     await APIClient.post(`/notes`, {
-        targetID,
+        forUserID,
         content,
     });
 }
