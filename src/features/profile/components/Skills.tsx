@@ -10,6 +10,7 @@ import { getSkills } from '../api/getSkills';
 import Heading2 from '../../../components/headings/Heading2';
 import Divider from '../../../components/divider/Divider';
 import { useInView } from 'react-intersection-observer';
+import { useWindowSize } from 'usehooks-ts';
 
 ChartJS.register(RadialLinearScale);
 
@@ -70,6 +71,8 @@ export default function Skills({ userID }: { userID: number }) {
         ],
     };
 
+    const windowSize = useWindowSize();
+
     return (
         <section className='mt-6' ref={ref}>
             <Heading2>Skills <NewLabel ID='userSkills' /></Heading2>
@@ -107,9 +110,9 @@ export default function Skills({ userID }: { userID: number }) {
                                 color: 'rgba(255, 255, 255, 0.3)',
                             },
                             pointLabels: {
-                                color: 'white',
+                                color: 'currentColor',
                                 font: {
-                                    size: 22,
+                                    size: windowSize.width > 720 ? 22 : 14,
                                 },
                             },
                             min: 0,
