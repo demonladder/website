@@ -99,7 +99,7 @@ export default function Skills({ userID }: { userID: number }) {
                 </div>
             </div>
             <Divider />
-            <div className='mx-auto xl:w-1/2'>
+            <div className='mx-auto xl:w-1/2 text-theme-text'>
                 <Radar data={chartData} options={{
                     scales: {
                         r: {
