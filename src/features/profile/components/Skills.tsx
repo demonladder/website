@@ -72,6 +72,7 @@ export default function Skills({ userID }: { userID: number }) {
     };
 
     const windowSize = useWindowSize();
+    const textColor = window.getComputedStyle(document.querySelector('#root > div')!).getPropertyValue('--color-theme-text');
 
     return (
         <section className='mt-6' ref={ref}>
@@ -99,7 +100,7 @@ export default function Skills({ userID }: { userID: number }) {
                 </div>
             </div>
             <Divider />
-            <div className='mx-auto xl:w-1/2 text-theme-text'>
+            <div className='mx-auto xl:w-1/2'>
                 <Radar data={chartData} options={{
                     scales: {
                         r: {
@@ -110,7 +111,7 @@ export default function Skills({ userID }: { userID: number }) {
                                 color: 'rgba(255, 255, 255, 0.3)',
                             },
                             pointLabels: {
-                                color: 'currentColor',
+                                color: textColor,
                                 font: {
                                     size: windowSize.width > 720 ? 22 : 14,
                                 },
