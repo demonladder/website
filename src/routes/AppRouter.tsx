@@ -66,11 +66,13 @@ import { listLoader } from '../features/list/list.loader';
 import { QueryClient } from '@tanstack/react-query';
 import { levelLoader } from '../features/level/level.loader';
 import { searchLoader } from '../features/search/search.loader';
+import Diversion from '../features/diversion/diversion.page';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
         <Route element={<MainLayout />} errorElement={<ErrorElement />}>
             <Route path='/' element={<Home />} />
+            <Route path='diversion' element={<Diversion />} />
             <Route path='search' element={<Search />} loader={searchLoader} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />
