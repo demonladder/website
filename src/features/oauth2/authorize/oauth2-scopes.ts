@@ -4,6 +4,4 @@ export enum OAuth2Scopes {
     SUBMISSIONS_WRITE = 'submissions.write',
 
     LISTS_WRITE = 'lists.write',
-
-    FAVORITES_WRITE = 'favorites.write',
 }

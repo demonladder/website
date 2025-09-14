@@ -5,14 +5,16 @@ import { camOffset, pixelsPerBlock } from './constants';
 import GameObject from './core/GameObject';
 import GameState from './GameState';
 import createLevel2 from './levels/Level2';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import Page from '../../components/Page';
 
 export const keysPressed: Record<string, boolean> = {};
 export const player = new Player();
 export default function Game() {
     let _p5: P5 | undefined;
     const sceneObjects: GameObject[] = [];
+    const fpsRef = useRef<HTMLParagraphElement>(null);
 
     let lastObject: GameObject;
 
@@ -38,6 +40,7 @@ export default function Game() {
     }
 
     function draw(p5: P5) {
+        if (fpsRef.current) fpsRef.current.innerText = `${p5.frameRate().toFixed(1)}fps`;
         p5.background(64);
         p5.stroke(255, 40);
         p5.strokeWeight(1);
@@ -82,7 +85,8 @@ export default function Game() {
         const text = `${percent.toFixed(2)}%`;
         p5.text(text, 640 - p5.textWidth(text) / 2, 50);
         if (percent > 100) {
-            p5.text((p5.millis() - startTime > 33200) ? 'You fail' : 'You win', 0, 50);
+            const endTime = p5.millis();
+            p5.text((endTime - startTime > 32000) ? 'You fail' : 'You win', 0, 50);
 
             p5.noLoop();
         }
@@ -150,12 +154,13 @@ export default function Game() {
     }, []);
 
     return (
-        <>
+        <Page title='Level 2'>
+            <p ref={fpsRef} className='font-mono' />
             <Sketch className='grid place-items-center my-2 gap-2' setup={setup} draw={draw} mousePressed={mousePressed} mouseReleased={mouseReleased} keyPressed={keyPressed} keyReleased={keyReleased} />
             <div className='flex justify-center'>
                 <PrimaryButton onClick={() => restart(_p5)}>R to restart</PrimaryButton>
             </div>
-        </>
+        </Page>
     );
 }
 

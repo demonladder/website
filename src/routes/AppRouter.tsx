@@ -13,7 +13,7 @@ const CreateUser = lazy(() => import('../features/admin/createUser/CreateUser'))
 const AddLevel = lazy(() => import('../features/admin/addLevel/AddLevel'));
 const DeleteUser = lazy(() => import('../features/admin/deleteUser/DeleteUser'));
 const SiteSettings = lazy(() => import('../pages/mod/siteSettings/SiteSettings'));
-const Game = lazy(() => import('../features/game/Game'));
+import Game from '../features/game/Game';
 import { profileLoader } from '../features/profile/loader';
 import Home from '../features/home/HomePage';
 const Search = lazy(() => import('../features/search/SearchPage'));
@@ -71,6 +71,8 @@ import Authorize from '../features/oauth2/authorize/authorize.page';
 import { AuthorizeLoader } from '../features/oauth2/authorize/authorize.loader';
 import Invalid from '../features/oauth2/invalid/invalid.page';
 import Applications from '../features/applications/applications.page';
+import Application from '../features/applications/application/application.page';
+import { applicationLoader } from '../features/applications/application/application.loader';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
@@ -81,6 +83,7 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
         <Route element={<MainLayout />} errorElement={<ErrorElement />}>
             <Route path='/' element={<Home />} />
             <Route path='developer/applications' element={<Applications />} />
+            <Route path='developer/applications/:appID' element={<Application />} loader={applicationLoader(queryClient)} />
             <Route path='search' element={<Search />} loader={searchLoader} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />
