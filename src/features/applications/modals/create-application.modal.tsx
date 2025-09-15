@@ -24,7 +24,7 @@ export default function CreateApplicationModal({ onClose }: Props) {
             toast.error(renderToastError.render({ data: error }));
         },
         onSuccess: (data) => {
-            void navigate(`${data.ID}`);
+            void navigate(`developer/applications/${data.ID}`);
         },
     });
 
