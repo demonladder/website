@@ -8,4 +8,5 @@ export default interface User {
     AverageEnjoyment: number | null;
     CountryCode: string | null;
     Pronouns: string | null;
+    IsBot: boolean;
 }

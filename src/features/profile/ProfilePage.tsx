@@ -68,7 +68,7 @@ export default function Profile() {
                 <div className='grow flex flex-col gap-1 justify-center'>
                     <div className='flex items-center gap-2 text-4xl'>
                         {flagEmoji(userData.CountryCode)}
-                        <Heading1 style={userColor ? { color: `#${userColor.toString(16).padStart(6, '0')}` } : {}}>{userData.Name}</Heading1>
+                        <Heading1 style={userColor ? { color: `#${userColor.toString(16).padStart(6, '0')}` } : {}}>{userData.Name} {userData.IsBot && <span className='bg-blue-500 px-2 rounded-xl ms-2'>APP</span>}</Heading1>
                         <UserRoleIcon roles={userData.Roles} />
                     </div>
                     <p>
@@ -121,13 +121,17 @@ export default function Profile() {
                     <NavLink to='rankings'>Rankings</NavLink>
                 </ul>
             </nav> */}
+            {!userData.IsBot &&
+                <>
+                    <LevelPreferences />
+                    <Submissions user={userData} />
+                    <PendingSubmissions userID={userID} />
+                    <Lists userID={userID} />
+                    <Skills userID={userID} />
+                    <RankingsWrapper />
+                </>
+            }
             <Outlet />
-            <LevelPreferences />
-            <Submissions user={userData} />
-            <PendingSubmissions userID={userID} />
-            <Lists userID={userID} />
-            <Skills userID={userID} />
-            <RankingsWrapper />
         </Page>
     );
 }
