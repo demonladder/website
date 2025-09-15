@@ -1,11 +1,10 @@
-import DemonFace from './DemonFace';
 import { Link } from 'react-router';
 import NotificationButton from './ui/Notifications';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
-import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
+import { difficultyToImgSrc } from '../utils/difficultyToImgSrc';
 
 export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();
@@ -33,14 +32,16 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const pfpSize = size === 'small' ? '48' : '56';
+
     return (
         <div className='flex sm:items-center gap-1 max-sm:flex-col'>
             {size === 'large' && <NotificationButton />}
             <div className='ms-2 relative group'>
                 <Link to={`/profile/${userID}`} onClick={onClick}>
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
-                        <object data={`/api/user/${userID}/pfp?size=56`} width={size === 'small' ? '48' : '56'} height={size === 'small' ? '48' : '56'} type='image/png' className='rounded-full'>
-                            <DemonFace diff={session.user?.Hardest?.Meta.Difficulty} size={DemonLogoSizes.SMALL} />
+                        <object data={`/api/user/${userID}/pfp?size=${pfpSize}`} width={pfpSize} height={pfpSize} type='image/png' className='rounded-full'>
+                            <img src={difficultyToImgSrc(session.user?.Hardest?.Meta.Difficulty)} />
                         </object>
                     </div>
                 </Link>

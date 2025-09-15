@@ -73,6 +73,8 @@ import Invalid from '../features/oauth2/invalid/invalid.page';
 import Applications from '../features/applications/applications.page';
 import Application from '../features/applications/application/application.page';
 import { applicationLoader } from '../features/applications/application/application.loader';
+import Diversion from '../features/diversion/diversion.page';
+import Otter from '../features/otter/otter.page';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
@@ -84,6 +86,8 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
             <Route path='/' element={<Home />} />
             <Route path='developer/applications' element={<Applications />} />
             <Route path='developer/applications/:appID' element={<Application />} loader={applicationLoader(queryClient)} />
+            <Route path='diversion' element={<Diversion />} />
+            <Route path='otter' element={<Otter />} />
             <Route path='search' element={<Search />} loader={searchLoader} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />
