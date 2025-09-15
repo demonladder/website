@@ -25,6 +25,7 @@ export default function CreateApplicationModal({ onClose }: Props) {
         },
         onSuccess: (data) => {
             void navigate(`developer/applications/${data.ID}`);
+            onClose();
         },
     });
 
