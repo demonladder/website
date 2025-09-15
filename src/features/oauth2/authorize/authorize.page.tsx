@@ -67,7 +67,6 @@ export default function Authorize() {
 const scopeLabels: Record<OAuth2Scopes, string> = {
     [OAuth2Scopes.SUBMISSIONS_WRITE]: 'Submit and edit submissions for you',
     [OAuth2Scopes.PROFILE_WRITE]: 'Update your profile',
-    [OAuth2Scopes.FAVORITES_WRITE]: 'Change your favorite and least favorite levels',
     [OAuth2Scopes.LISTS_WRITE]: 'Create or edit your lists',
 };
 
