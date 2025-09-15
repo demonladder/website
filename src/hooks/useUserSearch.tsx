@@ -37,6 +37,7 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                     MinPref: user.MinPref,
                     CountryCode: user.CountryCode,
                     Pronouns: user.Pronouns,
+                    IsBot: user.IsBot,
                 });
             }).catch(console.error);
         }
