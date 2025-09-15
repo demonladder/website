@@ -67,12 +67,14 @@ import { QueryClient } from '@tanstack/react-query';
 import { levelLoader } from '../features/level/level.loader';
 import { searchLoader } from '../features/search/search.loader';
 import Diversion from '../features/diversion/diversion.page';
+import Otter from '../features/otter/otter.page';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
         <Route element={<MainLayout />} errorElement={<ErrorElement />}>
             <Route path='/' element={<Home />} />
             <Route path='diversion' element={<Diversion />} />
+            <Route path='otter' element={<Otter />} />
             <Route path='search' element={<Search />} loader={searchLoader} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />
