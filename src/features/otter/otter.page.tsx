@@ -3,6 +3,9 @@ import Page from '../../components/Page';
 export default function Otter() {
     return (
         <Page title='SomeOtterThings'>
+            <p className='mb-2'>
+                <a href='https://www.youtube.com/@seels55' target='_blank' referrerPolicy='no-referrer'>https://www.youtube.com/@seels55</a>
+            </p>
             <div className='gallery grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
                 <div className='flex flex-col gap-2'>
                     <img src='https://www.sciencelearn.org.nz/_next/image?url=https%3A%2F%2Fwww.datocms-assets.com%2F117510%2F1722376082-02_03_01_01_im1.jpg%3Fw%3D1840%26h%3D1196.3460505104783&w=1920&q=85&dpl=dpl_AuHsQTwR2QcgcAEaTsZqSN8dM1f2' />
