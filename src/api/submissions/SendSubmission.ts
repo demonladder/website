@@ -8,6 +8,7 @@ interface SubmitDTO {
     refreshRate?: number;
     device?: Device;
     proof?: string;
+    isProofPrivate?: boolean;
     progress?: number;
     attempts?: number;
     isSolo?: boolean;
