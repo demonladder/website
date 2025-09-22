@@ -32,7 +32,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build:staging
+        run: npm run ${{ inputs.environment == 'gddl' && 'build' || 'build:staging'}}
         env:
           VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
           VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
