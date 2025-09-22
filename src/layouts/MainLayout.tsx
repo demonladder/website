@@ -209,7 +209,8 @@ export default function MainLayout() {
             return;
         }
 
-        void navigate(`/search?name=${encodeURIComponent(levelSearchInput)}`, { replace: true });
+        sessionStorage.setItem('level-filters', JSON.stringify({ name: levelSearchInput }));
+        void navigate(`/search?name=${encodeURIComponent(levelSearchInput)}`);
         setShowLevelSearch(false);
     }
 
