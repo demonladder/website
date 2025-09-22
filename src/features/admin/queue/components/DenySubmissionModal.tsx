@@ -6,13 +6,13 @@ import { TextInput } from '../../../../components/Input';
 import Modal from '../../../../components/Modal';
 import Select from '../../../../components/Select';
 import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import PendingSubmission from '../../../../api/types/PendingSubmission';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import DenySubmission from '../../../../api/submissions/DenySubmission';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
+import Checkbox from '../../../../components/input/CheckBox';
 
 const denyReasons = {
     'missingProof': 'Missing proof',
@@ -34,11 +34,12 @@ interface Props {
 
 export default function DenySubmissionModal({ submission, onClose }: Props) {
     const [denyReason, setDenyReason] = useState<DenyReason>('custom');
+    const [shouldBlacklistProof, setShouldBlacklistProof] = useState(false);
     const [reason, setReason] = useState('');
 
     const queryClient = useQueryClient();
     const denyMutation = useMutation({
-        mutationFn: (data: { ID: number, reason: string }) => DenySubmission(data.ID, data.reason),
+        mutationFn: (data: { ID: number, reason: string }) => DenySubmission(data.ID, data.reason, shouldBlacklistProof),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['user', submission.UserID] });
             void queryClient.invalidateQueries({ queryKey: ['submissionQueue'] });
@@ -54,25 +55,29 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
     }
 
     return (
-        <Modal title='Deny reason' show={true} onClose={() => onClose()}>
+        <Modal title='Deny submission?' show={true} onClose={() => onClose()}>
             <form onSubmit={onDeny}>
                 <FormGroup>
                     <FormInputLabel htmlFor='denyReason'>Select a type</FormInputLabel>
                     <Select id='denyReason' options={denyReasons} activeKey={denyReason} onChange={setDenyReason} height='36' />
                     <FormInputDescription>Choose a reason for denying the submission.</FormInputDescription>
                 </FormGroup>
+                {denyReason === 'wrongProof' &&
+                    <label className='flex gap-1 items-center'>
+                        <Checkbox checked={shouldBlacklistProof} onChange={(e) => setShouldBlacklistProof(e.target.checked)} />
+                        Blacklist proof?
+                    </label>
+                }
                 {['custom', 'hacked'].includes(denyReason) &&
                     <FormGroup>
                         <FormInputLabel htmlFor='customDenyReason'>Write a reason</FormInputLabel>
                         <TextInput value={reason} onChange={(e) => setReason(e.target.value.trimStart())} id='customDenyReason' placeholder='Reason...' required />
                     </FormGroup>
                 }
-                <FormGroup>
-                    <div className='flex gap-2 justify-end'>
-                        <SecondaryButton type='button' onClick={() => onClose()}>Close</SecondaryButton>
-                        <DangerButton type='submit' loading={denyMutation.isPending}>Deny</DangerButton>
-                    </div>
-                </FormGroup>
+                <div className='mt-8'>
+                    <DangerButton className='block w-full py-1' type='submit' loading={denyMutation.isPending}>Deny</DangerButton>
+                    <button className='my-2 py-1 block w-full border rounded border-theme-text/35' type='button' onClick={() => onClose()}>Cancel</button>
+                </div>
             </form>
         </Modal>
     );
