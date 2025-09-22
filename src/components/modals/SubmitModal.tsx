@@ -22,6 +22,7 @@ import { useSubmission } from './useSubmission';
 import FormGroup from '../form/FormGroup';
 import { Device } from '../../api/core/enums/device.enum';
 import { useApp } from '../../context/app/useApp';
+import Checkbox from '../input/CheckBox';
 
 interface Props {
     level: {
@@ -67,6 +68,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const [deviceKey, setDeviceKey] = useState(app.defaultDevice ?? Device.PC);
     const [refreshRate, setRefreshRate] = useState((app.defaultRefreshRate ?? 60).toString());
     const [proof, setProof] = useState('');
+    const [isProofPrivate, setIsProofPrivate] = useState(false);
     const [progress, setProgress] = useState('');
     const [attempts, setAttempts] = useState('');
     const [wasSolo, setWasSolo] = useState(true);
@@ -163,6 +165,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             refreshRate: parseInt(refreshRate),
             device: deviceKey,
             proof: proof.length > 0 ? proof : undefined,
+            isProofPrivate,
             progress: parseInt(progress),
             attempts: attemptCount,
             isSolo: wasSolo,
@@ -246,6 +249,10 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         <p className='text-sm text-yellow-500'>Please be aware that proof is not strictly required for easier levels. By not adding proof you can bypass the queue and skip the waiting time to get this submission added.</p>
                     }
                     <URLInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value)} invalid={!validateLink(proof) && (requiresProof || proof !== '')} required={requiresProof} spellCheck={false} />
+                    <label className='flex items-center gap-1'>
+                        <Checkbox checked={isProofPrivate} onChange={(e) => setIsProofPrivate(e.target.checked)} />
+                        Private
+                    </label>
                     <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
                 </FormGroup>
                 {level.Meta.Length !== LevelLengths.PLATFORMER &&
