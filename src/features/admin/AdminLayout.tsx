@@ -13,8 +13,14 @@ import { useApp } from '../../context/app/useApp';
 
 export default function AdminLayout() {
     const windowSize = useWindowSize();
-    const [hideSidebar, setHideSidebar] = useState(windowSize.width < 1024);
+    const isMobile = windowSize.width < 1024;
+    const [hideSidebar, setHideSidebar] = useState(isMobile);
     const app = useApp();
+
+    function onNavigation() {
+        if (!isMobile) return;
+        setHideSidebar(true);
+    }
 
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
@@ -25,38 +31,38 @@ export default function AdminLayout() {
                             <p>GDDL Dashboard</p>
                         </div>
                         <div className='px-4 py-6 flex flex-col gap-2 sidebar-wrapper overflow-auto scrollbar-thin'>
-                            <NavButton to='/mod' end={true}>Dashboard</NavButton>
-                            <NavButton to='/mod/queue'>Queue</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod' end={true}>Dashboard</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/queue'>Queue</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Submissions</p>
-                            <NavButton to='/mod/addSubmission'>Add submission</NavButton>
-                            <NavButton to='/mod/mergeSubmissions'>Merge submissions</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/addSubmission'>Add submission</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/mergeSubmissions'>Merge submissions</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Users</p>
-                            <NavButton to='/mod/manageUser'>Manage user</NavButton>
-                            <NavButton to='/mod/roles'>Roles</NavButton>
-                            <NavButton to='/mod/signupLinks'>Sign-up links</NavButton>
-                            <NavButton to='/mod/createUser'>Create user</NavButton>
-                            <NavButton to='/mod/deleteUser'>Delete user</NavButton>
-                            <NavButton to='/mod/verification'>Verification</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/manageUser'>Manage user</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/roles'>Roles</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/signupLinks'>Sign-up links</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/createUser'>Create user</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/deleteUser'>Delete user</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/verification'>Verification</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Moderation</p>
-                            <NavButton to='/mod/audit-logs'>Audit logs</NavButton>
-                            <NavButton to='/mod/beta'>Beta access</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/audit-logs'>Audit logs</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/beta'>Beta access</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Packs</p>
-                            <NavButton to='/mod/editPack'>Packs</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/editPack'>Packs</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>References</p>
-                            <NavButton to='/mod/references'>Edit references</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/references'>Edit references</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Levels</p>
-                            <NavButton to='/mod/addLevel'>Add/update level</NavButton>
-                            <NavButton to='/mod/editTags'>Edit tags</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/addLevel'>Add/update level</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/editTags'>Edit tags</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Settings</p>
-                            <NavButton to='/mod/siteSettings'>Site settings</NavButton>
-                            <NavButton to='/mod/debugging'>Debugging</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/siteSettings'>Site settings</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/debugging'>Debugging</NavButton>
                             <div className='py-6' />
                         </div>
                     </aside>
