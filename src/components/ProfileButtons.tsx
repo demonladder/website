@@ -4,7 +4,7 @@ import useNavbarNotification from '../context/NavbarNotification/useNavbarNotifi
 import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
-import { difficultyToImgSrc } from '../utils/difficultyToImgSrc';
+import { difficultyToImgSrc, DemonLogoSizes } from '../utils/difficultyToImgSrc';
 
 export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();
@@ -41,7 +41,7 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
                 <Link to={`/profile/${userID}`} onClick={onClick}>
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
                         <object data={`/api/user/${userID}/pfp?size=${pfpSize}`} width={pfpSize} height={pfpSize} type='image/png' className='rounded-full'>
-                            <img src={difficultyToImgSrc(session.user?.Hardest?.Meta.Difficulty)} />
+                            <img src={difficultyToImgSrc(session.user?.Hardest?.Meta.Difficulty, DemonLogoSizes.SMALL)} width='56' className='mt-1' />
                         </object>
                     </div>
                 </Link>
