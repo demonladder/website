@@ -126,6 +126,7 @@ export const ISO3611Alpha2 = {
     'KZ': 'Kazakhstan',
     'KE': 'Kenya',
     'KI': 'Kiribati',
+    'XK': 'Kosovo',
     'KW': 'Kuwait',
     'KG': 'Kyrgyzstan',
 
