@@ -166,7 +166,7 @@ export default function CustomTheme() {
                     <input type='file' className='absolute inset-0 opacity-0 cursor-pointer' onChange={onImport} />
                 </div>
                 <a className='text-button outlined flex items-center' download='theme.json' href={`data:application/json;charset=utf8,${encodeURIComponent(JSON.stringify(theme.theme))}`}>Download</a>
-                <TonalButton size='sm' onClick={() => theme.setEnabled(!theme.enabled)}>{theme.enabled ? 'Disable' : 'Use'}</TonalButton>
+                <TonalButton size='sm' onClick={() => theme.setEnabled(!theme.enabled)}>{theme.enabled ? 'Disable' : 'Enable'}</TonalButton>
                 <TonalButton size='sm' onClick={() => theme.set(customTheme)}>Save</TonalButton>
             </div>
         </section>
