@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Level, { LevelSkeleton } from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
 import { getLevels } from './api/getLevels';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GridLevel } from '../../components/GridLevel';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
@@ -19,6 +19,7 @@ import IconButton from '../../components/input/buttons/icon/IconButton';
 import { useShortcut } from 'react-keybind';
 import { useApp } from '../../context/app/useApp';
 import { LevelViewType } from '../../context/app/AppContext';
+import PageButtons from '../../components/PageButtons';
 
 // TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {
@@ -28,6 +29,7 @@ interface SavedFilters {
 export default function Search() {
     const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('level-filters', {});
     const [showFilters, setShowFilters] = useSessionStorage('show-filters', false);
+    const [page, setPage] = useState(0);
     const app = useApp();
 
     const [queryParams, setQueryParams] = useQueryParams({
@@ -94,11 +96,9 @@ export default function Search() {
         setQueryParams({}, 'replace');
     }
 
-    const { status: searchStatus, data: searchData, hasNextPage, fetchNextPage } = useInfiniteQuery({
-        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sortDirection: queryParams[QueryParamNames.SortDirection] }],
-        queryFn: ({ pageParam }) => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], page: pageParam }),
-        initialPageParam: 0,
-        getNextPageParam: (lastPage) => (lastPage.page + 1) * lastPage.limit > lastPage.total ? null : lastPage.page + 1,
+    const { status: searchStatus, data: searchData } = useQuery({
+        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], page }],
+        queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], page }),
     });
 
     function onNameChange(newName: string) {
@@ -114,13 +114,13 @@ export default function Search() {
     function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
-            setSelection((prev) => Math.min(prev + 1, searchData?.pages.at(0)?.levels.length ?? 0));
+            setSelection((prev) => Math.min(prev + 1, searchData?.levels.length ?? 0));
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
             setSelection((prev) => Math.max(prev - 1, 0));
         } else if (e.key === 'Enter') {
             if (selection > 0) {
-                const level = searchData?.pages.at(0)?.levels[selection - 1];
+                const level = searchData?.levels[selection - 1];
                 if (level) {
                     void navigate('/level/' + level.ID);
                 }
@@ -129,13 +129,6 @@ export default function Search() {
             }
         }
     }
-
-    const reduced = useMemo(() => searchData?.pages.reduce((acc, cur) => ({
-        total: acc.total,
-        limit: cur.limit,
-        page: cur.page,
-        levels: [...acc.levels, ...cur.levels],
-    })), [searchData?.pages]);
 
     return (
         <Page title='GDDL | Search'>
@@ -155,18 +148,14 @@ export default function Search() {
                 </div>
             }
             {searchStatus === 'success' && <>
-                <p className='text-center my-4'><b>{searchData.pages[0].total}</b> level{pluralS(searchData.pages[0].total)} found</p>
-                {reduced &&
-                    <div>{app.levelViewType === LevelViewType.LIST
-                        ? <LevelRenderer element={Level} levels={reduced?.levels} selectedLevel={selection} />
-                        : <LevelRenderer element={GridLevel} levels={reduced?.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2' selectedLevel={selection} />
-                    }</div>
+                {searchData.levels && app.levelViewType === LevelViewType.LIST
+                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='my-2' />
+                    : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2' selectedLevel={selection} />
                 }
-                {hasNextPage &&
-                    <div className='flex justify-center'>
-                        <button className='rounded-full px-4 py-2 my-4 bg-theme-500' onClick={() => void fetchNextPage()}>Load more</button>
-                    </div>
-                }
+                <div className='my-4'>
+                    <PageButtons meta={{ total: searchData.total, page, limit: 16 }} onPageChange={setPage} />
+                    <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>
+                </div>
             </>}
         </Page>
     );
