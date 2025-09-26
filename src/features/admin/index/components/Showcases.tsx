@@ -43,19 +43,19 @@ export default function Showcases() {
                     <p>No new showcase suggestions</p>
                 }
                 <ul className='grid lg:grid-cols-2 gap-4'>
-                    {suggestions.suggestions.map((suggestion) => <li key={suggestion.ID}>
-                        <div className='flex p-2 bg-theme-700 border border-theme-600 round:rounded-2xl'>
+                    {suggestions.suggestions.map((suggestion) => <li className='bg-theme-700 border border-theme-600 round:rounded-2xl p-4' key={suggestion.ID}>
+                        <div className='flex items-center mb-2'>
                             <DemonFace diff={suggestion.level.Meta.Difficulty} rarity={suggestion.level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
-                            <div className='mt-4 grow'>
+                            <div className='grow'>
                                 <Heading3><Link to={`/level/${suggestion.levelID}`}><b>{suggestion.level.Meta.Name}</b> by {suggestion.level.Meta.Publisher?.name ?? '(-)'}</Link></Heading3>
                                 <p>Suggested by: <Link to={`/profile/${suggestion.userID}`}>{suggestion.user.Name}</Link></p>
                                 <p className='text-theme-400'>{new Date(suggestion.updatedAt.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</p>
-                                <LiteYouTubeEmbed id={suggestion.videoID} title={suggestion.level.Meta.Name} />
-                                <div className='flex justify-end gap-1'>
-                                    <TextButton onClick={() => deleteMutation.mutate(suggestion.ID)}>Deny</TextButton>
-                                    <TonalButton size='sm' onClick={() => acceptMutation.mutate(suggestion.ID)}>Accept</TonalButton>
-                                </div>
                             </div>
+                        </div>
+                        <LiteYouTubeEmbed id={suggestion.videoID} title={suggestion.level.Meta.Name} />
+                        <div className='flex justify-end gap-1 mt-2'>
+                            <TextButton onClick={() => deleteMutation.mutate(suggestion.ID)}>Deny</TextButton>
+                            <TonalButton size='sm' onClick={() => acceptMutation.mutate(suggestion.ID)}>Accept</TonalButton>
                         </div>
                     </li>)}
                 </ul>
