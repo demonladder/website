@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import Heading1 from '../../components/headings/Heading1';
 import { useLoaderData, useNavigate } from 'react-router';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import APIClient from '../../api/APIClient';
 import { toast } from 'react-toastify';
 import type { AxiosError } from 'axios';
@@ -12,6 +12,7 @@ export default function TOTPRegisterPage() {
     const qrCodeCanvasRef = useRef<HTMLCanvasElement>(null);
     const otpUrl = useLoaderData<string>();
     const [code, setCode] = useState('');
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         if (!qrCodeCanvasRef.current) return;
@@ -39,6 +40,7 @@ export default function TOTPRegisterPage() {
         submitMutation.mutate(code, {
             onSuccess: () => {
                 toast.success('2FA enabled successfully!');
+                queryClient.setQueryData(['has2FA'], true);
                 void goBack();
             },
         });
