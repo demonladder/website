@@ -9,6 +9,8 @@ import { createApplication } from '../api/createApplication';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
+import { useAPI } from '../../../hooks/useAPI';
+import type { AxiosError } from 'axios';
 
 interface Props {
     onClose: () => void;
@@ -17,11 +19,13 @@ interface Props {
 export default function CreateApplicationModal({ onClose }: Props) {
     const [name, setName] = useState('');
     const navigate = useNavigate();
+    const client = useAPI();
 
     const createMutation = useMutation({
-        mutationFn: () => createApplication(name),
-        onError(error) {
-            toast.error(renderToastError.render({ data: error }));
+        mutationFn: () => createApplication(client, name),
+        onError(error: AxiosError) {
+            if (error.response?.status !== 400) onClose();
+            else toast.error(renderToastError.render({ data: error }));
         },
         onSuccess: (data) => {
             void navigate(`developer/applications/${data.ID}`);

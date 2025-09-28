@@ -13,15 +13,18 @@ import renderToastError from '../../../utils/renderToastError';
 import Heading1 from '../../../components/headings/Heading1';
 import { forgotPassword } from '../../../api/auth/forgotPassword';
 import Heading3 from '../../../components/headings/Heading3';
+import { Link } from 'react-router';
+import { useAPI } from '../../../hooks/useAPI';
 
 export default function AccountSettings() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [nameChallenge, setNameChallenge] = useState('');
     const session = useSession();
     const isNameValid = nameChallenge === session.user?.Name;
+    const client = useAPI();
 
     const deleteUserMutation = useMutation({
-        mutationFn: DeleteUserRequest,
+        mutationFn: (ID: number) => DeleteUserRequest(client, ID),
         onSuccess: () => {
             window.location.href = '/';
         },
@@ -50,11 +53,19 @@ export default function AccountSettings() {
             <Heading1 className='mb-4'>Account settings</Heading1>
             <div>
                 <div className='flex justify-between border-theme-500 border-b pb-2'>
-                    <Heading3>Password</Heading3>
+                    <Heading3>Reset password</Heading3>
                     <SecondaryButton onClick={onPasswordReset}>Reset</SecondaryButton>
                 </div>
                 <FormInputDescription>Get sent a reset link on Discord.</FormInputDescription>
             </div>
+            <section>
+                <Heading3 className='mt-8 mb-4 border-b pb-2 border-theme-500'>Two-factor authentication</Heading3>
+                <div className='flex gap-2 items-center'>
+                    <i className='bx bx-mobile-alt text-2xl' />
+                    <p>Use an authenticator app on your phone to generate a verification code.</p>
+                    <Link to='/auth/totp/register' className='ms-auto bg-theme-600 hover:bg-theme-500 active:bg-theme-400 transition-colors py-1 px-3 rounded-lg border border-white/35'>Add</Link>
+                </div>
+            </section>
             <div className='mt-12'>
                 <div className='flex justify-between border-theme-500 border-b pb-2'>
                     <Heading3>Delete account</Heading3>

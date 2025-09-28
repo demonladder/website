@@ -74,6 +74,9 @@ import Applications from '../features/applications/applications.page';
 import Application from '../features/applications/application/application.page';
 import { applicationLoader } from '../features/applications/application/application.loader';
 import Diversion from '../features/diversion/diversion.page';
+import TOTPPage from '../features/totp/totp.page';
+import TOTPRegisterPage from '../features/totp/totp-register.page';
+import { totpRegisterLoader } from '../features/totp/totp-register.loader';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
@@ -94,6 +97,8 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
             <Route path='pack/78' element={<CrossroadPack />} />
             <Route path='pack/:packID' element={<PackOverview />} />
             <Route path='staff' element={<Staff />} />
+            <Route path='auth/totp/authenticate' element={<TOTPPage />} />
+            <Route path='auth/totp/register' element={<TOTPRegisterPage />} loader={totpRegisterLoader} />
             <Route path='level/:levelID' element={<LevelPage />} loader={levelLoader(queryClient)} />
             <Route path='login' element={<Login />} />
             <Route path='signup' element={<SignUp />} />

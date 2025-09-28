@@ -10,17 +10,19 @@ import Modal from '../../../components/Modal';
 import { useQueryClient } from '@tanstack/react-query';
 import DeleteUserRequest from '../../../api/user/Delete';
 import FormGroup from '../../../components/form/FormGroup';
+import { useAPI } from '../../../hooks/useAPI';
 
 export default function DeleteUser() {
     const [user, setUser] = useState<TinyUser>();
     const [showConfirm, setShowConfirm] = useState(false);
 
     const queryClient = useQueryClient();
+    const client = useAPI();
 
     function submit() {
         if (user === undefined) return toast.error('Select a user first!');
 
-        void toast.promise(DeleteUserRequest(user.ID).then(() => queryClient.invalidateQueries({ queryKey: ['userSearch'] })).finally(() => setShowConfirm(false)), {
+        void toast.promise(DeleteUserRequest(client, user.ID).then(() => queryClient.invalidateQueries({ queryKey: ['userSearch'] })).finally(() => setShowConfirm(false)), {
             pending: 'Deleting user, this may take a while...',
             success: `Deleted ${user.Name}!`,
             error: renderToastError,
