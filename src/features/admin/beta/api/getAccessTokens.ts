@@ -13,6 +13,7 @@ interface GetAccessTokensResponse {
         Owner: {
             ID: number;
             Name: string;
+            avatar: string | null;
             RoleIDs: string;
         };
     }[];
