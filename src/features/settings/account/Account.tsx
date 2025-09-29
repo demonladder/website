@@ -63,7 +63,10 @@ export default function AccountSettings() {
                 <div className='flex gap-2 items-center'>
                     <i className='bx bx-mobile-alt text-2xl' />
                     <p>Use an authenticator app on your phone to generate a verification code.</p>
-                    <Link to='/auth/totp/register' className='ms-auto bg-theme-600 hover:bg-theme-500 active:bg-theme-400 transition-colors py-1 px-3 rounded-lg border border-white/35'>Add</Link>
+                    {session.has2FA
+                        ? <Link to='/auth/totp/register' className='ms-auto bg-theme-600 hover:bg-theme-500 active:bg-theme-400 transition-colors py-1 px-3 rounded-lg border border-white/35'>Edit</Link>
+                        : <Link to='/auth/totp/register' className='ms-auto bg-theme-600 hover:bg-theme-500 active:bg-theme-400 transition-colors py-1 px-3 rounded-lg border border-white/35'>Add</Link>
+                    }
                 </div>
             </section>
             <div className='mt-12'>

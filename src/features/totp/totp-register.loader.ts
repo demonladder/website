@@ -4,6 +4,7 @@ import { redirect } from 'react-router';
 
 export async function totpRegisterLoader() {
     try {
+        if ((await APIClient.get<boolean>('/auth/totp/is-enabled')).data && !(await APIClient.get<boolean>('/auth/totp/is-authenticated')).data) return redirect('/auth/totp/authenticate');
         const res = await APIClient.post<string>('/auth/totp/add');
         return res.data;
     } catch (error) {

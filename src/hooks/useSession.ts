@@ -10,6 +10,11 @@ export default function useSession() {
         queryFn: GetMe,
     });
 
+    const { data: has2FA } = useQuery({
+        queryKey: ['has2FA'],
+        queryFn: () => APIClient.get<boolean>('/auth/totp/is-enabled').then((res) => res.data),
+    });
+
     const hasPermission = useCallback((permission: PermissionFlags) => {
         if (!user) return false;
 
@@ -31,5 +36,6 @@ export default function useSession() {
         hasPermission,
         logout,
         loadStatus: status,
+        has2FA,
     };
 }
