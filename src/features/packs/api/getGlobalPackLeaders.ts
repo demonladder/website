@@ -5,7 +5,7 @@ import User from '../../../api/types/User';
 interface PackLeaderResponse {
     UserID: number;
     Sum: number;
-    User: User & {
+    User: Pick<User, 'Name' | 'avatar'> & {
         DiscordData: Pick<DiscordUserData, 'AccentColor'> | null;
     };
 }

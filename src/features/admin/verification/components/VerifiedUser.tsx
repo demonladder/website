@@ -37,9 +37,10 @@ export default function VerifiedUser({ user }: Props) {
     return (
         <div className='bg-theme-600 px-4 py-2 round:rounded-lg relative'>
             <Heading4 className='flex gap-2'>
-                <object data={`/api/user/${user.ID}/pfp?size=56`} type='image/png' className='inline-block size-14 rounded-full'>
-                    <i className='bx bxs-user-circle text-6xl' />
-                </object>
+                {user.avatar
+                    ? <img src={`https://cdn.gdladder.com/avatars/${user.avatar}.png`} width='56' height='56' className='inline-block size-14 rounded-full' alt='Profile' />
+                    : <i className='bx bxs-user-circle text-6xl' />
+                }
                 <div className='flex flex-col justify-around'>
                     <Link to={`/profile/${user.ID}`} className='underline'>{user.Name}</Link>
                 </div>

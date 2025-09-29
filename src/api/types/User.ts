@@ -9,4 +9,5 @@ export default interface User {
     CountryCode: string | null;
     Pronouns: string | null;
     IsBot: boolean;
+    avatar: string | null;
 }

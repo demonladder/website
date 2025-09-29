@@ -7,9 +7,10 @@ export default function DiscordProfilePicture() {
 
     return (
         <div>
-            <object data={`/api/user/${session.user?.ID}/pfp?size=128`} type='image/png' className='rounded-full'>
-                <DemonFace diff={session.user?.Hardest?.Meta.Difficulty} size={DemonLogoSizes.LARGE} />
-            </object>
+            {session.user?.avatar
+                ? <img src={`https://cdn.gdladder.com/avatars/${session.user.avatar}.png`} width='128' height='128' className='rounded-full' alt='Profile' />
+                : <DemonFace diff={session.user?.Hardest?.Meta.Difficulty} size={DemonLogoSizes.LARGE} />
+            }
         </div>
     );
 }

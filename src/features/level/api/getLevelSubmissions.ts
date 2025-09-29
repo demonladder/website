@@ -1,5 +1,6 @@
 import APIClient from '../../../api/APIClient';
 import ISubmission from '../../../api/types/Submission';
+import type User from '../../../api/types/User';
 
 export type Submission = Pick<
     ISubmission,
@@ -14,14 +15,10 @@ export type Submission = Pick<
     | 'Attempts'
     | 'DateAdded'
 > & {
-    User: {
-        ID: number;
-        Name: string;
+    User: Pick<User, 'ID' | 'Name' | 'avatar'> & {
         Roles: { ID: number }[];
     };
-    SecondaryUser: {
-        ID: number;
-        Name: string;
+    SecondaryUser: Pick<User, 'ID' | 'Name' | 'avatar'> & {
         Roles: { ID: number }[];
     } | null;
 };

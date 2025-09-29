@@ -40,9 +40,10 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
             <div className='ms-2 relative group'>
                 <Link to={`/profile/${userID}`} onClick={onClick}>
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
-                        <object data={`/api/user/${userID}/pfp?size=${pfpSize}`} width={pfpSize} height={pfpSize} type='image/png' className='rounded-full'>
-                            <img src={difficultyToImgSrc(session.user?.Hardest?.Meta.Difficulty, DemonLogoSizes.SMALL)} width='56' className='mt-1' />
-                        </object>
+                        {session.user?.avatar
+                            ? <img src={`https://cdn.gdladder.com/avatars/${session.user?.avatar}.png?size=${pfpSize}`} width={pfpSize} height={pfpSize} className='rounded-full' alt='Profile' />
+                            : <img src={difficultyToImgSrc(session.user?.Hardest?.Meta.Difficulty, DemonLogoSizes.SMALL)} width='56' className='mt-1' />
+                        }
                     </div>
                 </Link>
                 <div className='max-2xl:hidden absolute opacity-0 right-0 z-40 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity'>

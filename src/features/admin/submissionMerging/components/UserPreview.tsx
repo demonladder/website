@@ -13,9 +13,10 @@ export default function UserPreview({ userID, onUnSet }: Props) {
         <div>
             {user.isSuccess && (
                 <>
-                    <object data={`/api/user/${user.data.ID}/pfp?size=256`} type='image/png' className='rounded-full mx-auto'>
-                        <i className='bx bxs-user-circle text-9xl' />
-                    </object>
+                    {user.data.avatar
+                        ? <img src={`https://cdn.gdladder.com/avatars/${user.data.avatar}.png`} width='256' height='256' className='rounded-full mx-auto' alt='Profile' />
+                        : <i className='bx bxs-user-circle text-9xl mx-auto' />
+                    }
                     <p className='text-2xl mb-2'>{user.data.Name}</p>
                     <TextButton onClick={onUnSet} className='text-base'>Un-set</TextButton>
                 </>
