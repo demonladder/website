@@ -22,6 +22,7 @@ import { FullLevel } from '../../api/types/compounds/FullLevel';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useAddFavoriteMutation } from './hooks/useAddFavoriteMutation';
 import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation';
+import Tooltip from '../../components/Tooltip';
 
 const levelLengths = {
     1: 'Tiny',
@@ -96,19 +97,19 @@ export default function LevelPage() {
             <div className='flex max-md:flex-col gap-2 my-2'>
                 <div className='flex max-md:flex-col gap-4 md:w-8/12'>
                     <div className='h-full flex text-center'>
-                        <div className={`flex max-md:w-1/2 items-center tier-${rating?.toFixed() ?? '0'}`}>
-                            <p className={`grow w-28 py-2`}>
-                                <span className='text-4xl font-bold'>{rating?.toFixed() ?? '-'}</span>
-                                <br />
-                                <span>[{rating?.toFixed(2) ?? '-'}]</span>
-                            </p>
+                        <div className={`max-md:w-1/2 tier-${rating?.toFixed() ?? '0'} round:rounded-l-lg`}>
+                            <Tooltip label={`Tier ${rating !== null ? rating.toFixed(2) : '-'}`}>
+                                <p className='py-2 text-4xl font-bold text-center min-w-28'>
+                                    {rating !== null ? 'T' + rating.toFixed() : '-'}
+                                </p>
+                            </Tooltip>
                         </div>
-                        <div className={`flex max-md:w-1/2 items-center enj-${enjoyment?.toFixed() ?? '-1'}`}>
-                            <p className={`grow w-28 py-2`}>
-                                <span className='text-4xl font-bold'>{enjoyment?.toFixed() ?? '-'}</span>
-                                <br />
-                                <span>[{enjoyment?.toFixed(2) ?? '-'}]</span>
-                            </p>
+                        <div className={`max-md:w-1/2 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
+                            <Tooltip label={enjoyment !== null ? `Enjoyment ${enjoyment.toFixed(2)}` : 'No enjoyment rating'}>
+                                <p className={`py-2 text-4xl font-bold text-center min-w-28`}>
+                                    {enjoyment !== null ? 'E' + enjoyment.toFixed() : '-'}
+                                </p>
+                            </Tooltip>
                         </div>
                     </div>
                     <section className='col-span-8'>
