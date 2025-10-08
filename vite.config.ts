@@ -19,8 +19,5 @@ export default defineConfig(({ mode }) => {
                 '/api': env.VITE_SERVER_URL,
             },
         },
-        build: {
-            sourcemap: true,
-        },
     };
 });
