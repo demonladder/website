@@ -6,7 +6,7 @@ import useSession from '../../../hooks/useSession';
 import Heading1 from '../../../components/headings/Heading1';
 import { StringParam, useQueryParam } from 'use-query-params';
 import { OAuth2Scopes } from './oauth2-scopes';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 function PageWrapper({ children }: { children?: React.ReactNode }) {
     return (
@@ -23,6 +23,7 @@ export default function Authorize() {
     const [responseType] = useQueryParam('response_type', StringParam);
     const [scopes, setScopes] = useQueryParam('scope', StringParam);
     const [initialScope] = useState(scopes);
+    const cancelFormRef = useRef<HTMLFormElement>(null);
 
     if (!client) {
         return (
@@ -30,6 +31,10 @@ export default function Authorize() {
                 <Heading1 className='text-center my-8'>Unknown application</Heading1>
             </PageWrapper>
         );
+    }
+
+    function handleCancel() {
+        cancelFormRef.current?.submit();
     }
 
     return (
@@ -53,8 +58,11 @@ export default function Authorize() {
                 {clientID && <input className='opacity-0 absolute' name='client_id' value={clientID} />}
                 {responseType && <input className='opacity-0 absolute' name='response_type' value={responseType} />}
                 {scopes && <input className='opacity-0 absolute' name='scope' value={scopes} />}
-                <SecondaryButton size='md' type='button'>Cancel</SecondaryButton>
+                <SecondaryButton size='md' type='button' onClick={handleCancel}>Cancel</SecondaryButton>
                 <PrimaryButton size='md' type='submit'>Authorize</PrimaryButton>
+            </form>
+            <form ref={cancelFormRef} method='POST' action='/api/oauth/2/cancel' hidden>
+                {clientID && <input className='opacity-0 absolute' name='client_id' value={clientID} />}
             </form>
         </PageWrapper>
     );
