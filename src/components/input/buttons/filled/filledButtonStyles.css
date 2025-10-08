@@ -7,7 +7,7 @@
     --label-opacity: 100%;
     color: color-mix(in oklab, var(--label-color) var(--label-opacity), transparent);
 
-    --font-size: 14pt;
+    --font-size: 1rem;
     font-size: var(--font-size);
 
     --layer-color: var(--color-primary);
@@ -20,7 +20,8 @@
 
     --padding: 16px;
     padding: 0 var(--padding);
-    border-radius: calc(var(--height) / 2);
+    --border-radius: calc(var(--height) / 2);
+    border-radius: var(--border-radius);
 
     --elevation: 0px;
 
@@ -31,6 +32,9 @@
 .filled-button.xs {
     --height: 32px;
     --padding: 12px;
+}
+.filled-button.sm {
+    --font-size: 14pt;
 }
 .filled-button.md {
     --height: 56px;
@@ -61,7 +65,7 @@
     transition-duration: 350ms;
     transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.9);
 
-    border-radius: calc(var(--height) / 2);
+    border-radius: var(--border-radius);
     background-color: color-mix(in oklab, var(--layer-color) var(--layer-opacity), transparent);
 }
 
@@ -90,6 +94,6 @@
 .filled-button.pressed {
     --layer-color: var(--color-on-primary);
     --layer-opacity: 10%;
-    border-radius: 12px;
+    --border-radius: 12px;
     --elevation: 0px;
 }
