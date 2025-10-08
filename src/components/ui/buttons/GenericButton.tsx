@@ -21,7 +21,7 @@ export function Generic({ loading = false, size = 'sm', children, className, ...
 
     return (
         <button {...props} className={'text-center relative rounded-4xl active:rounded-xl disabled:pointer-events-none fast-spatial-transition px-3 min-h-[1.75rem]' + sizeClass + (className ? ' ' + className : '')}>
-            <span className={loading ? 'opacity-0' : 'flex justify-center'}>{children}</span>
+            <span className={loading ? 'opacity-0' : ''}>{children}</span>
             {loading && <span className='absolute left-1/2 -translate-x-1/2'><InlineLoadingSpinner /></span>}
         </button>
     );

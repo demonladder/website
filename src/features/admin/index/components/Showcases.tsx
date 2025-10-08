@@ -5,7 +5,7 @@ import Heading2 from '../../../../components/headings/Heading2';
 import DemonFace from '../../../../components/DemonFace';
 import { DemonLogoSizes } from '../../../../utils/difficultyToImgSrc';
 import Heading3 from '../../../../components/headings/Heading3';
-import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
+import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import TextButton from '../../../../components/input/buttons/text/TextButton';
 import { Link } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -55,7 +55,7 @@ export default function Showcases() {
                         <LiteYouTubeEmbed id={suggestion.videoID} title={suggestion.level.Meta.Name} />
                         <div className='flex justify-end gap-1 mt-2'>
                             <TextButton onClick={() => deleteMutation.mutate(suggestion.ID)}>Deny</TextButton>
-                            <TonalButton size='sm' onClick={() => acceptMutation.mutate(suggestion.ID)}>Accept</TonalButton>
+                            <SecondaryButton onClick={() => acceptMutation.mutate(suggestion.ID)}>Accept</SecondaryButton>
                         </div>
                     </li>)}
                 </ul>

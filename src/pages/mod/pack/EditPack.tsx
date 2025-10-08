@@ -169,8 +169,8 @@ export default function EditPack() {
                     <Divider />
                     <h3 className='text-xl'>Changelog</h3>
                     {getIndividualPacks().map((pack) => (
-                        <div className='mb-2' key={`packChange_${pack[0]?.PackID || 0}`}>
-                            <h4 className='text-lg'>{pack[0]?.PackName || (pack[0]?.PackID && `Pack ID: ${pack[0].PackID}`) || 0}</h4>
+                        <div className='mb-2' key={`packChange_${pack[0]?.PackID ?? 0}`}>
+                            <h4 className='text-lg'>{pack[0]?.PackName ?? (pack[0]?.PackID && `Pack ID: ${pack[0].PackID}`) ?? 0}</h4>
                             <ul className='grid grid-cols-3'>
                                 {pack.map((c, i) => (<ChangeItem change={c} remove={removeChange} key={`change_${c.PackID}_${i}`} />))}
                             </ul>

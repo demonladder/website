@@ -5,7 +5,7 @@ import Heading4 from '../../../../components/headings/Heading4';
 import Heading1 from '../../../../components/headings/Heading1';
 import Heading2 from '../../../../components/headings/Heading2';
 import Heading5 from '../../../../components/headings/Heading5';
-import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
+import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import { useTheme } from '../../../../context/theme/useTheme';
 import TextButton from '../../../../components/input/buttons/text/TextButton';
 import { toast } from 'react-toastify';
@@ -166,8 +166,8 @@ export default function CustomTheme() {
                     <input type='file' className='absolute inset-0 opacity-0 cursor-pointer' onChange={onImport} />
                 </div>
                 <a className='text-button outlined flex items-center' download='theme.json' href={`data:application/json;charset=utf8,${encodeURIComponent(JSON.stringify(theme.theme))}`}>Download</a>
-                <TonalButton size='sm' onClick={() => theme.setEnabled(!theme.enabled)}>{theme.enabled ? 'Disable' : 'Enable'}</TonalButton>
-                <TonalButton size='sm' onClick={() => theme.set(customTheme)}>Save</TonalButton>
+                <SecondaryButton size='sm' onClick={() => theme.setEnabled(!theme.enabled)}>{theme.enabled ? 'Disable' : 'Enable'}</SecondaryButton>
+                <SecondaryButton size='sm' onClick={() => theme.set(customTheme)}>Save</SecondaryButton>
             </div>
         </section>
     );

@@ -5,7 +5,7 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import Heading2 from '../../../components/headings/Heading2';
 import { URLInput } from '../../../components/Input';
-import TonalButton from '../../../components/input/buttons/tonal/TonalButton';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import APIClient from '../../../api/APIClient';
@@ -84,7 +84,7 @@ function SuggestShowcase({ levelID }: { levelID: number }) {
                         <URLInput value={suggestion} onChange={(e) => setSuggestion(e.target.value)} required />
                         <FormInputDescription>Please provide a YouTube video URL, e.g. <code>https://youtu.be/abc123</code>.</FormInputDescription>
                     </FormGroup>
-                    <TonalButton size='xs'>Send</TonalButton>
+                    <SecondaryButton type='submit'>Send</SecondaryButton>
                 </form>
             )}
         </div>

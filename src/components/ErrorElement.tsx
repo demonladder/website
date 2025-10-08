@@ -1,6 +1,6 @@
 import { Link, useRouteError } from 'react-router';
 import Heading1 from './headings/Heading1';
-import TonalButton from './input/buttons/tonal/TonalButton';
+import { SecondaryButton } from './ui/buttons/SecondaryButton';
 import { AxiosError } from 'axios';
 import type { GDDLError } from '../utils/renderToastError';
 
@@ -27,7 +27,7 @@ export default function ErrorElement() {
                 {error instanceof Error &&
                     <p>Error message: <b>{errorMessage}</b></p>
                 }
-                <Link to='/'><TonalButton size='xs'>Home</TonalButton></Link>
+                <Link to='/'><SecondaryButton>Home</SecondaryButton></Link>
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import Divider from '../../../components/divider/Divider';
 import Heading2 from '../../../components/headings/Heading2';
-import TonalButton from '../../../components/input/buttons/tonal/TonalButton';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import AuditLog from './components/AuditLog';
 import { useAuditLogs } from './hooks/useAuditLogs';
 
@@ -10,9 +10,9 @@ export default function AuditLogs() {
     return (
         <div>
             <div className='flex justify-between'>
-                <Heading2>Audit log</Heading2>
+                <Heading2>Audit logs</Heading2>
                 <div>
-                    <TonalButton size='sm' icon={<i className='bx bx-revision' />} onClick={() => void auditLogs.refetch()}>Refresh</TonalButton>
+                    <SecondaryButton onClick={() => void auditLogs.refetch()}><i className='bx bx-revision' /> Refresh</SecondaryButton>
                 </div>
             </div>
             {auditLogs.isSuccess &&
