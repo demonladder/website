@@ -9,4 +9,9 @@ export interface IAuditLog {
     changes: AuditLogChange[] | null;
     reason: string | null;
     createdAt: string;
+
+    user: {
+        Name: string;
+        avatar: string;
+    } | null;
 }

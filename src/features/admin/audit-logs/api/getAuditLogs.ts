@@ -10,6 +10,11 @@ interface AuditLog {
     changes: string | null;
     reason: string | null;
     createdAt: string;
+
+    user: {
+        Name: string;
+        avatar: string;
+    } | null;
 }
 
 export async function getAuditLogs() {
