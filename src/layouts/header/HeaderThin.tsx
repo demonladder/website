@@ -47,7 +47,7 @@ export default function HeaderThin() {
                         {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) && <Link className='text-xl' to='/mod' onClick={() => setNavOpen(false)}><i className='bx bx-shield-quarter' /> Dashboard</Link>}
                         <Link to='/notifications' className='text-xl' onClick={() => setNavOpen(false)}><i className={`bx ${notifications.data?.filter((n) => !n.IsRead).length ? 'bxs-bell' : 'bx-bell'}`} /> Notifications</Link>
                         <ProfileButtons onClick={() => setNavOpen(false)} size='small' />
-                        <SecondaryButton onClick={() => void session.logout()}>Log out</SecondaryButton>
+                        {session.user && <SecondaryButton onClick={() => void session.logout()}>Log out</SecondaryButton>}
                     </div>
                 </nav>
             </div>
