@@ -10,6 +10,7 @@ import Heading1 from '../../../components/headings/Heading1';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import pluralS from '../../../utils/pluralS';
 import LevelSearchBox from '../../../components/SearchBox/LevelSearchBox';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 
 const proofFilterOptions = {
     all: 'All',
@@ -42,14 +43,17 @@ export default function Queue() {
             <FloatingLoadingSpinner isLoading={isFetching} />
             <Heading1 className='mb-3'>Pending submissions</Heading1>
             <p><b>Filters</b></p>
-            <div className='grid grid-cols-4 gap-2'>
+            <div className='grid grid-cols-2 lg:grid-cols-4 gap-2'>
                 <div>
                     <p>Proof</p>
                     <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
                 </div>
                 <div>
                     <p>Level</p>
-                    <LevelSearchBox ID='queueLevelSearch' onLevel={(level) => setLevelID(level?.ID)} />
+                    <div className='flex gap-2'>
+                        <LevelSearchBox ID='queueLevelSearch' onLevel={(level) => setLevelID(level?.ID)} />
+                        <SecondaryButton onClick={() => setLevelID(undefined)}>Clear</SecondaryButton>
+                    </div>
                 </div>
             </div>
             <Content />

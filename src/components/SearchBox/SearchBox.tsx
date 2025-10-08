@@ -23,7 +23,7 @@ interface Props<T> {
 
 // This component is base class for search boxes.
 // It does not handle queries or decide what gets displayed.
-export default function SearchBox<T>({ value = '', onChange: setChange, onDebouncedChange, list, getLabel, onResult: setResult, status, id, placeholder = 'Search...', invalid = false }: Props<T>) {
+export default function SearchBox<T>({ value = '', onChange: setChange, onDebouncedChange, list, getLabel, onResult: setResult, status, id, placeholder = 'Search...', invalid = false, overWriteInput = false }: Props<T>) {
     const [visible, setVisible] = useState(false);  // State of the search results
     const timer = useRef<NodeJS.Timeout>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -53,20 +53,25 @@ export default function SearchBox<T>({ value = '', onChange: setChange, onDeboun
     function handleClick(r: T | undefined) {
         setResult?.(r);
         setVisible(false);
+        if (overWriteInput && r) setChange(getLabel(r));
     }
 
     function keyDown(event: React.KeyboardEvent) {
         if (event.key === 'Enter') {
             const firstEntry = list.at(0);
+
             if (value !== '') setResult?.(firstEntry);
             else setResult?.(undefined);
+
             if (inputRef.current) inputRef.current.blur();
             setVisible(false);
+
+            if (overWriteInput && firstEntry) setChange(getLabel(firstEntry));
         }
     }
 
     return (
-        <div>
+        <div className='grow'>
             <TextInput ref={inputRef} value={value} id={id} onKeyDown={keyDown} placeholder={placeholder} onChange={(e) => setChange(e.target.value)} onFocus={() => setVisible(true)} invalid={invalid} />
             <div className={(visible ? 'block' : 'hidden') + ' absolute bg-theme-900 p-1 border border-t-0 border-theme-400 text-theme-text round:rounded-b-lg text-base z-10 shadow-2xl'}>
                 {status === 'pending'

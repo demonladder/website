@@ -31,6 +31,7 @@ export default function LevelSearchBox({ ID, onLevel }: Props) {
 
             status={status}
             placeholder={'Search level name'}
+            overWriteInput
         />
     );
 }

@@ -35,5 +35,6 @@ export default function UserSearchBox({ setResult, id, invalid = false }: Props)
         status={status}
         placeholder='Search user...'
         invalid={invalid}
+        overWriteInput
     />;
 }
