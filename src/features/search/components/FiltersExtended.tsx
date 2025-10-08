@@ -3,7 +3,7 @@ import CheckBox from '../../../components/input/CheckBox';
 import Select from '../../../components/Select';
 import { useCallback } from 'react';
 import useSession from '../../../hooks/useSession';
-import { BooleanParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
+import { BooleanParam, NumberParam, useQueryParam, useQueryParams, withDefault } from 'use-query-params';
 import { QueryParamNames } from '../enums/QueryParamNames';
 import { toast } from 'react-toastify';
 import { useTags } from '../../../hooks/api/tags/useTags';
@@ -47,7 +47,7 @@ export default function FiltersExtended() {
     const [minID, setMinID] = useQueryParam(QueryParamNames.MinID, NumberParam);
     const [maxID, setMaxID] = useQueryParam(QueryParamNames.MaxID, NumberParam);
     const [twoPlayer, setTwoPlayer] = useQueryParam(QueryParamNames.TwoPlayer, withDefault(TwoPlayerParam, 'any'));
-    const [update, setUpdate] = useQueryParam(QueryParamNames.Update, withDefault(UpdateParam, 'any'));
+    const [update] = useQueryParam(QueryParamNames.Update, withDefault(UpdateParam, 'any'));
     const [topSkillset, setTopSkillset] = useQueryParam(QueryParamNames.TopSkillset, withDefault(NumberParam, 0));
     const [excludeCompleted, setExcludeCompleted] = useQueryParam(QueryParamNames.ExcludeCompleted, withDefault(BooleanParam, false));
     const [excludeUnrated, setExcludeUnrated] = useQueryParam(QueryParamNames.ExcludeUnrated, withDefault(BooleanParam, false));
@@ -55,6 +55,7 @@ export default function FiltersExtended() {
     const [excludeRated, setExcludeRated] = useQueryParam(QueryParamNames.ExcludeRated, withDefault(BooleanParam, false));
     const [excludeRatedEnj, setExcludeRatedEnj] = useQueryParam(QueryParamNames.ExcludeRatedEnjoyment, withDefault(BooleanParam, false));
     const [inPack, setInPack] = useQueryParam(QueryParamNames.InPack, withDefault(BooleanParam, false));
+    const [_, setQueryParams] = useQueryParams();
 
     const { data: tags } = useTags();
 
@@ -68,14 +69,21 @@ export default function FiltersExtended() {
                 return;
             }
 
-            setMinID(lowID);
-            setMaxID(highID);
+            setQueryParams((prev) => ({
+                ...prev,
+                [QueryParamNames.MinID]: lowID,
+                [QueryParamNames.MaxID]: highID,
+                [QueryParamNames.Update]: key,
+            }));
         } else {
-            setMinID(undefined);
-            setMaxID(undefined);
+            setQueryParams((prev) => ({
+                ...prev,
+                [QueryParamNames.MinID]: undefined,
+                [QueryParamNames.MaxID]: undefined,
+                [QueryParamNames.Update]: key,
+            }));
         }
-        setUpdate(key);
-    }, [setMinID, setMaxID, setUpdate]);
+    }, [setQueryParams]);
 
     const tagOptions: Record<number, string> = {};
     (tags ?? []).forEach((tag) => {
