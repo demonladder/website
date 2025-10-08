@@ -12,11 +12,12 @@ import { useLevelSubmissionSpread } from '../../../../hooks/api/level/submission
 import { ratingToWeight, weightedRatingAverage } from '../../../../utils/weightedAverage';
 import { average } from '../../../../utils/average';
 import standardDeviation from '../../../../utils/standardDeviation';
-import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
-import FilledButton from '../../../../components/input/buttons/filled/FilledButton';
 import { secondsToHumanReadable } from '../../../../utils/secondsToHumanReadable';
 import useSessionStorage from '../../../../hooks/useSessionStorage';
 import { NumberParam, useQueryParam } from 'use-query-params';
+import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
+import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 
 interface Props {
     submission: QueueSubmission;
@@ -160,7 +161,7 @@ export default function Submission({ submission }: Props) {
                     <p><b>Deviation:</b> {(submission.IsSolo ? submission.Level.Deviation : submission.Level.TwoPlayerDeviation)?.toFixed(2) ?? 0}</p>
                     <p><b>Rating count:</b> {submission.Level.RatingCount}</p>
                     <p className='mb-1'><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
-                    <TonalButton onClick={() => onFilter(submission.LevelID)} size={'xs'}>Filter queue by this level</TonalButton>
+                    <SecondaryButton onClick={() => onFilter(submission.LevelID)}>Filter queue by this level</SecondaryButton>
                 </div>
                 <div>
                     <Heading4 className='mb-2'>Level after accept</Heading4>
@@ -169,10 +170,10 @@ export default function Submission({ submission }: Props) {
                 </div>
             </div>
             <div className='mt-4 flex justify-evenly max-md:flex-col max-md:gap-4'>
-                <FilledButton sizeVariant='md' disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</FilledButton>
-                {submission.Rating !== null && <TonalButton disabled={submission.Proof !== null && !isProofClicked} className='px-3 py-2' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</TonalButton>}
-                <button className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3 text-white' onClick={() => showDenyModal(submission)}>Deny</button>
-                <Link to={`/mod/manageUser/${submission.UserID}`} className='h-14 flex items-center px-7 text-xl rounded-[28px] hover:bg-button-danger-1 active:rounded-lg transition-all bg-button-danger-3 text-white'>Mod view</Link>
+                <PrimaryButton size='lg' disabled={submission.Proof !== null && !isProofClicked} onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</PrimaryButton>
+                {submission.Rating !== null && <SecondaryButton disabled={submission.Proof !== null && !isProofClicked} size='lg' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</SecondaryButton>}
+                <DangerButton size='lg' onClick={() => showDenyModal(submission)}>Deny</DangerButton>
+                <Link to={`/mod/manageUser/${submission.UserID}`} className='flex'><DangerButton size='lg' className='grow'>Mod view</DangerButton></Link>
             </div>
         </li>
     );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { clamp } from '../utils/clamp';
-import IconButton from './input/buttons/icon/IconButton';
+import { PrimaryButton } from './ui/buttons/PrimaryButton';
 import { NumberInput } from './Input';
 
 interface Props {
@@ -46,8 +46,8 @@ export default function PageButtons({ onPageChange, meta }: Props) {
         <div className='mt-3 flex gap-3 justify-center items-center'>
             {meta.page > 0 &&  // If the current page is not the first, render button
                 <div className='flex gap-2 text-2xl'>
-                    <IconButton color='filled' size='xs' width='wide' onClick={() => onPageButtonClick(0)}><i className='bx bx-chevrons-left' /></IconButton>
-                    <IconButton color='filled' size='xs' width='wide' onClick={() => onPageButtonClick(meta.page - 1)}><i className='bx bx-chevron-left' /></IconButton>
+                    <PrimaryButton onClick={() => onPageButtonClick(0)}><i className='bx bx-chevrons-left' /></PrimaryButton>
+                    <PrimaryButton onClick={() => onPageButtonClick(meta.page - 1)}><i className='bx bx-chevron-left' /></PrimaryButton>
                 </div>
             }
             <div className='flex items-center gap-1'>
@@ -57,8 +57,8 @@ export default function PageButtons({ onPageChange, meta }: Props) {
             </div>
             {(meta.page + 1) < maxPages &&  // If the current page is not the last, render button
                 <div className='flex gap-2 text-2xl'>
-                    <IconButton color='filled' size='xs' width='wide' onClick={() => onPageButtonClick(meta.page + 1)}><i className='bx bx-chevron-right' /></IconButton>
-                    <IconButton color='filled' size='xs' width='wide' onClick={() => onPageButtonClick(maxPages - 1)}><i className='bx bx-chevrons-right' /></IconButton>
+                    <PrimaryButton onClick={() => onPageButtonClick(meta.page + 1)}><i className='bx bx-chevron-right' /></PrimaryButton>
+                    <PrimaryButton onClick={() => onPageButtonClick(maxPages - 1)}><i className='bx bx-chevrons-right' /></PrimaryButton>
                 </div>
             }
         </div>

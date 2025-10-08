@@ -2,7 +2,7 @@ import { useState } from 'react';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import { TextInput } from '../../../components/Input';
 import Modal from '../../../components/Modal';
-import FilledButton from '../../../components/input/buttons/filled/FilledButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import FormGroup from '../../../components/form/FormGroup';
 import { useMutation } from '@tanstack/react-query';
 import { createApplication } from '../api/createApplication';
@@ -40,7 +40,7 @@ export default function CreateApplicationModal({ onClose }: Props) {
                 <TextInput value={name} onChange={(e) => setName(e.target.value.trimStart())} required />
             </FormGroup>
             <div className='flex justify-end mt-2'>
-                <FilledButton sizeVariant='xs' onClick={() => createMutation.mutate()}>Create</FilledButton>
+                <PrimaryButton onClick={() => createMutation.mutate()}>Create</PrimaryButton>
             </div>
         </Modal>
     );

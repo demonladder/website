@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Heading1 from '../../components/headings/Heading1';
-import FilledButton from '../../components/input/buttons/filled/FilledButton';
+import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import Page from '../../components/Page';
 import { useCreateApplicationModal } from './hooks/useCreateApplicationModal';
 import { getMyApps } from './api/getMyApps';
@@ -18,7 +18,7 @@ export default function Applications() {
         <Page title='Applications'>
             <div className='flex justify-between items-center'>
                 <Heading1>Applications</Heading1>
-                <FilledButton onClick={() => openCreateModal()}>New application</FilledButton>
+                <PrimaryButton size='md' onClick={() => openCreateModal()}>New application</PrimaryButton>
             </div>
             {status === 'success' &&
                 <div className='flex flex-wrap gap-4 mt-8'>

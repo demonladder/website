@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 import { difficultyToImgSrc, DemonLogoSizes } from '../utils/difficultyToImgSrc';
+import { OutlineButton } from './ui/buttons/OutlineButton';
+import { PrimaryButton } from './ui/buttons/PrimaryButton';
 
 export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();
@@ -64,9 +66,9 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
 
 export function LoginButton() {
     return (
-        <div className='py-2 flex items-center gap-3'>
-            <Link to='/signup' className='bg-button-secondary-2 px-2 py-1 align-middle' style={{ color: 'white' }}>Sign up</Link>
-            <Link to='/login' className='bg-button-primary-2 px-2 py-1 align-middle' style={{ color: 'white' }}>Log in</Link>
+        <div className='py-2 grid grid-cols-2 items-center gap-3'>
+            <Link to='/signup'><OutlineButton size='md' className='w-full'>Sign up</OutlineButton></Link>
+            <Link to='/login'><PrimaryButton size='md' className='w-full'>Log in</PrimaryButton></Link>
         </div>
     );
 }

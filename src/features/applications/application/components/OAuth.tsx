@@ -6,10 +6,10 @@ import FormGroup from '../../../../components/form/FormGroup';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import { URLInput } from '../../../../components/Input';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
-import FilledButton from '../../../../components/input/buttons/filled/FilledButton';
+import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import Heading3 from '../../../../components/headings/Heading3';
 import { OAuth2Scopes } from '../../../oauth2/authorize/oauth2-scopes';
-import TonalButton from '../../../../components/input/buttons/tonal/TonalButton';
+import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import Checkbox from '../../../../components/input/CheckBox';
 import { copyText } from '../../../../utils/copyText';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -41,7 +41,7 @@ export default function OAuth() {
                 <FormInputLabel>Redirect URI</FormInputLabel>
                 <URLInput value={redirectURI} onChange={(e) => setRedirectURI(e.target.value)} placeholder='Redirect URI...' />
                 <FormInputDescription>You must set a redirect URI in order for users to authorize your application!</FormInputDescription>
-                <div className='flex justify-end'><FilledButton onClick={() => updateMutation.mutate()} className='mt-1' sizeVariant='xs' disabled={redirectURI === app.redirectURI}>Save</FilledButton></div>
+                <div className='flex justify-end'><PrimaryButton onClick={() => updateMutation.mutate()} className='mt-1' disabled={redirectURI === app.redirectURI}>Save</PrimaryButton></div>
             </FormGroup>
             <Heading3 className='mt-8 mb-4'>OAuth2 URL generator</Heading3>
             <div className='grid grid-cols-4 gap-2 my-4 bg-theme-700 p-2'>
@@ -50,7 +50,7 @@ export default function OAuth() {
                 ))}
             </div>
             <p className='bg-theme-950 px-2 py-1 outline rounded outline-white/15 font-mono break-all'>{oauth2URL}</p>
-            <TonalButton size='xs' className='mt-1' onClick={() => copyText(oauth2URL)}>Copy</TonalButton>
+            <SecondaryButton className='mt-1' onClick={() => copyText(oauth2URL)}>Copy</SecondaryButton>
         </section>
     );
 }

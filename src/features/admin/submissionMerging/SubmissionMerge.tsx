@@ -3,7 +3,7 @@ import Heading2 from '../../../components/headings/Heading2';
 import useUserSearch from '../../../hooks/useUserSearch';
 import User from '../../../api/types/User';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
-import FilledButton from '../../../components/input/buttons/filled/FilledButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { ModeType } from './api/enums/ModeType';
 import { useMutation } from '@tanstack/react-query';
 import { mergeSubmissions } from './api/mergeSubmissions';
@@ -60,7 +60,7 @@ export default function SubmissionMerge() {
             </div>
             <SegmentedButtonGroup options={mergeOptions} activeKey={mergeMode} onSetActive={setMergeMode} />
             <div className='mt-2 flex justify-end'>
-                <FilledButton sizeVariant='md' onClick={() => mergeMutation.mutate()} disabled={mergeMutation.isPending}>Merge</FilledButton>
+                <PrimaryButton size='lg' onClick={() => mergeMutation.mutate()} disabled={mergeMutation.isPending}>Merge</PrimaryButton>
             </div>
         </>
     );

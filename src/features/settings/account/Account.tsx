@@ -15,6 +15,8 @@ import { forgotPassword } from '../../../api/auth/forgotPassword';
 import Heading3 from '../../../components/headings/Heading3';
 import { Link } from 'react-router';
 import { useAPI } from '../../../hooks/useAPI';
+import { OutlineButton } from '../../../components/ui/buttons/OutlineButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 
 export default function AccountSettings() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -64,8 +66,8 @@ export default function AccountSettings() {
                     <i className='bx bx-mobile-alt text-2xl' />
                     <p>Use an authenticator app on your phone to generate a verification code.</p>
                     {session.has2FA
-                        ? <Link to='/auth/totp/register' className='ms-auto bg-theme-600 hover:bg-theme-500 active:bg-theme-400 transition-colors py-1 px-3 rounded-lg border border-white/35'>Edit</Link>
-                        : <Link to='/auth/totp/register' className='ms-auto bg-theme-600 hover:bg-theme-500 active:bg-theme-400 transition-colors py-1 px-3 rounded-lg border border-white/35'>Add</Link>
+                        ? <Link to='/auth/totp/register' className='ms-auto'><SecondaryButton>Edit</SecondaryButton></Link>
+                        : <Link to='/auth/totp/register' className='ms-auto'><SecondaryButton>Add</SecondaryButton></Link>
                     }
                 </div>
             </section>
@@ -76,6 +78,10 @@ export default function AccountSettings() {
                 </div>
                 <FormInputDescription>This action is irreversible! All related data to your account will be deleted.</FormInputDescription>
             </div>
+            <PrimaryButton>Primary</PrimaryButton>
+            <SecondaryButton>Test</SecondaryButton>
+            <DangerButton>Delete</DangerButton>
+            <OutlineButton>Outline</OutlineButton>
             <Modal title='Delete account' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                 <form onSubmit={onDelete}>
                     <div>

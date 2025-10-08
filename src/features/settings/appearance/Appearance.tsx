@@ -9,7 +9,7 @@ import Divider from '../../../components/divider/Divider';
 import ThemeSelect from './components/ThemeSelect';
 import FormGroup from '../../../components/form/FormGroup';
 import { useApp } from '../../../context/app/useApp';
-import FilledButton from '../../../components/input/buttons/filled/FilledButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 
 const fontOptions = {
     default: 'Default',
@@ -48,7 +48,7 @@ export default function Appearance() {
                 </FormGroup>
                 {app.enableBackground !== enableBackgroundInitial &&
                     <FormGroup>
-                        <FilledButton onClick={() => window.location.reload()}>Reload</FilledButton>
+                        <PrimaryButton onClick={() => window.location.reload()}>Reload</PrimaryButton>
                     </FormGroup>
                 }
             </section>

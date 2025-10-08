@@ -13,11 +13,11 @@ import { editListName } from './api/editListName';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import Heading1 from '../../components/headings/Heading1';
 import TextArea from '../../components/input/TextArea';
-import FilledButton from '../../components/input/buttons/filled/FilledButton';
+import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { editListDescription } from './api/editListDescription';
 import { AxiosError } from 'axios';
 import { useList } from './hooks/useList';
-import TonalButton from '../../components/input/buttons/tonal/TonalButton';
+import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
 import { type List } from './types/List';
 
 export default function List() {
@@ -127,8 +127,8 @@ export default function List() {
                 <>
                     <TextArea value={description} onChange={(e) => setDescription(e.target.value)} autoFocus />
                     <div className='mt-2 flex gap-1 justify-end'>
-                        <TonalButton size='sm' onClick={onCancelDescription}>Cancel</TonalButton>
-                        <FilledButton onClick={onSaveDescription}>Save</FilledButton>
+                        <SecondaryButton onClick={onCancelDescription}>Cancel</SecondaryButton>
+                        <PrimaryButton onClick={onSaveDescription}>Save</PrimaryButton>
                     </div>
                 </>
             }

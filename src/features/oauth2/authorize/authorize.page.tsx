@@ -1,6 +1,6 @@
 import { useLoaderData } from 'react-router';
-import FilledButton from '../../../components/input/buttons/filled/FilledButton';
-import TonalButton from '../../../components/input/buttons/tonal/TonalButton';
+import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import Checkbox from '../../../components/input/CheckBox';
 import useSession from '../../../hooks/useSession';
 import Heading1 from '../../../components/headings/Heading1';
@@ -47,18 +47,14 @@ export default function Authorize() {
                     {initialScope?.split(' ').map((scope) =>
                         <Scope checked={scopes!.split(' ').includes(scope)} onChange={(checked) => checked ? setScopes([...scopes!.split(' '), scope].join(' ')) : setScopes(scopes!.split(' ').filter((s, _, arr) => s !== scope || arr.length === 1).join(' '))} scope={scope as OAuth2Scopes} key={scope} />,
                     )}
-                    <li className='flex items-center gap-1'>
-                        <Checkbox disabled />
-                        <p className='text-gray-400'>Beat a new hardest for you</p>
-                    </li>
                 </ul>
             </div>
             <form className='grid grid-cols-2 gap-2' method='POST' action='/api/oauth/2/authorize'>
                 {clientID && <input className='opacity-0 absolute' name='client_id' value={clientID} />}
                 {responseType && <input className='opacity-0 absolute' name='response_type' value={responseType} />}
                 {scopes && <input className='opacity-0 absolute' name='scope' value={scopes} />}
-                <TonalButton size='sm' className='justify-center' type='button'>Cancel</TonalButton>
-                <FilledButton sizeVariant='sm' type='submit'>Authorize</FilledButton>
+                <SecondaryButton size='md' type='button'>Cancel</SecondaryButton>
+                <PrimaryButton size='md' type='submit'>Authorize</PrimaryButton>
             </form>
         </PageWrapper>
     );
