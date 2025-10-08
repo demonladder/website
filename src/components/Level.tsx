@@ -57,7 +57,7 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
                 <div className='flex gap-4 z-10'>
                     <div className='self-center hidden lg:block'>
                         <div className='flex flex-col text-end' style={{ textShadow: '1px 2px 0px black, 0px 1px 10px black' }}>
-                            {ID > 3 && <p>ID: <IDButton id={ID} /></p>}
+                            {ID > 3 && <p>ID: <IDButton id={ID} style={{ textShadow: '1px 2px 0px black, 0px 1px 10px black' }} /></p>}
                             {songName && <p>song: <b>{songName}</b></p>}
                         </div>
                     </div>

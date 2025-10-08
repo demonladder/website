@@ -4,9 +4,10 @@ interface Props {
     id: number,
     disabled?: boolean,
     className?: string,
+    style?: React.CSSProperties,
 }
 
-export default function IDButton({ id, disabled = false, className }: Props) {
+export default function IDButton({ id, disabled = false, className, style }: Props) {
     function onIDClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
         void navigator.clipboard.writeText('' + id);
@@ -22,5 +23,5 @@ export default function IDButton({ id, disabled = false, className }: Props) {
         return <p className={className}>{id}</p>;
     }
 
-    return <button className={'underline' + (className ? ' ' + className : '')} onClick={onIDClick} style={{ minWidth: '2rem' }}>{id}</button>;
+    return <button className={'underline' + (className ? ' ' + className : '')} onClick={onIDClick} style={{ minWidth: '2rem' }}><span style={style}>{id}</span></button>;
 }
