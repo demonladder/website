@@ -7,11 +7,12 @@ import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 import { difficultyToImgSrc, DemonLogoSizes } from '../utils/difficultyToImgSrc';
 import { OutlineButton } from './ui/buttons/OutlineButton';
 import { PrimaryButton } from './ui/buttons/PrimaryButton';
+import InlineLoadingSpinner from './InlineLoadingSpinner';
 
 export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();
 
-    if (session.loadStatus === 'pending') return <LoginButton />;
+    if (session.loadStatus === 'pending') return <InlineLoadingSpinner />;
     if (!session.user) return <LoginButton />;
 
     return <ProfileButton onClick={onClick} userID={session.user.ID} size={size} />;
