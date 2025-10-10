@@ -97,17 +97,19 @@ export default function LevelPage() {
             <div className='flex max-md:flex-col gap-2 my-2'>
                 <div className='flex max-md:flex-col gap-4 md:w-8/12'>
                     <div className='h-full flex text-center'>
-                        <div className={`max-md:w-1/2 tier-${rating?.toFixed() ?? '0'} round:rounded-l-lg`}>
+                        <div className={`max-md:w-1/2 py-2 tier-${rating?.toFixed() ?? '0'} round:rounded-l-lg`}>
                             <Tooltip label={`Tier ${rating !== null ? rating.toFixed(2) : '-'}`}>
-                                <p className='py-2 text-4xl font-bold text-center min-w-28'>
-                                    {rating !== null ? 'T' + rating.toFixed() : '-'}
+                                <p className='text-center text-lg' style={{ lineHeight: '1' }}>Tier</p>
+                                <p className='text-4xl font-bold text-center min-w-28' style={{ lineHeight: '1' }}>
+                                    {rating?.toFixed() ?? '-'}
                                 </p>
                             </Tooltip>
                         </div>
-                        <div className={`max-md:w-1/2 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
+                        <div className={`max-md:w-1/2 py-2 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
                             <Tooltip label={enjoyment !== null ? `Enjoyment ${enjoyment.toFixed(2)}` : 'No enjoyment rating'}>
-                                <p className={`py-2 text-4xl font-bold text-center min-w-28`}>
-                                    {enjoyment !== null ? 'E' + enjoyment.toFixed() : '-'}
+                                <p className='text-center text-lg' style={{ lineHeight: '1' }}>Enjoyment</p>
+                                <p className={`text-4xl font-bold text-center min-w-28`}>
+                                    {enjoyment?.toFixed() ?? '-'}
                                 </p>
                             </Tooltip>
                         </div>
