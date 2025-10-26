@@ -46,6 +46,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     const [pronounKey, setPronounKey] = useState<PronounOptionKey>('-');
     const pronounSelectID = useId();
     const [customPronouns, setCustomPronouns] = useState('');
+    const arePronounsValid = /^[a-z]{1,6}(\/[a-z]{1,6}){0,7}$/.test(customPronouns);
     const countrySelectID = useId();
 
     const hardestSearch = useLevelSearch('profileSettingsHardest', { defaultLevel: data?.HardestID });
@@ -130,7 +131,10 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                 <Select options={pronounOptions} activeKey={pronounKey} onChange={setPronounKey} id={pronounSelectID} />
                 {pronounKey === 'other' &&
                     <div className='mt-3'>
-                        <TextInput value={customPronouns} onChange={(e) => setCustomPronouns(e.target.value)} placeholder='Please specify...' invalid={customPronouns.length > 20} />
+                        <TextInput value={customPronouns} onChange={(e) => setCustomPronouns(e.target.value)} placeholder='Please specify...' invalid={!arePronounsValid} />
+                        {!arePronounsValid &&
+                            <p className='text-red-500'>Each pronoun must be 1-6 lowercase letters, separated by slashes.</p>
+                        }
                     </div>
                 }
                 <FormInputDescription>What are your pronouns?</FormInputDescription>
