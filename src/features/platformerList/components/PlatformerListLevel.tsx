@@ -20,7 +20,7 @@ export function PlatformerListLevel({ level }: { level: ListEntry; }) {
                     <IDButton id={level.LevelID} />
                 </div>
                 <div className={`ms-auto w-10 lg:w-32 lg:h-32 flex flex-col justify-center group enj-${roundedEnjoyment}`}>
-                    <p className='text-center'>Tier</p>
+                    <p className='text-center'>Enjoyment</p>
                     <p className='text-5xl text-center group-hover:hidden '>{level.Level.Enjoyment?.toFixed() ?? 'N/A'}</p>
                     <p className='text-5xl text-center hidden group-hover:block '>{level.Level.Enjoyment?.toFixed(2) ?? 'N/A'}</p>
                 </div>
