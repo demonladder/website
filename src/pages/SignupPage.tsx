@@ -53,11 +53,7 @@ export default function SignUp() {
                 window.location.href = `/profile/${data.ID}`;
             },
             onError: (err) => {
-                if (err instanceof Error) {
-                    toast.error(renderToastError.render({ data: err }));
-                } else {
-                    toast.error('An unknown error occurred. Please try again later.');
-                }
+                toast.error(renderToastError.render({ data: err }));
             },
         });
     }
