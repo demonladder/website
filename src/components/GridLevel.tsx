@@ -7,6 +7,7 @@ import { IDMapper } from '../utils/IDMapper';
 import { useApp } from '../context/app/useApp';
 import YesTick from './images/YesTick';
 import './GridLevel.css';
+import { getWordLength } from '../utils/wordLength';
 
 interface GridProps {
     ID: number;
@@ -42,12 +43,15 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
     const roundedRating = rating !== null ? Math.round(rating) : 0;
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
 
+    const longestWordInNameLength = name.split(' ').reduce((max, word) => Math.max(max, getWordLength(word)), 0);
+    const classes = longestWordInNameLength > 27 ? 'break-all' : 'break-words';
+
     return (
         <div className={'grid-level relative group cursor-pointer min-h-40 round:rounded-xl' + (selected ? ' outline' : '')} onClick={handleClick} onContextMenu={onContextMenu} style={{ backgroundImage: app.enableLevelThumbnails ? `linear-gradient(rgba(0, 0, 0, var(--image-opacity)), rgba(0, 0, 0, var(--image-opacity))), url("https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}")` : undefined }}>
             <div className={'p-2 ' + (app.enableLevelThumbnails ? 'text-white' : ('text-theme-text round:rounded-xl ' + (completed && app.highlightCompleted ? 'bg-gradient-to-br from-green-600 via-green-500 to-green-600' : 'bg-theme-600')))}>
                 <div className='flex justify-between'>
                     <div>
-                        <p><b className={'text-xl text-shadow-lg break-all' + (completed && app.highlightCompleted && app.enableLevelThumbnails ? ' text-green-400 text-shadow-green-200/20' : '')}><Copy text={ID.toString()} /> {name}</b>
+                        <p><b className={'text-xl text-shadow-lg ' + classes + (completed && app.highlightCompleted && app.enableLevelThumbnails ? ' text-green-400 text-shadow-green-200/20' : '')}><Copy text={ID.toString()} /> {name}</b>
                             {completed && app.highlightCompleted &&
                                 <YesTick className='inline-block ms-1 mb-1 size-6' />
                             }
