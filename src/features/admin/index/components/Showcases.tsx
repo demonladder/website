@@ -48,7 +48,7 @@ export default function Showcases() {
                             <DemonFace diff={suggestion.level.Meta.Difficulty} rarity={suggestion.level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
                             <div className='grow'>
                                 <Heading3><Link to={`/level/${suggestion.levelID}`}><b>{suggestion.level.Meta.Name}</b> by {suggestion.level.Meta.Publisher?.name ?? '(-)'}</Link></Heading3>
-                                <p>Suggested by: <Link to={`/profile/${suggestion.userID}`}>{suggestion.user.Name}</Link></p>
+                                <p>Suggested by: <Link to={`/profile/${suggestion.userID}`}>{suggestion.user?.Name ?? '[Deleted user]'}</Link></p>
                                 <p className='text-theme-400'>{new Date(suggestion.updatedAt.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</p>
                             </div>
                         </div>

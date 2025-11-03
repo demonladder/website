@@ -22,7 +22,7 @@ interface GetShowcaseSuggestionsResponse {
     };
     user: {
         Name: string;
-    };
+    } | null;
 }
 
 export interface GetShowcaseSuggestionsOptions {
