@@ -1,5 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUsersEligibleForVerification, GetUsersEligibleForVerificationOptions } from '../api/getUsersEligibleForVerification';
+import {
+    getUsersEligibleForVerification,
+    GetUsersEligibleForVerificationOptions,
+} from '../api/getUsersEligibleForVerification';
 
 export function useUsersEligibleForVerification(options?: GetUsersEligibleForVerificationOptions) {
     return useQuery({

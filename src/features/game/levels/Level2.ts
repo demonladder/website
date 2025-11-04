@@ -11,7 +11,7 @@ export default function createLevel2(p5: P5): GameObject[] {
     const w = 1.45;
     const variance = 6.5;
     for (let i = 0; i < length; i++) {
-        const h = (p5.noise(i / length * 12) - 0.5) * variance + variance;
+        const h = (p5.noise((i / length) * 12) - 0.5) * variance + variance;
         //const w = map(i / length, 0, 1, 1.3, 1.3);
 
         // Bottom

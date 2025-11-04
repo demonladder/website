@@ -8,8 +8,8 @@ export const ThemeContext = createContext<{
     clear: () => void;
 }>({
     enabled: false,
-    setEnabled: () => { },
+    setEnabled: () => {},
     theme: {},
-    set: () => { },
-    clear: () => { },
+    set: () => {},
+    clear: () => {},
 });

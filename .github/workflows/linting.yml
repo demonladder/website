@@ -1,0 +1,45 @@
+name: Check linting and formatting
+env:
+  node_version: 24.x
+
+on:
+  push:
+    branches:
+      - '*'
+    paths:
+      - '**.[jt]s'
+
+  pull_request:
+    branches:
+      - '*'
+    paths:
+      - '**.[jt]s'
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js v${{ env.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.node_version }}
+
+      - run: npm ci
+      - run: npm run format:check
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js v${{ env.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.node_version }}
+
+      - run: npm ci
+      - run: npm run lint

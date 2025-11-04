@@ -7,10 +7,7 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
 
     return {
-        plugins: [
-            tailwindcss(),
-            react(),
-        ],
+        plugins: [tailwindcss(), react()],
         define: {
             APP_VERSION: JSON.stringify(process.env.npm_package_version),
         },

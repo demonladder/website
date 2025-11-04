@@ -1,7 +1,10 @@
 import { ChartData } from 'chart.js';
 import { StatRecordNullable } from '../../../api/stats/padDataSet';
 
-export default function rawDataToChartData(rawData?: StatRecordNullable[], dataSetName = 'dataset1'): ChartData<'line'> {
+export default function rawDataToChartData(
+    rawData?: StatRecordNullable[],
+    dataSetName = 'dataset1',
+): ChartData<'line'> {
     return {
         labels: rawData?.map((stat) => stat.Timestamp) || [],
         datasets: [

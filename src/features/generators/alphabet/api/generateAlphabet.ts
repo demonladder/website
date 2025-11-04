@@ -20,14 +20,23 @@ export enum Difficulty {
     EXTREME = 5,
 }
 
-export async function generateAlphabet(minTier?: number, maxTier?: number, minEnjoyment?: number, maxEnjoyment?: number, difficulty?: Difficulty, uncompletedOnly = false) {
-    const res = await APIClient.get<AlphabetResponse[]>('/alphabet', { params: {
-        minTier: NaNToNull(minTier),
-        maxTier: NaNToNull(maxTier),
-        minEnjoyment: NaNToNull(minEnjoyment),
-        maxEnjoyment: NaNToNull(maxEnjoyment),
-        difficulty,
-        uncompletedOnly,
-    } });
+export async function generateAlphabet(
+    minTier?: number,
+    maxTier?: number,
+    minEnjoyment?: number,
+    maxEnjoyment?: number,
+    difficulty?: Difficulty,
+    uncompletedOnly = false,
+) {
+    const res = await APIClient.get<AlphabetResponse[]>('/alphabet', {
+        params: {
+            minTier: NaNToNull(minTier),
+            maxTier: NaNToNull(maxTier),
+            minEnjoyment: NaNToNull(minEnjoyment),
+            maxEnjoyment: NaNToNull(maxEnjoyment),
+            difficulty,
+            uncompletedOnly,
+        },
+    });
     return res.data;
 }

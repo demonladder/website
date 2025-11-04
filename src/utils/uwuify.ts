@@ -6,11 +6,7 @@ const chances = {
     duplicateCharacter: 0.4,
 };
 
-const preSuffixes = [
-    ',',
-    '\\~',
-    '\\~\\~',
-];
+const preSuffixes = [',', '\\~', '\\~\\~'];
 
 const suffixes = [
     ':flushed\\:',
@@ -40,7 +36,10 @@ const suffixes = [
 ];
 
 export function toUwU(text: string) {
-    const replaced = text.split(' ').map((s) => wordToUwU(s)).join(' ');
+    const replaced = text
+        .split(' ')
+        .map((s) => wordToUwU(s))
+        .join(' ');
 
     return replaced;
 }

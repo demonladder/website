@@ -34,7 +34,7 @@ export default class Player extends GameObject {
         this.prevMouseDown = false;
         this.isDead = false;
 
-        this.radius = 7 / pixelsPerBlock;  // Blocks
+        this.radius = 7 / pixelsPerBlock; // Blocks
         this.hitboxWidth = 0.2;
         this.hitboxHeight = 0.2;
         this.hitboxOffset.set(-0.1, 0.1);
@@ -70,7 +70,7 @@ export default class Player extends GameObject {
     }
 
     update(p5: P5) {
-        this.velocity.y = ((p5.mouseIsPressed || keysPressed[' '] === true) ? 1 : -1) * this.speed;
+        this.velocity.y = (p5.mouseIsPressed || keysPressed[' '] === true ? 1 : -1) * this.speed;
 
         if (!this.isDead) this.position.add(this.velocity.copy().div(60));
 
@@ -89,7 +89,11 @@ export default class Player extends GameObject {
         // Draw player
         this.trail.draw(p5);
         p5.noFill();
-        p5.circle(this.position.x * pixelsPerBlock, p5.height - this.position.y * pixelsPerBlock, this.radius * pixelsPerBlock * 2);
+        p5.circle(
+            this.position.x * pixelsPerBlock,
+            p5.height - this.position.y * pixelsPerBlock,
+            this.radius * pixelsPerBlock * 2,
+        );
 
         if (GameState.showHitboxes) {
             this.drawHitbox(p5);

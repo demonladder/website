@@ -13,8 +13,8 @@ interface IModalContext {
 
 const defaultContext: IModalContext = {
     modals: [],
-    addModal: () => { },
-    removeModal: () => { },
+    addModal: () => {},
+    removeModal: () => {},
 };
 
 export const ModalContext = createContext(defaultContext);

@@ -1,6 +1,6 @@
 class State {
     showHitboxes: boolean;
-    
+
     constructor() {
         this.showHitboxes = false;
     }

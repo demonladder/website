@@ -14,8 +14,8 @@ export interface GetPackLevelsResponse extends PackLevel {
             Difficulty: LevelMeta['Difficulty'];
             Rarity: LevelMeta['Rarity'];
             Song: {
-                Name: string,
-            },
+                Name: string;
+            };
             Publisher?: {
                 name: Publisher['name'];
             };

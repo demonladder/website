@@ -5,7 +5,7 @@ import { pixelsPerBlock } from './constants';
 export default class Trail {
     points: P5.Vector[];
     player: Player;
-    
+
     constructor(player: Player) {
         this.points = [player.position.copy()];
         this.player = player;
@@ -27,7 +27,12 @@ export default class Trail {
         this.points.forEach((p, i) => {
             p5.stroke(255);
             p5.strokeWeight(10);
-            p5.line(p.x * pixelsPerBlock, p5.height - p.y*pixelsPerBlock, all[i+1].x*pixelsPerBlock, p5.height - all[i+1].y*pixelsPerBlock);
+            p5.line(
+                p.x * pixelsPerBlock,
+                p5.height - p.y * pixelsPerBlock,
+                all[i + 1].x * pixelsPerBlock,
+                p5.height - all[i + 1].y * pixelsPerBlock,
+            );
         });
     }
 }

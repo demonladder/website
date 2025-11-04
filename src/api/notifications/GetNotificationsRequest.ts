@@ -4,8 +4,8 @@ interface NotificationsRaw {
     ID: string;
     Message: string;
     IsRead: boolean;
-    SentAt: string;  // UTC timestamp
-    ReadAt: string | null;  // UTC timestamp
+    SentAt: string; // UTC timestamp
+    ReadAt: string | null; // UTC timestamp
 }
 
 export interface NotificationResponse {
@@ -29,7 +29,7 @@ export default async function GetNotifications(options?: Options): Promise<Notif
         ID: notif.ID,
         Message: notif.Message,
         IsRead: notif.IsRead,
-        SentAt: new Date((notif.SentAt + 'Z')),
-        ReadAt: (notif.ReadAt !== null) ? new Date(notif.ReadAt) : null,
+        SentAt: new Date(notif.SentAt + 'Z'),
+        ReadAt: notif.ReadAt !== null ? new Date(notif.ReadAt) : null,
     }));
 }

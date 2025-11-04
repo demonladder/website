@@ -27,7 +27,7 @@ export default function useCookieReadonly(name: string) {
 
     const removeCookie = useCallback(() => {
         Cookies.remove(name);
-        
+
         setCookie(undefined);
 
         window.dispatchEvent(new CookieChangeEvent(name));
@@ -37,11 +37,13 @@ export default function useCookieReadonly(name: string) {
         setCookie(readCookie());
     }, [name, readCookie]);
 
-    const handleCookieChange = useCallback((e: CookieChangeEvent) => {
-        if (e.detail.name === name) setCookie(readCookie());
-    }, [name, readCookie]);
+    const handleCookieChange = useCallback(
+        (e: CookieChangeEvent) => {
+            if (e.detail.name === name) setCookie(readCookie());
+        },
+        [name, readCookie],
+    );
 
-     
     useEventListener('cookie-change', handleCookieChange);
 
     return [cookie, removeCookie, refresh] as const;

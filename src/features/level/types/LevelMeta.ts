@@ -9,12 +9,18 @@ export enum LevelLengths {
 
 export function levelLengthToString(length: LevelLengths): string {
     switch (length) {
-        case LevelLengths.TINY: return 'Tiny';
-        case LevelLengths.SHORT: return 'Short';
-        case LevelLengths.MEDIUM: return 'Medium';
-        case LevelLengths.LONG: return 'Long';
-        case LevelLengths.XL: return 'XL';
-        case LevelLengths.PLATFORMER: return 'Platformer';
+        case LevelLengths.TINY:
+            return 'Tiny';
+        case LevelLengths.SHORT:
+            return 'Short';
+        case LevelLengths.MEDIUM:
+            return 'Medium';
+        case LevelLengths.LONG:
+            return 'Long';
+        case LevelLengths.XL:
+            return 'XL';
+        case LevelLengths.PLATFORMER:
+            return 'Platformer';
     }
 }
 

@@ -10,18 +10,18 @@ interface DecathlonMetaData {
 }
 
 type Decathlon = Omit<List, 'Type' | 'Description'> & {
-    Type: 1,
-    Description: DecathlonMetaData,
+    Type: 1;
+    Description: DecathlonMetaData;
     levels: (ListLevel & {
-        Level: Omit<Level, 'RatingCount' | 'EnjoymentCount' | 'SubmissionCount'> & { Meta: LevelMeta },
-    })[]
+        Level: Omit<Level, 'RatingCount' | 'EnjoymentCount' | 'SubmissionCount'> & { Meta: LevelMeta };
+    })[];
 };
 
 interface APIResponse {
     list: List;
     levels: (ListLevel & {
-        Level: Omit<Level, 'RatingCount' | 'EnjoymentCount' | 'SubmissionCount'> & { Meta: LevelMeta },
-    })[]
+        Level: Omit<Level, 'RatingCount' | 'EnjoymentCount' | 'SubmissionCount'> & { Meta: LevelMeta };
+    })[];
 }
 
 export default async function GetDecathlon(): Promise<Decathlon> {

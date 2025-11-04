@@ -35,7 +35,7 @@ export async function getShowcaseSuggestions(options?: GetShowcaseSuggestionsOpt
         limit: number;
         total: number;
         page: number;
-        suggestions: GetShowcaseSuggestionsResponse[],
+        suggestions: GetShowcaseSuggestionsResponse[];
     }>('showcase', { params: options });
     return res.data;
 }

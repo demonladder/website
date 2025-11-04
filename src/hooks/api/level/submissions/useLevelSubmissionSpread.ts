@@ -14,9 +14,15 @@ async function getSubmissionSpread(levelID: number) {
 
     return {
         rating: Object.entries(data.rating).map(([key, value]) => ({ Rating: Number(key), Count: value })),
-        twoPlayerRating: Object.entries(data.twoPlayerRating).map(([key, value]) => ({ Rating: Number(key), Count: value })),
+        twoPlayerRating: Object.entries(data.twoPlayerRating).map(([key, value]) => ({
+            Rating: Number(key),
+            Count: value,
+        })),
         enjoyment: Object.entries(data.enjoyment).map(([key, value]) => ({ Enjoyment: Number(key), Count: value })),
-        twoPlayerEnjoyment: Object.entries(data.twoPlayerEnjoyment).map(([key, value]) => ({ Enjoyment: Number(key), Count: value })),
+        twoPlayerEnjoyment: Object.entries(data.twoPlayerEnjoyment).map(([key, value]) => ({
+            Enjoyment: Number(key),
+            Count: value,
+        })),
     };
 }
 

@@ -10,7 +10,7 @@ export interface LevelPreviewDTO {
         Name: string;
         Difficulty: LevelMeta['Difficulty'];
         Rarity: LevelMeta['Rarity'];
-    }
+    };
 }
 
 export async function getPopularLevels(): Promise<LevelPreviewDTO[]> {

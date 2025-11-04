@@ -17,7 +17,7 @@ export default abstract class GameObject extends Hitbox {
 
         return (
             this.position.x + this.hitboxOffset.x + this.hitboxWidth > other.position.x + other.hitboxOffset.x &&
-            this.position.x + this.hitboxOffset.x < other.position.x + other.hitboxOffset.x + other.hitboxWidth &&  // This object is to the left of the other object
+            this.position.x + this.hitboxOffset.x < other.position.x + other.hitboxOffset.x + other.hitboxWidth && // This object is to the left of the other object
             this.position.y + this.hitboxOffset.y >= other.position.y + other.hitboxOffset.y - other.hitboxHeight &&
             this.position.y + this.hitboxOffset.y - this.hitboxHeight < other.position.y + other.hitboxOffset.y
         );
@@ -29,7 +29,12 @@ export default abstract class GameObject extends Hitbox {
         p5.strokeWeight(1);
 
         const c = pixelsPerBlock;
-        p5.rect((this.position.x + this.hitboxOffset.x)*c, p5.height - (this.position.y + this.hitboxOffset.y)*c, this.hitboxWidth*c, this.hitboxHeight*c);
+        p5.rect(
+            (this.position.x + this.hitboxOffset.x) * c,
+            p5.height - (this.position.y + this.hitboxOffset.y) * c,
+            this.hitboxWidth * c,
+            this.hitboxHeight * c,
+        );
     }
 
     abstract update(p5: P5): void;

@@ -9,10 +9,10 @@ export default class Spike extends GameObject {
 
         this.hitboxWidth = 0.15;
         this.hitboxHeight = 0.4;
-        this.hitboxOffset.set(0.85/2, 0.7);
+        this.hitboxOffset.set(0.85 / 2, 0.7);
     }
 
-    update(_p5: P5): void { }
+    update(_p5: P5): void {}
 
     draw(p5: P5) {
         p5.strokeWeight(2);
@@ -24,9 +24,12 @@ export default class Spike extends GameObject {
         const c = pixelsPerBlock;
 
         p5.triangle(
-            x*c, p5.height - y*c,
-            x*c + pixelsPerBlock/2, p5.height - (y*c + pixelsPerBlock),
-            x*c + pixelsPerBlock, p5.height - y*c,
+            x * c,
+            p5.height - y * c,
+            x * c + pixelsPerBlock / 2,
+            p5.height - (y * c + pixelsPerBlock),
+            x * c + pixelsPerBlock,
+            p5.height - y * c,
         );
 
         if (GameState.showHitboxes) {

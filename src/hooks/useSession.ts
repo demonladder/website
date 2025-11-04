@@ -15,16 +15,17 @@ export default function useSession() {
         queryFn: () => APIClient.get<boolean>('/auth/totp/is-enabled').then((res) => res.data),
     });
 
-    const hasPermission = useCallback((permission: PermissionFlags) => {
-        if (!user) return false;
+    const hasPermission = useCallback(
+        (permission: PermissionFlags) => {
+            if (!user) return false;
 
-        const permissions = user.Roles
-            .map((r) => r.PermissionBitField)
-            .reduce((acc, val) => acc | val, 0);
+            const permissions = user.Roles.map((r) => r.PermissionBitField).reduce((acc, val) => acc | val, 0);
 
-        if (permissions & PermissionFlags.ADMIN) return true;
-        return (permissions & permission) !== 0;
-    }, [user]);
+            if (permissions & PermissionFlags.ADMIN) return true;
+            return (permissions & permission) !== 0;
+        },
+        [user],
+    );
 
     const logout = useCallback(async () => {
         await APIClient.post('/account/logout');

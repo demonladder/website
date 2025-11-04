@@ -18,9 +18,11 @@ export type Submission = Pick<
     User: Pick<User, 'ID' | 'Name' | 'avatar'> & {
         Roles: { ID: number }[];
     };
-    SecondaryUser: Pick<User, 'ID' | 'Name' | 'avatar'> & {
-        Roles: { ID: number }[];
-    } | null;
+    SecondaryUser:
+        | (Pick<User, 'ID' | 'Name' | 'avatar'> & {
+              Roles: { ID: number }[];
+          })
+        | null;
 };
 
 interface GetLevelSubmissionsResponse {

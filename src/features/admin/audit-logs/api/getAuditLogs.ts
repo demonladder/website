@@ -21,6 +21,6 @@ export async function getAuditLogs() {
     const res = await APIClient.get<AuditLog[]>('/audit-logs');
     return res.data.map((log) => ({
         ...log,
-        changes: log.changes ? JSON.parse(log.changes) as AuditLogChange[] : null,
+        changes: log.changes ? (JSON.parse(log.changes) as AuditLogChange[]) : null,
     }));
 }

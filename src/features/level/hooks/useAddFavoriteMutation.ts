@@ -46,14 +46,11 @@ export function useAddFavoriteMutation(options?: Options) {
                 },
             };
 
-            queryClient.setQueryData<GetFavoriteLevelsResponse[]>(
-                ['user', userID, 'favorites'],
-                (existing) => {
-                    if (!existing || existing.length === 0) return [newFavorite];
-                    if (existing.some((favorite) => favorite.ID === levelID)) return existing;
-                    return [...existing, newFavorite];
-                },
-            );
+            queryClient.setQueryData<GetFavoriteLevelsResponse[]>(['user', userID, 'favorites'], (existing) => {
+                if (!existing || existing.length === 0) return [newFavorite];
+                if (existing.some((favorite) => favorite.ID === levelID)) return existing;
+                return [...existing, newFavorite];
+            });
 
             options?.onSuccess?.();
         },

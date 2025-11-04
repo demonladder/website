@@ -11,7 +11,9 @@
     "build:staging": "tsc && vite build --mode staging",
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "format": "prettier --write **/*.[jt]s",
+    "format:check": "prettier --check **/*.[jt]s"
   },
   "dependencies": {
     "@react-hook/resize-observer": "^2.0.2",
@@ -61,6 +63,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "husky": "^9.1.7",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.0.12",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.43.0",
