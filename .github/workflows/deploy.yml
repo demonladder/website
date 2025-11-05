@@ -1,15 +1,13 @@
 name: Build and deploy
+env:
+  target: ${{ github.ref_name == 'main' && 'gddl' || 'gddl-beta' }}
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: Specify where the build should deploy
-        required: true
-        type: choice
-        options:
-          - gddl
-          - gddl-beta
+  workflow_run:
+    workflows: ["Check linting and formatting"]
+    branches:
+      - 'main'
+      - 'beta'
 
 jobs:
   build:
@@ -32,11 +30,12 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run ${{ inputs.environment == 'gddl' && 'build' || 'build:staging'}}
+        run: npm run ${{ env.target == 'gddl' && 'build' || 'build:staging'}}
         env:
           VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
           VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
           VITE_SESSION_ID_NAME: ${{ vars.VITE_SESSION_ID_NAME }}
+          VITE_MAX_TIER: ${{ vars.VITE_MAX_TIER }}
           VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
 
       - name: Prepare SSH key
@@ -48,16 +47,16 @@ jobs:
 
       - name: Delete index.html
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm /home/ubuntu/${{ inputs.environment }}/dist/index.html"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm /home/ubuntu/${{ env.target }}/dist/index.html"
 
       - name: Delete assets
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm -rf /home/ubuntu/${{ inputs.environment }}/dist/assets"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm -rf /home/ubuntu/${{ env.target }}/dist/assets"
 
       - name: Transfer index.html
         run: |
-          scp -i private_key.pem -o StrictHostKeyChecking=no ./dist/index.html ubuntu@34.249.48.77:/home/ubuntu/${{ inputs.environment }}/dist/index.html
+          scp -i private_key.pem -o StrictHostKeyChecking=no ./dist/index.html ubuntu@34.249.48.77:/home/ubuntu/${{ env.target }}/dist/index.html
 
       - name: Transfer assets
         run: |
-          scp -r -i private_key.pem -o StrictHostKeyChecking=no ./dist/assets ubuntu@34.249.48.77:/home/ubuntu/${{ inputs.environment }}/dist/assets
+          scp -r -i private_key.pem -o StrictHostKeyChecking=no ./dist/assets ubuntu@34.249.48.77:/home/ubuntu/${{ env.target }}/dist/assets
