@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit",
     "build": "tsc && vite build",
     "build:staging": "tsc && vite build --mode staging",
-    "lint": "eslint src --ignore-pattern **/*.d.ts* --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint src --ignore-pattern \"**/*.d.ts*\" --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky",
     "format": "prettier --write **/*.[jt]s",
