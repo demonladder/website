@@ -6,6 +6,8 @@ import { useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Heading2 from '../../../components/headings/Heading2';
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 interface Props {
     levelMeta: LevelMeta;
     twoPlayer: boolean;
@@ -25,7 +27,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
     const filledRatingData = useMemo(() => {
         if (!ratingData) return [];
         const lowestRating = ratingData.reduce((acc, cur) => Math.min(acc, cur.Rating), ratingData.at(0)?.Rating ?? 1);
-        const highestRating = ratingData.reduce((acc, cur) => Math.max(acc, cur.Rating), ratingData.at(0)?.Rating ?? 35);
+        const highestRating = ratingData.reduce((acc, cur) => Math.max(acc, cur.Rating), ratingData.at(0)?.Rating ?? MAX_TIER);
 
         const filledData = [...ratingData];
         for (let i = lowestRating; i <= highestRating; i++) {

@@ -29,13 +29,17 @@
     --color-tier-27: #6C1E04;
     --color-tier-28: #601A02;
     --color-tier-29: #5A1802;
-    --color-tier-30: #511700;
-    --color-tier-31: #491900;
-    --color-tier-32: #3F1A00;
-    --color-tier-33: #331700;
-    --color-tier-34: #231300;
-    --color-tier-35: #110A00;
-    --color-tier-36: #000000;
+    --color-tier-30: #521700;
+    --color-tier-31: #4f0a01;
+    --color-tier-32: #4a0207;
+    --color-tier-33: #470313;
+    --color-tier-34: #42041e;
+    --color-tier-35: #400427;
+    --color-tier-36: #3d0630;
+    --color-tier-37: #380635;
+    --color-tier-38: #300636;
+    --color-tier-39: #250630;
+    --color-tier-40: #1c072e;
 }
 
 .tier-0 { @apply bg-tier-0; color: white; }
@@ -75,6 +79,9 @@
 .tier-34 { @apply bg-tier-34; color: white; }
 .tier-35 { @apply bg-tier-35; color: white; }
 .tier-36 { @apply bg-tier-36; color: white; }
+.tier-37 { @apply bg-tier-37; color: white; }
+.tier-38 { @apply bg-tier-38; color: white; }
+.tier-39 { @apply bg-tier-39; color: white; }
 
 .from-tier-0 { @apply from-tier-0; }
 .from-tier-1 { @apply from-tier-1; }
@@ -113,6 +120,9 @@
 .from-tier-34 { @apply from-tier-34; }
 .from-tier-35 { @apply from-tier-35; }
 .from-tier-36 { @apply from-tier-36; }
+.from-tier-37 { @apply from-tier-37; }
+.from-tier-38 { @apply from-tier-38; }
+.from-tier-39 { @apply from-tier-39; }
 
 .to-tier-0 { @apply to-tier-0; }
 .to-tier-1 { @apply to-tier-1; }
@@ -151,3 +161,6 @@
 .to-tier-34 { @apply to-tier-34; }
 .to-tier-35 { @apply to-tier-35; }
 .to-tier-36 { @apply to-tier-36; }
+.to-tier-37 { @apply to-tier-37; }
+.to-tier-38 { @apply to-tier-38; }
+.to-tier-39 { @apply to-tier-39; }

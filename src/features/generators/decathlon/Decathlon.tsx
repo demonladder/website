@@ -46,7 +46,7 @@ export default function Decathlon() {
             <p>A decathlon is a notoriously difficult challenge as it is very RNG heavy.</p>
             <p>The rules are simple. You will be given 10 random levels which will have to be beaten in ascending difficulty. You cannot see all of the run ahead of time, only the next level in line.</p>
             <p>Depending on the tier of your current hardest, you will be given re-rolls:</p>
-            <p>32-35: 0 re-rolls</p>
+            <p>32-39: 0 re-rolls</p>
             <p>27-31: 1 re-roll</p>
             <p>23-26: 2 re-rolls</p>
             <p>19-22: 3 re-rolls</p>

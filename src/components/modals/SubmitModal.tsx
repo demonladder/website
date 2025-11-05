@@ -59,6 +59,7 @@ const deviceOptions: Record<Device, string> = {
     mobile: 'Mobile',
 };
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
 
 export default function SubmitModal({ onClose, level, userID }: Props) {
@@ -129,8 +130,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         const enjoyment = enjoymentKey === '-1' ? null : parseInt(enjoymentKey);
 
         if (rating !== null) {
-            if (rating < 1 || rating > 35) {
-                return toast.error('Rating must be between 1 and 35!');
+            if (rating < 1 || rating > MAX_TIER) {
+                return toast.error(`Rating must be between 1 and ${MAX_TIER}!`);
             }
 
             if (rating >= 21 && !proof) {
@@ -203,7 +204,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const isTierValid = useMemo(() => {
         if (tier === '') return false;
         const rating = parseInt(tier);
-        return !isNaN(rating) && rating >= 1 && rating <= 35;
+        return !isNaN(rating) && rating >= 1 && rating <= MAX_TIER;
     }, [tier]);
 
     const isEnjoymentValid = useMemo(() => {
@@ -227,8 +228,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 }
                 <FormGroup>
                     <FormInputLabel htmlFor='submitRating'>Tier</FormInputLabel>
-                    <NumberInput id='submitRating' value={tier} onChange={ratingChange} inputMode='numeric' min={1} max={35} invalid={tierEnjoymentInvalid} required={tierEnjoymentInvalid} autoFocus disabled={level.Meta.Length === LevelLengths.PLATFORMER} />
-                    <p className='text-sm text-gray-400'>Must be 1-35</p>
+                    <NumberInput id='submitRating' value={tier} onChange={ratingChange} inputMode='numeric' min={1} max={MAX_TIER} invalid={tierEnjoymentInvalid} required={tierEnjoymentInvalid} autoFocus disabled={level.Meta.Length === LevelLengths.PLATFORMER} />
+                    <p className='text-sm text-gray-400'>Must be 1-{MAX_TIER}</p>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel htmlFor='submitEnjoyment'>Enjoyment</FormInputLabel>

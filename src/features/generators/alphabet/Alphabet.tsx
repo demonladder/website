@@ -17,6 +17,8 @@ import useValidNumber from '../../../hooks/useValidNumber';
 import _ from 'lodash';
 import renderToastError from '../../../utils/renderToastError';
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 const difficultyOptions = {
     '-1': 'Any',
     1: 'Easy',
@@ -37,8 +39,8 @@ export default function Alphabet() {
 
     const generateMutation = useMutation({
         mutationFn: () => generateAlphabet(
-            _.clamp(parseFloat(minTier.value) + (minTier.isInteger ? -0.5 : 0), 1, 35),
-            _.clamp(parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0), 1, 35),
+            _.clamp(parseFloat(minTier.value) + (minTier.isInteger ? -0.5 : 0), 1, MAX_TIER),
+            _.clamp(parseFloat(maxTier.value) + (maxTier.isInteger ? 0.5 : 0), 1, MAX_TIER),
             _.clamp(parseFloat(minEnjoyment.value) + (minEnjoyment.isInteger ? -0.5 : 0), 0, 10),
             _.clamp(parseFloat(maxEnjoyment.value) + (maxEnjoyment.isInteger ? 0.5 : 0), 0, 10),
             difficulty !== '-1' ? difficulty as Difficulty : undefined,
@@ -66,12 +68,12 @@ export default function Alphabet() {
             <div>
                 <FormGroup>
                     <FormInputLabel>Minimum tier</FormInputLabel>
-                    <NumberInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value)} id='minTier' min='1' max='35' invalid={!minTier.isValid} />
+                    <NumberInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value)} id='minTier' min='1' max={MAX_TIER} invalid={!minTier.isValid} />
                     <FormInputDescription>Optional. The lowest tier of the alphabet. Use decimals for higher precision.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Maximum tier</FormInputLabel>
-                    <TextInput value={maxTier.value} onChange={(e) => maxTier.setValue(e.target.value.trim())} id='maxTier' min='1' max='35' invalid={!maxTier.isValid} />
+                    <TextInput value={maxTier.value} onChange={(e) => maxTier.setValue(e.target.value.trim())} id='maxTier' min='1' max={MAX_TIER} invalid={!maxTier.isValid} />
                     <FormInputDescription>Optional. The highest tier of the alphabet. Use decimals for higher precision.</FormInputDescription>
                 </FormGroup>
                 <FormGroup>

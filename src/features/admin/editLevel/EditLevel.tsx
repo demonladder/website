@@ -16,6 +16,8 @@ import { Link, useLoaderData } from 'react-router';
 import Heading1 from '../../../components/headings/Heading1';
 import type { FullLevel } from '../../../api/types/compounds/FullLevel';
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 export default function EditLevel() {
     const level = useLoaderData<FullLevel>();
     const [defaultRating, setDefaultRating] = useState(level.DefaultRating?.toString() ?? '');
@@ -86,7 +88,7 @@ export default function EditLevel() {
             <form onSubmit={onSubmit} className='mt-4'>
                 <FormGroup>
                     <FormInputLabel htmlFor={defaultRatingID}>Default rating</FormInputLabel>
-                    <NumberInput id={defaultRatingID} value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > 35 || parseInt(defaultRating) < 1} />
+                    <NumberInput id={defaultRatingID} value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > MAX_TIER || parseInt(defaultRating) < 1} />
                 </FormGroup>
                 <FormGroup className='mt-1'>
                     <FormInputLabel htmlFor={showcaseID}>Showcase</FormInputLabel>

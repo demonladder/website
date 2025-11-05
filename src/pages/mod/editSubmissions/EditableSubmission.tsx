@@ -22,6 +22,8 @@ import Heading3 from '../../../components/headings/Heading3';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 import User from '../../../api/types/User';
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 interface Props {
     submission: Submission & { User: User };
 }
@@ -101,7 +103,7 @@ export default function EditableSubmission({ submission }: Props) {
             </FormGroup>
             <FormGroup>
                 <FormInputLabel htmlFor='addSubmissionTier'>Tier</FormInputLabel>
-                <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} min='1' max='35' invalid={invalidRating && invalidEnjoyment} />
+                <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} min='1' max={MAX_TIER} invalid={invalidRating && invalidEnjoyment} />
                 <FormInputDescription>Optional unless missing enjoyment</FormInputDescription>
             </FormGroup>
             <FormGroup>

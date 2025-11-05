@@ -137,9 +137,11 @@ export default function AddSubmission() {
     );
 }
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 function validateTier(tier?: number) {
     if (tier === undefined) return false;
-    return !isNaN(tier) && tier >= 1 && tier <= 35;
+    return !isNaN(tier) && tier >= 1 && tier <= MAX_TIER;
 }
 
 function validateEnjoyment(enjoyment?: number) {

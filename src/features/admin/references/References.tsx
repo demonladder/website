@@ -17,9 +17,11 @@ import ChangeLevel from './components/ChangeLevel';
 import Level from './components/Level';
 import RemoveList from './components/RemoveList';
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 export default function EditReferences() {
     const [tier, setTier] = useQueryParam('tier', withDefault(NumberParam, 1));
-    const [maxTier, setMaxTier] = useState(35);
+    const [maxTier, setMaxTier] = useState(MAX_TIER);
     const [changeList, setChangeList] = useState<Change[]>([]);
     const [removeList, setRemoveList] = useState<number[]>([]);
 

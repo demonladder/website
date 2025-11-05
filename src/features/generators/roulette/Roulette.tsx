@@ -18,6 +18,8 @@ import validateParameter from '../../../utils/validators/validateParameter';
 import renderToastError from '../../../utils/renderToastError';
 import Heading2 from '../../../components/headings/Heading2';
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 const difficultyOptions = {
     '-1': 'Any',
     1: 'Easy',
@@ -70,12 +72,12 @@ export default function Roulette() {
             <p>Generate a roulette. For every level you have to get 1% more than the last level. Eg. you must get at least 1% on level #1, 2% on level #2, 3% on level #3 and so on until you reach level #100 where you have to get 100%.</p>
             <FormGroup>
                 <FormInputLabel>Minimum tier</FormInputLabel>
-                <TextInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value.trim())} id='minTier' min='1' max='35' invalid={!minTier.isValid} />
+                <TextInput value={minTier.value} onChange={(e) => minTier.setValue(e.target.value.trim())} id='minTier' min='1' max={MAX_TIER} invalid={!minTier.isValid} />
                 <FormInputDescription>Optional. The lowest tier of the roulette. Use decimals for higher precision.</FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Maximum tier</FormInputLabel>
-                <TextInput value={maxTier.value} onChange={(e) => maxTier.setValue(e.target.value.trim())} id='maxTier' min='1' max='35' invalid={!maxTier.isValid} />
+                <TextInput value={maxTier.value} onChange={(e) => maxTier.setValue(e.target.value.trim())} id='maxTier' min='1' max={MAX_TIER} invalid={!maxTier.isValid} />
                 <FormInputDescription>Optional. The highest tier of the roulette. Use decimals for higher precision.</FormInputDescription>
             </FormGroup>
             <FormGroup>

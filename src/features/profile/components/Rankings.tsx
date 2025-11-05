@@ -4,6 +4,8 @@ import Heading2 from '../../../components/headings/Heading2';
 import { getUserRankings } from '../api/getUserRankings';
 import { useParams } from 'react-router';
 
+const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
+
 function percentToRank(percent: number): string {
     if (percent >= 100) return 'S';
     if (percent >= 90) return 'X';
@@ -30,7 +32,7 @@ function Rank({ tier, count, total }: { tier?: string, count: number, total: num
             <td className='px-2 whitespace-nowrap w-24 self-center mx-2'>{count}/{total}</td>
             <td className='px-2 grow'>
                 <span className='block relative'>
-                    <span className={`absolute block left-0 top-0 align-middle h-9 tier-${tier ?? Math.min(Math.floor(0.36 * percent + 1), 35)}`} style={{ width: `${percent}%` }} />
+                    <span className={`absolute block left-0 top-0 align-middle h-9 tier-${tier ?? Math.min(Math.floor(0.36 * percent + 1), MAX_TIER)}`} style={{ width: `${percent}%` }} />
                 </span>
             </td>
         </tr>
