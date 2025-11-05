@@ -3,7 +3,7 @@ import Trail from '../Trail';
 import { camOffset, pixelsPerBlock } from '../constants';
 import GameObject from '../core/GameObject';
 import GameState from '../GameState';
-import { keysPressed } from '../Game';
+import { keysPressed } from '../constants';
 
 enum Speed {
     Half = 8.37,

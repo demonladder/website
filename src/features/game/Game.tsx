@@ -1,7 +1,6 @@
 import Sketch from 'react-p5';
 import P5 from 'p5';
-import Player from './gameObjects/Player';
-import { camOffset, pixelsPerBlock } from './constants';
+import { camOffset, keysPressed, pixelsPerBlock, player } from './constants';
 import GameObject from './core/GameObject';
 import GameState from './GameState';
 import createLevel2 from './levels/Level2';
@@ -9,8 +8,6 @@ import { useEffect, useRef } from 'react';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import Page from '../../components/Page';
 
-export const keysPressed: Record<string, boolean> = {};
-export const player = new Player();
 export default function Game() {
     let _p5: P5 | undefined;
     const sceneObjects: GameObject[] = [];

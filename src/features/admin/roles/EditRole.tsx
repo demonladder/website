@@ -27,7 +27,7 @@ export default function EditRole() {
 
     const navigate = useNavigate();
     const openDeleteRoleModal = useDeleteRoleModal({
-        onSucces: () => navigate('/mod/roles'),
+        onSucces: () => void navigate('/mod/roles'),
     });
 
     const { data } = useQuery({
@@ -56,7 +56,7 @@ export default function EditRole() {
     }, [roleID, color, roleName, tempPermissions, queryClient]);
 
     if (Number.isNaN(roleID)) {
-        navigate('/mod/roles');
+        void navigate('/mod/roles');
         return;
     }
 

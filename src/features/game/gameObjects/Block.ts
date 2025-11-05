@@ -2,7 +2,7 @@ import P5 from 'p5';
 import { camOffset, pixelsPerBlock } from '../constants';
 import GameObject from '../core/GameObject';
 import GameState from '../GameState';
-import { player } from '../Game';
+import { player } from '../constants';
 
 export default class Block extends GameObject {
     constructor(x?: number, y?: number) {

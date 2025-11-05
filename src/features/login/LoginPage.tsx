@@ -26,7 +26,7 @@ export default function Login() {
         }),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['me'] });
-            navigate(-1);
+            void navigate(-1);
         },
     });
 

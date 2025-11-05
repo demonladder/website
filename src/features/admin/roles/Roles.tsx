@@ -42,7 +42,7 @@ export default function Roles() {
             {filteredRoles !== undefined &&
                 <ul>
                     {filteredRoles.map((role) => (
-                        <li className='py-3 ps-3 border-b border-theme-500 hover:bg-theme-500 cursor-pointer' onClick={() => navigate(`/mod/roles/${role.ID}`)} key={role.ID}>{role.Icon ?? ''} {role.Name}</li>
+                        <li className='py-3 ps-3 border-b border-theme-500 hover:bg-theme-500 cursor-pointer' onClick={() => void navigate(`/mod/roles/${role.ID}`)} key={role.ID}>{role.Icon ?? ''} {role.Name}</li>
                     ))}
                 </ul>
             }

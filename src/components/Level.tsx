@@ -33,7 +33,7 @@ export default function Level({ ID, difficulty, rarity, rating, defaultRating, a
     const app = useApp();
 
     return (
-        <div className={'relative group cursor-pointer outline-offset-4 round:rounded-xl focus-visible:outline-2' + (selected ? ' outline-2 z-20' : '') + (app.enableLevelThumbnails ? '' : (completed ? ' odd:bg-green-700 even:bg-green-500' : ' odd:bg-theme-700 even:bg-theme-500'))} onClick={() => navigate('/level/' + ID)} onContextMenu={onContextMenu} tabIndex={0}>
+        <div className={'relative group cursor-pointer outline-offset-4 round:rounded-xl focus-visible:outline-2' + (selected ? ' outline-2 z-20' : '') + (app.enableLevelThumbnails ? '' : (completed ? ' odd:bg-green-700 even:bg-green-500' : ' odd:bg-theme-700 even:bg-theme-500'))} onClick={() => void navigate('/level/' + ID)} onContextMenu={onContextMenu} tabIndex={0}>
             {app.enableLevelThumbnails &&
                 <img className='absolute size-full object-cover object-center transition-all opacity-60 group-hover:opacity-100 focus-visible:opacity-100 level-thumbnail' loading='lazy' src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(ID)}`} style={{ maskImage: 'linear-gradient(to right, transparent var(--mask-start-at, 40%), black 90%)' }} />
             }

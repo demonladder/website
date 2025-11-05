@@ -48,7 +48,7 @@ export default tseslint.config(
                 generics: 'always-multiline',
                 tuples: 'always-multiline',
             }],
-            '@stylistic/ts/indent': ['warn', 4],
+            '@stylistic/ts/indent': ['off'],
             '@stylistic/ts/no-extra-semi': 'error',
             '@stylistic/ts/semi': 'error',
             '@stylistic/ts/space-before-blocks': 'error',
