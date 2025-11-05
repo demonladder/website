@@ -6,7 +6,7 @@ export enum ChangeType {
 }
 
 export interface Change {
-    Tier: number;
+    Tier: number | null;
     ID: number;
     Name: string;
     Type: ChangeType;

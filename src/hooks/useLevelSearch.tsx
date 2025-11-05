@@ -74,6 +74,7 @@ export default function useLevelSearch(ID: string, { required = false, defaultLe
             status={status}
             invalid={isInvalid || (required && !activeLevel)}
             placeholder={defaultData?.Meta.Name}
+            overWriteInput
         />),
         value: search,
     };

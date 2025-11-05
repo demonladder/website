@@ -43,8 +43,7 @@ export default function EditReferences() {
 
     const { activeLevel, SearchBox } = useLevelSearch('editReferenceLevelInput');
     function addChange() {
-        if (!activeLevel) return;
-        if (activeLevel.Rating === null) return;
+        if (!activeLevel) return toast.error('No level selected');
 
         if (changeList.filter(c => c.ID === activeLevel.ID && c.Type === ChangeType.Add).length === 1) return;
 
