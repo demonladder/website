@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Level, { LevelSkeleton } from '../../components/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
@@ -157,51 +157,54 @@ export default function Search() {
         }
     }
 
-    const filters: React.ReactNode[] = [];
-    if (savedFilters[QueryParamNames.MinRating] || savedFilters[QueryParamNames.MaxRating]) filters.push(<FilterLabel label={
-        savedFilters[QueryParamNames.MinRating] && savedFilters[QueryParamNames.MaxRating] ? `tier: ${savedFilters[QueryParamNames.MinRating]} - ${savedFilters[QueryParamNames.MaxRating]}`
-            : !savedFilters[QueryParamNames.MinRating] ? `tier: < ${savedFilters[QueryParamNames.MaxRating]}`
-                : `tier: > ${savedFilters[QueryParamNames.MinRating]}`
-    } onRemove={() => {
-        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined }));
-        setQueryParams({ ...queryParams, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined });
-    }} />);
+    const filters: React.ReactNode[] = useMemo(() => {
+        const filters: React.ReactNode[] = [];
+        if (savedFilters[QueryParamNames.MinRating] || savedFilters[QueryParamNames.MaxRating]) filters.push(<FilterLabel label={
+            savedFilters[QueryParamNames.MinRating] && savedFilters[QueryParamNames.MaxRating] ? `tier: ${savedFilters[QueryParamNames.MinRating]} - ${savedFilters[QueryParamNames.MaxRating]}`
+                : !savedFilters[QueryParamNames.MinRating] ? `tier: < ${savedFilters[QueryParamNames.MaxRating]}`
+                    : `tier: > ${savedFilters[QueryParamNames.MinRating]}`
+        } onRemove={() => {
+            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined }));
+            setQueryParams({ ...queryParams, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined });
+        }} />);
 
-    if (savedFilters[QueryParamNames.MinEnjoyment] || savedFilters[QueryParamNames.MaxEnjoyment]) filters.push(<FilterLabel label={
-        savedFilters[QueryParamNames.MinEnjoyment] && savedFilters[QueryParamNames.MaxEnjoyment] ? `enjoyment: ${savedFilters[QueryParamNames.MinEnjoyment]} - ${savedFilters[QueryParamNames.MaxEnjoyment]}`
-            : !savedFilters[QueryParamNames.MinEnjoyment] ? `enjoyment: < ${savedFilters[QueryParamNames.MaxEnjoyment]}`
-                : `enjoyment: > ${savedFilters[QueryParamNames.MinEnjoyment]}`
-    } onRemove={() => {
-        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined }));
-        setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined });
-    }} />);
+        if (savedFilters[QueryParamNames.MinEnjoyment] || savedFilters[QueryParamNames.MaxEnjoyment]) filters.push(<FilterLabel label={
+            savedFilters[QueryParamNames.MinEnjoyment] && savedFilters[QueryParamNames.MaxEnjoyment] ? `enjoyment: ${savedFilters[QueryParamNames.MinEnjoyment]} - ${savedFilters[QueryParamNames.MaxEnjoyment]}`
+                : !savedFilters[QueryParamNames.MinEnjoyment] ? `enjoyment: < ${savedFilters[QueryParamNames.MaxEnjoyment]}`
+                    : `enjoyment: > ${savedFilters[QueryParamNames.MinEnjoyment]}`
+        } onRemove={() => {
+            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined }));
+            setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined });
+        }} />);
 
-    if (queryParams[QueryParamNames.Difficulty]) filters.push(<FilterLabel label={`difficulty: ${difficulties[queryParams[QueryParamNames.Difficulty] as keyof typeof difficulties]}`} onRemove={() => {
-        setQueryParams({ ...queryParams, [QueryParamNames.Difficulty]: undefined });
-    }} />);
+        if (queryParams[QueryParamNames.Difficulty]) filters.push(<FilterLabel label={`difficulty: ${difficulties[queryParams[QueryParamNames.Difficulty] as keyof typeof difficulties]}`} onRemove={() => {
+            setQueryParams({ ...queryParams, [QueryParamNames.Difficulty]: undefined });
+        }} />);
 
-    if (savedFilters[QueryParamNames.Length]) filters.push(<FilterLabel label={`length: ${lengths[savedFilters[QueryParamNames.Length] as keyof typeof lengths]}`} onRemove={() => {
-        setQueryParams({ ...queryParams, [QueryParamNames.Length]: undefined });
-        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.Length]: undefined }));
-    }} />);
+        if (savedFilters[QueryParamNames.Length]) filters.push(<FilterLabel label={`length: ${lengths[savedFilters[QueryParamNames.Length] as keyof typeof lengths]}`} onRemove={() => {
+            setQueryParams({ ...queryParams, [QueryParamNames.Length]: undefined });
+            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.Length]: undefined }));
+        }} />);
 
-    if (savedFilters[QueryParamNames.MinSubmissionCount] || savedFilters[QueryParamNames.MaxSubmissionCount]) filters.push(<FilterLabel label={
-        savedFilters[QueryParamNames.MinSubmissionCount] && savedFilters[QueryParamNames.MaxSubmissionCount] ? `submissions: ${savedFilters[QueryParamNames.MinSubmissionCount]} - ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
-            : !savedFilters[QueryParamNames.MinSubmissionCount] ? `submissions: < ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
-                : `submissions: > ${savedFilters[QueryParamNames.MinSubmissionCount]}`
-    } onRemove={() => {
-        setQueryParams({ ...queryParams, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined });
-        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined }));
-    }} />);
+        if (savedFilters[QueryParamNames.MinSubmissionCount] || savedFilters[QueryParamNames.MaxSubmissionCount]) filters.push(<FilterLabel label={
+            savedFilters[QueryParamNames.MinSubmissionCount] && savedFilters[QueryParamNames.MaxSubmissionCount] ? `submissions: ${savedFilters[QueryParamNames.MinSubmissionCount]} - ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
+                : !savedFilters[QueryParamNames.MinSubmissionCount] ? `submissions: < ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
+                    : `submissions: > ${savedFilters[QueryParamNames.MinSubmissionCount]}`
+        } onRemove={() => {
+            setQueryParams({ ...queryParams, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined });
+            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined }));
+        }} />);
 
-    if (savedFilters[QueryParamNames.MinEnjoymentCount] || savedFilters[QueryParamNames.MaxEnjoymentCount]) filters.push(<FilterLabel label={
-        savedFilters[QueryParamNames.MinEnjoymentCount] && savedFilters[QueryParamNames.MaxEnjoymentCount] ? `enjoyment ratings: ${savedFilters[QueryParamNames.MinEnjoymentCount]} - ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
-            : !savedFilters[QueryParamNames.MinEnjoymentCount] ? `enjoyment ratings: < ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
-                : `enjoyment ratings: > ${savedFilters[QueryParamNames.MinEnjoymentCount]}`
-    } onRemove={() => {
-        setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined });
-        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined }));
-    }} />);
+        if (savedFilters[QueryParamNames.MinEnjoymentCount] || savedFilters[QueryParamNames.MaxEnjoymentCount]) filters.push(<FilterLabel label={
+            savedFilters[QueryParamNames.MinEnjoymentCount] && savedFilters[QueryParamNames.MaxEnjoymentCount] ? `enjoyment ratings: ${savedFilters[QueryParamNames.MinEnjoymentCount]} - ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
+                : !savedFilters[QueryParamNames.MinEnjoymentCount] ? `enjoyment ratings: < ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
+                    : `enjoyment ratings: > ${savedFilters[QueryParamNames.MinEnjoymentCount]}`
+        } onRemove={() => {
+            setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined });
+            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined }));
+        }} />);
+        return filters;
+    }, [queryParams, savedFilters, setQueryParams, setSavedFilters]);
 
     return (
         <Page title='GDDL | Search'>
