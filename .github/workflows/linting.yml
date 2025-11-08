@@ -4,18 +4,14 @@ env:
 
 on:
   push:
-    branches:
-      - '**'
     paths:
-      - '**.js'
-      - '**.ts'
+      - '**.jsx?'
+      - '**.tsx?'
 
   pull_request:
-    branches:
-      - '**'
     paths:
-      - '**.js'
-      - '**.ts'
+      - '**.jsx?'
+      - '**.tsx?'
 
 jobs:
   lint:
