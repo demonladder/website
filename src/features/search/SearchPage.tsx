@@ -24,7 +24,34 @@ import PageButtons from '../../components/PageButtons';
 // TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {
     [QueryParamNames.Name]: string | null;
+    [QueryParamNames.MaxRating]: number | null;
+    [QueryParamNames.MinRating]: number | null;
+    [QueryParamNames.MaxEnjoyment]: number | null;
+    [QueryParamNames.MinEnjoyment]: number | null;
+    [QueryParamNames.Length]: number | null;
+    [QueryParamNames.MinSubmissionCount]: number | null;
+    [QueryParamNames.MaxSubmissionCount]: number | null;
+    [QueryParamNames.MinEnjoymentCount]: number | null;
+    [QueryParamNames.MaxEnjoymentCount]: number | null;
 }
+
+const difficulties = {
+    '1': 'official',
+    '2': 'easy',
+    '3': 'medium',
+    '4': 'hard',
+    '5': 'insane',
+    '6': 'extreme',
+};
+
+const lengths = {
+    1: 'tiny',
+    2: 'short',
+    3: 'medium',
+    4: 'long',
+    5: 'xl',
+    6: 'platformer',
+};
 
 export default function Search() {
     const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('level-filters', {});
@@ -130,6 +157,52 @@ export default function Search() {
         }
     }
 
+    const filters: React.ReactNode[] = [];
+    if (savedFilters[QueryParamNames.MinRating] || savedFilters[QueryParamNames.MaxRating]) filters.push(<FilterLabel label={
+        savedFilters[QueryParamNames.MinRating] && savedFilters[QueryParamNames.MaxRating] ? `tier: ${savedFilters[QueryParamNames.MinRating]} - ${savedFilters[QueryParamNames.MaxRating]}`
+            : !savedFilters[QueryParamNames.MinRating] ? `tier: < ${savedFilters[QueryParamNames.MaxRating]}`
+                : `tier: > ${savedFilters[QueryParamNames.MinRating]}`
+    } onRemove={() => {
+        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined }));
+        setQueryParams({ ...queryParams, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined });
+    }} />);
+
+    if (savedFilters[QueryParamNames.MinEnjoyment] || savedFilters[QueryParamNames.MaxEnjoyment]) filters.push(<FilterLabel label={
+        savedFilters[QueryParamNames.MinEnjoyment] && savedFilters[QueryParamNames.MaxEnjoyment] ? `enjoyment: ${savedFilters[QueryParamNames.MinEnjoyment]} - ${savedFilters[QueryParamNames.MaxEnjoyment]}`
+            : !savedFilters[QueryParamNames.MinEnjoyment] ? `enjoyment: < ${savedFilters[QueryParamNames.MaxEnjoyment]}`
+                : `enjoyment: > ${savedFilters[QueryParamNames.MinEnjoyment]}`
+    } onRemove={() => {
+        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined }));
+        setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined });
+    }} />);
+
+    if (queryParams[QueryParamNames.Difficulty]) filters.push(<FilterLabel label={`difficulty: ${difficulties[queryParams[QueryParamNames.Difficulty] as keyof typeof difficulties]}`} onRemove={() => {
+        setQueryParams({ ...queryParams, [QueryParamNames.Difficulty]: undefined });
+    }} />);
+
+    if (savedFilters[QueryParamNames.Length]) filters.push(<FilterLabel label={`length: ${lengths[savedFilters[QueryParamNames.Length] as keyof typeof lengths]}`} onRemove={() => {
+        setQueryParams({ ...queryParams, [QueryParamNames.Length]: undefined });
+        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.Length]: undefined }));
+    }} />);
+
+    if (savedFilters[QueryParamNames.MinSubmissionCount] || savedFilters[QueryParamNames.MaxSubmissionCount]) filters.push(<FilterLabel label={
+        savedFilters[QueryParamNames.MinSubmissionCount] && savedFilters[QueryParamNames.MaxSubmissionCount] ? `submissions: ${savedFilters[QueryParamNames.MinSubmissionCount]} - ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
+            : !savedFilters[QueryParamNames.MinSubmissionCount] ? `submissions: < ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
+                : `submissions: > ${savedFilters[QueryParamNames.MinSubmissionCount]}`
+    } onRemove={() => {
+        setQueryParams({ ...queryParams, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined });
+        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined }));
+    }} />);
+
+    if (savedFilters[QueryParamNames.MinEnjoymentCount] || savedFilters[QueryParamNames.MaxEnjoymentCount]) filters.push(<FilterLabel label={
+        savedFilters[QueryParamNames.MinEnjoymentCount] && savedFilters[QueryParamNames.MaxEnjoymentCount] ? `enjoyment ratings: ${savedFilters[QueryParamNames.MinEnjoymentCount]} - ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
+            : !savedFilters[QueryParamNames.MinEnjoymentCount] ? `enjoyment ratings: < ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
+                : `enjoyment ratings: > ${savedFilters[QueryParamNames.MinEnjoymentCount]}`
+    } onRemove={() => {
+        setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined });
+        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined }));
+    }} />);
+
     return (
         <Page title='GDDL | Search'>
             <Heading1 className='mb-2'>Levels</Heading1>
@@ -148,6 +221,11 @@ export default function Search() {
                 </div>
             }
             {searchStatus === 'success' && <>
+                {filters.length > 0 &&
+                    <div className='py-2'>
+                        <p><b className='text-lg'>Filters:</b> {...filters}</p>
+                    </div>
+                }
                 {searchData.levels && app.levelViewType === LevelViewType.LIST
                     ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='my-2' />
                     : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2' selectedLevel={selection} />
@@ -158,5 +236,13 @@ export default function Search() {
                 </div>
             </>}
         </Page>
+    );
+}
+
+function FilterLabel({ label, onRemove }: { label: string, onRemove: () => void }) {
+    return (
+        <button className='bg-theme-500 px-1 mx-1 rounded-md border border-theme-400 hover:border-red-500 group slow-effect-transition' onClick={onRemove}>
+            {label} <span className='mx-1 group-hover:text-red-500 slow-effect-transition font-bold'>x</span>
+        </button>
     );
 }
