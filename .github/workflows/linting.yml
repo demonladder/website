@@ -7,13 +7,15 @@ on:
     branches:
       - '*'
     paths:
-      - '**.[jt]s'
+      - '**.js'
+      - '**.ts'
 
   pull_request:
     branches:
       - '*'
     paths:
-      - '**.[jt]s'
+      - '**.js'
+      - '**.ts'
 
 jobs:
   lint:
