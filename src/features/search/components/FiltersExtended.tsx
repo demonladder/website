@@ -143,27 +143,27 @@ export default function FiltersExtended() {
             <div className='grid grid-cols-12'>
                 <label className={'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' + (session.user ? '' : ' text-gray-500 line-through')}>
                     <CheckBox checked={excludeCompleted} onChange={() => setExcludeCompleted((prev) => !prev)} disabled={!session.user} />
-                    Exclude completed
+                    Uncompleted only
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
                     <CheckBox checked={excludeUnrated} onChange={() => setExcludeUnrated((prev) => !prev)} />
-                    Exclude unrated tier
+                    Rated tier only
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
                     <CheckBox checked={exculdeUnratedEnj} onChange={() => setExcludeUnratedEnj((prev) => !prev)} />
-                    Exclude unrated enjoyment
+                    Has enjoyment
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
                     <CheckBox checked={excludeRated} onChange={() => setExcludeRated((prev) => !prev)} />
-                    Exclude rated tier
+                    Unrated tier only
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
                     <CheckBox checked={excludeRatedEnj} onChange={() => setExcludeRatedEnj((prev) => !prev)} />
-                    Exclude rated enjoyment
+                    No enjoyment ratings
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
                     <CheckBox checked={inPack} onChange={() => setInPack((prev) => !prev)} />
-                    Exclude non-pack levels
+                    Pack levels only
                 </label>
             </div>
         </div>
