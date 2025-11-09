@@ -1,15 +1,19 @@
 @theme {
     --color-enj--1: #360432;
     --color-enj-0: #E67C73;
-    --color-enj-1: #EA8B71;
-    --color-enj-2: #EE9A6D;
-    --color-enj-3: #F2A96D;
-    --color-enj-4: #F6B86B;
-    --color-enj-5: #FAC769;
-    --color-enj-6: #FFD666;
-    --color-enj-7: #D5D06F;
-    --color-enj-8: #ABC978;
-    --color-enj-9: #81C281;
+    
+    --color-enj-1: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 20%);
+    --color-enj-2: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 40%);
+    --color-enj-3: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 60%);
+    --color-enj-4: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 80%);
+    
+    --color-enj-5: #FFF666;
+    
+    --color-enj-6: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 20%);
+    --color-enj-7: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 40%);
+    --color-enj-8: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 60%);
+    --color-enj-9: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 80%);
+
     --color-enj-10: #57BB8A;
 }
 
