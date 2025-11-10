@@ -5,10 +5,13 @@ import { IAuditLog } from '../types/IAuditLog';
 
 interface Props {
     log: IAuditLog;
+    users: { ID: number; Name: string; avatar: string }[];
 }
 
-function getEvent(log: IAuditLog) {
+function getEvent(log: IAuditLog, users: Props['users']) {
     switch (log.event) {
+        case AuditEvents.PENDING_SUBMISSION_DELETE:
+            return <><b>{users.find((user) => user.ID === log.userID)?.Name ?? log.userID}</b> denied a submission from <b>{users.find((user) => user.ID === log.targetID)?.Name ?? `<${log.targetID}>`}</b></>;
         case AuditEvents.PACK_CREATE:
             return <><b>{log.userID}</b> created pack <b>{log.changes?.find((change) => change.key === 'Name')?.newValue}</b></>;
         case AuditEvents.PACK_DELETE:
@@ -24,7 +27,7 @@ function getEvent(log: IAuditLog) {
     }
 }
 
-export default function AuditLog({ log }: Props) {
+export default function AuditLog({ log, users }: Props) {
     const [showDetails, setShowDetails] = useState(false);
 
     const hasChanges = (log.changes?.length ?? 0) > 0;
@@ -33,12 +36,12 @@ export default function AuditLog({ log }: Props) {
         <div className={'border border-theme-500 bg-theme-800 p-2 my-2 round:rounded-xl ' + (hasChanges ? 'cursor-pointer' : '')} onClick={() => setShowDetails((prev) => hasChanges && !prev)}>
             <div className='flex justify-between items-center'>
                 <div className='flex gap-2'>
-                    {log.user?.avatar
-                        ? <img className='rounded-full size-14' src={`https://cdn.gdladder.com/avatars/${log.user.avatar}.png`} alt='Profile picture' />
+                    {users.find((user) => user.ID === log.userID)?.avatar
+                        ? <img className='rounded-full size-14' src={`https://cdn.gdladder.com/avatars/${users.find((user) => user.ID === log.userID)!.avatar}.png`} alt='Profile picture' />
                         : <i className='bx bxs-user-circle text-6xl' />
                     }
                     <div>
-                        <Heading3>{getEvent(log)}</Heading3>
+                        <Heading3>{getEvent(log, users)}</Heading3>
                         <p className='text-theme-400'>{new Date(log.createdAt.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</p>
                     </div>
                 </div>
@@ -55,6 +58,7 @@ export default function AuditLog({ log }: Props) {
                         if (change.oldValue !== undefined) return (<li>Removed {change.key.toLowerCase()} of {change.oldValue}</li>);
                         return (<li>Set {change.key.toLowerCase()} to {change.newValue}</li>);
                     })}
+                    {log.reason && <li>- With reason: <b>{log.reason}</b></li>}
                 </ul>
             }
         </div>
