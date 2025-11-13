@@ -10,6 +10,8 @@ export default function useContextMenu(buttons?: ButtonData[]) {
     if (buttons === undefined) return (data: MenuData) => context?.setMenuData(data);
 
     function onContextMenu(e: React.MouseEvent) {
+        if (context?.menuData?.x === e.clientX && context.menuData.y === e.clientY) return;
+
         e.preventDefault();
         e.stopPropagation();
 
