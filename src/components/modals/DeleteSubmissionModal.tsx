@@ -43,7 +43,7 @@ export default function DeleteSubmissionModal({ userID, levelID, submissionID, u
             <form onSubmit={deleteSubmission}>
                 <FormGroup>
                     <FormInputLabel htmlFor={deleteInputID}>Reason</FormInputLabel>
-                    <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} id={deleteInputID} required minLength={1} />
+                    <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} id={deleteInputID} required minLength={3} />
                 </FormGroup>
                 <div className='flex place-content-end gap-2 mt-4'>
                     <SecondaryButton type='button' onClick={close}>Close</SecondaryButton>
