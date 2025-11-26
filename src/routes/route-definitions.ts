@@ -10,4 +10,13 @@ export const routes = {
             path: 'submit/:levelID',
         },
     },
+    staff: {
+        href: () => '/mod',
+        submissions: {
+            search: {
+                href: () => '/mod/submission-search',
+                path: 'submission-search',
+            },
+        },
+    },
 };

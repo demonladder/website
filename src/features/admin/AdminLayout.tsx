@@ -10,6 +10,7 @@ import './adminLayout.css';
 import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 import { useWindowSize } from 'usehooks-ts';
 import { useApp } from '../../context/app/useApp';
+import { routes } from '../../routes/route-definitions';
 
 export default function AdminLayout() {
     const windowSize = useWindowSize();
@@ -31,12 +32,13 @@ export default function AdminLayout() {
                             <p>GDDL Dashboard</p>
                         </div>
                         <div className='px-4 py-6 flex flex-col gap-2 sidebar-wrapper overflow-auto scrollbar-thin'>
-                            <NavButton onClick={onNavigation} to='/mod' end={true}>Dashboard</NavButton>
+                            <NavButton onClick={onNavigation} to={routes.staff.href()} end={true}>Dashboard</NavButton>
                             <NavButton onClick={onNavigation} to='/mod/queue'>Queue</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Submissions</p>
                             <NavButton onClick={onNavigation} to='/mod/addSubmission'>Add submission</NavButton>
                             <NavButton onClick={onNavigation} to='/mod/mergeSubmissions'>Merge submissions</NavButton>
+                            <NavButton onClick={onNavigation} to={routes.staff.submissions.search.href()}>Search submissions</NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Users</p>
                             <NavButton onClick={onNavigation} to='/mod/manageUser'>Manage user</NavButton>

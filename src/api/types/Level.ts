@@ -1,3 +1,5 @@
+import type LevelMeta from '../../features/level/types/LevelMeta';
+
 export interface Level {
     ID: number;
     Rating: number | null;
@@ -12,4 +14,6 @@ export interface Level {
     DefaultRating: number | null;
     Showcase: string | null;
     Popularity: number | null;
+
+    Meta: LevelMeta | null;
 }

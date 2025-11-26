@@ -1,4 +1,6 @@
 import { Device } from '../core/enums/device.enum';
+import type { Level } from './Level';
+import type User from './User';
 
 export default interface Submission {
     ID: number;
@@ -16,4 +18,7 @@ export default interface Submission {
     ApprovedBy: number | null;
     DateAdded: string;
     DateChanged: string;
+
+    Level: Level | null;
+    User: User | null;
 }

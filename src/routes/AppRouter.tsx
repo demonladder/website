@@ -80,6 +80,7 @@ import { totpRegisterLoader } from '../features/totp/totp-register.loader';
 import SubmitPage from '../features/submit/submit.page';
 import { routes } from './route-definitions';
 import { submitLoader } from '../features/submit/submit.loader';
+import SubmissionSearch from '../features/admin/submission-search/submission-search.page';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
@@ -159,6 +160,7 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
             <Route path='roles' element={<Roles />} />
             <Route path='roles/:roleID' element={<EditRole />} />
             <Route path='mergeSubmissions' element={<SubmissionMerge />} />
+            <Route path={routes.staff.submissions.search.path} element={<SubmissionSearch />} />
         </Route>,
     ],
 ));
