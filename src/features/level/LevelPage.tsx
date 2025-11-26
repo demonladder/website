@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from 'react-router';
+import { Link, useLoaderData, useNavigate } from 'react-router';
 import DemonFace from '../../components/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
 import IDButton from '../../components/IDButton';
@@ -8,7 +8,6 @@ import TagBox from './components/TagBox';
 import RatingGraph from './components/RatingGraph';
 import Showcase from './components/Showcase';
 import ExternalLinks from './components/ExternalLinks';
-import useSubmitModal from '../../hooks/modals/useSubmitModal';
 import Page from '../../components/Page';
 import { BooleanParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import Heading1 from '../../components/headings/Heading1';
@@ -23,6 +22,7 @@ import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useAddFavoriteMutation } from './hooks/useAddFavoriteMutation';
 import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation';
 import Tooltip from '../../components/Tooltip';
+import { routes } from '../../routes/route-definitions';
 
 const levelLengths = {
     1: 'Tiny',
@@ -38,6 +38,7 @@ export default function LevelPage() {
     const [showTwoPlayerStats, setShowTwoPlayerStats] = useQueryParam('twoPlayer', withDefault(BooleanParam, false));
     const [showExtra, setShowExtra] = useState(false);
     const [submissionPage, setSubmissionPage] = useQueryParam('page', withDefault(NumberParam, 0));
+    const navigate = useNavigate();
 
     function onShowTwoPlayerStats(state: boolean) {
         if (showTwoPlayerStats === state) return;
@@ -46,7 +47,6 @@ export default function LevelPage() {
         setSubmissionPage(0);
     }
 
-    const openSubmitModal = useSubmitModal();
     const openAddListLevelModal = useAddListLevelModal();
 
     const session = useSession();
@@ -66,7 +66,7 @@ export default function LevelPage() {
 
     return (
         <Page title={`${level.Meta.Name}`}>
-            <FAB variant='large' color='primary' onClick={() => openSubmitModal(level)}><i className='bx bx-list-plus' /></FAB>
+            <FAB variant='large' color='primary' onClick={() => void navigate(routes.submit.level.href(level.ID))}><i className='bx bx-list-plus' /></FAB>
             <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>
                     <DemonFace meta={level.Meta} size={DemonLogoSizes.MEDIUM} />

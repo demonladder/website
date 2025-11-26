@@ -1,14 +1,6 @@
 import { Link } from 'react-router';
 import Page from '../../components/Page';
-
-function ListItem({ children }: { children: React.ReactNode }) {
-    return (
-        <li className='ms-2 mb-1 flex gap-2'>
-            <p>-</p>
-            <p>{children}</p>
-        </li>
-    );
-}
+import ListItem from '../../components/ListItem';
 
 export default function About() {
     return (
@@ -66,13 +58,23 @@ export default function About() {
                         </ul>
                     </li>
                     <li className='mb-5'>
-                        <p className='mb-1'>6) Extreme demon submissions require proof</p>
+                        <p className='mb-1'>6) Tier 25+ demon submissions require video proof.</p>
                         <ul>
-                            <ListItem>This sections covers when proof is required. What counts as proof is covered in the <a href='#proof' className='text-blue-500 underline'>proof section.</a></ListItem>
-                            <ListItem>Every level that is rated extreme demon in-game need video proof.</ListItem>
-                            <ListItem>Levels that have a rounded tier rating of 21 or more need video proof. This means even non-extremes might need proof.</ListItem>
-                            <ListItem>Proof is required if you want to rate a level tier 21 or higher.</ListItem>
+                            <ListItem>Every level that is rated tier 25 or higher on GDDL need proof.</ListItem>
+                            <ListItem>Proof is also required if you want to rate a level tier 25 or higher.</ListItem>
+                            <ListItem>For levels that are tier 31 or higher, audible clicks are required in the proof.</ListItem>
+                            <ListItem>The entire run must be included; from at least the first click to the endscreen. The endscreen must be included.</ListItem>
                         </ul>
+                    </li>
+                    <li className='mb-5'>
+                        <p className='mb-1'>7) Physics bypass above 240 is not allowed.</p>
+                        <ul>
+                            <ListItem>If your submission does not show what the physic bypass is, the submission will be denied regardless.</ListItem>
+                            <ListItem>CBF is allowed.</ListItem>
+                        </ul>
+                    </li>
+                    <li className='mb-5'>
+                        <p className='mb-1'>8) The level must be beat on the official version or a verified LDM.</p>
                     </li>
                 </ol>
             </section>

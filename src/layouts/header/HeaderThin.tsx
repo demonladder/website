@@ -40,7 +40,7 @@ export default function HeaderThin() {
                             <NavItem onClose={() => setNavOpen(false)} route={route} size={'thin'} key={`headerRoute_${i}`} />
                         ))}
                     </div>
-                    <div className='flex max-sm:flex-col sm:items-center gap-2 pb-4'>
+                    <div className='flex max-lg:flex-col lg:items-center gap-2 pb-4'>
                         <div className='my-4'>
                             {userSearch.SearchBox}
                         </div>

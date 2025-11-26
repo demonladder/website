@@ -77,6 +77,9 @@ import Diversion from '../features/diversion/diversion.page';
 import TOTPPage from '../features/totp/totp.page';
 import TOTPRegisterPage from '../features/totp/totp-register.page';
 import { totpRegisterLoader } from '../features/totp/totp-register.loader';
+import SubmitPage from '../features/submit/submit.page';
+import { routes } from './route-definitions';
+import { submitLoader } from '../features/submit/submit.loader';
 
 export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
     [
@@ -90,6 +93,8 @@ export const router = (queryClient: QueryClient) => createBrowserRouter(createRo
             <Route path='developer/applications/:appID' element={<Application />} loader={applicationLoader(queryClient)} />
             <Route path='diversion' element={<Diversion />} />
             <Route path='search' element={<Search />} loader={searchLoader} />
+            <Route path={routes.submit.path} element={<SubmitPage />} />
+            <Route path={routes.submit.level.path} element={<SubmitPage />} loader={submitLoader(queryClient)} />
             <Route path='platformerList' element={<PlatformerList />} />
             <Route path='references' element={<References />} />
             <Route path='packs' element={<Packs />} />

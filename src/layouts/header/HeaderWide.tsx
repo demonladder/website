@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import HeaderRoutes from './HeaderRoutes';
 import NavItem from './NavItem';
 import useUserSearch from '../../hooks/useUserSearch';
+import { routes } from '../../routes/route-definitions';
 
 export default function HeaderWide() {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function HeaderWide() {
                     {HeaderRoutes.map((route, i) => (
                         <NavItem route={route} size={'wide'} key={`headerRoute_${i}`} />
                     ))}
+                    <Link to={routes.submit.href()} className='bg-blue-600 text-white px-2 py-1 rounded-lg'>Submit</Link>
                 </div>
                 <div className='ms-auto flex items-center gap-4'>
                     {userSearch.SearchBox}

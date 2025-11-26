@@ -16,7 +16,7 @@ function SegmentedButton({ children, onClick, isActive = false, isFirst, isLast,
     if (isLast) classes.push('last');
 
     return (
-        <button className={classes.join(' ')} style={{ width: `${1 / buttonCount * 100}%` }} onClick={onClick}><i className='bx bx-check text-2xl' hidden={!isActive} /> {children}</button>
+        <button type='button' className={classes.join(' ')} style={{ width: `${1 / buttonCount * 100}%` }} onClick={onClick}><i className='bx bx-check text-2xl' hidden={!isActive} /> {children}</button>
     );
 }
 
