@@ -21,6 +21,8 @@ import useUserQuery from '../../../hooks/queries/useUserQuery';
 import Heading3 from '../../../components/headings/Heading3';
 import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
 import User from '../../../api/types/User';
+import Heading4 from '../../../components/headings/Heading4';
+import Checkbox from '../../../components/input/CheckBox';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 
@@ -50,6 +52,8 @@ export default function EditableSubmission({ submission }: Props) {
     const [secondPlayerID, setSecondPlayerID] = useState(submission.SecondPlayerID ?? undefined);
     const [deleteReason, setDeleteReason] = useState('');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [weight, setWeight] = useState(submission.weight.toString());
+    const [extremeReform2025, setExtremeReform2025] = useState((submission.flags & 1) === 1);
 
     const approvedBy = useUserQuery(submission.ApprovedBy ?? 0, {
         enabled: submission.ApprovedBy !== null,
@@ -74,6 +78,8 @@ export default function EditableSubmission({ submission }: Props) {
             isSolo: wasSolo,
             secondPlayerID: wasSolo ? null : secondPlayerID,
             isEdit: true,
+            flags: extremeReform2025 ? (submission.flags | 1) : (submission.flags & ~1),
+            weight: parseFloat(weight) || 0,
         }),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['level', submission.LevelID] });
@@ -97,59 +103,80 @@ export default function EditableSubmission({ submission }: Props) {
     }, [invalidRating, invalidEnjoyment, updateMutation]);
 
     return (
-        <form onSubmit={submit}>
-            <FormGroup>
-                <p>Editing <b>{submission.User.Name}s</b> submission</p>
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel htmlFor='addSubmissionTier'>Tier</FormInputLabel>
-                <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} min='1' max={MAX_TIER} invalid={invalidRating && invalidEnjoyment} />
-                <FormInputDescription>Optional unless missing enjoyment</FormInputDescription>
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel htmlFor='addSubmissionEnjoyment'>Enjoyment</FormInputLabel>
-                <NumberInput id='addSubmissionEnjoyment' value={enjoyment} onChange={(e) => setEnjoyment(parseInt(e.target.value))} min='0' max='10' invalid={invalidRating && invalidEnjoyment} />
-                <FormInputDescription>Optional unless missing tier</FormInputDescription>
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel htmlFor='addSubmissionRefreshRate'>Refresh rate</FormInputLabel>
-                <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} placeholder='60' min='30' />
-                <FormInputDescription>Minimum 30</FormInputDescription>
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel>Device</FormInputLabel>
-                <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel htmlFor='addSubmissionProof'>Proof</FormInputLabel>
-                <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} />
-                <FormInputDescription>Optional</FormInputDescription>
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel>Progress</FormInputLabel>
-                <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' min='1' max='100' />
-            </FormGroup>
-            <FormGroup>
-                <FormInputLabel>Attempts</FormInputLabel>
-                <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} min='1' />
-            </FormGroup>
-            <FormGroup>
-                <label className='flex items-center gap-2 mb-2'>
-                    <CheckBox checked={wasSolo} onChange={(e) => setWasSolo(e.target.checked)} />
-                    Solo completion
-                </label>
-            </FormGroup>
-            {!wasSolo &&
-                <FormGroup>
-                    <FormInputLabel htmlFor='secondPlayerID'>Second player ID</FormInputLabel>
-                    <NumberInput id='secondPlayerID' value={secondPlayerID} onChange={(e) => setSecondPlayerID(parseInt(e.target.value))} min='1' />
-                    <FormInputDescription>Optional</FormInputDescription>
-                </FormGroup>
-            }
-            <FormGroup className='flex gap-2'>
-                <PrimaryButton type='submit' onClick={submit} disabled={updateMutation.isPending}>Edit</PrimaryButton>
-                <DangerButton type='button' onClick={() => setShowDeleteConfirm(true)} disabled={deleteMutation.isPending}>Delete</DangerButton>
-            </FormGroup>
+        <>
+            <Heading3>Editing <b>{submission.User.Name}s</b> submission</Heading3>
+            <form onSubmit={submit}>
+                <div className='grid grid-cols-8 gap-x-8'>
+                    <FormGroup>
+                        <FormInputLabel htmlFor='addSubmissionTier'>Tier</FormInputLabel>
+                        <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} min='1' max={MAX_TIER} invalid={invalidRating && invalidEnjoyment} />
+                        <FormInputDescription>Optional unless missing enjoyment</FormInputDescription>
+                    </FormGroup>
+                    <FormGroup>
+                        <FormInputLabel htmlFor='addSubmissionEnjoyment'>Enjoyment</FormInputLabel>
+                        <NumberInput id='addSubmissionEnjoyment' value={enjoyment} onChange={(e) => setEnjoyment(parseInt(e.target.value))} min='0' max='10' invalid={invalidRating && invalidEnjoyment} />
+                        <FormInputDescription>Optional unless missing tier</FormInputDescription>
+                    </FormGroup>
+                    <FormGroup>
+                        <FormInputLabel htmlFor='addSubmissionRefreshRate'>Refresh rate</FormInputLabel>
+                        <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} placeholder='60' min='30' />
+                        <FormInputDescription>Minimum 30</FormInputDescription>
+                    </FormGroup>
+                    <FormGroup>
+                        <FormInputLabel>Device</FormInputLabel>
+                        <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
+                    </FormGroup>
+                    <FormGroup className='col-span-4'>
+                        <FormInputLabel htmlFor='addSubmissionProof'>Proof</FormInputLabel>
+                        <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} />
+                        <FormInputDescription>Optional</FormInputDescription>
+                    </FormGroup>
+                    <FormGroup>
+                        <FormInputLabel>Progress</FormInputLabel>
+                        <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' min='1' max='100' />
+                    </FormGroup>
+                    <FormGroup>
+                        <FormInputLabel>Attempts</FormInputLabel>
+                        <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} min='1' />
+                    </FormGroup>
+                    <FormGroup>
+                        <label className='flex items-center gap-2 mb-2'>
+                            <CheckBox checked={wasSolo} onChange={(e) => setWasSolo(e.target.checked)} />
+                            Solo completion
+                        </label>
+                    </FormGroup>
+                    {!wasSolo &&
+                        <FormGroup>
+                            <FormInputLabel htmlFor='secondPlayerID'>Second player ID</FormInputLabel>
+                            <NumberInput id='secondPlayerID' value={secondPlayerID} onChange={(e) => setSecondPlayerID(parseInt(e.target.value))} min='1' />
+                            <FormInputDescription>Optional</FormInputDescription>
+                        </FormGroup>
+                    }
+                    <FormGroup>
+                        <FormInputLabel>Weight</FormInputLabel>
+                        <NumberInput value={weight} onChange={(e) => setWeight(e.target.value)}  />
+                    </FormGroup>
+                </div>
+                <div className='mt-4'>
+                    <Heading4>Flags</Heading4>
+                    <label className='flex items-center gap-1'>
+                        <Checkbox checked={extremeReform2025} onChange={(e) => setExtremeReform2025(e.target.checked)} />
+                        Extreme reform 2025
+                    </label>
+                </div>
+                <div className='flex justify-end gap-2 col-span-2'>
+                    <PrimaryButton type='submit' size='sm' onClick={submit} disabled={updateMutation.isPending}>Edit</PrimaryButton>
+                    <DangerButton type='button' size='sm' onClick={() => setShowDeleteConfirm(true)} disabled={deleteMutation.isPending}>Delete</DangerButton>
+                </div>
+                {showDeleteConfirm &&
+                    <div className='mt-4'>
+                        <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} placeholder='Delete reason' />
+                        <FormInputDescription>Does not notify the user if the field is left blank!</FormInputDescription>
+                        <PrimaryButton type='button' onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
+                        <DangerButton type='button' onClick={() => deleteMutation.mutate()}>Confirm delete</DangerButton>
+                    </div>
+                }
+            </form>
             <FormGroup>
                 <Heading3>Extra info</Heading3>
                 <div className='grid grid-cols-3'>
@@ -179,14 +206,6 @@ export default function EditableSubmission({ submission }: Props) {
                     </div>
                 </div>
             </FormGroup>
-            {showDeleteConfirm &&
-                <div className='mt-4'>
-                    <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} placeholder='Delete reason' />
-                    <FormInputDescription>Does not notify the user if the field is left blank!</FormInputDescription>
-                    <PrimaryButton type='button' onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
-                    <DangerButton type='button' onClick={() => deleteMutation.mutate()}>Confirm delete</DangerButton>
-                </div>
-            }
-        </form>
+        </>
     );
 }

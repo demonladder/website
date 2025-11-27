@@ -18,6 +18,8 @@ export default interface Submission {
     ApprovedBy: number | null;
     DateAdded: string;
     DateChanged: string;
+    flags: number;
+    weight: number;
 
     Level: Level | null;
     User: User | null;
