@@ -34,7 +34,7 @@ export default function PageButtons({ onPageChange, meta }: Props) {
         const parsed = parseInt(e.target.value);
         if (isNaN(parsed)) return;
 
-        onPageChange(clamp(parsed - 1, 1, maxPages));
+        onPageChange(clamp(parsed - 1, 0, maxPages - 1));
     }
 
     function onPageButtonClick(page: number) {
