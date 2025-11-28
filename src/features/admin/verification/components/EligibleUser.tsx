@@ -41,7 +41,7 @@ export default function EligibleUser({ userID, submissions, distinctApprovals }:
             {user.isSuccess && <>
                 <Heading4 className='flex gap-2'>
                     {user.data.avatar
-                        ? <img src={`https://cdn.gdladder.com/avatars/${user.data.avatar}.png`} width='56' height='56' className='inline-block size-14 rounded-full' alt='Profile' />
+                        ? <img src={`https://cdn.gdladder.com/avatars/${user.data.ID}/${user.data.avatar}.png`} width='56' height='56' className='inline-block size-14 rounded-full' alt='Profile' />
                         : <i className='bx bxs-user-circle text-6xl' />
                     }
                     <div className='flex flex-col justify-around'>

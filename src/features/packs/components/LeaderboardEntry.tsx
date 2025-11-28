@@ -20,7 +20,7 @@ export function LeaderboardEntry({ discordData, highestScore, sum, user, userID 
     return (
         <div className='mt-2 max-md:text-xs grid grid-cols-[auto_1fr_auto] gap-2'>
             {user.avatar
-                ? <img src={`https://cdn.gdladder.com/avatars/${user.avatar}.png`} width='40' height='40' className='rounded-full size-10' alt='Profile' />
+                ? <img src={`https://cdn.gdladder.com/avatars/${userID}/${user.avatar}.png`} width='40' height='40' className='rounded-full size-10' alt='Profile' />
                 : <i className='bx bxs-user-circle text-[40px]' style={{ color: `#${profileColor.toString(16)}` }} />
             }
             <Link to={`/profile/${userID}`} style={{ width: width + '%', backgroundColor: `#${profileColor.toString(16)}` }} className='flex items-center ps-2 relative h-10 bg-gray-500 round:rounded-xl'>

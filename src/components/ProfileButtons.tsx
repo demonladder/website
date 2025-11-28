@@ -44,7 +44,7 @@ function ProfileButton({ onClick, userID, size = 'large' }: Props) {
                 <Link to={`/profile/${userID}`} onClick={onClick}>
                     <div className={size === 'large' ? 'size-14' : 'size-12'}>
                         {session.user?.avatar
-                            ? <img src={`https://cdn.gdladder.com/avatars/${session.user?.avatar}.png?size=${pfpSize}`} width={pfpSize} height={pfpSize} className='rounded-full' alt='Profile' />
+                            ? <img src={`https://cdn.gdladder.com/avatars/${session.user.ID}/${session.user.avatar}.png?size=${pfpSize}`} width={pfpSize} height={pfpSize} className='rounded-full' alt='Profile' />
                             : <img src={difficultyToImgSrc(session.user?.Hardest?.Meta.Difficulty, DemonLogoSizes.SMALL)} width='56' className='mt-1' />
                         }
                     </div>

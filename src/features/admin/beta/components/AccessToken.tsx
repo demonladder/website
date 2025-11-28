@@ -35,7 +35,7 @@ export default function AccessToken({ token }: Props) {
     return (
         <div className='flex gap-2 bg-theme-700 shadow-lg px-4 py-2 rounded-xl'>
             {token.Owner.avatar
-                ? <img src={`https://cdn.gdladder.com/avatars/${token.Owner.avatar}.png`} width='112' height='112' className='rounded-full size-28' alt='Profile' />
+                ? <img src={`https://cdn.gdladder.com/avatars/${token.Owner.ID}/${token.Owner.avatar}.png`} width='112' height='112' className='rounded-full size-28' alt='Profile' />
                 : <i className='bx bxs-user-circle text-[7rem]' />
             }
             <div className='flex flex-col justify-evenly gap-2 py-2'>

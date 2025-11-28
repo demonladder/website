@@ -95,7 +95,7 @@ function Submission({ level, submission }: SubmissionProps) {
                         <p className={secondaryIconRole ? 'font-bold' : ''} style={secondaryIconRole?.Color ? { color: `#${secondaryIconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedSecondaryName} {secondaryIconRole?.Icon}</p>
                     </>
                     : <div className='flex items-center gap-1'>
-                        {submission.User.avatar && <img src={`https://cdn.gdladder.com/avatars/${submission.User.avatar}.png?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block' alt='Profile' />}
+                        {submission.User.avatar && <img src={`https://cdn.gdladder.com/avatars/${submission.User.ID}/${submission.User.avatar}.png?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block' alt='Profile' />}
                         <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
                     </div>
                 }

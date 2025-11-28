@@ -63,7 +63,7 @@ export default function Profile() {
         <Page title={`GDDL - ${loadedData.Name}`} key={userID}>
             <div className='mb-2 flex gap-4' onContextMenu={contextMenu}>
                 {loadedData.avatar
-                    ? <img src={`https://cdn.gdladder.com/avatars/${loadedData.avatar}.png`} width='80' height='80' className='inline rounded-full' alt='Profile' />
+                    ? <img src={`https://cdn.gdladder.com/avatars/${userID}/${loadedData.avatar}.png`} width='80' height='80' className='inline rounded-full' alt='Profile' />
                     : <i className='bx bxs-user-circle text-[80px]' />
                 }
                 <div className='grow flex flex-col gap-1 justify-center'>

@@ -187,7 +187,7 @@ export default function EditableSubmission({ submission }: Props) {
                                 <FormInputLabel>Approved by</FormInputLabel>
                                 <div className='flex gap-2'>
                                     {approvedBy.data.avatar
-                                        ? <img src={`https://cdn.gdladder.com/avatars/${approvedBy.data.avatar}.png`} width='56' height='56' className='rounded-full size-14' alt='Profile' />
+                                        ? <img src={`https://cdn.gdladder.com/avatars/${approvedBy.data.ID}/${approvedBy.data.avatar}.png`} width='56' height='56' className='rounded-full size-14' alt='Profile' />
                                         : <i className='bx bxs-user-circle text-6xl' />
                                     }
                                     <p className='text-xl self-center'>{approvedBy.data.Name}</p>

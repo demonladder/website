@@ -37,7 +37,7 @@ export default function AuditLog({ log, users }: Props) {
             <div className='flex justify-between items-center'>
                 <div className='flex gap-2'>
                     {users.find((user) => user.ID === log.userID)?.avatar
-                        ? <img className='rounded-full size-14' src={`https://cdn.gdladder.com/avatars/${users.find((user) => user.ID === log.userID)!.avatar}.png`} alt='Profile picture' />
+                        ? <img className='rounded-full size-14' src={`https://cdn.gdladder.com/avatars/${users.find((user) => user.ID === log.userID)!.ID}/${users.find((user) => user.ID === log.userID)!.avatar}.png`} alt='Profile picture' />
                         : <i className='bx bxs-user-circle text-6xl' />
                     }
                     <div>

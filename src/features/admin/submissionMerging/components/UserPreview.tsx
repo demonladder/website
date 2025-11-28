@@ -14,7 +14,7 @@ export default function UserPreview({ userID, onUnSet }: Props) {
             {user.isSuccess && (
                 <>
                     {user.data.avatar
-                        ? <img src={`https://cdn.gdladder.com/avatars/${user.data.avatar}.png`} width='256' height='256' className='rounded-full mx-auto' alt='Profile' />
+                        ? <img src={`https://cdn.gdladder.com/avatars/${user.data.ID}/${user.data.avatar}.png`} width='256' height='256' className='rounded-full mx-auto' alt='Profile picture' />
                         : <i className='bx bxs-user-circle text-9xl mx-auto' />
                     }
                     <p className='text-2xl mb-2'>{user.data.Name}</p>
