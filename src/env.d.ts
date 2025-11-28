@@ -8,6 +8,7 @@ interface ImportMetaEnv {
     VITE_SESSION_ID_NAME: string;
     VITE_MAX_TIER: string;
     VITE_MINIMUM_REFRESH_RATE: string;
+    VITE_CF_TURNSTILE_SITE_KEY: string;
 }
 
 interface ImportMeta {
