@@ -1,17 +1,13 @@
 name: Build and deploy
 env:
-  target: ${{ inputs.environment }}
+  target: ${{ github.ref_name == 'main' && 'gddl' || 'gddl-beta' }}
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: Specify where the build should deploy
-        required: true
-        type: choice
-        options:
-          - gddl
-          - gddl-beta
+  workflow_run:
+    workflows: ["Check linting"]
+    branches:
+      - 'main'
+      - 'beta'
 
 jobs:
   build:
