@@ -157,7 +157,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                     <NumberInput ref={maxPrefRef} />
                 </div>
             </FormGroup>
-            <PrimaryButton type='submit' loading={updateMutation.isPending}>Update</PrimaryButton>
+            <PrimaryButton type='submit' className='float-right mt-4' loading={updateMutation.isPending}>Update</PrimaryButton>
         </form>
     );
 }
