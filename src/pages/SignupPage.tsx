@@ -40,18 +40,16 @@ export default function SignUp() {
     const overrideKey = url.get('key');
     const [username, setUsername] = useState(url.get('name') ?? '');
     const turnstileContainerID = useId();
-    const { execute, token: turnstileToken } = useTurnstile(turnstileContainerID);
+    const { token: turnstileToken } = useTurnstile(turnstileContainerID);
 
     const signupMutation = useMutation({
         mutationFn: ({ username, password, overrideKey, turnstileToken }: { username: string, password: string, overrideKey?: string, turnstileToken: string }) => SignUpFn(username, password, turnstileToken, overrideKey),
     });
 
-    async function handleSubmit(e: React.FormEvent) {
+    function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
         if (password !== passwordConfirm) return toast.error('Passwords must match!');
-
-        await execute();
         if (!turnstileToken) return toast.error('Please complete the captcha challenge.');
 
         signupMutation.mutate({ username, password, overrideKey: overrideKey ?? undefined, turnstileToken }, {
@@ -80,7 +78,7 @@ export default function SignUp() {
                         <p>Already have your name on the site from the sheet days? Contact the staff <a className='text-blue-500 font-bold underline' href='https://discord.gg/gddl' target='_blank' rel='noopener noreferrer'>in our discord</a> to get a password reset link.</p>
                     </div>
                 }
-                <form onSubmit={(e) => void handleSubmit(e)}>
+                <form onSubmit={handleSubmit}>
                     <FormGroup>
                         <FormInputLabel htmlFor='username'>Username</FormInputLabel>
                         <TextInput id='username' value={username} onChange={(e) => setUsername(e.target.value.trimStart())} invalid={!validateUsername(username)} pattern='^[a-zA-Z0-9._]{2,32}$' disabled={url.get('name') !== null} name='username' autoComplete='off' required />
@@ -96,8 +94,8 @@ export default function SignUp() {
                         <FormInputLabel htmlFor='confirmPassword'>Confirm password</FormInputLabel>
                         <PasswordInput id='confirmPassword' value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value.trimStart())} autoComplete='new-password' autoCapitalize='off' required />
                     </FormGroup>
-                    <div id={turnstileContainerID} />
-                    <PrimaryButton type='submit' className='mt-4 w-full'>Sign Up</PrimaryButton>
+                    <div id={turnstileContainerID} className='my-4' />
+                    <PrimaryButton type='submit' className='w-full'>Sign Up</PrimaryButton>
                 </form>
             </div>
         </Page>

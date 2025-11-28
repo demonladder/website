@@ -21,22 +21,17 @@ declare const turnstile: {
 
 export default function useTurnstile(containerID: string) {
     const [token, setToken] = useState<string>();
-    const [status, setStatus] = useState<'ready' | 'pending' | 'error'>('pending');
 
     useEffect(() => {
         const widgetID = turnstile.render(`#${containerID}`, {
             sitekey: CF_TURNSTILE_SITE_KEY,
             theme: 'light',
             size: 'flexible',
-            execution: 'execute',
-            appearance: 'execute',
             callback: (token) => {
                 setToken(token);
-                setStatus('ready');
             },
             'error-callback': () => {
                 setToken(undefined);
-                setStatus('error');
             },
         });
 
@@ -46,14 +41,6 @@ export default function useTurnstile(containerID: string) {
     }, [containerID]);
 
     return {
-        execute: async () => {
-            turnstile.execute(`#${containerID}`);
-            while (status === 'pending') {
-                await new Promise((resolve) => setTimeout(resolve, 100));
-            }
-
-            if (status === 'error') throw new Error('Turnstile challenge failed');
-        },
         token,
     };
 }
