@@ -38,6 +38,7 @@ jobs:
           VITE_SESSION_ID_NAME: ${{ vars.VITE_SESSION_ID_NAME }}
           VITE_MAX_TIER: ${{ vars.VITE_MAX_TIER }}
           VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
+          VITE_CF_TURNSTILE_SITE_KEY: ${{ vars.VITE_CF_TURNSTILE_SITE_KEY }}
 
       - name: Prepare SSH key
         run: |
