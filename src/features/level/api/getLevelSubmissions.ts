@@ -14,6 +14,7 @@ export type Submission = Pick<
     | 'Progress'
     | 'Attempts'
     | 'DateAdded'
+    | 'weight'
 > & {
     User: Pick<User, 'ID' | 'Name' | 'avatar'> & {
         Roles: { ID: number }[];
