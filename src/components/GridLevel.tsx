@@ -22,10 +22,11 @@ interface GridProps {
     inPack?: boolean;
     date?: string;
     selected?: boolean;
+    position?: number;
     onContextMenu?: (e: React.MouseEvent) => void;
 }
 
-export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, rarity, completed = false, inPack = false, date, selected = false, onContextMenu }: GridProps) {
+export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficulty, rarity, completed = false, inPack = false, date, selected = false, position, onContextMenu }: GridProps) {
     const navigate = useNavigate();
     const app = useApp();
 
@@ -58,6 +59,9 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                         </p>
                         {creator &&
                             <p>by {creator}</p>
+                        }
+                        {position !== undefined &&
+                            <p>#{position}</p>
                         }
                     </div>
                     <div className='self-center'>

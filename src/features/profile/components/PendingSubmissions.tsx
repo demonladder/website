@@ -157,7 +157,7 @@ function GridList({ levels, user }: { levels: UserPendingSubmission[], user: Use
         <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
             {levels.map((p) => (
                 <li key={p.Level.ID}>
-                    <GridLevel ID={p.Level.ID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} enjoyment={p.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Publisher?.name ?? '-'} proof={p.Proof} inPack={false} date={p.DateAdded} onContextMenu={(e) => openContext(e, p)} />
+                    <GridLevel ID={p.Level.ID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} enjoyment={p.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Publisher?.name ?? '-'} proof={p.Proof} inPack={false} position={p.Position} date={p.DateAdded} onContextMenu={(e) => openContext(e, p)} />
                 </li>
             ))}
         </ul>
