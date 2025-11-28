@@ -10,7 +10,11 @@ export default function useContextMenu(buttons?: ButtonData[]) {
     if (buttons === undefined) return (data: MenuData) => context?.setMenuData(data);
 
     function onContextMenu(e: React.MouseEvent) {
-        if (context?.menuData?.x === e.clientX && context.menuData.y === e.clientY) return;
+        if (context?.menuData?.x === e.clientX && context.menuData.y === e.clientY) {
+            // If the context menu is already open at this position, close it
+            context.setMenuData(undefined);
+            return;
+        }
 
         e.preventDefault();
         e.stopPropagation();
