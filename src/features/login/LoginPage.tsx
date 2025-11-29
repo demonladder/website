@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router';
 import { PasswordInput, TextInput } from '../../components/Input';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
@@ -10,6 +10,7 @@ import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
 import FormGroup from '../../components/form/FormGroup';
 import { accountLogin } from './api/accountLogin';
+import useTurnstile from '../../hooks/useTurnstile';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -18,8 +19,11 @@ export default function Login() {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
+    const turnstileContainerID = useId();
+    const { token: turnstileToken } = useTurnstile(turnstileContainerID);
+
     const { mutate: submit, isPending } = useMutation({
-        mutationFn: ({ username, password }: { username: string, password: string }) => toast.promise(accountLogin(username, password), {
+        mutationFn: ({ username, password, challenge }: { username: string, password: string, challenge: string }) => toast.promise(accountLogin(username, password, challenge), {
             pending: 'Logging in...',
             success: 'Logged in!',
             error: renderToastError,
@@ -32,7 +36,8 @@ export default function Login() {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        submit({ username, password });
+        if (!turnstileToken) return toast.error('Please complete the CAPTCHA challenge.');
+        submit({ username, password, challenge: turnstileToken });
     }
 
     return (
@@ -48,6 +53,7 @@ export default function Login() {
                         <FormInputLabel htmlFor='loginPassword'>Password</FormInputLabel>
                         <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} id='loginPassword' name='password' autoComplete='current-password' autoCapitalize='off' />
                     </FormGroup>
+                    <div id={turnstileContainerID} className='mt-4' />
                     <PrimaryButton type='submit' className='relative mt-4 w-full' loading={isPending}>Log in</PrimaryButton>
                     <div className='mt-8'>
                         <p className='text-center'>
