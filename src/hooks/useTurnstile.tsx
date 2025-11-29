@@ -23,6 +23,11 @@ export default function useTurnstile(containerID: string) {
     const [token, setToken] = useState<string>();
 
     useEffect(() => {
+        if (import.meta.env.MODE === 'development') {
+            setToken('dev-mode-token');
+            return;
+        }
+
         const widgetID = turnstile.render(`#${containerID}`, {
             sitekey: CF_TURNSTILE_SITE_KEY,
             theme: 'light',

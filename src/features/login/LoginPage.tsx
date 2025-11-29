@@ -4,17 +4,21 @@ import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { useId, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import renderToastError from '../../utils/renderToastError';
+import renderToastError, { type GDDLError } from '../../utils/renderToastError';
 import FormInputLabel from '../../components/form/FormInputLabel';
 import Page from '../../components/Page';
 import Heading1 from '../../components/headings/Heading1';
 import FormGroup from '../../components/form/FormGroup';
 import { accountLogin } from './api/accountLogin';
 import useTurnstile from '../../hooks/useTurnstile';
+import type { AxiosError } from 'axios';
+import DigitCodeInput from '../../components/input/DigitCodeInput';
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isTotpRequired, setIsTotpRequired] = useState(false);
+    const [totpCode, setTotpCode] = useState<string>();
 
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -23,7 +27,7 @@ export default function Login() {
     const { token: turnstileToken } = useTurnstile(turnstileContainerID);
 
     const { mutate: submit, isPending } = useMutation({
-        mutationFn: ({ username, password, challenge }: { username: string, password: string, challenge: string }) => toast.promise(accountLogin(username, password, challenge), {
+        mutationFn: ({ username, password, challenge, totpCode }: { username: string, password: string, challenge: string, totpCode?: string }) => toast.promise(accountLogin(username, password, challenge, totpCode), {
             pending: 'Logging in...',
             success: 'Logged in!',
             error: renderToastError,
@@ -32,12 +36,18 @@ export default function Login() {
             void queryClient.invalidateQueries({ queryKey: ['me'] });
             void navigate(-1);
         },
+        onError(error: AxiosError<GDDLError>) {
+            if (error.response?.status === 400 && typeof error.response.data.message === 'string' && /TOTP.*required/.test(error.response.data.message)) {
+                setIsTotpRequired(true);
+                return;
+            }
+        },
     });
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!turnstileToken) return toast.error('Please complete the CAPTCHA challenge.');
-        submit({ username, password, challenge: turnstileToken });
+        submit({ username, password, challenge: turnstileToken, totpCode });
     }
 
     return (
@@ -53,6 +63,12 @@ export default function Login() {
                         <FormInputLabel htmlFor='loginPassword'>Password</FormInputLabel>
                         <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} id='loginPassword' name='password' autoComplete='current-password' autoCapitalize='off' />
                     </FormGroup>
+                    {isTotpRequired &&
+                        <div className='my-4'>
+                            <p className='mb-1'>Please enter the 6-digit code from your authenticator app to continue:</p>
+                            <DigitCodeInput onChange={setTotpCode} />
+                        </div>
+                    }
                     <div id={turnstileContainerID} className='mt-4' />
                     <PrimaryButton type='submit' className='relative mt-4 w-full' loading={isPending}>Log in</PrimaryButton>
                     <div className='mt-8'>
