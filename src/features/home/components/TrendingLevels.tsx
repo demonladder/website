@@ -39,6 +39,9 @@ export default function TrendingLevels() {
                         <LevelPreview level={level} index={i + 1} />
                     </SwiperSlide>
                 ))}
+                {data.length === 0 && (
+                    <div className='p-4 text-center'>No trending levels found.</div>
+                )}
             </Swiper>
         </div>
     );
