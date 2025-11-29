@@ -11,6 +11,7 @@ export default interface Submission {
     RefreshRate: number;
     Device: Device;
     Proof: string | null;
+    IsProofPrivate: boolean;
     IsSolo: boolean;
     SecondPlayerID: number | null;
     Progress: number;

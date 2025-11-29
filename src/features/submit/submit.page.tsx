@@ -14,7 +14,7 @@ import FormInputDescription from '../../components/form/FormInputDescription';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { Device } from '../../api/core/enums/device.enum';
 import { useApp } from '../../context/app/useApp';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { validateIntChange, validateIntInputChange } from '../../utils/validators/validateIntChange';
 import { validateLink } from '../../utils/validators/validateLink';
 import SegmentedButtonGroup from '../../components/input/buttons/segmented/SegmentedButtonGroup';
@@ -25,6 +25,8 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
 import useSession from '../../hooks/useSession';
 import useUserSearch from '../../hooks/useUserSearch';
+import { useSubmission } from '../../components/modals/useSubmission';
+import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
@@ -86,6 +88,22 @@ export default function SubmitPage() {
     const session = useSession();
     const userID = session.user?.ID;
     const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });
+
+    const { data: existingSubmission, status } = useSubmission(level?.ID ?? 0, userID, {});
+
+    useEffect(() => {
+        if (existingSubmission) {
+            setTier(existingSubmission.Rating?.toString() ?? '');
+            setEnjoymentKey(existingSubmission.Enjoyment !== null && existingSubmission.Enjoyment !== undefined ? existingSubmission.Enjoyment.toString() as EnjoymentOptions : '-1');
+            setRefreshRate(existingSubmission.RefreshRate.toString());
+            setDeviceKey(existingSubmission.Device);
+            setProof(existingSubmission.Proof ?? '');
+            setIsProofPrivate(existingSubmission.IsProofPrivate);
+            setProgress(existingSubmission.Progress.toString());
+            setAttempts(existingSubmission.Attempts?.toString() ?? '');
+            setWasSolo(existingSubmission.IsSolo);
+        }
+    }, [existingSubmission]);
 
     function onBlur(e: React.FocusEvent<HTMLInputElement>) {
         const newVal = validateIntChange(e.target.value);
@@ -198,7 +216,8 @@ export default function SubmitPage() {
                     <Heading2>Submit</Heading2>
                     {LevelSearchBox}
                     {level && <>
-                        <form onSubmit={submitForm} autoCorrect='off' autoCapitalize='off' spellCheck='false' className='grid grid-cols-2 gap-4'>
+                        <form onSubmit={submitForm} autoCorrect='off' autoCapitalize='off' spellCheck='false' className='grid grid-cols-2 gap-4 relative'>
+                            <FloatingLoadingSpinner isLoading={status === 'pending'} />
                             {level.Meta.Length === LevelLengths.PLATFORMER &&
                                 <WarningBox>Platformer submissions are currently restricted; it's not possible to vote for tiers yet!</WarningBox>
                             }
@@ -207,7 +226,7 @@ export default function SubmitPage() {
                                 <NumberInput id='submitRating' value={tier} onChange={ratingChange} inputMode='numeric' min={1} max={MAX_TIER} invalid={tierEnjoymentInvalid} required={tierEnjoymentInvalid} autoFocus disabled={level.Meta.Length === LevelLengths.PLATFORMER} />
                             </FormGroup>
                             <FormGroup>
-                                <FormInputLabel htmlFor='submitEnjoyment'>Enjoyment</FormInputLabel>
+                                <FormInputLabel>Enjoyment</FormInputLabel>
                                 <Select id='submitEnjoyment' options={enjoymentOptions} activeKey={enjoymentKey} onChange={setEnjoymentKey} invalid={tierEnjoymentInvalid} zIndex={1030} />
                             </FormGroup>
                             <FormGroup>
