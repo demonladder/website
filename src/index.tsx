@@ -45,6 +45,6 @@ root.render(
                 </NavbarNotificationProvider>
             </AppProvider>
         </QueryClientProvider>
-        <ToastContainer theme='dark' position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'} />
+        <ToastContainer theme='dark' pauseOnFocusLoss={false} position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'} />
     </React.StrictMode>,
 );
