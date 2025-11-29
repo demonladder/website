@@ -12,6 +12,7 @@ export interface SearchLevelRequest {
     limit?: number;
     name?: string | null;
     page: number;
+    sort?: string;
     sortDirection?: string;
     difficulty?: number;
     inPack?: boolean;

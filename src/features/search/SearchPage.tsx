@@ -124,8 +124,8 @@ export default function Search() {
     }
 
     const { status: searchStatus, data: searchData } = useQuery({
-        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], page }],
-        queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sortDirection: queryParams[QueryParamNames.SortDirection], page }),
+        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sort: queryParams[QueryParamNames.Sort], sortDirection: queryParams[QueryParamNames.SortDirection], page }],
+        queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sort: queryParams[QueryParamNames.Sort], sortDirection: queryParams[QueryParamNames.SortDirection], page }),
     });
 
     function onNameChange(newName: string) {
