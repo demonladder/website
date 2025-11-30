@@ -4,7 +4,7 @@ import useLevelSearch from '../../hooks/useLevelSearch';
 import { routes } from '../../routes/route-definitions';
 import type { FullLevel } from '../../api/types/compounds/FullLevel';
 import WarningBox from '../../components/message/WarningBox';
-import { Difficulties, LevelLengths } from '../level/types/LevelMeta';
+import { LevelLengths } from '../level/types/LevelMeta';
 import FormGroup from '../../components/form/FormGroup';
 import FormInputLabel from '../../components/form/FormInputLabel';
 import { NumberInput, URLInput } from '../../components/Input';
@@ -158,8 +158,8 @@ export default function SubmitPage() {
                 return toast.error(`Rating must be between 1 and ${MAX_TIER}!`);
             }
 
-            if (rating >= 21 && !proof) {
-                return toast.error('Proof is required if you want to rate a level 21 or higher!');
+            if (rating >= 25 && !proof) {
+                return toast.error('Proof is required if you want to rate a level 25 or higher!');
             }
         } else if (enjoyment === null) {
             return toast.error('Rating and enjoyment can\'t both be empty!');
@@ -171,10 +171,6 @@ export default function SubmitPage() {
 
         if (proof && !validateLink(proof)) {
             return toast.error('Proof link is invalid!');
-        }
-
-        if (level.Meta.Difficulty === Difficulties.Extreme && !proof) {
-            return toast.error('No proof provided!');
         }
 
         const attemptCount = parseInt(attempts);
