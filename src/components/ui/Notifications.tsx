@@ -60,7 +60,7 @@ export default function NotificationButton() {
                                             <p>{notification.Message}</p>
                                             <p className='text-sm text-theme-400'>{secondsToHumanReadable(Math.floor((Date.now() - notification.SentAt.getTime()) / 1000))} ago</p>
                                         </div>
-                                        <button className='text-theme-400 hover:text-theme-400/80 transition-colors p-1' onClick={() => deleteMutation.mutate(notification.ID)}>
+                                        <button className='text-theme-400 hover:text-theme-400/80 transition-colors p-1' onClick={() => !deleteMutation.isPending && deleteMutation.mutate(notification.ID)}>
                                             <i className='bx bxs-trash' />
                                         </button>
                                     </div>
