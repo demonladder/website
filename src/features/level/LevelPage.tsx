@@ -81,7 +81,7 @@ export default function LevelPage() {
                 <div className='relative'>
                     <IconButton color='outline' size='md' onClick={() => setShowExtra((prev) => !prev)}><i className='bx bx-dots-vertical-rounded' /></IconButton>
                     {showExtra &&
-                        <div className='absolute min-w-max right-0 bg-theme-900 border border-theme-400 round:rounded-lg'>
+                        <div className='absolute z-10 min-w-max right-0 bg-theme-900 border border-theme-400 round:rounded-lg'>
                             <ul className='p-1'>
                                 <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addFavoriteMutation.mutate(level.ID)}>Add favorite</button></li>
                                 <li><button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700' onClick={() => addLeastFavoriteMutation.mutate(level.ID)}>Add least favorite</button></li>
