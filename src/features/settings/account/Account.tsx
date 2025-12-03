@@ -15,8 +15,6 @@ import { forgotPassword } from '../../../api/auth/forgotPassword';
 import Heading3 from '../../../components/headings/Heading3';
 import { Link } from 'react-router';
 import { useAPI } from '../../../hooks/useAPI';
-import { OutlineButton } from '../../../components/ui/buttons/OutlineButton';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 
 export default function AccountSettings() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -78,10 +76,6 @@ export default function AccountSettings() {
                 </div>
                 <FormInputDescription>This action is irreversible! All related data to your account will be deleted.</FormInputDescription>
             </div>
-            <PrimaryButton>Primary</PrimaryButton>
-            <SecondaryButton>Test</SecondaryButton>
-            <DangerButton>Delete</DangerButton>
-            <OutlineButton>Outline</OutlineButton>
             <Modal title='Delete account' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                 <form onSubmit={onDelete}>
                     <div>
