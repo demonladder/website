@@ -1,6 +1,6 @@
 import { redirect } from 'react-router';
 import { permissionsFromRoles } from '../../utils/permissionsFromRoles';
-import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
+import { PermissionFlags } from './roles/PermissionFlags';
 import GetMe from '../../api/auth/GetMe';
 
 export async function modLoader() {

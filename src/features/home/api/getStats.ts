@@ -1,13 +1,25 @@
 import APIClient from '../../../api/APIClient';
 
 interface Stats {
-    users: number;
+    users: {
+        now: number;
+        old: number;
+    };
     registeredUsers: number;
     activeUsers: number;
-    totalLevels: number;
+    totalLevels: {
+        now: number;
+        old: number;
+    };
     totalRatedLevels: number;
-    submissions: number;
-    pendingSubmissions: number;
+    submissions: {
+        now: number;
+        old: number;
+    };
+    pendingSubmissions: {
+        now: number;
+        old: number;
+    };
     recentSubmissions: number;
     oldestQueuedSubmission?: string;
     topRaters: {
