@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: staging
+
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run ${{ github.ref_name == 'main' && 'build' || 'build:staging'}}
+        env:
+          VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
+          VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
+          VITE_SESSION_ID_NAME: ${{ vars.VITE_SESSION_ID_NAME }}
+          VITE_MAX_TIER: ${{ vars.VITE_MAX_TIER }}
+          VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
+          VITE_CF_TURNSTILE_SITE_KEY: ${{ vars.VITE_CF_TURNSTILE_SITE_KEY }}

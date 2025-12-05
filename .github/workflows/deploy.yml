@@ -1,16 +1,22 @@
-name: Build and deploy
-env:
-  target: ${{ github.ref_name == 'main' && 'gddl' || 'gddl-beta' }}
+name: Deploy
 
 on:
-  workflow_run:
-    workflows: ["Check linting"]
-    branches:
-      - 'main'
-      - 'beta'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Deployment target (main or beta)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - main
+          - beta
+
+env:
+  target: ${{ inputs.target == 'main' && 'main' || 'beta' }}
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     environment: staging
 
@@ -31,7 +37,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run ${{ env.target == 'gddl' && 'build' || 'build:staging'}}
+        run: npm run ${{ inputs.target == 'main' && 'build' || 'build:staging'}}
         env:
           VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
           VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
