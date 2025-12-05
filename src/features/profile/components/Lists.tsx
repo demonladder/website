@@ -88,20 +88,26 @@ interface Props {
 //     );
 // }
 
-
 export default function Lists({ userID }: Props) {
     const { data: lists } = useUserLists(userID);
 
     return (
         <section>
             <Heading2>Lists</Heading2>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-2' style={{ gridAutoRows: '120px auto auto auto' }}>
+            <div className='grid gap-4 mt-2' style={{ gridAutoRows: '120px auto auto auto', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
                 {lists?.map((list) => (
                     <div key={list.ID} className='grid grid-rows-subgrid gap-0 row-span-4 mb-4 bg-theme-700 round:rounded-xl overflow-hidden border border-theme-600'>
-                        <img width='100%' className='h-30 object-cover' src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(87425029)}`} alt={`Image for ${list.Name}`} />
+                        <img width='100%' className='h-30 object-cover' src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`} alt={`Image for ${list.Name}`} />
                         <Link to={`/list/${list.ID}`}><Heading3 className='mx-4'>{list.Name}</Heading3></Link>
                         <p className='mx-4'>{list.Description ?? <i className='text-theme-400'>No description</i>}</p>
-                        <p className='text-sm m-4 text-theme-400'>Created {secondsToHumanReadable((Date.now() - new Date(list.createdAt).getTime()) / 1000)} ago <span className='mx-2'>-</span> modified {secondsToHumanReadable((Date.now() - new Date(list.updatedAt).getTime()) / 1000)} ago</p>
+                        <div className='text-sm p-4'>
+                            <p className='text-theme-400'>Created {secondsToHumanReadable((Date.now() - new Date(list.createdAt).getTime()) / 1000)} ago <span className='mx-1'>-</span> modified {secondsToHumanReadable((Date.now() - new Date(list.updatedAt).getTime()) / 1000)} ago</p>
+                            <ul className='flex flex-wrap gap-2 mt-1'>
+                                <li><span className='px-2 py-[2px] rounded bg-theme-600'>2.2</span></li>
+                                <li><span className='px-2 py-[2px] rounded bg-theme-600'>Cube</span></li>
+                                <li><span className='px-2 py-[2px] rounded bg-theme-600'>Extreme</span></li>
+                            </ul>
+                        </div>
                     </div>
                 ))}
             </div>
