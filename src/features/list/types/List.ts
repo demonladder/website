@@ -6,4 +6,6 @@ export interface List {
     AverageTier: number | null;
     MedianTier: number | null;
     OwnerID: number;
+    createdAt: string;
+    updatedAt: string;
 }
