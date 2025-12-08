@@ -38,7 +38,7 @@ function ListCard({ list }: { list: GetUserListsResponse }) {
 
     return (
         <div onContextMenu={contextMenu} className='grid grid-rows-subgrid gap-0 row-span-4 mb-4 bg-theme-700 round:rounded-xl overflow-hidden border border-theme-600'>
-            <img width='100%' className='h-30 object-cover' src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`} alt={`Image for ${list.Name}`} />
+            <img width='100%' className='h-[120px] object-cover' src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`} alt={`Image for ${list.Name}`} />
             <Link to={`/list/${list.ID}`}><Heading3 className='mx-4'>{list.Name}</Heading3></Link>
             <p className='mx-4'>{list.Description ?? <i className='text-theme-400'>No description</i>}</p>
             <div className='text-sm p-4'>
