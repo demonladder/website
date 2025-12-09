@@ -1,4 +1,4 @@
-import { Change } from '../../../pages/mod/pack/types/Change';
+import { Change } from '../../../features/admin/edit-pack/types/Change';
 import APIClient from '../../APIClient';
 
 export default async function SavePackChangesRequest(changes: Change[]) {
