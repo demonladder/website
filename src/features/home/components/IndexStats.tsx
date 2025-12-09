@@ -24,20 +24,20 @@ export default function IndexStats() {
                 <div className='flex gap-8 flex-wrap'>
                     <div>
                         <Heading3 className='mt-2'>Users</Heading3>
-                        <p>Total users: {anyOrLoading(data.users)}</p>
+                        <p>Total users: {anyOrLoading(data.users.now)}</p>
                         <p>Registered users: {anyOrLoading(data.registeredUsers)}</p>
                         <p>Active users: {anyOrLoading(data.activeUsers)}</p>
                     </div>
                     <div>
                         <Heading3 className='mt-2'>Levels</Heading3>
-                        <p>Levels: {anyOrLoading(data.totalLevels)}</p>
+                        <p>Levels: {anyOrLoading(data.totalLevels.now)}</p>
                         <p>Rated levels: {anyOrLoading(data.totalRatedLevels)}</p>
-                        <p>Coverage: {((data.totalRatedLevels ?? 0) / (data.totalLevels ?? 1) * 100).toFixed(2)}%</p>
+                        <p>Coverage: {((data.totalRatedLevels ?? 0) / (data.totalLevels.now ?? 1) * 100).toFixed(2)}%</p>
                     </div>
                     <div>
                         <Heading3 className='mt-2'>Submissions</Heading3>
-                        <p>Total submissions: {anyOrLoading(data.submissions)}</p>
-                        <p>Pending submissions: {anyOrLoading(data.pendingSubmissions)}</p>
+                        <p>Total submissions: {anyOrLoading(data.submissions.now)}</p>
+                        <p>Pending submissions: {anyOrLoading(data.pendingSubmissions.now)}</p>
                         <p>Submissions last 24h: {anyOrLoading(data.recentSubmissions)}</p>
                         <p>Oldest queued submission: {data.oldestQueuedSubmission ? ms(Date.now() - new Date(data.oldestQueuedSubmission.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) : '0s'} ago</p>
                     </div>

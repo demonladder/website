@@ -12,7 +12,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { acceptShowcaseSuggestion } from '../api/acceptShowcaseSuggestion';
 import { deleteShowcaseSuggestion } from '../api/deleteShowcaseSuggestion';
 import { toast } from 'react-toastify';
-import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 
 export default function Showcases() {
     const [page, setPage] = useState(0);
@@ -43,7 +42,7 @@ export default function Showcases() {
                     <p>No new showcase suggestions</p>
                 }
                 <ul className='grid lg:grid-cols-2 gap-4'>
-                    {suggestions.suggestions.map((suggestion) => <li className='bg-theme-700 border border-theme-600 round:rounded-2xl p-4' key={suggestion.ID}>
+                    {suggestions.suggestions.map((suggestion) => <li className='bg-theme-800 border border-theme-600 round:rounded-2xl p-4' key={suggestion.ID}>
                         <div className='flex items-center mb-2'>
                             <DemonFace diff={suggestion.level.Meta.Difficulty} rarity={suggestion.level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
                             <div className='grow'>
@@ -52,7 +51,7 @@ export default function Showcases() {
                                 <p className='text-theme-400'>{new Date(suggestion.updatedAt.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</p>
                             </div>
                         </div>
-                        <LiteYouTubeEmbed id={suggestion.videoID} title={suggestion.level.Meta.Name} />
+                        <iframe className='rounded-xl' width='100%' height='400' src={`https://www.youtube.com/embed/${suggestion.videoID}?si=41vSsQ4VYRJP2MeR`} title='YouTube video player' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerPolicy='strict-origin-when-cross-origin' allowFullScreen />
                         <div className='flex justify-end gap-1 mt-2'>
                             <TextButton onClick={() => deleteMutation.mutate(suggestion.ID)}>Deny</TextButton>
                             <SecondaryButton onClick={() => acceptMutation.mutate(suggestion.ID)}>Accept</SecondaryButton>

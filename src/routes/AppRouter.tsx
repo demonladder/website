@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, createRoutesFromElements, redirect, Route } from 'react-router';
 import ErrorElement from '../components/ErrorElement';
-import { modLoader as ModLoader } from '../pages/mod/mod.loader';
-const ModIndex = lazy(() => import('../pages/mod/ModIndex'));
+import { modLoader as ModLoader } from '../features/admin/mod.loader';
+const ModIndex = lazy(() => import('../features/admin/index/index.page'));
 const Queue = lazy(() => import('../features/admin/queue/Queue'));
 const Beta = lazy(() => import('../features/admin/beta/BetaAccess'));
 const EditReferences = lazy(() => import('../features/admin/references/References'));

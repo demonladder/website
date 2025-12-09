@@ -1,37 +1,39 @@
-name: Build and deploy
-env:
-  target: ${{ github.ref_name == 'main' && 'gddl' || 'gddl-beta' }}
+name: Deploy
 
 on:
-  workflow_run:
-    workflows: ["Check linting"]
-    branches:
-      - 'main'
-      - 'beta'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Deployment target (main or beta)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - main
+          - beta
+
+env:
+  target: ${{ inputs.target == 'main' && 'main' || 'beta' }}
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     environment: staging
-
-    strategy:
-      matrix:
-        node-version: [24.x]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js v24
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24.x
           cache: 'npm'
 
       - name: Install deps
         run: npm ci
 
       - name: Build
-        run: npm run ${{ env.target == 'gddl' && 'build' || 'build:staging'}}
+        run: npm run ${{ inputs.target == 'main' && 'build' || 'build:staging'}}
         env:
           VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
           VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}

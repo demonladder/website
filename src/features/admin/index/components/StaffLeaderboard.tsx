@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import GetStaffLeaderboard, { StaffLeaderboardRecord } from '../../api/staffLeaderboard/GetStaffLeaderboard';
-import pluralS from '../../utils/pluralS';
 import { useState } from 'react';
-import { pickRandom } from '../../utils/pickRandom';
-import Heading2 from '../../components/headings/Heading2';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
+import type { StaffLeaderboardRecord } from '../../../../api/staffLeaderboard/GetStaffLeaderboard';
+import pluralS from '../../../../utils/pluralS';
+import GetStaffLeaderboard from '../../../../api/staffLeaderboard/GetStaffLeaderboard';
+import Heading2 from '../../../../components/headings/Heading2';
+import { pickRandom } from '../../../../utils/pickRandom';
 
 function StaffLeaderboardEntry({ data, highestScore }: { data: StaffLeaderboardRecord, highestScore?: number }) {
     if (highestScore === undefined) return (<LoadingSpinner />);

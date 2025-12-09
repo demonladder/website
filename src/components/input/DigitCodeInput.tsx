@@ -21,6 +21,7 @@ export default function DigitCodeInput({ onChange }: Props) {
         // Handles pasting the entire code
         if (value.length === 6) {
             setCode(value.split('').slice(0, 6));
+            onChange?.(value.slice(0, 6));
             digit6Ref.current?.focus();
             return;
         }
