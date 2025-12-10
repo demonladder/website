@@ -7,29 +7,12 @@ import TrendingLevels from './components/TrendingLevels';
 import PopularLevels from './components/PopularLevels';
 import Supporters from './components/Supporters';
 import Heading2 from '../../components/headings/Heading2';
-import { useWindowSize } from 'usehooks-ts';
-import Heading1 from '../../components/headings/Heading1';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 
 export default function Home() {
-    const winSize = useWindowSize();
-
-    const margin = ((width: number): number => {
-        if (width >= 1536) return width - 1536;
-        if (width >= 1280) return width - 1280;
-        if (width >= 1024) return width - 1024;
-        if (width >= 768) return width - 768;
-        if (width >= 640) return width - 560;
-        return 0;
-    })(winSize.width);
-
     return (
         <main>
             <meta name='description' content='Rate Geometry Dash levels by difficulty and fun. See community averages to find the best levels to challenge or enjoy.' />
-            <div className='container mx-auto my-10'><Heading1>Celebrating GDDL's 5-year anniversary</Heading1></div>
-            <div style={{ margin: `0 ${margin / 2}px` }}>
-                <LiteYouTubeEmbed id='wbGyG7ovHaA' title='GDDL 5' />
-            </div>
             <div className='container mx-auto py-4 grid grid-cols-1 xl:grid-cols-4 gap-8'>
                 <Container className='xl:col-span-3'>
                     <Announcement>
@@ -46,6 +29,10 @@ export default function Home() {
                 <TrendingLevels />
                 <iframe src='https://discord.com/widget?id=741568423485767721&theme=dark' className='shadow-lg w-full row-span-2' height={450} sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts' />
                 <PopularLevels />
+                <div className='xl:col-span-2 rounded-2xl overflow-hidden'>
+                    <Heading2>Celebrating GDDL's 5-year anniversary</Heading2>
+                    <LiteYouTubeEmbed id='wbGyG7ovHaA' title='GDDL 5' />
+                </div>
                 <Container className='xl:col-span-2'>
                     <Announcement>
                         <Heading2>Our platformer list</Heading2>
