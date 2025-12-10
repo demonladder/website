@@ -1,13 +1,6 @@
 name: Build
 
 on:
-  push:
-    branches: ['*']
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - '*.json'
-      - 'vite.config.ts'
   pull_request:
     branches: ['*']
     paths:

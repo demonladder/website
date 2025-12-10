@@ -3,11 +3,6 @@ env:
   node_version: 24.x
 
 on:
-  push:
-    paths:
-      - '**.jsx?'
-      - '**.tsx?'
-
   pull_request:
     paths:
       - '**.jsx?'
