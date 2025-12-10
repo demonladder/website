@@ -28,6 +28,13 @@ export default function ClientSiteSettings() {
                     </label>
                     <FormInputDescription>Adds a checkmark and green background to levels in list view.</FormInputDescription>
                 </FormGroup>
+                <FormGroup>
+                    <label className='flex items-center gap-2'>
+                        <CheckBox checked={app.levelsUseDecimals} onChange={(e) => app.set('levelsUseDecimals', e.target.checked)} />
+                        Display level ratings and enjoyment with decimals
+                    </label>
+                    <FormInputDescription>If enabled, level ratings and enjoyment will be displayed with two decimal places on the level page.</FormInputDescription>
+                </FormGroup>
                 <div className='mt-4'>
                     <FormInputLabel>Level view type</FormInputLabel>
                     <div>

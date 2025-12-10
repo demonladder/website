@@ -23,6 +23,7 @@ import { useAddFavoriteMutation } from './hooks/useAddFavoriteMutation';
 import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation';
 import Tooltip from '../../components/Tooltip';
 import { routes } from '../../routes/route-definitions';
+import { useApp } from '../../context/app/useApp';
 
 const levelLengths = {
     1: 'Tiny',
@@ -39,6 +40,7 @@ export default function LevelPage() {
     const [showExtra, setShowExtra] = useState(false);
     const [submissionPage, setSubmissionPage] = useQueryParam('page', withDefault(NumberParam, 0));
     const navigate = useNavigate();
+    const app = useApp();
 
     function onShowTwoPlayerStats(state: boolean) {
         if (showTwoPlayerStats === state) return;
@@ -96,24 +98,36 @@ export default function LevelPage() {
             </div>
             <div className='flex max-md:flex-col gap-2 my-2'>
                 <div className='flex max-md:flex-col gap-4 md:w-8/12'>
-                    <div className='flex items-start text-center'>
-                        <div className={`max-md:w-1/2 py-4 tier-${rating?.toFixed() ?? '0'} round:rounded-l-lg`}>
-                            <Tooltip label={`Tier ${rating !== null ? rating.toFixed(2) : '-'}`}>
+                    {!app.levelsUseDecimals
+                        ? <div className='flex items-start text-center'>
+                            <div className={`max-md:w-1/2 py-4 tier-${rating?.toFixed() ?? '0'} round:rounded-l-lg`}>
+                                <Tooltip label={`Tier ${rating !== null ? rating.toFixed(2) : '-'}`}>
+                                    <p className='text-center text-lg' style={{ lineHeight: '1' }}>Tier</p>
+                                    <p className='text-4xl font-bold text-center min-w-28'>
+                                        {rating?.toFixed() ?? '-'}
+                                    </p>
+                                </Tooltip>
+                            </div>
+                            <div className={`max-md:w-1/2 py-4 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
+                                <Tooltip label={enjoyment !== null ? `Enjoyment ${enjoyment.toFixed(2)}` : 'No enjoyment rating'}>
+                                    <p className='text-center text-lg' style={{ lineHeight: '1' }}>Enjoyment</p>
+                                    <p className={`text-4xl font-bold text-center min-w-28`}>
+                                        {enjoyment?.toFixed() ?? '-'}
+                                    </p>
+                                </Tooltip>
+                            </div>
+                        </div>
+                        : <div className='flex items-start text-center'>
+                            <div className={`max-md:w-1/2 py-4 tier-${rating?.toFixed() ?? '0'} round:rounded-l-lg`}>
                                 <p className='text-center text-lg' style={{ lineHeight: '1' }}>Tier</p>
-                                <p className='text-4xl font-bold text-center min-w-28'>
-                                    {rating?.toFixed() ?? '-'}
-                                </p>
-                            </Tooltip>
-                        </div>
-                        <div className={`max-md:w-1/2 py-4 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
-                            <Tooltip label={enjoyment !== null ? `Enjoyment ${enjoyment.toFixed(2)}` : 'No enjoyment rating'}>
+                                <p className='text-4xl font-bold text-center min-w-28'>{rating?.toFixed(2) ?? '-'}</p>
+                            </div>
+                            <div className={`max-md:w-1/2 py-4 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
                                 <p className='text-center text-lg' style={{ lineHeight: '1' }}>Enjoyment</p>
-                                <p className={`text-4xl font-bold text-center min-w-28`}>
-                                    {enjoyment?.toFixed() ?? '-'}
-                                </p>
-                            </Tooltip>
+                                <p className={`text-4xl font-bold text-center min-w-28`}>{enjoyment?.toFixed(2) ?? '-'}</p>
+                            </div>
                         </div>
-                    </div>
+                    }
                     <section className='col-span-8'>
                         <h3 className='text-2xl xl:mb-2'>Description</h3>
                         <p className='text-lg'>{level.Meta.Description || <i>No description</i>}</p>

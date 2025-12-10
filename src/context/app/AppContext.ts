@@ -15,6 +15,7 @@ export interface AppSettings {
     isRounded: boolean;
     highlightCompleted: boolean;
     levelViewType: LevelViewType;
+    levelsUseDecimals: boolean;
 }
 
 interface IAppContext extends Partial<AppSettings> {
