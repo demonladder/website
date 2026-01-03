@@ -24,7 +24,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const turnstileContainerID = useId();
-    const { token: turnstileToken } = useTurnstile(turnstileContainerID);
+    const { token: turnstileToken, reset: resetCaptcha } = useTurnstile(turnstileContainerID);
 
     const { mutate: submit, isPending } = useMutation({
         mutationFn: ({ username, password, challenge, totpCode }: { username: string, password: string, challenge: string, totpCode?: string }) => toast.promise(accountLogin(username, password, challenge, totpCode), {
@@ -37,6 +37,7 @@ export default function Login() {
             void navigate(-1);
         },
         onError(error: AxiosError<GDDLError>) {
+            resetCaptcha();
             if (error.response?.status === 400 && typeof error.response.data.message === 'string' && /TOTP.*required/.test(error.response.data.message)) {
                 setIsTotpRequired(true);
                 return;

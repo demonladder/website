@@ -29,7 +29,7 @@ export default function SignUp() {
     const overrideKey = url.get('key');
     const [username, setUsername] = useState(url.get('name') ?? '');
     const turnstileContainerID = useId();
-    const { token: turnstileToken } = useTurnstile(turnstileContainerID);
+    const { token: turnstileToken, reset: resetCaptcha } = useTurnstile(turnstileContainerID);
 
     const signupMutation = useMutation({
         mutationFn: ({ username, password, overrideKey, turnstileToken }: { username: string, password: string, overrideKey?: string, turnstileToken: string }) => SignUpFn(username, password, turnstileToken, overrideKey),
@@ -46,6 +46,7 @@ export default function SignUp() {
                 window.location.href = `/profile/${data.ID}`;
             },
             onError: (err) => {
+                resetCaptcha();
                 toast.error(renderToastError.render({ data: err }));
             },
         });

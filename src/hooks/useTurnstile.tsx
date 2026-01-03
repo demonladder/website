@@ -21,6 +21,7 @@ declare const turnstile: {
 
 export default function useTurnstile(containerID: string) {
     const [token, setToken] = useState<string>();
+    const [widgetID, setWidgetID] = useState<string>();
 
     useEffect(() => {
         if (import.meta.env.MODE === 'development') {
@@ -39,6 +40,7 @@ export default function useTurnstile(containerID: string) {
                 setToken(undefined);
             },
         });
+        setWidgetID(widgetID);
 
         return () => {
             turnstile.remove(widgetID);
@@ -47,5 +49,8 @@ export default function useTurnstile(containerID: string) {
 
     return {
         token,
+        reset: () => {
+            if (widgetID) turnstile.reset(widgetID);
+        },
     };
 }
