@@ -21,7 +21,6 @@ import { FullLevel } from '../../api/types/compounds/FullLevel';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useAddFavoriteMutation } from './hooks/useAddFavoriteMutation';
 import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation';
-import Tooltip from '../../components/Tooltip';
 import { routes } from '../../routes/route-definitions';
 import { useApp } from '../../context/app/useApp';
 
@@ -101,20 +100,18 @@ export default function LevelPage() {
                     {!app.levelsUseDecimals
                         ? <div className='flex items-start text-center'>
                             <div className={`max-md:w-1/2 py-4 tier-${rating?.toFixed() ?? '0'} round:rounded-l-lg`}>
-                                <Tooltip label={`Tier ${rating !== null ? rating.toFixed(2) : '-'}`}>
-                                    <p className='text-center text-lg' style={{ lineHeight: '1' }}>Tier</p>
-                                    <p className='text-4xl font-bold text-center min-w-28'>
-                                        {rating?.toFixed() ?? '-'}
-                                    </p>
-                                </Tooltip>
+                                <p className='text-center text-lg' style={{ lineHeight: '1' }}>Tier</p>
+                                <p className='text-4xl font-bold text-center min-w-28'>
+                                    {rating?.toFixed() ?? '-'}
+                                </p>
+                                <p className='text-gray-600 text-sm'>({rating?.toFixed(2) ?? '-'})</p>
                             </div>
                             <div className={`max-md:w-1/2 py-4 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
-                                <Tooltip label={enjoyment !== null ? `Enjoyment ${enjoyment.toFixed(2)}` : 'No enjoyment rating'}>
-                                    <p className='text-center text-lg' style={{ lineHeight: '1' }}>Enjoyment</p>
-                                    <p className={`text-4xl font-bold text-center min-w-28`}>
-                                        {enjoyment?.toFixed() ?? '-'}
-                                    </p>
-                                </Tooltip>
+                                <p className='text-center text-lg' style={{ lineHeight: '1' }}>Enjoyment</p>
+                                <p className={`text-4xl font-bold text-center min-w-28`}>
+                                    {enjoyment?.toFixed() ?? '-'}
+                                </p>
+                                <p className='text-gray-600 text-sm'>({enjoyment?.toFixed(2) ?? '-'})</p>
                             </div>
                         </div>
                         : <div className='flex items-start text-center'>
