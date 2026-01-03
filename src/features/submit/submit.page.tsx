@@ -289,7 +289,7 @@ export default function SubmitPage() {
                                 <p className='mb-1'>2) For levels that contains multiple paths or has bonus objectives, rate according to the easiest path that is not hidden.</p>
                             </li>
                             <li className='mb-5'>
-                                <p className='mb-1'>3) You should ignore the official difficutly in-game.</p>
+                                <p className='mb-1'>3) You should ignore the official difficulty in-game.</p>
                             </li>
                             <li className='mb-5'>
                                 <p className='mb-1'>4) You do not need to follow others' opinion and rate as what others suggest.</p>
