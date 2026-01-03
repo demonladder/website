@@ -7,14 +7,17 @@ import { toast } from 'react-toastify';
 import MarkAllReadRequest from '../../api/notifications/MarkAllReadRequest';
 import renderToastError from '../../utils/renderToastError';
 import Page from '../../components/Page';
+import useSession from '../../hooks/useSession';
 
 export default function Notifications() {
     const [isMutating, setIsMutating] = useState(false);
     const [allOrUnread, setAllOrUnread] = useState<UnreadFilter>('unread');
     const queryClient = useQueryClient();
+    const session = useSession();
     const { data } = useQuery({
         queryKey: ['notifications', allOrUnread],
         queryFn: () => GetNotifications({ allOrUnread }),
+        enabled: session.user !== undefined,
     });
 
     function markAllRead() {
