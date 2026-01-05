@@ -7,7 +7,7 @@ interface SubmitDTO {
     enjoyment?: number | null;
     refreshRate?: number;
     device?: Device;
-    proof?: string;
+    proof?: string | null;
     isProofPrivate?: boolean;
     progress?: number;
     attempts?: number;

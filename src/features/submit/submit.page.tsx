@@ -185,7 +185,7 @@ export default function SubmitPage() {
             enjoyment: enjoyment,
             refreshRate: parseInt(refreshRate),
             device: deviceKey,
-            proof: proof.length > 0 ? proof : undefined,
+            proof: proof || null,
             isProofPrivate,
             progress: parseInt(progress),
             attempts: attemptCount,
