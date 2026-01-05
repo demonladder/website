@@ -1,7 +1,7 @@
 {
   "name": "gddl",
   "private": true,
-  "version": "2.2.5",
+  "version": "2.2.6",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
