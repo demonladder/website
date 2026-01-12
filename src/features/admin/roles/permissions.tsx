@@ -21,6 +21,12 @@ export const permissions: Permission[] = [
         Flag: PermissionFlags.MANAGE_SUBMISSIONS,
     },
     {
+        ID: 21,
+        Name: 'Manage Discord integration',
+        Description: 'Allows users to delete the link between a users Discord account and GDDL account.',
+        Flag: PermissionFlags.MANAGE_DISCORD_INTEGRATION,
+    },
+    {
         ID: 16,
         Name: 'Skip queue',
         Description: 'Users will have all their submission be automatically accepted.',
@@ -44,7 +50,7 @@ export const permissions: Permission[] = [
         Flag: PermissionFlags.VIEW_AUDIT_LOG,
     },
     {
-        ID: 19,
+        ID: 20,
         Name: 'Manage favorite levels',
         Description: 'Allows users to add or delete levels from users\' preferences',
         Flag: PermissionFlags.MANAGE_FAVORITE_LEVELS,

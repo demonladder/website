@@ -20,4 +20,5 @@ export enum PermissionFlags {
     CREATE_SIGNUP_TOKEN = 1 << 18,
     VIEW_AUDIT_LOG = 1 << 19,
     MANAGE_FAVORITE_LEVELS = 1 << 20,
+    MANAGE_DISCORD_INTEGRATION = 1 << 21,
 }
