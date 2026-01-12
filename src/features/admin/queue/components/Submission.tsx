@@ -150,9 +150,8 @@ export default function Submission({ submission }: Props) {
                             }
                         </span>
                     </div>
-                    {submission.IsSolo
-                        ? submission.Level.Meta.IsTwoPlayer && <p>Completed solo</p>
-                        : <p>Completed with {submission.SecondPlayerID ?? 'an unregistered user'}</p>
+                    {submission.Level.Meta.IsTwoPlayer && (submission.IsSolo ? <p>Completed solo</p>
+                        : <p>Completed with {submission.SecondPlayerID ?? 'an unregistered user'}</p>)
                     }
                 </div>
                 <div>
