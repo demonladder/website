@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
-import PageButtons from '../../../components/PageButtons';
+import PageButtons from '../../../components/shared/PageButtons';
 import RefreshRateIcon from './RefreshRateIcon';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import { Submission as ISubmission, SubmissionSort, getLevelSubmissions } from '../api/getLevelSubmissions';
@@ -17,7 +17,7 @@ import { Device } from '../../../api/core/enums/device.enum';
 import Heading2 from '../../../components/headings/Heading2';
 import Select from '../../../components/input/select/Select';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
-import Tooltip from '../../../components/Tooltip';
+import Tooltip from '../../../components/ui/Tooltip';
 
 const sorts: Record<SubmissionSort, string> = {
     [SubmissionSort.DATE_ADDED]: 'Date added',

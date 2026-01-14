@@ -5,10 +5,10 @@ import { toast } from 'react-toastify';
 import GenerateTierRoulette, { TierRouletteResponse } from '../../../api/generators/GenerateTierRoulette';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Link } from 'react-router';
-import IDButton from '../../../components/IDButton';
+import IDButton from '../../../components/ui/IDButton';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import { NumberInput } from '../../../components/Input';
+import { NumberInput } from '../../../components/shared/input/Input';
 
 export default function TierRoulette() {
     const [rouletteLevels, setRouletteLevels] = useLocalStorage<TierRouletteResponse[] | null>('tierRouletteLevels', null);

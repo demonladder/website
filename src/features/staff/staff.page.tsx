@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import { Link } from 'react-router';
-import UserRoleIcon from '../../components/UserRoleIcon';
-import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
+import UserRoleIcon from '../../components/ui/UserRoleIcon';
+import FloatingLoadingSpinner from '../../components/ui/FloatingLoadingSpinner';
 import GetStaff from '../../api/user/StaffMember';
 import Role from '../../api/types/Role';
 import Heading1 from '../../components/headings/Heading1';

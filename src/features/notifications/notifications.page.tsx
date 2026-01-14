@@ -6,7 +6,7 @@ import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
 import { toast } from 'react-toastify';
 import MarkAllReadRequest from '../../api/notifications/MarkAllReadRequest';
 import renderToastError from '../../utils/renderToastError';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import useSession from '../../hooks/useSession';
 
 export default function Notifications() {

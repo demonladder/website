@@ -1,4 +1,4 @@
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import './diversion.css';
 import crushedCan from './images/crushed can.png';
 import image2 from './images/goth in bed.jpg';

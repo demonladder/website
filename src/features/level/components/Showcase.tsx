@@ -4,7 +4,7 @@ import FormGroup from '../../../components/form/FormGroup';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import Heading2 from '../../../components/headings/Heading2';
-import { URLInput } from '../../../components/Input';
+import { URLInput } from '../../../components/shared/input/Input';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';

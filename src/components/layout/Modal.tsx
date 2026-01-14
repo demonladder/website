@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import Heading1 from './headings/Heading1';
+import Heading1 from '../headings/Heading1';
 
 interface Props {
     title: string,

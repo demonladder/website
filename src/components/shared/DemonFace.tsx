@@ -1,5 +1,5 @@
-import LevelMeta, { Difficulties, Rarity } from '../features/level/types/LevelMeta';
-import { DemonLogoSizes, difficultyToImgSrc } from '../utils/difficultyToImgSrc';
+import LevelMeta, { Difficulties, Rarity } from '../../features/level/types/LevelMeta';
+import { DemonLogoSizes, difficultyToImgSrc } from '../../utils/difficultyToImgSrc';
 
 interface Props {
     diff?: number | Difficulties;

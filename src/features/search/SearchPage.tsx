@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Level, { LevelSkeleton } from '../../components/Level';
+import Level, { LevelSkeleton } from '../../components/shared/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
 import { getLevels } from './api/getLevels';
 import { useQuery } from '@tanstack/react-query';
-import { GridLevel } from '../../components/GridLevel';
+import { GridLevel } from '../../components/shared/GridLevel';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
 import { QueryParamNames } from './enums/QueryParamNames';
-import { LevelRenderer } from '../../components/LevelRenderer';
+import { LevelRenderer } from '../../components/layout/LevelRenderer';
 import Heading1 from '../../components/headings/Heading1';
 import Heading2 from '../../components/headings/Heading2';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import { useNavigate } from 'react-router';
 import SearchInput from '../../components/input/search/Search';
 import pluralS from '../../utils/pluralS';
@@ -19,7 +19,7 @@ import IconButton from '../../components/input/buttons/icon/IconButton';
 import { useShortcut } from 'react-keybind';
 import { useApp } from '../../context/app/useApp';
 import { LevelViewType } from '../../context/app/AppContext';
-import PageButtons from '../../components/PageButtons';
+import PageButtons from '../../components/shared/PageButtons';
 
 // TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {

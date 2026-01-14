@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import { TextInput } from '../../../components/Input';
+import { TextInput } from '../../../components/shared/input/Input';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import { useQuery, useQueryClient } from '@tanstack/react-query';

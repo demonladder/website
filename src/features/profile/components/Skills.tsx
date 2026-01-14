@@ -1,10 +1,10 @@
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, RadialLinearScale, ChartData } from 'chart.js';
 import { useQuery } from '@tanstack/react-query';
-import Select from '../../../components/Select';
+import Select from '../../../components/shared/input/Select';
 import { useId, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
-import NewLabel from '../../../components/NewLabel';
+import NewLabel from '../../../components/shared/NewLabel';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import { getSkills } from '../api/getSkills';
 import Heading2 from '../../../components/headings/Heading2';

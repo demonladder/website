@@ -4,7 +4,7 @@ import type { Application } from '../../../../api/types/Application';
 import Heading2 from '../../../../components/headings/Heading2';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { URLInput } from '../../../../components/Input';
+import { URLInput } from '../../../../components/shared/input/Input';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import Heading3 from '../../../../components/headings/Heading3';

@@ -1,6 +1,6 @@
 import TwoPlayerButtons from './TwoPlayerButtons';
 import LevelMeta from '../types/LevelMeta';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/useLevelSubmissionSpread';
 import { useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';

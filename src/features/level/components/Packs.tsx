@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getLevelPacks } from '../api/getLevelPacks';
 import PackRef from '../../../components/PackRef/PackRef';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import LevelMeta from '../types/LevelMeta';
 import { useInView } from 'react-intersection-observer';
 import Heading2 from '../../../components/headings/Heading2';

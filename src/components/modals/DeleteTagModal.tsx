@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { DangerButton } from '../ui/buttons/DangerButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
-import Modal from '../Modal';
+import Modal from '../layout/Modal';
 import { deleteTag } from '../../features/admin/editTags/api/deleteTag';
 import renderToastError from '../../utils/renderToastError';
 import { useState } from 'react';

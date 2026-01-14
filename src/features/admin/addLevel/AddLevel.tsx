@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import { TextInput } from '../../../components/Input';
+import { TextInput } from '../../../components/shared/input/Input';
 import { toast } from 'react-toastify';
 import { addLevelFromGD } from './api/addLevelFromGD';
 import renderToastError from '../../../utils/renderToastError';

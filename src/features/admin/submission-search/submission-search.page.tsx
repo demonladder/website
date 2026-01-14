@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import Heading1 from '../../../components/headings/Heading1';
 import APIClient from '../../../api/APIClient';
 import type Submission from '../../../api/types/Submission';
-import PageButtons from '../../../components/PageButtons';
+import PageButtons from '../../../components/shared/PageButtons';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import Checkbox from '../../../components/input/CheckBox';
 import { Link } from 'react-router';

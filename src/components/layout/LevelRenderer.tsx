@@ -1,4 +1,4 @@
-import { Difficulties, Rarity } from '../features/level/types/LevelMeta';
+import { Difficulties, Rarity } from '../../features/level/types/LevelMeta';
 
 interface LevelProps {
     ID: number;

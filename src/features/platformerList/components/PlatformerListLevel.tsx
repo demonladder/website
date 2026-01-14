@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
-import DemonFace from '../../../components/DemonFace';
-import IDButton from '../../../components/IDButton';
+import DemonFace from '../../../components/shared/DemonFace';
+import IDButton from '../../../components/ui/IDButton';
 import { ListEntry } from '../api/getPlatformerList';
 import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
 

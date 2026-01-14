@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import GetUserNotes from '../../../../api/notes/GetUserNotes';
 import renderToastError from '../../../../utils/renderToastError';
 import CreateUserNote from '../../../../api/notes/CreateUserNote';
-import FloatingLoadingSpinner from '../../../../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../../../../components/ui/FloatingLoadingSpinner';
 import DeleteUserNote from '../../../../api/notes/DeleteUserNote';
 import Heading3 from '../../../../components/headings/Heading3';
 

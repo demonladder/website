@@ -1,6 +1,6 @@
-import Select from '../../../components/Select';
+import Select from '../../../components/shared/input/Select';
 import FiltersExtended from './FiltersExtended';
-import { TextInput } from '../../../components/Input';
+import { TextInput } from '../../../components/shared/input/Input';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import RatingFilter from './filters/RatingFilter';
 import EnjoymentFilter from './filters/EnjoymentFilter';

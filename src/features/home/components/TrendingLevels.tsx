@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 import { getTrendingLevels } from '../api/getTrendingLevels';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Scrollbar } from 'swiper/modules';

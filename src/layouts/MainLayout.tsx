@@ -14,7 +14,7 @@ import useResizeObserver from '@react-hook/resize-observer';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 import APIClient from '../api/APIClient';
 import { useApp } from '../context/app/useApp';
-import GlobalSpinner from '../components/GlobalSpinner';
+import GlobalSpinner from '../components/ui/GlobalSpinner';
 import MenuContextProvider from '../components/ui/menuContext/MenuContextContainer';
 import { useShortcut } from 'react-keybind';
 import Search from '../components/input/search/Search';

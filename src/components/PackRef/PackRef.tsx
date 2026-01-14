@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import PackIcon from '../PackIcon';
+import PackIcon from '../ui/PackIcon';
 import HoverMenu from './HoverMenu';
 import Pack from '../../features/singlePack/types/Pack';
 import PackMeta from '../../features/singlePack/types/PackMeta';

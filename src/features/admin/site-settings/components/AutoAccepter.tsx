@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
-import { NumberInput } from '../../../../components/Input';
+import { NumberInput } from '../../../../components/shared/input/Input';
 import GetAutoAcceptSettings from '../../../../api/settings/autoAccept/GetAutoAcceptSettings';
 import { useEffect, useState } from 'react';
 import { validateIntChange } from '../../../../utils/validators/validateIntChange';

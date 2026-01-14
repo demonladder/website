@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
-import InlineLoadingSpinner from '../../InlineLoadingSpinner';
+import InlineLoadingSpinner from '../InlineLoadingSpinner';
 
 export interface GenericButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     loading?: boolean;

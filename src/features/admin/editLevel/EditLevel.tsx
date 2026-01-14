@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import { NumberInput, TextInput } from '../../../components/Input';
+import { NumberInput, TextInput } from '../../../components/shared/input/Input';
 import { validateIntInputChange } from '../../../utils/validators/validateIntChange';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';

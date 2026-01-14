@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
-import { TextInput } from '../Input';
-import Modal from '../Modal';
+import { TextInput } from '../shared/input/Input';
+import Modal from '../layout/Modal';
 import { createList } from '../../features/list/api/createList';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';

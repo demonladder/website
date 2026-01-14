@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Modal from '../../../components/Modal';
+import Modal from '../../../components/layout/Modal';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import Divider from '../../../components/divider/Divider';

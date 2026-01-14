@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import type { StaffLeaderboardRecord } from '../../../../api/staffLeaderboard/GetStaffLeaderboard';
 import pluralS from '../../../../utils/pluralS';
 import GetStaffLeaderboard from '../../../../api/staffLeaderboard/GetStaffLeaderboard';

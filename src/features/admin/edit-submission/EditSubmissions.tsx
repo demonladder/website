@@ -1,4 +1,4 @@
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import EditableSubmission from './components/EditableSubmission';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';

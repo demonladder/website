@@ -1,14 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Heading2 from '../../../components/headings/Heading2';
 import { getFavoriteLevels, GetFavoriteLevelsResponse, getLeastFavoriteLevels } from '../api/getFavoriteLevels';
-import Level, { LevelSkeleton } from '../../../components/Level';
+import Level, { LevelSkeleton } from '../../../components/shared/Level';
 import { useParams } from 'react-router';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import APIClient from '../../../api/APIClient';
 import useSession from '../../../hooks/useSession';
 import { toast } from 'react-toastify';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
-import { GridLevel } from '../../../components/GridLevel';
+import { GridLevel } from '../../../components/shared/GridLevel';
 import { useApp } from '../../../context/app/useApp';
 import { LevelViewType } from '../../../context/app/AppContext';
 import type { AxiosError } from 'axios';

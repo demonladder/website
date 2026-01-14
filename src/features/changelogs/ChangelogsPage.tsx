@@ -1,6 +1,6 @@
 import Markdown from 'react-markdown';
 import markdownComponents from '../../utils/markdownComponents';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import { useChangelogs } from './hooks/useChangelogs';
 
 export default function Changelogs() {

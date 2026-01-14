@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import DiscordUserData from '../../../api/types/DiscordUserData';
 import User from '../../../api/types/User';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 
 export function LeaderboardEntry({ discordData, highestScore, sum, user, userID }: { sum: number, user: Pick<User, 'Name' | 'avatar'>, userID: number, discordData: Pick<DiscordUserData, 'AccentColor'> | null, highestScore?: number }) {
     if (highestScore === undefined) return (<LoadingSpinner />);

@@ -1,5 +1,5 @@
 import useLocalStorage from '../hooks/useLocalStorage';
-import { TextInput } from '../components/Input';
+import { TextInput } from '../components/shared/input/Input';
 import { PrimaryButton } from '../components/ui/buttons/PrimaryButton';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -8,7 +8,7 @@ import APIClient from '../api/APIClient';
 import { AxiosError } from 'axios';
 import renderToastError from '../utils/renderToastError';
 import { useMutation } from '@tanstack/react-query';
-import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../components/ui/FloatingLoadingSpinner';
 import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
 
 export default function BetaGuard({ children }: { children?: React.ReactNode }) {

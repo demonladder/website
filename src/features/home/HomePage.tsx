@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import Announcement from '../../components/announcement/Announcement';
-import Container from '../../components/Container';
+import Container from '../../components/layout/Container';
 import IndexStats from './components/IndexStats';
 import Body from '../../components/announcement/Body';
 import TrendingLevels from './components/TrendingLevels';

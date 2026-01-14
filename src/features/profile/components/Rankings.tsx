@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import Heading2 from '../../../components/headings/Heading2';
 import { getUserRankings } from '../api/getUserRankings';
 import { useParams } from 'react-router';

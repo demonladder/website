@@ -1,13 +1,13 @@
 import { useParams } from 'react-router';
-import Level from '../../components/Level';
-import { GridLevel } from '../../components/GridLevel';
+import Level from '../../components/shared/Level';
+import { GridLevel } from '../../components/shared/GridLevel';
 import Leaderboard from '../packs/components/Leaderboard';
 import usePackLevels from './hooks/usePackLevels';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import usePack from './hooks/usePack';
-import { LevelRenderer } from '../../components/LevelRenderer';
+import { LevelRenderer } from '../../components/layout/LevelRenderer';
 import Heading1 from '../../components/headings/Heading1';
-import FloatingLoadingSpinner from '../../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../../components/ui/FloatingLoadingSpinner';
 import Heading3 from '../../components/headings/Heading3';
 import { useApp } from '../../context/app/useApp';
 import { LevelViewType } from '../../context/app/AppContext';

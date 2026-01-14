@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import UpdateSubmissionSettings, { BitField } from '../../../../api/user/UpdateWants';
 import renderToastError from '../../../../utils/renderToastError';
-import { NumberInput } from '../../../../components/Input';
+import { NumberInput } from '../../../../components/shared/input/Input';
 import { validateIntInputChange } from '../../../../utils/validators/validateIntChange';
 import GetWants from '../../../../api/user/GetWants';
 import useSession from '../../../../hooks/useSession';

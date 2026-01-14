@@ -1,5 +1,5 @@
 import { NumberParam, useQueryParam } from 'use-query-params';
-import { NumberInput } from '../../../../components/Input';
+import { NumberInput } from '../../../../components/shared/input/Input';
 import { parseNumber } from '../../../../utils/parse/parseNumber';
 import { QueryParamNames } from '../../enums/QueryParamNames';
 

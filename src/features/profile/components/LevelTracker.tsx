@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import Tracker from './Tracker';
 import { useLevel } from '../../level/hooks/useLevel';
-import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 
 interface Props {
     levelID: number | null;

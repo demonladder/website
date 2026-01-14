@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import FormGroup from '../form/FormGroup';
-import Modal from '../Modal';
+import Modal from '../layout/Modal';
 import { DangerButton } from '../ui/buttons/DangerButton';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { reportUser } from '../../api/reports/reportUser';
 import TextArea from '../input/TextArea';
-import Select from '../Select';
+import Select from '../shared/input/Select';
 import FormInputLabel from '../form/FormInputLabel';
 import useUserQuery from '../../hooks/queries/useUserQuery';
 import { Id, toast } from 'react-toastify';

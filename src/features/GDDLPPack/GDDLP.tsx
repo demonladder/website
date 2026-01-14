@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import PackResponse from '../../api/pack/responses/PackResponse';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import Leaderboard from '../packs/components/Leaderboard';
 import GetGDDLPTiers from '../../api/pack/requests/GetGDDLPTiers';
 import pluralS from '../../utils/pluralS';

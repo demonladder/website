@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import ms from 'ms';
-import Container from '../../../components/Container';
-import InlineLoadingSpinner from '../../../components/InlineLoadingSpinner';
+import Container from '../../../components/layout/Container';
+import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 import { getStats } from '../api/getStats';
 import Heading2 from '../../../components/headings/Heading2';
 import Heading3 from '../../../components/headings/Heading3';

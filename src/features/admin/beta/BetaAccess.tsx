@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Heading2 from '../../../components/headings/Heading2';
-import PageButtons from '../../../components/PageButtons';
+import PageButtons from '../../../components/shared/PageButtons';
 import { useAccessTokens } from './hooks/useAccessTokens';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';

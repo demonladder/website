@@ -5,7 +5,7 @@ import FormGroup from '../../../components/form/FormGroup';
 import SaveSiteSettings from '../../../api/settings/SaveSiteSettings';
 import GetSiteSettings from '../../../api/settings/GetSiteSettings';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinner';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import AutoAccepter from './components/AutoAccepter';

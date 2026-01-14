@@ -1,11 +1,11 @@
-import IDButton from './IDButton';
+import IDButton from '../ui/IDButton';
 import { useNavigate } from 'react-router';
 import DemonFace from './DemonFace';
-import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
-import YesTick from './images/YesTick';
-import { Difficulties, Rarity } from '../features/level/types/LevelMeta';
-import { IDMapper } from '../utils/IDMapper';
-import { useApp } from '../context/app/useApp';
+import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
+import YesTick from '../images/YesTick';
+import { Difficulties, Rarity } from '../../features/level/types/LevelMeta';
+import { IDMapper } from '../../utils/IDMapper';
+import { useApp } from '../../context/app/useApp';
 
 interface Props {
     ID: number;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
-import Select from '../../../../components/Select';
+import Select from '../../../../components/shared/input/Select';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import GetWants from '../../../../api/user/GetWants';

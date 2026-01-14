@@ -1,4 +1,4 @@
-import Role from '../api/types/Role';
+import Role from '../../api/types/Role';
 
 export default function UserRoleIcon({ roles }: { roles: Role[] }) {
     const topRole = roles.sort((a, b) => a.Ordering - b.Ordering).filter((role) => role.Icon !== null)[0];

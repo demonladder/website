@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../shared/LoadingSpinner';
 import SearchResult from './SearchResult';
 import { useEventListener } from 'usehooks-ts';
-import { TextInput } from '../Input';
+import { TextInput } from '../shared/input/Input';
 
 interface Props<T> {
     value?: string;

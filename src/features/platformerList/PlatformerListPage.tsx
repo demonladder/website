@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Heading1 from '../../components/headings/Heading1';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import { getPlatformerList } from './api/getPlatformerList';
 import { PlatformerListLevel } from './components/PlatformerListLevel';
 

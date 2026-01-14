@@ -2,9 +2,9 @@ import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton'
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import FormGroup from '../../../components/form/FormGroup';
-import Modal from '../../../components/Modal';
+import Modal from '../../../components/layout/Modal';
 import React, { useState } from 'react';
-import { TextInput } from '../../../components/Input';
+import { TextInput } from '../../../components/shared/input/Input';
 import useSession from '../../../hooks/useSession';
 import { toast } from 'react-toastify';
 import DeleteUserRequest from '../../../api/user/Delete';

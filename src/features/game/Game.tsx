@@ -6,7 +6,7 @@ import GameState from './GameState';
 import createLevel2 from './levels/Level2';
 import { useEffect, useRef } from 'react';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 
 export default function Game() {
     let _p5: P5 | undefined;

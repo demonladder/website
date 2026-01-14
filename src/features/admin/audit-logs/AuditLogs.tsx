@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Divider from '../../../components/divider/Divider';
 import Heading2 from '../../../components/headings/Heading2';
-import PageButtons from '../../../components/PageButtons';
+import PageButtons from '../../../components/shared/PageButtons';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import AuditLog from './components/AuditLog';
 import { useAuditLogs } from './hooks/useAuditLogs';

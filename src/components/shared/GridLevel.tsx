@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router';
 import DemonFace from './DemonFace';
-import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
-import Copy from './Copy';
-import { Difficulties, Rarity } from '../features/level/types/LevelMeta';
-import { IDMapper } from '../utils/IDMapper';
-import { useApp } from '../context/app/useApp';
-import YesTick from './images/YesTick';
+import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
+import Copy from '../ui/Copy';
+import { Difficulties, Rarity } from '../../features/level/types/LevelMeta';
+import { IDMapper } from '../../utils/IDMapper';
+import { useApp } from '../../context/app/useApp';
+import YesTick from '../images/YesTick';
 import './GridLevel.css';
-import { getWordLength } from '../utils/wordLength';
+import { getWordLength } from '../../utils/wordLength';
 
 interface GridProps {
     ID: number;

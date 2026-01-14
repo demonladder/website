@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { clamp } from '../utils/clamp';
-import { PrimaryButton } from './ui/buttons/PrimaryButton';
-import { NumberInput } from './Input';
+import { clamp } from '../../utils/clamp';
+import { PrimaryButton } from '../ui/buttons/PrimaryButton';
+import { NumberInput } from './input/Input';
 
 interface Props {
     onPageChange: (page: number) => void;

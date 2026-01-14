@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import Modal from '../Modal';
-import Select from '../Select';
+import Modal from '../layout/Modal';
+import Select from '../shared/input/Select';
 import SendSubmission from '../../api/submissions/SendSubmission';
-import { NumberInput, URLInput } from '../Input';
+import { NumberInput, URLInput } from '../shared/input/Input';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';

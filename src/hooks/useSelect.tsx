@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Select from '../components/Select';
+import Select from '../components/shared/input/Select';
 
 export default function useSelect({ ID, options }: { ID: string, options: { [key: string]: string }}) {
     const [key, setKey] = useState(Object.keys(options)[0]);

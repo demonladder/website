@@ -1,6 +1,6 @@
 import { DiscordLink } from '../ui/buttons/DiscordLink';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
-import Modal from '../Modal';
+import Modal from '../layout/Modal';
 
 interface Props {
     onClose: () => void;

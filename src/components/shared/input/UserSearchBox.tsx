@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { TinyUser } from '../api/types/TinyUser';
-import SearchBox from './SearchBox/SearchBox';
-import SearchUser from '../api/user/SearchUser';
+import { TinyUser } from '../../../api/types/TinyUser';
+import SearchBox from '../../SearchBox/SearchBox';
+import SearchUser from '../../../api/user/SearchUser';
 
 interface Props {
     setResult: (e: TinyUser | undefined) => void,

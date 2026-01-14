@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import Level from './components/Level';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -8,7 +8,7 @@ import { moveListLevel } from './api/moveListLevel';
 import renderToastError from '../../utils/renderToastError';
 import useDeleteListModal from '../../hooks/modals/useDeleteListModal';
 import useSession from '../../hooks/useSession';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import { editListName } from './api/editListName';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import Heading1 from '../../components/headings/Heading1';

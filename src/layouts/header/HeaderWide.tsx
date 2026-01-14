@@ -1,4 +1,4 @@
-import ProfileButtons from '../../components/ProfileButtons';
+import ProfileButtons from '../../components/shared/ProfileButtons';
 import { Link, useNavigate } from 'react-router';
 import HeaderRoutes from './HeaderRoutes';
 import NavItem from './NavItem';

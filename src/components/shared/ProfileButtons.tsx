@@ -1,13 +1,13 @@
 import { Link } from 'react-router';
-import NotificationButton from './ui/Notifications';
-import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
+import NotificationButton from '../ui/Notifications';
+import useNavbarNotification from '../../context/NavbarNotification/useNavbarNotification';
 import { useEffect } from 'react';
-import useSession from '../hooks/useSession';
-import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
-import { difficultyToImgSrc, DemonLogoSizes } from '../utils/difficultyToImgSrc';
-import { OutlineButton } from './ui/buttons/OutlineButton';
-import { PrimaryButton } from './ui/buttons/PrimaryButton';
-import InlineLoadingSpinner from './InlineLoadingSpinner';
+import useSession from '../../hooks/useSession';
+import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
+import { difficultyToImgSrc, DemonLogoSizes } from '../../utils/difficultyToImgSrc';
+import { OutlineButton } from '../ui/buttons/OutlineButton';
+import { PrimaryButton } from '../ui/buttons/PrimaryButton';
+import InlineLoadingSpinner from '../ui/InlineLoadingSpinner';
 
 export default function ProfileButtons({ onClick, size }: { onClick?: () => void, size?: 'small' | 'large' }) {
     const session = useSession();

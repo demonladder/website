@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useId } from 'react';
-import { NumberInput, TextInput } from '../../../../components/Input';
+import { NumberInput, TextInput } from '../../../../components/shared/input/Input';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import TextArea from '../../../../components/input/TextArea';
 import FormGroup from '../../../../components/form/FormGroup';
@@ -10,11 +10,11 @@ import useUserQuery from '../../../../hooks/queries/useUserQuery';
 import { saveProfile } from '../api/saveProfile';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
-import Select from '../../../../components/Select';
+import Select from '../../../../components/shared/input/Select';
 import { ISO3611Alpha2 } from '../ISO3611-1-alpha-2';
 import { useMutation } from '@tanstack/react-query';
 import Heading1 from '../../../../components/headings/Heading1';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import useSession from '../../../../hooks/useSession';
 
 const pronounOptions = {

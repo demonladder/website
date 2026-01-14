@@ -5,7 +5,7 @@ import Roles from './Roles';
 import BanHistory from './BanHistory';
 import { useQuery } from '@tanstack/react-query';
 import GetUser from '../../../../api/user/GetUser';
-import InlineLoadingSpinner from '../../../../components/InlineLoadingSpinner';
+import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 import { useDocumentTitle } from 'usehooks-ts';
 import Submissions from './Submissions';
 

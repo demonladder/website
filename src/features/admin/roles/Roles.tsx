@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getRoles } from '../../../api/roles/getRoles';
-import { TextInput } from '../../../components/Input';
+import { TextInput } from '../../../components/shared/input/Input';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';

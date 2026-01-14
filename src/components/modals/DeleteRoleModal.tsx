@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { DangerButton } from '../ui/buttons/DangerButton';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
-import Modal from '../Modal';
+import Modal from '../layout/Modal';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';

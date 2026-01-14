@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { NumberInput, TextInput } from '../../../components/Input';
-import Select from '../../../components/Select';
+import { NumberInput, TextInput } from '../../../components/shared/input/Input';
+import Select from '../../../components/shared/input/Select';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
-import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import useUserSearch from '../../../hooks/useUserSearch';
 import FormInputLabel from '../../../components/form/FormInputLabel';

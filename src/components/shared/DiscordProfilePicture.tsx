@@ -1,6 +1,6 @@
 import DemonFace from './DemonFace';
-import useSession from '../hooks/useSession';
-import { DemonLogoSizes } from '../utils/difficultyToImgSrc';
+import useSession from '../../hooks/useSession';
+import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
 
 export default function DiscordProfilePicture() {
     const session = useSession();

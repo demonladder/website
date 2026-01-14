@@ -3,7 +3,7 @@ import FormGroup from '../../../../components/form/FormGroup';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import Heading2 from '../../../../components/headings/Heading2';
-import { TextInput } from '../../../../components/Input';
+import { TextInput } from '../../../../components/shared/input/Input';
 import TextArea from '../../../../components/input/TextArea';
 import { useLoaderData } from 'react-router';
 import type { Application } from '../../../../api/types/Application';

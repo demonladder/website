@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { RadioButton } from '../../../components/Input';
+import { RadioButton } from '../../../components/shared/input/Input';
 import { Sorts } from '../api/getUserSubmissions';
 import { useLocalStorage } from 'usehooks-ts';
 import Divider from '../../../components/divider/Divider';

@@ -1,5 +1,5 @@
 import { ChangeType } from '../../../../api/references/ChangeReferences';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import { useReferences } from '../../../references/hooks/useReferences';
 import ChangeLevel from './ChangeLevel';
 

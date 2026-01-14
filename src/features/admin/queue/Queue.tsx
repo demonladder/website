@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { getPendingSubmissions } from './api/getPendingSubmissions';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import Submission from './components/Submission';
-import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
-import Select from '../../../components/Select';
-import PageButtons from '../../../components/PageButtons';
+import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinner';
+import Select from '../../../components/shared/input/Select';
+import PageButtons from '../../../components/shared/PageButtons';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import Heading1 from '../../../components/headings/Heading1';
 import useSessionStorage from '../../../hooks/useSessionStorage';

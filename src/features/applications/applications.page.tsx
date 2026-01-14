@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import Heading1 from '../../components/headings/Heading1';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import { useCreateApplicationModal } from './hooks/useCreateApplicationModal';
 import { getMyApps } from './api/getMyApps';
 import { Link } from 'react-router';

@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import BanRecord from './BanRecord';
-import InlineLoadingSpinner from '../../../../components/InlineLoadingSpinner';
+import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 import { UserResponse } from '../../../../api/user/GetUser';
-import { TextInput } from '../../../../components/Input';
+import { TextInput } from '../../../../components/shared/input/Input';
 import useSelect from '../../../../hooks/useSelect';
 import { useId, useState } from 'react';
 import { toast } from 'react-toastify';

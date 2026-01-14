@@ -46,7 +46,7 @@ const TierRoulette = lazy(() => import('../features/generators/tierRoulette/Tier
 const Decathlon = lazy(() => import('../features/generators/decathlon/Decathlon'));
 import BulkSubmit from '../features/bulkSubmit/BulkSubmit';
 import Changelogs from '../features/changelogs/ChangelogsPage';
-import FloatingLoadingSpinner from '../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../components/ui/FloatingLoadingSpinner';
 import EditPack from '../features/admin/edit-pack/edit-pack.page';
 import ManageUser from '../features/admin/manage-user/manage-user.page';
 import ManageUserContent from '../features/admin/manage-user/components/ManageUserContent';

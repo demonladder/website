@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { NumberInput } from '../../../components/Input';
-import Select from '../../../components/Select';
+import { NumberInput } from '../../../components/shared/input/Input';
+import Select from '../../../components/shared/input/Select';
 import Notifications from './components/Notifications';
 import DiscordRoles from './components/DiscordRoles';
 import FormInputDescription from '../../../components/form/FormInputDescription';

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import Page from '../../components/Page';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import Page from '../../components/layout/Page';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import Heading1 from '../../components/headings/Heading1';
 import Category from './components/Category';
-import UserLink from '../../components/UserLink';
+import UserLink from '../../components/ui/UserLink';
 import { getPacks } from './api/getPacks';
 import Leaderboard from './components/Leaderboard';
 

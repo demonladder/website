@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import CreateSignupToken from '../../../api/signupToken/SignupToken';
-import UserSearchBox from '../../../components/UserSearchBox';
+import UserSearchBox from '../../../components/shared/input/UserSearchBox';
 import { TinyUser } from '../../../api/types/TinyUser';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormGroup from '../../../components/form/FormGroup';
-import { TextInput } from '../../../components/Input';
+import { TextInput } from '../../../components/shared/input/Input';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import Heading1 from '../../../components/headings/Heading1';
 

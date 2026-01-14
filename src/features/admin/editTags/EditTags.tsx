@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Tag } from '../../../api/types/level/Tag';
 import { useRef, useState } from 'react';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import { TextInput } from '../../../components/Input';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
+import { TextInput } from '../../../components/shared/input/Input';
 import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';

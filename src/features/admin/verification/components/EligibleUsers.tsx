@@ -1,5 +1,5 @@
 import Heading3 from '../../../../components/headings/Heading3';
-import PageButtons from '../../../../components/PageButtons';
+import PageButtons from '../../../../components/shared/PageButtons';
 import { useUsersEligibleForVerification } from '../hooks/useUsersEligibleForVerification';
 import EligibleUser from './EligibleUser';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';

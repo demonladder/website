@@ -1,4 +1,4 @@
-import { LoginButton } from '../../../components/ProfileButtons';
+import { LoginButton } from '../../../components/shared/ProfileButtons';
 import useSession from '../../../hooks/useSession';
 import GeneralInformation from './components/GeneralInformation';
 import DiscordSync from './components/DiscordSync';

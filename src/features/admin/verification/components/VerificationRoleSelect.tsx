@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Heading3 from '../../../../components/headings/Heading3';
-import Select from '../../../../components/Select';
+import Select from '../../../../components/shared/input/Select';
 import useRoles from '../../../../hooks/api/useRoles';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { NaNToNull } from '../../../../utils/NaNToNull';

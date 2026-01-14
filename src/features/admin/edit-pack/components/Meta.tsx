@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
-import { TextInput } from '../../../../components/Input';
+import { TextInput } from '../../../../components/shared/input/Input';
 import TextArea from '../../../../components/input/TextArea';
 import renderToastError from '../../../../utils/renderToastError';
 import SavePackMetaRequest from '../../../../api/packs/requests/SavePackDescriptionRequest';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPacks } from '../../../packs/api/getPacks';
-import LoadingSpinner from '../../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import FormGroup from '../../../../components/form/FormGroup';
 import usePack from '../../../singlePack/hooks/usePack';

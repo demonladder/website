@@ -3,7 +3,7 @@ import GenericLineChart from './GenericLineChart';
 import rawDataToChartData from './rawDataToChartData';
 import type { Metrics } from '../../../../api/stats/GetStatistic';
 import GetStatistic from '../../../../api/stats/GetStatistic';
-import FloatingLoadingSpinner from '../../../../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../../../../components/ui/FloatingLoadingSpinner';
 
 export default function StatisticLineChart({ metricName, title = 'API data' }: { metricName: Metrics, title?: string }) {
     const { data, status } = useQuery({

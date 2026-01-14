@@ -1,6 +1,6 @@
-import { NumberInput, TextInput } from '../../../components/Input';
+import { NumberInput, TextInput } from '../../../components/shared/input/Input';
 import CheckBox from '../../../components/input/CheckBox';
-import Select from '../../../components/Select';
+import Select from '../../../components/shared/input/Select';
 import { useCallback } from 'react';
 import useSession from '../../../hooks/useSession';
 import { BooleanParam, NumberParam, useQueryParam, useQueryParams, withDefault } from 'use-query-params';

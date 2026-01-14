@@ -3,7 +3,7 @@ import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import GenerateDecathlon from '../../../api/generators/decathlon/GenerateDecathlon';
 import GetDecathlon from '../../../api/generators/decathlon/GetDecathlon';
 import { Link } from 'react-router';
-import IDButton from '../../../components/IDButton';
+import IDButton from '../../../components/ui/IDButton';
 import NextDecathlonLevel from '../../../api/generators/decathlon/NextDecathlonLevel';
 import ReRollDecathlonLevel from '../../../api/generators/decathlon/ReRollDecathlonLevel';
 import { toast } from 'react-toastify';

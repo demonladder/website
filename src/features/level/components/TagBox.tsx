@@ -6,7 +6,7 @@ import { sendTagVoteRequest } from '../api/SendTagVoteRequest';
 import { toast } from 'react-toastify';
 import { getTagEligibility } from '../api/getTagEligibility';
 import TagInfoModal from './TagInfoModal';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';

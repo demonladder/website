@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Level from '../../components/Level';
-import { GridLevel } from '../../components/GridLevel';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import Level from '../../components/shared/Level';
+import { GridLevel } from '../../components/shared/GridLevel';
 import GetCrossroadsPackLevels from '../../api/pack/requests/GetCrossroadsPackLevels';
-import Page from '../../components/Page';
-import { LevelRenderer } from '../../components/LevelRenderer';
+import Page from '../../components/layout/Page';
+import { LevelRenderer } from '../../components/layout/LevelRenderer';
 import usePack from '../singlePack/hooks/usePack';
 import Heading1 from '../../components/headings/Heading1';
 import { useApp } from '../../context/app/useApp';

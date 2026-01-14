@@ -1,7 +1,7 @@
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import Difficulty from './components/Difficulty';
 import { useReferences } from './hooks/useReferences';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import Heading1 from '../../components/headings/Heading1';
 
 const diffs = [

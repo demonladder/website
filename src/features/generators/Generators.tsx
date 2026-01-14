@@ -1,5 +1,5 @@
 import { NavLink as Nav, Outlet } from 'react-router';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import Heading1 from '../../components/headings/Heading1';
 
 export default function Generators() {

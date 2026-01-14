@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 import { DangerButton } from '../ui/buttons/DangerButton';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
-import Modal from '../Modal';
+import Modal from '../layout/Modal';
 import { toast } from 'react-toastify';
 import { deleteList } from '../../features/list/api/deleteList';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
 import { List } from '../../features/list/types/List';
-import { TextInput } from '../Input';
+import { TextInput } from '../shared/input/Input';
 import { useNavigate } from 'react-router';
 import FormGroup from '../form/FormGroup';
 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Sorts, UserSubmission, getUserSubmissions } from '../api/getUserSubmissions';
-import PageButtons from '../../../components/PageButtons';
+import PageButtons from '../../../components/shared/PageButtons';
 import SortMenu from './SortMenu';
-import { GridLevel } from '../../../components/GridLevel';
-import Level, { LevelSkeleton } from '../../../components/Level';
+import { GridLevel } from '../../../components/shared/GridLevel';
+import Level, { LevelSkeleton } from '../../../components/shared/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
-import { TextInput } from '../../../components/Input';
+import { TextInput } from '../../../components/shared/input/Input';
 import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
 import useLateValue from '../../../hooks/useLateValue';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';

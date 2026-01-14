@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import { TextInput } from '../../../components/Input';
-import Modal from '../../../components/Modal';
+import { TextInput } from '../../../components/shared/input/Input';
+import Modal from '../../../components/layout/Modal';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import FormGroup from '../../../components/form/FormGroup';
 import { useMutation } from '@tanstack/react-query';

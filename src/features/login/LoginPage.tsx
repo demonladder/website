@@ -1,12 +1,12 @@
 import { Link, useNavigate } from 'react-router';
-import { PasswordInput, TextInput } from '../../components/Input';
+import { PasswordInput, TextInput } from '../../components/shared/input/Input';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { useId, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import renderToastError, { type GDDLError } from '../../utils/renderToastError';
 import FormInputLabel from '../../components/form/FormInputLabel';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 import Heading1 from '../../components/headings/Heading1';
 import FormGroup from '../../components/form/FormGroup';
 import { accountLogin } from './api/accountLogin';

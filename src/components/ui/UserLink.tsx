@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import useUserQuery from '../hooks/queries/useUserQuery';
+import useUserQuery from '../../hooks/queries/useUserQuery';
 
 export default function UserLink({ userID }: { userID: number }) {
     const { data } = useUserQuery(userID);

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getStats } from '../../home/api/getStats';
-import FloatingLoadingSpinner from '../../../components/FloatingLoadingSpinner';
+import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinner';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import StaffLeaderboard from './components/StaffLeaderboard';
 import Showcases from './components/Showcases';

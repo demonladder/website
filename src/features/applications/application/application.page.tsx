@@ -1,6 +1,6 @@
 import { Link, useLoaderData, useNavigate } from 'react-router';
 import Heading1 from '../../../components/headings/Heading1';
-import Page from '../../../components/Page';
+import Page from '../../../components/layout/Page';
 import { Application as IApplication } from '../../../api/types/Application';
 import { decodeDate } from '../../../utils/decodeDate';
 import GeneralInformation from './components/GeneralInformation';
@@ -9,7 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import GlobalSpinner from '../../../components/GlobalSpinner';
+import GlobalSpinner from '../../../components/ui/GlobalSpinner';
 
 export default function Application() {
     const app = useLoaderData<IApplication>();

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 import { NavButton } from '../../components/ui/NavButton';
-import Page from '../../components/Page';
+import Page from '../../components/layout/Page';
 
 export default function Settings() {
     return (

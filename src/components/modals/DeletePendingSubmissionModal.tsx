@@ -1,12 +1,12 @@
 import { toast } from 'react-toastify';
 import { DangerButton } from '../ui/buttons/DangerButton';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
-import Modal from '../Modal';
+import Modal from '../layout/Modal';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
 import FormGroup from '../form/FormGroup';
 import FormInputLabel from '../form/FormInputLabel';
-import { TextInput } from '../Input';
+import { TextInput } from '../shared/input/Input';
 import { useId, useState } from 'react';
 import DeletePendingSubmission from '../../api/submissions/DeletePendingSubmission';
 

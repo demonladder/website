@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
-import Page from '../../components/Page';
-import ListItem from '../../components/ListItem';
+import Page from '../../components/layout/Page';
+import ListItem from '../../components/shared/ListItem';
 
 export default function About() {
     return (
