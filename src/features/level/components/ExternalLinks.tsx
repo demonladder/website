@@ -34,19 +34,15 @@ export default function ExternalLinks({ level }: Props) {
 
     const { data: pointercrateData } = useQuery({
         queryKey: ['pointercrate', level.ID],
-        queryFn: () => axios.get<{ name: string, position: number, level_id: number, publisher: { name: string } }[]>(`https://pointercrate.com/api/v2/demons?name=${level.Meta.Name}`).then((res) => res.data),
+        queryFn: () => axios.get<{ position: number, level_id: number }[]>('https://pointercrate.com/api/v2/demons', { params: { level_id: level.ID }}).then((res) => res.data),
         enabled: inView,
     });
 
     const { data: SFHData } = useQuery({
         queryKey: ['songfilehub', level.ID],
-        queryFn: () => axios.get<SFHResponseDataObject[]>(`https://api.songfilehub.com/songs?levelID=${level.ID}&states=rated`).then((res) => res.data),
+        queryFn: () => axios.get<SFHResponseDataObject[]>('https://api.songfilehub.com/songs', { params: { levelID: level.ID, states: 'rated' }}).then((res) => res.data),
         enabled: inView,
     });
-
-    const pointercrate = pointercrateData?.find((l) => l.level_id === level.ID)
-        ?? pointercrateData?.find((l) => l.publisher.name === level.Meta.Publisher?.name)
-        ?? pointercrateData?.find((l) => l.name === level.Meta.Name && (l.publisher.name ? l.publisher.name === level.Meta.Publisher?.name : true));
 
     return (
         <section className='mt-6' ref={ref}>
@@ -57,8 +53,8 @@ export default function ExternalLinks({ level }: Props) {
                 {level.AREDLPosition !== undefined &&
                     <LinkButton link={`https://aredl.net/list/${level.ID}`} message={`AREDL - #${level.AREDLPosition}`} />
                 }
-                {pointercrate !== undefined &&
-                    <LinkButton link={`https://pointercrate.com/demonlist/${pointercrate.position}`} message={`Pointercrate - #${pointercrate.position}`} />
+                {pointercrateData !== undefined && pointercrateData.length > 0 &&
+                    <LinkButton link={`https://pointercrate.com/demonlist/${pointercrateData[0].position}`} message={`Pointercrate - #${pointercrateData[0].position}`} />
                 }
             </div>
             {SFHData !== undefined && SFHData.length !== 0 &&
