@@ -48,12 +48,12 @@ type SortDirections = keyof typeof sortDirections;
 
 function Submission({ level, submission }: SubmissionProps) {
     const { data: roles } = useRoles();
-    const userRoles = roles && submission.User.Roles.map((r) => roles.find(role => role.ID === r.ID)).filter((r) => r !== undefined);
-    const secondaryUserRoles = roles && submission.SecondaryUser?.Roles.map((r) => roles.find(role => role.ID === r.ID)).filter((r) => r !== undefined);
+    const userRoles = roles && submission.User.roles.map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
+    // const secondaryUserRoles = roles && submission.SecondaryUser?.roles.map((r) => roles.find(role => role.ID === r)).filter((r) => r !== undefined);
 
     // Find the highest non-null role color
     const iconRole = userRoles?.sort((a, b) => (a?.Ordering ?? 0) - (b?.Ordering ?? 0)).filter((r) => r?.Color !== null).at(0) ?? null;
-    const secondaryIconRole = secondaryUserRoles?.sort((a, b) => (a?.Ordering ?? 0) - (b?.Ordering ?? 0)).filter((r) => r?.Color !== null).at(0) ?? null;
+    // const secondaryIconRole = secondaryUserRoles?.sort((a, b) => (a?.Ordering ?? 0) - (b?.Ordering ?? 0)).filter((r) => r?.Color !== null).at(0) ?? null;
 
     const enj = submission.Enjoyment == null ? '-1' : submission.Enjoyment;
     const enjText = submission.Enjoyment == null ? '-' : submission.Enjoyment;
@@ -92,7 +92,8 @@ function Submission({ level, submission }: SubmissionProps) {
                 {submission.SecondaryUser
                     ? <>
                         <p className={iconRole ? 'font-bold' : ''} style={iconRole?.Color ? { color: `#${iconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedName} {iconRole?.Icon}</p>
-                        <p className={secondaryIconRole ? 'font-bold' : ''} style={secondaryIconRole?.Color ? { color: `#${secondaryIconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedSecondaryName} {secondaryIconRole?.Icon}</p>
+                        {/* <p className={secondaryIconRole ? 'font-bold' : ''} style={secondaryIconRole?.Color ? { color: `#${secondaryIconRole.Color.toString(16).padStart(6, '0')}` } : undefined}>{shortenedSecondaryName} {secondaryIconRole?.Icon}</p> */}
+                        <p className='text-sm text-white/70'>+ {shortenedSecondaryName}</p>
                     </>
                     : <div className='flex items-center gap-1'>
                         {submission.User.avatar && <img src={`https://cdn.gdladder.com/avatars/${submission.User.ID}/${submission.User.avatar}.png?size=32`} className='rounded-full max-w-8 max-h-8 self-center inline-block' alt='Profile' />}
