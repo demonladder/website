@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import NotificationButton from '../ui/Notifications';
-import useNavbarNotification from '../../context/NavbarNotification/useNavbarNotification';
+import useNavbarNotification from '../../context/navbarNotification/useNavbarNotification';
 import { useEffect } from 'react';
 import useSession from '../../hooks/useSession';
 import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';

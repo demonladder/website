@@ -7,7 +7,7 @@ import { secondsToHumanReadable } from '../../../utils/secondsToHumanReadable';
 import { IDMapper } from '../../../utils/IDMapper';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import type { GetUserListsResponse } from '../api/getUserLists';
-import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../../context/menu/useContextMenu';
 
 interface Props {
     userID: number;

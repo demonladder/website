@@ -13,7 +13,7 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import { useApproveClicked } from '../../admin/queue/hooks/useApproveClicked';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
-import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../../context/menu/useContextMenu';
 import PendingSubmission from '../../../api/types/PendingSubmission';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 import { useUserPendingSubmissions } from '../hooks/useUserPendingSubmissions';

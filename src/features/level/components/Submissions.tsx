@@ -7,7 +7,7 @@ import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import { Submission as ISubmission, SubmissionSort, getLevelSubmissions } from '../api/getLevelSubmissions';
 import useRoles from '../../../hooks/api/useRoles';
 import TwoPlayerButtons from './TwoPlayerButtons';
-import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../../context/menu/useContextMenu';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import Level from '../types/Level';

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MenuContext } from './MenuContext';
-import { PermissionFlags } from '../../../features/admin/roles/PermissionFlags';
-import useSession from '../../../hooks/useSession';
+import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
+import useSession from '../../hooks/useSession';
 import { Link } from 'react-router';
 
 export interface ButtonData {

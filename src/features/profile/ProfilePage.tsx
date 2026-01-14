@@ -12,7 +12,7 @@ import flagEmoji from '../../utils/flagEmoji';
 import Skills from './components/Skills';
 import Page from '../../components/layout/Page';
 import Heading1 from '../../components/headings/Heading1';
-import useContextMenu from '../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../context/menu/useContextMenu';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useUserColor } from '../../hooks/useUserColor';
 import InlineLoadingSpinner from '../../components/ui/InlineLoadingSpinner';

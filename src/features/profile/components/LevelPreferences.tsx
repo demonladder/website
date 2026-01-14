@@ -3,7 +3,7 @@ import Heading2 from '../../../components/headings/Heading2';
 import { getFavoriteLevels, GetFavoriteLevelsResponse, getLeastFavoriteLevels } from '../api/getFavoriteLevels';
 import Level, { LevelSkeleton } from '../../../components/shared/Level';
 import { useParams } from 'react-router';
-import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../../context/menu/useContextMenu';
 import APIClient from '../../../api/APIClient';
 import useSession from '../../../hooks/useSession';
 import { toast } from 'react-toastify';

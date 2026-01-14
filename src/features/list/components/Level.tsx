@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import DemonFace from '../../../components/shared/DemonFace';
 import { useRef, useState } from 'react';
-import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../../context/menu/useContextMenu';
 import { toast } from 'react-toastify';
 import { removeLevelFromList } from '../api/removeLevelFromList';
 import renderToastError from '../../../utils/renderToastError';

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ButtonData, MenuData } from './MenuContextContainer';
+import { ButtonData, MenuData } from './MenuContextProvider';
 import { MenuContext } from './MenuContext';
 
 export default function useContextMenu(): (data: MenuData) => void;

@@ -7,7 +7,7 @@ import { GridLevel } from '../../../components/shared/GridLevel';
 import Level, { LevelSkeleton } from '../../../components/shared/Level';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import { TextInput } from '../../../components/shared/input/Input';
-import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../../context/menu/useContextMenu';
 import useLateValue from '../../../hooks/useLateValue';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';

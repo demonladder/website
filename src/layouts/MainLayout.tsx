@@ -2,20 +2,20 @@
 
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
-import ModalProvider from '../context/ModalProvider';
+import ModalProvider from '../context/modal/ModalProvider';
 import Header from './header/Header';
-import NavbarNotificationRenderer from '../context/NavbarNotification/NavbarNotificationRenderer';
+import NavbarNotificationRenderer from '../context/navbarNotification/NavbarNotificationRenderer';
 import { Outlet, useNavigate, useNavigation } from 'react-router';
 import Footer from './footer/Footer';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import noise3D from '../utils/noise/noise3D';
 import { useWindowSize } from 'usehooks-ts';
 import useResizeObserver from '@react-hook/resize-observer';
-import useNavbarNotification from '../context/NavbarNotification/useNavbarNotification';
+import useNavbarNotification from '../context/navbarNotification/useNavbarNotification';
 import APIClient from '../api/APIClient';
 import { useApp } from '../context/app/useApp';
 import GlobalSpinner from '../components/ui/GlobalSpinner';
-import MenuContextProvider from '../components/ui/menuContext/MenuContextContainer';
+import MenuContextProvider from '../context/menu/MenuContextProvider';
 import { useShortcut } from 'react-keybind';
 import Search from '../components/input/search/Search';
 

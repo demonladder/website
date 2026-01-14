@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router';
 import { QueryParamProvider } from 'use-query-params';
-import ModalProvider from '../../context/ModalProvider';
+import ModalProvider from '../../context/modal/ModalProvider';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { NavButton } from '../../components/ui/NavButton';
 import { Suspense, useState } from 'react';

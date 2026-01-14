@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { MenuData } from './MenuContextContainer';
+import { MenuData } from './MenuContextProvider';
 
 export const MenuContext = createContext<{
     menuData: MenuData | undefined;

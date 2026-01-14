@@ -8,7 +8,7 @@ import { getTagEligibility } from '../api/getTagEligibility';
 import TagInfoModal from './TagInfoModal';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { useTags } from '../../../hooks/api/tags/useTags';
-import useContextMenu from '../../../components/ui/menuContext/useContextMenu';
+import useContextMenu from '../../../context/menu/useContextMenu';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import { removeTagVotes } from '../api/removeTagVotes';
 import renderToastError from '../../../utils/renderToastError';
