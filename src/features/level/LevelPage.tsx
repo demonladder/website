@@ -104,14 +104,14 @@ export default function LevelPage() {
                                 <p className='text-4xl font-bold text-center min-w-28'>
                                     {rating?.toFixed() ?? '-'}
                                 </p>
-                                <p className='text-gray-600 text-sm'>({rating?.toFixed(2) ?? '-'})</p>
+                                <p className='opacity-60 text-sm'>({rating?.toFixed(2) ?? '-'})</p>
                             </div>
                             <div className={`max-md:w-1/2 py-4 enj-${enjoyment?.toFixed() ?? '-1'} round:rounded-r-lg`}>
                                 <p className='text-center text-lg' style={{ lineHeight: '1' }}>Enjoyment</p>
                                 <p className={`text-4xl font-bold text-center min-w-28`}>
                                     {enjoyment?.toFixed() ?? '-'}
                                 </p>
-                                <p className='text-gray-600 text-sm'>({enjoyment?.toFixed(2) ?? '-'})</p>
+                                <p className='opacity-60 text-sm'>({enjoyment?.toFixed(2) ?? '-'})</p>
                             </div>
                         </div>
                         : <div className='flex items-start text-center'>
