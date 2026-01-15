@@ -22,7 +22,7 @@ export default function Showcase({ level }: Props) {
     return (
         <div className='mt-6'>
             <Heading2 className='mb-2' id='levelShowcase'>Showcase</Heading2>
-            <LiteYouTubeEmbed id={level.Showcase} title={`Showcase video for ${level.Meta.Name}`} />
+            <LiteYouTubeEmbed thumbnail={`https://i.ytimg.com/vi/${level.Showcase}/maxresdefault.jpg`} id={level.Showcase} title={`Showcase video for ${level.Meta.Name}`} />
         </div>
     );
 }
