@@ -7,13 +7,10 @@ import { UserStat } from './UserStat';
 import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
 import { Link } from 'react-router';
 import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
-import DiscordUserData from '../../../../api/types/DiscordUserData';
 import { useVerificationRole } from '../hooks/useVerificationRole';
 
 interface Props {
-    user: User & {
-        DiscordData: DiscordUserData;
-    };
+    user: User;
 }
 
 export default function VerifiedUser({ user }: Props) {

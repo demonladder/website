@@ -1,13 +1,10 @@
 import APIClient from '../APIClient';
-import DiscordUserData from '../types/DiscordUserData';
 import User from '../types/User';
 
 export interface StaffLeaderboardRecord {
     UserID: number;
     Points: number;
-    User?: User & {
-        DiscordData: DiscordUserData;
-    };
+    User?: User;
 }
 
 interface ResponseDTO {

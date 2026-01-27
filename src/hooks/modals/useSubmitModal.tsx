@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import SubmitModal from '../../components/modals/SubmitModal';
 import useModal from './useModal';
-import SyncDiscordModal from '../../components/modals/SyncDiscordModal';
 import useSession from '../useSession';
+import { toast } from 'react-toastify';
 
 export default function useSubmitModal() {
     const { createModal, closeModal } = useModal();
@@ -10,14 +10,7 @@ export default function useSubmitModal() {
     const session = useSession();
 
     const open = useCallback((level: Parameters<typeof SubmitModal>[0]['level']) => {
-        if (!session?.user?.DiscordData) {
-            const ID = 'sync-discord';
-            createModal(
-                ID,
-                <SyncDiscordModal onClose={() => closeModal(ID)} />,
-            );
-            return;
-        }
+        if (!session.user) return toast.error('You must be logged in to submit ratings!');
 
         const ID = `submit-${level.ID}`;
         createModal(

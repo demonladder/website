@@ -10,4 +10,5 @@ export default interface User {
     Pronouns: string | null;
     IsBot: boolean;
     avatar: string | null;
+    accentColor: number | null;
 }

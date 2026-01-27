@@ -1,5 +1,4 @@
 import APIClient from '../../../../api/APIClient';
-import DiscordUserData from '../../../../api/types/DiscordUserData';
 import User from '../../../../api/types/User';
 
 export interface GetVerifiedUsersResponseOptions {
@@ -10,9 +9,7 @@ export interface GetVerifiedUsersResponseOptions {
 
 interface GetVerifiedUsersResponse {
     total: number;
-    users: (User & {
-        DiscordData: DiscordUserData;
-    })[];
+    users: User[];
 }
 
 export async function getVerifiedUsers(options?: GetVerifiedUsersResponseOptions) {

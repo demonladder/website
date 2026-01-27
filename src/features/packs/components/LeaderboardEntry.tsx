@@ -1,14 +1,13 @@
 import { Link } from 'react-router';
-import DiscordUserData from '../../../api/types/DiscordUserData';
 import User from '../../../api/types/User';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 
-export function LeaderboardEntry({ discordData, highestScore, sum, user, userID }: { sum: number, user: Pick<User, 'Name' | 'avatar'>, userID: number, discordData: Pick<DiscordUserData, 'AccentColor'> | null, highestScore?: number }) {
+export function LeaderboardEntry({ highestScore, sum, user, userID }: { sum: number, user: Pick<User, 'Name' | 'avatar' | 'accentColor'>, userID: number, highestScore?: number }) {
     if (highestScore === undefined) return (<LoadingSpinner />);
 
     const width = sum * 100 / highestScore;
 
-    const profileColor = discordData?.AccentColor ? parseInt(discordData.AccentColor) : 0;
+    const profileColor = user.accentColor ?? 0;
 
     const red = profileColor >> 16;
     const green = (profileColor >> 8) & 0xff;

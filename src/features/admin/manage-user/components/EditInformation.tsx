@@ -73,10 +73,10 @@ export default function EditInformation({ user }: { user: UserResponse }) {
             </form>
             <div>
                 <Heading3 className='mt-4'>Discord link</Heading3>
-                {user.DiscordData
+                {user.Account
                     ? <>
-                        <p>ID: <b>{user.DiscordData.ID}</b></p>
-                        <p>Username: <b>{user.DiscordData.Username}</b></p>
+                        <p>ID: <b>{user.Account.ID}</b></p>
+                        <p>Username: <b>{user.Account.discordUsername}</b></p>
                     </>
                     : <p>User's profile is not linked to any Discord account!</p>
                 }

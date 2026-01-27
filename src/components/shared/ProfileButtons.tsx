@@ -1,7 +1,5 @@
 import { Link } from 'react-router';
 import NotificationButton from '../ui/Notifications';
-import useNavbarNotification from '../../context/navbarNotification/useNavbarNotification';
-import { useEffect } from 'react';
 import useSession from '../../hooks/useSession';
 import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
 import { difficultyToImgSrc, DemonLogoSizes } from '../../utils/difficultyToImgSrc';
@@ -26,14 +24,6 @@ interface Props {
 
 function ProfileButton({ onClick, userID, size = 'large' }: Props) {
     const session = useSession();
-
-    const { discordSync } = useNavbarNotification();
-    useEffect(() => {
-        if (session.user && !session.user.DiscordData) {
-            discordSync();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const pfpSize = size === 'small' ? '48' : '56';
 

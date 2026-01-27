@@ -39,6 +39,7 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                     Pronouns: user.Pronouns,
                     IsBot: user.IsBot,
                     avatar: user.avatar,
+                    accentColor: user.accentColor,
                 });
             }).catch(console.error);
         }

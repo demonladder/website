@@ -1,13 +1,10 @@
 import APIClient from '../../../api/APIClient';
-import type DiscordUserData from '../../../api/types/DiscordUserData';
 import User from '../../../api/types/User';
 
 interface PackLeaderResponse {
     UserID: number;
     Sum: number;
-    User: Pick<User, 'Name' | 'avatar'> & {
-        DiscordData: Pick<DiscordUserData, 'AccentColor'> | null;
-    };
+    User: Pick<User, 'Name' | 'avatar' | 'accentColor'>;
 }
 
 export async function getGlobalPackLeaders(packID?: number): Promise<PackLeaderResponse[]> {
