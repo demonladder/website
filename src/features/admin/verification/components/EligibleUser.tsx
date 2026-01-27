@@ -5,10 +5,9 @@ import useUserQuery from '../../../../hooks/queries/useUserQuery';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
-import AddRoleToUser from '../../../../api/user/AddRoleToUser';
 import { UserStat } from './UserStat';
-import { useVerificationRole } from '../hooks/useVerificationRole';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { verifyUser } from '../api/verifyUser';
 
 interface Props {
     userID: number;
@@ -18,13 +17,14 @@ interface Props {
 
 export default function EligibleUser({ userID, submissions, distinctApprovals }: Props) {
     const user = useUserQuery(userID);
-    const verificationRole = useVerificationRole();
     const queryClient = useQueryClient();
 
-    function onVerify() {
-        if (!verificationRole.data) return toast.error('Verification role not set');
+    const verifyMutation = useMutation({
+        mutationFn: () => verifyUser(userID),
+    });
 
-        void toast.promise(AddRoleToUser(userID, verificationRole.data.ID), {
+    function onVerify() {
+        void toast.promise(verifyMutation.mutateAsync(), {
             pending: 'Verifying user...',
             success: 'User verified!',
             error: renderToastError,
@@ -63,7 +63,7 @@ export default function EligibleUser({ userID, submissions, distinctApprovals }:
                     <UserStat label='Pending'>{user.data.PendingSubmissionCount}</UserStat>
                 </div>
                 <div className='flex mt-4'>
-                    <PrimaryButton className='grow' onClick={onVerify}>Verify</PrimaryButton>
+                    <PrimaryButton className='grow' onClick={onVerify} loading={verifyMutation.isPending}>Verify</PrimaryButton>
                 </div>
             </>}
         </div>
