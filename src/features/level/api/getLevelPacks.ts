@@ -7,6 +7,6 @@ interface GetLevelPacksResponse extends Pack {
 }
 
 export async function getLevelPacks(levelID: number): Promise<GetLevelPacksResponse[]> {
-    const res = await APIClient.get<GetLevelPacksResponse[]>(`/level/${levelID}/packs`);
+    const res = await APIClient.get<GetLevelPacksResponse[]>(`/levels/${levelID}/packs`);
     return res.data;
 }

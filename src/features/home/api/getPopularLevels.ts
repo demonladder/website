@@ -14,6 +14,6 @@ export interface LevelPreviewDTO {
 }
 
 export async function getPopularLevels(): Promise<LevelPreviewDTO[]> {
-    const res = await APIClient.get<LevelPreviewDTO[]>('/level/popular');
+    const res = await APIClient.get<LevelPreviewDTO[]>('/levels/popular');
     return res.data;
 }

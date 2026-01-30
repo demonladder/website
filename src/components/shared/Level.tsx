@@ -18,7 +18,7 @@ interface Props {
     actualEnjoyment?: number | null;
     completed?: boolean;
     name: string;
-    creator?: string;
+    creator?: string | null;
     songName?: string;
     onContextMenu?: React.MouseEventHandler;
     selected?: boolean;

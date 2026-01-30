@@ -60,7 +60,7 @@ export async function getLevelSubmissions({
     sortDirection,
     username,
 }: GetLevelSubmissionsRequest) {
-    const res = await APIClient.get<GetLevelSubmissionsResponse>(`/level/${levelID}/submissions`, {
+    const res = await APIClient.get<GetLevelSubmissionsResponse>(`/levels/${levelID}/submissions`, {
         params: {
             page,
             limit,

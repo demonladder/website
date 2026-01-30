@@ -10,7 +10,7 @@ export async function updateLevel(levelID: number, data: UpdateLevelRequest) {
     const sanitizedDefaultRating = parseInt(data.defaultRating.trim()) || null;
     const sanitizedShowcase = data.showcase || null;
 
-    const res = await APIClient.put<Level>(`/level/${levelID}`, {
+    const res = await APIClient.put<Level>(`/levels/${levelID}`, {
         defaultRating: sanitizedDefaultRating,
         showcase: sanitizedShowcase,
     });

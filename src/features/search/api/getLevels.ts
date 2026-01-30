@@ -5,7 +5,7 @@ interface SearchInfo {
     total: number;
     limit: number;
     page: number;
-    levels: SearchLevelResponse[];
+    data: SearchLevelResponse[];
 }
 
 export interface SearchLevelRequest {
@@ -22,7 +22,7 @@ export interface SearchLevelResponse {
     ID: number;
     Rating: number | null;
     Enjoyment: number | null;
-    Completed: 0 | 1;
+    Completed?: 0 | 1;
     InPack: 0 | 1;
     Meta: {
         Name: string;
@@ -31,19 +31,17 @@ export interface SearchLevelResponse {
         Song: {
             Name: string;
         };
-        Publisher?: {
-            name: string;
+        Publisher: {
+            name: string | null;
         };
     };
 }
 
 export async function getLevels(q: SearchLevelRequest): Promise<SearchInfo> {
-    const res = await APIClient.get<SearchInfo>('/level/search', {
+    const res = await APIClient.get<SearchInfo>('/levels', {
         params: {
             limit: 16,
             ...q,
-            properties:
-                'total,limit,page,levels(ID,Rating,Enjoyment,Showcase,Completed,InPack,Meta(Name,Creator,Difficulty,Rarity,Song(Name),Publisher))',
         },
     });
     return res.data;

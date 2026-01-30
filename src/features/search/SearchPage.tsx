@@ -81,7 +81,7 @@ export default function Search() {
         [QueryParamNames.MaxID]: NumberParam,
         [QueryParamNames.TwoPlayer]: StringParam,
         [QueryParamNames.Update]: StringParam,
-        [QueryParamNames.TopSkillset]: StringParam,
+        [QueryParamNames.TopTagID]: StringParam,
         [QueryParamNames.ExcludeCompleted]: BooleanParam,
         [QueryParamNames.ExcludeUnrated]: BooleanParam,
         [QueryParamNames.ExcludeUnratedEnjoyment]: BooleanParam,
@@ -141,13 +141,13 @@ export default function Search() {
     function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
-            setSelection((prev) => Math.min(prev + 1, searchData?.levels.length ?? 0));
+            setSelection((prev) => Math.min(prev + 1, searchData?.data.length ?? 0));
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
             setSelection((prev) => Math.max(prev - 1, 0));
         } else if (e.key === 'Enter') {
             if (selection > 0) {
-                const level = searchData?.levels[selection - 1];
+                const level = searchData?.data[selection - 1];
                 if (level) {
                     void navigate('/level/' + level.ID);
                 }
@@ -229,9 +229,9 @@ export default function Search() {
                         <p><b className='text-lg'>Filters:</b> {...filters}</p>
                     </div>
                 }
-                {searchData.levels && app.levelViewType === LevelViewType.LIST
-                    ? <LevelRenderer element={Level} levels={searchData.levels} selectedLevel={selection} className='my-2' />
-                    : <LevelRenderer element={GridLevel} levels={searchData.levels} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2' selectedLevel={selection} />
+                {searchData.data && app.levelViewType === LevelViewType.LIST
+                    ? <LevelRenderer element={Level} levels={searchData.data} selectedLevel={selection} className='my-2' />
+                    : <LevelRenderer element={GridLevel} levels={searchData.data} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2' selectedLevel={selection} />
                 }
                 <div className='my-4'>
                     <PageButtons meta={{ total: searchData.total, page, limit: 16 }} onPageChange={setPage} />

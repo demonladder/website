@@ -5,12 +5,12 @@ interface LevelProps {
     rating: number | null;
     enjoyment: number | null;
     name: string;
-    creator?: string;
+    creator?: string | null;
     songName: string;
     difficulty: Difficulties;
     rarity: Rarity;
     inPack: boolean;
-    completed: boolean;
+    completed?: boolean;
     selected?: boolean;
     showcase?: string | null;
     proof?: string;
@@ -27,13 +27,13 @@ interface LevelDTO {
             Name: string;
         };
         Publisher?: {
-            name: string;
+            name: string | null;
         };
         Difficulty: Difficulties;
         Rarity: Rarity;
     };
     InPack?: 0 | 1;
-    Completed: 0 | 1;
+    Completed?: 0 | 1;
 }
 
 interface Props {

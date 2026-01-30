@@ -9,7 +9,7 @@ interface SpreadResponse {
 }
 
 async function getSubmissionSpread(levelID: number) {
-    const res = await APIClient.get<SpreadResponse>(`/level/${levelID}/submissions/spread`);
+    const res = await APIClient.get<SpreadResponse>(`/levels/${levelID}/submissions/spread`);
     const data = res.data;
 
     return {

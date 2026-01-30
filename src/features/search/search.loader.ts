@@ -50,7 +50,7 @@ export function searchLoader({ request }: LoaderFunctionArgs) {
                 [QueryParamNames.MaxID]: NumberParam.decode(params.get(QueryParamNames.MaxID) ?? undefined),
                 [QueryParamNames.TwoPlayer]: StringParam.decode(params.get(QueryParamNames.TwoPlayer) ?? undefined),
                 [QueryParamNames.Update]: StringParam.decode(params.get(QueryParamNames.Update) ?? undefined),
-                [QueryParamNames.TopSkillset]: StringParam.decode(params.get(QueryParamNames.TopSkillset) ?? undefined),
+                [QueryParamNames.TopTagID]: StringParam.decode(params.get(QueryParamNames.TopTagID) ?? undefined),
                 [QueryParamNames.ExcludeCompleted]: BooleanParam.decode(
                     params.get(QueryParamNames.ExcludeCompleted) ?? undefined,
                 ),

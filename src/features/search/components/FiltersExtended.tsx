@@ -48,7 +48,7 @@ export default function FiltersExtended() {
     const [maxID, setMaxID] = useQueryParam(QueryParamNames.MaxID, NumberParam);
     const [twoPlayer, setTwoPlayer] = useQueryParam(QueryParamNames.TwoPlayer, withDefault(TwoPlayerParam, 'any'));
     const [update] = useQueryParam(QueryParamNames.Update, withDefault(UpdateParam, 'any'));
-    const [topSkillset, setTopSkillset] = useQueryParam(QueryParamNames.TopSkillset, withDefault(NumberParam, 0));
+    const [topTagID, setTopTagID] = useQueryParam(QueryParamNames.TopTagID, withDefault(NumberParam, 0));
     const [excludeCompleted, setExcludeCompleted] = useQueryParam(QueryParamNames.ExcludeCompleted, withDefault(BooleanParam, false));
     const [excludeUnrated, setExcludeUnrated] = useQueryParam(QueryParamNames.ExcludeUnrated, withDefault(BooleanParam, false));
     const [exculdeUnratedEnj, setExcludeUnratedEnj] = useQueryParam(QueryParamNames.ExcludeUnratedEnjoyment, withDefault(BooleanParam, false));
@@ -136,7 +136,7 @@ export default function FiltersExtended() {
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Top skillset:</p>
-                    <Select height='20' activeKey={topSkillset} options={tagOptions} onChange={(key) => setTopSkillset(key)} id='skillsetSelectOptions' />
+                    <Select height='20' activeKey={topTagID} options={tagOptions} onChange={(key) => setTopTagID(key)} id='skillsetSelectOptions' />
                 </div>
             </div>
             <Divider />

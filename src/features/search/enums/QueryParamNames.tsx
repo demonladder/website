@@ -20,7 +20,7 @@ export enum QueryParamNames {
     MaxDeviation = 'maxDeviation',
     TwoPlayer = 'twoPlayer',
     Update = 'update',
-    TopSkillset = 'topSkillset',
+    TopTagID = 'topTagID',
     ExcludeCompleted = 'excludeCompleted',
     ExcludeUnrated = 'excludeUnrated',
     ExcludeUnratedEnjoyment = 'excludeUnratedEnjoyment',

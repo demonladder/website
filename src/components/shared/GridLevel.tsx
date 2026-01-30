@@ -15,7 +15,7 @@ interface GridProps {
     enjoyment: number | null;
     proof?: string | null;
     name: string;
-    creator?: string;
+    creator?: string | null;
     difficulty: Difficulties;
     rarity: Rarity;
     completed?: boolean;
@@ -57,8 +57,8 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                                 <YesTick className='inline-block ms-1 mb-1 size-6' />
                             }
                         </p>
-                        {creator &&
-                            <p>by {creator}</p>
+                        {creator !== undefined &&
+                            <p>by {creator ?? '(-)'}</p>
                         }
                         {position !== undefined &&
                             <p>#{position}</p>

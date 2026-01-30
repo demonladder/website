@@ -4,7 +4,7 @@
   "version": "2.2.6",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "bunx --bun vite --host",
     "test": "mocha",
     "type-check": "tsc --noEmit",
     "build": "tsc && vite build",
