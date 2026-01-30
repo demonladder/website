@@ -3,6 +3,8 @@
     transition-property: all;
     transition-duration: 350ms;
     transition-timing-function: cubic-bezier(0.42, 1.67, 0.21, 0.90);
+    display: grid;
+    place-items: center;
 
     --container-color: black;
     --container-opacity: 0%;
