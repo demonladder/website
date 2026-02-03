@@ -1,14 +1,29 @@
 import { Link, NavLink } from 'react-router';
 import { BookReaderIcon } from '../components/shared/icons/BookReaderIcon';
 import { useEventListener } from 'usehooks-ts';
-import ProfileButtons from '../components/shared/ProfileButtons';
-import { useState } from 'react';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
 import { BellIcon, BookIcon, CogIcon, DashboardIcon, Dice5Icon, DoorOpenIcon, HomeIcon, PackageIcon, SearchIcon, UserIcon } from '../components/shared/icons';
+import { DemonLogoSizes, difficultyToImgSrc } from '../utils/difficultyToImgSrc';
+import { useApp } from '../context/app/useApp';
+
+function MenuLink({ to, children, label }: { to: string; children: React.ReactNode, label: string }) {
+    const app = useApp();
+
+    return (
+        <li className='not-first:mt-2 list-none'>
+            <NavLink to={to} onClick={() => app.set('showSideBar', false)} className={({ isActive }) => 'flex align-middle gap-1 p-2 hover:bg-theme-700 transition-colors rounded-lg' + (isActive ? ' bg-theme-700 font-bold' : ' ')}>
+                {children}
+                <span>{label}</span>
+            </NavLink>
+        </li>
+    );
+}
 
 export default function Sidebar() {
-    const [show, setShow] = useState(false);
+    const app = useApp();
+    const show = app.showSideBar;
+    const setShow = (value: boolean) => app.set('showSideBar', value);
     const session = useSession();
 
     useEventListener('keydown', (e) => {
@@ -18,15 +33,9 @@ export default function Sidebar() {
         }
     });
 
-    function MenuLink({ to, children, label }: { to: string; children: React.ReactNode, label: string }) {
-        return (
-            <li className='not-first:mt-2 list-none'>
-                <NavLink to={to} onClick={() => setShow(false)} className={({ isActive }) => 'flex align-middle gap-1 p-2 hover:bg-theme-700 transition-colors rounded-lg' + (isActive ? ' bg-theme-700 font-bold' : ' ')}>
-                    {children}
-                    <span>{label}</span>
-                </NavLink>
-            </li>
-        );
+    function onSignOut() {
+        void session.logout();
+        setShow(false);
     }
 
     return (
@@ -43,34 +52,41 @@ export default function Sidebar() {
                         <h1 className='text-2xl font-bold'>GDDL</h1>
                         <button className='bx bx-x text-4xl' onClick={() => setShow(false)} />
                     </div>
-                    <div className={'absolute fast-effect-transition top-6 ' + (show ? 'translate-y-10 right-1/2 translate-x-1/2 px-4' : '-translate-x-full text-theme-header-text left-0 px-6 sm:px-8 md:px-16')}>
-                        <ProfileButtons onClick={() => setShow(true)} hover={!show} onMenuClose={() => setShow(false)} />
-                    </div>
-                    <div className='opacity-0 pointer-events-none'>
-                        <ProfileButtons hover={!show} />
-                    </div>
+                    {session.user &&
+                        <div>
+                            {session.user?.avatar
+                                ? <img src={`https://cdn.gdladder.com/avatars/${session.user.ID}/${session.user.avatar}.png?size=${56}`} width={56} height={56} className='rounded-full mx-auto' />
+                                : <img src={difficultyToImgSrc(session.user?.Hardest?.Meta.Difficulty, DemonLogoSizes.SMALL)} width={56} height={56} className='mx-auto' />
+                            }
+                            <p className='text-lg text-center'>{session.user.Name}</p>
+                        </div>
+                    }
                     <MenuLink to='/' label='Home'><HomeIcon /></MenuLink>
-                    <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
-                        <p className='px-2 text-theme-400 text-sm'>Account</p>
-                        <MenuLink to={'/profile/' + session.user?.ID} label='Profile'><UserIcon /></MenuLink>
-                        <MenuLink to='/notifications' label='Notifications'><BellIcon /></MenuLink>
-                        <MenuLink to='/settings/profile' label='Settings'><CogIcon /></MenuLink>
-                        <button onClick={() => void session.logout()} className='p-2 hover:bg-theme-700 transition-colors rounded-lg w-full mt-2 flex items-center gap-1'><DoorOpenIcon /> Sign out</button>
-                    </ul>
+                    {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
+                        <MenuLink to='/mod' label='Dashboard'><DashboardIcon /></MenuLink>
+                    }
+                    {session.user &&
+                        <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
+                            <p className='px-2 text-theme-400 text-sm'>Account</p>
+                            <MenuLink to={'/profile/' + session.user?.ID} label='Profile'><UserIcon /></MenuLink>
+                            <MenuLink to='/notifications' label='Notifications'><BellIcon /></MenuLink>
+                            <MenuLink to='/settings/profile' label='Settings'><CogIcon /></MenuLink>
+                            <button onClick={onSignOut} className='p-2 hover:bg-theme-700 transition-colors rounded-lg w-full mt-2 flex items-center gap-1'><DoorOpenIcon /> Sign out</button>
+                        </ul>
+                    }
                     <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
                         <p className='px-2 text-theme-400 text-sm'>Levels</p>
                         <MenuLink to='/search' label='Levels'><SearchIcon /></MenuLink>
                         <MenuLink to='/references' label='References'><BookIcon /></MenuLink>
                         <MenuLink to='/about' label='Guidelines'><BookReaderIcon /></MenuLink>
-                        <Link to='/submit' className='p-2 mt-2 transition-colors rounded-lg bg-blue-600 inline-block w-full text-center'>Submit</Link>
+                        {session.user &&
+                            <Link to='/submit' className='p-2 mt-2 transition-colors rounded-lg bg-blue-600 inline-block w-full text-center'>Submit</Link>
+                        }
                     </ul>
                     <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
                         <p className='px-2 text-theme-400 text-sm'>Misc</p>
                         <MenuLink to='/packs' label='Packs'><PackageIcon /></MenuLink>
                         <MenuLink to='/generators' label='Generators'><Dice5Icon /></MenuLink>
-                        {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
-                            <MenuLink to='/mod' label='Dashboard'><DashboardIcon /></MenuLink>
-                        }
                     </ul>
                 </div>
             </div>

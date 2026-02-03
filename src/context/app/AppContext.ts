@@ -16,6 +16,7 @@ export interface AppSettings {
     highlightCompleted: boolean;
     levelViewType: LevelViewType;
     levelsUseDecimals: boolean;
+    showSideBar: boolean;
 }
 
 interface IAppContext extends Partial<AppSettings> {
