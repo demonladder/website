@@ -21,6 +21,8 @@ export default function Surface({ variant, size = 'md', className, ...props }: P
         'xl': 'shadow-xl px-8 py-6 round:rounded-2xl',
     }[size];
 
+    classNames += ' border border-theme-outline';
+
     if (className) classNames += ' ' + className;
 
     return (

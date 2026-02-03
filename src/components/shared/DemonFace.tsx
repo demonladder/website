@@ -14,14 +14,7 @@ interface Props {
 export default function DemonFace(props: Props) {
     const diff = props.diff ?? props.meta?.Difficulty;
     const rarity = props.rarity ?? props.meta?.Rarity ?? Rarity.STAR;
-    const size = props.size ?? DemonLogoSizes.EXTRA_LARGE;
-
-    const sizeClass = {
-        [DemonLogoSizes.SMALL]: 'w-[71px] h-16',
-        [DemonLogoSizes.MEDIUM]: 'w-[143px] h-32',
-        [DemonLogoSizes.LARGE]: 'w-[179px] h-40',
-        [DemonLogoSizes.EXTRA_LARGE]: 'w-[213px] h-48',
-    }[size];
+    const size = props.size ?? DemonLogoSizes.MEDIUM;
 
     const r = ((rarity: Rarity) => {
         if (rarity == Rarity.FEATURE) return 'feature';
@@ -31,9 +24,10 @@ export default function DemonFace(props: Props) {
     })(rarity);
 
     return (
-        <div className={`inline-block relative ${sizeClass}`}>
-            {rarity !== Rarity.STAR && <img src={`/images/rarity/${r}_${size}.webp`} className='absolute' />}
-            <img src={difficultyToImgSrc(diff, size)} className='absolute' />
+        <div className='inline-block relative'>
+            {rarity !== Rarity.STAR && <img src={`/images/rarity/${r}_${size}.webp`} width={size} className='absolute' />}
+            <img src={difficultyToImgSrc(diff, size)} width={size} className='absolute' />
+            <img src={difficultyToImgSrc(diff, size)} width={size} className='opacity-0' />
         </div>
     );
 }

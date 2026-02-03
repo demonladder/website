@@ -10,6 +10,7 @@ import useSession from '../../../hooks/useSession';
 import { List } from '../types/List';
 import { GetListResponse } from '../api/getList';
 import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
+import { useWindowSize } from 'usehooks-ts';
 
 interface Props {
     list: Pick<List, 'ID' | 'OwnerID'>;
@@ -89,6 +90,8 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
         { type: 'danger', text: 'Remove', onClick: onRemoveLevel },
     ]);
 
+    const windowSize = useWindowSize();
+
     return (
         <li ref={itemRef} id={listLevel.LevelID.toString()} draggable={true} onDragStart={dragStartHandler} onDragEnd={dragStopHandler} onDragOver={dragOverHandler} onDragLeave={dragLeaveHandler} onDrop={(e) => dropHandler(e)} className={isDragged ? 'opacity-0' : (dragOver ? 'opacity-50' : '')} onContextMenu={openContext}>
             <div className='grid grid-cols-12 max-xl:gap-2 group/menu'>
@@ -104,16 +107,16 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
                     }
                 </div>
                 <Link to={`/level/${listLevel.LevelID}`} className='col-span-11 flex grow bg-theme-700 hover:bg-theme-600'>
-                    <DemonFace diff={listLevel.Level.Meta?.Difficulty} rarity={listLevel.Level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
-                    <div className='self-center text-sm lg:text-xl mx-6'>
+                    <DemonFace diff={listLevel.Level.Meta?.Difficulty} rarity={listLevel.Level.Meta.Rarity} size={windowSize.width < 1024 ? DemonLogoSizes.SMALL : DemonLogoSizes.MEDIUM} />
+                    <div className='self-center text-sm lg:text-xl ms-2 grow'>
                         <h3 className='lg:text-2xl font-bold break-all whitespace-pre-wrap'>{listLevel.Level.Meta?.Name}</h3>
                         <p className='text-gray-300'><i>{listLevel.Level.Meta?.Publisher?.name}</i></p>
                     </div>
-                    <div className={'ms-auto w-8 lg:w-32 lg:h-32 grid place-items-center group ' + ratingClass}>
+                    <div className={'w-10 lg:w-32 lg:h-32 grid place-items-center group ' + ratingClass}>
                         <p className='lg:text-3xl group-hover:hidden '>{listLevel.Level.Rating !== null ? roundedRating : 'N/A'}</p>
                         <p className='lg:text-3xl hidden group-hover:block '>{listLevel.Level.Rating !== null ? fixedRating : 'N/A'}</p>
                     </div>
-                    <div className={'w-8 lg:w-32 lg:h-32 grid place-items-center group ' + enjoymentClass}>
+                    <div className={'w-10 lg:w-32 lg:h-32 grid place-items-center group ' + enjoymentClass}>
                         <p className='lg:text-3xl group-hover:hidden '>{listLevel.Level.Enjoyment !== null ? roundedEnjoyment : 'N/A'}</p>
                         <p className='lg:text-3xl hidden group-hover:block '>{listLevel.Level.Enjoyment !== null ? fixedEnjoyment : 'N/A'}</p>
                     </div>

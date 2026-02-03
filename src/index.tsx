@@ -29,11 +29,21 @@ function createRoot() {
     return root;
 }
 
-document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') ?? ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark')).matches ? 'dark' : 'white'));
+document.documentElement.setAttribute(
+    'data-theme',
+    localStorage.getItem('theme') ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'white'),
+);
 document.documentElement.setAttribute('data-font', localStorage.getItem('font') ?? 'default');
 
 const rootElement = document.getElementById('root') ?? createRoot();
 const root = ReactDOM.createRoot(rootElement);
+
+kofiWidgetOverlay.draw('gddemonladder', {
+    type: 'floating-chat',
+    'floating-chat.donateButton.text': 'Donate',
+    'floating-chat.donateButton.background-color': '#00b9fe',
+    'floating-chat.donateButton.text-color': '#fff',
+});
 
 root.render(
     <React.StrictMode>
@@ -45,6 +55,10 @@ root.render(
                 </NavbarNotificationProvider>
             </AppProvider>
         </QueryClientProvider>
-        <ToastContainer theme='dark' pauseOnFocusLoss={false} position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'} />
+        <ToastContainer
+            theme='dark'
+            pauseOnFocusLoss={false}
+            position={window.innerWidth > 640 ? 'bottom-right' : 'top-center'}
+        />
     </React.StrictMode>,
 );

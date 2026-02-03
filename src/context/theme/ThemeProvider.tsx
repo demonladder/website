@@ -19,7 +19,7 @@ export default function ThemeProvider({ children }: { children?: React.ReactNode
 
     return (
         <ThemeContext.Provider value={{ enabled, setEnabled, theme, set: setTheme, clear }}>
-            <div className={'min-h-dvh text-theme-text' + (app.isRounded ? ' round' : '')} style={enabled ? reduced : undefined}>
+            <div className={'h-dvh text-theme-text' + (app.isRounded ? ' round' : '')} style={enabled ? reduced : undefined}>
                 {children}
             </div>
         </ThemeContext.Provider>

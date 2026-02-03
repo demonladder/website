@@ -19,6 +19,6 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true
     },
-    "include": ["src", "index.d.ts", "test"],
+    "include": ["src", "test"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -3,10 +3,10 @@
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ModalProvider from '../context/modal/ModalProvider';
-import Header from './header/Header';
+import Header from './components/Header';
 import NavbarNotificationRenderer from '../context/navbarNotification/NavbarNotificationRenderer';
 import { Outlet, useNavigate, useNavigation } from 'react-router';
-import Footer from './footer/Footer';
+import Footer from './components/Footer';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import noise3D from '../utils/noise/noise3D';
 import { useWindowSize } from 'usehooks-ts';
@@ -18,10 +18,8 @@ import GlobalSpinner from '../components/ui/GlobalSpinner';
 import MenuContextProvider from '../context/menu/MenuContextProvider';
 import { useShortcut } from 'react-keybind';
 import Search from '../components/input/search/Search';
-
-declare const kofiWidgetOverlay: {
-    draw: (username: string, options: Record<string, string>) => void;
-};
+import Sidebar from './Sidebar';
+import useSession from '../hooks/useSession';
 
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -141,20 +139,20 @@ export default function MainLayout() {
     useResizeObserver(containerRef, setup);
     const { error: notifyError, warning: notifyWarning } = useNavbarNotification();
 
+    const session = useSession();
     useEffect(() => {
-        kofiWidgetOverlay.draw('gddemonladder', {
-            'type': 'floating-chat',
-            'floating-chat.donateButton.text': 'Donate',
-            'floating-chat.donateButton.background-color': '#00b9fe',
-            'floating-chat.donateButton.text-color': '#fff',
-        });
-        const widget = document.querySelector('[id^="kofi-widget-overlay-"');
-        widget?.classList.remove('opacity-0');
+        const widget = document.querySelector<HTMLDivElement>('[id^="kofi-widget-overlay-"');
+
+        if (!session.user || session.user.Roles.length === 0) return;
+
+        widget?.classList.add('opacity-0');
+        widget?.classList.add('pointer-events-none');
 
         return () => {
-            widget?.classList.add('opacity-0');
+            widget?.classList.remove('opacity-0');
+            widget?.classList.remove('pointer-events-none');
         };
-    }, []);
+    }, [session.user]);
 
     useEffect(() => {
         const url = new URLSearchParams(location.search);
@@ -230,6 +228,7 @@ export default function MainLayout() {
                         <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
                     }
                     <title>GD Demon Ladder</title>
+                    <Sidebar />
                     <div ref={containerRef} className='min-h-dvh relative flex flex-col'>
                         <Header />
                         <NavbarNotificationRenderer />

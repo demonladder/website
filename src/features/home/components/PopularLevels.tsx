@@ -50,7 +50,7 @@ export default function PopularLevels() {
 
 export function LevelPreview({ level, index }: { level: LevelPreviewDTO, index: number }) {
     return (
-        <Link to={`/level/${level.ID}`} className='bg-theme-800 shadow border border-theme-outline round:rounded-lg p-3 flex items-center gap-2'>
+        <Link to={`/level/${level.ID}`} className='bg-theme-800 shadow border border-theme-outline round:rounded-xl p-3 flex items-center gap-2'>
             <DemonFace diff={level.Meta.Difficulty} rarity={level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
             <div className='flex flex-col gap-0.5'>
                 <Heading4>#{index} {level.Meta.Name}</Heading4>
