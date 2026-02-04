@@ -29,7 +29,7 @@ export default async function GetNotifications(options?: Options): Promise<Notif
         ID: notif.ID,
         Message: notif.Message,
         IsRead: notif.IsRead,
-        SentAt: new Date(notif.SentAt + 'Z'),
+        SentAt: new Date(notif.SentAt),
         ReadAt: notif.ReadAt !== null ? new Date(notif.ReadAt) : null,
     }));
 }
