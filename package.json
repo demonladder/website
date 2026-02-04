@@ -16,6 +16,7 @@
     "format:check": "prettier --check **/*.[jt]s"
   },
   "dependencies": {
+    "@boxicons/react": "^1.0.2",
     "@react-hook/resize-observer": "^2.0.2",
     "@tanstack/react-query": "^5.87.4",
     "@tanstack/react-query-devtools": "^5.87.4",

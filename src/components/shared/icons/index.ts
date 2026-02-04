@@ -1,14 +1,2 @@
-export { BellIcon } from './BellIcon';
-export { BookIcon } from './BookIcon';
-export { BookReaderIcon } from './BookReaderIcon';
-export { CogIcon } from './CogIcon';
-export { DashboardIcon } from './DashboardIcon';
-export { Dice5Icon } from './Dice5Icon';
-export { DoorOpenIcon } from './DoorOpenIcon';
-export { GameIcon } from './GameIcon';
-export { HomeIcon } from './HomeIcon';
 export { MenuIcon } from './MenuIcon';
-export { PackageIcon } from './PackageIcon';
-export { SearchIcon } from './SearchIcon';
-export { UserIcon } from './UserIcon';
 export { XIcon } from './XIcon';

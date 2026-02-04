@@ -1,11 +1,11 @@
 import { Link, NavLink } from 'react-router';
-import { BookReaderIcon } from '../components/shared/icons/BookReaderIcon';
 import { useEventListener } from 'usehooks-ts';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
-import { BellIcon, BookIcon, CogIcon, DashboardIcon, Dice5Icon, DoorOpenIcon, HomeIcon, PackageIcon, SearchIcon, UserIcon, XIcon } from '../components/shared/icons';
+import { XIcon } from '../components/shared/icons';
 import { DemonLogoSizes, difficultyToImgSrc } from '../utils/difficultyToImgSrc';
 import { useApp } from '../context/app/useApp';
+import { Bell, Book, Cog, Dashboard, DiceRoll, DoorOpenAlt, Home, Package, Reading, Search, User } from '@boxicons/react';
 
 function MenuLink({ to, children, label }: { to: string; children: React.ReactNode, label: string }) {
     const app = useApp();
@@ -61,32 +61,32 @@ export default function Sidebar() {
                             <p className='text-lg text-center'>{session.user.Name}</p>
                         </div>
                     }
-                    <MenuLink to='/' label='Home'><HomeIcon /></MenuLink>
+                    <MenuLink to='/' label='Home'><Home /></MenuLink>
                     {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
-                        <MenuLink to='/mod' label='Dashboard'><DashboardIcon /></MenuLink>
+                        <MenuLink to='/mod' label='Dashboard'><Dashboard /></MenuLink>
                     }
                     {session.user &&
                         <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
                             <p className='px-2 text-theme-400 text-sm'>Account</p>
-                            <MenuLink to={'/profile/' + session.user?.ID} label='Profile'><UserIcon /></MenuLink>
-                            <MenuLink to='/notifications' label='Notifications'><BellIcon /></MenuLink>
-                            <MenuLink to='/settings/profile' label='Settings'><CogIcon /></MenuLink>
-                            <button onClick={onSignOut} className='p-2 hover:bg-theme-700 transition-colors rounded-lg w-full mt-2 flex items-center gap-1'><DoorOpenIcon /> Sign out</button>
+                            <MenuLink to={'/profile/' + session.user?.ID} label='Profile'><User /></MenuLink>
+                            <MenuLink to='/notifications' label='Notifications'><Bell /></MenuLink>
+                            <MenuLink to='/settings/profile' label='Settings'><Cog /></MenuLink>
+                            <button onClick={onSignOut} className='p-2 hover:bg-theme-700 transition-colors rounded-lg w-full mt-2 flex items-center gap-1'><DoorOpenAlt /> Sign out</button>
                         </ul>
                     }
                     <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
                         <p className='px-2 text-theme-400 text-sm'>Levels</p>
-                        <MenuLink to='/search' label='Levels'><SearchIcon /></MenuLink>
-                        <MenuLink to='/references' label='References'><BookIcon /></MenuLink>
-                        <MenuLink to='/about' label='Guidelines'><BookReaderIcon /></MenuLink>
+                        <MenuLink to='/search' label='Levels'><Search /></MenuLink>
+                        <MenuLink to='/references' label='References'><Book /></MenuLink>
+                        <MenuLink to='/about' label='Guidelines'><Reading /></MenuLink>
                         {session.user &&
                             <Link to='/submit' className='p-2 mt-2 transition-colors rounded-lg bg-blue-600 inline-block w-full text-center'>Submit</Link>
                         }
                     </ul>
                     <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
                         <p className='px-2 text-theme-400 text-sm'>Misc</p>
-                        <MenuLink to='/packs' label='Packs'><PackageIcon /></MenuLink>
-                        <MenuLink to='/generators' label='Generators'><Dice5Icon /></MenuLink>
+                        <MenuLink to='/packs' label='Packs'><Package /></MenuLink>
+                        <MenuLink to='/generators' label='Generators'><DiceRoll /></MenuLink>
                     </ul>
                 </div>
             </div>
