@@ -43,7 +43,7 @@ export default function Sidebar() {
             <div className={'fixed inset-0 bg-black z-30 fast-effect-transition ' + (show ? 'opacity-50' : 'opacity-0 pointer-events-none')} onClick={() => setShow(false)} />
             <div
                 className={
-                    'h-full fixed right-0 top-0 min-w-3xs bg-theme-950 border-theme-outline z-40 fast-effect-transition ' +
+                    'h-full max-h-dvh overflow-y-auto fixed right-0 top-0 min-w-xs md:min-w-3xs bg-theme-950 border-theme-outline z-40 fast-effect-transition ' +
                     (show ? 'border-l' : 'translate-x-full')
                 }
             >
