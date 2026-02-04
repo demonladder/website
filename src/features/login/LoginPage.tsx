@@ -77,7 +77,7 @@ export default function Login() {
                             Don't have an account? Register <Link to='/signup' className='text-blue-400 underline'>here!</Link>
                         </p>
                         <p className='text-center mt-1'>
-                            <Link to='/forgotPassword' className='hover:text-blue-400 underline'>Forgot password?</Link>
+                            <Link to='/forgotPassword' className='text-blue-400 underline'>Forgot password?</Link>
                         </p>
                     </div>
                 </form>

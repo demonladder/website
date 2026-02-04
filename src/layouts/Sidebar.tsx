@@ -3,7 +3,7 @@ import { BookReaderIcon } from '../components/shared/icons/BookReaderIcon';
 import { useEventListener } from 'usehooks-ts';
 import useSession from '../hooks/useSession';
 import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
-import { BellIcon, BookIcon, CogIcon, DashboardIcon, Dice5Icon, DoorOpenIcon, HomeIcon, PackageIcon, SearchIcon, UserIcon } from '../components/shared/icons';
+import { BellIcon, BookIcon, CogIcon, DashboardIcon, Dice5Icon, DoorOpenIcon, HomeIcon, PackageIcon, SearchIcon, UserIcon, XIcon } from '../components/shared/icons';
 import { DemonLogoSizes, difficultyToImgSrc } from '../utils/difficultyToImgSrc';
 import { useApp } from '../context/app/useApp';
 
@@ -48,9 +48,9 @@ export default function Sidebar() {
                 }
             >
                 <div className='p-2 relative'>
-                    <div className='flex justify-between items-center mb-4 p-2'>
+                    <div className='mb-4 p-2 h-9 flex items-center justify-between'>
                         <h1 className='text-2xl font-bold'>GDDL</h1>
-                        <button className='bx bx-x text-4xl' onClick={() => setShow(false)} />
+                        <button onClick={() => setShow(false)}><XIcon size={36} /></button>
                     </div>
                     {session.user &&
                         <div>

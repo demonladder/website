@@ -5,9 +5,9 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import ModalProvider from '../context/modal/ModalProvider';
 import Header from './components/Header';
 import NavbarNotificationRenderer from '../context/navbarNotification/NavbarNotificationRenderer';
-import { Outlet, useNavigate, useNavigation } from 'react-router';
+import { Outlet, useNavigation } from 'react-router';
 import Footer from './components/Footer';
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef } from 'react';
 import noise3D from '../utils/noise/noise3D';
 import { useWindowSize } from 'usehooks-ts';
 import useResizeObserver from '@react-hook/resize-observer';
@@ -16,8 +16,6 @@ import APIClient from '../api/APIClient';
 import { useApp } from '../context/app/useApp';
 import GlobalSpinner from '../components/ui/GlobalSpinner';
 import MenuContextProvider from '../context/menu/MenuContextProvider';
-import { useShortcut } from 'react-keybind';
-import Search from '../components/input/search/Search';
 import Sidebar from './Sidebar';
 import useSession from '../hooks/useSession';
 
@@ -185,43 +183,9 @@ export default function MainLayout() {
         };
     }, [onScroll]);
 
-    // Register the shortcut to search levels
-    const { registerShortcut, unregisterShortcut } = useShortcut()!;
-    const [showLevelSearch, setShowLevelSearch] = useState(false);
-    const [levelSearchInput, setLevelSearchInput] = useState('');
-    useEffect(() => {
-        const keybinds = ['ctrl+k', 'cmd+k'];
-        registerShortcut(() => {
-            if (window.location.pathname !== '/search') setShowLevelSearch((prev) => !prev);
-        }, keybinds, 'Search', 'Search levels');
-        return () => {
-            unregisterShortcut(keybinds);
-        };
-    }, [registerShortcut, unregisterShortcut]);
-
-    const navigate = useNavigate();
-    function onSearch(e: React.FormEvent) {
-        e.preventDefault();
-        if (levelSearchInput === '') {
-            setShowLevelSearch(false);
-            return;
-        }
-
-        sessionStorage.setItem('level-filters', JSON.stringify({ name: levelSearchInput }));
-        void navigate(`/search?name=${encodeURIComponent(levelSearchInput)}`);
-        setShowLevelSearch(false);
-    }
-
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
             <MenuContextProvider>
-                {showLevelSearch &&
-                    <div className='fixed inset-0 z-50 bg-black/35' onClick={() => setShowLevelSearch(false)}>
-                        <form onSubmit={onSearch} className='absolute max-md:w-full md:min-w-xl left-1/2 -translate-x-1/2 mt-36'>
-                            <Search value={levelSearchInput} onChange={(e) => setLevelSearchInput(e.target.value.trimStart().slice(0, 22))} placeholder='Search level name' autoFocus />
-                        </form>
-                    </div>
-                }
                 <ModalProvider>
                     <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to' />
                     {app.enableBackground &&

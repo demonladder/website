@@ -11,3 +11,4 @@ export { MenuIcon } from './MenuIcon';
 export { PackageIcon } from './PackageIcon';
 export { SearchIcon } from './SearchIcon';
 export { UserIcon } from './UserIcon';
+export { XIcon } from './XIcon';
