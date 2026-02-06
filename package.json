@@ -1,7 +1,7 @@
 {
   "name": "gddl",
   "private": true,
-  "version": "2.2.6",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite --host",
