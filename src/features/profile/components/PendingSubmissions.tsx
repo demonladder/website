@@ -52,7 +52,7 @@ export default function PendingSubmissions({ userID }: Props) {
                 {submissionResult.submissions.length === 0 &&
                     <p>No levels</p>
                 }
-                <PageButtons onPageChange={setPage} meta={{ page, limit: submissionResult.limit, total: submissionResult.total }} />
+                <PageButtons onPageChange={setPage} page={page} limit={submissionResult.limit} total={submissionResult.total} />
             </>}
         </div>
     );

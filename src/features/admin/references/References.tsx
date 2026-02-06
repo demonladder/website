@@ -80,7 +80,7 @@ export default function EditReferences() {
             <div className='flex flex-col gap-2 mb-8'>{
                 data.filter((l) => l.Tier === tier).map((l) => <Level data={l} remove={() => onRemoveReference(l)} key={l.LevelID} />)
             }</div>
-            <PageButtons onPageChange={(page) => setTier(page + 1)} meta={{ page: tier - 1, total: maxTier, limit: 1 }} />
+            <PageButtons onPageChange={(page) => setTier(page + 1)} page={tier - 1} total={maxTier} limit={1} />
             <div className='flex justify-around'>
                 <button className='text-gray-400 underline-t' onClick={() => setMaxTier((prev) => prev + 1)}>Add tier</button>
             </div>

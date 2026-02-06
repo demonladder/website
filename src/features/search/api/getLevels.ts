@@ -31,7 +31,7 @@ export interface SearchLevelResponse {
         Song: {
             Name: string;
         };
-        Publisher: {
+        Publisher?: {
             name: string | null;
         };
     };

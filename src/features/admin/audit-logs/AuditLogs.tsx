@@ -33,7 +33,7 @@ export default function AuditLogs() {
                     <ul>{auditLogs.data.logs.map((log) => (
                         <AuditLog log={log} users={auditLogs.data.users} key={log.ID} />
                     ))}</ul>
-                    <PageButtons onPageChange={setPage} meta={{ page, limit: auditLogs.data.limit, total: auditLogs.data.total }} />
+                    <PageButtons onPageChange={setPage} page={page} limit={auditLogs.data.limit} total={auditLogs.data.total} />
                 </>
             }
         </div>

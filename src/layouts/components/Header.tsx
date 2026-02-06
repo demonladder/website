@@ -45,7 +45,7 @@ export default function Header() {
                 <ProfileButtons />
                 <div className='absolute left-0 right-0 flex justify-center max-lg:hidden'>
                     <form onSubmit={onSearch} className='w-sm xl:w-lg relative'>
-                        <Search ref={ref} value={text} onChange={(e) => setText(e.target.value.trimStart().slice(0, 22))} autoFocus placeholder='What do you want to play?' />
+                        <Search ref={ref} value={text} onChange={(e) => setText(e.target.value.trimStart().slice(0, 22))} autoFocus placeholder='Search levels and users' />
                         <p className='absolute pointer-events-none right-4 top-1/2 -translate-y-1/2 text-theme-400 text-xs outline rounded-md px-1'>Ctrl + K</p>
                     </form>
                 </div>

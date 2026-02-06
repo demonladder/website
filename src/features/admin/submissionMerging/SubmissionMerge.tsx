@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Heading2 from '../../../components/headings/Heading2';
 import useUserSearch from '../../../hooks/useUserSearch';
-import User from '../../../api/types/User';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { ModeType } from './api/enums/ModeType';
@@ -13,6 +12,7 @@ import renderToastError from '../../../utils/renderToastError';
 import UserPreview from './components/UserPreview';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputLabel from '../../../components/form/FormInputLabel';
+import type { UserWithRoles } from '../../../api/user/searchUsers';
 
 const mergeOptions: Record<ModeType, string> = {
     [ModeType.OVERWRITE]: 'Overwrite',
@@ -21,8 +21,8 @@ const mergeOptions: Record<ModeType, string> = {
 };
 
 export default function SubmissionMerge() {
-    const [sourceUser, setSourceUser] = useState<User>();
-    const [targetUser, setTargetUser] = useState<User>();
+    const [sourceUser, setSourceUser] = useState<UserWithRoles>();
+    const [targetUser, setTargetUser] = useState<UserWithRoles>();
 
     const [mergeMode, setMergeMode] = useState<ModeType>(ModeType.OVERWRITE);
 

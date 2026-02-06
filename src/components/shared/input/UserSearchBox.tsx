@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { TinyUser } from '../../../api/types/TinyUser';
 import SearchBox from '../../SearchBox/SearchBox';
-import SearchUser from '../../../api/user/SearchUser';
+import { searchUsers } from '../../../api/user/searchUsers';
 
 interface Props {
     setResult: (e: TinyUser | undefined) => void,
@@ -18,9 +18,9 @@ export default function UserSearchBox({ setResult, id, invalid = false }: Props)
     const [text, setText] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const { status, data: users = [] } = useQuery({
+    const { status, data } = useQuery({
         queryKey: ['userSearch', searchQuery],
-        queryFn: () => SearchUser(searchQuery),
+        queryFn: () => searchUsers({ name: searchQuery }),
     });
 
     return <SearchBox<UserType>
@@ -30,7 +30,7 @@ export default function UserSearchBox({ setResult, id, invalid = false }: Props)
         onChange={setText}
         onDebouncedChange={setSearchQuery}
         id={id}
-        list={users.map((d) => ({ ...d, label: d.Name }))}
+        list={data?.data.map((d) => ({ ...d, label: d.Name })) ?? []}
         onResult={setResult}
         status={status}
         placeholder='Search user...'

@@ -20,6 +20,9 @@ import { useShortcut } from 'react-keybind';
 import { useApp } from '../../context/app/useApp';
 import { LevelViewType } from '../../context/app/AppContext';
 import PageButtons from '../../components/shared/PageButtons';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import { UserCard } from './components/UserCard';
+import { useSearchUsers } from './hooks/useSearchUsers';
 
 // TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {
@@ -100,7 +103,10 @@ export default function Search() {
     const scrollToSearchInput = useCallback(() => {
         if (searchInputRef.current) {
             searchInputRef.current.scrollIntoView({ behavior: 'instant', block: 'center' });
-            setTimeout(() => searchInputRef.current?.focus(), 100);
+            setTimeout(() => {
+                searchInputRef.current?.focus();
+                searchInputRef.current?.select();
+            }, 100);
         }
     }, []);
 
@@ -123,10 +129,14 @@ export default function Search() {
         setQueryParams({}, 'replace');
     }
 
-    const { status: searchStatus, data: searchData } = useQuery({
-        queryKey: ['search', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sort: queryParams[QueryParamNames.Sort], sortDirection: queryParams[QueryParamNames.SortDirection], page }],
+    const { status: levelSearchStatus, data: levelSearchData } = useQuery({
+        queryKey: ['searchLevels', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sort: queryParams[QueryParamNames.Sort], sortDirection: queryParams[QueryParamNames.SortDirection], page }],
         queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sort: queryParams[QueryParamNames.Sort], sortDirection: queryParams[QueryParamNames.SortDirection], page }),
     });
+
+    const [userPage, setUserPage] = useSessionStorage('user-search-page', 0);
+    const searchUserOptions = useMemo(() => ({ name: savedFilters[QueryParamNames.Name], limit: 16, page: userPage }), [savedFilters, userPage]);
+    const { status: userSearchStatus, data: userSearchData } = useSearchUsers(searchUserOptions);
 
     function onNameChange(newName: string) {
         setQueryParams({
@@ -141,13 +151,13 @@ export default function Search() {
     function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
-            setSelection((prev) => Math.min(prev + 1, searchData?.data.length ?? 0));
+            setSelection((prev) => Math.min(prev + 1, levelSearchData?.data.length ?? 0));
         } else if (e.key === 'ArrowUp') {
             e.preventDefault();
             setSelection((prev) => Math.max(prev - 1, 0));
         } else if (e.key === 'Enter') {
             if (selection > 0) {
-                const level = searchData?.data[selection - 1];
+                const level = levelSearchData?.data[selection - 1];
                 if (level) {
                     void navigate('/level/' + level.ID);
                 }
@@ -215,29 +225,42 @@ export default function Search() {
             </div>
             <Filters reset={reset} show={showFilters} />
             <SortMenu />
-            {searchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
-            {searchStatus === 'pending' &&
+            {levelSearchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
+            {levelSearchStatus === 'pending' &&
                 <div className='my-4'>
                     {Array.from({ length: 12 }, (_, i) => (
                         <LevelSkeleton key={i} />
                     ))}
                 </div>
             }
-            {searchStatus === 'success' && <>
+            {levelSearchStatus === 'success' && <>
                 {filters.length > 0 &&
                     <div className='py-2'>
                         <p><b className='text-lg'>Filters:</b> {...filters}</p>
                     </div>
                 }
-                {searchData.data && app.levelViewType === LevelViewType.LIST
-                    ? <LevelRenderer element={Level} levels={searchData.data} selectedLevel={selection} className='my-2' />
-                    : <LevelRenderer element={GridLevel} levels={searchData.data} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2' selectedLevel={selection} />
+                {levelSearchData.data && app.levelViewType === LevelViewType.LIST
+                    ? <LevelRenderer element={Level} levels={levelSearchData.data} selectedLevel={selection} className='my-2' />
+                    : <LevelRenderer element={GridLevel} levels={levelSearchData.data} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2' selectedLevel={selection} />
                 }
                 <div className='my-4'>
-                    <PageButtons meta={{ total: searchData.total, page, limit: 16 }} onPageChange={setPage} />
-                    <p className='text-center'><b>{searchData.total}</b> level{pluralS(searchData.total)} found</p>
+                    <PageButtons limit={16} total={levelSearchData.total} page={page} onPageChange={setPage} />
+                    <p className='text-center'><b>{levelSearchData.total}</b> level{pluralS(levelSearchData.total)} found</p>
                 </div>
             </>}
+            <section>
+                <Heading1 className='mb-2'>Users</Heading1>
+                {userSearchStatus === 'pending' &&
+                    <LoadingSpinner />
+                }
+                {userSearchStatus === 'success' &&
+                    <>
+                        <ul className='grid grid-cols-4 gap-2'>{userSearchData.data.map((user) => <UserCard key={user.ID} user={user} />)}</ul>
+                        <PageButtons limit={userSearchData.limit} total={userSearchData.total} page={userSearchData.page} onPageChange={setUserPage} />
+                    <p className='text-center'><b>{userSearchData.total}</b> user{pluralS(userSearchData.total)}</p>
+                    </>
+                }
+            </section>
         </Page>
     );
 }

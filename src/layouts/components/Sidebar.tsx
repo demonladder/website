@@ -1,17 +1,17 @@
 import { Link, NavLink } from 'react-router';
 import { useEventListener } from 'usehooks-ts';
-import useSession from '../hooks/useSession';
-import { PermissionFlags } from '../features/admin/roles/PermissionFlags';
-import { XIcon } from '../components/shared/icons';
-import { DemonLogoSizes, difficultyToImgSrc } from '../utils/difficultyToImgSrc';
-import { useApp } from '../context/app/useApp';
+import useSession from '../../hooks/useSession';
+import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
+import { XIcon } from '../../components/shared/icons';
+import { DemonLogoSizes, difficultyToImgSrc } from '../../utils/difficultyToImgSrc';
+import { useApp } from '../../context/app/useApp';
 import { Bell, Book, Cog, Dashboard, DiceRoll, DoorOpenAlt, Home, Package, Reading, Search, User } from '@boxicons/react';
 
 function MenuLink({ to, children, label }: { to: string; children: React.ReactNode, label: string }) {
     const app = useApp();
 
     return (
-        <li className='not-first:mt-2 list-none'>
+        <li className='not-first:mt-2'>
             <NavLink to={to} onClick={() => app.set('showSideBar', false)} className={({ isActive }) => 'flex align-middle gap-1 p-2 hover:bg-theme-700 transition-colors rounded-lg' + (isActive ? ' bg-theme-700 font-bold' : ' ')}>
                 {children}
                 <span>{label}</span>
@@ -61,12 +61,14 @@ export default function Sidebar() {
                             <p className='text-lg text-center'>{session.user.Name}</p>
                         </div>
                     }
-                    <MenuLink to='/' label='Home'><Home /></MenuLink>
-                    {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
-                        <MenuLink to='/mod' label='Dashboard'><Dashboard /></MenuLink>
-                    }
+                    <ul className='my-2'>
+                        <MenuLink to='/' label='Home'><Home /></MenuLink>
+                        {session.hasPermission(PermissionFlags.STAFF_DASHBOARD) &&
+                            <MenuLink to='/mod' label='Dashboard'><Dashboard /></MenuLink>
+                        }
+                    </ul>
                     {session.user &&
-                        <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
+                        <ul className='bg-theme-900 p-2 rounded-xl my-2'>
                             <p className='px-2 text-theme-400 text-sm'>Account</p>
                             <MenuLink to={'/profile/' + session.user?.ID} label='Profile'><User /></MenuLink>
                             <MenuLink to='/notifications' label='Notifications'><Bell /></MenuLink>
@@ -74,7 +76,7 @@ export default function Sidebar() {
                             <button onClick={onSignOut} className='p-2 hover:bg-theme-700 transition-colors rounded-lg w-full mt-2 flex items-center gap-1'><DoorOpenAlt /> Sign out</button>
                         </ul>
                     }
-                    <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
+                    <ul className='bg-theme-900 p-2 rounded-xl my-2'>
                         <p className='px-2 text-theme-400 text-sm'>Levels</p>
                         <MenuLink to='/search' label='Levels'><Search /></MenuLink>
                         <MenuLink to='/references' label='References'><Book /></MenuLink>
@@ -83,10 +85,10 @@ export default function Sidebar() {
                             <Link to='/submit' className='p-2 mt-2 transition-colors rounded-lg bg-blue-600 inline-block w-full text-center'>Submit</Link>
                         }
                     </ul>
-                    <ul className='bg-theme-900 p-2 rounded-xl mt-4'>
+                    <ul className='bg-theme-900 p-2 rounded-xl my-2'>
                         <p className='px-2 text-theme-400 text-sm'>Misc</p>
                         <MenuLink to='/packs' label='Packs'><Package /></MenuLink>
-                        <MenuLink to='/generators' label='Generators'><DiceRoll /></MenuLink>
+                        <MenuLink to='/generators' label='Challenges'><DiceRoll /></MenuLink>
                     </ul>
                 </div>
             </div>

@@ -21,13 +21,13 @@ export default function VerifiedUsers() {
                 <div>
                     <Heading3>Verified Users</Heading3>
                     {users.data.total === 0 && <p>No verified users</p>}
-                    <PageButtons onPageChange={setPage} meta={{ page, limit: 30, total: users.data.total }} />
+                    <PageButtons onPageChange={setPage} page={page} limit={30} total={users.data.total} />
                     <div className='grid grid-cols-1 xl:grid-cols-2 gap-4 mt-3'>
                         {users.data.users.map((user) => (
                             <VerifiedUser user={user} key={'verifiedUser_' + user.ID} />
                         ))}
                     </div>
-                    <PageButtons onPageChange={setPage} meta={{ page, limit: 30, total: users.data.total }} />
+                    <PageButtons onPageChange={setPage} page={page} limit={30} total={users.data.total} />
                 </div>
             )}
         </section>

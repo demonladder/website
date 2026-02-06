@@ -80,7 +80,7 @@ export default function Showcases() {
                                 </div>
                             </li>)}
                         </ul>
-                        <PageButtons onPageChange={setPage} meta={{ limit: suggestions.limit, page, total: suggestions.total }} />
+                        <PageButtons onPageChange={setPage} page={page} limit={suggestions.limit} total={suggestions.total} />
                     </>
                 }
             </>

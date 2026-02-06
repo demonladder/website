@@ -22,7 +22,7 @@ export default function EligibleUsers() {
                                 <EligibleUser userID={user.ID} submissions={user.submissions} distinctApprovals={user.distinctApprovals} key={'eligibleUser_' + user.ID} />
                             ))}
                         </div>
-                        <PageButtons onPageChange={setPage} meta={{ page, limit: users.data.limit, total: users.data.total }} />
+                        <PageButtons onPageChange={setPage} page={page} limit={users.data.limit} total={users.data.total} />
                     </div>
                 )}
             </div>

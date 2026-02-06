@@ -1,27 +1,26 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from '../components/SearchBox/SearchBox';
-import SearchUser from '../api/user/SearchUser';
+import { searchUsers, type UserWithRoles } from '../api/user/searchUsers';
 import GetUser from '../api/user/GetUser';
-import User from '../api/types/User';
 
 interface Props {
     ID: string,
     userID?: number,
     maxUsersOnList?: number,
-    onUserSelect?: (user: User) => void;
+    onUserSelect?: (user: UserWithRoles) => void;
 }
 
 export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect }: Props) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const [activeUser, setActiveUser] = useState<User>();
+    const [activeUser, setActiveUser] = useState<UserWithRoles>();
     const [isInvalid, setIsInvalid] = useState(false);
 
     const { data, status } = useQuery({
         queryKey: ['userSearch', searchQuery, { maxUsersOnList }],
-        queryFn: () => SearchUser(searchQuery, maxUsersOnList),
+        queryFn: () => searchUsers({ name: searchQuery, limit: maxUsersOnList }),
     });
 
     useEffect(() => {
@@ -30,16 +29,9 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
                 setActiveUser({
                     ID: user.ID,
                     Name: user.Name,
-                    AverageEnjoyment: user.AverageEnjoyment,
-                    HardestID: user.HardestID,
                     Introduction: user.Introduction,
-                    MaxPref: user.MaxPref,
-                    MinPref: user.MinPref,
-                    CountryCode: user.CountryCode,
-                    Pronouns: user.Pronouns,
-                    IsBot: user.IsBot,
                     avatar: user.avatar,
-                    accentColor: user.accentColor,
+                    roles: user.Roles,
                 });
             }).catch(console.error);
         }
@@ -58,7 +50,7 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         setSearchQuery(value);
     }, []);
 
-    const onSetResult = useCallback((user?: User) => {
+    const onSetResult = useCallback((user?: UserWithRoles) => {
         setActiveUser(user);
         if (user && onUserSelect) onUserSelect(user);
     }, [onUserSelect]);
@@ -68,7 +60,7 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         setQuery,
         clear,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox value={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onChange={setSearch} onDebouncedChange={setSearchQuery} id={ID} list={data?.map((d) => ({
+        SearchBox: (<SearchBox value={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onChange={setSearch} onDebouncedChange={setSearchQuery} id={ID} list={data?.data.map((d) => ({
             ...d,
             label: d.Name,
         })) || []} onResult={onSetResult} status={status} placeholder='Search user...' invalid={isInvalid} />),

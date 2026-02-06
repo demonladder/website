@@ -51,13 +51,13 @@ export default function BetaAccess() {
             )}
             {status === 'success' && (
                 <div className='mt-6'>
-                    <PageButtons onPageChange={setPage} meta={{ limit: accessTokens.limit, page, total: accessTokens.total }} />
+                    <PageButtons onPageChange={setPage} page={page} limit={accessTokens.limit} total={accessTokens.total} />
                     <div className='flex flex-wrap gap-8'>
                         {accessTokens.tokens.map((token) => (
                             <AccessToken token={token} key={token.ID} />
                         ))}
                     </div>
-                    <PageButtons onPageChange={setPage} meta={{ limit: accessTokens.limit, page, total: accessTokens.total }} />
+                    <PageButtons onPageChange={setPage} page={page} limit={accessTokens.limit} total={accessTokens.total} />
                 </div>
             )}
         </section>

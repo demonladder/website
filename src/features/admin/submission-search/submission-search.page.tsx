@@ -44,7 +44,7 @@ export default function SubmissionSearch() {
                             </li>
                         ))}
                     </ul>
-                    <PageButtons meta={{ limit: 16, page, total: data.total }} onPageChange={setPage} />
+                    <PageButtons page={page} limit={16} total={data.total} onPageChange={setPage} />
                 </>
             }
         </div>

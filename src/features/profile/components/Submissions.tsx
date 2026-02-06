@@ -61,7 +61,7 @@ export default function Submissions({ user }: Props) {
                 {submissionResult.submissions.length === 0 &&
                     <p>No levels</p>
                 }
-                <PageButtons onPageChange={setPage} meta={{ ...submissionResult, page }} />
+                <PageButtons onPageChange={setPage} page={page} limit={submissionResult.limit} total={submissionResult.total} />
             </>}
         </section>
     );

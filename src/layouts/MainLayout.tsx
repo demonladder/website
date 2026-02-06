@@ -16,8 +16,9 @@ import APIClient from '../api/APIClient';
 import { useApp } from '../context/app/useApp';
 import GlobalSpinner from '../components/ui/GlobalSpinner';
 import MenuContextProvider from '../context/menu/MenuContextProvider';
-import Sidebar from './Sidebar';
+import Sidebar from './components/Sidebar';
 import useSession from '../hooks/useSession';
+import { ScrollToTop } from '../routes/ScrollToTop';
 
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -186,6 +187,7 @@ export default function MainLayout() {
     return (
         <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
             <MenuContextProvider>
+                <ScrollToTop />
                 <ModalProvider>
                     <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to' />
                     {app.enableBackground &&

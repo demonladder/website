@@ -158,7 +158,7 @@ export default function Submissions({ page, setPage, level, showTwoPlayerStats, 
                 {submissions.submissions.map((s) => <Submission level={level} submission={s} key={s.User.ID} />)}
                 {submissions.submissions.length === 0 ? <p className='mb-0'>No submissions available!</p> : null}
             </div>
-            <PageButtons onPageChange={(page) => setPage(page)} meta={{ total: submissions.total, limit: submissions.limit, page }} />
+            <PageButtons onPageChange={(page) => setPage(page)} page={page} limit={submissions.limit} total={submissions.total} />
         </section>
     );
 }

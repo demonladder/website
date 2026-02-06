@@ -25,7 +25,7 @@ export default function LevelSearchBox({ ID, onLevel }: Props) {
             onChange={setSearch}
             onDebouncedChange={setDebouncedSearch}
 
-            list={data?.levels ?? []}
+            list={data?.data ?? []}
             getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Publisher?.name}`}
             getName={(r) => r.Meta.Name}
 

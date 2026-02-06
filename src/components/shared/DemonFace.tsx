@@ -24,7 +24,7 @@ export default function DemonFace(props: Props) {
     })(rarity);
 
     return (
-        <div className='inline-block relative'>
+        <div className='inline-block relative w-max'>
             {rarity !== Rarity.STAR && <img src={`/images/rarity/${r}_${size}.webp`} width={size} className='absolute' />}
             <img src={difficultyToImgSrc(diff, size)} width={size} className='absolute' />
             <img src={difficultyToImgSrc(diff, size)} width={size} className='opacity-0' />

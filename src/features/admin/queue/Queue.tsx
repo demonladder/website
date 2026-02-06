@@ -57,7 +57,7 @@ export default function Queue() {
                 </div>
             </div>
             <Content />
-            <PageButtons meta={{ limit: 5, page, total: queue?.total ?? 0 }} onPageChange={(p) => setPage(p)} />
+            <PageButtons page={page} limit={5} total={queue?.total ?? 0} onPageChange={(p) => setPage(p)} />
             <p className='text-center'><b>{queue?.total ?? 0}</b> submission{pluralS(queue?.total ?? 0)} found</p>
         </div>
     );
