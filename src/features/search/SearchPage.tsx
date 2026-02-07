@@ -255,9 +255,9 @@ export default function Search() {
                 }
                 {userSearchStatus === 'success' &&
                     <>
-                        <ul className='grid grid-cols-4 gap-2'>{userSearchData.data.map((user) => <UserCard key={user.ID} user={user} />)}</ul>
+                        <ul className='grid grid-cols-4 gap-2 mb-4'>{userSearchData.data.map((user) => <UserCard key={user.ID} user={user} />)}</ul>
                         <PageButtons limit={userSearchData.limit} total={userSearchData.total} page={userSearchData.page} onPageChange={setUserPage} />
-                    <p className='text-center'><b>{userSearchData.total}</b> user{pluralS(userSearchData.total)}</p>
+                        <p className='text-center'><b>{userSearchData.total}</b> user{pluralS(userSearchData.total)}</p>
                     </>
                 }
             </section>
