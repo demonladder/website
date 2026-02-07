@@ -11,6 +11,7 @@ import useSessionStorage from '../../../hooks/useSessionStorage';
 import pluralS from '../../../utils/pluralS';
 import LevelSearchBox from '../../../components/SearchBox/LevelSearchBox';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { useEffect } from 'react';
 
 const proofFilterOptions = {
     all: 'All',
@@ -24,10 +25,21 @@ export default function Queue() {
     const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
     const [levelID, setLevelID] = useQueryParam('levelID', NumberParam);
 
-    const { status, isFetching, data: queue } = useQuery({
+    const {
+        status,
+        isFetching,
+        data: queue,
+    } = useQuery({
         queryKey: ['submissionQueue', { page, proofFilter, levelID }],
         queryFn: () => getPendingSubmissions({ proofFilter, limit: 5, page, levelID: levelID ?? undefined }),
     });
+
+    useEffect(() => {
+        if (!queue?.total) return;
+        if (queue.total > 0 && queue.submissions.length === 0) {
+            setPage(Math.max(0, Math.ceil(queue.total / 5) - 1));
+        }
+    }, [queue?.submissions.length, queue?.total, setPage]);
 
     function Content() {
         if (status === 'pending') return <LoadingSpinner />;
@@ -35,18 +47,31 @@ export default function Queue() {
 
         if (queue.total === 0) return <h5>Queue empty :D</h5>;
 
-        return (<ul>{queue.submissions.map((s) => <Submission submission={s} key={s.ID} />)}</ul>);
+        return (
+            <ul>
+                {queue.submissions.map((s) => (
+                    <Submission submission={s} key={s.ID} />
+                ))}
+            </ul>
+        );
     }
 
     return (
         <div>
             <FloatingLoadingSpinner isLoading={isFetching} />
             <Heading1 className='mb-3'>Pending submissions</Heading1>
-            <p><b>Filters</b></p>
+            <p>
+                <b>Filters</b>
+            </p>
             <div className='grid grid-cols-2 lg:grid-cols-4 gap-2'>
                 <div>
                     <p>Proof</p>
-                    <Select id='submissionQueueSortOrder' options={proofFilterOptions} activeKey={proofFilter} onChange={setProofFilter} />
+                    <Select
+                        id='submissionQueueSortOrder'
+                        options={proofFilterOptions}
+                        activeKey={proofFilter}
+                        onChange={setProofFilter}
+                    />
                 </div>
                 <div>
                     <p>Level</p>
@@ -58,7 +83,9 @@ export default function Queue() {
             </div>
             <Content />
             <PageButtons page={page} limit={5} total={queue?.total ?? 0} onPageChange={(p) => setPage(p)} />
-            <p className='text-center'><b>{queue?.total ?? 0}</b> submission{pluralS(queue?.total ?? 0)} found</p>
+            <p className='text-center'>
+                <b>{queue?.total ?? 0}</b> submission{pluralS(queue?.total ?? 0)} found
+            </p>
         </div>
     );
 }

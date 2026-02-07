@@ -22,6 +22,13 @@ export default function Showcases() {
     const [videoHeight, setVideoHeight] = useState(400);
 
     useEffect(() => {
+        if (!suggestions?.total) return;
+        if (suggestions.total > 0 && suggestions.suggestions.length === 0) {
+            setPage(Math.max(0, Math.ceil(suggestions.total / 2) - 1));
+        }
+    }, [suggestions?.suggestions.length, suggestions?.total, setPage]);
+
+    useEffect(() => {
         if (!ulRef.current) return;
 
         setVideoHeight(ulRef.current.clientWidth * 9 / 16 / 2.1165857);
