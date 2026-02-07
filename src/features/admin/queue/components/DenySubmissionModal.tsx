@@ -33,9 +33,9 @@ interface Props {
 }
 
 export default function DenySubmissionModal({ submission, onClose }: Props) {
-    const [denyReason, setDenyReason] = useState<DenyReason>('custom');
+    const [selectableReason, setSelectableReason] = useState<DenyReason>('custom');
     const [shouldBlacklistProof, setShouldBlacklistProof] = useState(false);
-    const [reason, setReason] = useState('');
+    const [customReason, setCustomReason] = useState('');
 
     const queryClient = useQueryClient();
     const denyMutation = useMutation({
@@ -51,7 +51,7 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
 
     function onDeny(e: React.FormEvent) {
         e.preventDefault();
-        denyMutation.mutate({ ID: submission.ID, reason });
+        denyMutation.mutate({ ID: submission.ID, reason: selectableReason === 'custom' ? customReason : selectableReason });
     }
 
     return (
@@ -59,19 +59,19 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
             <form onSubmit={onDeny}>
                 <FormGroup>
                     <FormInputLabel htmlFor='denyReason'>Select a type</FormInputLabel>
-                    <Select id='denyReason' options={denyReasons} activeKey={denyReason} onChange={setDenyReason} height='36' />
+                    <Select id='denyReason' options={denyReasons} activeKey={selectableReason} onChange={setSelectableReason} height='36' />
                     <FormInputDescription>Choose a reason for denying the submission.</FormInputDescription>
                 </FormGroup>
-                {denyReason === 'wrongProof' &&
+                {selectableReason === 'wrongProof' &&
                     <label className='flex gap-1 items-center'>
                         <Checkbox checked={shouldBlacklistProof} onChange={(e) => setShouldBlacklistProof(e.target.checked)} />
                         Blacklist proof?
                     </label>
                 }
-                {['custom', 'hacked'].includes(denyReason) &&
+                {['custom', 'hacked'].includes(selectableReason) &&
                     <FormGroup>
                         <FormInputLabel htmlFor='customDenyReason'>Write a reason</FormInputLabel>
-                        <TextInput value={reason} onChange={(e) => setReason(e.target.value.trimStart())} id='customDenyReason' placeholder='Reason...' required />
+                        <TextInput value={customReason} onChange={(e) => setCustomReason(e.target.value.trimStart())} id='customDenyReason' placeholder='Reason...' required />
                     </FormGroup>
                 }
                 <div className='mt-8'>
