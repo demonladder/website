@@ -6,6 +6,7 @@ import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
 import UserBan from '../../../../api/types/UserBan';
 import { revokeBan } from '../../../../api/user/bans/revokeBan';
 import ms from 'ms';
+import { parseDate } from '../../../../utils/parse/parseDate';
 
 interface Props {
     record: UserBan;
@@ -35,14 +36,14 @@ export default function BanRecord({ record }: Props) {
     return (
         <div className='bg-theme-500 mb-3 p-3 round:rounded-lg grid shadow-lg grid-cols-1 xl:grid-cols-2 gap-4'>
             <div>
-                <p>Banned on <b>{record.BanStart}</b></p>
-                <p>Banned until <b>{record.BanStop}</b></p>
+                <p>Banned on <b>{parseDate(record.BanStart).toLocaleString()}</b></p>
+                {record.BanStop && <p>Banned until <b>{parseDate(record.BanStop).toLocaleString()}</b></p>}
                 <p>Duration: <b>{duration ? ms(duration) : 'permanent'}</b></p>
             </div>
             <div>
                 <p>User banned by {record.StaffID ? <UserLink userID={record.StaffID} /> : '-'}</p>
-                <p>Ban reason: {record.Reason || 'None specified'}</p>
-                <p>Status: {isActive ? 'Active' : 'Inactive'}</p>
+                <p>Ban reason: <b>{record.Reason || 'None specified'}</b></p>
+                <p>Status: <b>{isActive ? 'Active' : 'Inactive'}</b></p>
                 {isActive && <DangerButton onClick={onRevoke} disabled={isLoading}>Revoke</DangerButton>}
             </div>
         </div>
