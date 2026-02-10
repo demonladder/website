@@ -83,3 +83,7 @@ runMigration('8', () => {
     if (app.levelViewType === undefined) app.levelViewType = 'grid';
     localStorage.setItem('app', JSON.stringify(app));
 });
+
+runMigration('9', () => {
+    localStorage.removeItem('newLabels');
+});

@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import Select from '../../../components/shared/input/Select';
 import { useId, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
-import NewLabel from '../../../components/shared/NewLabel';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import { getSkills } from '../api/getSkills';
 import Heading2 from '../../../components/headings/Heading2';
@@ -76,7 +75,7 @@ export default function Skills({ userID }: { userID: number }) {
 
     return (
         <section className='mt-6' ref={ref}>
-            <Heading2>Skills <NewLabel ID='userSkills' /></Heading2>
+            <Heading2>Skills</Heading2>
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-4'>
                 <div>
                     <label htmlFor='skillLevelSpan'>Levels included:</label>
