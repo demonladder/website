@@ -48,7 +48,7 @@ export default function SortMenu({ set }: Props) {
     }, [mouseMove]);
 
     return (
-        <div className='relative h-full z-10'>
+        <div className='relative h-full z-[11]'>
             <button className='bg-white text-black w-7 h-7 grid place-items-center' onClick={() => setShow(prev => !prev)}>
                 {sortAscending ?
                     <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-sort-up' viewBox='0 0 16 16'>
