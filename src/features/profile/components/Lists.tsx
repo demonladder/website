@@ -17,6 +17,8 @@ export default function Lists({ userID }: Props) {
     const [maxLists, setMaxLists] = useState(4);
     const { data: lists } = useUserLists(userID);
 
+    if (!lists?.length) return;
+
     return (
         <section className='mt-8'>
             <Heading2>
