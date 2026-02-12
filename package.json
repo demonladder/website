@@ -1,8 +1,19 @@
 {
   "name": "gddl",
-  "private": true,
   "version": "3.0.0",
+  "author": "Daniel Iversen Sato <diversensato@gmail.com>",
+  "private": true,
   "type": "module",
+  "repository": {
+    "url": "git+https://github.com/demonladder/website.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/demonladder/website#readme",
+  "bugs": "https://github.com/demonladder/website/issues",
+  "funding": {
+    "type": "ko-fi",
+    "url": "https://ko-fi.com/gddemonladder"
+  },
   "scripts": {
     "dev": "bunx --bun vite --host",
     "test": "mocha",
