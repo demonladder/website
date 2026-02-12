@@ -77,8 +77,8 @@ export default function Sidebar() {
                         </ul>
                     }
                     <ul className='bg-theme-900 p-2 rounded-xl my-2'>
-                        <p className='px-2 text-theme-400 text-sm'>Levels</p>
-                        <MenuLink to='/search' label='Levels'><Search /></MenuLink>
+                        <p className='px-2 text-theme-400 text-sm'>GDDL</p>
+                        <MenuLink to='/search' label='Search'><Search /></MenuLink>
                         <MenuLink to='/references' label='References'><Book /></MenuLink>
                         <MenuLink to='/about' label='Guidelines'><Reading /></MenuLink>
                         {session.user &&

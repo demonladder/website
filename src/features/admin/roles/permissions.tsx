@@ -41,7 +41,7 @@ export const permissions: Permission[] = [
     {
         ID: 18,
         Name: 'Signup links',
-        Description: 'Allows users to create, delete and edit notes.',
+        Description: 'Allows users to create signup links for users.',
         Flag: PermissionFlags.CREATE_SIGNUP_TOKEN,
     },
     {

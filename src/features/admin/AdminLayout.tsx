@@ -72,7 +72,7 @@ export default function AdminLayout() {
                         <ul className='flex items-center'>
                             <li><button onClick={() => setHideSidebar((prev) => !prev)} className='flex items-center m-2 p-2'><i className='bx bx-menu' /></button></li>
                             <li><Link to='/' className='m-2 p-2'>Home</Link></li>
-                            <li><Link to='/search' className='m-2 p-2'>Levels</Link></li>
+                            <li><Link to='/search' className='m-2 p-2'>Search</Link></li>
                             <li><Link to='/packs' className='m-2 p-2'>Packs</Link></li>
                             <li><Link to='/settings/site' className='m-2 p-2'><i className='bx bxs-cog text-xl mt-2' /></Link></li>
                         </ul>
