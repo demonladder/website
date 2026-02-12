@@ -1,14 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import GenericLineChart from './GenericLineChart';
 import rawDataToChartData from './rawDataToChartData';
-import type { Metrics } from '../../../../api/stats/GetStatistic';
-import GetStatistic from '../../../../api/stats/GetStatistic';
+import { statsClient, type Metrics } from '../../../../api/stats';
 import FloatingLoadingSpinner from '../../../../components/ui/FloatingLoadingSpinner';
 
-export default function StatisticLineChart({ metricName, title = 'API data' }: { metricName: Metrics, title?: string }) {
+interface Props {
+    metricName: Metrics;
+    title?: string;
+}
+
+export default function StatisticLineChart({ metricName, title = 'API data' }: Props) {
     const { data, status } = useQuery({
         queryKey: ['stats', metricName],
-        queryFn: () => GetStatistic(metricName),
+        queryFn: () => statsClient.getMetric(metricName),
     });
 
     const chartData = rawDataToChartData(data);

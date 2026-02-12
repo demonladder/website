@@ -3,7 +3,7 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
-import { Metrics } from '../../../api/stats/GetStatistic';
+import { Metrics } from '../../../api/stats';
 import ms from 'ms';
 import Divider from '../../../components/divider/Divider';
 import { BotSettings } from './components/BotSettings';

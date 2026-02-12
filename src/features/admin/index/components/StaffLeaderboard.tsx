@@ -43,7 +43,7 @@ export default function StaffLeaderboard() {
     const filteredData = view === 'allTime' ? data?.allTime : data?.monthly;
 
     return (
-        <section className='mt-8'>
+        <section className='p-4 border border-theme-outline bg-theme-800 round:rounded-xl'>
             <Heading2>Point leaderboard</Heading2>
             <p>You get more points the higher the tier of the level is</p>
             <p>Bonus points for proof (Remember to check it)</p>

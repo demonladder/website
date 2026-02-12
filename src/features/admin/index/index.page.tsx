@@ -7,6 +7,7 @@ import Showcases from './components/Showcases';
 import Heading1 from '../../../components/headings/Heading1';
 import { truncateBigNumber } from '../../../utils/truncateBigNumber';
 import { useState } from 'react';
+import { Stats } from './components/Stats';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -51,7 +52,10 @@ export default function ModIndex() {
                 <StatisticTracker value={stats?.totalLevels.now} oldValue={stats?.totalLevels.old} label='Total Levels' />
             </div>
             <Showcases />
-            <StaffLeaderboard />
+            <div className='mt-8 grid lg:grid-cols-2 gap-4'>
+                <Stats />
+                <StaffLeaderboard />
+            </div>
         </div>
     );
 }

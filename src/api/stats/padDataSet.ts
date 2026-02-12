@@ -21,20 +21,7 @@ export function padDataSet(data: StatRecordNullable[]) {
         });
     }
 
-    // Loop through and fill in any gaps
     data.reverse();
-    // for (let i = 0; i < data.length - 1; i++) {
-    //     const current = data[i];
-    //     const next = data[i + 1];
-    //     const difference = Math.abs(next.Timestamp - current.Timestamp);
-
-    //     if (difference > ms('11m')) {
-    //         data.splice(i + 1, 0, {
-    //             Timestamp: current.Timestamp + ms('5m'),
-    //             Value: null,
-    //         });
-    //     }
-    // }
 
     return data;
 }
