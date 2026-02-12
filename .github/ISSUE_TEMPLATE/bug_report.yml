@@ -1,0 +1,60 @@
+name: Bug report
+description: Create a report to help us improve
+title: "[BUG]: "
+labels: bug
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to report a bug! Please fill in the details below to help us understand the issue and find a solution.
+
+  - type: input
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the bug here...
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: A step-by-step list of how to reproduce the bug.
+      value: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error"
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: What did you expect to happen?
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: The platform where the bug occurred.
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - iOS
+        - Android
+        - Other
+  
+  - type: input
+    id: site-version
+    attributes:
+      label: Site Version
+      description: The version of the site where the bug occurred (you can find the version in the footer).
+      placeholder: e.g., 2.2.3
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: Any additional information, screenshots, or logs that might help us understand the issue.
+      placeholder: Any other relevant details or screenshots here...
