@@ -10,7 +10,7 @@ import AddRoleToUser from '../../../../api/user/AddRoleToUser';
 import renderToastError from '../../../../utils/renderToastError';
 import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
 import { UserResponse } from '../../../../api/user/GetUser';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import { useUserRoles } from '../../../../hooks/useUserRoles';
 
 export default function Roles({ user }: { user: UserResponse }) {

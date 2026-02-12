@@ -6,7 +6,7 @@ import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinne
 import Select from '../../../components/shared/input/Select';
 import PageButtons from '../../../components/shared/PageButtons';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import pluralS from '../../../utils/pluralS';
 import LevelSearchBox from '../../../components/SearchBox/LevelSearchBox';

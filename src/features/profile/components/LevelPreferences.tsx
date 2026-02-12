@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import { getFavoriteLevels, GetFavoriteLevelsResponse, getLeastFavoriteLevels } from '../api/getFavoriteLevels';
 import Level, { LevelSkeleton } from '../../../components/shared/Level';
 import { useParams } from 'react-router';

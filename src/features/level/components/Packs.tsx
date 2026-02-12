@@ -4,7 +4,7 @@ import PackRef from '../../../components/PackRef/PackRef';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import LevelMeta from '../types/LevelMeta';
 import { useInView } from 'react-intersection-observer';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 interface Props {
     levelID: number;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNotifications } from '../../features/notifications/hooks/useNotifications';
-import Heading4 from '../headings/Heading4';
+import { Heading4 } from '../headings';
 import { secondsToHumanReadable } from '../../utils/secondsToHumanReadable';
 import { useMutation } from '@tanstack/react-query';
 import { deleteNotification } from '../../features/notifications/api/deleteNotification';

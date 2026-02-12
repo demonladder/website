@@ -1,8 +1,7 @@
 import { Link } from 'react-router';
 import { useState } from 'react';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2, Heading3 } from '../../../components/headings';
 import { useUserLists } from '../hooks/useUserLists';
-import Heading3 from '../../../components/headings/Heading3';
 import { secondsToHumanReadable } from '../../../utils/secondsToHumanReadable';
 import { IDMapper } from '../../../utils/IDMapper';
 import { useTags } from '../../../hooks/api/tags/useTags';

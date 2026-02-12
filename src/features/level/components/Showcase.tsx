@@ -3,7 +3,7 @@ import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import FormGroup from '../../../components/form/FormGroup';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import { URLInput } from '../../../components/shared/input/Input';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { toast } from 'react-toastify';

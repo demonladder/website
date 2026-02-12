@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import renderToastError, { type GDDLError } from '../../utils/renderToastError';
 import FormInputLabel from '../../components/form/FormInputLabel';
 import Page from '../../components/layout/Page';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import FormGroup from '../../components/form/FormGroup';
 import { accountLogin } from './api/accountLogin';
 import useTurnstile from '../../hooks/useTurnstile';

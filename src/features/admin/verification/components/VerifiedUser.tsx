@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import User from '../../../../api/types/User';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
-import Heading4 from '../../../../components/headings/Heading4';
+import { Heading4 } from '../../../../components/headings';
 import { UserStat } from './UserStat';
 import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
 import { Link } from 'react-router';

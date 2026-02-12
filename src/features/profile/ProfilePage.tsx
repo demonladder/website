@@ -11,7 +11,7 @@ import useUserQuery from '../../hooks/queries/useUserQuery';
 import flagEmoji from '../../utils/flagEmoji';
 import Skills from './components/Skills';
 import Page from '../../components/layout/Page';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import useContextMenu from '../../context/menu/useContextMenu';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
 import { useUserColor } from '../../hooks/useUserColor';

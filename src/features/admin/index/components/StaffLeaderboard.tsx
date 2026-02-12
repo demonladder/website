@@ -4,7 +4,7 @@ import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import type { StaffLeaderboardRecord } from '../../../../api/staffLeaderboard/GetStaffLeaderboard';
 import pluralS from '../../../../utils/pluralS';
 import GetStaffLeaderboard from '../../../../api/staffLeaderboard/GetStaffLeaderboard';
-import Heading2 from '../../../../components/headings/Heading2';
+import { Heading2 } from '../../../../components/headings';
 import { pickRandom } from '../../../../utils/pickRandom';
 
 function StaffLeaderboardEntry({ data, highestScore }: { data: StaffLeaderboardRecord, highestScore?: number }) {

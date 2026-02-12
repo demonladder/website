@@ -4,7 +4,7 @@ import Page from '../../components/layout/Page';
 import Leaderboard from '../packs/components/Leaderboard';
 import GetGDDLPTiers from '../../api/pack/requests/GetGDDLPTiers';
 import pluralS from '../../utils/pluralS';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 
 interface Props {
     pack: PackResponse;

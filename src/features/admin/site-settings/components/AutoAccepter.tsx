@@ -8,7 +8,7 @@ import CheckBox from '../../../../components/input/CheckBox';
 import SaveAutoAcceptSettings from '../../../../api/settings/autoAccept/SaveAutoAcceptSettings';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../../components/form/FormInputLabel';

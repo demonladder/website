@@ -16,7 +16,7 @@ import IDButton from '../../../components/ui/IDButton';
 import useValidNumber from '../../../hooks/useValidNumber';
 import validateParameter from '../../../utils/validators/validateParameter';
 import renderToastError from '../../../utils/renderToastError';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 

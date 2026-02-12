@@ -10,7 +10,7 @@ import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormGroup from '../../../components/form/FormGroup';
 import { TextInput } from '../../../components/shared/input/Input';
 import FormInputDescription from '../../../components/form/FormInputDescription';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 
 export default function SignupLink() {
     const [result, setResult] = useState<TinyUser>();

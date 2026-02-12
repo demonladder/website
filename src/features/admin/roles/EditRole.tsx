@@ -13,8 +13,7 @@ import useDeleteRoleModal from '../../../hooks/modals/useDeleteRoleModal';
 import Users from './components/Users';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import FormInputLabel from '../../../components/form/FormInputLabel';
-import Heading2 from '../../../components/headings/Heading2';
-import Heading3 from '../../../components/headings/Heading3';
+import { Heading2, Heading3 } from '../../../components/headings';
 import Divider from '../../../components/divider/Divider';
 
 export default function EditRole() {

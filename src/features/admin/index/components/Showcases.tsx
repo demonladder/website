@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useShowcaseSuggestions } from '../hooks/useShowcaseSuggestions';
 import PageButtons from '../../../../components/shared/PageButtons';
-import Heading2 from '../../../../components/headings/Heading2';
+import { Heading2, Heading3 } from '../../../../components/headings';
 import DemonFace from '../../../../components/shared/DemonFace';
 import { DemonLogoSizes } from '../../../../utils/difficultyToImgSrc';
-import Heading3 from '../../../../components/headings/Heading3';
 import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import TextButton from '../../../../components/input/buttons/text/TextButton';
 import { Link } from 'react-router';

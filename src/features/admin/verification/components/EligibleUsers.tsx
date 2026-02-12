@@ -1,4 +1,4 @@
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import PageButtons from '../../../../components/shared/PageButtons';
 import { useUsersEligibleForVerification } from '../hooks/useUsersEligibleForVerification';
 import EligibleUser from './EligibleUser';

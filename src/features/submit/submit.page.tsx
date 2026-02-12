@@ -1,5 +1,5 @@
 import { Link, useLoaderData, useNavigate } from 'react-router';
-import Heading2 from '../../components/headings/Heading2';
+import { Heading2 } from '../../components/headings';
 import useLevelSearch from '../../hooks/useLevelSearch';
 import { routes } from '../../routes/route-definitions';
 import type { FullLevel } from '../../api/types/compounds/FullLevel';

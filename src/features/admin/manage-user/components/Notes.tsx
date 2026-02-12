@@ -11,7 +11,7 @@ import renderToastError from '../../../../utils/renderToastError';
 import CreateUserNote from '../../../../api/notes/CreateUserNote';
 import FloatingLoadingSpinner from '../../../../components/ui/FloatingLoadingSpinner';
 import DeleteUserNote from '../../../../api/notes/DeleteUserNote';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 
 export default function Notes({ user }: { user: UserResponse }) {
     const addID = useId();

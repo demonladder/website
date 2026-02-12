@@ -3,7 +3,7 @@ import { FullLevel } from '../../../api/types/compounds/FullLevel';
 import axios from 'axios';
 import { pluralWas } from '../../../utils/pluralS';
 import { useInView } from 'react-intersection-observer';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 interface SFHResponseDataObject {
     _id: string;

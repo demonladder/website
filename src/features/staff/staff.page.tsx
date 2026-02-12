@@ -5,7 +5,7 @@ import UserRoleIcon from '../../components/ui/UserRoleIcon';
 import FloatingLoadingSpinner from '../../components/ui/FloatingLoadingSpinner';
 import GetStaff from '../../api/user/StaffMember';
 import Role from '../../api/types/Role';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 
 const roleTitles: Record<Role['ID'], string> = {
     2: 'List helpers',

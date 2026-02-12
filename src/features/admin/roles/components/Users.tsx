@@ -4,7 +4,7 @@ import User from '../../../../api/types/User';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 
 export default function Users({ roleID }: { roleID: number }) {
     const queryClient = useQueryClient();

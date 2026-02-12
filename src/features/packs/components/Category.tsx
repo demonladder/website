@@ -1,7 +1,7 @@
 import CategoryResponse from '../../../api/packs/responses/Category';
 import PackRef from '../../../components/PackRef/PackRef';
 import { GetPacksResponse } from '../api/getPacks';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 interface Props {
     category: CategoryResponse;

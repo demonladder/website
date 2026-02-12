@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import APIClient from '../../../api/APIClient';
-import Heading1 from '../../../components/headings/Heading1';
-import Heading3 from '../../../components/headings/Heading3';
+import { Heading1, Heading3 } from '../../../components/headings';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { useMutation } from '@tanstack/react-query';
 import FormInputDescription from '../../../components/form/FormInputDescription';

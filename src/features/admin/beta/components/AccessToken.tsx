@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import pluralS from '../../../../utils/pluralS';
 import { revokeToken } from '../api/revokeToken';

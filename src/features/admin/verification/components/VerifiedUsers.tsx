@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useVerifiedUsers } from '../hooks/useVerifiedUsers';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import PageButtons from '../../../../components/shared/PageButtons';
 import VerifiedUser from './VerifiedUser';
 import { useVerificationRole } from '../hooks/useVerificationRole';

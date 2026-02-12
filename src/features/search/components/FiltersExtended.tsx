@@ -128,15 +128,15 @@ export default function FiltersExtended() {
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Two player:</p>
-                    <Select height='20' activeKey={twoPlayer ?? 'any'} options={twoPlayerOptions} onChange={(key) => setTwoPlayer(key)} id='twoPlayerSelectOptions' />
+                    <Select height='28' activeKey={twoPlayer ?? 'any'} options={twoPlayerOptions} onChange={(key) => setTwoPlayer(key)} id='twoPlayerSelectOptions' />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Update:</p>
-                    <Select height='20' activeKey={update ?? 'any'} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
+                    <Select height='28' activeKey={update ?? 'any'} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Top skillset:</p>
-                    <Select height='20' activeKey={topTagID} options={tagOptions} onChange={(key) => setTopTagID(key)} id='skillsetSelectOptions' />
+                    <Select height='28' activeKey={topTagID} options={tagOptions} onChange={(key) => setTopTagID(key)} id='skillsetSelectOptions' />
                 </div>
             </div>
             <Divider />

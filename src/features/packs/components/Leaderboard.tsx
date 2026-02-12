@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getGlobalPackLeaders } from '../api/getGlobalPackLeaders';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import usePackLevels from '../../singlePack/hooks/usePackLevels';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import { LeaderboardEntry } from './LeaderboardEntry';
 
 export default function Leaderboard({ packID }: { packID?: number }) {

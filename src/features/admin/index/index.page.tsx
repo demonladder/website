@@ -4,7 +4,7 @@ import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinne
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import StaffLeaderboard from './components/StaffLeaderboard';
 import Showcases from './components/Showcases';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 import { truncateBigNumber } from '../../../utils/truncateBigNumber';
 import { useState } from 'react';
 import { Stats } from './components/Stats';

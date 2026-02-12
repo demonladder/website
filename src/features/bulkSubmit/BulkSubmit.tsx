@@ -9,7 +9,7 @@ import { AxiosError } from 'axios';
 import { validateTier } from '../../utils/validators/validateTier';
 import { validateEnjoyment } from '../../utils/validators/validateEnjoyment';
 import Page from '../../components/layout/Page';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import { Device } from '../../api/core/enums/device.enum';
 import { useApp } from '../../context/app/useApp';
 

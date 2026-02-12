@@ -10,7 +10,7 @@ import Showcase from './components/Showcase';
 import ExternalLinks from './components/ExternalLinks';
 import Page from '../../components/layout/Page';
 import { BooleanParam, NumberParam, useQueryParam, withDefault } from 'use-query-params';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import FAB from '../../components/input/buttons/FAB/FAB';
 import IconButton from '../../components/input/buttons/icon/IconButton';
 import Surface from '../../components/layout/Surface';

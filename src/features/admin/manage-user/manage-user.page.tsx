@@ -1,4 +1,4 @@
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { Outlet, useNavigate } from 'react-router';
 

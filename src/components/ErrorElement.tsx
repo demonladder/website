@@ -1,5 +1,5 @@
 import { Link, useRouteError } from 'react-router';
-import Heading1 from './headings/Heading1';
+import { Heading1 } from './headings';
 import { SecondaryButton } from './ui/buttons/SecondaryButton';
 import { AxiosError } from 'axios';
 import type { GDDLError } from '../utils/renderToastError';

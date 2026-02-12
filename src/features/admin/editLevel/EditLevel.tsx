@@ -13,7 +13,7 @@ import { recalculateLevelStats } from './api/recalculateStats';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import { removeLevel } from './api/removeLevel';
 import { Link, useLoaderData } from 'react-router';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 import type { FullLevel } from '../../../api/types/compounds/FullLevel';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);

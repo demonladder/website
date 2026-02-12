@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import APIClient from '../../api/APIClient';

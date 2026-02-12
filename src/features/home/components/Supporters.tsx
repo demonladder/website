@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import Surface from '../../../components/layout/Surface';
 import { getSupporters } from '../api/getSupporters';
 import { Link } from 'react-router';

@@ -8,7 +8,7 @@ import FormInputDescription from '../../components/form/FormInputDescription';
 import FormInputLabel from '../../components/form/FormInputLabel';
 import { validateUsername } from '../../utils/validators/validateUsername';
 import Page from '../../components/layout/Page';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import FormGroup from '../../components/form/FormGroup';
 import { useMutation } from '@tanstack/react-query';
 import SignUpFn from '../../api/auth/SignUp';

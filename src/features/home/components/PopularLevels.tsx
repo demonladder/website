@@ -9,8 +9,7 @@ import 'swiper/css/scrollbar';
 import { getPopularLevels, LevelPreviewDTO } from '../api/getPopularLevels';
 import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 import DemonFace from '../../../components/shared/DemonFace';
-import Heading2 from '../../../components/headings/Heading2';
-import Heading4 from '../../../components/headings/Heading4';
+import { Heading2, Heading4 } from '../../../components/headings';
 import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
 
 export default function PopularLevels() {

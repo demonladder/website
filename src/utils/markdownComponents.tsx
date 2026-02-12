@@ -1,7 +1,6 @@
 import { Components } from 'react-markdown';
 import { Link } from 'react-router';
-import Heading1 from '../components/headings/Heading1';
-import Heading2 from '../components/headings/Heading2';
+import { Heading1, Heading2} from '../components/headings';
 
 const components: Partial<Components> = {
     h1({ children }) {

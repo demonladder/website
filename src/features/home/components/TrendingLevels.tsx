@@ -8,7 +8,7 @@ import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 import { LevelPreview } from './PopularLevels';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 export default function TrendingLevels() {
     const { data, status } = useQuery({

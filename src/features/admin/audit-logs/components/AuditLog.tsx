@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import { AuditEvents } from '../enums/audit-events.enum';
 import { IAuditLog } from '../types/IAuditLog';
 import { parseDate } from '../../../../utils/parse/parseDate';

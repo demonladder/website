@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import Page from '../../components/layout/Page';
 import { useCreateApplicationModal } from './hooks/useCreateApplicationModal';

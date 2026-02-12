@@ -8,7 +8,7 @@ import { createEnumParam, NumberParam, StringParam, useQueryParam, withDefault }
 import { QueryParamNames } from '../enums/QueryParamNames';
 import _ from 'lodash';
 import Divider from '../../../components/divider/Divider';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 type Props = {
     reset: () => void,

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../components/shared/input/Input';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import Page from '../../components/layout/Page';
 import FormGroup from '../../components/form/FormGroup';
 import { useMutation } from '@tanstack/react-query';

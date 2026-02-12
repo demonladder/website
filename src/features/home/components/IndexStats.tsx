@@ -4,8 +4,7 @@ import ms from 'ms';
 import Container from '../../../components/layout/Container';
 import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 import { getStats } from '../api/getStats';
-import Heading2 from '../../../components/headings/Heading2';
-import Heading3 from '../../../components/headings/Heading3';
+import { Heading2, Heading3 } from '../../../components/headings';
 
 function anyOrLoading<T>(value: T) {
     return value ?? (<InlineLoadingSpinner />);

@@ -1,5 +1,5 @@
 import { Link, useLoaderData, useNavigate } from 'react-router';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 import Page from '../../../components/layout/Page';
 import { Application as IApplication } from '../../../api/types/Application';
 import { decodeDate } from '../../../utils/decodeDate';

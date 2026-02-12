@@ -9,7 +9,7 @@ import ReRollDecathlonLevel from '../../../api/generators/decathlon/ReRollDecath
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import pluralS from '../../../utils/pluralS';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 export default function Decathlon() {
     const queryClient = useQueryClient();

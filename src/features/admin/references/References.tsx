@@ -11,7 +11,7 @@ import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinne
 import renderToastError from '../../../utils/renderToastError';
 import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import PageButtons from '../../../components/shared/PageButtons';
-import Heading3 from '../../../components/headings/Heading3';
+import { Heading3 } from '../../../components/headings';
 import Divider from '../../../components/divider/Divider';
 import ChangeLevel from './components/ChangeLevel';
 import Level from './components/Level';

@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import Heading4 from '../../../../components/headings/Heading4';
+import { Heading4 } from '../../../../components/headings';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';

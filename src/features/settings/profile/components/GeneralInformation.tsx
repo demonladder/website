@@ -13,7 +13,7 @@ import FormInputLabel from '../../../../components/form/FormInputLabel';
 import Select from '../../../../components/shared/input/Select';
 import { ISO3611Alpha2 } from '../ISO3611-1-alpha-2';
 import { useMutation } from '@tanstack/react-query';
-import Heading1 from '../../../../components/headings/Heading1';
+import { Heading1 } from '../../../../components/headings';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import useSession from '../../../../hooks/useSession';
 

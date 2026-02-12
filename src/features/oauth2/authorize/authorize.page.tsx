@@ -3,7 +3,7 @@ import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import Checkbox from '../../../components/input/CheckBox';
 import useSession from '../../../hooks/useSession';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 import { StringParam, useQueryParam } from 'use-query-params';
 import { OAuth2Scopes } from './oauth2-scopes';
 import { useRef, useState } from 'react';

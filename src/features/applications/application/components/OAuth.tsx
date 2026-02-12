@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useLoaderData } from 'react-router';
 import type { Application } from '../../../../api/types/Application';
-import Heading2 from '../../../../components/headings/Heading2';
+import { Heading2, Heading3 } from '../../../../components/headings';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import { URLInput } from '../../../../components/shared/input/Input';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
-import Heading3 from '../../../../components/headings/Heading3';
 import { OAuth2Scopes } from '../../../oauth2/authorize/oauth2-scopes';
 import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import Checkbox from '../../../../components/input/CheckBox';

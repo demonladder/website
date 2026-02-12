@@ -10,7 +10,7 @@ import TextArea from '../../../../components/input/TextArea';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { saveProfile } from '../../../settings/profile/api/saveProfile';
 import renderToastError from '../../../../utils/renderToastError';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import { unlinkUserDiscord } from '../api/unlinkUserDiscord';
 

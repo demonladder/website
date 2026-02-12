@@ -6,7 +6,7 @@ import { useId, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import { getSkills } from '../api/getSkills';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import Divider from '../../../components/divider/Divider';
 import { useInView } from 'react-intersection-observer';
 import { useWindowSize } from 'usehooks-ts';

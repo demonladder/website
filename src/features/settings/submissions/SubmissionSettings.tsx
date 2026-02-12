@@ -7,7 +7,7 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 import Divider from '../../../components/divider/Divider';
 import { useApp } from '../../../context/app/useApp';
 import { Device } from '../../../api/core/enums/device.enum';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 
 const deviceOptions = {
     [Device.PC]: 'PC',

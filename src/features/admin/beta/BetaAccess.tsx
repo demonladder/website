@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import PageButtons from '../../../components/shared/PageButtons';
 import { useAccessTokens } from './hooks/useAccessTokens';
 import useUserSearch from '../../../hooks/useUserSearch';

@@ -18,10 +18,9 @@ import { validateTier } from '../../../../utils/validators/validateTier';
 import { validateEnjoyment } from '../../../../utils/validators/validateEnjoyment';
 import DeleteSubmission from '../../../../api/submissions/DeleteSubmission';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3, Heading4 } from '../../../../components/headings';
 import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 import User from '../../../../api/types/User';
-import Heading4 from '../../../../components/headings/Heading4';
 import Checkbox from '../../../../components/input/CheckBox';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);

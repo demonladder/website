@@ -3,7 +3,7 @@ import EditableSubmission from './components/EditableSubmission';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import getSubmission from '../../../api/submissions/getSubmission';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 export default function EditSubmission() {
     const submissionID = parseInt(useParams().submissionID ?? '');

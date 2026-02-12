@@ -6,9 +6,8 @@ import usePackLevels from './hooks/usePackLevels';
 import Page from '../../components/layout/Page';
 import usePack from './hooks/usePack';
 import { LevelRenderer } from '../../components/layout/LevelRenderer';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1, Heading3 } from '../../components/headings';
 import FloatingLoadingSpinner from '../../components/ui/FloatingLoadingSpinner';
-import Heading3 from '../../components/headings/Heading3';
 import { useApp } from '../../context/app/useApp';
 import { LevelViewType } from '../../context/app/AppContext';
 

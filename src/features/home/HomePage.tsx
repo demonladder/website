@@ -6,7 +6,7 @@ import Body from '../../components/announcement/Body';
 import TrendingLevels from './components/TrendingLevels';
 import PopularLevels from './components/PopularLevels';
 import Supporters from './components/Supporters';
-import Heading2 from '../../components/headings/Heading2';
+import { Heading2 } from '../../components/headings';
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 
 export default function Home() {

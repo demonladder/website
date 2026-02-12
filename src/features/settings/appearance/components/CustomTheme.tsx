@@ -1,10 +1,6 @@
 import { useState } from 'react';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading1, Heading2, Heading3, Heading4, Heading5 } from '../../../../components/headings';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
-import Heading4 from '../../../../components/headings/Heading4';
-import Heading1 from '../../../../components/headings/Heading1';
-import Heading2 from '../../../../components/headings/Heading2';
-import Heading5 from '../../../../components/headings/Heading5';
 import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import { useTheme } from '../../../../context/theme/useTheme';
 import TextButton from '../../../../components/input/buttons/text/TextButton';

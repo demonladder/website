@@ -1,4 +1,4 @@
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import { useTheme } from '../../../../context/theme/useTheme';
 
 export default function ThemeSelect() {

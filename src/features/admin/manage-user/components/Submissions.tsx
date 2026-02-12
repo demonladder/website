@@ -7,8 +7,7 @@ import User from '../../../../api/types/User';
 import { AxiosError } from 'axios';
 import renderToastError from '../../../../utils/renderToastError';
 import { deleteSubmissions } from '../../../../api/user/submissions/deleteSubmissions';
-import Heading3 from '../../../../components/headings/Heading3';
-import Heading4 from '../../../../components/headings/Heading4';
+import { Heading3, Heading4 } from '../../../../components/headings';
 import { removeUserEnjoyments } from '../../../../api/user/submissions/removeUserEnjoyments';
 
 interface Props {

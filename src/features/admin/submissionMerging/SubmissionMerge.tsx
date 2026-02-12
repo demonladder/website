@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import useUserSearch from '../../../hooks/useUserSearch';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';

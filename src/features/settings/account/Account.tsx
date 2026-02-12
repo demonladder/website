@@ -10,9 +10,9 @@ import { toast } from 'react-toastify';
 import DeleteUserRequest from '../../../api/user/Delete';
 import { useMutation } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 import { forgotPassword } from '../../../api/auth/forgotPassword';
-import Heading3 from '../../../components/headings/Heading3';
+import { Heading3 } from '../../../components/headings';
 import { Link } from 'react-router';
 import { useAPI } from '../../../hooks/useAPI';
 

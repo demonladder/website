@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 import APIClient from '../../../api/APIClient';
 import type Submission from '../../../api/types/Submission';
 import PageButtons from '../../../components/shared/PageButtons';

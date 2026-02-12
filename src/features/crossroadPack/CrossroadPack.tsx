@@ -6,7 +6,7 @@ import GetCrossroadsPackLevels from '../../api/pack/requests/GetCrossroadsPackLe
 import Page from '../../components/layout/Page';
 import { LevelRenderer } from '../../components/layout/LevelRenderer';
 import usePack from '../singlePack/hooks/usePack';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import { useApp } from '../../context/app/useApp';
 import { LevelViewType } from '../../context/app/AppContext';
 

@@ -2,7 +2,7 @@ import { LoginButton } from '../../../components/shared/ProfileButtons';
 import useSession from '../../../hooks/useSession';
 import GeneralInformation from './components/GeneralInformation';
 import DiscordSync from './components/DiscordSync';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1 } from '../../../components/headings';
 
 export default function ProfileSettings() {
     const session = useSession();

@@ -18,7 +18,7 @@ import PendingSubmission from '../../../api/types/PendingSubmission';
 import useDenySubmissionModal from '../../../hooks/modals/useDenySubmissionModal';
 import { useUserPendingSubmissions } from '../hooks/useUserPendingSubmissions';
 import useUserQuery from '../../../hooks/queries/useUserQuery';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import useSession from '../../../hooks/useSession';
 import useDeletePendingSubmissionModal from '../../../hooks/modals/useDeletePendingSubmissionModal';
 import User from '../../../api/types/User';

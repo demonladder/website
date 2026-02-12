@@ -14,7 +14,7 @@ import Level from '../types/Level';
 import LevelMeta from '../types/LevelMeta';
 import { createEnumParam, useQueryParam, withDefault } from 'use-query-params';
 import { Device } from '../../../api/core/enums/device.enum';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import Select from '../../../components/input/select/Select';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Tooltip from '../../../components/ui/Tooltip';

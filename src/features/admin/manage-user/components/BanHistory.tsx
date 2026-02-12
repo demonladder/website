@@ -9,11 +9,10 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import FormGroup from '../../../../components/form/FormGroup';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3, Heading4 } from '../../../../components/headings';
 import { useUserBans } from '../../../../hooks/api/user/useUserBans';
 import { banUser } from '../../../../api/user/bans/banUser';
 import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
-import Heading4 from '../../../../components/headings/Heading4';
 import ms from 'ms';
 
 export default function BanHistory({ user }: { user: UserResponse }) {

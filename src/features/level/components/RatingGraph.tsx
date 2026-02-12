@@ -4,7 +4,7 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { useLevelSubmissionSpread } from '../../../hooks/api/level/submissions/useLevelSubmissionSpread';
 import { useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 

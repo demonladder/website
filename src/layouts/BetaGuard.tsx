@@ -3,7 +3,7 @@ import { TextInput } from '../components/shared/input/Input';
 import { PrimaryButton } from '../components/ui/buttons/PrimaryButton';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Heading1 from '../components/headings/Heading1';
+import { Heading1 } from '../components/headings';
 import APIClient from '../api/APIClient';
 import { AxiosError } from 'axios';
 import renderToastError from '../utils/renderToastError';

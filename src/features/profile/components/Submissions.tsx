@@ -12,7 +12,7 @@ import useLateValue from '../../../hooks/useLateValue';
 import useAddListLevelModal from '../../../hooks/modals/useAddListLevelModal';
 import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionModal';
 import User from '../../../api/types/User';
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 import useSession from '../../../hooks/useSession';

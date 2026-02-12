@@ -1,4 +1,4 @@
-import Heading2 from '../../../components/headings/Heading2';
+import { Heading2 } from '../../../components/headings';
 import EligibleUsers from './components/EligibleUsers';
 import VerificationRoleSelect from './components/VerificationRoleSelect';
 import VerifiedUsers from './components/VerifiedUsers';

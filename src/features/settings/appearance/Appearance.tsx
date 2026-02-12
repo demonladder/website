@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import Select from '../../../components/shared/input/Select';
-import Heading3 from '../../../components/headings/Heading3';
-import Heading1 from '../../../components/headings/Heading1';
+import { Heading1, Heading3 } from '../../../components/headings';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import CustomTheme from './components/CustomTheme';
 import Divider from '../../../components/divider/Divider';

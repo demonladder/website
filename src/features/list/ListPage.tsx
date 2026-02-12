@@ -11,7 +11,7 @@ import useSession from '../../hooks/useSession';
 import Page from '../../components/layout/Page';
 import { editListName } from './api/editListName';
 import { PermissionFlags } from '../admin/roles/PermissionFlags';
-import Heading1 from '../../components/headings/Heading1';
+import { Heading1 } from '../../components/headings';
 import TextArea from '../../components/input/TextArea';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { editListDescription } from './api/editListDescription';

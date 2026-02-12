@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Heading3 from '../../../../components/headings/Heading3';
+import { Heading3 } from '../../../../components/headings';
 import Select from '../../../../components/shared/input/Select';
 import useRoles from '../../../../hooks/api/useRoles';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';

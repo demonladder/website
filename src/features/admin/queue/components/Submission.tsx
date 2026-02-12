@@ -4,7 +4,7 @@ import { useApproveClicked } from '../hooks/useApproveClicked';
 import { levelLengthToString } from '../../../level/types/LevelMeta';
 import useDenySubmissionModal from '../../../../hooks/modals/useDenySubmissionModal';
 import { useMemo } from 'react';
-import Heading4 from '../../../../components/headings/Heading4';
+import { Heading4 } from '../../../../components/headings';
 import { DemonLogoSizes } from '../../../../utils/difficultyToImgSrc';
 import { difficultyToImgSrc } from '../../../../utils/difficultyToImgSrc';
 import { toast } from 'react-toastify';
