@@ -2,6 +2,7 @@
   "name": "gddl",
   "version": "3.0.0",
   "author": "Daniel Iversen Sato <diversensato@gmail.com>",
+  "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "type": "module",
   "repository": {
