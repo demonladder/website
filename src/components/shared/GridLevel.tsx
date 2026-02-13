@@ -73,7 +73,7 @@ export function GridLevel({ ID, rating, enjoyment, proof, name, creator, difficu
                         <p><b className={`px-2 py-1 text-xl shadow rounded tier-${roundedRating}`}>{rating?.toFixed() ?? '-'}</b></p>
                         <p><b className={`px-2 py-1 text-xl shadow rounded enj-${roundedEnjoyment}`}>{enjoyment?.toFixed() ?? '-'}</b></p>
                         {proof &&
-                            <i className='bx bx-link p-1 cursor-pointer rounded transition-colors hover:bg-theme-500 text-xl' onClick={handleProofClick} title='Proof of completion' />
+                            <i className='bx bxl-youtube p-1 cursor-pointer rounded transition-colors hover:bg-theme-500 text-xl' onClick={handleProofClick} title='Showcase of the level' />
                         }
                         {inPack &&
                             <i className='bx bx-box text-2xl p-1' title='This level is in a pack' />
