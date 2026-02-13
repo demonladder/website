@@ -25,9 +25,9 @@ export function UserCard({ user }: { user: UserWithRoles }) {
                     {user.Name}
                 </span>
             </Link>
-            <p className='text-theme-400'>
-                {(user.Introduction?.slice(0, 75) ?? 'No introduction') +
-                    (user.Introduction && user.Introduction.length > 75 ? '...' : '')}
+            <p className='text-theme-400 h-18 overflow-hidden'>
+                {(user.Introduction?.slice(0, 100) ?? 'No introduction') +
+                    (user.Introduction && user.Introduction.length > 100 ? '...' : '')}
             </p>
         </li>
     );
