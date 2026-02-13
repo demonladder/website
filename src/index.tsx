@@ -6,7 +6,7 @@ import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/re
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import NavbarNotificationProvider from './context/navbarNotifications/NavbarNotificationProvider';
+import NavbarNotificationProvider from './context/navbarNotification/NavbarNotificationProvider';
 import './migrations';
 import App from './App';
 import AppProvider from './context/app/AppProvider';

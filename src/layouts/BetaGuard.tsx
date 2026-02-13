@@ -9,7 +9,7 @@ import { AxiosError } from 'axios';
 import renderToastError from '../utils/renderToastError';
 import { useMutation } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../components/ui/FloatingLoadingSpinner';
-import useNavbarNotification from '../context/navbarNotifications/useNavbarNotification';
+import useNavbarNotification from '../context/navbarNotification/useNavbarNotification';
 
 export default function BetaGuard({ children }: { children?: React.ReactNode }) {
     const [accessToken, setAccessToken] = useLocalStorage<string>('accessToken');
