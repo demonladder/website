@@ -36,5 +36,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
-      - run: ssh -o StrictHostKeyChecking=no -i private_key.pem  ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "rm -rf ~/gddl-beta/dist"
-      - run: scp -o StrictHostKeyChecking=no -i private_key.pem -r ./dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/gddl-beta/dist
+      - run: ssh -o StrictHostKeyChecking=no -i private_key.pem  ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "rm -rf ~/gddl-beta/dist/assets"
+      - run: ssh -o StrictHostKeyChecking=no -i private_key.pem  ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "rm -rf ~/gddl-beta/dist/index.html"
+      - run: scp -o StrictHostKeyChecking=no -i private_key.pem -r ./dist/assets ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/gddl-beta/dist/assets
+      - run: scp -o StrictHostKeyChecking=no -i private_key.pem -r ./dist/index.html ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/gddl-beta/dist/index.html
