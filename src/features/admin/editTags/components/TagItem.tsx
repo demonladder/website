@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Tag } from '../../../../api/types/level/Tag';
 import { useQueryClient } from '@tanstack/react-query';
-import { reorderTag } from '../api/reorderTag';
+import { tagsClient } from '../../../../api';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 
@@ -47,7 +47,7 @@ export default function TagItem({ dragLocked, tag, selected, onSelect }: Props) 
         setDragOver(false);
 
         const droppedID = parseInt(e.dataTransfer.getData('text/plain'));
-        const request = reorderTag(droppedID, tag.Ordering).then(() => {
+        const request = tagsClient.update(droppedID, { position: tag.Ordering }).then(() => {
             void queryClient.invalidateQueries({ queryKey: ['tags'] });
             onSelect();
         });

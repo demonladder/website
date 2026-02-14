@@ -3,7 +3,7 @@ export default function LoadingSpinner({ isLoading = true }) {
 
     return (
         <span className='flex justify-center items-center gap-1'>
-            <i className='bx bxs-hourglass bx-tada'></i>
+            <i className='bx bxs-hourglass bx-tada' />
             Loading
         </span>
     );

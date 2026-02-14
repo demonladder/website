@@ -6,9 +6,8 @@ import SearchBox from '../../../../components/SearchBox/SearchBox';
 import Role from '../../../../api/types/Role';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import AddRoleToUser from '../../../../api/user/AddRoleToUser';
+import { usersClient } from '../../../../api';
 import renderToastError from '../../../../utils/renderToastError';
-import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
 import { UserResponse } from '../../../../api/user/GetUser';
 import { Heading3 } from '../../../../components/headings';
 import { useUserRoles } from '../../../../hooks/useUserRoles';
@@ -27,7 +26,7 @@ export default function Roles({ user }: { user: UserResponse }) {
             .filter((r) => r.Name.toLowerCase().includes(addFilter.toLowerCase())) ?? [];
 
     const addRoleMutation = useMutation({
-        mutationFn: (roleID: number) => AddRoleToUser(user.ID, roleID),
+        mutationFn: (roleID: number) => usersClient.addRole(user.ID, roleID),
         onSuccess: () => {
             toast.success('Role added!');
             void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });
@@ -37,7 +36,7 @@ export default function Roles({ user }: { user: UserResponse }) {
 
     const removeRoleMutation = useMutation({
         mutationFn: (roleID: number) =>
-            toast.promise(RemoveRoleFromUser(user.ID, roleID), {
+            toast.promise(usersClient.removeRole(user.ID, roleID), {
                 pending: 'Removing role...',
                 success: 'Role removed',
                 error: renderToastError,

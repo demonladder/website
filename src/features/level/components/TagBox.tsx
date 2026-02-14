@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
-import { TopTags, getLevelTags } from '../api/getLevelTags';
+import { levelTagsClient, type Reaction } from '../../../api';
 import { sendTagVoteRequest } from '../api/SendTagVoteRequest';
 import { toast } from 'react-toastify';
 import { getTagEligibility } from '../api/getTagEligibility';
@@ -10,9 +10,9 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import useContextMenu from '../../../context/menu/useContextMenu';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
-import { removeTagVotes } from '../api/removeTagVotes';
 import renderToastError from '../../../utils/renderToastError';
 import Select from '../../../components/input/select/Select';
+import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 
 export default function TagBox({ level }: { level: FullLevel }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
     const queryClient = useQueryClient();
     const { data: levelTags } = useQuery({
         queryKey: ['level', level.ID, 'tags'],
-        queryFn: () => getLevelTags(level.ID),
+        queryFn: () => levelTagsClient.getLevelTags(level.ID),
     });
     const { data: tags, status: tagStatus, fetchStatus: tagFetchStatus } = useTags();
     const { data: voteMeta } = useQuery({
@@ -51,8 +51,10 @@ export default function TagBox({ level }: { level: FullLevel }) {
     }
 
     if (levelTags !== undefined) {
-        const topThreeTags = levelTags.slice(0, 3);
-        const userVotes = levelTags.filter((t) => t.HasVoted && !topThreeTags.find((_t) => t.TagID === _t.TagID));
+        const topThreeTags = levelTags.reactions.slice(0, 3);
+        const userVotes = levelTags.reactions.filter(
+            (t) => t.HasVoted && !topThreeTags.find((_t) => t.TagID === _t.TagID),
+        );
 
         tagsToDisplay.push(...topThreeTags, ...userVotes);
     }
@@ -65,7 +67,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
             <TagInfoModal />
             {!isContentLoading ? (
                 <>
-                    {levelTags.map((t, i) => (
+                    {levelTags.reactions.map((t, i) => (
                         <Tag
                             levelID={level.ID}
                             submission={t}
@@ -73,7 +75,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
                             key={`tagSubmission_${level.ID}_${i}`}
                         />
                     ))}
-                    {levelTags.length === 0 && <span>None yet</span>}
+                    {levelTags.reactions.length === 0 && <span>None yet</span>}
                 </>
             ) : (
                 <span className='mt-4 text-xl'>
@@ -83,7 +85,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
             {!isContentLoading && canVote && (
                 <div className='self-center'>
                     <Select
-                        label={<i className='bx bx-plus text-xl' />}
+                        label={<i className='bx bx-plus text-2xl' />}
                         options={tagOptions}
                         id='voteTag'
                         onOption={(o) => onVoteChange(parseInt(o))}
@@ -94,7 +96,7 @@ export default function TagBox({ level }: { level: FullLevel }) {
     );
 }
 
-function Tag({ levelID, submission, eligible = false }: { levelID: number; submission: TopTags; eligible?: boolean }) {
+function Tag({ levelID, submission, eligible = false }: { levelID: number; submission: Reaction; eligible?: boolean }) {
     const queryClient = useQueryClient();
     const onContextMenu = useContextMenu([
         { text: 'Vote', onClick: handleClick },
@@ -106,8 +108,14 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number; submi
         },
     ]);
 
+    const { data: tags, status } = useTags();
+    if (status === 'pending') return <InlineLoadingSpinner />;
+    if (status === 'error') return;
+    const tag = tags.find((t) => t.ID === submission.TagID);
+    if (!tag) return;
+
     function handleRemoveVotes() {
-        void toast.promise(removeTagVotes(levelID, submission.TagID), {
+        void toast.promise(levelTagsClient.removeVotes(levelID, submission.TagID), {
             pending: 'Removing votes...',
             success: {
                 render: () => {
@@ -140,11 +148,11 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number; submi
             }
         >
             <span>
-                {submission.Tag.Name} {submission.ReactCount}
+                {tag.Name} {submission.ReactCount}
             </span>
-            {submission.Tag.Description && (
-                <div className='pointer-events-none absolute z-30 w-56 opacity-0 group-hover:opacity-100 transition-opacity left-1/2 top-full -translate-x-1/2 translate-y-1 bg-theme-500 border border-theme-400 round:rounded-lg shadow-lg px-2 py-1'>
-                    {submission.Tag.Description}
+            {tag.Description && (
+                <div className='pointer-events-none text-base absolute z-30 w-56 opacity-0 group-hover:opacity-100 transition-opacity left-1/2 top-full -translate-x-1/2 translate-y-1 bg-theme-500 border border-theme-400 round:rounded-lg shadow-lg px-2 py-1'>
+                    {tag.Description}
                 </div>
             )}
         </button>

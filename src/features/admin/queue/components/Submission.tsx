@@ -78,24 +78,24 @@ export default function Submission({ submission }: Props) {
         if (standardDeviations <= 2)
             return (
                 <>
-                    <i className='bx bxs-error'></i> Semi-outlier detected!
+                    <i className='bx bxs-error' /> Semi-outlier detected!
                 </>
             );
         if (standardDeviations <= 3)
             return (
                 <>
-                    <i className='bx bxs-error'></i> Outlier detected!
+                    <i className='bx bxs-error' /> Outlier detected!
                 </>
             );
         if (standardDeviations <= 5)
             return (
                 <>
-                    <i className='bx bxs-error'></i> Outlier detected! (rating won't count)
+                    <i className='bx bxs-error' /> Outlier detected! (rating won't count)
                 </>
             );
         return (
             <>
-                <i className='bx bxs-error'></i> Possible troll detected!
+                <i className='bx bxs-error' /> Possible troll detected!
             </>
         );
     }, [difference, standardDeviations]);

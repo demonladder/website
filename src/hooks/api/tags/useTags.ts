@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import { getTags } from '../../../api/tags/GetTags';
+import { tagsClient } from '../../../api';
 import { AxiosError } from 'axios';
 import { UseQueryOptionsWithoutKey } from '../../../types/UseQueryOptionsWithoutKey';
 
-export function useTags(options: UseQueryOptionsWithoutKey<Awaited<ReturnType<typeof getTags>>, AxiosError> = {}) {
+export function useTags(
+    options: UseQueryOptionsWithoutKey<Awaited<ReturnType<typeof tagsClient.list>>, AxiosError> = {},
+) {
     return useQuery({
-        queryKey: ['tags'],
-        queryFn: getTags,
         ...options,
+        queryKey: ['tags'],
+        queryFn: () => tagsClient.list(),
     });
 }

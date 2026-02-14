@@ -107,11 +107,10 @@ function Submission({ level, submission }: SubmissionProps) {
         <div
             onContextMenu={openContext}
             title={title.join('\n')}
-            className='text-lg min-h-13 flex select-none round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow'
+            className='text-lg min-h-13 flex round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow'
         >
-            <Link
-                className={`flex items-center justify-center basis-14 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`}
-                to={linkDestination}
+            <span
+                className={`flex items-center font-bold justify-center basis-14 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`}
             >
                 {submission.Rating ? (
                     submission.weight > 0 ? (
@@ -132,13 +131,10 @@ function Submission({ level, submission }: SubmissionProps) {
                 ) : (
                     '-'
                 )}
-            </Link>
-            <Link
-                className={`flex items-center justify-center basis-14 p-2 text-center enj-${enj}`}
-                to={linkDestination}
-            >
+            </span>
+            <span className={`flex items-center font-bold justify-center basis-14 p-2 text-center enj-${enj}`}>
                 {enjText}
-            </Link>
+            </span>
             <Link className='p-2 flex items-center flex-grow bg-theme-500 shrink overflow-hidden' to={linkDestination}>
                 {submission.SecondaryUser ? (
                     <>
@@ -187,7 +183,7 @@ function Submission({ level, submission }: SubmissionProps) {
                             target='_blank'
                             rel='noopener noreferrer'
                         >
-                            <i className='bx bx-link'></i>
+                            <i className='bx bx-link' />
                         </a>
                     )}
                     {submission.Progress < 100 && <span>{submission.Progress}%</span>}

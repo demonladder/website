@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import { Heading4 } from '../../../../components/headings';
 import { UserStat } from './UserStat';
-import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
+import { usersClient } from '../../../../api';
 import { Link } from 'react-router';
 import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
 import { useVerificationRole } from '../hooks/useVerificationRole';
@@ -21,7 +21,7 @@ export default function VerifiedUser({ user }: Props) {
         if (!verificationRole.data) return toast.error('Verification role not set');
 
         void toast.promise(
-            RemoveRoleFromUser(user.ID, verificationRole.data.ID).then(() => {
+            usersClient.removeRole(user.ID, verificationRole.data.ID).then(() => {
                 void queryClient.invalidateQueries({ queryKey: ['verifiedUsers'] });
                 void queryClient.invalidateQueries({ queryKey: ['usersEligibleForVerification'] });
                 void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });

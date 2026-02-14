@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { getVerifiedUsers, GetVerifiedUsersResponseOptions } from '../api/getVerifiedUsers';
+import { usersClient, type GetVerifiedRequest } from '../../../../api';
 
-export function useVerifiedUsers(options: GetVerifiedUsersResponseOptions = {}) {
+export function useVerifiedUsers(options: GetVerifiedRequest = {}) {
     return useQuery({
         queryKey: ['verifiedUsers', options],
-        queryFn: () => getVerifiedUsers(options),
+        queryFn: () => usersClient.getVerified(options),
     });
 }
