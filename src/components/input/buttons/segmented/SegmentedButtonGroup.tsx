@@ -22,7 +22,7 @@ function SegmentedButton({ children, onClick, isActive = false, isFirst, isLast,
             style={{ width: `${(1 / buttonCount) * 100}%` }}
             onClick={onClick}
         >
-            <i className='bx bx-check text-2xl' hidden={!isActive} /> {children}
+            {children}
         </button>
     );
 }

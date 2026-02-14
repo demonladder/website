@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
 import Role from '../../api/types/Role';
-import { deleteRole } from '../../features/admin/roles/api/deleteRole';
+import { rolesClient } from '../../api';
 
 interface Props {
     role: Role;
@@ -22,7 +22,7 @@ export default function DeleteRoleModal({ role, onClose: close, onSucces }: Prop
             if (roleID === undefined) return;
 
             void toast.promise(
-                deleteRole(roleID).then(() => {
+                rolesClient.delete(roleID).then(() => {
                     void queryClient.invalidateQueries({ queryKey: ['roles'] });
                     close();
                     if (onSucces) onSucces();

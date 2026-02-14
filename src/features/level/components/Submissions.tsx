@@ -18,6 +18,7 @@ import { Heading2 } from '../../../components/headings';
 import Select from '../../../components/input/select/Select';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import Tooltip from '../../../components/ui/Tooltip';
+import { ArrowDownAZ, ArrowUpAZ } from '@boxicons/react';
 
 const sorts: Record<SubmissionSort, string> = {
     [SubmissionSort.DATE_ADDED]: 'Date added',
@@ -34,17 +35,12 @@ interface SubmissionProps {
     submission: ISubmission;
 }
 
-const progressFilterOptions = {
-    victors: 'victors',
-    all: 'all',
-    incomplete: 'users with progress',
+const statusOptions = {
+    all: 'All',
+    completed: 'Victors',
+    beating: 'Progress',
 };
-
-const sortDirections = {
-    asc: 'Asc',
-    desc: 'Desc',
-} as const;
-type SortDirections = keyof typeof sortDirections;
+type StatusOptions = keyof typeof statusOptions;
 
 function Submission({ level, submission }: SubmissionProps) {
     const { data: roles } = useRoles();
@@ -65,7 +61,7 @@ function Submission({ level, submission }: SubmissionProps) {
 
     const linkDestination = `/profile/${submission.User.ID}`;
 
-    const hasWidgets = submission.Proof !== null || submission.Device === Device.MOBILE;
+    const hasWidgets = submission.Proof !== null || submission.Device === Device.MOBILE || submission.Progress < 100;
 
     const title: string[] = [];
     title.push(submission.User.Name);
@@ -111,11 +107,10 @@ function Submission({ level, submission }: SubmissionProps) {
         <div
             onContextMenu={openContext}
             title={title.join('\n')}
-            className='text-lg flex select-none round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow'
+            className='text-lg min-h-13 flex round:rounded-md border border-white/0 hover:border-white/100 transition-colors shadow'
         >
-            <Link
-                className={`flex items-center justify-center basis-14 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`}
-                to={linkDestination}
+            <span
+                className={`flex items-center font-bold justify-center basis-14 p-2 round:rounded-s-md tier-${submission.Rating ? submission.Rating : '0'}`}
             >
                 {submission.Rating ? (
                     submission.weight > 0 ? (
@@ -136,14 +131,11 @@ function Submission({ level, submission }: SubmissionProps) {
                 ) : (
                     '-'
                 )}
-            </Link>
-            <Link
-                className={`flex items-center justify-center basis-14 p-2 text-center enj-${enj}`}
-                to={linkDestination}
-            >
+            </span>
+            <span className={`flex items-center font-bold justify-center basis-14 p-2 text-center enj-${enj}`}>
                 {enjText}
-            </Link>
-            <Link className='p-2 flex-grow bg-theme-500 shrink overflow-hidden' to={linkDestination}>
+            </span>
+            <Link className='p-2 flex items-center flex-grow bg-theme-500 shrink overflow-hidden' to={linkDestination}>
                 {submission.SecondaryUser ? (
                     <>
                         <p
@@ -191,9 +183,10 @@ function Submission({ level, submission }: SubmissionProps) {
                             target='_blank'
                             rel='noopener noreferrer'
                         >
-                            <i className='bx bx-link'></i>
+                            <i className='bx bx-link' />
                         </a>
                     )}
+                    {submission.Progress < 100 && <span>{submission.Progress}%</span>}
                 </span>
             )}
             <RefreshRateIcon refreshRate={submission.RefreshRate} />
@@ -216,27 +209,32 @@ export default function Submissions({
     showTwoPlayerStats,
     setShowTwoPlayerStats,
 }: SubmissionsProps) {
-    const [progressFilterKey, setProgressFilterKey] = useState<keyof typeof progressFilterOptions>('victors');
     const [sorter, setSorter] = useQueryParam<SubmissionSort>(
         'sort',
         withDefault(createEnumParam(Object.values(SubmissionSort)), SubmissionSort.DATE_ADDED),
     );
-    const [sortDirection, setSortDirection] = useState<SortDirections>('asc');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [statusOptionsKey, setStatusOptionsKey] = useState<StatusOptions>('all');
 
     const { data: submissions, status } = useQuery({
         queryKey: [
             'level',
             level.ID,
             'submissions',
-            { page, progressFilterKey, twoPlayer: showTwoPlayerStats, sorter, sortDirection },
+            { page, status: statusOptionsKey, twoPlayer: showTwoPlayerStats, sort: sorter, sortDirection },
         ],
         queryFn: () =>
             getLevelSubmissions({
                 twoPlayer: showTwoPlayerStats,
                 levelID: level.ID,
-                progressFilter: progressFilterKey,
                 sort: sorter,
                 sortDirection,
+                progressFilter:
+                    statusOptionsKey === 'completed'
+                        ? 'victors'
+                        : statusOptionsKey === 'beating'
+                          ? 'incomplete'
+                          : 'all',
                 limit: 24,
                 page,
             }),
@@ -263,33 +261,24 @@ export default function Submissions({
                 setShowTwoPlayerStats={setShowTwoPlayerStats}
             />
             <div className='flex flex-wrap gap-2 mb-2'>
-                <Select
-                    label={`Sort by: ${sorts[sorter]}`}
-                    icon={<i className='bx bx-sort' />}
-                    options={sorts}
-                    onOption={setSorter}
-                />
+                <Select label={`Sort by: ${sorts[sorter]}`} options={sorts} onOption={setSorter} />
+                <button
+                    className='px-3 bg-secondary-container text-on-secondary-container rounded-full'
+                    onClick={() => setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))}
+                >
+                    {sortDirection === 'asc' ? <ArrowUpAZ /> : <ArrowDownAZ />}
+                </button>
                 <SegmentedButtonGroup
-                    options={sortDirections}
-                    activeKey={sortDirection}
-                    onSetActive={setSortDirection}
-                />
-                <Select
-                    options={progressFilterOptions}
-                    label={
-                        <>
-                            Showing: <b>{progressFilterKey}</b>
-                        </>
-                    }
-                    onOption={setProgressFilterKey}
-                    id='submissionsProgressFilter'
+                    options={statusOptions}
+                    activeKey={statusOptionsKey}
+                    onSetActive={setStatusOptionsKey}
                 />
             </div>
             <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-2'>
-                {submissions.submissions.map((s) => (
+                {submissions.data.map((s) => (
                     <Submission level={level} submission={s} key={s.User.ID} />
                 ))}
-                {submissions.submissions.length === 0 ? <p className='mb-0'>No submissions available!</p> : null}
+                {submissions.data.length === 0 ? <p className='mb-0'>No submissions available!</p> : null}
             </div>
             <PageButtons
                 onPageChange={(page) => setPage(page)}

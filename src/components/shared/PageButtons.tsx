@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { clamp } from '../../utils/clamp';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
 import { NumberInput } from './input/Input';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@boxicons/react';
 
 interface Props {
     onPageChange: (page: number) => void;
@@ -39,16 +40,14 @@ export default function PageButtons({ onPageChange, page, total, limit }: Props)
 
     return (
         <div className='mt-3 flex gap-3 justify-center items-center'>
-            {page > 0 && ( // If the current page is not the first, render button
-                <div className='flex gap-2 text-2xl'>
-                    <PrimaryButton onClick={() => onPageButtonClick(0)}>
-                        <i className='bx bx-chevrons-left' />
-                    </PrimaryButton>
-                    <PrimaryButton onClick={() => onPageButtonClick(page - 1)}>
-                        <i className='bx bx-chevron-left' />
-                    </PrimaryButton>
-                </div>
-            )}
+            <div className={'flex gap-2 text-2xl' + (page === 0 ? ' opacity-0 pointer-events-none' : '')}>
+                <PrimaryButton onClick={() => onPageButtonClick(0)}>
+                    <ChevronsLeft />
+                </PrimaryButton>
+                <PrimaryButton onClick={() => onPageButtonClick(page - 1)}>
+                    <ChevronLeft />
+                </PrimaryButton>
+            </div>
             <div className='flex items-center gap-1'>
                 <p className='m-0'>Page</p>
                 <NumberInput
@@ -60,16 +59,14 @@ export default function PageButtons({ onPageChange, page, total, limit }: Props)
                 />
                 <p>/{maxPages}</p>
             </div>
-            {page + 1 < maxPages && ( // If the current page is not the last, render button
-                <div className='flex gap-2 text-2xl'>
-                    <PrimaryButton onClick={() => onPageButtonClick(page + 1)}>
-                        <i className='bx bx-chevron-right' />
-                    </PrimaryButton>
-                    <PrimaryButton onClick={() => onPageButtonClick(maxPages - 1)}>
-                        <i className='bx bx-chevrons-right' />
-                    </PrimaryButton>
-                </div>
-            )}
+            <div className={'flex gap-2 text-2xl' + (page + 1 < maxPages ? '' : ' opacity-0 pointer-events-none')}>
+                <PrimaryButton onClick={() => onPageButtonClick(page + 1)}>
+                    <ChevronRight />
+                </PrimaryButton>
+                <PrimaryButton onClick={() => onPageButtonClick(maxPages - 1)}>
+                    <ChevronsRight />
+                </PrimaryButton>
+            </div>
         </div>
     );
 }

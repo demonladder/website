@@ -3,8 +3,9 @@ import { Link } from 'react-router';
 import ms from 'ms';
 import Container from '../../../components/layout/Container';
 import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
-import { getStats } from '../api/getStats';
+import { statsClient } from '../../../api';
 import { Heading2, Heading3 } from '../../../components/headings';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 
 function anyOrLoading<T>(value: T) {
     return value ?? <InlineLoadingSpinner />;
@@ -21,12 +22,13 @@ function Statistic({ label, children }: { label: string; children: number | stri
 export default function IndexStats() {
     const { data, status } = useQuery({
         queryKey: ['stats'],
-        queryFn: getStats,
+        queryFn: () => statsClient.getStats(),
     });
 
     return (
         <Container className='xl:col-span-2'>
             <Heading2>Stats</Heading2>
+            {status === 'pending' && <LoadingSpinner />}
             {status === 'success' && (
                 <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-8'>
                     <div>
@@ -40,7 +42,7 @@ export default function IndexStats() {
                         <Statistic label='Levels'>{data.totalLevels.now}</Statistic>
                         <Statistic label='Rated levels'>{data.totalRatedLevels}</Statistic>
                         <Statistic label='Coverage'>
-                            {(((data.totalRatedLevels ?? 0) / (data.totalLevels.now ?? 1)) * 100).toFixed(2)}
+                            {(((data.totalRatedLevels ?? 0) / (data.totalLevels.now ?? 1)) * 100).toFixed(1) + '%'}
                         </Statistic>
                     </div>
                     <div>

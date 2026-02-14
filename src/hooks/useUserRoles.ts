@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUserRoles } from '../api/user/getUserRoles';
+import { usersClient } from '../api';
 
 export function useUserRoles(userID: number) {
     return useQuery({
         queryKey: ['user', userID, 'roles'],
-        queryFn: () => getUserRoles(userID),
+        queryFn: () => usersClient.getRoles(userID),
     });
 }

@@ -26,7 +26,7 @@ interface GetLevelSubmissionsResponse {
     total: number;
     limit: number;
     page: number;
-    submissions: Submission[];
+    data: Submission[];
 }
 
 export enum SubmissionSort {

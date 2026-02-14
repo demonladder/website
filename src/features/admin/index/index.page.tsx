@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getStats } from '../../home/api/getStats';
+import { statsClient } from '../../../api';
 import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinner';
 import {
     Chart as ChartJS,
@@ -69,7 +69,7 @@ function StatisticTracker({ value, oldValue, label }: { label: string; oldValue?
 export default function ModIndex() {
     const { data: stats } = useQuery({
         queryKey: ['stats'],
-        queryFn: getStats,
+        queryFn: () => statsClient.getStats(),
     });
 
     return (

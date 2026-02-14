@@ -1,21 +1,19 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import APIClient from '../../../../api/APIClient';
-import User from '../../../../api/types/User';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
-import RemoveRoleFromUser from '../../../../api/user/RemoveRoleFromUser';
+import { rolesClient, usersClient } from '../../../../api';
 import { Heading3 } from '../../../../components/headings';
 
 export default function Users({ roleID }: { roleID: number }) {
     const queryClient = useQueryClient();
     const { data } = useQuery({
         queryKey: ['role', roleID, 'users'],
-        queryFn: () => APIClient.get<{ users: User[] }>(`/roles/${roleID}/users`).then((res) => res.data),
+        queryFn: () => rolesClient.listMembers(roleID),
     });
 
     function removeUser(userID: number) {
         void toast.promise(
-            RemoveRoleFromUser(userID, roleID).then(() => {
+            usersClient.removeRole(userID, roleID).then(() => {
                 void queryClient.invalidateQueries({ queryKey: ['role', roleID, 'users'] });
                 void queryClient.invalidateQueries({ queryKey: ['users', userID] });
             }),

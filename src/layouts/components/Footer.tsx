@@ -19,7 +19,7 @@ export default function Footer() {
                         </li>
                         <li>
                             <a href='https://twitter.com/gdladder' target='_blank' rel='noopener noreferrer'>
-                                <i className='bx bxl-twitter'></i>
+                                <i className='bx bxl-twitter' />
                             </a>
                         </li>
                         <li>

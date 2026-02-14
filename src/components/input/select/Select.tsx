@@ -49,7 +49,7 @@ export default function Select<S extends Record<string, string>, K = S[keyof S]>
         <>
             {show && <div className='absolute inset-0 z-30' onClick={() => setShow(false)} />}
             <div className='relative inline-block' id={id}>
-                <SecondaryButton isPressedOverride={show} onClick={() => setShow((prev) => !prev)}>
+                <SecondaryButton className='h-8 px-4' isPressedOverride={show} onClick={() => setShow((prev) => !prev)}>
                     {icon} {label}
                 </SecondaryButton>
                 <ul

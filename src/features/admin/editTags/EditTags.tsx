@@ -7,9 +7,8 @@ import { DangerButton } from '../../../components/ui/buttons/DangerButton';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
 import { toast } from 'react-toastify';
-import { saveTag } from './api/saveTag';
 import renderToastError from '../../../utils/renderToastError';
-import { createTag } from './api/createTag';
+import { tagsClient } from '../../../api';
 import useDeleteTagModal from '../../../hooks/modals/useDeleteTagModal';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import TagItem from './components/TagItem';
@@ -49,7 +48,8 @@ export default function EditTags() {
 
         setIsMutating(true);
         void toast.promise(
-            saveTag(selectedTag, nameRef.current.value, descriptionRef.current.value)
+            tagsClient
+                .update(selectedTag.ID, { name: nameRef.current.value, description: descriptionRef.current.value })
                 .then(() => {
                     void queryClient.invalidateQueries({ queryKey: ['tags'] });
                 })
@@ -68,7 +68,8 @@ export default function EditTags() {
 
         if (!nameRef.current || !descriptionRef.current) return;
         void toast.promise(
-            createTag(nameRef.current.value, descriptionRef.current.value)
+            tagsClient
+                .create({ name: nameRef.current.value, description: descriptionRef.current.value })
                 .then(() => {
                     void queryClient.invalidateQueries({ queryKey: ['tags'] });
                 })
