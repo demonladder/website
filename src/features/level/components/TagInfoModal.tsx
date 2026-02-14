@@ -3,6 +3,7 @@ import Modal from '../../../components/layout/Modal';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { useTags } from '../../../hooks/api/tags/useTags';
 import Divider from '../../../components/divider/Divider';
+import { InfoCircle } from '@boxicons/react';
 
 export default function TagInfoModal() {
     const [visible, setVisible] = useState(false);
@@ -15,7 +16,9 @@ export default function TagInfoModal() {
 
     return (
         <>
-            <button className='bx bx-info-circle self-center text-2xl' onClick={openModal} />
+            <button className='self-center' onClick={openModal}>
+                <InfoCircle />{' '}
+            </button>
             <Modal title='Skillset explanation' show={visible} onClose={() => setVisible(false)}>
                 <div>
                     <p>Tags describe the general skillsets that are present in this level.</p>
