@@ -13,7 +13,7 @@ on:
           - beta
 
 env:
-  target: ${{ inputs.target == 'main' && 'main' || 'beta' }}
+  target: ${{ inputs.target == 'stable' && 'main' || 'beta' }}
 
 jobs:
   deploy:
@@ -21,26 +21,9 @@ jobs:
     environment: staging
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js v24
-        uses: actions/setup-node@v4
+      - uses: actions/download-artifact@v5
         with:
-          node-version: 24.x
-          cache: 'npm'
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Build
-        run: npm run ${{ inputs.target == 'main' && 'build' || 'build:staging'}}
-        env:
-          VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
-          VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
-          VITE_SESSION_ID_NAME: ${{ vars.VITE_SESSION_ID_NAME }}
-          VITE_MAX_TIER: ${{ vars.VITE_MAX_TIER }}
-          VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
-          VITE_CF_TURNSTILE_SITE_KEY: ${{ vars.VITE_CF_TURNSTILE_SITE_KEY }}
+          name: build-${{ github.ref_name == 'stable' && 'prod' || 'staging'}}
 
       - name: Prepare SSH key
         run: |

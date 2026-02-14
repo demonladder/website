@@ -16,18 +16,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Use Node.js v24
-        uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 24.x
-          cache: 'npm'
+          bun-version: latest
 
-      - name: Install deps
-        run: npm ci
+      - run: bun install
 
       - name: Build
-        run: npm run ${{ github.ref_name == 'main' && 'build' || 'build:staging'}}
+        run: bun run ${{ github.ref_name == 'stable' && 'build' || 'build:staging'}}
         env:
           VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
           VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
@@ -35,3 +31,8 @@ jobs:
           VITE_MAX_TIER: ${{ vars.VITE_MAX_TIER }}
           VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
           VITE_CF_TURNSTILE_SITE_KEY: ${{ vars.VITE_CF_TURNSTILE_SITE_KEY }}
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: build-${{ github.ref_name == 'stable' && 'prod' || 'staging'}}
+          path: dist/
