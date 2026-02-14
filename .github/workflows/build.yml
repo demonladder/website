@@ -31,8 +31,3 @@ jobs:
           VITE_MAX_TIER: ${{ vars.VITE_MAX_TIER }}
           VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
           VITE_CF_TURNSTILE_SITE_KEY: ${{ vars.VITE_CF_TURNSTILE_SITE_KEY }}
-
-      - uses: actions/upload-artifact@v6
-        with:
-          name: build-${{ github.ref_name == 'stable' && 'prod' || 'staging'}}
-          path: dist/

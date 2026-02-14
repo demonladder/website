@@ -1,19 +1,14 @@
-name: Deploy
+name: Deploy beta
 
 on:
   workflow_dispatch:
-    inputs:
-      target:
-        description: 'Deployment target (main or beta)'
-        required: false
-        default: ''
-        type: choice
-        options:
-          - main
-          - beta
-
-env:
-  target: ${{ inputs.target == 'stable' && 'main' || 'beta' }}
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - '*.json'
+      - 'vite.config.ts'
 
 jobs:
   deploy:
@@ -21,29 +16,25 @@ jobs:
     environment: staging
 
     steps:
-      - uses: actions/download-artifact@v5
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          name: build-${{ github.ref_name == 'stable' && 'prod' || 'staging'}}
+          bun-version: latest
+
+      - run: bun install
+      - run: bun run build:staging
+        env:
+          VITE_SERVER_URL: ${{ vars.VITE_SERVER_URL }}
+          VITE_DISCORD_OAUTH: ${{ vars.VITE_DISCORD_OAUTH }}
+          VITE_SESSION_ID_NAME: ${{ vars.VITE_SESSION_ID_NAME }}
+          VITE_MAX_TIER: ${{ vars.VITE_MAX_TIER }}
+          VITE_MINIMUM_REFRESH_RATE: ${{ vars.VITE_MINIMUM_REFRESH_RATE }}
+          VITE_CF_TURNSTILE_SITE_KEY: ${{ vars.VITE_CF_TURNSTILE_SITE_KEY }}
 
       - name: Prepare SSH key
         run: |
-          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Delete index.html
-        run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm /home/ubuntu/${{ env.target }}/dist/index.html"
-
-      - name: Delete assets
-        run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@34.249.48.77 "sudo rm -rf /home/ubuntu/${{ env.target }}/dist/assets"
-
-      - name: Transfer index.html
-        run: |
-          scp -i private_key.pem -o StrictHostKeyChecking=no ./dist/index.html ubuntu@34.249.48.77:/home/ubuntu/${{ env.target }}/dist/index.html
-
-      - name: Transfer assets
-        run: |
-          scp -r -i private_key.pem -o StrictHostKeyChecking=no ./dist/assets ubuntu@34.249.48.77:/home/ubuntu/${{ env.target }}/dist/assets
+      - run: ssh -o StrictHostKeyChecking=no -i private_key.pem  ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "rm -rf ~/gddl-beta/dist"
+      - run: scp -o StrictHostKeyChecking=no -i private_key.pem -r ./dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/gddl-beta/dist
