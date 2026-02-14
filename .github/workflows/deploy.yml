@@ -2,13 +2,6 @@ name: Deploy beta
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - '*.json'
-      - 'vite.config.ts'
 
 jobs:
   deploy:
