@@ -31,7 +31,8 @@ export default function EditInformation({ user }: { user: UserResponse }) {
 
     const queryClient = useQueryClient();
     const editMutation = useMutation({
-        mutationFn: (body: Parameters<typeof saveProfile>[0]) => toast.promise(saveProfile(body), { pending: 'Saving...', success: 'Saved', error: renderToastError }),
+        mutationFn: (body: Parameters<typeof saveProfile>[0]) =>
+            toast.promise(saveProfile(body), { pending: 'Saving...', success: 'Saved', error: renderToastError }),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });
             void queryClient.invalidateQueries({ queryKey: ['userSearch'] });
@@ -49,8 +50,20 @@ export default function EditInformation({ user }: { user: UserResponse }) {
     function handleUnlink() {
         const handle = toast.loading('Unlinking...');
         unlinkMutation.mutate(user.ID, {
-            onSuccess: () => toast.update(handle, { render: 'Account unlinked', type: 'success', isLoading: false, autoClose: 3000 }),
-            onError: (err) => toast.update(handle, { render: renderToastError.render({ data: err }), type: 'error', isLoading: false, autoClose: 3000 }),
+            onSuccess: () =>
+                toast.update(handle, {
+                    render: 'Account unlinked',
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: 3000,
+                }),
+            onError: (err) =>
+                toast.update(handle, {
+                    render: renderToastError.render({ data: err }),
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                }),
         });
     }
 
@@ -60,26 +73,45 @@ export default function EditInformation({ user }: { user: UserResponse }) {
             <form className='mt-4' onSubmit={submitHandler}>
                 <FormGroup>
                     <FormInputLabel htmlFor={nameID}>Name</FormInputLabel>
-                    <TextInput id={nameID} className='border p-2' value={newName} onChange={(e) => setNewName(e.target.value)} invalid={!validateUsername(newName)} />
+                    <TextInput
+                        id={nameID}
+                        className='border p-2'
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                        invalid={!validateUsername(newName)}
+                    />
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel htmlFor={introductionID}>Introduction</FormInputLabel>
-                    <TextArea id={introductionID} className='border p-2' value={newIntroduction} onChange={(e) => setNewIntroduction(e.target.value)} invalid={!validateUsername(newName)} />
+                    <TextArea
+                        id={introductionID}
+                        className='border p-2'
+                        value={newIntroduction}
+                        onChange={(e) => setNewIntroduction(e.target.value)}
+                        invalid={!validateUsername(newName)}
+                    />
                 </FormGroup>
                 <div className='flex justify-between'>
-                    <PrimaryButton type='submit' disabled={!isChanged}>Save</PrimaryButton>
+                    <PrimaryButton type='submit' disabled={!isChanged}>
+                        Save
+                    </PrimaryButton>
                     <p>{newIntroduction.length}/500</p>
                 </div>
             </form>
             <div>
                 <Heading3 className='mt-4'>Discord link</Heading3>
-                {user.Account
-                    ? <>
-                        <p>ID: <b>{user.Account.ID}</b></p>
-                        <p>Username: <b>{user.Account.discordUsername}</b></p>
+                {user.Account ? (
+                    <>
+                        <p>
+                            ID: <b>{user.Account.ID}</b>
+                        </p>
+                        <p>
+                            Username: <b>{user.Account.discordUsername}</b>
+                        </p>
                     </>
-                    : <p>User's profile is not linked to any Discord account!</p>
-                }
+                ) : (
+                    <p>User's profile is not linked to any Discord account!</p>
+                )}
                 <SecondaryButton onClick={() => handleUnlink()}>Un-link</SecondaryButton>
             </div>
         </section>

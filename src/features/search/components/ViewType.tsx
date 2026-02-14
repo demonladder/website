@@ -6,7 +6,7 @@ interface Props {
     onViewGrid: () => void;
 }
 
-export default function ViewType({ isList, onViewList, onViewGrid}: Props) {
+export default function ViewType({ isList, onViewList, onViewGrid }: Props) {
     const options = {
         LIST: 'List',
         GRID: 'Grid',
@@ -20,7 +20,5 @@ export default function ViewType({ isList, onViewList, onViewGrid}: Props) {
         }
     }
 
-    return (
-        <SegmentedButtonGroup options={options} activeKey={isList ? 'LIST' : 'GRID'} onSetActive={onSetActive} />
-    );
+    return <SegmentedButtonGroup options={options} activeKey={isList ? 'LIST' : 'GRID'} onSetActive={onSetActive} />;
 }

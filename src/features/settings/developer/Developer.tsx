@@ -27,23 +27,45 @@ export default function Developer() {
     const generateHandle = useRef<Id>(null);
     const generateMutation = useMutation({
         mutationFn: generateAPIKey,
-        onMutate: () => generateHandle.current = toast.loading('Generating key...'),
+        onMutate: () => (generateHandle.current = toast.loading('Generating key...')),
         onSuccess: (data) => {
             setKey(data);
-            toast.update(generateHandle.current!, { render: 'API key generated successfully', autoClose: null, type: 'success', isLoading: false });
+            toast.update(generateHandle.current!, {
+                render: 'API key generated successfully',
+                autoClose: null,
+                type: 'success',
+                isLoading: false,
+            });
         },
-        onError: (err: AxiosError) => toast.update(generateHandle.current!, { render: renderToastError.render({ data: err }), autoClose: null, type: 'error', isLoading: false }),
+        onError: (err: AxiosError) =>
+            toast.update(generateHandle.current!, {
+                render: renderToastError.render({ data: err }),
+                autoClose: null,
+                type: 'error',
+                isLoading: false,
+            }),
     });
 
     const resetHandle = useRef<Id>(null);
     const resetMutation = useMutation({
         mutationFn: resetAPIKey,
-        onMutate: () => resetHandle.current = toast.loading('Resetting API key...'),
+        onMutate: () => (resetHandle.current = toast.loading('Resetting API key...')),
         onSuccess: () => {
             setKey('');
-            toast.update(resetHandle.current!, { render: 'API key reset successfully', autoClose: null, type: 'success', isLoading: false });
+            toast.update(resetHandle.current!, {
+                render: 'API key reset successfully',
+                autoClose: null,
+                type: 'success',
+                isLoading: false,
+            });
         },
-        onError: (err: AxiosError) => toast.update(resetHandle.current!, { render: renderToastError.render({ data: err }), autoClose: null, type: 'error', isLoading: false }),
+        onError: (err: AxiosError) =>
+            toast.update(resetHandle.current!, {
+                render: renderToastError.render({ data: err }),
+                autoClose: null,
+                type: 'error',
+                isLoading: false,
+            }),
     });
 
     return (
@@ -51,22 +73,38 @@ export default function Developer() {
             <Heading1 className='mb-4'>Developer settings</Heading1>
             <div>
                 <Heading3>API key</Heading3>
-                <p>You can only have 1 API key at a time. <b className='text-red-600'>DO NOT</b> give this key to any unofficial source as it gives <b className='text-orange-400'>full control</b> over your account!</p>
-                <p>To generate a new API key, click the "Generate" button below. This will invalidate your current API key if you have one.</p>
+                <p>
+                    You can only have 1 API key at a time. <b className='text-red-600'>DO NOT</b> give this key to any
+                    unofficial source as it gives <b className='text-orange-400'>full control</b> over your account!
+                </p>
+                <p>
+                    To generate a new API key, click the "Generate" button below. This will invalidate your current API
+                    key if you have one.
+                </p>
                 <div className='flex gap-2 mt-2'>
-                    <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>Generate</PrimaryButton>
-                    <DangerButton onClick={() => resetMutation.mutate()} loading={resetMutation.isPending}>Reset key</DangerButton>
+                    <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>
+                        Generate
+                    </PrimaryButton>
+                    <DangerButton onClick={() => resetMutation.mutate()} loading={resetMutation.isPending}>
+                        Reset key
+                    </DangerButton>
                 </div>
-                {key &&
+                {key && (
                     <div className='mt-4'>
                         <p>Your new API key:</p>
-                        <p className='bg-theme-600 px-1'><code>{key}</code></p>
-                        <FormInputDescription>Copy this key now, as it will disappear once you leave this page!</FormInputDescription>
+                        <p className='bg-theme-600 px-1'>
+                            <code>{key}</code>
+                        </p>
+                        <FormInputDescription>
+                            Copy this key now, as it will disappear once you leave this page!
+                        </FormInputDescription>
                     </div>
-                }
+                )}
                 <Divider />
                 <Heading3>Applications</Heading3>
-                <Link to={routes.developer.applications} className='text-blue-500'>Go to applications</Link>
+                <Link to={routes.developer.applications} className='text-blue-500'>
+                    Go to applications
+                </Link>
             </div>
         </div>
     );

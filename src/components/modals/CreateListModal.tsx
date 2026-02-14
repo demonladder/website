@@ -23,35 +23,49 @@ export default function CreateListModal({ userID, levelID, onClose: close }: Pro
 
     const queryClient = useQueryClient();
 
-    const onCreateList = useCallback((e: React.FormEvent) => {
-        e.preventDefault();
+    const onCreateList = useCallback(
+        (e: React.FormEvent) => {
+            e.preventDefault();
 
-        const promise = createList(title, levelID, description).then(() => {
-            close();
-            return queryClient.invalidateQueries({ queryKey: ['user', userID, 'lists'] });
-        });
+            const promise = createList(title, levelID, description).then(() => {
+                close();
+                return queryClient.invalidateQueries({ queryKey: ['user', userID, 'lists'] });
+            });
 
-        void toast.promise(promise, {
-            pending: 'Creating...',
-            success: 'List created!',
-            error: renderToastError,
-        });
-    }, [title, description, close, levelID, queryClient, userID]);
+            void toast.promise(promise, {
+                pending: 'Creating...',
+                success: 'List created!',
+                error: renderToastError,
+            });
+        },
+        [title, description, close, levelID, queryClient, userID],
+    );
 
     return (
         <Modal title='Create list' show={true} onClose={close}>
             <form onSubmit={onCreateList}>
                 <FormGroup>
                     <FormInputLabel>Title</FormInputLabel>
-                    <TextInput value={title} onChange={(e) => setTitle(e.target.value.trimStart())} invalid={!title.match(/^[a-zA-Z0-9\s._-]{3,32}$/)} minLength={3} maxLength={32} required />
-                    <FormInputDescription>3-32 characters. Allowed characters: a-Z 0-9 spaces . _ -</FormInputDescription>
+                    <TextInput
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value.trimStart())}
+                        invalid={!title.match(/^[a-zA-Z0-9\s._-]{3,32}$/)}
+                        minLength={3}
+                        maxLength={32}
+                        required
+                    />
+                    <FormInputDescription>
+                        3-32 characters. Allowed characters: a-Z 0-9 spaces . _ -
+                    </FormInputDescription>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Description</FormInputLabel>
                     <TextInput value={description} onChange={(e) => setDescription(e.target.value)} />
                 </FormGroup>
                 <FormGroup className='flex float-right gap-2'>
-                    <SecondaryButton type='button' onClick={close}>Close</SecondaryButton>
+                    <SecondaryButton type='button' onClick={close}>
+                        Close
+                    </SecondaryButton>
                     <PrimaryButton type='submit'>Create</PrimaryButton>
                 </FormGroup>
             </form>

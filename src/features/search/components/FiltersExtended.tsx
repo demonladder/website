@@ -49,41 +49,59 @@ export default function FiltersExtended() {
     const [twoPlayer, setTwoPlayer] = useQueryParam(QueryParamNames.TwoPlayer, withDefault(TwoPlayerParam, 'any'));
     const [update] = useQueryParam(QueryParamNames.Update, withDefault(UpdateParam, 'any'));
     const [topTagID, setTopTagID] = useQueryParam(QueryParamNames.TopTagID, withDefault(NumberParam, 0));
-    const [excludeCompleted, setExcludeCompleted] = useQueryParam(QueryParamNames.ExcludeCompleted, withDefault(BooleanParam, false));
-    const [excludeUnrated, setExcludeUnrated] = useQueryParam(QueryParamNames.ExcludeUnrated, withDefault(BooleanParam, false));
-    const [exculdeUnratedEnj, setExcludeUnratedEnj] = useQueryParam(QueryParamNames.ExcludeUnratedEnjoyment, withDefault(BooleanParam, false));
-    const [excludeRated, setExcludeRated] = useQueryParam(QueryParamNames.ExcludeRated, withDefault(BooleanParam, false));
-    const [excludeRatedEnj, setExcludeRatedEnj] = useQueryParam(QueryParamNames.ExcludeRatedEnjoyment, withDefault(BooleanParam, false));
+    const [excludeCompleted, setExcludeCompleted] = useQueryParam(
+        QueryParamNames.ExcludeCompleted,
+        withDefault(BooleanParam, false),
+    );
+    const [excludeUnrated, setExcludeUnrated] = useQueryParam(
+        QueryParamNames.ExcludeUnrated,
+        withDefault(BooleanParam, false),
+    );
+    const [exculdeUnratedEnj, setExcludeUnratedEnj] = useQueryParam(
+        QueryParamNames.ExcludeUnratedEnjoyment,
+        withDefault(BooleanParam, false),
+    );
+    const [excludeRated, setExcludeRated] = useQueryParam(
+        QueryParamNames.ExcludeRated,
+        withDefault(BooleanParam, false),
+    );
+    const [excludeRatedEnj, setExcludeRatedEnj] = useQueryParam(
+        QueryParamNames.ExcludeRatedEnjoyment,
+        withDefault(BooleanParam, false),
+    );
     const [inPack, setInPack] = useQueryParam(QueryParamNames.InPack, withDefault(BooleanParam, false));
     const [_, setQueryParams] = useQueryParams();
 
     const { data: tags } = useTags();
 
-    const onUpdateChange = useCallback((key: UpdateOption) => {
-        if (key !== 'any') {
-            const lowID = parseInt(key.split('-')[0]);
-            const highID = parseInt(key.split('-')[1]);
+    const onUpdateChange = useCallback(
+        (key: UpdateOption) => {
+            if (key !== 'any') {
+                const lowID = parseInt(key.split('-')[0]);
+                const highID = parseInt(key.split('-')[1]);
 
-            if (isNaN(lowID) || isNaN(highID)) {
-                toast.error('Invalid update range');
-                return;
+                if (isNaN(lowID) || isNaN(highID)) {
+                    toast.error('Invalid update range');
+                    return;
+                }
+
+                setQueryParams((prev) => ({
+                    ...prev,
+                    [QueryParamNames.MinID]: lowID,
+                    [QueryParamNames.MaxID]: highID,
+                    [QueryParamNames.Update]: key,
+                }));
+            } else {
+                setQueryParams((prev) => ({
+                    ...prev,
+                    [QueryParamNames.MinID]: undefined,
+                    [QueryParamNames.MaxID]: undefined,
+                    [QueryParamNames.Update]: key,
+                }));
             }
-
-            setQueryParams((prev) => ({
-                ...prev,
-                [QueryParamNames.MinID]: lowID,
-                [QueryParamNames.MaxID]: highID,
-                [QueryParamNames.Update]: key,
-            }));
-        } else {
-            setQueryParams((prev) => ({
-                ...prev,
-                [QueryParamNames.MinID]: undefined,
-                [QueryParamNames.MaxID]: undefined,
-                [QueryParamNames.Update]: key,
-            }));
-        }
-    }, [setQueryParams]);
+        },
+        [setQueryParams],
+    );
 
     const tagOptions: Record<number, string> = {};
     (tags ?? []).forEach((tag) => {
@@ -97,52 +115,123 @@ export default function FiltersExtended() {
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Submission count:</p>
                     <div className='flex items-center'>
-                        <NumberInput value={minSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMinSubCount(NaNToNull(parseInt(e.target.value)))} />
+                        <NumberInput
+                            value={minSubCount ?? undefined}
+                            min='1'
+                            max='1000'
+                            onChange={(e) => setMinSubCount(NaNToNull(parseInt(e.target.value)))}
+                        />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput value={maxSubCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxSubCount(NaNToNull(parseInt(e.target.value)))} />
+                        <NumberInput
+                            value={maxSubCount ?? undefined}
+                            min='1'
+                            max='1000'
+                            onChange={(e) => setMaxSubCount(NaNToNull(parseInt(e.target.value)))}
+                        />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Enjoyment count:</p>
                     <div className='flex items-center'>
-                        <NumberInput value={minEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMinEnjoymentCount(NaNToNull(parseInt(e.target.value)))} />
+                        <NumberInput
+                            value={minEnjoymentCount ?? undefined}
+                            min='1'
+                            max='1000'
+                            onChange={(e) => setMinEnjoymentCount(NaNToNull(parseInt(e.target.value)))}
+                        />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput value={maxEnjoymentCount ?? undefined} min='1' max='1000' onChange={(e) => setMaxEnjoymentCount(NaNToNull(parseInt(e.target.value)))} />
+                        <NumberInput
+                            value={maxEnjoymentCount ?? undefined}
+                            min='1'
+                            max='1000'
+                            onChange={(e) => setMaxEnjoymentCount(NaNToNull(parseInt(e.target.value)))}
+                        />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Rating deviation:</p>
                     <div className='flex items-center'>
-                        <NumberInput className='num-lg' value={minDeviation ?? undefined} min='1' max='10' onChange={(e) => setMinDeviation(NaNToNull(parseFloat(e.target.value)))} />
+                        <NumberInput
+                            className='num-lg'
+                            value={minDeviation ?? undefined}
+                            min='1'
+                            max='10'
+                            onChange={(e) => setMinDeviation(NaNToNull(parseFloat(e.target.value)))}
+                        />
                         <p className='m-0 mx-2'>to</p>
-                        <NumberInput className='num-lg' value={maxDeviation ?? undefined} min='1' max='10' onChange={(e) => setMaxDeviation(NaNToNull(parseFloat(e.target.value)))} />
+                        <NumberInput
+                            className='num-lg'
+                            value={maxDeviation ?? undefined}
+                            min='1'
+                            max='10'
+                            onChange={(e) => setMaxDeviation(NaNToNull(parseFloat(e.target.value)))}
+                        />
                     </div>
                 </div>
                 <div className='col-span-12 md:col-span-6 xl:col-span-6'>
                     <p className='form-label m-0'>Level ID:</p>
                     <div className='flex items-center'>
-                        <TextInput className='num-lg' value={minID ?? undefined} min='1' max='500000000' onChange={(e) => setMinID(NaNToNull(parseInt(e.target.value)))} />
+                        <TextInput
+                            className='num-lg'
+                            value={minID ?? undefined}
+                            min='1'
+                            max='500000000'
+                            onChange={(e) => setMinID(NaNToNull(parseInt(e.target.value)))}
+                        />
                         <p className='m-0 mx-2'>to</p>
-                        <TextInput className='num-lg' value={maxID ?? undefined} min='1' max='500000000' onChange={(e) => setMaxID(NaNToNull(parseInt(e.target.value)))} />
+                        <TextInput
+                            className='num-lg'
+                            value={maxID ?? undefined}
+                            min='1'
+                            max='500000000'
+                            onChange={(e) => setMaxID(NaNToNull(parseInt(e.target.value)))}
+                        />
                     </div>
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p className='form-label m-0'>Two player:</p>
-                    <Select height='28' activeKey={twoPlayer ?? 'any'} options={twoPlayerOptions} onChange={(key) => setTwoPlayer(key)} id='twoPlayerSelectOptions' />
+                    <Select
+                        height='28'
+                        activeKey={twoPlayer ?? 'any'}
+                        options={twoPlayerOptions}
+                        onChange={(key) => setTwoPlayer(key)}
+                        id='twoPlayerSelectOptions'
+                    />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Update:</p>
-                    <Select height='28' activeKey={update ?? 'any'} options={updateOptions} onChange={onUpdateChange} id='updateSelectOptions' />
+                    <Select
+                        height='28'
+                        activeKey={update ?? 'any'}
+                        options={updateOptions}
+                        onChange={onUpdateChange}
+                        id='updateSelectOptions'
+                    />
                 </div>
                 <div className='col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2'>
                     <p>Top skillset:</p>
-                    <Select height='28' activeKey={topTagID} options={tagOptions} onChange={(key) => setTopTagID(key)} id='skillsetSelectOptions' />
+                    <Select
+                        height='28'
+                        activeKey={topTagID}
+                        options={tagOptions}
+                        onChange={(key) => setTopTagID(key)}
+                        id='skillsetSelectOptions'
+                    />
                 </div>
             </div>
             <Divider />
             <div className='grid grid-cols-12'>
-                <label className={'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' + (session.user ? '' : ' text-gray-500 line-through')}>
-                    <CheckBox checked={excludeCompleted} onChange={() => setExcludeCompleted((prev) => !prev)} disabled={!session.user} />
+                <label
+                    className={
+                        'col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' +
+                        (session.user ? '' : ' text-gray-500 line-through')
+                    }
+                >
+                    <CheckBox
+                        checked={excludeCompleted}
+                        onChange={() => setExcludeCompleted((prev) => !prev)}
+                        disabled={!session.user}
+                    />
                     Uncompleted only
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>

@@ -36,7 +36,9 @@ export default function CreateApplicationModal({ onClose }: Props) {
     return (
         <Modal title='Create application' onClose={onClose} show>
             <FormGroup>
-                <FormInputLabel>Name <span className='text-red-500'>*</span></FormInputLabel>
+                <FormInputLabel>
+                    Name <span className='text-red-500'>*</span>
+                </FormInputLabel>
                 <TextInput value={name} onChange={(e) => setName(e.target.value.trimStart())} required />
             </FormGroup>
             <div className='flex justify-end mt-2'>

@@ -30,17 +30,23 @@ export default function Users({ roleID }: { roleID: number }) {
     return (
         <section className='mt-4'>
             <Heading3>Users</Heading3>
-            {data?.users.length === 0
-                ? <p>No users have this role</p>
-                : <>
+            {data?.users.length === 0 ? (
+                <p>No users have this role</p>
+            ) : (
+                <>
                     <p>Users with this role:</p>
                     <ul>
                         {data?.users.map((user) => (
-                            <li className='my-2' key={user.ID}><button onClick={() => removeUser(user.ID)}><i className='bx bx-x' /></button> {user.Name}</li>
+                            <li className='my-2' key={user.ID}>
+                                <button onClick={() => removeUser(user.ID)}>
+                                    <i className='bx bx-x' />
+                                </button>{' '}
+                                {user.Name}
+                            </li>
                         ))}
                     </ul>
                 </>
-            }
+            )}
         </section>
     );
 }

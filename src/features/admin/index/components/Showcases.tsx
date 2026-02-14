@@ -30,11 +30,11 @@ export default function Showcases() {
     useEffect(() => {
         if (!ulRef.current) return;
 
-        setVideoHeight(ulRef.current.clientWidth * 9 / 16 / 2.1165857);
+        setVideoHeight((ulRef.current.clientWidth * 9) / 16 / 2.1165857);
         const observer = new ResizeObserver((entries) => {
             for (const entry of entries) {
                 const width = entry.contentRect.width;
-                setVideoHeight(width * 9 / 16 / 2.1165857); // The decimals are to account for the padding and borders of the iframe
+                setVideoHeight((width * 9) / 16 / 2.1165857); // The decimals are to account for the padding and borders of the iframe
             }
         });
 
@@ -65,32 +65,75 @@ export default function Showcases() {
         <section className='mt-8'>
             <Heading2>Showcase suggestions</Heading2>
             {status === 'pending' && <InlineLoadingSpinner />}
-            {status === 'success' && <>
-                {suggestions.total === 0 ?
-                    <p>No new showcase suggestions</p>
-                    : <>
-                        <ul ref={ulRef} className='grid lg:grid-cols-2 gap-4'>
-                            {suggestions.suggestions.map((suggestion) => <li className='bg-theme-800 border border-theme-600 round:rounded-2xl p-4' key={suggestion.ID}>
-                                <div className='flex items-center mb-2'>
-                                    <DemonFace diff={suggestion.level.Meta.Difficulty} rarity={suggestion.level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
-                                    <div className='grow'>
-                                        <Heading3><Link to={`/level/${suggestion.levelID}`}><b>{suggestion.level.Meta.Name}</b> by {suggestion.level.Meta.Publisher?.name ?? '(-)'}</Link></Heading3>
-                                        <p>Suggested by: <Link to={`/profile/${suggestion.userID}`}>{suggestion.user?.Name ?? '[Deleted user]'}</Link></p>
-                                        <p className='text-theme-400'>{new Date(suggestion.updatedAt.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</p>
-                                    </div>
-                                </div>
-                                <iframe className='rounded-xl' width='100%' height={videoHeight} src={`https://www.youtube.com/embed/${suggestion.videoID}?si=41vSsQ4VYRJP2MeR`} title='YouTube video player' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerPolicy='strict-origin-when-cross-origin' allowFullScreen />
-                                <div className='flex justify-end gap-1 mt-2'>
-                                    <TextButton onClick={() => deleteMutation.mutate(suggestion.ID)}>Deny</TextButton>
-                                    <SecondaryButton onClick={() => acceptMutation.mutate(suggestion.ID)}>Accept</SecondaryButton>
-                                </div>
-                            </li>)}
-                        </ul>
-                        <PageButtons onPageChange={setPage} page={page} limit={suggestions.limit} total={suggestions.total} />
-                    </>
-                }
-            </>
-            }
+            {status === 'success' && (
+                <>
+                    {suggestions.total === 0 ? (
+                        <p>No new showcase suggestions</p>
+                    ) : (
+                        <>
+                            <ul ref={ulRef} className='grid lg:grid-cols-2 gap-4'>
+                                {suggestions.suggestions.map((suggestion) => (
+                                    <li
+                                        className='bg-theme-800 border border-theme-600 round:rounded-2xl p-4'
+                                        key={suggestion.ID}
+                                    >
+                                        <div className='flex items-center mb-2'>
+                                            <DemonFace
+                                                diff={suggestion.level.Meta.Difficulty}
+                                                rarity={suggestion.level.Meta.Rarity}
+                                                size={DemonLogoSizes.MEDIUM}
+                                            />
+                                            <div className='grow'>
+                                                <Heading3>
+                                                    <Link to={`/level/${suggestion.levelID}`}>
+                                                        <b>{suggestion.level.Meta.Name}</b> by{' '}
+                                                        {suggestion.level.Meta.Publisher?.name ?? '(-)'}
+                                                    </Link>
+                                                </Heading3>
+                                                <p>
+                                                    Suggested by:{' '}
+                                                    <Link to={`/profile/${suggestion.userID}`}>
+                                                        {suggestion.user?.Name ?? '[Deleted user]'}
+                                                    </Link>
+                                                </p>
+                                                <p className='text-theme-400'>
+                                                    {new Date(
+                                                        suggestion.updatedAt.replace(' +00:00', 'Z').replace(' ', 'T'),
+                                                    ).toLocaleString()}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <iframe
+                                            className='rounded-xl'
+                                            width='100%'
+                                            height={videoHeight}
+                                            src={`https://www.youtube.com/embed/${suggestion.videoID}?si=41vSsQ4VYRJP2MeR`}
+                                            title='YouTube video player'
+                                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                                            referrerPolicy='strict-origin-when-cross-origin'
+                                            allowFullScreen
+                                        />
+                                        <div className='flex justify-end gap-1 mt-2'>
+                                            <TextButton onClick={() => deleteMutation.mutate(suggestion.ID)}>
+                                                Deny
+                                            </TextButton>
+                                            <SecondaryButton onClick={() => acceptMutation.mutate(suggestion.ID)}>
+                                                Accept
+                                            </SecondaryButton>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                            <PageButtons
+                                onPageChange={setPage}
+                                page={page}
+                                limit={suggestions.limit}
+                                total={suggestions.total}
+                            />
+                        </>
+                    )}
+                </>
+            )}
         </section>
     );
 }

@@ -1,4 +1,4 @@
-'bg-refreshRate-60 bg-refreshRate-75 bg-refreshRate-120 bg-refreshRate-144 bg-refreshRate-240 bg-refreshRate-360 text-permission-0 text-permission-1 text-permission-2 text-permission-3 text-permission-4 text-permission-5 text-permission-6';  // Include these classes in the final CSS bundle
+'bg-refreshRate-60 bg-refreshRate-75 bg-refreshRate-120 bg-refreshRate-144 bg-refreshRate-240 bg-refreshRate-360 text-permission-0 text-permission-1 text-permission-2 text-permission-3 text-permission-4 text-permission-5 text-permission-6'; // Include these classes in the final CSS bundle
 
 import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
@@ -22,7 +22,7 @@ import { ScrollToTop } from '../routes/ScrollToTop';
 export default function MainLayout() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const points = useRef<{ x: number, y: number }[]>([]);
+    const points = useRef<{ x: number; y: number }[]>([]);
     const lines = useRef<[number, number][]>([]);
     const app = useApp();
     const navigation = useNavigation();
@@ -59,11 +59,11 @@ export default function MainLayout() {
             const p1 = points.current[i];
             const p2 = points.current[j];
 
-            const offsetX1 = p1.x + Math.cos(prevFrameTime / 1000 * movementSpeed) * variance;
-            const offsetY1 = p1.y + Math.sin(prevFrameTime / 1000 * movementSpeed) * variance;
+            const offsetX1 = p1.x + Math.cos((prevFrameTime / 1000) * movementSpeed) * variance;
+            const offsetY1 = p1.y + Math.sin((prevFrameTime / 1000) * movementSpeed) * variance;
 
-            const offsetX2 = p2.x + Math.cos(prevFrameTime / 1000 * movementSpeed) * variance;
-            const offsetY2 = p2.y + Math.sin(prevFrameTime / 1000 * movementSpeed) * variance;
+            const offsetX2 = p2.x + Math.cos((prevFrameTime / 1000) * movementSpeed) * variance;
+            const offsetY2 = p2.y + Math.sin((prevFrameTime / 1000) * movementSpeed) * variance;
 
             const noiseX1 = noise3D(offsetX1 / 100, offsetY1 / 100, i) * movementScale;
             const noiseY1 = noise3D(offsetX1 / 200, offsetY1 / 200, i) * movementScale;
@@ -91,7 +91,9 @@ export default function MainLayout() {
         }
 
         const width = windowSize.width;
-        const height = windowSize.height + (document.documentElement.scrollHeight - document.documentElement.clientHeight) / heightModifier;
+        const height =
+            windowSize.height +
+            (document.documentElement.scrollHeight - document.documentElement.clientHeight) / heightModifier;
         canvas.width = width;
         canvas.height = height;
 
@@ -123,7 +125,7 @@ export default function MainLayout() {
         // Remove duplicates
         lines.current = lines.current.filter((line, index, self) => {
             const [i, j] = line;
-            return self.findIndex(l => (l[0] === i && l[1] === j) || (l[0] === j && l[1] === i)) === index;
+            return self.findIndex((l) => (l[0] === i && l[1] === j) || (l[0] === j && l[1] === i)) === index;
         });
 
         function update(dt: number) {
@@ -156,8 +158,12 @@ export default function MainLayout() {
         const url = new URLSearchParams(location.search);
         const error = url.get('error');
         if (error) {
-            if (error === 'already_linked') notifyError('This Discord account is already linked to another GDDL account.');
-            else if (error === 'mismatching_discord_id') notifyError('The Discord account linked to this GDDL account does not match the Discord account you are trying to link with.');
+            if (error === 'already_linked')
+                notifyError('This Discord account is already linked to another GDDL account.');
+            else if (error === 'mismatching_discord_id')
+                notifyError(
+                    'The Discord account linked to this GDDL account does not match the Discord account you are trying to link with.',
+                );
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -178,27 +184,31 @@ export default function MainLayout() {
     }, [onScroll]);
 
     return (
-        <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
+        <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }}>
             <MenuContextProvider>
                 <ScrollToTop />
                 <ModalProvider>
                     <div className='fixed top-0 -z-50 w-full h-screen bg-linear-to-br from-theme-bg-from to-theme-bg-to' />
-                    {app.enableBackground &&
+                    {app.enableBackground && (
                         <canvas ref={canvasRef} className='fixed top-0 pointer-events-none -z-50 text-theme-text/50' />
-                    }
+                    )}
                     <title>GD Demon Ladder</title>
                     <Sidebar />
                     <div ref={containerRef} className='min-h-dvh relative flex flex-col'>
                         <Header />
                         <NavbarNotificationRenderer />
-                        <Suspense fallback={<div className='flex justify-center items-center h-screen'><i className='bx bx-loader-alt bx-spin text-4xl' /></div>}>
+                        <Suspense
+                            fallback={
+                                <div className='flex justify-center items-center h-screen'>
+                                    <i className='bx bx-loader-alt bx-spin text-4xl' />
+                                </div>
+                            }
+                        >
                             <Outlet />
                         </Suspense>
                         <Footer />
                     </div>
-                    {isNavigating &&
-                        <GlobalSpinner />
-                    }
+                    {isNavigating && <GlobalSpinner />}
                 </ModalProvider>
             </MenuContextProvider>
         </QueryParamProvider>

@@ -17,11 +17,12 @@ export default function SignupLink() {
     const [discordIDOverride, setDiscordIDOverride] = useState<string>();
 
     const genToken = useMutation({
-        mutationFn: async (context: { userID: number; discordID?: string }) => toast.promise(CreateSignupToken(context), {
-            pending: 'Generating...',
-            success: 'Sent!',
-            error: renderToastError,
-        }),
+        mutationFn: async (context: { userID: number; discordID?: string }) =>
+            toast.promise(CreateSignupToken(context), {
+                pending: 'Generating...',
+                success: 'Sent!',
+                error: renderToastError,
+            }),
     });
 
     function newLink() {
@@ -33,7 +34,10 @@ export default function SignupLink() {
     return (
         <section>
             <Heading1>Password reset</Heading1>
-            <p className='mb-4'>Send a one-time reset link to a user. The link will be sent through Discord so the target user should have DMs open and share a server with the bot.</p>
+            <p className='mb-4'>
+                Send a one-time reset link to a user. The link will be sent through Discord so the target user should
+                have DMs open and share a server with the bot.
+            </p>
             <FormGroup>
                 <FormInputLabel htmlFor='tokenReceiver'>User</FormInputLabel>
                 <UserSearchBox setResult={setResult} id='tokenReceiver' />
@@ -44,7 +48,9 @@ export default function SignupLink() {
                 <FormInputDescription>Used for claiming accounts.</FormInputDescription>
             </FormGroup>
             <FormGroup>
-                <PrimaryButton onClick={newLink} disabled={genToken.status === 'pending'}>Send</PrimaryButton>
+                <PrimaryButton onClick={newLink} disabled={genToken.status === 'pending'}>
+                    Send
+                </PrimaryButton>
             </FormGroup>
         </section>
     );

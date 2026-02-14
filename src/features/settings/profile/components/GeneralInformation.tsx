@@ -25,7 +25,7 @@ const pronounOptions = {
     'xe/xem': 'xe/xem',
     'ze/zir': 'ze/zir',
     'it/its': 'it/its',
-    'other': 'Other',
+    other: 'Other',
 } as const;
 type PronounOptionKey = keyof typeof pronounOptions;
 
@@ -113,30 +113,48 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     }
 
     if (status === 'pending') return <LoadingSpinner />;
-    if (status === 'error') return <div><Heading1>An error occurred</Heading1></div>;
+    if (status === 'error')
+        return (
+            <div>
+                <Heading1>An error occurred</Heading1>
+            </div>
+        );
 
     return (
         <form onSubmit={onSave}>
             <FormGroup>
                 <FormInputLabel>Your name</FormInputLabel>
-                <TextInput value={name} onChange={(e) => setName(e.target.value)} invalid={!name.match(/^[a-zA-Z0-9._]{0,32}$/)} />
+                <TextInput
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    invalid={!name.match(/^[a-zA-Z0-9._]{0,32}$/)}
+                />
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Introduction</FormInputLabel>
                 <TextArea spellCheck={false} value={introduction} onChange={(e) => setIntroduction(e.target.value)} />
-                <FormInputDescription>Your introduction is visible to everyone visiting your profile.</FormInputDescription>
+                <FormInputDescription>
+                    Your introduction is visible to everyone visiting your profile.
+                </FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Pronouns</FormInputLabel>
                 <Select options={pronounOptions} activeKey={pronounKey} onChange={setPronounKey} id={pronounSelectID} />
-                {pronounKey === 'other' &&
+                {pronounKey === 'other' && (
                     <div className='mt-3'>
-                        <TextInput value={customPronouns} onChange={(e) => setCustomPronouns(e.target.value)} placeholder='Please specify...' invalid={!arePronounsValid} />
-                        {!arePronounsValid &&
-                            <p className='text-red-500'>Each pronoun must be 1-6 lowercase letters, separated by slashes.</p>
-                        }
+                        <TextInput
+                            value={customPronouns}
+                            onChange={(e) => setCustomPronouns(e.target.value)}
+                            placeholder='Please specify...'
+                            invalid={!arePronounsValid}
+                        />
+                        {!arePronounsValid && (
+                            <p className='text-red-500'>
+                                Each pronoun must be 1-6 lowercase letters, separated by slashes.
+                            </p>
+                        )}
                     </div>
-                }
+                )}
                 <FormInputDescription>What are your pronouns?</FormInputDescription>
             </FormGroup>
             <FormGroup>
@@ -147,7 +165,9 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             <FormGroup>
                 <FormInputLabel>Hardest level</FormInputLabel>
                 {hardestSearch.SearchBox}
-                <FormInputDescription>What is the hardest level you have completed? Does not automatically update!</FormInputDescription>
+                <FormInputDescription>
+                    What is the hardest level you have completed? Does not automatically update!
+                </FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Tier preference</FormInputLabel>
@@ -157,7 +177,9 @@ export default function GeneralInformation({ userID }: { userID: number }) {
                     <NumberInput ref={maxPrefRef} />
                 </div>
             </FormGroup>
-            <PrimaryButton type='submit' className='float-right mt-4' loading={updateMutation.isPending}>Update</PrimaryButton>
+            <PrimaryButton type='submit' className='float-right mt-4' loading={updateMutation.isPending}>
+                Update
+            </PrimaryButton>
         </form>
     );
 }

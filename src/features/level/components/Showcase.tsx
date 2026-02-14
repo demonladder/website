@@ -21,8 +21,14 @@ export default function Showcase({ level }: Props) {
 
     return (
         <div className='mt-6'>
-            <Heading2 className='mb-2' id='levelShowcase'>Showcase</Heading2>
-            <LiteYouTubeEmbed thumbnail={`https://i.ytimg.com/vi/${level.Showcase}/maxresdefault.jpg`} id={level.Showcase} title={`Showcase video for ${level.Meta.Name}`} />
+            <Heading2 className='mb-2' id='levelShowcase'>
+                Showcase
+            </Heading2>
+            <LiteYouTubeEmbed
+                thumbnail={`https://i.ytimg.com/vi/${level.Showcase}/maxresdefault.jpg`}
+                id={level.Showcase}
+                title={`Showcase video for ${level.Meta.Name}`}
+            />
         </div>
     );
 }
@@ -55,7 +61,7 @@ function SuggestShowcase({ levelID }: { levelID: number }) {
                 // Fallthrough
             }
             case 'youtu.be': {
-                videoID = (/^\/([a-zA-Z0-9_-]{11,})/.exec(url.pathname))?.[1];
+                videoID = /^\/([a-zA-Z0-9_-]{11,})/.exec(url.pathname)?.[1];
                 if (!videoID) return toast.error('Could not resolve video ID!');
             }
         }
@@ -63,12 +69,22 @@ function SuggestShowcase({ levelID }: { levelID: number }) {
         const handle = toast.loading('Sending...');
         submitMutation.mutate(videoID, {
             onSuccess: () => {
-                toast.update(handle, { render: 'Suggestion sent!', type: 'success', isLoading: false, autoClose: 3000 });
+                toast.update(handle, {
+                    render: 'Suggestion sent!',
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
                 setShowForm(false);
                 setSuggestion('');
             },
             onError: (error) => {
-                toast.update(handle, { render: renderToastError.render({ data: error }), type: 'error', isLoading: false, autoClose: 3000 });
+                toast.update(handle, {
+                    render: renderToastError.render({ data: error }),
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
             },
         });
     }
@@ -76,13 +92,21 @@ function SuggestShowcase({ levelID }: { levelID: number }) {
     return (
         <div className='mt-6'>
             <Heading2 className='mb-2'>Showcase</Heading2>
-            <p>No showcase yet, <button className='text-blue-500 underline-t' onClick={() => setShowForm(true)}>suggest</button> one</p>
+            <p>
+                No showcase yet,{' '}
+                <button className='text-blue-500 underline-t' onClick={() => setShowForm(true)}>
+                    suggest
+                </button>{' '}
+                one
+            </p>
             {showForm && (
                 <form onSubmit={handleSubmit}>
                     <FormGroup>
                         <FormInputLabel htmlFor='suggestShowcase'>YouTube URL</FormInputLabel>
                         <URLInput value={suggestion} onChange={(e) => setSuggestion(e.target.value)} required />
-                        <FormInputDescription>Please provide a YouTube video URL, e.g. <code>https://youtu.be/abc123</code>.</FormInputDescription>
+                        <FormInputDescription>
+                            Please provide a YouTube video URL, e.g. <code>https://youtu.be/abc123</code>.
+                        </FormInputDescription>
                     </FormGroup>
                     <SecondaryButton type='submit'>Send</SecondaryButton>
                 </form>

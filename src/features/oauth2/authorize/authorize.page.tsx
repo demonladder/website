@@ -18,7 +18,7 @@ function PageWrapper({ children }: { children?: React.ReactNode }) {
 
 export default function Authorize() {
     const session = useSession();
-    const client = useLoaderData<{ name: string, botID: number, createdAt: string } | null>();
+    const client = useLoaderData<{ name: string; botID: number; createdAt: string } | null>();
     const [clientID] = useQueryParam('client_id', StringParam);
     const [responseType] = useQueryParam('response_type', StringParam);
     const [scopes, setScopes] = useQueryParam('scope', StringParam);
@@ -42,24 +42,49 @@ export default function Authorize() {
             <div className='flex justify-center gap-6 mb-4'>
                 <img src={`/api/user/${client.botID}/pfp?size=80`} width='80' height='80' className='rounded-full' />
                 <p className='self-center'>...</p>
-                <img src={`/api/user/${session.user?.ID}/pfp?size=80`} width='80' height='80' className='rounded-full' />
+                <img
+                    src={`/api/user/${session.user?.ID}/pfp?size=80`}
+                    width='80'
+                    height='80'
+                    className='rounded-full'
+                />
             </div>
-            <p className='text-center'><b>{client.name}</b></p>
+            <p className='text-center'>
+                <b>{client.name}</b>
+            </p>
             <p className='text-center'>wants to access your GDDL account</p>
             <div className='my-4 px-6 py-8 bg-theme-700 rounded-lg border border-theme-600 max-h-[380px] overflow-y-scroll scrollbar-thin'>
                 <p>Authorizing will allow this application to:</p>
                 <ul className='mt-3 flex flex-col gap-3'>
-                    {initialScope?.split(' ').map((scope) =>
-                        <Scope checked={scopes!.split(' ').includes(scope)} onChange={(checked) => checked ? setScopes([...scopes!.split(' '), scope].join(' ')) : setScopes(scopes!.split(' ').filter((s, _, arr) => s !== scope || arr.length === 1).join(' '))} scope={scope as OAuth2Scopes} key={scope} />,
-                    )}
+                    {initialScope?.split(' ').map((scope) => (
+                        <Scope
+                            checked={scopes!.split(' ').includes(scope)}
+                            onChange={(checked) =>
+                                checked
+                                    ? setScopes([...scopes!.split(' '), scope].join(' '))
+                                    : setScopes(
+                                          scopes!
+                                              .split(' ')
+                                              .filter((s, _, arr) => s !== scope || arr.length === 1)
+                                              .join(' '),
+                                      )
+                            }
+                            scope={scope as OAuth2Scopes}
+                            key={scope}
+                        />
+                    ))}
                 </ul>
             </div>
             <form className='grid grid-cols-2 gap-2' method='POST' action='/api/oauth/2/authorize'>
                 {clientID && <input className='opacity-0 absolute' name='client_id' value={clientID} />}
                 {responseType && <input className='opacity-0 absolute' name='response_type' value={responseType} />}
                 {scopes && <input className='opacity-0 absolute' name='scope' value={scopes} />}
-                <SecondaryButton size='md' type='button' onClick={handleCancel}>Cancel</SecondaryButton>
-                <PrimaryButton size='md' type='submit'>Authorize</PrimaryButton>
+                <SecondaryButton size='md' type='button' onClick={handleCancel}>
+                    Cancel
+                </SecondaryButton>
+                <PrimaryButton size='md' type='submit'>
+                    Authorize
+                </PrimaryButton>
             </form>
             <form ref={cancelFormRef} method='POST' action='/api/oauth/2/cancel' hidden>
                 {clientID && <input className='opacity-0 absolute' name='client_id' value={clientID} />}
@@ -74,7 +99,15 @@ const scopeLabels: Record<OAuth2Scopes, string> = {
     [OAuth2Scopes.LISTS_WRITE]: 'Create or edit your lists',
 };
 
-function Scope({ checked, onChange, scope }: { checked: boolean, onChange: (checked: boolean) => void, scope: OAuth2Scopes }) {
+function Scope({
+    checked,
+    onChange,
+    scope,
+}: {
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+    scope: OAuth2Scopes;
+}) {
     return (
         <li className='flex items-center gap-1'>
             <Checkbox checked={checked} onChange={(e) => onChange(e.target.checked)} />

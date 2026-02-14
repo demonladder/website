@@ -1,6 +1,9 @@
 import './search.css';
 
-interface Props extends Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'type'> {
+interface Props extends Omit<
+    React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+    'type'
+> {
     onMenu?: (e: React.MouseEvent) => void;
 }
 

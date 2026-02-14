@@ -21,19 +21,26 @@ export default function DeleteListModal({ list, onClose: close }: Props) {
     const [listName, setListName] = useState('');
 
     const navigate = useNavigate();
-    const onDeleteList = useCallback((e: React.FormEvent) => {
-        e.preventDefault();
+    const onDeleteList = useCallback(
+        (e: React.FormEvent) => {
+            e.preventDefault();
 
-        void toast.promise(deleteList(list.ID).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['user', list.OwnerID, 'lists'] });
-            if (window.location.pathname.includes(`/list/${list.ID}`)) void navigate(`/profile/${list.OwnerID}`);
-            close();
-        }), {
-            pending: 'Deleting...',
-            success: 'List deleted!',
-            error: renderToastError,
-        });
-    }, [close, list.ID, list.OwnerID, navigate, queryClient]);
+            void toast.promise(
+                deleteList(list.ID).then(() => {
+                    void queryClient.invalidateQueries({ queryKey: ['user', list.OwnerID, 'lists'] });
+                    if (window.location.pathname.includes(`/list/${list.ID}`))
+                        void navigate(`/profile/${list.OwnerID}`);
+                    close();
+                }),
+                {
+                    pending: 'Deleting...',
+                    success: 'List deleted!',
+                    error: renderToastError,
+                },
+            );
+        },
+        [close, list.ID, list.OwnerID, navigate, queryClient],
+    );
 
     // Prevent pasting
     function onListName(e: React.ChangeEvent<HTMLInputElement>) {
@@ -51,8 +58,12 @@ export default function DeleteListModal({ list, onClose: close }: Props) {
                     <TextInput value={listName} onChange={onListName} placeholder={list.Name} />
                 </FormGroup>
                 <div className='flex place-content-end gap-2 mt-4'>
-                    <SecondaryButton type='button' onClick={close}>Close</SecondaryButton>
-                    <DangerButton type='submit' disabled={list.Name !== listName}>Delete</DangerButton>
+                    <SecondaryButton type='button' onClick={close}>
+                        Close
+                    </SecondaryButton>
+                    <DangerButton type='submit' disabled={list.Name !== listName}>
+                        Delete
+                    </DangerButton>
                 </div>
             </form>
         </Modal>

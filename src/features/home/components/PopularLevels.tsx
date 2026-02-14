@@ -18,12 +18,19 @@ export default function PopularLevels() {
         queryFn: getPopularLevels,
     });
 
-    if (status === 'pending') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>;
+    if (status === 'pending')
+        return (
+            <div className='xl:col-span-3'>
+                <InlineLoadingSpinner />
+            </div>
+        );
     if (status === 'error') return <div className='xl:col-span-3'>Error, could not fetch popular levels</div>;
 
     return (
         <div className='xl:col-span-3'>
-            <Heading2 className='flex items-center gap-2'><i className='bx bxs-hot pt-1' /> All-time Popular Levels</Heading2>
+            <Heading2 className='flex items-center gap-2'>
+                <i className='bx bxs-hot pt-1' /> All-time Popular Levels
+            </Heading2>
             <Swiper
                 slidesPerView={1}
                 spaceBetween={10}
@@ -42,20 +49,28 @@ export default function PopularLevels() {
                     </SwiperSlide>
                 ))}
             </Swiper>
-
         </div>
     );
 }
 
-export function LevelPreview({ level, index }: { level: LevelPreviewDTO, index: number }) {
+export function LevelPreview({ level, index }: { level: LevelPreviewDTO; index: number }) {
     return (
-        <Link to={`/level/${level.ID}`} className='bg-theme-800 shadow border border-theme-outline round:rounded-xl p-3 flex items-center gap-2'>
+        <Link
+            to={`/level/${level.ID}`}
+            className='bg-theme-800 shadow border border-theme-outline round:rounded-xl p-3 flex items-center gap-2'
+        >
             <DemonFace diff={level.Meta.Difficulty} rarity={level.Meta.Rarity} size={DemonLogoSizes.MEDIUM} />
             <div className='flex flex-col gap-0.5'>
-                <Heading4>#{index} {level.Meta.Name}</Heading4>
+                <Heading4>
+                    #{index} {level.Meta.Name}
+                </Heading4>
                 <div className='text-lg'>
-                    <span className={`round:rounded-s px-4 py-1 tier-${level.Rating?.toFixed() ?? '0'}`}>{level.Rating?.toFixed() ?? '-'}</span>
-                    <span className={`round:rounded-e px-4 py-1 enj-${level.Enjoyment?.toFixed() ?? '-'}`}>{level.Enjoyment?.toFixed()}</span>
+                    <span className={`round:rounded-s px-4 py-1 tier-${level.Rating?.toFixed() ?? '0'}`}>
+                        {level.Rating?.toFixed() ?? '-'}
+                    </span>
+                    <span className={`round:rounded-e px-4 py-1 enj-${level.Enjoyment?.toFixed() ?? '-'}`}>
+                        {level.Enjoyment?.toFixed()}
+                    </span>
                 </div>
             </div>
         </Link>

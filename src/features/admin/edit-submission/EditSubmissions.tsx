@@ -14,15 +14,15 @@ export default function EditSubmission() {
         enabled: !isNaN(submissionID),
     });
 
-    if (status === 'pending') return (<LoadingSpinner />);
+    if (status === 'pending') return <LoadingSpinner />;
     if (status === 'error') return 'An error occurred';
 
     return (
         <main>
             <Heading2>Edit Submission</Heading2>
-            {submission &&
+            {submission && (
                 <EditableSubmission submission={submission} key={`${submission.LevelID}_${submission.UserID}`} />
-            }
+            )}
         </main>
     );
 }

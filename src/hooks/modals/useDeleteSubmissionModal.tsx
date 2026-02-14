@@ -9,7 +9,13 @@ export default function useDeleteSubmissionModal() {
 
         createModal(
             ID,
-            <DeleteSubmissionModal onClose={() => closeModal(ID)} userID={userID} levelID={levelID} submissionID={submissionID} username={username} />,
+            <DeleteSubmissionModal
+                onClose={() => closeModal(ID)}
+                userID={userID}
+                levelID={levelID}
+                submissionID={submissionID}
+                username={username}
+            />,
         );
     }
 

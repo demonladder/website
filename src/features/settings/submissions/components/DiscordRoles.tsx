@@ -36,22 +36,43 @@ export default function DiscordRoles() {
     const toastHandle = useRef<Id | null>(null);
     const mutation = useMutation({
         mutationFn: UpdateRoleManagementSettings,
-        onMutate: () => toastHandle.current = toast.loading('Saving...'),
+        onMutate: () => (toastHandle.current = toast.loading('Saving...')),
         onSuccess: () => {
             void refetch();
             toast.update(toastHandle.current!, { render: 'Saved', type: 'success', isLoading: false, autoClose: null });
         },
-        onError: (err: AxiosError) => toast.update(toastHandle.current!, { render: renderToastError.render({ data: err }), type: 'error', isLoading: false, autoClose: null }),
+        onError: (err: AxiosError) =>
+            toast.update(toastHandle.current!, {
+                render: renderToastError.render({ data: err }),
+                type: 'error',
+                isLoading: false,
+                autoClose: null,
+            }),
     });
 
     return (
         <section>
             <b>Discord Roles</b>
-            <Select id='hardestManage' options={hardestManageOptions} activeKey={hardestManageKey} onChange={setHardestManageKey} />
-            <FormInputDescription>How your role tier roles in the GDDL Discord server will be managed. Switching between these may remove manually set tier roles!</FormInputDescription>
-            {session.user !== undefined &&
-                <PrimaryButton loading={status === 'pending' || mutation.isPending} onClick={() => mutation.mutate(hardestManageKey)} className='mt-2' disabled={hardestManageKey === data?.roleManagement}>Save</PrimaryButton>
-            }
+            <Select
+                id='hardestManage'
+                options={hardestManageOptions}
+                activeKey={hardestManageKey}
+                onChange={setHardestManageKey}
+            />
+            <FormInputDescription>
+                How your role tier roles in the GDDL Discord server will be managed. Switching between these may remove
+                manually set tier roles!
+            </FormInputDescription>
+            {session.user !== undefined && (
+                <PrimaryButton
+                    loading={status === 'pending' || mutation.isPending}
+                    onClick={() => mutation.mutate(hardestManageKey)}
+                    className='mt-2'
+                    disabled={hardestManageKey === data?.roleManagement}
+                >
+                    Save
+                </PrimaryButton>
+            )}
         </section>
     );
 }

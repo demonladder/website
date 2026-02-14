@@ -32,7 +32,17 @@ export default function SignUp() {
     const { token: turnstileToken, reset: resetCaptcha } = useTurnstile(turnstileContainerID);
 
     const signupMutation = useMutation({
-        mutationFn: ({ username, password, overrideKey, turnstileToken }: { username: string, password: string, overrideKey?: string, turnstileToken: string }) => SignUpFn(username, password, turnstileToken, overrideKey),
+        mutationFn: ({
+            username,
+            password,
+            overrideKey,
+            turnstileToken,
+        }: {
+            username: string;
+            password: string;
+            overrideKey?: string;
+            turnstileToken: string;
+        }) => SignUpFn(username, password, turnstileToken, overrideKey),
     });
 
     function handleSubmit(e: React.FormEvent) {
@@ -41,15 +51,18 @@ export default function SignUp() {
         if (password !== passwordConfirm) return toast.error('Passwords must match!');
         if (!turnstileToken) return toast.error('Please complete the captcha challenge.');
 
-        signupMutation.mutate({ username, password, overrideKey: overrideKey ?? undefined, turnstileToken }, {
-            onSuccess: (data) => {
-                window.location.href = `/profile/${data.ID}`;
+        signupMutation.mutate(
+            { username, password, overrideKey: overrideKey ?? undefined, turnstileToken },
+            {
+                onSuccess: (data) => {
+                    window.location.href = `/profile/${data.ID}`;
+                },
+                onError: (err) => {
+                    resetCaptcha();
+                    toast.error(renderToastError.render({ data: err }));
+                },
             },
-            onError: (err) => {
-                resetCaptcha();
-                toast.error(renderToastError.render({ data: err }));
-            },
-        });
+        );
     }
 
     const strength = useMemo(() => getPasswordStrength(password), [password]);
@@ -59,29 +72,79 @@ export default function SignUp() {
         <Page>
             <div className='w-11/12 md:w-1/2 lg:w-2/6 mx-auto'>
                 <Heading1 className='mb-4'>Sign Up</Heading1>
-                {url.get('name') === null &&
+                {url.get('name') === null && (
                     <div className='my-6'>
-                        <p>Already have your name on the site from the sheet days? Contact the staff <a className='text-blue-500 font-bold underline' href='https://discord.gg/gddl' target='_blank' rel='noopener noreferrer'>in our discord</a> to get a password reset link.</p>
+                        <p>
+                            Already have your name on the site from the sheet days? Contact the staff{' '}
+                            <a
+                                className='text-blue-500 font-bold underline'
+                                href='https://discord.gg/gddl'
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                in our discord
+                            </a>{' '}
+                            to get a password reset link.
+                        </p>
                     </div>
-                }
+                )}
                 <form onSubmit={handleSubmit}>
                     <FormGroup>
                         <FormInputLabel htmlFor='username'>Username</FormInputLabel>
-                        <TextInput id='username' value={username} onChange={(e) => setUsername(e.target.value.trimStart())} invalid={!validateUsername(username)} pattern='^[a-zA-Z0-9._]{2,32}$' disabled={url.get('name') !== null} name='username' autoComplete='off' required />
-                        <p className='text-gray-400 text-sm'>Name must be between 2 and 32 characters. It can only contain the following characters: <code>{'a-Z 0-9 . _'}</code></p>
+                        <TextInput
+                            id='username'
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value.trimStart())}
+                            invalid={!validateUsername(username)}
+                            pattern='^[a-zA-Z0-9._]{2,32}$'
+                            disabled={url.get('name') !== null}
+                            name='username'
+                            autoComplete='off'
+                            required
+                        />
+                        <p className='text-gray-400 text-sm'>
+                            Name must be between 2 and 32 characters. It can only contain the following characters:{' '}
+                            <code>{'a-Z 0-9 . _'}</code>
+                        </p>
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel htmlFor='password'>Password</FormInputLabel>
-                        <PasswordInput value={password} onChange={(e) => setPassword(e.target.value.trim())} id='password' name='password' autoComplete='new-password' autoCapitalize='off' minLength={7} invalid={password.length < 7} required />
-                        <div className='h-1 rounded-b' style={{ backgroundImage: `linear-gradient(to left, ${strengthColor}, ${strengthColor})`, backgroundSize: `${strength}%`, backgroundRepeat: 'no-repeat' }} />
+                        <PasswordInput
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value.trim())}
+                            id='password'
+                            name='password'
+                            autoComplete='new-password'
+                            autoCapitalize='off'
+                            minLength={7}
+                            invalid={password.length < 7}
+                            required
+                        />
+                        <div
+                            className='h-1 rounded-b'
+                            style={{
+                                backgroundImage: `linear-gradient(to left, ${strengthColor}, ${strengthColor})`,
+                                backgroundSize: `${strength}%`,
+                                backgroundRepeat: 'no-repeat',
+                            }}
+                        />
                         <FormInputDescription>Passwords must be at least 7 characters long</FormInputDescription>
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel htmlFor='confirmPassword'>Confirm password</FormInputLabel>
-                        <PasswordInput id='confirmPassword' value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value.trimStart())} autoComplete='new-password' autoCapitalize='off' required />
+                        <PasswordInput
+                            id='confirmPassword'
+                            value={passwordConfirm}
+                            onChange={(e) => setPasswordConfirm(e.target.value.trimStart())}
+                            autoComplete='new-password'
+                            autoCapitalize='off'
+                            required
+                        />
                     </FormGroup>
                     <div id={turnstileContainerID} className='my-4' />
-                    <PrimaryButton type='submit' className='w-full'>Sign Up</PrimaryButton>
+                    <PrimaryButton type='submit' className='w-full'>
+                        Sign Up
+                    </PrimaryButton>
                 </form>
             </div>
         </Page>

@@ -11,7 +11,7 @@ import Submissions from './Submissions';
 
 export default function ManageUserContent() {
     const userID = useParams().userID;
-    
+
     const { data: fetchedUser, status } = useQuery({
         queryKey: ['user', parseInt(userID ?? '-1')],
         queryFn: () => GetUser(parseInt(userID ?? '-1')),
@@ -26,7 +26,12 @@ export default function ManageUserContent() {
 
     return (
         <>
-            <p>Selected user: <b>{fetchedUser.ID} ({fetchedUser.Name})</b></p>
+            <p>
+                Selected user:{' '}
+                <b>
+                    {fetchedUser.ID} ({fetchedUser.Name})
+                </b>
+            </p>
             <div className='grid lg:grid-cols-2 gap-6'>
                 <EditInformation user={fetchedUser} />
                 <Submissions user={fetchedUser} />

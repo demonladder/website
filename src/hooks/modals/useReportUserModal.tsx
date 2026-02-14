@@ -7,10 +7,7 @@ export function useReportUserModal() {
     function open(userID: number) {
         const ID = `reportUser-${userID}`;
 
-        createModal(
-            ID,
-            <ReportUserModal userID={userID} onClose={() => closeModal(ID)} />,
-        );
+        createModal(ID, <ReportUserModal userID={userID} onClose={() => closeModal(ID)} />);
     }
 
     return open;

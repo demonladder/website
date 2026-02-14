@@ -17,13 +17,23 @@ interface Props {
     levelID: number;
 }
 
-function ListItem({ userID, levelID, list, onClose: close }: { userID: number, levelID: number, list: List, onClose: () => void }) {
+function ListItem({
+    userID,
+    levelID,
+    list,
+    onClose: close,
+}: {
+    userID: number;
+    levelID: number;
+    list: List;
+    onClose: () => void;
+}) {
     const queryClient = useQueryClient();
 
     const onSubmit = useCallback(() => {
         const promise = addLevelToList(levelID, list.ID).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['user', userID, 'lists']});
-            void queryClient.invalidateQueries({ queryKey: ['list', list.ID]});
+            void queryClient.invalidateQueries({ queryKey: ['user', userID, 'lists'] });
+            void queryClient.invalidateQueries({ queryKey: ['list', list.ID] });
             close();
         });
 
@@ -37,7 +47,9 @@ function ListItem({ userID, levelID, list, onClose: close }: { userID: number, l
     return (
         <li className='mt-4'>
             <span> {list.Name}</span>
-            <PrimaryButton onClick={onSubmit} className='float-right'>Add</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} className='float-right'>
+                Add
+            </PrimaryButton>
         </li>
     );
 }
@@ -52,21 +64,30 @@ export default function AddLevelToListModal({ onClose, userID, levelID }: Props)
 
     return (
         <Modal title='Add level to list' show={true} onClose={onClose}>
-            <div>{status === 'error'
-                ? <p>An error occured, please try again later</p>
-                : <>
-                    <ol className='my-6'>
-                        {lists?.map((list) => (
-                            <ListItem userID={userID} levelID={levelID} list={list} onClose={onClose} key={list.ID} />
-                        ))}
-                    </ol>
-                    {lists?.length === 0 &&
-                        <p>You don't have any lists yet.</p>
-                    }
-                    <PrimaryButton onClick={() => openCreateListModal(userID, levelID)}>Create new list</PrimaryButton>
-                    <LoadingSpinner isLoading={status === 'pending'} />
-                </>
-            }</div>
+            <div>
+                {status === 'error' ? (
+                    <p>An error occured, please try again later</p>
+                ) : (
+                    <>
+                        <ol className='my-6'>
+                            {lists?.map((list) => (
+                                <ListItem
+                                    userID={userID}
+                                    levelID={levelID}
+                                    list={list}
+                                    onClose={onClose}
+                                    key={list.ID}
+                                />
+                            ))}
+                        </ol>
+                        {lists?.length === 0 && <p>You don't have any lists yet.</p>}
+                        <PrimaryButton onClick={() => openCreateListModal(userID, levelID)}>
+                            Create new list
+                        </PrimaryButton>
+                        <LoadingSpinner isLoading={status === 'pending'} />
+                    </>
+                )}
+            </div>
             <div className='flex float-right'>
                 <SecondaryButton onClick={onClose}>Close</SecondaryButton>
             </div>

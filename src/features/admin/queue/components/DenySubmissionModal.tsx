@@ -15,15 +15,15 @@ import renderToastError from '../../../../utils/renderToastError';
 import Checkbox from '../../../../components/input/CheckBox';
 
 const denyReasons = {
-    'missingProof': 'Missing proof',
-    'wrongProof': 'Wrong proof',
-    'inaccessibleProof': 'Inaccessible proof',
-    'noEndscreen': 'No endscreen',
-    'incompleteRun': 'Doesn\'t show the entire run',
-    'missingClicks': 'Missing/incoherent clicks',
-    'hacked': 'Hacked',
-    'fakeAccount': 'Fake account',
-    'custom': 'Other',
+    missingProof: 'Missing proof',
+    wrongProof: 'Wrong proof',
+    inaccessibleProof: 'Inaccessible proof',
+    noEndscreen: 'No endscreen',
+    incompleteRun: "Doesn't show the entire run",
+    missingClicks: 'Missing/incoherent clicks',
+    hacked: 'Hacked',
+    fakeAccount: 'Fake account',
+    custom: 'Other',
 };
 type DenyReason = keyof typeof denyReasons;
 
@@ -39,7 +39,8 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
 
     const queryClient = useQueryClient();
     const denyMutation = useMutation({
-        mutationFn: (data: { ID: number, reason: string }) => DenySubmission(data.ID, data.reason, shouldBlacklistProof),
+        mutationFn: (data: { ID: number; reason: string }) =>
+            DenySubmission(data.ID, data.reason, shouldBlacklistProof),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['user', submission.UserID] });
             void queryClient.invalidateQueries({ queryKey: ['submissionQueue'] });
@@ -51,7 +52,10 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
 
     function onDeny(e: React.FormEvent) {
         e.preventDefault();
-        denyMutation.mutate({ ID: submission.ID, reason: selectableReason === 'custom' ? customReason : selectableReason });
+        denyMutation.mutate({
+            ID: submission.ID,
+            reason: selectableReason === 'custom' ? customReason : selectableReason,
+        });
     }
 
     return (
@@ -59,24 +63,47 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
             <form onSubmit={onDeny}>
                 <FormGroup>
                     <FormInputLabel htmlFor='denyReason'>Select a type</FormInputLabel>
-                    <Select id='denyReason' options={denyReasons} activeKey={selectableReason} onChange={setSelectableReason} height='36' />
+                    <Select
+                        id='denyReason'
+                        options={denyReasons}
+                        activeKey={selectableReason}
+                        onChange={setSelectableReason}
+                        height='36'
+                    />
                     <FormInputDescription>Choose a reason for denying the submission.</FormInputDescription>
                 </FormGroup>
-                {selectableReason === 'wrongProof' &&
+                {selectableReason === 'wrongProof' && (
                     <label className='flex gap-1 items-center'>
-                        <Checkbox checked={shouldBlacklistProof} onChange={(e) => setShouldBlacklistProof(e.target.checked)} />
+                        <Checkbox
+                            checked={shouldBlacklistProof}
+                            onChange={(e) => setShouldBlacklistProof(e.target.checked)}
+                        />
                         Blacklist proof?
                     </label>
-                }
-                {['custom', 'hacked'].includes(selectableReason) &&
+                )}
+                {['custom', 'hacked'].includes(selectableReason) && (
                     <FormGroup>
                         <FormInputLabel htmlFor='customDenyReason'>Write a reason</FormInputLabel>
-                        <TextInput value={customReason} onChange={(e) => setCustomReason(e.target.value.trimStart())} id='customDenyReason' placeholder='Reason...' required />
+                        <TextInput
+                            value={customReason}
+                            onChange={(e) => setCustomReason(e.target.value.trimStart())}
+                            id='customDenyReason'
+                            placeholder='Reason...'
+                            required
+                        />
                     </FormGroup>
-                }
+                )}
                 <div className='mt-8'>
-                    <DangerButton className='block w-full py-1' type='submit' loading={denyMutation.isPending}>Deny</DangerButton>
-                    <button className='my-2 py-1 block w-full border rounded border-theme-text/35' type='button' onClick={() => onClose()}>Cancel</button>
+                    <DangerButton className='block w-full py-1' type='submit' loading={denyMutation.isPending}>
+                        Deny
+                    </DangerButton>
+                    <button
+                        className='my-2 py-1 block w-full border rounded border-theme-text/35'
+                        type='button'
+                        onClick={() => onClose()}
+                    >
+                        Cancel
+                    </button>
                 </div>
             </form>
         </Modal>

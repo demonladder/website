@@ -11,7 +11,10 @@ interface LevelSearchOptions {
     onLevel?: (level: SearchLevelResponse | undefined) => void;
 }
 
-export default function useLevelSearch(ID: string, { required = false, defaultLevel, inPack, onLevel }: LevelSearchOptions = {}) {
+export default function useLevelSearch(
+    ID: string,
+    { required = false, defaultLevel, inPack, onLevel }: LevelSearchOptions = {},
+) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -62,20 +65,22 @@ export default function useLevelSearch(ID: string, { required = false, defaultLe
         setQuery,
         clear,
         markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox<SearchLevelResponse>
-            getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Publisher?.name}`}
-            getName={(r) => r.Meta.Name}
-            value={search}
-            onChange={setSearch}
-            onDebouncedChange={setSearchQuery}
-            id={ID}
-            list={data?.data ?? []}
-            onResult={onResult}
-            status={status}
-            invalid={isInvalid || (required && !activeLevel)}
-            placeholder={defaultData?.Meta.Name ?? 'Search for a level...'}
-            overWriteInput
-        />),
+        SearchBox: (
+            <SearchBox<SearchLevelResponse>
+                getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Publisher?.name}`}
+                getName={(r) => r.Meta.Name}
+                value={search}
+                onChange={setSearch}
+                onDebouncedChange={setSearchQuery}
+                id={ID}
+                list={data?.data ?? []}
+                onResult={onResult}
+                status={status}
+                invalid={isInvalid || (required && !activeLevel)}
+                placeholder={defaultData?.Meta.Name ?? 'Search for a level...'}
+                overWriteInput
+            />
+        ),
         value: search,
     };
 }

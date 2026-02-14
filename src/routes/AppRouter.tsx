@@ -81,84 +81,105 @@ import { routes } from './route-definitions';
 import { submitLoader } from '../features/submit/submit.loader';
 import SubmissionSearch from '../features/admin/submission-search/submission-search.page';
 
-export const router = (queryClient: QueryClient) => createBrowserRouter(createRoutesFromElements(
-    [
-        <Route element={<OAuth2Layout />} path='/oauth2'>
-            <Route element={<Authorize />} path='authorize' loader={AuthorizeLoader} />
-            <Route element={<Invalid />} path='invalid' />
-        </Route>,
-        <Route element={<MainLayout />} errorElement={<ErrorElement />}>
-            <Route path='/' element={<Home />} />
-            <Route path='developer/applications' element={<Applications />} />
-            <Route path='developer/applications/:appID' element={<Application />} loader={applicationLoader(queryClient)} />
-            <Route path='search' element={<Search />} loader={searchLoader} />
-            <Route path={routes.submit.path} element={<SubmitPage />} />
-            <Route path={routes.submit.level.path} element={<SubmitPage />} loader={submitLoader(queryClient)} />
-            <Route path='platformerList' element={<PlatformerList />} />
-            <Route path='references' element={<References />} />
-            <Route path='packs' element={<Packs />} />
-            <Route path='about' element={<About />} />
-            <Route path='pack/78' element={<CrossroadPack />} />
-            <Route path='pack/:packID' element={<PackOverview />} />
-            <Route path='staff' element={<Staff />} />
-            <Route path='auth/totp/authenticate' element={<TOTPPage />} />
-            <Route path='auth/totp/register' element={<TOTPRegisterPage />} loader={totpRegisterLoader} />
-            <Route path='level/:levelID' element={<LevelPage />} loader={levelLoader(queryClient)} />
-            <Route path='login' element={<Login />} />
-            <Route path='signup' element={<SignUp />} />
-            <Route path='profile' loader={profileLoader(queryClient)} />
-            <Route path='profile/:userID' element={<Profile />} loader={profileLoader(queryClient)}>
-                <Route path='favorites' element={<FavoriteLevels />} />
-                <Route path='rankings' element={<Rankings />} />
-            </Route>
-            <Route path='notifications' element={<Notifications />} />
-            <Route path='game' element={<Game />} />
-            <Route path='settings' element={<Settings />}>
-                <Route path='account' element={<AccountSettings />} />
-                <Route path='site' element={<ClientSiteSettings />} />
-                <Route path='profile' element={<ProfileSettings />} />
-                <Route path='submission' element={<SubmissionSettings />} />
-                <Route path='appearance' element={<Appearance />} />
-                <Route path='developer' element={<Developer />} />
-            </Route>
-            <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
-            <Route path='list/:listID' element={<List />} loader={listLoader(queryClient)} />
-            <Route path='forgotPassword' element={<ForgotPassword />} />
-            <Route path='generators' element={<Suspense fallback={<FloatingLoadingSpinner />}><Generators /></Suspense>}>
-                <Route path='alphabet' element={<Alphabet />} />
-                <Route path='roulette' element={<Roulette />} />
-                <Route path='reverseRoulette' element={<ReverseRoulette />} />
-                <Route path='tierRoulette' element={<TierRoulette />} />
-                <Route path='decathlon' element={<Decathlon />} />
-            </Route>
-            <Route path='bulkSubmit' element={<BulkSubmit />} />
-            <Route path='changeLogs' element={<Changelogs />} />
-        </Route>,
-        <Route path='/mod' element={<Suspense fallback={<FloatingLoadingSpinner />}><AdminLayout /></Suspense>} loader={ModLoader} errorElement={<ErrorElement />}>
-            <Route index element={<ModIndex />} />
-            <Route path='audit-logs' element={<AuditLogs />} />
-            <Route path='beta' element={<Beta />} />
-            <Route path='queue' element={<Queue />} />
-            <Route path='references' element={<EditReferences />} />
-            <Route path='editPack' element={<EditPack />} />
-            <Route path='addSubmission' element={<AddSubmission />} />
-            <Route path='editSubmission/:submissionID' element={<EditSubmission />} />
-            <Route path='manageUser' element={<ManageUser />}>
-                <Route path=':userID' element={<ManageUserContent />} />
-            </Route>
-            <Route path='createUser' element={<CreateUser />} />
-            <Route path='deleteUser' element={<DeleteUser />} />
-            <Route path='signupLinks' element={<SignupLink />} />
-            <Route path='verification' element={<Verification />} />
-            <Route path='addLevel' element={<AddLevel />} />
-            <Route path='edit-level/:levelID' element={<EditLevel />} loader={levelLoader(queryClient)} />
-            <Route path='editTags' element={<EditTags />} />
-            <Route path='siteSettings' element={<SiteSettings />} />
-            <Route path='debugging' element={<Debugging />} />
-            <Route path='roles' element={<Roles />} />
-            <Route path='roles/:roleID' element={<EditRole />} />
-            <Route path='mergeSubmissions' element={<SubmissionMerge />} />
-            <Route path={routes.staff.submissions.search.path} element={<SubmissionSearch />} />
-        </Route>,
-    ],
-));
+export const router = (queryClient: QueryClient) =>
+    createBrowserRouter(
+        createRoutesFromElements([
+            <Route element={<OAuth2Layout />} path='/oauth2'>
+                <Route element={<Authorize />} path='authorize' loader={AuthorizeLoader} />
+                <Route element={<Invalid />} path='invalid' />
+            </Route>,
+            <Route element={<MainLayout />} errorElement={<ErrorElement />}>
+                <Route path='/' element={<Home />} />
+                <Route path='developer/applications' element={<Applications />} />
+                <Route
+                    path='developer/applications/:appID'
+                    element={<Application />}
+                    loader={applicationLoader(queryClient)}
+                />
+                <Route path='search' element={<Search />} loader={searchLoader} />
+                <Route path={routes.submit.path} element={<SubmitPage />} />
+                <Route path={routes.submit.level.path} element={<SubmitPage />} loader={submitLoader(queryClient)} />
+                <Route path='platformerList' element={<PlatformerList />} />
+                <Route path='references' element={<References />} />
+                <Route path='packs' element={<Packs />} />
+                <Route path='about' element={<About />} />
+                <Route path='pack/78' element={<CrossroadPack />} />
+                <Route path='pack/:packID' element={<PackOverview />} />
+                <Route path='staff' element={<Staff />} />
+                <Route path='auth/totp/authenticate' element={<TOTPPage />} />
+                <Route path='auth/totp/register' element={<TOTPRegisterPage />} loader={totpRegisterLoader} />
+                <Route path='level/:levelID' element={<LevelPage />} loader={levelLoader(queryClient)} />
+                <Route path='login' element={<Login />} />
+                <Route path='signup' element={<SignUp />} />
+                <Route path='profile' loader={profileLoader(queryClient)} />
+                <Route path='profile/:userID' element={<Profile />} loader={profileLoader(queryClient)}>
+                    <Route path='favorites' element={<FavoriteLevels />} />
+                    <Route path='rankings' element={<Rankings />} />
+                </Route>
+                <Route path='notifications' element={<Notifications />} />
+                <Route path='game' element={<Game />} />
+                <Route path='settings' element={<Settings />}>
+                    <Route path='account' element={<AccountSettings />} />
+                    <Route path='site' element={<ClientSiteSettings />} />
+                    <Route path='profile' element={<ProfileSettings />} />
+                    <Route path='submission' element={<SubmissionSettings />} />
+                    <Route path='appearance' element={<Appearance />} />
+                    <Route path='developer' element={<Developer />} />
+                </Route>
+                <Route path='list' loader={() => redirect('/search')} element={<p>hi</p>} />
+                <Route path='list/:listID' element={<List />} loader={listLoader(queryClient)} />
+                <Route path='forgotPassword' element={<ForgotPassword />} />
+                <Route
+                    path='generators'
+                    element={
+                        <Suspense fallback={<FloatingLoadingSpinner />}>
+                            <Generators />
+                        </Suspense>
+                    }
+                >
+                    <Route path='alphabet' element={<Alphabet />} />
+                    <Route path='roulette' element={<Roulette />} />
+                    <Route path='reverseRoulette' element={<ReverseRoulette />} />
+                    <Route path='tierRoulette' element={<TierRoulette />} />
+                    <Route path='decathlon' element={<Decathlon />} />
+                </Route>
+                <Route path='bulkSubmit' element={<BulkSubmit />} />
+                <Route path='changeLogs' element={<Changelogs />} />
+            </Route>,
+            <Route
+                path='/mod'
+                element={
+                    <Suspense fallback={<FloatingLoadingSpinner />}>
+                        <AdminLayout />
+                    </Suspense>
+                }
+                loader={ModLoader}
+                errorElement={<ErrorElement />}
+            >
+                <Route index element={<ModIndex />} />
+                <Route path='audit-logs' element={<AuditLogs />} />
+                <Route path='beta' element={<Beta />} />
+                <Route path='queue' element={<Queue />} />
+                <Route path='references' element={<EditReferences />} />
+                <Route path='editPack' element={<EditPack />} />
+                <Route path='addSubmission' element={<AddSubmission />} />
+                <Route path='editSubmission/:submissionID' element={<EditSubmission />} />
+                <Route path='manageUser' element={<ManageUser />}>
+                    <Route path=':userID' element={<ManageUserContent />} />
+                </Route>
+                <Route path='createUser' element={<CreateUser />} />
+                <Route path='deleteUser' element={<DeleteUser />} />
+                <Route path='signupLinks' element={<SignupLink />} />
+                <Route path='verification' element={<Verification />} />
+                <Route path='addLevel' element={<AddLevel />} />
+                <Route path='edit-level/:levelID' element={<EditLevel />} loader={levelLoader(queryClient)} />
+                <Route path='editTags' element={<EditTags />} />
+                <Route path='siteSettings' element={<SiteSettings />} />
+                <Route path='debugging' element={<Debugging />} />
+                <Route path='roles' element={<Roles />} />
+                <Route path='roles/:roleID' element={<EditRole />} />
+                <Route path='mergeSubmissions' element={<SubmissionMerge />} />
+                <Route path={routes.staff.submissions.search.path} element={<SubmissionSearch />} />
+            </Route>,
+        ]),
+    );

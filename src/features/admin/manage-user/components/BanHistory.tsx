@@ -32,11 +32,19 @@ export default function BanHistory({ user }: { user: UserResponse }) {
     const [reason, setReason] = useState('');
 
     const banMutation = useMutation({
-        mutationFn: () => toast.promise(banUser(user.ID, durationSelect.activeElement !== '-' ? ms(durationSelect.activeElement) : null, reason), {
-            pending: 'Banning...',
-            success: 'User banned!',
-            error: renderToastError,
-        }),
+        mutationFn: () =>
+            toast.promise(
+                banUser(
+                    user.ID,
+                    durationSelect.activeElement !== '-' ? ms(durationSelect.activeElement) : null,
+                    reason,
+                ),
+                {
+                    pending: 'Banning...',
+                    success: 'User banned!',
+                    error: renderToastError,
+                },
+            ),
         onSuccess: () => {
             void banQuery.refetch();
         },
@@ -54,9 +62,7 @@ export default function BanHistory({ user }: { user: UserResponse }) {
                 {banQuery.data?.map((record) => (
                     <BanRecord record={record} key={record.BanID} />
                 ))}
-                {banQuery.data?.length === 0 &&
-                    <p>Clean record :D</p>
-                }
+                {banQuery.data?.length === 0 && <p>Clean record :D</p>}
                 {!banQuery.data && <InlineLoadingSpinner />}
             </div>
             <div className='mt-8'>
@@ -68,9 +74,17 @@ export default function BanHistory({ user }: { user: UserResponse }) {
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel htmlFor='banReason'>Reason:</FormInputLabel>
-                        <TextInput id='banReason' placeholder='Ban reason...' value={reason} onChange={(e) => setReason(e.target.value.trimStart())} required />
+                        <TextInput
+                            id='banReason'
+                            placeholder='Ban reason...'
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value.trimStart())}
+                            required
+                        />
                     </FormGroup>
-                    <DangerButton type='submit' disabled={banMutation.isPending}>Ban</DangerButton>
+                    <DangerButton type='submit' disabled={banMutation.isPending}>
+                        Ban
+                    </DangerButton>
                 </form>
             </div>
         </section>

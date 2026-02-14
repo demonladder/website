@@ -7,7 +7,7 @@ interface ChangeLevelProps {
 }
 
 export default function ChangeLevel({ data, remove }: ChangeLevelProps) {
-    const prefix = (data.Type === ChangeType.Remove ? 'from' : 'to');
+    const prefix = data.Type === ChangeType.Remove ? 'from' : 'to';
 
     return (
         <div className='flex justify-between'>

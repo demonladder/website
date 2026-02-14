@@ -26,7 +26,9 @@ export default function Notifications() {
         queryFn: GetWants,
     });
 
-    const [acceptNotifs, setAcceptNotifs] = useState<boolean>(((data?.bitField || 0) & NotificationsBitField.Accept) !== 0);
+    const [acceptNotifs, setAcceptNotifs] = useState<boolean>(
+        ((data?.bitField || 0) & NotificationsBitField.Accept) !== 0,
+    );
     const [DMNotifs, setDMNotifs] = useState<boolean>(((data?.bitField || 0) & NotificationsBitField.DMs) !== 0);
     const [DMTierLimit, setDMTierLimit] = useState(`${data?.DMTierLimit ?? 1}`);
     const [wantBitField, setWantBitField] = useState<BitField>();
@@ -60,11 +62,16 @@ export default function Notifications() {
         if (DMNotifs) wantBitField.add(NotificationsBitField.DMs);
         else wantBitField.remove(NotificationsBitField.DMs);
 
-        void toast.promise(UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() => queryClient.invalidateQueries({ queryKey: ['user', session.user?.ID, 'wants'] })), {
-            pending: 'Saving...',
-            success: 'Saved',
-            error: renderToastError,
-        });
+        void toast.promise(
+            UpdateSubmissionSettings(wantBitField, parseInt(DMTierLimit)).then(() =>
+                queryClient.invalidateQueries({ queryKey: ['user', session.user?.ID, 'wants'] }),
+            ),
+            {
+                pending: 'Saving...',
+                success: 'Saved',
+                error: renderToastError,
+            },
+        );
     }
 
     return (
@@ -73,21 +80,35 @@ export default function Notifications() {
             <b>Notifications</b>
             <div>
                 <label className='flex items-center gap-2 mb-2'>
-                    <CheckBox checked={acceptNotifs} onChange={(e) => setAcceptNotifs(e.target.checked)} disabled={session.user === undefined} />
+                    <CheckBox
+                        checked={acceptNotifs}
+                        onChange={(e) => setAcceptNotifs(e.target.checked)}
+                        disabled={session.user === undefined}
+                    />
                     Receive notifications when your submissions get accepted
                 </label>
                 <label className='flex items-center gap-2 mb-2'>
-                    <CheckBox checked={DMNotifs} onChange={(e) => setDMNotifs(e.target.checked)} disabled={session.user === undefined} />
+                    <CheckBox
+                        checked={DMNotifs}
+                        onChange={(e) => setDMNotifs(e.target.checked)}
+                        disabled={session.user === undefined}
+                    />
                     Receive DMs on Discord when your submissions get accepted
                 </label>
                 <div className='mb-2'>
-                    <label htmlFor='submissionSettingsDMTierLimit'><b>Tier limit for Discord DMs</b></label>
-                    <NumberInput id='submissionSettingsDMTierLimit' value={DMTierLimit} onChange={(e) => validateIntInputChange(e, setDMTierLimit)} />
-                    <FormInputDescription>You will only receive DMs if the level is above the specified tier</FormInputDescription>
+                    <label htmlFor='submissionSettingsDMTierLimit'>
+                        <b>Tier limit for Discord DMs</b>
+                    </label>
+                    <NumberInput
+                        id='submissionSettingsDMTierLimit'
+                        value={DMTierLimit}
+                        onChange={(e) => validateIntInputChange(e, setDMTierLimit)}
+                    />
+                    <FormInputDescription>
+                        You will only receive DMs if the level is above the specified tier
+                    </FormInputDescription>
                 </div>
-                {session.user &&
-                    <PrimaryButton onClick={submit}>Save</PrimaryButton>
-                }
+                {session.user && <PrimaryButton onClick={submit}>Save</PrimaryButton>}
             </div>
         </>
     );

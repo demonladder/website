@@ -23,12 +23,19 @@ type SortDirections = keyof typeof sortDirections;
 
 export default function SortMenu() {
     const [sorter, setSorter] = useQueryParam('sort', withDefault(StringParam, 'ID'));
-    const [sortDirection, setSortDirection] = useQueryParam(QueryParamNames.SortDirection, withDefault(StringParam, 'asc'));
+    const [sortDirection, setSortDirection] = useQueryParam(
+        QueryParamNames.SortDirection,
+        withDefault(StringParam, 'asc'),
+    );
 
     return (
         <div className='max-md:grow flex items-center mt-4 gap-2'>
             <Select label={`Sort by: ${sorts[sorter as Sorts]}`} options={sorts} onOption={setSorter} />
-            <SegmentedButtonGroup options={sortDirections} activeKey={sortDirection as SortDirections} onSetActive={setSortDirection} />
+            <SegmentedButtonGroup
+                options={sortDirections}
+                activeKey={sortDirection as SortDirections}
+                onSetActive={setSortDirection}
+            />
         </div>
     );
 }

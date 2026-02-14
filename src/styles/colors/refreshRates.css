@@ -7,6 +7,7 @@
     --color-refreshRate-360: #000000;
 }
 
-.bg-refreshRate-60, .bg-refreshRate-360 {
+.bg-refreshRate-60,
+.bg-refreshRate-360 {
     color: white;
 }

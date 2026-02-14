@@ -13,10 +13,12 @@ export default function Leaderboard({ packID }: { packID?: number }) {
 
     const { data: levels } = usePackLevels(packID);
 
-    const highestScore = ((levels?.length ?? 0) * 100) || packLeaders?.reduce((prev, curr) => {
-        if (prev < curr.Sum) return curr.Sum;
-        return prev;
-    }, packLeaders[0].Sum);
+    const highestScore =
+        (levels?.length ?? 0) * 100 ||
+        packLeaders?.reduce((prev, curr) => {
+            if (prev < curr.Sum) return curr.Sum;
+            return prev;
+        }, packLeaders[0].Sum);
 
     return (
         <section className='mt-4'>
@@ -24,7 +26,15 @@ export default function Leaderboard({ packID }: { packID?: number }) {
             <LoadingSpinner isLoading={status === 'pending'} />
             {status === 'error' && <p>Error: could not fetch leaderboard from server</p>}
             <div className='pe-8'>
-                {packLeaders?.map((contestant) => (<LeaderboardEntry user={contestant.User} userID={contestant.UserID} sum={contestant.Sum} highestScore={highestScore} key={'leader_' + contestant.UserID} />))}
+                {packLeaders?.map((contestant) => (
+                    <LeaderboardEntry
+                        user={contestant.User}
+                        userID={contestant.UserID}
+                        sum={contestant.Sum}
+                        highestScore={highestScore}
+                        key={'leader_' + contestant.UserID}
+                    />
+                ))}
             </div>
         </section>
     );

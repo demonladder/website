@@ -53,8 +53,14 @@ export default function BetaGuard({ children }: { children?: React.ReactNode }) 
                 <div>
                     <Heading1>GDDL Beta</Heading1>
                     <form onSubmit={handleSubmit} className='my-4'>
-                        <TextInput value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder='Access key' />
-                        <PrimaryButton type='submit' disabled={mutation.isPending}>Enter</PrimaryButton>
+                        <TextInput
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            placeholder='Access key'
+                        />
+                        <PrimaryButton type='submit' disabled={mutation.isPending}>
+                            Enter
+                        </PrimaryButton>
                     </form>
                     {mutation.isPending && <FloatingLoadingSpinner />}
                 </div>

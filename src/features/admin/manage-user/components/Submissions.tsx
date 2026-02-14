@@ -42,18 +42,33 @@ export default function Submissions({ user }: Props) {
             <Heading3 className='mb-8'>Actions</Heading3>
             <div>
                 <Heading4 className='border-theme-500 border-b pb-2'>Remove enjoyments</Heading4>
-                <FormInputDescription>This action is irreversible! All the users submissions enjoyment will be set to null and any submissions with a null tier will be deleted.</FormInputDescription>
+                <FormInputDescription>
+                    This action is irreversible! All the users submissions enjoyment will be set to null and any
+                    submissions with a null tier will be deleted.
+                </FormInputDescription>
                 <DangerButton onClick={() => removeEnjoyments.mutate(user.ID)}>Remove</DangerButton>
             </div>
             <div className='mt-12'>
                 <Heading4 className='border-theme-500 border-b pb-2'>Purge pending submissions</Heading4>
-                <FormInputDescription>This action is irreversible! All the users pending submissions will be deleted.</FormInputDescription>
-                <DangerButton onClick={() => purgePendingSubmissions.mutate(user.ID)} loading={purgePendingSubmissions.isPending}>Purge</DangerButton>
+                <FormInputDescription>
+                    This action is irreversible! All the users pending submissions will be deleted.
+                </FormInputDescription>
+                <DangerButton
+                    onClick={() => purgePendingSubmissions.mutate(user.ID)}
+                    loading={purgePendingSubmissions.isPending}
+                >
+                    Purge
+                </DangerButton>
             </div>
             <div className='mt-12'>
                 <Heading4 className='border-theme-500 border-b pb-2'>Purge submissions</Heading4>
-                <FormInputDescription>This action is irreversible! All the users submissions will be deleted. Might take a little while if the user has a lot of submissions.</FormInputDescription>
-                <DangerButton onClick={() => purgeSubmissions.mutate(user.ID)} loading={purgeSubmissions.isPending}>Purge</DangerButton>
+                <FormInputDescription>
+                    This action is irreversible! All the users submissions will be deleted. Might take a little while if
+                    the user has a lot of submissions.
+                </FormInputDescription>
+                <DangerButton onClick={() => purgeSubmissions.mutate(user.ID)} loading={purgeSubmissions.isPending}>
+                    Purge
+                </DangerButton>
             </div>
         </section>
     );

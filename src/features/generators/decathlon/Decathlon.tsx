@@ -15,7 +15,12 @@ export default function Decathlon() {
     const queryClient = useQueryClient();
 
     const generateMutation = useMutation({
-        mutationFn: () => toast.promise(GenerateDecathlon, { pending: 'Generating...', success: 'Generated!', error: renderToastError }),
+        mutationFn: () =>
+            toast.promise(GenerateDecathlon, {
+                pending: 'Generating...',
+                success: 'Generated!',
+                error: renderToastError,
+            }),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['decathlon'] });
         },
@@ -29,7 +34,12 @@ export default function Decathlon() {
     });
 
     const reRollMutation = useMutation({
-        mutationFn: () => toast.promise(ReRollDecathlonLevel, { pending: 'Rolling...', success: 'Level re-rolled!', error: renderToastError }),
+        mutationFn: () =>
+            toast.promise(ReRollDecathlonLevel, {
+                pending: 'Rolling...',
+                success: 'Level re-rolled!',
+                error: renderToastError,
+            }),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['decathlon'] });
         },
@@ -44,7 +54,10 @@ export default function Decathlon() {
         <div>
             <Heading2>Decathlon</Heading2>
             <p>A decathlon is a notoriously difficult challenge as it is very RNG heavy.</p>
-            <p>The rules are simple. You will be given 10 random levels which will have to be beaten in ascending difficulty. You cannot see all of the run ahead of time, only the next level in line.</p>
+            <p>
+                The rules are simple. You will be given 10 random levels which will have to be beaten in ascending
+                difficulty. You cannot see all of the run ahead of time, only the next level in line.
+            </p>
             <p>Depending on the tier of your current hardest, you will be given re-rolls:</p>
             <p>32-39: 0 re-rolls</p>
             <p>27-31: 1 re-roll</p>
@@ -55,27 +68,55 @@ export default function Decathlon() {
             <p>6-9: 6 re-rolls</p>
             <p>1-5: 7 re-rolls</p>
             <p>The decathlon will not contain levels you have already beaten.</p>
-            <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>{data ? 'Re-g' : 'G'}enerate</PrimaryButton>
-            {data && <>
-                <p className='my-4'>You have <b>{data.Description.reRolls} re-roll{pluralS(data.Description.reRolls)}</b> left</p>
-                <ol className='mt-4 text-xl'>
-                    {data.levels.map((l, i) => (
-                        <li className='even:bg-gray-700 py-4' key={l.LevelID}>
-                            <div className='flex'>
-                                <p className='ps-2 py-1 grow'><b>#{i + 1}</b> <Link to={`/level/${l.LevelID}`} className='underline'>{l.Level.Meta.Name}</Link> <i><IDButton className='italic text-gray-400' id={l.LevelID} /></i></p>
-                                <p className={`w-20 text-center py-1 tier-${l.Level.Rating!.toFixed()}`}>{l.Level.Rating!.toFixed()}</p>
-                                <p className={`w-20 text-center py-1 enj-${(l.Level.Enjoyment ?? -1).toFixed()}`}>{l.Level.Enjoyment?.toFixed() ?? 'N/A'}</p>
-                            </div>
-                            {i === data.Description.levelsCompleted &&
-                                <div>
-                                    <PrimaryButton onClick={() => nextMutation.mutate()}>Next</PrimaryButton>
-                                    <button onClick={() => reRollMutation.mutate()} className='text-red-400 disabled:line-through disabled:text-gray-400 ms-2 underline-t' disabled={data.Description.reRolls <= -1}>Re-roll</button>
+            <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>
+                {data ? 'Re-g' : 'G'}enerate
+            </PrimaryButton>
+            {data && (
+                <>
+                    <p className='my-4'>
+                        You have{' '}
+                        <b>
+                            {data.Description.reRolls} re-roll{pluralS(data.Description.reRolls)}
+                        </b>{' '}
+                        left
+                    </p>
+                    <ol className='mt-4 text-xl'>
+                        {data.levels.map((l, i) => (
+                            <li className='even:bg-gray-700 py-4' key={l.LevelID}>
+                                <div className='flex'>
+                                    <p className='ps-2 py-1 grow'>
+                                        <b>#{i + 1}</b>{' '}
+                                        <Link to={`/level/${l.LevelID}`} className='underline'>
+                                            {l.Level.Meta.Name}
+                                        </Link>{' '}
+                                        <i>
+                                            <IDButton className='italic text-gray-400' id={l.LevelID} />
+                                        </i>
+                                    </p>
+                                    <p className={`w-20 text-center py-1 tier-${l.Level.Rating!.toFixed()}`}>
+                                        {l.Level.Rating!.toFixed()}
+                                    </p>
+                                    <p className={`w-20 text-center py-1 enj-${(l.Level.Enjoyment ?? -1).toFixed()}`}>
+                                        {l.Level.Enjoyment?.toFixed() ?? 'N/A'}
+                                    </p>
                                 </div>
-                            }
-                        </li>
-                    ))}
-                </ol>
-            </>}
+                                {i === data.Description.levelsCompleted && (
+                                    <div>
+                                        <PrimaryButton onClick={() => nextMutation.mutate()}>Next</PrimaryButton>
+                                        <button
+                                            onClick={() => reRollMutation.mutate()}
+                                            className='text-red-400 disabled:line-through disabled:text-gray-400 ms-2 underline-t'
+                                            disabled={data.Description.reRolls <= -1}
+                                        >
+                                            Re-roll
+                                        </button>
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ol>
+                </>
+            )}
         </div>
     );
 }

@@ -16,8 +16,8 @@ import SendSubmission from '../../../api/submissions/SendSubmission';
 import { Device } from '../../../api/core/enums/device.enum';
 
 const deviceOptions: Record<Device, string> = {
-    'pc': 'PC',
-    'mobile': 'Mobile',
+    pc: 'PC',
+    mobile: 'Mobile',
 };
 
 export default function AddSubmission() {
@@ -31,7 +31,12 @@ export default function AddSubmission() {
 
     const queryClient = useQueryClient();
 
-    const { activeLevel, markInvalid: markInvalidLevel, SearchBox, clear: clearActiveLevel } = useLevelSearch('addSubmissionSearch');
+    const {
+        activeLevel,
+        markInvalid: markInvalidLevel,
+        SearchBox,
+        clear: clearActiveLevel,
+    } = useLevelSearch('addSubmissionSearch');
     const userSearch = useUserSearch({
         ID: 'addSubmissionUserSearch',
     });
@@ -64,11 +69,13 @@ export default function AddSubmission() {
         // Send
         setIsMutating(true);
         void toast.promise(
-            SendSubmission(submission).then(() => {
-                void queryClient.invalidateQueries({ queryKey: ['submissions'] });
-                void queryClient.invalidateQueries({ queryKey: ['level', activeLevel.ID] });
-                void queryClient.invalidateQueries({ queryKey: ['user', submission.userID] });
-            }).finally(() => setIsMutating(false)),
+            SendSubmission(submission)
+                .then(() => {
+                    void queryClient.invalidateQueries({ queryKey: ['submissions'] });
+                    void queryClient.invalidateQueries({ queryKey: ['level', activeLevel.ID] });
+                    void queryClient.invalidateQueries({ queryKey: ['user', submission.userID] });
+                })
+                .finally(() => setIsMutating(false)),
             {
                 pending: 'Sending...',
                 success: 'Submission added',
@@ -108,29 +115,56 @@ export default function AddSubmission() {
                 </div>
                 <div>
                     <FormInputLabel htmlFor='addSubmissionTier'>Tier:</FormInputLabel>
-                    <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} invalid={!(tierValid || validOverride)} />
+                    <NumberInput
+                        id='addSubmissionTier'
+                        value={rating}
+                        onChange={(e) => setRating(parseInt(e.target.value))}
+                        invalid={!(tierValid || validOverride)}
+                    />
                 </div>
                 <div>
                     <FormInputLabel htmlFor='addSubmissionEnjoyment'>Enjoyment:</FormInputLabel>
-                    <NumberInput id='addSubmissionEnjoyment' value={enjoyment} onChange={(e) => setEnjoyment(parseInt(e.target.value))} invalid={!(enjoymentValid || validOverride)} />
+                    <NumberInput
+                        id='addSubmissionEnjoyment'
+                        value={enjoyment}
+                        onChange={(e) => setEnjoyment(parseInt(e.target.value))}
+                        invalid={!(enjoymentValid || validOverride)}
+                    />
                 </div>
                 <div>
                     <FormInputLabel htmlFor='addSubmissionRefreshRate'>Refresh rate:</FormInputLabel>
-                    <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(parseInt(e.target.value))} invalid={!validateRefreshRate(refreshRate)} />
+                    <NumberInput
+                        id='addSubmissionRefreshRate'
+                        value={refreshRate}
+                        onChange={(e) => setRefreshRate(parseInt(e.target.value))}
+                        invalid={!validateRefreshRate(refreshRate)}
+                    />
                     <FormInputDescription>Defaults to 60 if empty.</FormInputDescription>
                 </div>
                 <div>
                     <FormInputLabel>Device:</FormInputLabel>
-                    <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
+                    <Select
+                        id='submitDeviceMod'
+                        options={deviceOptions}
+                        activeKey={deviceKey}
+                        onChange={setDeviceKey}
+                    />
                 </div>
                 <div>
                     <FormInputLabel htmlFor='addSubmissionProof'>Proof:</FormInputLabel>
-                    <TextInput id='addSubmissionProof' value={proof} onChange={(e) => setProof(e.target.value)} invalid={!validateProof(proof, activeLevel?.Meta.Difficulty)} />
+                    <TextInput
+                        id='addSubmissionProof'
+                        value={proof}
+                        onChange={(e) => setProof(e.target.value)}
+                        invalid={!validateProof(proof, activeLevel?.Meta.Difficulty)}
+                    />
                     <FormInputDescription>Optional. Has to a valid URL.</FormInputDescription>
                 </div>
             </div>
             <div className='flex justify-between mt-3'>
-                <PrimaryButton onClick={submit} disabled={isMutating}>Add</PrimaryButton>
+                <PrimaryButton onClick={submit} disabled={isMutating}>
+                    Add
+                </PrimaryButton>
                 <DangerButton onClick={clear}>Clear</DangerButton>
             </div>
         </div>

@@ -10,7 +10,13 @@ interface Props<S, K> {
     id?: string;
 }
 
-export default function Select<S extends Record<string, string>, K = S[keyof S]>({ label, icon, options, onOption, id }: Props<S, K>) {
+export default function Select<S extends Record<string, string>, K = S[keyof S]>({
+    label,
+    icon,
+    options,
+    onOption,
+    id,
+}: Props<S, K>) {
     const [show, setShow] = useState(false);
     const menuRef = useRef<HTMLUListElement>(null);
     const [filter, setFilter] = useState('');
@@ -20,16 +26,19 @@ export default function Select<S extends Record<string, string>, K = S[keyof S]>
         onOption?.(key);
     }
 
-    function mouseMove(e: MouseEvent) {  // Auto close sort menu when mouse wanders too far
+    function mouseMove(e: MouseEvent) {
+        // Auto close sort menu when mouse wanders too far
         const menu = menuRef.current;
         if (!menu) return;
         const rect = menu.getBoundingClientRect();
         const dist = 100;
 
-        if (e.clientX < rect.x - dist ||
+        if (
+            e.clientX < rect.x - dist ||
             e.clientX > rect.x + rect.width + dist ||
             e.clientY < rect.y - dist ||
-            e.clientY > rect.y + rect.height + dist) {
+            e.clientY > rect.y + rect.height + dist
+        ) {
             setShow(false);
         }
     }
@@ -40,16 +49,37 @@ export default function Select<S extends Record<string, string>, K = S[keyof S]>
         <>
             {show && <div className='absolute inset-0 z-30' onClick={() => setShow(false)} />}
             <div className='relative inline-block' id={id}>
-                <SecondaryButton isPressedOverride={show} onClick={() => setShow((prev) => !prev)}>{icon} {label}</SecondaryButton>
-                <ul ref={menuRef} className={'absolute z-40 p-1 round:rounded-lg min-w-28 bg-theme-900 border border-theme-400 shadow-2xl transition-opacity ' + (show ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+                <SecondaryButton isPressedOverride={show} onClick={() => setShow((prev) => !prev)}>
+                    {icon} {label}
+                </SecondaryButton>
+                <ul
+                    ref={menuRef}
+                    className={
+                        'absolute z-40 p-1 round:rounded-lg min-w-28 bg-theme-900 border border-theme-400 shadow-2xl transition-opacity ' +
+                        (show ? 'opacity-100' : 'opacity-0 pointer-events-none')
+                    }
+                >
                     <li>
-                        <input type='text' className='w-full px-4 py-1 outline-none' value={filter} onChange={(e) => setFilter(e.target.value)} placeholder='Search...' />
+                        <input
+                            type='text'
+                            className='w-full px-4 py-1 outline-none'
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                            placeholder='Search...'
+                        />
                     </li>
-                    {Object.entries(options).filter(([_, value]) => value.toLowerCase().startsWith(filter.toLowerCase())).map(([key, value]) => (
-                        <li key={key}>
-                            <button className='px-4 py-1 text-start w-full hover:bg-theme-700 round:rounded transition-colors' onClick={() => onClick(key as K)}>{value}</button>
-                        </li>
-                    ))}
+                    {Object.entries(options)
+                        .filter(([_, value]) => value.toLowerCase().startsWith(filter.toLowerCase()))
+                        .map(([key, value]) => (
+                            <li key={key}>
+                                <button
+                                    className='px-4 py-1 text-start w-full hover:bg-theme-700 round:rounded transition-colors'
+                                    onClick={() => onClick(key as K)}
+                                >
+                                    {value}
+                                </button>
+                            </li>
+                        ))}
                 </ul>
             </div>
         </>

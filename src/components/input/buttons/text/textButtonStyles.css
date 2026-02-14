@@ -11,13 +11,13 @@
     --layer-opacity: 0%;
 
     position: relative;
-    
+
     --height: 40px;
     height: var(--height);
     padding: 0 16px;
     --border-radius: calc(var(--height) / 2);
     border-radius: var(--border-radius);
-    
+
     --elevation: 0px;
 
     transition-duration: 350ms;
@@ -35,10 +35,10 @@
     }
 }
 
-div[data-theme="dark"] .text-button {
+div[data-theme='dark'] .text-button {
     --primary: #588bdd;
-    --on-primary: #062A60;
-    --on-surface: #E6E0E9;
+    --on-primary: #062a60;
+    --on-surface: #e6e0e9;
 }
 
 .text-button::after {
@@ -58,7 +58,8 @@ div[data-theme="dark"] .text-button {
     background-color: color-mix(in oklab, var(--layer-color) var(--layer-opacity), transparent);
 }
 
-.text-button:focus-visible, .text-button.focused {
+.text-button:focus-visible,
+.text-button.focused {
     outline: 3px solid var(--primary);
     outline-offset: 2px;
 }
@@ -71,13 +72,15 @@ div[data-theme="dark"] .text-button {
     pointer-events: none;
 }
 
-.text-button:hover, .text-button.hovered {
+.text-button:hover,
+.text-button.hovered {
     --layer-color: var(--primary);
     --layer-opacity: 8%;
     --label-color: var(--primary);
 }
 
-.text-button:active, .text-button.pressed {
+.text-button:active,
+.text-button.pressed {
     --layer-color: var(--primary);
     --layer-opacity: 10%;
     --label-color: var(--primary);

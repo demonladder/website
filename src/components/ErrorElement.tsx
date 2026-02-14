@@ -24,10 +24,14 @@ export default function ErrorElement() {
             <div className='flex flex-col gap-4 items-center'>
                 <Heading1>Oops</Heading1>
                 <p className='text-lg'>Something went wrong while trying to load the page.</p>
-                {error instanceof Error &&
-                    <p>Error message: <b>{errorMessage}</b></p>
-                }
-                <Link to='/'><SecondaryButton>Home</SecondaryButton></Link>
+                {error instanceof Error && (
+                    <p>
+                        Error message: <b>{errorMessage}</b>
+                    </p>
+                )}
+                <Link to='/'>
+                    <SecondaryButton>Home</SecondaryButton>
+                </Link>
             </div>
         </div>
     );

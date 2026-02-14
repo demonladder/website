@@ -21,7 +21,10 @@ export default function Roles({ user }: { user: UserResponse }) {
 
     const manageUserAddRoleSearchBox = useId();
     const [addFilter, setAddFilter] = useState<string>('');
-    const unacquiredRoles = rolesQuery.data?.filter((r) => !userRoles?.find((ur) => ur.ID === r.ID)).filter((r) => r.Name.toLowerCase().includes(addFilter.toLowerCase())) ?? [];
+    const unacquiredRoles =
+        rolesQuery.data
+            ?.filter((r) => !userRoles?.find((ur) => ur.ID === r.ID))
+            .filter((r) => r.Name.toLowerCase().includes(addFilter.toLowerCase())) ?? [];
 
     const addRoleMutation = useMutation({
         mutationFn: (roleID: number) => AddRoleToUser(user.ID, roleID),
@@ -33,7 +36,12 @@ export default function Roles({ user }: { user: UserResponse }) {
     });
 
     const removeRoleMutation = useMutation({
-        mutationFn: (roleID: number) => toast.promise(RemoveRoleFromUser(user.ID, roleID), { pending: 'Removing role...', success: 'Role removed', error: renderToastError }),
+        mutationFn: (roleID: number) =>
+            toast.promise(RemoveRoleFromUser(user.ID, roleID), {
+                pending: 'Removing role...',
+                success: 'Role removed',
+                error: renderToastError,
+            }),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['user', user.ID] });
         },
@@ -61,13 +69,21 @@ export default function Roles({ user }: { user: UserResponse }) {
                 />
             </div>
             {rolesQuery.isPending && <InlineLoadingSpinner />}
-            {userRoles !== undefined &&
+            {userRoles !== undefined && (
                 <ul>
                     {userRoles.map((role) => (
-                        <li className='mt-1' key={role.ID}><DangerButton onClick={() => removeRoleMutation.mutate(role.ID)} loading={removeRoleMutation.isPending}>X</DangerButton> {role.Icon} {role.Name}</li>
+                        <li className='mt-1' key={role.ID}>
+                            <DangerButton
+                                onClick={() => removeRoleMutation.mutate(role.ID)}
+                                loading={removeRoleMutation.isPending}
+                            >
+                                X
+                            </DangerButton>{' '}
+                            {role.Icon} {role.Name}
+                        </li>
                     ))}
                 </ul>
-            }
+            )}
         </section>
     );
 }

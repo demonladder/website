@@ -32,11 +32,12 @@ export default function EditLevel() {
     }
 
     const mutation = useMutation({
-        mutationFn: ([levelID, data]: Parameters<typeof updateLevel>) => toast.promise(updateLevel(levelID, data), {
-            pending: 'Updating...',
-            success: 'Saved!',
-            error: renderToastError,
-        }),
+        mutationFn: ([levelID, data]: Parameters<typeof updateLevel>) =>
+            toast.promise(updateLevel(levelID, data), {
+                pending: 'Updating...',
+                success: 'Saved!',
+                error: renderToastError,
+            }),
         onSuccess: (data) => {
             level.Showcase = data.Showcase;
             level.DefaultRating = data.DefaultRating;
@@ -44,11 +45,12 @@ export default function EditLevel() {
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (levelID: number) => toast.promise(removeLevel(levelID), {
-            pending: 'Removing...',
-            success: 'Removed!',
-            error: renderToastError,
-        }),
+        mutationFn: (levelID: number) =>
+            toast.promise(removeLevel(levelID), {
+                pending: 'Removing...',
+                success: 'Removed!',
+                error: renderToastError,
+            }),
         onSuccess: () => {
             queryClient.removeQueries({
                 queryKey: ['level', level.ID],
@@ -62,11 +64,12 @@ export default function EditLevel() {
     }
 
     const recalculateMutation = useMutation({
-        mutationFn: () => toast.promise(recalculateLevelStats(level.ID), {
-            pending: 'Recalculating...',
-            success: 'Recalculated!',
-            error: renderToastError,
-        }),
+        mutationFn: () =>
+            toast.promise(recalculateLevelStats(level.ID), {
+                pending: 'Recalculating...',
+                success: 'Recalculated!',
+                error: renderToastError,
+            }),
         onSettled: () => {
             setConfirmRemove(false);
         },
@@ -84,16 +87,29 @@ export default function EditLevel() {
     return (
         <div>
             <Heading1>Edit Level</Heading1>
-            <p>You're currently editing <Link to={`/level/${level.ID}`}><b>{level.Meta.Name}</b></Link> by {level.Meta.Publisher?.name ?? '(-)'}</p>
+            <p>
+                You're currently editing{' '}
+                <Link to={`/level/${level.ID}`}>
+                    <b>{level.Meta.Name}</b>
+                </Link>{' '}
+                by {level.Meta.Publisher?.name ?? '(-)'}
+            </p>
             <form onSubmit={onSubmit} className='mt-4'>
                 <FormGroup>
                     <FormInputLabel htmlFor={defaultRatingID}>Default rating</FormInputLabel>
-                    <NumberInput id={defaultRatingID} value={defaultRating} onChange={(e) => validateIntInputChange(e, setDefaultRating)} invalid={parseInt(defaultRating) > MAX_TIER || parseInt(defaultRating) < 1} />
+                    <NumberInput
+                        id={defaultRatingID}
+                        value={defaultRating}
+                        onChange={(e) => validateIntInputChange(e, setDefaultRating)}
+                        invalid={parseInt(defaultRating) > MAX_TIER || parseInt(defaultRating) < 1}
+                    />
                 </FormGroup>
                 <FormGroup className='mt-1'>
                     <FormInputLabel htmlFor={showcaseID}>Showcase</FormInputLabel>
                     <TextInput id={showcaseID} value={showcase} onChange={onShowcase} />
-                    <FormInputDescription>- Must be a YouTube video <b>ID</b></FormInputDescription>
+                    <FormInputDescription>
+                        - Must be a YouTube video <b>ID</b>
+                    </FormInputDescription>
                     <FormInputDescription>- At least 720p</FormInputDescription>
                     <FormInputDescription>- No LDMs</FormInputDescription>
                     <FormInputDescription>- Must show the entire level, no intros</FormInputDescription>
@@ -104,16 +120,28 @@ export default function EditLevel() {
                     <FormInputDescription>- Uses the appropriate NONG if applicable</FormInputDescription>
                 </FormGroup>
                 <FormGroup>
-                    <PrimaryButton type='submit' loading={mutation.isPending}>Save</PrimaryButton>
+                    <PrimaryButton type='submit' loading={mutation.isPending}>
+                        Save
+                    </PrimaryButton>
                 </FormGroup>
             </form>
             <div className='my-8 border-theme-500 border-b-2' />
             <FormGroup>
-                <PrimaryButton onClick={() => recalculateMutation.mutate()} disabled={recalculateMutation.status === 'pending'}>Re-calculate stats</PrimaryButton>
-                <FormInputDescription>Should only really be used if an error has occurred in the stat calucation which happens when I do a lil oopsie.</FormInputDescription>
+                <PrimaryButton
+                    onClick={() => recalculateMutation.mutate()}
+                    disabled={recalculateMutation.status === 'pending'}
+                >
+                    Re-calculate stats
+                </PrimaryButton>
+                <FormInputDescription>
+                    Should only really be used if an error has occurred in the stat calucation which happens when I do a
+                    lil oopsie.
+                </FormInputDescription>
             </FormGroup>
             <FormGroup>
-                <DangerButton onClick={onRemoveLevel} loading={deleteMutation.isPending}>{confirmRemove ? 'Confirm r' : 'R'}emove level</DangerButton>
+                <DangerButton onClick={onRemoveLevel} loading={deleteMutation.isPending}>
+                    {confirmRemove ? 'Confirm r' : 'R'}emove level
+                </DangerButton>
                 <FormInputDescription>If the level gets unrated.</FormInputDescription>
             </FormGroup>
         </div>

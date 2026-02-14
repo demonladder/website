@@ -26,27 +26,40 @@ export default function DeleteSubmissionModal({ userID, levelID, submissionID, u
     function deleteSubmission(e: React.FormEvent) {
         e.preventDefault();
 
-        void toast.promise(DeleteSubmission(submissionID, deleteReason).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['level', levelID] });
-            void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions'] });
-            close();
-        }), {
-            pending: 'Deleting...',
-            success: 'Submission deleted ',
-            error: renderToastError,
-        });
+        void toast.promise(
+            DeleteSubmission(submissionID, deleteReason).then(() => {
+                void queryClient.invalidateQueries({ queryKey: ['level', levelID] });
+                void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions'] });
+                close();
+            }),
+            {
+                pending: 'Deleting...',
+                success: 'Submission deleted ',
+                error: renderToastError,
+            },
+        );
     }
 
     return (
         <Modal title='Delete submission' show={true} onClose={close}>
-            <p>Are you sure you want to delete <b>{username}s</b> submission?</p>
+            <p>
+                Are you sure you want to delete <b>{username}s</b> submission?
+            </p>
             <form onSubmit={deleteSubmission}>
                 <FormGroup>
                     <FormInputLabel htmlFor={deleteInputID}>Reason</FormInputLabel>
-                    <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} id={deleteInputID} required minLength={3} />
+                    <TextInput
+                        value={deleteReason}
+                        onChange={(e) => setDeleteReason(e.target.value)}
+                        id={deleteInputID}
+                        required
+                        minLength={3}
+                    />
                 </FormGroup>
                 <div className='flex place-content-end gap-2 mt-4'>
-                    <SecondaryButton type='button' onClick={close}>Close</SecondaryButton>
+                    <SecondaryButton type='button' onClick={close}>
+                        Close
+                    </SecondaryButton>
                     <DangerButton type='submit'>Delete</DangerButton>
                 </div>
             </form>

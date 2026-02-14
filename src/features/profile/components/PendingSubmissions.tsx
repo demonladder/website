@@ -27,7 +27,7 @@ import { useApp } from '../../../context/app/useApp';
 import { LevelViewType } from '../../../context/app/AppContext';
 
 interface Props {
-    userID: number,
+    userID: number;
 }
 
 export default function PendingSubmissions({ userID }: Props) {
@@ -44,21 +44,27 @@ export default function PendingSubmissions({ userID }: Props) {
             <Heading2 id='pendingSubmissions'>Pending submissions</Heading2>
             {status === 'pending' && <LoadingSpinner />}
             {status === 'error' && <p>Error loading submissions</p>}
-            {status === 'success' && user.data && <>
-                {app.levelViewType === LevelViewType.LIST
-                    ? <InlineList levels={submissionResult.submissions} userID={userID} />
-                    : <GridList levels={submissionResult.submissions} user={user.data} />
-                }
-                {submissionResult.submissions.length === 0 &&
-                    <p>No levels</p>
-                }
-                <PageButtons onPageChange={setPage} page={page} limit={submissionResult.limit} total={submissionResult.total} />
-            </>}
+            {status === 'success' && user.data && (
+                <>
+                    {app.levelViewType === LevelViewType.LIST ? (
+                        <InlineList levels={submissionResult.submissions} userID={userID} />
+                    ) : (
+                        <GridList levels={submissionResult.submissions} user={user.data} />
+                    )}
+                    {submissionResult.submissions.length === 0 && <p>No levels</p>}
+                    <PageButtons
+                        onPageChange={setPage}
+                        page={page}
+                        limit={submissionResult.limit}
+                        total={submissionResult.total}
+                    />
+                </>
+            )}
         </div>
     );
 }
 
-function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userID: number }) {
+function InlineList({ levels, userID }: { levels: UserPendingSubmission[]; userID: number }) {
     const [clickedSubmission, setClickedSubmission] = useState<UserPendingSubmission>();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const openAddListLevelModal = useAddListLevelModal();
@@ -81,25 +87,55 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
             y: e.clientY,
             buttons: [
                 { text: 'View level', to: `/level/${submission.Level.ID}` },
-                { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID), requireSession: true },
+                {
+                    text: 'Add to list',
+                    onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID),
+                    requireSession: true,
+                },
                 { type: 'divider' },
-                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
-                { text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.ID, submission.Level.ID, userID), permission: PermissionFlags.MANAGE_SUBMISSIONS },
-                { text: 'Delete', type: 'danger', onClick: () => setShowDeleteModal(true), userID, permission: PermissionFlags.MANAGE_SUBMISSIONS },
-                { text: 'Deny', type: 'danger', onClick: () => openDenySubmissionModal({ ID: submission.ID, UserID: userID }), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                {
+                    text: 'View proof',
+                    onClick: () => window.open(submission.Proof!, '_blank'),
+                    disabled: !submission.Proof,
+                },
+                {
+                    text: 'Accept',
+                    type: 'info',
+                    onClick: () => approveSubmission(submission.ID, submission.Level.ID, userID),
+                    permission: PermissionFlags.MANAGE_SUBMISSIONS,
+                },
+                {
+                    text: 'Delete',
+                    type: 'danger',
+                    onClick: () => setShowDeleteModal(true),
+                    userID,
+                    permission: PermissionFlags.MANAGE_SUBMISSIONS,
+                },
+                {
+                    text: 'Deny',
+                    type: 'danger',
+                    onClick: () => openDenySubmissionModal({ ID: submission.ID, UserID: userID }),
+                    permission: PermissionFlags.MANAGE_SUBMISSIONS,
+                },
             ],
         });
     }
 
     function deleteSubmission(submission: Pick<PendingSubmission, 'ID' | 'LevelID'>) {
-        void toast.promise(DeletePendingSubmission(submission.ID).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions', 'pending'] });
-            setShowDeleteModal(false);
-        }), {
-            pending: 'Deleting...',
-            success: 'Deleted your submission for ' + levels.find((l) => l.Level.ID === submission.LevelID)?.Level.Meta.Name || `(${submission.LevelID})`,
-            error: renderToastError,
-        });
+        void toast.promise(
+            DeletePendingSubmission(submission.ID).then(() => {
+                void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions', 'pending'] });
+                setShowDeleteModal(false);
+            }),
+            {
+                pending: 'Deleting...',
+                success:
+                    'Deleted your submission for ' +
+                        levels.find((l) => l.Level.ID === submission.LevelID)?.Level.Meta.Name ||
+                    `(${submission.LevelID})`,
+                error: renderToastError,
+            },
+        );
     }
 
     return (
@@ -107,24 +143,46 @@ function InlineList({ levels, userID }: { levels: UserPendingSubmission[], userI
             <ul>
                 {levels.map((p) => (
                     <li key={p.Level.ID}>
-                        <Level ID={p.Level.ID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} actualRating={p.Level.Rating} enjoyment={p.Enjoyment} actualEnjoyment={p.Level.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Publisher?.name ?? '-'} songName={p.Level.Meta.Song.Name} position={p.Position} onContextMenu={(e) => openContext(e, p)} />
+                        <Level
+                            ID={p.Level.ID}
+                            difficulty={p.Level.Meta.Difficulty}
+                            rarity={p.Level.Meta.Rarity}
+                            rating={p.Rating}
+                            actualRating={p.Level.Rating}
+                            enjoyment={p.Enjoyment}
+                            actualEnjoyment={p.Level.Enjoyment}
+                            name={p.Level.Meta.Name}
+                            creator={p.Level.Meta.Publisher?.name ?? '-'}
+                            songName={p.Level.Meta.Song.Name}
+                            position={p.Position}
+                            onContextMenu={(e) => openContext(e, p)}
+                        />
                     </li>
                 ))}
             </ul>
-            {clickedSubmission &&
+            {clickedSubmission && (
                 <Modal title='Delete submission' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-                    <p>Are you sure you want to delete your pending submission for {clickedSubmission.Level.Meta.Name}? (ID: {clickedSubmission.Level.ID})</p>
+                    <p>
+                        Are you sure you want to delete your pending submission for {clickedSubmission.Level.Meta.Name}?
+                        (ID: {clickedSubmission.Level.ID})
+                    </p>
                     <div className='flex place-content-end gap-2'>
                         <SecondaryButton onClick={() => setShowDeleteModal(false)}>Close</SecondaryButton>
-                        <DangerButton onClick={() => deleteSubmission({ ID: clickedSubmission.ID, LevelID: clickedSubmission.Level.ID })}>Delete</DangerButton>
+                        <DangerButton
+                            onClick={() =>
+                                deleteSubmission({ ID: clickedSubmission.ID, LevelID: clickedSubmission.Level.ID })
+                            }
+                        >
+                            Delete
+                        </DangerButton>
                     </div>
                 </Modal>
-            }
+            )}
         </>
     );
 }
 
-function GridList({ levels, user }: { levels: UserPendingSubmission[], user: User }) {
+function GridList({ levels, user }: { levels: UserPendingSubmission[]; user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDenySubmissionModal = useDenySubmissionModal();
     const openDeleteSubmissionModal = useDeletePendingSubmissionModal();
@@ -142,13 +200,41 @@ function GridList({ levels, user }: { levels: UserPendingSubmission[], user: Use
             y: e.clientY,
             buttons: [
                 { text: 'View level', to: `/level/${submission.Level.ID}` },
-                { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID), requireSession: true },
+                {
+                    text: 'Add to list',
+                    onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID),
+                    requireSession: true,
+                },
                 { type: 'divider' },
-                { text: 'View proof', onClick: () => window.open(submission.Proof!, '_blank'), disabled: !submission.Proof },
-                { text: 'Delete', type: 'danger', onClick: () => openDeleteSubmissionModal({ ID: submission.ID, LevelID: submission.Level.ID, UserID: user.ID }, user.Name), userID: user.ID, permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                {
+                    text: 'View proof',
+                    onClick: () => window.open(submission.Proof!, '_blank'),
+                    disabled: !submission.Proof,
+                },
+                {
+                    text: 'Delete',
+                    type: 'danger',
+                    onClick: () =>
+                        openDeleteSubmissionModal(
+                            { ID: submission.ID, LevelID: submission.Level.ID, UserID: user.ID },
+                            user.Name,
+                        ),
+                    userID: user.ID,
+                    permission: PermissionFlags.MANAGE_SUBMISSIONS,
+                },
                 { type: 'divider', permission: PermissionFlags.MANAGE_SUBMISSIONS },
-                { text: 'Accept', type: 'info', onClick: () => approveSubmission(submission.ID, submission.Level.ID, user.ID), permission: PermissionFlags.MANAGE_SUBMISSIONS },
-                { text: 'Deny', type: 'danger', onClick: () => openDenySubmissionModal({ ID: submission.ID, UserID: user.ID }), permission: PermissionFlags.MANAGE_SUBMISSIONS },
+                {
+                    text: 'Accept',
+                    type: 'info',
+                    onClick: () => approveSubmission(submission.ID, submission.Level.ID, user.ID),
+                    permission: PermissionFlags.MANAGE_SUBMISSIONS,
+                },
+                {
+                    text: 'Deny',
+                    type: 'danger',
+                    onClick: () => openDenySubmissionModal({ ID: submission.ID, UserID: user.ID }),
+                    permission: PermissionFlags.MANAGE_SUBMISSIONS,
+                },
             ],
         });
     }
@@ -157,7 +243,20 @@ function GridList({ levels, user }: { levels: UserPendingSubmission[], user: Use
         <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
             {levels.map((p) => (
                 <li key={p.Level.ID}>
-                    <GridLevel ID={p.Level.ID} difficulty={p.Level.Meta.Difficulty} rarity={p.Level.Meta.Rarity} rating={p.Rating} enjoyment={p.Enjoyment} name={p.Level.Meta.Name} creator={p.Level.Meta.Publisher?.name ?? '-'} proof={p.Proof} inPack={false} position={p.Position} date={p.DateAdded} onContextMenu={(e) => openContext(e, p)} />
+                    <GridLevel
+                        ID={p.Level.ID}
+                        difficulty={p.Level.Meta.Difficulty}
+                        rarity={p.Level.Meta.Rarity}
+                        rating={p.Rating}
+                        enjoyment={p.Enjoyment}
+                        name={p.Level.Meta.Name}
+                        creator={p.Level.Meta.Publisher?.name ?? '-'}
+                        proof={p.Proof}
+                        inPack={false}
+                        position={p.Position}
+                        date={p.DateAdded}
+                        onContextMenu={(e) => openContext(e, p)}
+                    />
                 </li>
             ))}
         </ul>

@@ -12,10 +12,7 @@ export default function useDeleteRoleModal(options?: Options) {
     function open(role: Role) {
         const ID = `deleteRole-${role.ID}`;
 
-        createModal(
-            ID,
-            <DeleteRoleModal role={role} onClose={() => closeModal(ID)} onSucces={options?.onSucces} />,
-        );
+        createModal(ID, <DeleteRoleModal role={role} onClose={() => closeModal(ID)} onSucces={options?.onSucces} />);
     }
 
     return open;

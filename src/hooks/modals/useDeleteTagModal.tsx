@@ -8,10 +8,7 @@ export default function useDeleteTagModal() {
     function open(tag: Tag) {
         const ID = `deleteTag-${tag.ID}`;
 
-        createModal(
-            ID,
-            <DeleteTagModal onClose={() => closeModal(ID)} tag={tag} />,
-        );
+        createModal(ID, <DeleteTagModal onClose={() => closeModal(ID)} tag={tag} />);
     }
 
     return open;

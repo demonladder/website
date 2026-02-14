@@ -12,11 +12,14 @@ export default function ModalProvider({ children }: { children: React.ReactNode 
         setModals((prev) => prev.filter((modal) => modal.ID !== ID));
     }, []);
 
-    const contextValue = useMemo(() => ({
-        modals,
-        addModal,
-        removeModal,
-    }), [modals, addModal, removeModal]);
+    const contextValue = useMemo(
+        () => ({
+            modals,
+            addModal,
+            removeModal,
+        }),
+        [modals, addModal, removeModal],
+    );
 
     return (
         <ModalContext.Provider value={contextValue}>

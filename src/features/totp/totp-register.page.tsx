@@ -16,13 +16,17 @@ export default function TOTPRegisterPage() {
 
     useEffect(() => {
         if (!qrCodeCanvasRef.current) return;
-        QRCode.toCanvas(qrCodeCanvasRef.current, otpUrl, {
-            errorCorrectionLevel: 'low',
-
-        }, function (error) {
-            if (error) console.error(error);
-            else console.log('success!');
-        });
+        QRCode.toCanvas(
+            qrCodeCanvasRef.current,
+            otpUrl,
+            {
+                errorCorrectionLevel: 'low',
+            },
+            function (error) {
+                if (error) console.error(error);
+                else console.log('success!');
+            },
+        );
     }, [otpUrl]);
 
     const navigate = useNavigate();
@@ -51,16 +55,47 @@ export default function TOTPRegisterPage() {
             <div className='bg-theme-800 p-4 rounded-xl shadow-md w-xl text-center'>
                 <Heading1>Add 2FA</Heading1>
                 <p>Two-factor authentication adds an extra layer of security to your account.</p>
-                <p className='mt-4'><b>Step 1</b>: Download an authenticator app (e.g., <a className='text-blue-400 underline!' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Google Authenticator</a>).</p>
-                <p className='mt-4'><b>Step 2</b>: Scan the QR code below with your authenticator app.</p>
+                <p className='mt-4'>
+                    <b>Step 1</b>: Download an authenticator app (e.g.,{' '}
+                    <a
+                        className='text-blue-400 underline!'
+                        href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'
+                    >
+                        Google Authenticator
+                    </a>
+                    ).
+                </p>
+                <p className='mt-4'>
+                    <b>Step 2</b>: Scan the QR code below with your authenticator app.
+                </p>
                 <canvas ref={qrCodeCanvasRef} className='mx-auto my-4' />
                 <p>or copy the code below if you're on desktop:</p>
                 <code>{new URL(otpUrl).searchParams.get('secret')}</code>
-                <p className='mt-4'><b>Step 3</b>: Verify by entering the code from your authenticator app.</p>
+                <p className='mt-4'>
+                    <b>Step 3</b>: Verify by entering the code from your authenticator app.
+                </p>
                 <form onSubmit={handleSubmit}>
-                    <input type='text' value={code} onChange={(e) => setCode(e.target.value)} placeholder='XXXXXX' maxLength={6} className='w-full border text-4xl text-center spacing rounded no-spinner my-4' />
-                    <button type='submit' className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white rounded px-4 py-2 mt-2 w-full'>Save</button>
-                    <button onClick={goBack} type='button' className='mt-2 w-full block border border-theme-400 py-2 rounded'>Cancel</button>
+                    <input
+                        type='text'
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        placeholder='XXXXXX'
+                        maxLength={6}
+                        className='w-full border text-4xl text-center spacing rounded no-spinner my-4'
+                    />
+                    <button
+                        type='submit'
+                        className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white rounded px-4 py-2 mt-2 w-full'
+                    >
+                        Save
+                    </button>
+                    <button
+                        onClick={goBack}
+                        type='button'
+                        className='mt-2 w-full block border border-theme-400 py-2 rounded'
+                    >
+                        Cancel
+                    </button>
                 </form>
             </div>
         </div>

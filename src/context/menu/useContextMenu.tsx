@@ -20,7 +20,7 @@ export default function useContextMenu(buttons?: ButtonData[]) {
         e.stopPropagation();
 
         context?.setMenuData({
-            buttons: buttons!,  // TypeScript doesn't understand that buttons is not undefined here
+            buttons: buttons!, // TypeScript doesn't understand that buttons is not undefined here
             x: e.clientX,
             y: e.clientY,
         });

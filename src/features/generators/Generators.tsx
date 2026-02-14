@@ -20,9 +20,14 @@ export default function Generators() {
     );
 }
 
-function NavLink({ to, children }: { to: string, children: React.ReactNode }) {
+function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
     return (
-        <Nav to={to} className={({ isActive }) => `p-2 text-center round:rounded-lg ${isActive ? 'bg-theme-600 font-bold border border-theme-outline' : 'bg-theme-700'}`}>
+        <Nav
+            to={to}
+            className={({ isActive }) =>
+                `p-2 text-center round:rounded-lg ${isActive ? 'bg-theme-600 font-bold border border-theme-outline' : 'bg-theme-700'}`
+            }
+        >
             {children}
         </Nav>
     );

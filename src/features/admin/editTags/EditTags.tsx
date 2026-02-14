@@ -48,13 +48,18 @@ export default function EditTags() {
         if (!nameRef.current || !descriptionRef.current) return;
 
         setIsMutating(true);
-        void toast.promise(saveTag(selectedTag, nameRef.current.value, descriptionRef.current.value).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['tags'] });
-        }).finally(() => setIsMutating(false)), {
-            pending: 'Saving...',
-            success: 'Saved',
-            error: renderToastError,
-        });
+        void toast.promise(
+            saveTag(selectedTag, nameRef.current.value, descriptionRef.current.value)
+                .then(() => {
+                    void queryClient.invalidateQueries({ queryKey: ['tags'] });
+                })
+                .finally(() => setIsMutating(false)),
+            {
+                pending: 'Saving...',
+                success: 'Saved',
+                error: renderToastError,
+            },
+        );
     }
 
     function onCreate() {
@@ -62,15 +67,20 @@ export default function EditTags() {
         setIsMutating(true);
 
         if (!nameRef.current || !descriptionRef.current) return;
-        void toast.promise(createTag(nameRef.current.value, descriptionRef.current.value).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['tags'] });
-        }).finally(() => {
-            setIsMutating(false);
-        }), {
-            pending: 'Creating...',
-            success: 'Created tag',
-            error: renderToastError,
-        });
+        void toast.promise(
+            createTag(nameRef.current.value, descriptionRef.current.value)
+                .then(() => {
+                    void queryClient.invalidateQueries({ queryKey: ['tags'] });
+                })
+                .finally(() => {
+                    setIsMutating(false);
+                }),
+            {
+                pending: 'Creating...',
+                success: 'Created tag',
+                error: renderToastError,
+            },
+        );
     }
 
     function onDelete() {
@@ -88,7 +98,9 @@ export default function EditTags() {
             <p>Select tag:</p>
             <LoadingSpinner isLoading={tags === undefined} />
             <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2'>
-                {tags?.map((t) => (<TagItem dragLocked={false} tag={t} selected={t === selectedTag} onSelect={onTagSelect} />))}
+                {tags?.map((t) => (
+                    <TagItem dragLocked={false} tag={t} selected={t === selectedTag} onSelect={onTagSelect} />
+                ))}
             </div>
             <div className='mt-4'>
                 <div className='mb-2'>
@@ -100,11 +112,14 @@ export default function EditTags() {
                     <TextInput ref={descriptionRef} />
                     <p className='text-gray-400 text-sm'>Short description that is visible in the tooltip</p>
                 </div>
-                {selectedTag
-                    ? <PrimaryButton onClick={onSave}>Save</PrimaryButton>
-                    : <SecondaryButton onClick={onCreate}>Create</SecondaryButton>
-                }
-                <DangerButton className='ms-2' onClick={onDelete}>Delete</DangerButton>
+                {selectedTag ? (
+                    <PrimaryButton onClick={onSave}>Save</PrimaryButton>
+                ) : (
+                    <SecondaryButton onClick={onCreate}>Create</SecondaryButton>
+                )}
+                <DangerButton className='ms-2' onClick={onDelete}>
+                    Delete
+                </DangerButton>
             </div>
         </div>
     );

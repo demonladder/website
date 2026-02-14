@@ -4,9 +4,9 @@
     --theme-seaweed-800: #3ddc84;
     --theme-seaweed-900: #3ecb9a;
     --theme-seaweed-950: #3ddc84;
-    
+
     --theme-seaweed-header: #3ddc84;
-    
+
     --theme-seaweed-bg-from: #e4f7ff;
     --theme-seaweed-bg-to: #e4f7ff;
     --theme-seaweed-text: #000000;
@@ -14,7 +14,7 @@
     --theme-seaweed-footer: var(--theme-seaweed-900);
 }
 
-[data-theme="seaweed"] {
+[data-theme='seaweed'] {
     --color-theme-400: var(--theme-seaweed-400);
     --color-theme-500: var(--theme-seaweed-500);
     --color-theme-600: var(--theme-seaweed-600);

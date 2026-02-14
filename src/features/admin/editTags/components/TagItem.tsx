@@ -60,8 +60,19 @@ export default function TagItem({ dragLocked, tag, selected, onSelect }: Props) 
     }
 
     return (
-        <div draggable={true} onDrop={dropHandler} onDragEnd={dragStopHandler} onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDragLeave={dragLeaveHandler} className={`${isBeingDragged ? 'opacity-0' : ''} ${dragOver ? 'opacity-50' : ''}`}>
-            <div onClick={() => onSelect(tag)} className={`${selected ? 'bg-blue-600' : 'bg-gray-500'} cursor-grab p-1 text-center round:rounded`}>
+        <div
+            draggable={true}
+            onDrop={dropHandler}
+            onDragEnd={dragStopHandler}
+            onDragStart={dragStartHandler}
+            onDragOver={dragOverHandler}
+            onDragLeave={dragLeaveHandler}
+            className={`${isBeingDragged ? 'opacity-0' : ''} ${dragOver ? 'opacity-50' : ''}`}
+        >
+            <div
+                onClick={() => onSelect(tag)}
+                className={`${selected ? 'bg-blue-600' : 'bg-gray-500'} cursor-grab p-1 text-center round:rounded`}
+            >
                 <p className='select-none'>{tag.Name}</p>
             </div>
         </div>

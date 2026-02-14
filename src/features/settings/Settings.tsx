@@ -6,7 +6,8 @@ export default function Settings() {
     return (
         <Page>
             <div className='flex max-xl:flex-col gap-8 xl:gap-4'>
-                <div>{/*Extra div is required so the nested div doesn't shrink*/}
+                <div>
+                    {/*Extra div is required so the nested div doesn't shrink*/}
                     <div className='flex flex-col xl:w-80'>
                         <NavButton to='/settings/site'>Site</NavButton>
                         <NavButton to='/settings/profile'>Profile</NavButton>

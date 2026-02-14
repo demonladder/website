@@ -15,10 +15,13 @@ export function useApproveClicked() {
     }
 
     return (ID: number, levelID: number, userID: number, onlyEnjoyment = false, proofReviewTime?: number | null) => {
-        void toast.promise(approveSubmission(ID, onlyEnjoyment, proofReviewTime).then(() => invalidateQueries(userID, levelID)), {
-            pending: 'Approving...',
-            success: 'Approved!',
-            error: renderToastError,
-        });
+        void toast.promise(
+            approveSubmission(ID, onlyEnjoyment, proofReviewTime).then(() => invalidateQueries(userID, levelID)),
+            {
+                pending: 'Approving...',
+                success: 'Approved!',
+                error: renderToastError,
+            },
+        );
     };
 }

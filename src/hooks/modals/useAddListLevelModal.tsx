@@ -7,10 +7,7 @@ export default function useAddListLevelModal() {
     function open(userID: number, levelID: number) {
         const ID = `addLevelToList-${userID}-${levelID}`;
 
-        createModal(
-            ID,
-            <AddLevelToListModal onClose={() => closeModal(ID)} userID={userID} levelID={levelID} />,
-        );
+        createModal(ID, <AddLevelToListModal onClose={() => closeModal(ID)} userID={userID} levelID={levelID} />);
     }
 
     return open;

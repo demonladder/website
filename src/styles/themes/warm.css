@@ -7,7 +7,7 @@
     --theme-warm-950: #ffdab2;
 
     --theme-warm-header: #ffd3a4;
-    
+
     --theme-warm-bg-from: #fffaf5;
     --theme-warm-bg-to: #ffdab2;
     --theme-warm-text: black;
@@ -15,7 +15,7 @@
     --theme-warm-footer: var(--theme-warm-900);
 }
 
-[data-theme="warm"] {
+[data-theme='warm'] {
     --color-theme-400: var(--theme-warm-400);
     --color-theme-500: var(--theme-warm-500);
     --color-theme-600: var(--theme-warm-600);

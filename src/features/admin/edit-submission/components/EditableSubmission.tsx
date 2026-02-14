@@ -30,8 +30,8 @@ interface Props {
 }
 
 const deviceOptions: { [key: string]: string } = {
-    'pc': 'PC',
-    'mobile': 'Mobile',
+    pc: 'PC',
+    mobile: 'Mobile',
 };
 type Device = keyof typeof deviceOptions;
 
@@ -64,22 +64,23 @@ export default function EditableSubmission({ submission }: Props) {
     const invalidEnjoyment = enjoyment === undefined || !validateEnjoyment(enjoyment);
 
     const updateMutation = useMutation({
-        mutationFn: () => APIClient.patch(`/submissions/${submission.ID}`, {
-            levelID: submission.LevelID,
-            userID: submission.UserID,
-            rating: rating ?? null,
-            enjoyment: enjoyment ?? null,
-            refreshRate: parseInt(refreshRate),
-            device: deviceKey,
-            proof: proof !== '' ? proof : null,
-            progress: parseInt(progress),
-            attempts: parseInt(attempts) ?? null,
-            isSolo: wasSolo,
-            secondPlayerID: wasSolo ? null : secondPlayerID,
-            isEdit: true,
-            flags: extremeReform2025 ? (submission.flags | 1) : (submission.flags & ~1),
-            weight: parseFloat(weight) || 0,
-        }),
+        mutationFn: () =>
+            APIClient.patch(`/submissions/${submission.ID}`, {
+                levelID: submission.LevelID,
+                userID: submission.UserID,
+                rating: rating ?? null,
+                enjoyment: enjoyment ?? null,
+                refreshRate: parseInt(refreshRate),
+                device: deviceKey,
+                proof: proof !== '' ? proof : null,
+                progress: parseInt(progress),
+                attempts: parseInt(attempts) ?? null,
+                isSolo: wasSolo,
+                secondPlayerID: wasSolo ? null : secondPlayerID,
+                isEdit: true,
+                flags: extremeReform2025 ? submission.flags | 1 : submission.flags & ~1,
+                weight: parseFloat(weight) || 0,
+            }),
         onSuccess: () => {
             void queryClient.invalidateQueries({ queryKey: ['level', submission.LevelID] });
             toast.success('Submission updated!');
@@ -93,37 +94,67 @@ export default function EditableSubmission({ submission }: Props) {
         onError: (err: AxiosError) => void toast.error(render({ data: err })),
     });
 
-    const submit = useCallback((e: FormEvent) => {
-        e.preventDefault();
+    const submit = useCallback(
+        (e: FormEvent) => {
+            e.preventDefault();
 
-        if (invalidRating && invalidEnjoyment) return toast.error('Either rating or enjoyment is required!');
+            if (invalidRating && invalidEnjoyment) return toast.error('Either rating or enjoyment is required!');
 
-        updateMutation.mutate();
-    }, [invalidRating, invalidEnjoyment, updateMutation]);
+            updateMutation.mutate();
+        },
+        [invalidRating, invalidEnjoyment, updateMutation],
+    );
 
     return (
         <>
-            <Heading3>Editing <b>{submission.User.Name}s</b> submission</Heading3>
+            <Heading3>
+                Editing <b>{submission.User.Name}s</b> submission
+            </Heading3>
             <form onSubmit={submit}>
                 <div className='grid grid-cols-8 gap-x-8'>
                     <FormGroup>
                         <FormInputLabel htmlFor='addSubmissionTier'>Tier</FormInputLabel>
-                        <NumberInput id='addSubmissionTier' value={rating} onChange={(e) => setRating(parseInt(e.target.value))} min='1' max={MAX_TIER} invalid={invalidRating && invalidEnjoyment} />
+                        <NumberInput
+                            id='addSubmissionTier'
+                            value={rating}
+                            onChange={(e) => setRating(parseInt(e.target.value))}
+                            min='1'
+                            max={MAX_TIER}
+                            invalid={invalidRating && invalidEnjoyment}
+                        />
                         <FormInputDescription>Optional unless missing enjoyment</FormInputDescription>
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel htmlFor='addSubmissionEnjoyment'>Enjoyment</FormInputLabel>
-                        <NumberInput id='addSubmissionEnjoyment' value={enjoyment} onChange={(e) => setEnjoyment(parseInt(e.target.value))} min='0' max='10' invalid={invalidRating && invalidEnjoyment} />
+                        <NumberInput
+                            id='addSubmissionEnjoyment'
+                            value={enjoyment}
+                            onChange={(e) => setEnjoyment(parseInt(e.target.value))}
+                            min='0'
+                            max='10'
+                            invalid={invalidRating && invalidEnjoyment}
+                        />
                         <FormInputDescription>Optional unless missing tier</FormInputDescription>
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel htmlFor='addSubmissionRefreshRate'>Refresh rate</FormInputLabel>
-                        <NumberInput id='addSubmissionRefreshRate' value={refreshRate} onChange={(e) => setRefreshRate(e.target.value)} placeholder='60' min='30' />
+                        <NumberInput
+                            id='addSubmissionRefreshRate'
+                            value={refreshRate}
+                            onChange={(e) => setRefreshRate(e.target.value)}
+                            placeholder='60'
+                            min='30'
+                        />
                         <FormInputDescription>Minimum 30</FormInputDescription>
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel>Device</FormInputLabel>
-                        <Select id='submitDeviceMod' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
+                        <Select
+                            id='submitDeviceMod'
+                            options={deviceOptions}
+                            activeKey={deviceKey}
+                            onChange={setDeviceKey}
+                        />
                     </FormGroup>
                     <FormGroup className='col-span-4'>
                         <FormInputLabel htmlFor='addSubmissionProof'>Proof</FormInputLabel>
@@ -132,7 +163,13 @@ export default function EditableSubmission({ submission }: Props) {
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel>Progress</FormInputLabel>
-                        <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} placeholder='100' min='1' max='100' />
+                        <NumberInput
+                            value={progress}
+                            onChange={(e) => setProgress(e.target.value)}
+                            placeholder='100'
+                            min='1'
+                            max='100'
+                        />
                     </FormGroup>
                     <FormGroup>
                         <FormInputLabel>Attempts</FormInputLabel>
@@ -144,56 +181,92 @@ export default function EditableSubmission({ submission }: Props) {
                             Solo completion
                         </label>
                     </FormGroup>
-                    {!wasSolo &&
+                    {!wasSolo && (
                         <FormGroup>
                             <FormInputLabel htmlFor='secondPlayerID'>Second player ID</FormInputLabel>
-                            <NumberInput id='secondPlayerID' value={secondPlayerID} onChange={(e) => setSecondPlayerID(parseInt(e.target.value))} min='1' />
+                            <NumberInput
+                                id='secondPlayerID'
+                                value={secondPlayerID}
+                                onChange={(e) => setSecondPlayerID(parseInt(e.target.value))}
+                                min='1'
+                            />
                             <FormInputDescription>Optional</FormInputDescription>
                         </FormGroup>
-                    }
+                    )}
                     <FormGroup>
                         <FormInputLabel>Weight</FormInputLabel>
-                        <NumberInput value={weight} onChange={(e) => setWeight(e.target.value)}  />
+                        <NumberInput value={weight} onChange={(e) => setWeight(e.target.value)} />
                     </FormGroup>
                 </div>
                 <div className='mt-4'>
                     <Heading4>Flags</Heading4>
                     <label className='flex items-center gap-1'>
-                        <Checkbox checked={extremeReform2025} onChange={(e) => setExtremeReform2025(e.target.checked)} />
+                        <Checkbox
+                            checked={extremeReform2025}
+                            onChange={(e) => setExtremeReform2025(e.target.checked)}
+                        />
                         Extreme reform 2025
                     </label>
                 </div>
                 <div className='flex justify-end gap-2 col-span-2'>
-                    <PrimaryButton type='submit' size='sm' onClick={submit} disabled={updateMutation.isPending}>Edit</PrimaryButton>
-                    <DangerButton type='button' size='sm' onClick={() => setShowDeleteConfirm(true)} disabled={deleteMutation.isPending}>Delete</DangerButton>
+                    <PrimaryButton type='submit' size='sm' onClick={submit} disabled={updateMutation.isPending}>
+                        Edit
+                    </PrimaryButton>
+                    <DangerButton
+                        type='button'
+                        size='sm'
+                        onClick={() => setShowDeleteConfirm(true)}
+                        disabled={deleteMutation.isPending}
+                    >
+                        Delete
+                    </DangerButton>
                 </div>
-                {showDeleteConfirm &&
+                {showDeleteConfirm && (
                     <div className='mt-4'>
-                        <TextInput value={deleteReason} onChange={(e) => setDeleteReason(e.target.value)} placeholder='Delete reason' />
-                        <FormInputDescription>Does not notify the user if the field is left blank!</FormInputDescription>
-                        <PrimaryButton type='button' onClick={() => setShowDeleteConfirm(false)}>Cancel</PrimaryButton>
-                        <DangerButton type='button' onClick={() => deleteMutation.mutate()}>Confirm delete</DangerButton>
+                        <TextInput
+                            value={deleteReason}
+                            onChange={(e) => setDeleteReason(e.target.value)}
+                            placeholder='Delete reason'
+                        />
+                        <FormInputDescription>
+                            Does not notify the user if the field is left blank!
+                        </FormInputDescription>
+                        <PrimaryButton type='button' onClick={() => setShowDeleteConfirm(false)}>
+                            Cancel
+                        </PrimaryButton>
+                        <DangerButton type='button' onClick={() => deleteMutation.mutate()}>
+                            Confirm delete
+                        </DangerButton>
                     </div>
-                }
+                )}
             </form>
             <FormGroup>
                 <Heading3>Extra info</Heading3>
                 <div className='grid grid-cols-3'>
-                    {submission.ApprovedBy !== null && <>
-                        <InlineLoadingSpinner isLoading={approvedBy.isPending} />
-                        {approvedBy.data &&
-                            <div>
-                                <FormInputLabel>Approved by</FormInputLabel>
-                                <div className='flex gap-2'>
-                                    {approvedBy.data.avatar
-                                        ? <img src={`https://cdn.gdladder.com/avatars/${approvedBy.data.ID}/${approvedBy.data.avatar}.png`} width='56' height='56' className='rounded-full size-14' alt='Profile' />
-                                        : <i className='bx bxs-user-circle text-6xl' />
-                                    }
-                                    <p className='text-xl self-center'>{approvedBy.data.Name}</p>
+                    {submission.ApprovedBy !== null && (
+                        <>
+                            <InlineLoadingSpinner isLoading={approvedBy.isPending} />
+                            {approvedBy.data && (
+                                <div>
+                                    <FormInputLabel>Approved by</FormInputLabel>
+                                    <div className='flex gap-2'>
+                                        {approvedBy.data.avatar ? (
+                                            <img
+                                                src={`https://cdn.gdladder.com/avatars/${approvedBy.data.ID}/${approvedBy.data.avatar}.png`}
+                                                width='56'
+                                                height='56'
+                                                className='rounded-full size-14'
+                                                alt='Profile'
+                                            />
+                                        ) : (
+                                            <i className='bx bxs-user-circle text-6xl' />
+                                        )}
+                                        <p className='text-xl self-center'>{approvedBy.data.Name}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                    </>}
+                            )}
+                        </>
+                    )}
                     <div>
                         <FormInputLabel>Sent At</FormInputLabel>
                         <p className='text-lg'>{new Date(formatDBDateString(submission.DateAdded)).toUTCString()}</p>
@@ -201,7 +274,10 @@ export default function EditableSubmission({ submission }: Props) {
                     <div>
                         <FormInputLabel>Changed At</FormInputLabel>
                         <p className='text-lg'>{new Date(formatDBDateString(submission.DateChanged)).toUTCString()}</p>
-                        <FormInputDescription>Last time the submission was edited. If it's the same as Sent At, it means it was auto accepted</FormInputDescription>
+                        <FormInputDescription>
+                            Last time the submission was edited. If it's the same as Sent At, it means it was auto
+                            accepted
+                        </FormInputDescription>
                     </div>
                 </div>
             </FormGroup>

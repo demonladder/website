@@ -7,10 +7,7 @@ export default function useCreateListModal() {
     function open(userID: number, levelID: number) {
         const ID = `createList-${userID}`;
 
-        createModal(
-            ID,
-            <CreateListModal userID={userID} levelID={levelID} onClose={() => closeModal(ID)} />,
-        );
+        createModal(ID, <CreateListModal userID={userID} levelID={levelID} onClose={() => closeModal(ID)} />);
     }
 
     return open;

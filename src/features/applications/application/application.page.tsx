@@ -29,15 +29,19 @@ export default function Application() {
 
     return (
         <Page>
-            {deleteMutation.isPending &&
-                <GlobalSpinner />
-            }
-            <Link to='/developer/applications' className='text-theme-400'>{'<- back'}</Link>
+            {deleteMutation.isPending && <GlobalSpinner />}
+            <Link to='/developer/applications' className='text-theme-400'>
+                {'<- back'}
+            </Link>
             <Heading1 className='mt-2'>{app.name}</Heading1>
             <p className='text-theme-400'>Created on {decodeDate(app.createdAt).toLocaleString()}</p>
             <GeneralInformation />
             <OAuth />
-            <div className='flex justify-end'><button onClick={() => deleteMutation.mutate()} className='underline-t mt-8 text-red-400'>delete app</button></div>
+            <div className='flex justify-end'>
+                <button onClick={() => deleteMutation.mutate()} className='underline-t mt-8 text-red-400'>
+                    delete app
+                </button>
+            </div>
         </Page>
     );
 }

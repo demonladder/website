@@ -1,4 +1,4 @@
-export function UserStat({ children, label, title }: { children: React.ReactNode; label: string; title?: string; }) {
+export function UserStat({ children, label, title }: { children: React.ReactNode; label: string; title?: string }) {
     return (
         <div title={title}>
             <p className='text-theme-400'>{label}</p>

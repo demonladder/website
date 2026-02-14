@@ -6,5 +6,5 @@ export interface ListLevel {
     Position: number;
     AddedAt: string;
     UpdatedAt: string;
-    Level: Omit<ILevel, "RatingCount" | "EnjoymentCount" | "SubmissionCount">;
+    Level: Omit<ILevel, 'RatingCount' | 'EnjoymentCount' | 'SubmissionCount'>;
 }

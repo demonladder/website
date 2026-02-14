@@ -27,11 +27,15 @@ export default function Debugging() {
             <p className='mb-2'>For developer eyes only :P</p>
             <div>
                 <div className='mb-2'>
-                    <SecondaryButton onClick={() => fixDeviation()} disabled={fixDeviationStatus === 'pending'}>Recalculate level stats</SecondaryButton>
+                    <SecondaryButton onClick={() => fixDeviation()} disabled={fixDeviationStatus === 'pending'}>
+                        Recalculate level stats
+                    </SecondaryButton>
                     <p>Takes like 17 minutes</p>
                 </div>
                 <div className='mb-2'>
-                    <DangerButton onClick={() => restartServer()} disabled={restartServerStatus === 'pending'}>Restart server</DangerButton>
+                    <DangerButton onClick={() => restartServer()} disabled={restartServerStatus === 'pending'}>
+                        Restart server
+                    </DangerButton>
                     <p>Self explanatory</p>
                 </div>
             </div>

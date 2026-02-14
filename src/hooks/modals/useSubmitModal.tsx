@@ -9,15 +9,15 @@ export default function useSubmitModal() {
 
     const session = useSession();
 
-    const open = useCallback((level: Parameters<typeof SubmitModal>[0]['level']) => {
-        if (!session.user) return toast.error('You must be logged in to submit ratings!');
+    const open = useCallback(
+        (level: Parameters<typeof SubmitModal>[0]['level']) => {
+            if (!session.user) return toast.error('You must be logged in to submit ratings!');
 
-        const ID = `submit-${level.ID}`;
-        createModal(
-            ID,
-            <SubmitModal onClose={() => closeModal(ID)} level={level} userID={session.user.ID} />,
-        );
-    }, [session, closeModal, createModal]);
+            const ID = `submit-${level.ID}`;
+            createModal(ID, <SubmitModal onClose={() => closeModal(ID)} level={level} userID={session.user.ID} />);
+        },
+        [session, closeModal, createModal],
+    );
 
     return open;
 }

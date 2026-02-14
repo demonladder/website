@@ -19,11 +19,11 @@
     --theme-dark-footer-text: #ffffff;
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
     --outline-variant: var(--theme-dark-outline);
 }
 
-[data-theme="dark"] header input {
+[data-theme='dark'] header input {
     color: black;
     --color-theme-950: rgb(0 0 0 / 0.2);
 }

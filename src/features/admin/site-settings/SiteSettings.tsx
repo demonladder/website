@@ -38,20 +38,32 @@ export default function SiteSettings() {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (queueEditLock.current === null || submissionLock.current === null || accountCreationLock.current === null || userSettingLock.current === null || accessTokenEnabled.current === null) return toast.error('An error occurred!');
+        if (
+            queueEditLock.current === null ||
+            submissionLock.current === null ||
+            accountCreationLock.current === null ||
+            userSettingLock.current === null ||
+            accessTokenEnabled.current === null
+        )
+            return toast.error('An error occurred!');
 
         setIsMutating(true);
-        void toast.promise(SaveSiteSettings({
-            isQueueEditLocked: queueEditLock.current.checked,
-            isSubmissionLocked: submissionLock.current.checked,
-            isAccountCreationLocked: accountCreationLock.current.checked,
-            isUserSettingsLocked: userSettingLock.current.checked,
-            isAccessTokenEnabled: accessTokenEnabled.current.checked,
-        }).then(() => queryClient.invalidateQueries({ queryKey: ['siteSettings'] })).finally(() => setIsMutating(false)), {
-            pending: 'Saving...',
-            success: 'Settings saved!',
-            error: renderToastError,
-        });
+        void toast.promise(
+            SaveSiteSettings({
+                isQueueEditLocked: queueEditLock.current.checked,
+                isSubmissionLocked: submissionLock.current.checked,
+                isAccountCreationLocked: accountCreationLock.current.checked,
+                isUserSettingsLocked: userSettingLock.current.checked,
+                isAccessTokenEnabled: accessTokenEnabled.current.checked,
+            })
+                .then(() => queryClient.invalidateQueries({ queryKey: ['siteSettings'] }))
+                .finally(() => setIsMutating(false)),
+            {
+                pending: 'Saving...',
+                success: 'Settings saved!',
+                error: renderToastError,
+            },
+        );
     }
 
     const isFetching = status === 'pending' || fetchStatus === 'fetching';
@@ -66,39 +78,57 @@ export default function SiteSettings() {
                     <FormGroup>
                         <div className='flex items-center gap-2'>
                             <CheckBox id='queueEditLock' ref={queueEditLock} />
-                            <label htmlFor='queueEditLock' className='select-none'>Lock approval and denial of submissions</label>
+                            <label htmlFor='queueEditLock' className='select-none'>
+                                Lock approval and denial of submissions
+                            </label>
                         </div>
-                        <p className='text-sm text-gray-400'>Staff won't be able to approve or deny submissions in the queue</p>
+                        <p className='text-sm text-gray-400'>
+                            Staff won't be able to approve or deny submissions in the queue
+                        </p>
                     </FormGroup>
                     <FormGroup>
                         <div className='flex items-center gap-2'>
                             <CheckBox id='submissionLock' ref={submissionLock} />
-                            <label htmlFor='submissionLock' className='select-none'>Lock submissions</label>
+                            <label htmlFor='submissionLock' className='select-none'>
+                                Lock submissions
+                            </label>
                         </div>
                         <p className='text-sm text-gray-400'>Users won't be able to submit any ratings</p>
                     </FormGroup>
                     <FormGroup>
                         <div className='flex items-center gap-2'>
                             <CheckBox id='accountLock' ref={accountCreationLock} />
-                            <label htmlFor='accountLock' className='select-none'>Lock account creation</label>
+                            <label htmlFor='accountLock' className='select-none'>
+                                Lock account creation
+                            </label>
                         </div>
                         <p className='text-sm text-gray-400'>Users won't be able to create new accounts</p>
                     </FormGroup>
                     <FormGroup>
                         <div className='flex items-center gap-2'>
                             <CheckBox id='userSettingLock' ref={userSettingLock} />
-                            <label htmlFor='userSettingLock' className='select-none'>Lock user settings</label>
+                            <label htmlFor='userSettingLock' className='select-none'>
+                                Lock user settings
+                            </label>
                         </div>
-                        <p className='text-sm text-gray-400'>Users won't be able to edit their introduction, tier preferences etc.</p>
+                        <p className='text-sm text-gray-400'>
+                            Users won't be able to edit their introduction, tier preferences etc.
+                        </p>
                     </FormGroup>
                     <FormGroup>
                         <div className='flex items-center gap-2'>
                             <CheckBox id='accessTokenEnabled' ref={accessTokenEnabled} />
-                            <label htmlFor='accessTokenEnabled' className='select-none'>Enable access token requirement</label>
+                            <label htmlFor='accessTokenEnabled' className='select-none'>
+                                Enable access token requirement
+                            </label>
                         </div>
-                        <p className='text-sm text-gray-400'>If this setting is enabled, only requests from known access token users can use the API.</p>
+                        <p className='text-sm text-gray-400'>
+                            If this setting is enabled, only requests from known access token users can use the API.
+                        </p>
                     </FormGroup>
-                    <PrimaryButton type='submit' loading={isMutating || isFetching}>Save</PrimaryButton>
+                    <PrimaryButton type='submit' loading={isMutating || isFetching}>
+                        Save
+                    </PrimaryButton>
                 </form>
             </section>
             <Divider />

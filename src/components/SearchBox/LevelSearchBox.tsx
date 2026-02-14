@@ -24,11 +24,9 @@ export default function LevelSearchBox({ ID, onLevel }: Props) {
             value={search}
             onChange={setSearch}
             onDebouncedChange={setDebouncedSearch}
-
             list={data?.data ?? []}
             getLabel={(r) => `${r.Meta.Name} by ${r.Meta.Publisher?.name}`}
             getName={(r) => r.Meta.Name}
-
             status={status}
             placeholder={'Search level name'}
             overWriteInput

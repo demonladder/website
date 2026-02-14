@@ -52,7 +52,7 @@ export const permissions: Permission[] = [
     {
         ID: 20,
         Name: 'Manage favorite levels',
-        Description: 'Allows users to add or delete levels from users\' preferences',
+        Description: "Allows users to add or delete levels from users' preferences",
         Flag: PermissionFlags.MANAGE_FAVORITE_LEVELS,
     },
     {

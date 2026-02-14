@@ -25,27 +25,45 @@ export default function Roles() {
 
     const onCreate = useCallback(() => {
         setIsMutating(true);
-        void toast.promise(createRole(search).then(() => queryClient.invalidateQueries({ queryKey: ['roles'] })).finally(() => setIsMutating(false)), {
-            pending: 'Creating role...',
-            success: 'Role created',
-            error: renderToastError,
-        });
+        void toast.promise(
+            createRole(search)
+                .then(() => queryClient.invalidateQueries({ queryKey: ['roles'] }))
+                .finally(() => setIsMutating(false)),
+            {
+                pending: 'Creating role...',
+                success: 'Role created',
+                error: renderToastError,
+            },
+        );
     }, [search, queryClient, setIsMutating]);
 
     return (
         <div>
             <h3 className='text-2xl mb-4'>Roles</h3>
             <div className='mb-4'>
-                <TextInput id='roleSearch' value={search} onChange={(e) => setSearch(e.target.value)} placeholder='Search role' />
-                <PrimaryButton onClick={onCreate} disabled={isMutating}>Create</PrimaryButton>
+                <TextInput
+                    id='roleSearch'
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder='Search role'
+                />
+                <PrimaryButton onClick={onCreate} disabled={isMutating}>
+                    Create
+                </PrimaryButton>
             </div>
-            {filteredRoles !== undefined &&
+            {filteredRoles !== undefined && (
                 <ul>
                     {filteredRoles.map((role) => (
-                        <li className='py-3 ps-3 border-b border-theme-500 hover:bg-theme-500 cursor-pointer' onClick={() => void navigate(`/mod/roles/${role.ID}`)} key={role.ID}>{role.Icon ?? ''} {role.Name}</li>
+                        <li
+                            className='py-3 ps-3 border-b border-theme-500 hover:bg-theme-500 cursor-pointer'
+                            onClick={() => void navigate(`/mod/roles/${role.ID}`)}
+                            key={role.ID}
+                        >
+                            {role.Icon ?? ''} {role.Name}
+                        </li>
                     ))}
                 </ul>
-            }
+            )}
         </div>
     );
 }

@@ -3,15 +3,18 @@ import { useEffect, useState } from 'react';
 const CF_TURNSTILE_SITE_KEY = import.meta.env.VITE_CF_TURNSTILE_SITE_KEY;
 
 declare const turnstile: {
-    render: (containerID: string, options: {
-        sitekey: string,
-        theme?: 'auto' | 'light' | 'dark',
-        size?: 'normal' | 'flexible' | 'compact',
-        execution?: 'render' | 'execute',
-        appearance?: 'always' | 'execute' | 'interaction-only',
-        callback?: (token: string) => void,
-        'error-callback'?: () => void,
-    }) => string;
+    render: (
+        containerID: string,
+        options: {
+            sitekey: string;
+            theme?: 'auto' | 'light' | 'dark';
+            size?: 'normal' | 'flexible' | 'compact';
+            execution?: 'render' | 'execute';
+            appearance?: 'always' | 'execute' | 'interaction-only';
+            callback?: (token: string) => void;
+            'error-callback'?: () => void;
+        },
+    ) => string;
     getResponse: (widgetID: string) => string;
     isExpired: (widgetID: string) => boolean;
     reset: (widgetID: string) => void;

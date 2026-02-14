@@ -48,9 +48,9 @@ export default function TOTPPage() {
             focusInteropRef.current = false;
             return;
         }
-        const inputtedDigits = code.slice(0, index).filter(d => d !== '').length;
+        const inputtedDigits = code.slice(0, index).filter((d) => d !== '').length;
         if (inputtedDigits < index) {
-            const firstEmptyIndex = code.findIndex(d => d === '');
+            const firstEmptyIndex = code.findIndex((d) => d === '');
             const firstEmptyRef = [digit1Ref, digit2Ref, digit3Ref, digit4Ref, digit5Ref, digit6Ref][firstEmptyIndex];
             firstEmptyRef.current?.focus();
         }
@@ -65,7 +65,9 @@ export default function TOTPPage() {
             const newCode = [...code];
             newCode[firstEmptyIndex - 1] = '';
             setCode(newCode);
-            const firstEmptyRef = [digit1Ref, digit2Ref, digit3Ref, digit4Ref, digit5Ref, digit6Ref][firstEmptyIndex - 1];
+            const firstEmptyRef = [digit1Ref, digit2Ref, digit3Ref, digit4Ref, digit5Ref, digit6Ref][
+                firstEmptyIndex - 1
+            ];
             firstEmptyRef.current?.focus();
         }
     }
@@ -97,14 +99,79 @@ export default function TOTPPage() {
                 <Heading1>Two-Factor Authentication</Heading1>
                 <p className='mb-2'>Enter the code from your authenticator app below to continue</p>
                 <div className='flex gap-2'>
-                    <input ref={digit1Ref} type='number' required maxLength={1} className='w-full border text-6xl text-center spacing rounded no-spinner' value={code[0]} onChange={(e) => handleChange(0, e)} onFocus={() => handleFocus(0)} onKeyDown={onKeyDown} />
-                    <input ref={digit2Ref} type='number' required maxLength={1} className='w-full border text-6xl text-center spacing rounded no-spinner' value={code[1]} onChange={(e) => handleChange(1, e)} onFocus={() => handleFocus(1)} onKeyDown={onKeyDown} />
-                    <input ref={digit3Ref} type='number' required maxLength={1} className='w-full border text-6xl text-center spacing rounded no-spinner' value={code[2]} onChange={(e) => handleChange(2, e)} onFocus={() => handleFocus(2)} onKeyDown={onKeyDown} />
-                    <input ref={digit4Ref} type='number' required maxLength={1} className='w-full border text-6xl text-center spacing rounded no-spinner' value={code[3]} onChange={(e) => handleChange(3, e)} onFocus={() => handleFocus(3)} onKeyDown={onKeyDown} />
-                    <input ref={digit5Ref} type='number' required maxLength={1} className='w-full border text-6xl text-center spacing rounded no-spinner' value={code[4]} onChange={(e) => handleChange(4, e)} onFocus={() => handleFocus(4)} onKeyDown={onKeyDown} />
-                    <input ref={digit6Ref} type='number' required maxLength={1} className='w-full border text-6xl text-center spacing rounded no-spinner' value={code[5]} onChange={(e) => handleChange(5, e)} onFocus={() => handleFocus(5)} onKeyDown={onKeyDown} />
+                    <input
+                        ref={digit1Ref}
+                        type='number'
+                        required
+                        maxLength={1}
+                        className='w-full border text-6xl text-center spacing rounded no-spinner'
+                        value={code[0]}
+                        onChange={(e) => handleChange(0, e)}
+                        onFocus={() => handleFocus(0)}
+                        onKeyDown={onKeyDown}
+                    />
+                    <input
+                        ref={digit2Ref}
+                        type='number'
+                        required
+                        maxLength={1}
+                        className='w-full border text-6xl text-center spacing rounded no-spinner'
+                        value={code[1]}
+                        onChange={(e) => handleChange(1, e)}
+                        onFocus={() => handleFocus(1)}
+                        onKeyDown={onKeyDown}
+                    />
+                    <input
+                        ref={digit3Ref}
+                        type='number'
+                        required
+                        maxLength={1}
+                        className='w-full border text-6xl text-center spacing rounded no-spinner'
+                        value={code[2]}
+                        onChange={(e) => handleChange(2, e)}
+                        onFocus={() => handleFocus(2)}
+                        onKeyDown={onKeyDown}
+                    />
+                    <input
+                        ref={digit4Ref}
+                        type='number'
+                        required
+                        maxLength={1}
+                        className='w-full border text-6xl text-center spacing rounded no-spinner'
+                        value={code[3]}
+                        onChange={(e) => handleChange(3, e)}
+                        onFocus={() => handleFocus(3)}
+                        onKeyDown={onKeyDown}
+                    />
+                    <input
+                        ref={digit5Ref}
+                        type='number'
+                        required
+                        maxLength={1}
+                        className='w-full border text-6xl text-center spacing rounded no-spinner'
+                        value={code[4]}
+                        onChange={(e) => handleChange(4, e)}
+                        onFocus={() => handleFocus(4)}
+                        onKeyDown={onKeyDown}
+                    />
+                    <input
+                        ref={digit6Ref}
+                        type='number'
+                        required
+                        maxLength={1}
+                        className='w-full border text-6xl text-center spacing rounded no-spinner'
+                        value={code[5]}
+                        onChange={(e) => handleChange(5, e)}
+                        onFocus={() => handleFocus(5)}
+                        onKeyDown={onKeyDown}
+                    />
                 </div>
-                <button type='submit' className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white rounded px-4 py-2 mt-4 w-full'>Submit</button>
+                <button
+                    type='submit'
+                    className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white rounded px-4 py-2 mt-4 w-full'
+                >
+                    Submit
+                </button>
             </form>
         </div>
     );

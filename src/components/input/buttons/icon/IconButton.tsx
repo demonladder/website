@@ -1,6 +1,9 @@
 import './iconButton.css';
 
-interface Props extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'className' | 'children'> {
+interface Props extends Omit<
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
+    'className' | 'children'
+> {
     children: React.ReactNode;
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     color?: 'filled' | 'tonal' | 'outline' | 'standard';
@@ -9,7 +12,14 @@ interface Props extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLBu
     isSelected?: boolean;
 }
 
-export default function IconButton({ size = 'md', color = 'standard', width = 'standard', disabled = false, isSelected = false, ...props }: Props) {
+export default function IconButton({
+    size = 'md',
+    color = 'standard',
+    width = 'standard',
+    disabled = false,
+    isSelected = false,
+    ...props
+}: Props) {
     let classNames = 'icon-button ';
     classNames += {
         filled: 'filled',
@@ -24,7 +34,5 @@ export default function IconButton({ size = 'md', color = 'standard', width = 's
     if (disabled) classNames += ' disabled';
     if (isSelected) classNames += ' selected';
 
-    return (
-        <button {...props} className={classNames} />
-    );
+    return <button {...props} className={classNames} />;
 }

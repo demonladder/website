@@ -45,11 +45,16 @@ export default function Game() {
             p5.line(0, y * pixelsPerBlock, p5.width, y * pixelsPerBlock);
         }
 
-        const minX = Math.floor(player.position.x - camOffset);  // Left most pixel in world coordinates
-        const maxX = Math.ceil(player.position.x + ((p5.width - camOffset)));  // Right most pixel in world coordinates
+        const minX = Math.floor(player.position.x - camOffset); // Left most pixel in world coordinates
+        const maxX = Math.ceil(player.position.x + (p5.width - camOffset)); // Right most pixel in world coordinates
 
         for (let x = minX; x < maxX; x++) {
-            p5.line((x - player.position.x + camOffset) * pixelsPerBlock, 0, (x - player.position.x + camOffset) * pixelsPerBlock, p5.height);
+            p5.line(
+                (x - player.position.x + camOffset) * pixelsPerBlock,
+                0,
+                (x - player.position.x + camOffset) * pixelsPerBlock,
+                p5.height,
+            );
         }
 
         sceneObjects.forEach((o) => {
@@ -74,7 +79,7 @@ export default function Game() {
             }
         }
 
-        const percent = player.position.x / (lastObject.position.x + 5) * 100;
+        const percent = (player.position.x / (lastObject.position.x + 5)) * 100;
         p5.strokeWeight(5);
         p5.stroke(0);
         p5.fill(255);
@@ -83,7 +88,7 @@ export default function Game() {
         p5.text(text, 640 - p5.textWidth(text) / 2, 50);
         if (percent > 100) {
             const endTime = p5.millis();
-            p5.text((endTime - startTime > 32000) ? 'You fail' : 'You win', 0, 50);
+            p5.text(endTime - startTime > 32000 ? 'You fail' : 'You win', 0, 50);
 
             p5.noLoop();
         }
@@ -153,11 +158,18 @@ export default function Game() {
     return (
         <Page title='Level 2'>
             <p ref={fpsRef} className='font-mono' />
-            <Sketch className='grid place-items-center my-2 gap-2' setup={setup} draw={draw} mousePressed={mousePressed} mouseReleased={mouseReleased} keyPressed={keyPressed} keyReleased={keyReleased} />
+            <Sketch
+                className='grid place-items-center my-2 gap-2'
+                setup={setup}
+                draw={draw}
+                mousePressed={mousePressed}
+                mouseReleased={mouseReleased}
+                keyPressed={keyPressed}
+                keyReleased={keyReleased}
+            />
             <div className='flex justify-center'>
                 <PrimaryButton onClick={() => restart(_p5)}>R to restart</PrimaryButton>
             </div>
         </Page>
     );
 }
-

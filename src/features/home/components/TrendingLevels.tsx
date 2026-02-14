@@ -16,12 +16,19 @@ export default function TrendingLevels() {
         queryFn: getTrendingLevels,
     });
 
-    if (status === 'pending') return <div className='xl:col-span-3'><InlineLoadingSpinner /></div>;
+    if (status === 'pending')
+        return (
+            <div className='xl:col-span-3'>
+                <InlineLoadingSpinner />
+            </div>
+        );
     if (status === 'error') return <div className='xl:col-span-3'>Error, could not fetch trending levels</div>;
 
     return (
         <div className='xl:col-span-3'>
-            <Heading2 className='flex items-center gap-2'><i className='bx bx-trending-up pt-1' /> Trending Levels</Heading2>
+            <Heading2 className='flex items-center gap-2'>
+                <i className='bx bx-trending-up pt-1' /> Trending Levels
+            </Heading2>
             <Swiper
                 slidesPerView={1}
                 spaceBetween={10}
@@ -39,9 +46,7 @@ export default function TrendingLevels() {
                         <LevelPreview level={level} index={i + 1} />
                     </SwiperSlide>
                 ))}
-                {data.length === 0 && (
-                    <div className='p-4 text-center'>No trending levels found.</div>
-                )}
+                {data.length === 0 && <div className='p-4 text-center'>No trending levels found.</div>}
             </Swiper>
         </div>
     );

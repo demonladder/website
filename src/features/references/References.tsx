@@ -36,15 +36,26 @@ export default function References() {
     const { status, data: referenceDemons } = useReferences();
 
     if (status === 'pending') return <LoadingSpinner />;
-    if (status === 'error') return <Page><Heading1>Error: could not fetch references</Heading1></Page>;
+    if (status === 'error')
+        return (
+            <Page>
+                <Heading1>Error: could not fetch references</Heading1>
+            </Page>
+        );
 
     return (
         <div className='max-w-[95%] overflow-x-scroll scrollbar-thin mx-auto my-4'>
             <title>GDDL | References</title>
             <div className='flex max-sm:flex-col'>
-                {
-                    diffs.map((diff) => <Difficulty name={diff.name} minTier={diff.minTier} maxTier={diff.maxTier} key={diff.name} references={referenceDemons} />)
-                }
+                {diffs.map((diff) => (
+                    <Difficulty
+                        name={diff.name}
+                        minTier={diff.minTier}
+                        maxTier={diff.maxTier}
+                        key={diff.name}
+                        references={referenceDemons}
+                    />
+                ))}
             </div>
         </div>
     );

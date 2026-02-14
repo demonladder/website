@@ -7,7 +7,7 @@
     --theme-june-950: #ff73da;
 
     --theme-june-header: #f080d2;
-    
+
     --theme-june-bg-from: var(--theme-june-800);
     --theme-june-bg-to: var(--theme-june-950);
     --theme-june-text: rgb(27, 25, 25);
@@ -16,7 +16,7 @@
     --theme-june-footer: var(--theme-june-950);
 }
 
-[data-theme="june"] {
+[data-theme='june'] {
     --color-theme-400: var(--theme-june-400);
     --color-theme-500: var(--theme-june-500);
     --color-theme-600: var(--theme-june-600);

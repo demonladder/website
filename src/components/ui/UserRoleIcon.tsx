@@ -6,6 +6,8 @@ export default function UserRoleIcon({ roles }: { roles: Role[] }) {
     if (!topRole || !topRole.Icon) return;
 
     return (
-        <span className='m-0 cursor-help' title={topRole.Name} role='img' aria-label='Role icon'>{topRole.Icon}</span>
+        <span className='m-0 cursor-help' title={topRole.Name} role='img' aria-label='Role icon'>
+            {topRole.Icon}
+        </span>
     );
 }

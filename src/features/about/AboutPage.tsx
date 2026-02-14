@@ -6,34 +6,75 @@ export default function About() {
     return (
         <Page>
             <section>
-                <h2 id='origin' className='text-3xl text-theme-header mb-3'>It's just to fill in what is not enough</h2>
-                <p className='mb-1'>Launched in August 2020, this project is a list of EVERY demon rated, with a little tier put beside it. It originated from the discussion that the demon difficulties in-game is not enough. The division of difficulties for demons is always a subject to discuss, but there isn't a definitive list for this. Well, until now!</p>
+                <h2 id='origin' className='text-3xl text-theme-header mb-3'>
+                    It's just to fill in what is not enough
+                </h2>
+                <p className='mb-1'>
+                    Launched in August 2020, this project is a list of EVERY demon rated, with a little tier put beside
+                    it. It originated from the discussion that the demon difficulties in-game is not enough. The
+                    division of difficulties for demons is always a subject to discuss, but there isn't a definitive
+                    list for this. Well, until now!
+                </p>
                 <p className='mb-1'>This project is created with the following two problems in mind:</p>
                 <ol className='ms-2'>
-                    <li className='mb-1'>1) Although the official difficulty for demons in-game is good, it is too broad to serve as a reference. Difficulty can vary greatly inside the same demon category.</li>
-                    <li>2) There is not a default demon difficulty, and all freshly rated demons are deemed Hard Demons by default, making the system even more confusing.</li>
+                    <li className='mb-1'>
+                        1) Although the official difficulty for demons in-game is good, it is too broad to serve as a
+                        reference. Difficulty can vary greatly inside the same demon category.
+                    </li>
+                    <li>
+                        2) There is not a default demon difficulty, and all freshly rated demons are deemed Hard Demons
+                        by default, making the system even more confusing.
+                    </li>
                 </ol>
             </section>
             <section className='mt-8'>
-                <h2 id='mechanism' className='text-3xl text-theme-header mb-3'>The mechanism</h2>
-                <p className='mb-1'>With the official system in mind, each demon difficulty is split into 5 tiers, with the exception of Extreme Demons being split into 19 tiers. Tiers are then named from Tier 1 to Tier 39, with Tier 39 being the hardest.</p>
-                <p>Tiers are determined by user ratings. This means the list is community-driven, one thing that is loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level. The system has been running well since launch, and we have collected over <span className='text-theme-header font-bold'>800,000 ratings</span> for over <span className='text-theme-header font-bold'>8,800 classic demons</span> covering over 91% of the demons in the game.</p>
+                <h2 id='mechanism' className='text-3xl text-theme-header mb-3'>
+                    The mechanism
+                </h2>
+                <p className='mb-1'>
+                    With the official system in mind, each demon difficulty is split into 5 tiers, with the exception of
+                    Extreme Demons being split into 19 tiers. Tiers are then named from Tier 1 to Tier 39, with Tier 39
+                    being the hardest.
+                </p>
+                <p>
+                    Tiers are determined by user ratings. This means the list is community-driven, one thing that is
+                    loved by the owner. User ratings are collected and averaged out to obtain the final tier of a level.
+                    The system has been running well since launch, and we have collected over{' '}
+                    <span className='text-theme-header font-bold'>800,000 ratings</span> for over{' '}
+                    <span className='text-theme-header font-bold'>8,800 classic demons</span> covering over 91% of the
+                    demons in the game.
+                </p>
             </section>
             <section className='mt-8'>
-                <h2 id='guidelines' className='text-3xl text-theme-header mb-3'>Rating guidelines</h2>
-                <p className='mb-1'>Here are some guidelines that you should consider while voting for the tier of demons:</p>
+                <h2 id='guidelines' className='text-3xl text-theme-header mb-3'>
+                    Rating guidelines
+                </h2>
+                <p className='mb-1'>
+                    Here are some guidelines that you should consider while voting for the tier of demons:
+                </p>
                 <ol className='ms-2'>
                     <li className='mb-5'>
-                        <p className='mb-1'>1) Your rating should be based on the difficulty of the whole level, which means:</p>
+                        <p className='mb-1'>
+                            1) Your rating should be based on the difficulty of the whole level, which means:
+                        </p>
                         <ul>
                             <ListItem>You should not rate based on the difficulty of the hardest section.</ListItem>
-                            <ListItem>You should not rate based on only one criteria, e.g. timing, spamming, etc.</ListItem>
+                            <ListItem>
+                                You should not rate based on only one criteria, e.g. timing, spamming, etc.
+                            </ListItem>
                         </ul>
                     </li>
                     <li className='mb-5'>
-                        <p className='mb-1'>2) For levels that contains multiple paths or has bonus objectives, rate according to the easiest path that is not hidden.</p>
+                        <p className='mb-1'>
+                            2) For levels that contains multiple paths or has bonus objectives, rate according to the
+                            easiest path that is not hidden.
+                        </p>
                         <ul>
-                            <ListItem>A hidden path is a part of the level when it requires previous knowledge of the layout in order to enter or proceed, AND good sight-reading cannot substitute the said information.</ListItem>
+                            <ListItem>
+                                A hidden path is a part of the level when it requires previous knowledge of the layout
+                                in order to enter or proceed, AND good sight-reading cannot substitute the said
+                                information.
+                            </ListItem>
                         </ul>
                     </li>
                     <li className='mb-5'>
@@ -43,11 +84,21 @@ export default function About() {
                         </ul>
                     </li>
                     <li className='mb-5'>
-                        <p className='mb-1'>4) You do not need to follow others' opinion and rate as what others suggest.</p>
+                        <p className='mb-1'>
+                            4) You do not need to follow others' opinion and rate as what others suggest.
+                        </p>
                         <ul>
-                            <ListItem>The system is designed to tolerate discrepancies, so differences are accepted.</ListItem>
-                            <ListItem>Plus, it is important to know that players have a split decision. This allows us to see how subjective the difficulty for a level can be.</ListItem>
-                            <ListItem>Also, do not rate a level so that the level tier matches what you think. Respect others' opinions.</ListItem>
+                            <ListItem>
+                                The system is designed to tolerate discrepancies, so differences are accepted.
+                            </ListItem>
+                            <ListItem>
+                                Plus, it is important to know that players have a split decision. This allows us to see
+                                how subjective the difficulty for a level can be.
+                            </ListItem>
+                            <ListItem>
+                                Also, do not rate a level so that the level tier matches what you think. Respect others'
+                                opinions.
+                            </ListItem>
                         </ul>
                     </li>
                     <li className='mb-5'>
@@ -62,14 +113,22 @@ export default function About() {
                         <ul>
                             <ListItem>Every level that is rated tier 25 or higher on GDDL need proof.</ListItem>
                             <ListItem>Proof is also required if you want to rate a level tier 25 or higher.</ListItem>
-                            <ListItem>For levels that are tier 31 or higher, audible clicks are required in the proof.</ListItem>
-                            <ListItem>The entire run must be included; from at least the first click to the endscreen. The endscreen must be included.</ListItem>
+                            <ListItem>
+                                For levels that are tier 31 or higher, audible clicks are required in the proof.
+                            </ListItem>
+                            <ListItem>
+                                The entire run must be included; from at least the first click to the endscreen. The
+                                endscreen must be included.
+                            </ListItem>
                         </ul>
                     </li>
                     <li className='mb-5'>
                         <p className='mb-1'>7) Physics bypass above 240 is not allowed.</p>
                         <ul>
-                            <ListItem>If your submission does not show what the physic bypass is, the submission will be denied regardless.</ListItem>
+                            <ListItem>
+                                If your submission does not show what the physic bypass is, the submission will be
+                                denied regardless.
+                            </ListItem>
                             <ListItem>CBF is allowed.</ListItem>
                         </ul>
                     </li>
@@ -79,15 +138,31 @@ export default function About() {
                 </ol>
             </section>
             <section className='mt-8'>
-                <h2 id='howToRate' className='text-3xl text-theme-header mb-3'>How to rate</h2>
-                <p className='mb-1'>To rate a level, it is required that you are logged in. If you do not have an account, head over to <Link to='/signup' className='text-blue-500'>sign-up</Link> to create an account.</p>
-                <p>If you are logged in and you are viewing the information on a level, there should be a bright blue button under the level's rating that says "Submit <i className='bx bx-list-plus text-xl' />"</p>
+                <h2 id='howToRate' className='text-3xl text-theme-header mb-3'>
+                    How to rate
+                </h2>
+                <p className='mb-1'>
+                    To rate a level, it is required that you are logged in. If you do not have an account, head over to{' '}
+                    <Link to='/signup' className='text-blue-500'>
+                        sign-up
+                    </Link>{' '}
+                    to create an account.
+                </p>
+                <p>
+                    If you are logged in and you are viewing the information on a level, there should be a bright blue
+                    button under the level's rating that says "Submit <i className='bx bx-list-plus text-xl' />"
+                </p>
                 <p>Click that button, and a pop-up will appear where you can enter your submission.</p>
-                <img className='w-11/12 mx-auto my-2' src='/assets/images/howToRate.png' alt="" />
+                <img className='w-11/12 mx-auto my-2' src='/assets/images/howToRate.png' alt='' />
             </section>
             <section className='mt-8'>
-                <h2 className='text-3xl text-theme-header mb-3' id='proof'>Proof</h2>
-                <p>Proof must come in the form of a video. GDDL does not host videos so you will have to upload the video somewhere else.</p>
+                <h2 className='text-3xl text-theme-header mb-3' id='proof'>
+                    Proof
+                </h2>
+                <p>
+                    Proof must come in the form of a video. GDDL does not host videos so you will have to upload the
+                    video somewhere else.
+                </p>
                 <p>Here is a list of accepted URLs:</p>
                 <pre className='my-2'>
                     <p>{`https://www.youtube.com/watch?v={id}`}</p>
@@ -98,16 +173,31 @@ export default function About() {
                     <p>{`https://twitch.tv/videos/{id}`}</p>
                     <p>{`https://drive.google.com/file/d/{id}`}</p>
                 </pre>
-                <p>Proof is not required for non-extremes and is entirely optional. You are still allowed to add proof to non-extremes of course.</p>
+                <p>
+                    Proof is not required for non-extremes and is entirely optional. You are still allowed to add proof
+                    to non-extremes of course.
+                </p>
                 <p>For levels that are tier 31 or more, audible clicks are required in the proof.</p>
                 <p>Proof must contain the endscreen.</p>
             </section>
             <section className='mt-8'>
-                <h2 id='autoAccept' className='text-3xl text-theme-header mb-3'>Auto accept system</h2>
+                <h2 id='autoAccept' className='text-3xl text-theme-header mb-3'>
+                    Auto accept system
+                </h2>
                 <p>You may have noticed that some of your submissions get instantly accepted and others don't.</p>
-                <p>The way it works is by looking at how much of an outlier the submission is and what tier the level is.</p>
-                <p>This system is mainly in place to mitigate the amount of tier 1 The Lightning Road submissions in the queue.</p>
-                <p>The exact specifics can vary but at the time of writing, levels above tier 16 will not have auto accepting enabled. Submissions that deviate more than 2 from the level's rounded rating will also not be automatically accepted but put in the queue instead.</p>
+                <p>
+                    The way it works is by looking at how much of an outlier the submission is and what tier the level
+                    is.
+                </p>
+                <p>
+                    This system is mainly in place to mitigate the amount of tier 1 The Lightning Road submissions in
+                    the queue.
+                </p>
+                <p>
+                    The exact specifics can vary but at the time of writing, levels above tier 16 will not have auto
+                    accepting enabled. Submissions that deviate more than 2 from the level's rounded rating will also
+                    not be automatically accepted but put in the queue instead.
+                </p>
             </section>
         </Page>
     );

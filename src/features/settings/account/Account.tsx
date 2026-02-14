@@ -63,18 +63,27 @@ export default function AccountSettings() {
                 <div className='flex gap-2 items-center'>
                     <i className='bx bx-mobile-alt text-2xl' />
                     <p>Use an authenticator app on your phone to generate a verification code.</p>
-                    {session.has2FA
-                        ? <Link to='/auth/totp/register' className='ms-auto'><SecondaryButton>Edit</SecondaryButton></Link>
-                        : <Link to='/auth/totp/register' className='ms-auto'><SecondaryButton>Add</SecondaryButton></Link>
-                    }
+                    {session.has2FA ? (
+                        <Link to='/auth/totp/register' className='ms-auto'>
+                            <SecondaryButton>Edit</SecondaryButton>
+                        </Link>
+                    ) : (
+                        <Link to='/auth/totp/register' className='ms-auto'>
+                            <SecondaryButton>Add</SecondaryButton>
+                        </Link>
+                    )}
                 </div>
             </section>
             <div className='mt-12'>
                 <div className='flex justify-between border-theme-500 border-b pb-2'>
                     <Heading3>Delete account</Heading3>
-                    <DangerButton onClick={() => setShowDeleteModal(true)} disabled={!session.user}>Delete</DangerButton>
+                    <DangerButton onClick={() => setShowDeleteModal(true)} disabled={!session.user}>
+                        Delete
+                    </DangerButton>
                 </div>
-                <FormInputDescription>This action is irreversible! All related data to your account will be deleted.</FormInputDescription>
+                <FormInputDescription>
+                    This action is irreversible! All related data to your account will be deleted.
+                </FormInputDescription>
             </div>
             <Modal title='Delete account' show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
                 <form onSubmit={onDelete}>
@@ -82,12 +91,23 @@ export default function AccountSettings() {
                         <p>Are you sure you want to delete your account?</p>
                         <p>This action is irreversible! All related data to your account will be deleted.</p>
                         <FormGroup>
-                            <TextInput name='deleteUserChallenge' value={nameChallenge} onChange={(e) => setNameChallenge(e.target.value)} placeholder='Type your username to confirm' invalid={!isNameValid} autoComplete='off' />
-                            <FormInputDescription>Enter your username to confirm the deletion of your account.</FormInputDescription>
+                            <TextInput
+                                name='deleteUserChallenge'
+                                value={nameChallenge}
+                                onChange={(e) => setNameChallenge(e.target.value)}
+                                placeholder='Type your username to confirm'
+                                invalid={!isNameValid}
+                                autoComplete='off'
+                            />
+                            <FormInputDescription>
+                                Enter your username to confirm the deletion of your account.
+                            </FormInputDescription>
                         </FormGroup>
                     </div>
                     <div className='flex justify-end'>
-                        <DangerButton type='submit' disabled={!isNameValid} loading={deleteUserMutation.isPending}>Delete account</DangerButton>
+                        <DangerButton type='submit' disabled={!isNameValid} loading={deleteUserMutation.isPending}>
+                            Delete account
+                        </DangerButton>
                     </div>
                 </form>
             </Modal>

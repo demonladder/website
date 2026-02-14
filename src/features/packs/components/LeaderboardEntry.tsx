@@ -2,10 +2,20 @@ import { Link } from 'react-router';
 import User from '../../../api/types/User';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 
-export function LeaderboardEntry({ highestScore, sum, user, userID }: { sum: number, user: Pick<User, 'Name' | 'avatar' | 'accentColor'>, userID: number, highestScore?: number }) {
-    if (highestScore === undefined) return (<LoadingSpinner />);
+export function LeaderboardEntry({
+    highestScore,
+    sum,
+    user,
+    userID,
+}: {
+    sum: number;
+    user: Pick<User, 'Name' | 'avatar' | 'accentColor'>;
+    userID: number;
+    highestScore?: number;
+}) {
+    if (highestScore === undefined) return <LoadingSpinner />;
 
-    const width = sum * 100 / highestScore;
+    const width = (sum * 100) / highestScore;
 
     const profileColor = user.accentColor ?? 0;
 
@@ -18,11 +28,22 @@ export function LeaderboardEntry({ highestScore, sum, user, userID }: { sum: num
 
     return (
         <div className='mt-2 max-md:text-xs grid grid-cols-[auto_1fr_auto] gap-2'>
-            {user.avatar
-                ? <img src={`https://cdn.gdladder.com/avatars/${userID}/${user.avatar}.png`} width='40' height='40' className='rounded-full size-10' alt='Profile' />
-                : <i className='bx bxs-user-circle text-[40px]' style={{ color: `#${profileColor.toString(16)}` }} />
-            }
-            <Link to={`/profile/${userID}`} style={{ width: width + '%', backgroundColor: `#${profileColor.toString(16)}` }} className='flex items-center ps-2 relative h-10 bg-gray-500 round:rounded-xl'>
+            {user.avatar ? (
+                <img
+                    src={`https://cdn.gdladder.com/avatars/${userID}/${user.avatar}.png`}
+                    width='40'
+                    height='40'
+                    className='rounded-full size-10'
+                    alt='Profile'
+                />
+            ) : (
+                <i className='bx bxs-user-circle text-[40px]' style={{ color: `#${profileColor.toString(16)}` }} />
+            )}
+            <Link
+                to={`/profile/${userID}`}
+                style={{ width: width + '%', backgroundColor: `#${profileColor.toString(16)}` }}
+                className='flex items-center ps-2 relative h-10 bg-gray-500 round:rounded-xl'
+            >
                 <span style={{ color: textCol }}>{user.Name}</span>
                 <span className='absolute -right-2 top-1/2 -translate-y-1/2 translate-x-full'>{sum}%</span>
             </Link>

@@ -7,7 +7,5 @@ export default function BotStatus() {
         queryFn: GetBotStatusRequest,
     });
 
-    return (
-        <span>{data?.status ?? 'Unknown'}</span>
-    );
+    return <span>{data?.status ?? 'Unknown'}</span>;
 }

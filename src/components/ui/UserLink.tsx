@@ -6,10 +6,7 @@ export default function UserLink({ userID }: { userID: number }) {
 
     return (
         <Link to={`/profile/${userID}`} className={data !== undefined ? 'underline font-bold' : ''}>
-            {data !== undefined
-                ? data.Name
-                : userID
-            }
+            {data !== undefined ? data.Name : userID}
         </Link>
     );
 }

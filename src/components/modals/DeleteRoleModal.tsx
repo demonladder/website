@@ -17,19 +17,25 @@ interface Props {
 export default function DeleteRoleModal({ role, onClose: close, onSucces }: Props) {
     const queryClient = useQueryClient();
 
-    const onDeleteRole = useCallback((roleID?: number) => {
-        if (roleID === undefined) return;
+    const onDeleteRole = useCallback(
+        (roleID?: number) => {
+            if (roleID === undefined) return;
 
-        void toast.promise(deleteRole(roleID).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['roles'] });
-            close();
-            if (onSucces) onSucces();
-        }), {
-            pending: 'Deleting...',
-            success: 'Deleted role!',
-            error: renderToastError,
-        });
-    }, [onSucces, close, queryClient]);
+            void toast.promise(
+                deleteRole(roleID).then(() => {
+                    void queryClient.invalidateQueries({ queryKey: ['roles'] });
+                    close();
+                    if (onSucces) onSucces();
+                }),
+                {
+                    pending: 'Deleting...',
+                    success: 'Deleted role!',
+                    error: renderToastError,
+                },
+            );
+        },
+        [onSucces, close, queryClient],
+    );
 
     return (
         <Modal title='Delete Role' show={true} onClose={close}>

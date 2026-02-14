@@ -14,7 +14,7 @@ export default function CreateUser() {
         }
 
         if (!nameRef.current.value) {
-            return toast.error('Name can\'t be empty');
+            return toast.error("Name can't be empty");
         }
 
         void toast.promise(APIClient.post('/user', { name: nameRef.current.value }), {

@@ -52,7 +52,8 @@
             opacity: var(--state-opacity);
         }
 
-        &.selected, &:active {
+        &.selected,
+        &:active {
             border-radius: 32px;
             --container-color: var(--color-secondary-container);
             --label-color: var(--color-on-secondary-container);

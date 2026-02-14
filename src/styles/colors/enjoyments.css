@@ -1,31 +1,67 @@
 @theme {
     --color-enj--1: #360432;
-    --color-enj-0: #E67C73;
-    
+    --color-enj-0: #e67c73;
+
     --color-enj-1: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 20%);
     --color-enj-2: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 40%);
     --color-enj-3: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 60%);
     --color-enj-4: color-mix(in oklab, var(--color-enj-0), var(--color-enj-5) 80%);
-    
-    --color-enj-5: #FFF666;
-    
+
+    --color-enj-5: #fff666;
+
     --color-enj-6: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 20%);
     --color-enj-7: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 40%);
     --color-enj-8: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 60%);
     --color-enj-9: color-mix(in oklab, var(--color-enj-5), var(--color-enj-10) 80%);
 
-    --color-enj-10: #57BB8A;
+    --color-enj-10: #57bb8a;
 }
 
-.enj--1 { @apply bg-enj--1; color: white; }
-.enj-0 { @apply bg-enj-0; color: black; }
-.enj-1 { @apply bg-enj-1; color: black; }
-.enj-2 { @apply bg-enj-2; color: black; }
-.enj-3 { @apply bg-enj-3; color: black; }
-.enj-4 { @apply bg-enj-4; color: black; }
-.enj-5 { @apply bg-enj-5; color: black; }
-.enj-6 { @apply bg-enj-6; color: black; }
-.enj-7 { @apply bg-enj-7; color: black; }
-.enj-8 { @apply bg-enj-8; color: black; }
-.enj-9 { @apply bg-enj-9; color: black; }
-.enj-10 { @apply bg-enj-10; color: black; }
+.enj--1 {
+    @apply bg-enj--1;
+    color: white;
+}
+.enj-0 {
+    @apply bg-enj-0;
+    color: black;
+}
+.enj-1 {
+    @apply bg-enj-1;
+    color: black;
+}
+.enj-2 {
+    @apply bg-enj-2;
+    color: black;
+}
+.enj-3 {
+    @apply bg-enj-3;
+    color: black;
+}
+.enj-4 {
+    @apply bg-enj-4;
+    color: black;
+}
+.enj-5 {
+    @apply bg-enj-5;
+    color: black;
+}
+.enj-6 {
+    @apply bg-enj-6;
+    color: black;
+}
+.enj-7 {
+    @apply bg-enj-7;
+    color: black;
+}
+.enj-8 {
+    @apply bg-enj-8;
+    color: black;
+}
+.enj-9 {
+    @apply bg-enj-9;
+    color: black;
+}
+.enj-10 {
+    @apply bg-enj-10;
+    color: black;
+}

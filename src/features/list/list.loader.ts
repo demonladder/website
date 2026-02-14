@@ -8,7 +8,7 @@ export function listLoader(queryClient: QueryClient) {
         if (!params.listID) throw new Error('Missing list ID');
         const listID = parseInt(params.listID);
         if (isNaN(listID)) throw new Error('List ID must be a number');
-        
+
         const cache = queryClient.getQueryData<List>(['list', listID]);
         if (cache) return cache;
 

@@ -75,10 +75,29 @@ export default function Submission({ submission }: Props) {
         if (standardDeviations === undefined) return;
         if (difference !== undefined && difference <= 2) return;
         if (standardDeviations <= 1.5) return;
-        if (standardDeviations <= 2) return <><i className='bx bxs-error'></i> Semi-outlier detected!</>;
-        if (standardDeviations <= 3) return <><i className='bx bxs-error'></i> Outlier detected!</>;
-        if (standardDeviations <= 5) return <><i className='bx bxs-error'></i> Outlier detected! (rating won't count)</>;
-        return <><i className='bx bxs-error'></i> Possible troll detected!</>;
+        if (standardDeviations <= 2)
+            return (
+                <>
+                    <i className='bx bxs-error'></i> Semi-outlier detected!
+                </>
+            );
+        if (standardDeviations <= 3)
+            return (
+                <>
+                    <i className='bx bxs-error'></i> Outlier detected!
+                </>
+            );
+        if (standardDeviations <= 5)
+            return (
+                <>
+                    <i className='bx bxs-error'></i> Outlier detected! (rating won't count)
+                </>
+            );
+        return (
+            <>
+                <i className='bx bxs-error'></i> Possible troll detected!
+            </>
+        );
     }, [difference, standardDeviations]);
 
     function onProofClick() {
@@ -102,10 +121,14 @@ export default function Submission({ submission }: Props) {
 
     const approveSubmission = useApproveClicked();
 
-    const secondsAgo = Math.floor((Date.now() - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000);
+    const secondsAgo = Math.floor(
+        (Date.now() - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000,
+    );
 
     return (
-        <li className={`round:rounded-2xl bg-linear-to-br tier-${submission.Rating ?? 0} from-tier-${submission.Rating ?? 0} to-tier-${levelRating?.toFixed() ?? 0} p-3 my-2 text-lg`}>
+        <li
+            className={`round:rounded-2xl bg-linear-to-br tier-${submission.Rating ?? 0} from-tier-${submission.Rating ?? 0} to-tier-${levelRating?.toFixed() ?? 0} p-3 my-2 text-lg`}
+        >
             <Link className='flex items-center gap-2 mb-2 cursor-pointer' to={`/level/${submission.LevelID}`}>
                 <img src={difficultyToImgSrc(submission.Level.Meta.Difficulty, DemonLogoSizes.SMALL)} />
                 <div>
@@ -114,65 +137,159 @@ export default function Submission({ submission }: Props) {
                 </div>
             </Link>
             <div className='mb-3'>
-                <p><i className='bx bxs-user' /> Submitted by <a href={`/profile/${submission.UserID}`} className='font-bold group' target='_blank' rel='noopener noreferrer'>{submission.User.Name} <i className='bx bx-link-external' /></a></p>
-                <p><i className='bx bxs-time-five' /> Submitted at <b>{new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</b> ({secondsToHumanReadable(secondsAgo)} ago)</p>
+                <p>
+                    <i className='bx bxs-user' /> Submitted by{' '}
+                    <a
+                        href={`/profile/${submission.UserID}`}
+                        className='font-bold group'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        {submission.User.Name} <i className='bx bx-link-external' />
+                    </a>
+                </p>
+                <p>
+                    <i className='bx bxs-time-five' /> Submitted at{' '}
+                    <b>{new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).toLocaleString()}</b>{' '}
+                    ({secondsToHumanReadable(secondsAgo)} ago)
+                </p>
             </div>
             <div className='grid grid-cols-3 gap-4 max-md:grid-cols-1'>
                 <div>
                     <Heading4 className='mb-2'>Submission info</Heading4>
                     <div className='mb-2'>
-                        <p><b>Submitted rating:</b> {submission.Rating ?? 'None'}</p>
-                        {outlierText &&
-                            <span className='bg-yellow-400 text-black px-2 py-1'>{outlierText}</span>
-                        }
-                        <p><b>Submitted enjoyment:</b> {submission.Enjoyment ?? 'None'}</p>
+                        <p>
+                            <b>Submitted rating:</b> {submission.Rating ?? 'None'}
+                        </p>
+                        {outlierText && <span className='bg-yellow-400 text-black px-2 py-1'>{outlierText}</span>}
+                        <p>
+                            <b>Submitted enjoyment:</b> {submission.Enjoyment ?? 'None'}
+                        </p>
                     </div>
                     <div className='mb-2'>
-                        <p><b>Would deviate by:</b> {standardDeviations?.toFixed(1) ?? '-'}σ</p>
-                        <p><b>Weight:</b> {weight ?? '-'}</p>
+                        <p>
+                            <b>Would deviate by:</b> {standardDeviations?.toFixed(1) ?? '-'}σ
+                        </p>
+                        <p>
+                            <b>Weight:</b> {weight ?? '-'}
+                        </p>
                     </div>
                     <div className='mb-2'>
-                        <p><i className='bx bx-devices' /> <b>Device:</b> {submission.Device}</p>
-                        <p><i className='bx bx-refresh' /> <b>Refresh rate:</b> {submission.RefreshRate}</p>
-                        <p><i className='bx bx-time-five' /> <b>Progress:</b> {submission.Progress}%</p>
-                        <p><i className='bx bx-flag' /> <b>Attempts:</b> {submission.Attempts ?? 'Not specified'}</p>
+                        <p>
+                            <i className='bx bx-devices' /> <b>Device:</b> {submission.Device}
+                        </p>
+                        <p>
+                            <i className='bx bx-refresh' /> <b>Refresh rate:</b> {submission.RefreshRate}
+                        </p>
+                        <p>
+                            <i className='bx bx-time-five' /> <b>Progress:</b> {submission.Progress}%
+                        </p>
+                        <p>
+                            <i className='bx bx-flag' /> <b>Attempts:</b> {submission.Attempts ?? 'Not specified'}
+                        </p>
                     </div>
                     <div>
-                        <span className='font-bold'><i className='bx bx-movie' /> Proof: </span>
+                        <span className='font-bold'>
+                            <i className='bx bx-movie' /> Proof:{' '}
+                        </span>
                         <span className='break-all group'>
-                            {submission.Proof
-                                ? <>
-                                    <button onClick={onProofClick} className='underline'>{submission.Proof} <i className='bx bx-link-external' /></button>
+                            {submission.Proof ? (
+                                <>
+                                    <button onClick={onProofClick} className='underline'>
+                                        {submission.Proof} <i className='bx bx-link-external' />
+                                    </button>
                                     <br />
-                                    {!isProofClicked && <span className='bg-yellow-400 text-black px-1'>View proof to accept!</span>}
+                                    {!isProofClicked && (
+                                        <span className='bg-yellow-400 text-black px-1'>View proof to accept!</span>
+                                    )}
                                 </>
-                                : 'None'
-                            }
+                            ) : (
+                                'None'
+                            )}
                         </span>
                     </div>
-                    {submission.Level.Meta.IsTwoPlayer && (submission.IsSolo ? <p>Completed solo</p>
-                        : <p>Completed with {submission.SecondPlayerID ?? 'an unregistered user'}</p>)
-                    }
+                    {submission.Level.Meta.IsTwoPlayer &&
+                        (submission.IsSolo ? (
+                            <p>Completed solo</p>
+                        ) : (
+                            <p>Completed with {submission.SecondPlayerID ?? 'an unregistered user'}</p>
+                        ))}
                 </div>
                 <div>
                     <Heading4 className='mb-2'>Level info</Heading4>
-                    <p><b>Rating:</b> {(submission.IsSolo ? submission.Level.Rating : submission.Level.TwoPlayerRating)?.toFixed(2) ?? 'None'}</p>
-                    <p><b>Deviation:</b> {(submission.IsSolo ? submission.Level.Deviation : submission.Level.TwoPlayerDeviation)?.toFixed(2) ?? 0}</p>
-                    <p><b>Rating count:</b> {submission.Level.RatingCount}</p>
-                    <p className='mb-1'><b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}</p>
-                    <SecondaryButton onClick={() => onFilter(submission.LevelID)}>Filter queue by this level</SecondaryButton>
+                    <p>
+                        <b>Rating:</b>{' '}
+                        {(submission.IsSolo ? submission.Level.Rating : submission.Level.TwoPlayerRating)?.toFixed(2) ??
+                            'None'}
+                    </p>
+                    <p>
+                        <b>Deviation:</b>{' '}
+                        {(submission.IsSolo
+                            ? submission.Level.Deviation
+                            : submission.Level.TwoPlayerDeviation
+                        )?.toFixed(2) ?? 0}
+                    </p>
+                    <p>
+                        <b>Rating count:</b> {submission.Level.RatingCount}
+                    </p>
+                    <p className='mb-1'>
+                        <b>Length:</b> {levelLengthToString(submission.Level.Meta.Length)}
+                    </p>
+                    <SecondaryButton onClick={() => onFilter(submission.LevelID)}>
+                        Filter queue by this level
+                    </SecondaryButton>
                 </div>
                 <div>
                     <Heading4 className='mb-2'>Level after accept</Heading4>
-                    <p><b>New rating:</b> {newLevelRating?.toFixed(2) ?? '-'}</p>
-                    <p><b>New deviation:</b> {newSTDDev?.toFixed(2) ?? 0}</p>
+                    <p>
+                        <b>New rating:</b> {newLevelRating?.toFixed(2) ?? '-'}
+                    </p>
+                    <p>
+                        <b>New deviation:</b> {newSTDDev?.toFixed(2) ?? 0}
+                    </p>
                 </div>
             </div>
             <div className='mt-4 flex justify-evenly max-md:flex-col max-md:gap-4'>
-                <PrimaryButton size='lg' disabled={submission.Proof !== null && !isProofClicked} onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, undefined, getProofReviewTime())}>Approve</PrimaryButton>
-                {submission.Rating !== null && <SecondaryButton disabled={submission.Proof !== null && !isProofClicked} size='lg' onClick={() => approveSubmission(submission.ID, submission.LevelID, submission.UserID, true, getProofReviewTime())}>Only enjoyment</SecondaryButton>}
-                <DangerButton size='lg' onClick={() => showDenyModal(submission)}>Deny</DangerButton>
-                <Link to={`/mod/manageUser/${submission.UserID}`} className='flex'><DangerButton size='lg' className='grow'>Mod view</DangerButton></Link>
+                <PrimaryButton
+                    size='lg'
+                    disabled={submission.Proof !== null && !isProofClicked}
+                    onClick={() =>
+                        approveSubmission(
+                            submission.ID,
+                            submission.LevelID,
+                            submission.UserID,
+                            undefined,
+                            getProofReviewTime(),
+                        )
+                    }
+                >
+                    Approve
+                </PrimaryButton>
+                {submission.Rating !== null && (
+                    <SecondaryButton
+                        disabled={submission.Proof !== null && !isProofClicked}
+                        size='lg'
+                        onClick={() =>
+                            approveSubmission(
+                                submission.ID,
+                                submission.LevelID,
+                                submission.UserID,
+                                true,
+                                getProofReviewTime(),
+                            )
+                        }
+                    >
+                        Only enjoyment
+                    </SecondaryButton>
+                )}
+                <DangerButton size='lg' onClick={() => showDenyModal(submission)}>
+                    Deny
+                </DangerButton>
+                <Link to={`/mod/manageUser/${submission.UserID}`} className='flex'>
+                    <DangerButton size='lg' className='grow'>
+                        Mod view
+                    </DangerButton>
+                </Link>
             </div>
         </li>
     );

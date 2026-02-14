@@ -24,60 +24,133 @@ export default function AdminLayout() {
     }
 
     return (
-        <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }} >
+        <QueryParamProvider adapter={ReactRouter6Adapter} options={{ updateType: 'replaceIn' }}>
             <ModalProvider>
-                <div className={'relative grid grid-rows-[auto_1fr_auto] grid-cols-[auto_1fr] max-w-screen min-h-screen' + (app.isRounded ? ' round' : '')}>
-                    <aside className={'row-span-3 bg-theme-950 text-theme-text sticky top-0 bottom-0 max-h-screen w-2xs transition-all' + (hideSidebar ? ' -ms-72' : '')}>
+                <div
+                    className={
+                        'relative grid grid-rows-[auto_1fr_auto] grid-cols-[auto_1fr] max-w-screen min-h-screen' +
+                        (app.isRounded ? ' round' : '')
+                    }
+                >
+                    <aside
+                        className={
+                            'row-span-3 bg-theme-950 text-theme-text sticky top-0 bottom-0 max-h-screen w-2xs transition-all' +
+                            (hideSidebar ? ' -ms-72' : '')
+                        }
+                    >
                         <div className='h-14 flex items-center justify-center border-b border-white/20'>
                             <p>GDDL Dashboard</p>
                         </div>
                         <div className='px-4 py-6 flex flex-col gap-2 sidebar-wrapper overflow-auto scrollbar-thin'>
-                            <NavButton onClick={onNavigation} to={routes.staff.href()} end={true}>Dashboard</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/queue'>Queue</NavButton>
+                            <NavButton onClick={onNavigation} to={routes.staff.href()} end={true}>
+                                Dashboard
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/queue'>
+                                Queue
+                            </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Submissions</p>
-                            <NavButton onClick={onNavigation} to='/mod/addSubmission'>Add submission</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/mergeSubmissions'>Merge submissions</NavButton>
-                            <NavButton onClick={onNavigation} to={routes.staff.submissions.search.href()}>Search submissions</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/addSubmission'>
+                                Add submission
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/mergeSubmissions'>
+                                Merge submissions
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to={routes.staff.submissions.search.href()}>
+                                Search submissions
+                            </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Users</p>
-                            <NavButton onClick={onNavigation} to='/mod/manageUser'>Manage user</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/roles'>Roles</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/signupLinks'>Sign-up links</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/createUser'>Create user</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/deleteUser'>Delete user</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/verification'>Verification</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/manageUser'>
+                                Manage user
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/roles'>
+                                Roles
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/signupLinks'>
+                                Sign-up links
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/createUser'>
+                                Create user
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/deleteUser'>
+                                Delete user
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/verification'>
+                                Verification
+                            </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Moderation</p>
-                            <NavButton onClick={onNavigation} to='/mod/audit-logs'>Audit logs</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/beta'>Beta access</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/audit-logs'>
+                                Audit logs
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/beta'>
+                                Beta access
+                            </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Packs</p>
-                            <NavButton onClick={onNavigation} to='/mod/editPack'>Packs</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/editPack'>
+                                Packs
+                            </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>References</p>
-                            <NavButton onClick={onNavigation} to='/mod/references'>Edit references</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/references'>
+                                Edit references
+                            </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Levels</p>
-                            <NavButton onClick={onNavigation} to='/mod/addLevel'>Add/update level</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/editTags'>Edit tags</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/addLevel'>
+                                Add/update level
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/editTags'>
+                                Edit tags
+                            </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Settings</p>
-                            <NavButton onClick={onNavigation} to='/mod/siteSettings'>Site settings</NavButton>
-                            <NavButton onClick={onNavigation} to='/mod/debugging'>Debugging</NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/siteSettings'>
+                                Site settings
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to='/mod/debugging'>
+                                Debugging
+                            </NavButton>
                             <div className='py-6' />
                         </div>
                     </aside>
                     <nav className='col-start-2 bg-theme-header text-theme-header-text px-6 h-14 flex items-center justify-between border-b border-theme-outline'>
                         <ul className='flex items-center'>
-                            <li><button onClick={() => setHideSidebar((prev) => !prev)} className='flex items-center m-2 p-2'><i className='bx bx-menu' /></button></li>
-                            <li><Link to='/' className='m-2 p-2'>Home</Link></li>
-                            <li><Link to='/search' className='m-2 p-2'>Search</Link></li>
-                            <li><Link to='/packs' className='m-2 p-2'>Packs</Link></li>
-                            <li><Link to='/settings/site' className='m-2 p-2'><i className='bx bxs-cog text-xl mt-2' /></Link></li>
+                            <li>
+                                <button
+                                    onClick={() => setHideSidebar((prev) => !prev)}
+                                    className='flex items-center m-2 p-2'
+                                >
+                                    <i className='bx bx-menu' />
+                                </button>
+                            </li>
+                            <li>
+                                <Link to='/' className='m-2 p-2'>
+                                    Home
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to='/search' className='m-2 p-2'>
+                                    Search
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to='/packs' className='m-2 p-2'>
+                                    Packs
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to='/settings/site' className='m-2 p-2'>
+                                    <i className='bx bxs-cog text-xl mt-2' />
+                                </Link>
+                            </li>
                         </ul>
                         <ul>
-                            <li><ProfileButtons size='small' /></li>
+                            <li>
+                                <ProfileButtons size='small' />
+                            </li>
                         </ul>
                     </nav>
                     <main className='col-start-2 from-theme-bg-from to-theme-bg-to bg-linear-to-br text-theme-text p-6 relative'>

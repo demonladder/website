@@ -15,7 +15,7 @@
     --theme-peach-footer: var(--theme-peach-900);
 }
 
-[data-theme="peach"] {
+[data-theme='peach'] {
     --color-theme-400: var(--theme-peach-400);
     --color-theme-500: var(--theme-peach-500);
     --color-theme-600: var(--theme-peach-600);

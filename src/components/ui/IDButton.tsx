@@ -1,10 +1,10 @@
 import { toast } from 'react-toastify';
 
 interface Props {
-    id: number,
-    disabled?: boolean,
-    className?: string,
-    style?: React.CSSProperties,
+    id: number;
+    disabled?: boolean;
+    className?: string;
+    style?: React.CSSProperties;
 }
 
 export default function IDButton({ id, disabled = false, className, style }: Props) {
@@ -23,5 +23,13 @@ export default function IDButton({ id, disabled = false, className, style }: Pro
         return <p className={className}>{id}</p>;
     }
 
-    return <button className={'underline' + (className ? ' ' + className : '')} onClick={onIDClick} style={{ minWidth: '2rem' }}><span style={style}>{id}</span></button>;
+    return (
+        <button
+            className={'underline' + (className ? ' ' + className : '')}
+            onClick={onIDClick}
+            style={{ minWidth: '2rem' }}
+        >
+            <span style={style}>{id}</span>
+        </button>
+    );
 }

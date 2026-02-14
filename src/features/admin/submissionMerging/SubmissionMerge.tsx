@@ -27,7 +27,8 @@ export default function SubmissionMerge() {
     const [mergeMode, setMergeMode] = useState<ModeType>(ModeType.OVERWRITE);
 
     const searchUser = useUserSearch({
-        ID: 'searchUser', onUserSelect: (user) => {
+        ID: 'searchUser',
+        onUserSelect: (user) => {
             if (!sourceUser) setSourceUser(user);
             else if (!targetUser) setTargetUser(user);
         },
@@ -42,25 +43,50 @@ export default function SubmissionMerge() {
     return (
         <>
             <Heading2>Merge Submissions</Heading2>
-            <p>This tool allows you to merge submissions from one user into another. You can choose to overwrite, combine, or skip submissions based on the selected mode.</p>
+            <p>
+                This tool allows you to merge submissions from one user into another. You can choose to overwrite,
+                combine, or skip submissions based on the selected mode.
+            </p>
             <p>The mode controls how each individual submission will be merged. Here's an explanation on each mode:</p>
             <ul>
-                <li className='ms-4'><p>- <b>Overwrite</b>: Completely overwrites the targets submission if it exists.</p></li>
-                <li className='ms-4'><p>- <b>Combine</b>: Attempts to merge the two submissions. The following fields will be taken from the source if the target is null: <code>Rating</code>, <code>Enjoyment</code>, <code>Proof</code> and <code>Attempts</code>,</p></li>
-                <li className='ms-4'><p>- <b>Skip</b>: Skips the submission if the target already has a submission. Safest.</p></li>
+                <li className='ms-4'>
+                    <p>
+                        - <b>Overwrite</b>: Completely overwrites the targets submission if it exists.
+                    </p>
+                </li>
+                <li className='ms-4'>
+                    <p>
+                        - <b>Combine</b>: Attempts to merge the two submissions. The following fields will be taken from
+                        the source if the target is null: <code>Rating</code>, <code>Enjoyment</code>,{' '}
+                        <code>Proof</code> and <code>Attempts</code>,
+                    </p>
+                </li>
+                <li className='ms-4'>
+                    <p>
+                        - <b>Skip</b>: Skips the submission if the target already has a submission. Safest.
+                    </p>
+                </li>
             </ul>
             <FormGroup>
                 <FormInputLabel>Select user</FormInputLabel>
                 {searchUser.SearchBox}
             </FormGroup>
             <div className='my-4 grid grid-cols-5'>
-                <div className='col-span-2 text-center'>{sourceUser && <UserPreview userID={sourceUser.ID} onUnSet={() => setSourceUser(undefined)} />}</div>
-                <p className='text-9xl grid'><i className='bx bx-chevron-right place-self-center' /></p>
-                <div className='col-span-2 text-center'>{targetUser && <UserPreview userID={targetUser.ID} onUnSet={() => setTargetUser(undefined)} />}</div>
+                <div className='col-span-2 text-center'>
+                    {sourceUser && <UserPreview userID={sourceUser.ID} onUnSet={() => setSourceUser(undefined)} />}
+                </div>
+                <p className='text-9xl grid'>
+                    <i className='bx bx-chevron-right place-self-center' />
+                </p>
+                <div className='col-span-2 text-center'>
+                    {targetUser && <UserPreview userID={targetUser.ID} onUnSet={() => setTargetUser(undefined)} />}
+                </div>
             </div>
             <SegmentedButtonGroup options={mergeOptions} activeKey={mergeMode} onSetActive={setMergeMode} />
             <div className='mt-2 flex justify-end'>
-                <PrimaryButton size='lg' onClick={() => mergeMutation.mutate()} disabled={mergeMutation.isPending}>Merge</PrimaryButton>
+                <PrimaryButton size='lg' onClick={() => mergeMutation.mutate()} disabled={mergeMutation.isPending}>
+                    Merge
+                </PrimaryButton>
             </div>
         </>
     );

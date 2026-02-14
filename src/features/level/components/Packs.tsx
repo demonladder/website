@@ -23,14 +23,16 @@ export default function Packs({ levelID, meta }: Props) {
         <section className='mt-6' ref={ref}>
             <Heading2>Packs</Heading2>
             {status === 'pending' && <LoadingSpinner />}
-            {status === 'success' &&
+            {status === 'success' && (
                 <>
                     {packs?.length === 0 && <p className='mb-0'>{meta.Name} is not in any packs</p>}
                     <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 text-center max-md:text-sm'>
-                        {packs?.map((pack) => <PackRef pack={pack} meta={pack.Meta} key={pack.ID} />)}
+                        {packs?.map((pack) => (
+                            <PackRef pack={pack} meta={pack.Meta} key={pack.ID} />
+                        ))}
                     </div>
                 </>
-            }
+            )}
         </section>
     );
 }

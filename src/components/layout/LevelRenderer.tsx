@@ -44,9 +44,26 @@ interface Props {
 }
 
 export function LevelRenderer({ element: Element, className, levels, selectedLevel }: Props) {
-    return <div className={className}>
-        {levels.map((level, i) => (
-            <Element ID={level.ID} rarity={level.Meta.Rarity} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Publisher?.name} songName={level.Meta.Song.Name} difficulty={level.Meta.Difficulty} inPack={level.InPack === 1} completed={level.Completed === 1} selected={(i + 1) === selectedLevel} showcase={level.Showcase} proof={level.Showcase ? `https://youtu.be/${level.Showcase}` : undefined} key={level.ID} />
-        ))}
-    </div>;
+    return (
+        <div className={className}>
+            {levels.map((level, i) => (
+                <Element
+                    ID={level.ID}
+                    rarity={level.Meta.Rarity}
+                    rating={level.Rating}
+                    enjoyment={level.Enjoyment}
+                    name={level.Meta.Name}
+                    creator={level.Meta.Publisher?.name}
+                    songName={level.Meta.Song.Name}
+                    difficulty={level.Meta.Difficulty}
+                    inPack={level.InPack === 1}
+                    completed={level.Completed === 1}
+                    selected={i + 1 === selectedLevel}
+                    showcase={level.Showcase}
+                    proof={level.Showcase ? `https://youtu.be/${level.Showcase}` : undefined}
+                    key={level.ID}
+                />
+            ))}
+        </div>
+    );
 }

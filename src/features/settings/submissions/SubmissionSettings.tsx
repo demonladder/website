@@ -35,13 +35,30 @@ export default function SubmissionSettings() {
         <section>
             <Heading1 className='mb-4'>Submission settings</Heading1>
             <div>
-                <label htmlFor='defaultRefreshRateInput'><b>Default FPS</b></label>
-                <NumberInput id='defaultRefreshRateInput' value={defaultFPS} onChange={updateFPS} invalid={FPSInvalid} />
-                <FormInputDescription>This value will be used for every submission you send if you don't explicitly type the fps on the submission form</FormInputDescription>
+                <label htmlFor='defaultRefreshRateInput'>
+                    <b>Default FPS</b>
+                </label>
+                <NumberInput
+                    id='defaultRefreshRateInput'
+                    value={defaultFPS}
+                    onChange={updateFPS}
+                    invalid={FPSInvalid}
+                />
+                <FormInputDescription>
+                    This value will be used for every submission you send if you don't explicitly type the fps on the
+                    submission form
+                </FormInputDescription>
             </div>
             <div>
-                <label htmlFor='submitDevice'><b>Default device</b></label>
-                <Select id='submitDevice' options={deviceOptions} activeKey={app.defaultDevice ?? Device.PC} onChange={(device) => app.set('defaultDevice', device)} />
+                <label htmlFor='submitDevice'>
+                    <b>Default device</b>
+                </label>
+                <Select
+                    id='submitDevice'
+                    options={deviceOptions}
+                    activeKey={app.defaultDevice ?? Device.PC}
+                    onChange={(device) => app.set('defaultDevice', device)}
+                />
                 <FormInputDescription>The default device for all your submissions</FormInputDescription>
             </div>
             <Notifications />

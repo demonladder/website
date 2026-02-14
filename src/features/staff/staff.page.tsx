@@ -24,18 +24,24 @@ const roleDescriptions: Record<Role['ID'], string> = {
     6: 'The current owner of GDDL!',
 };
 
-function List({ data, roleID }: { data?: { ID: number, Name: string }[], roleID: number }) {
+function List({ data, roleID }: { data?: { ID: number; Name: string }[]; roleID: number }) {
     return (
         <div className='p-4 round:rounded-lg mb-2 grid grid-cols-2 lg:grid-cols-4 gap-8'>
             <span className='max-lg:hidden'></span>
             <div className={`text-right break-words text-permission-${roleID}`}>
-                <h3 className='text-3xl font-bold'>{roleTitles[roleID]} <UserRoleIcon roles={[]} /></h3>
+                <h3 className='text-3xl font-bold'>
+                    {roleTitles[roleID]} <UserRoleIcon roles={[]} />
+                </h3>
                 <p>{roleDescriptions[roleID] || 'Description'}</p>
             </div>
             <ul>
-                {data?.map((s, i) => <li key={`staffList_${roleID}_${i}`}>
-                    <Link to={`/profile/${s.ID}`} className='underline'>{s.Name}</Link>
-                </li>)}
+                {data?.map((s, i) => (
+                    <li key={`staffList_${roleID}_${i}`}>
+                        <Link to={`/profile/${s.ID}`} className='underline'>
+                            {s.Name}
+                        </Link>
+                    </li>
+                ))}
             </ul>
         </div>
     );
@@ -51,7 +57,7 @@ export default function Staff() {
         <Page>
             <Heading1 className='mb-4'>Current staff members</Heading1>
             <FloatingLoadingSpinner isLoading={isLoading} />
-            {status === 'success' &&
+            {status === 'success' && (
                 <div>
                     <List data={data.find((role) => role.ID === 6)?.users} roleID={6} />
                     <List data={data.find((role) => role.ID === 5)?.users} roleID={5} />
@@ -59,7 +65,7 @@ export default function Staff() {
                     <List data={data.find((role) => role.ID === 3)?.users} roleID={3} />
                     <List data={data.find((role) => role.ID === 2)?.users} roleID={2} />
                 </div>
-            }
+            )}
         </Page>
     );
 }

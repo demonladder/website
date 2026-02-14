@@ -1,4 +1,7 @@
-interface Props extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, 'className'> {
+interface Props extends Omit<
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
+    'className'
+> {
     variant?: 'default' | 'medium' | 'large';
     color?: 'primary' | 'secondary' | 'tertiary';
 }
@@ -16,9 +19,8 @@ export default function FAB({ variant = 'default', color = 'secondary', ...props
         tertiary: ' bg-tertiary text-on-tertiary hover:before:bg-on-tertiary/[8%] active:before:bg-on-tertiary/10',
     }[color];
 
-    classNames += ' fixed z-30 right-4 bottom-10 shadow-xl hover:shadow-2xl active:shadow-xl transition-all before:transition-all before:size-full before:absolute before:inset-0 before:bg-on-primary/0 before:rounded-[inherit]';
+    classNames +=
+        ' fixed z-30 right-4 bottom-10 shadow-xl hover:shadow-2xl active:shadow-xl transition-all before:transition-all before:size-full before:absolute before:inset-0 before:bg-on-primary/0 before:rounded-[inherit]';
 
-    return (
-        <button {...props} className={' ' + classNames} />
-    );
+    return <button {...props} className={' ' + classNames} />;
 }

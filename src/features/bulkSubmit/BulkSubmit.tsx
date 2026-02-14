@@ -20,13 +20,16 @@ function parseValue(val?: string): string | undefined {
 
 function parseIntParam(val?: string | null, def?: number): number | undefined {
     if (val === undefined || val === null || val === '-') return def ?? undefined;
-    if (val.startsWith('[') && val.endsWith(']')) throw new Error('Don\'t wrap optional values in [ ]');
-    if (val.startsWith('<') && val.endsWith('>')) throw new Error('Don\'t wrap required values in < >');
+    if (val.startsWith('[') && val.endsWith(']')) throw new Error("Don't wrap optional values in [ ]");
+    if (val.startsWith('<') && val.endsWith('>')) throw new Error("Don't wrap required values in < >");
     return parseInt(val);
 }
 
 function parseSubmissions(submissions: string, { defaultRefreshRate }: { defaultRefreshRate: number }) {
-    const lines = submissions.split('\n').map((l) => l.trim()).filter((l) => l !== '');
+    const lines = submissions
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l !== '');
     if (lines.length === 0) return [];
 
     return lines.map((l) => {
@@ -37,7 +40,8 @@ function parseSubmissions(submissions: string, { defaultRefreshRate }: { default
         let creator: string | undefined = undefined;
 
         let paramOffset = 0;
-        if (params[0] == parseInt(params[0]).toString()) {  // Level ID variant
+        if (params[0] == parseInt(params[0]).toString()) {
+            // Level ID variant
             levelID = parseInt(params[0]);
         } else {
             levelName = params[0];
@@ -52,7 +56,8 @@ function parseSubmissions(submissions: string, { defaultRefreshRate }: { default
         const device = parseValue(params[4 + paramOffset]) === 'pc' ? Device.PC : Device.MOBILE;
         const videoProof = parseValue(params[5 + paramOffset]);
 
-        if (tier === null && enjoyment === null) throw new Error('Tier and enjoyment are required. Supply one or both.');
+        if (tier === null && enjoyment === null)
+            throw new Error('Tier and enjoyment are required. Supply one or both.');
 
         return { levelID, levelName, creator, tier, enjoyment, FPS, device, videoProof };
     });
@@ -73,10 +78,20 @@ export default function BulkSubmit() {
                 if (successAmount > 0) toast.success(`Successfully submitted ${successAmount} submissions`);
                 else toast.error('No submissions were successful');
                 // Exclude failed submissions from the list
-                setSubmissions(submissions
-                    .filter((s) => failedSubmissions.some((f) => f.levelID === s.levelID || (s.levelID === undefined && f.levelName === s.levelName && f.creator === s.creator)))
-                    .map((s) => `${s.levelID ?? `${s.levelName as string} ${s.creator as string}`} ${s.tier ?? '-'} ${s.enjoyment ?? '-'} ${s.FPS} ${s.device ?? '-'} ${s.videoProof ?? '-'}`)
-                    .join('\n'),
+                setSubmissions(
+                    submissions
+                        .filter((s) =>
+                            failedSubmissions.some(
+                                (f) =>
+                                    f.levelID === s.levelID ||
+                                    (s.levelID === undefined && f.levelName === s.levelName && f.creator === s.creator),
+                            ),
+                        )
+                        .map(
+                            (s) =>
+                                `${s.levelID ?? `${s.levelName as string} ${s.creator as string}`} ${s.tier ?? '-'} ${s.enjoyment ?? '-'} ${s.FPS} ${s.device ?? '-'} ${s.videoProof ?? '-'}`,
+                        )
+                        .join('\n'),
                 );
             }
         },
@@ -109,8 +124,18 @@ export default function BulkSubmit() {
                 <pre>{'<level name> <creator> [tier] [enjoyment] [fps] [pc or mobile] [video proof]'}</pre>
                 <p>Values wrapped in [ ] are optional. You can use a - as a placeholder for optional values.</p>
             </div>
-            <TextArea value={submissions} onChange={(e) => setSubmissions(e.target.value)} placeholder={'Examples:\n64658786 - 10\nichor lazerblitz 8\n3 6 - 120 mobile'} invalid={!isValid} aria-invalid={!isValid} autoCorrect='off' autoFocus={true} />
-            <PrimaryButton onClick={onSubmit} loading={mutation.status === 'pending'}>Submit</PrimaryButton>
+            <TextArea
+                value={submissions}
+                onChange={(e) => setSubmissions(e.target.value)}
+                placeholder={'Examples:\n64658786 - 10\nichor lazerblitz 8\n3 6 - 120 mobile'}
+                invalid={!isValid}
+                aria-invalid={!isValid}
+                autoCorrect='off'
+                autoFocus={true}
+            />
+            <PrimaryButton onClick={onSubmit} loading={mutation.status === 'pending'}>
+                Submit
+            </PrimaryButton>
         </Page>
     );
 }

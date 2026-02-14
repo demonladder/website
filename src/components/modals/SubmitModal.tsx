@@ -73,10 +73,12 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const [progress, setProgress] = useState('');
     const [attempts, setAttempts] = useState('');
     const [wasSolo, setWasSolo] = useState(true);
-    const [randomAttempts] = useState(((x: number | null) => {
-        if (!x) x = Math.random() + 4.5;
-        return 15 * x ** 2 + 200 + (Math.random() * 2 - 1) * x ** 0.5 * 100;
-    })(level.Rating));
+    const [randomAttempts] = useState(
+        ((x: number | null) => {
+            if (!x) x = Math.random() + 4.5;
+            return 15 * x ** 2 + 200 + (Math.random() * 2 - 1) * x ** 0.5 * 100;
+        })(level.Rating),
+    );
 
     const session = useSession();
 
@@ -114,7 +116,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         onSuccess: () => {
             void removeSubmissionData();
             void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
-            if (session.user?.ID !== undefined) void queryClient.invalidateQueries({ queryKey: ['user', session.user.ID] });
+            if (session.user?.ID !== undefined)
+                void queryClient.invalidateQueries({ queryKey: ['user', session.user.ID] });
             onClose();
         },
     });
@@ -138,7 +141,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 return toast.error('Proof is required if you want to rate a level 21 or higher!');
             }
         } else if (enjoyment === null) {
-            return toast.error('Rating and enjoyment can\'t both be empty!');
+            return toast.error("Rating and enjoyment can't both be empty!");
         }
 
         if (parseInt(refreshRate) < MINIMUM_REFRESH_RATE) {
@@ -159,33 +162,39 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         }
 
         const loadingHandle = toast.loading('Submitting...');
-        submitMutation.mutate({
-            levelID: level.ID,
-            rating: rating,
-            enjoyment: enjoyment,
-            refreshRate: parseInt(refreshRate),
-            device: deviceKey,
-            proof: proof.length > 0 ? proof : undefined,
-            isProofPrivate,
-            progress: parseInt(progress),
-            attempts: attemptCount,
-            isSolo: wasSolo,
-            secondPlayerID: secondPlayerSearch.activeUser?.ID,
-        }, {
-            onSuccess: (data) => {
-                if (data.wasAuto) {
-                    void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
-                    void queryClient.invalidateQueries({ queryKey: ['submission', level.ID, userID] });
-                    if (userID !== undefined) void queryClient.invalidateQueries({ queryKey: ['user', userID] });
-                } else {
-                    void removeSubmissionData();
-                }
-                toast.success(data.wasAuto ? 'Submission accepted' : 'Submission queued');
-                onClose();
+        submitMutation.mutate(
+            {
+                levelID: level.ID,
+                rating: rating,
+                enjoyment: enjoyment,
+                refreshRate: parseInt(refreshRate),
+                device: deviceKey,
+                proof: proof.length > 0 ? proof : undefined,
+                isProofPrivate,
+                progress: parseInt(progress),
+                attempts: attemptCount,
+                isSolo: wasSolo,
+                secondPlayerID: secondPlayerSearch.activeUser?.ID,
             },
-            onError: (err: unknown) => toast.error(err instanceof Error ? renderToastError.render({ data: err }) : 'An unknown error occurred!'),
-            onSettled: () => toast.dismiss(loadingHandle),
-        });
+            {
+                onSuccess: (data) => {
+                    if (data.wasAuto) {
+                        void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
+                        void queryClient.invalidateQueries({ queryKey: ['submission', level.ID, userID] });
+                        if (userID !== undefined) void queryClient.invalidateQueries({ queryKey: ['user', userID] });
+                    } else {
+                        void removeSubmissionData();
+                    }
+                    toast.success(data.wasAuto ? 'Submission accepted' : 'Submission queued');
+                    onClose();
+                },
+                onError: (err: unknown) =>
+                    toast.error(
+                        err instanceof Error ? renderToastError.render({ data: err }) : 'An unknown error occurred!',
+                    ),
+                onSettled: () => toast.dismiss(loadingHandle),
+            },
+        );
     }
 
     function onBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -221,23 +230,54 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
 
     return (
         <Modal title='Submit rating' show={true} onClose={onClose}>
-            <p className='my-3'>Make sure read and understood our <a href='/about#guidelines' className='text-blue-500' target='_blank'>rating guidelines</a></p>
+            <p className='my-3'>
+                Make sure read and understood our{' '}
+                <a href='/about#guidelines' className='text-blue-500' target='_blank'>
+                    rating guidelines
+                </a>
+            </p>
             <form onSubmit={(e) => submitForm(e)} autoCorrect='off' autoCapitalize='off' spellCheck='false'>
-                {level.Meta.Length === LevelLengths.PLATFORMER &&
-                    <WarningBox>Platformer submissions are currently restricted; it's not possible to vote for tiers yet!</WarningBox>
-                }
+                {level.Meta.Length === LevelLengths.PLATFORMER && (
+                    <WarningBox>
+                        Platformer submissions are currently restricted; it's not possible to vote for tiers yet!
+                    </WarningBox>
+                )}
                 <FormGroup>
                     <FormInputLabel htmlFor='submitRating'>Tier</FormInputLabel>
-                    <NumberInput id='submitRating' value={tier} onChange={ratingChange} inputMode='numeric' min={1} max={MAX_TIER} invalid={tierEnjoymentInvalid} required={tierEnjoymentInvalid} autoFocus disabled={level.Meta.Length === LevelLengths.PLATFORMER} />
+                    <NumberInput
+                        id='submitRating'
+                        value={tier}
+                        onChange={ratingChange}
+                        inputMode='numeric'
+                        min={1}
+                        max={MAX_TIER}
+                        invalid={tierEnjoymentInvalid}
+                        required={tierEnjoymentInvalid}
+                        autoFocus
+                        disabled={level.Meta.Length === LevelLengths.PLATFORMER}
+                    />
                     <p className='text-sm text-gray-400'>Must be 1-{MAX_TIER}</p>
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel htmlFor='submitEnjoyment'>Enjoyment</FormInputLabel>
-                    <Select id='submitEnjoyment' options={enjoymentOptions} activeKey={enjoymentKey} onChange={setEnjoymentKey} invalid={tierEnjoymentInvalid} zIndex={1030} />
+                    <Select
+                        id='submitEnjoyment'
+                        options={enjoymentOptions}
+                        activeKey={enjoymentKey}
+                        onChange={setEnjoymentKey}
+                        invalid={tierEnjoymentInvalid}
+                        zIndex={1030}
+                    />
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel htmlFor='submitRefreshRate'>FPS</FormInputLabel>
-                    <NumberInput id='submitRefreshRate' value={refreshRate} onChange={FPSChange} onBlur={onBlur} invalid={parseInt(refreshRate) < MINIMUM_REFRESH_RATE} />
+                    <NumberInput
+                        id='submitRefreshRate'
+                        value={refreshRate}
+                        onChange={FPSChange}
+                        onBlur={onBlur}
+                        invalid={parseInt(refreshRate) < MINIMUM_REFRESH_RATE}
+                    />
                     <p className='text-sm text-gray-400'>At least {MINIMUM_REFRESH_RATE}fps</p>
                 </FormGroup>
                 <FormGroup>
@@ -245,28 +285,62 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     <Select id='submitDevice' options={deviceOptions} activeKey={deviceKey} onChange={setDeviceKey} />
                 </FormGroup>
                 <FormGroup>
-                    <FormInputLabel htmlFor='submitProof'>Proof <a href='/about#proof' target='_blank'><i className='bx bx-info-circle' /></a></FormInputLabel>
-                    {level.Meta.Difficulty !== Difficulties.Extreme && Math.round(level.Rating ?? 16) < 16 &&
-                        <p className='text-sm text-yellow-500'>Please be aware that proof is not strictly required for easier levels. By not adding proof you can bypass the queue and skip the waiting time to get this submission added.</p>
-                    }
-                    <URLInput id='submitProof' value={proof} onChange={(e) => setProof(e.target.value)} invalid={!validateLink(proof) && (requiresProof || proof !== '')} required={requiresProof} spellCheck={false} />
+                    <FormInputLabel htmlFor='submitProof'>
+                        Proof{' '}
+                        <a href='/about#proof' target='_blank'>
+                            <i className='bx bx-info-circle' />
+                        </a>
+                    </FormInputLabel>
+                    {level.Meta.Difficulty !== Difficulties.Extreme && Math.round(level.Rating ?? 16) < 16 && (
+                        <p className='text-sm text-yellow-500'>
+                            Please be aware that proof is not strictly required for easier levels. By not adding proof
+                            you can bypass the queue and skip the waiting time to get this submission added.
+                        </p>
+                    )}
+                    <URLInput
+                        id='submitProof'
+                        value={proof}
+                        onChange={(e) => setProof(e.target.value)}
+                        invalid={!validateLink(proof) && (requiresProof || proof !== '')}
+                        required={requiresProof}
+                        spellCheck={false}
+                    />
                     <label className='flex items-center gap-1'>
                         <Checkbox checked={isProofPrivate} onChange={(e) => setIsProofPrivate(e.target.checked)} />
                         Private
                     </label>
-                    <p className='text-sm text-gray-400'>Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.</p>
+                    <p className='text-sm text-gray-400'>
+                        Proof is required for extreme demons. Clicks must be included if the level is tier 31 or higher.
+                    </p>
                 </FormGroup>
-                {level.Meta.Length !== LevelLengths.PLATFORMER &&
+                {level.Meta.Length !== LevelLengths.PLATFORMER && (
                     <FormGroup>
                         <FormInputLabel>Percent</FormInputLabel>
-                        <NumberInput value={progress} onChange={(e) => setProgress(e.target.value)} min={1} max={100} inputMode='numeric' placeholder='100' />
-                        <FormInputDescription>Optional, defaults to 100. Will not affect ratings if less than 100.</FormInputDescription>
+                        <NumberInput
+                            value={progress}
+                            onChange={(e) => setProgress(e.target.value)}
+                            min={1}
+                            max={100}
+                            inputMode='numeric'
+                            placeholder='100'
+                        />
+                        <FormInputDescription>
+                            Optional, defaults to 100. Will not affect ratings if less than 100.
+                        </FormInputDescription>
                     </FormGroup>
-                }
+                )}
                 <FormGroup>
                     <FormInputLabel>Attempts</FormInputLabel>
-                    <NumberInput value={attempts} onChange={(e) => setAttempts(e.target.value)} min={1} inputMode='numeric' placeholder={randomAttempts.toFixed()} />
-                    <FormInputDescription>Optional. How many attempts it took you to beat this level.</FormInputDescription>
+                    <NumberInput
+                        value={attempts}
+                        onChange={(e) => setAttempts(e.target.value)}
+                        min={1}
+                        inputMode='numeric'
+                        placeholder={randomAttempts.toFixed()}
+                    />
+                    <FormInputDescription>
+                        Optional. How many attempts it took you to beat this level.
+                    </FormInputDescription>
                 </FormGroup>
                 {/* <FormGroup>
                     <FormInputLabel>Completion date</FormInputLabel>
@@ -275,7 +349,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         <input type='time' className='border-b-2 bg-theme-950/70' />
                     </div>
                 </FormGroup> */}
-                {level.Meta.IsTwoPlayer &&
+                {level.Meta.IsTwoPlayer && (
                     <FormGroup>
                         <label className='flex items-center gap-2 mb-2'>
                             <CheckBox checked={wasSolo} onChange={(e) => setWasSolo(e.target.checked)} />
@@ -285,15 +359,29 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                             <div>
                                 <p>The second player:</p>
                                 {secondPlayerSearch.SearchBox}
-                                <p className='text-sm text-gray-400'>If the person you beat this level with doesn't have an account, leave this blank</p>
+                                <p className='text-sm text-gray-400'>
+                                    If the person you beat this level with doesn't have an account, leave this blank
+                                </p>
                             </div>
                         )}
                     </FormGroup>
-                }
+                )}
                 <FormGroup className='flex justify-between mt-8'>
-                    <button type='button' className={'text-red-400 underline-t disabled:text-gray-400 ' + (userSubmission ? '' : 'opacity-0 pointer-events-none')} onClick={() => deleteMutation.mutate()} disabled={deleteMutation.status === 'pending'}>delete</button>
+                    <button
+                        type='button'
+                        className={
+                            'text-red-400 underline-t disabled:text-gray-400 ' +
+                            (userSubmission ? '' : 'opacity-0 pointer-events-none')
+                        }
+                        onClick={() => deleteMutation.mutate()}
+                        disabled={deleteMutation.status === 'pending'}
+                    >
+                        delete
+                    </button>
                     <div>
-                        <SecondaryButton type='button' onClick={onClose}>Close</SecondaryButton>
+                        <SecondaryButton type='button' onClick={onClose}>
+                            Close
+                        </SecondaryButton>
                         <PrimaryButton type='submit'>Submit</PrimaryButton>
                     </div>
                 </FormGroup>

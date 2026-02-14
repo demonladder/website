@@ -31,10 +31,23 @@ export default function ReportUserModal({ userID, onClose }: { userID: number; o
 
     const toastID = useRef<Id | null>(null);
     const reportMutation = useMutation({
-        mutationFn: ([userID, selectedReason, description]: [number, ReportReason, string]) => reportUser(userID, parseInt(selectedReason), description),
-        onMutate: () => toastID.current = toast.loading('Reporting user...'),
-        onSuccess: () => toast.update(toastID.current!, { render: 'User reported successfully!', type: 'success', isLoading: false, autoClose: 5000 }),
-        onError: (error: AxiosError) => toast.update(toastID.current!, { render: renderToastError.render({ data: error }), type: 'error', isLoading: null, autoClose: null }),
+        mutationFn: ([userID, selectedReason, description]: [number, ReportReason, string]) =>
+            reportUser(userID, parseInt(selectedReason), description),
+        onMutate: () => (toastID.current = toast.loading('Reporting user...')),
+        onSuccess: () =>
+            toast.update(toastID.current!, {
+                render: 'User reported successfully!',
+                type: 'success',
+                isLoading: false,
+                autoClose: 5000,
+            }),
+        onError: (error: AxiosError) =>
+            toast.update(toastID.current!, {
+                render: renderToastError.render({ data: error }),
+                type: 'error',
+                isLoading: null,
+                autoClose: null,
+            }),
     });
 
     function handleSubmit(e: React.FormEvent) {
@@ -50,7 +63,13 @@ export default function ReportUserModal({ userID, onClose }: { userID: number; o
             <form onSubmit={(e) => void handleSubmit(e)}>
                 <FormGroup>
                     <FormInputLabel htmlFor='reason'>Reason</FormInputLabel>
-                    <Select id='reason' options={reasons} activeKey={selectedReason} onChange={setSelectedReason} invalid={selectedReason === '0'} />
+                    <Select
+                        id='reason'
+                        options={reasons}
+                        activeKey={selectedReason}
+                        onChange={setSelectedReason}
+                        invalid={selectedReason === '0'}
+                    />
                 </FormGroup>
                 <FormGroup>
                     <FormInputLabel htmlFor='description'>Description</FormInputLabel>
@@ -65,7 +84,9 @@ export default function ReportUserModal({ userID, onClose }: { userID: number; o
                     />
                 </FormGroup>
                 <FormGroup className='flex place-content-end gap-2'>
-                    <SecondaryButton type='button' onClick={close}>Close</SecondaryButton>
+                    <SecondaryButton type='button' onClick={close}>
+                        Close
+                    </SecondaryButton>
                     <DangerButton type='submit'>Report</DangerButton>
                 </FormGroup>
             </form>

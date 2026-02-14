@@ -29,14 +29,18 @@ export default function List({ addLevel, packID, removeLevel }: Props) {
             <h3 className='text-xl'>Levels:</h3>
             <div className='mb-4'>
                 {addLevelSearch.SearchBox}
-                <PrimaryButton onClick={() => onAdd()} className='me-2'>Add</PrimaryButton>
+                <PrimaryButton onClick={() => onAdd()} className='me-2'>
+                    Add
+                </PrimaryButton>
                 <PrimaryButton onClick={() => onAdd(true)}>Add EX</PrimaryButton>
             </div>
             <div>
                 <ul className='grid grid-cols-3 gap-2'>
-                    {data?.filter((l) => levelFilter === '' || l.Level.Meta.Name.toLowerCase().startsWith(levelFilter)).map((l) => (
-                        <Level level={l} onRemove={() => removeLevel(l)} key={`pack_${packID}_${l.LevelID}`} />
-                    ))}
+                    {data
+                        ?.filter((l) => levelFilter === '' || l.Level.Meta.Name.toLowerCase().startsWith(levelFilter))
+                        .map((l) => (
+                            <Level level={l} onRemove={() => removeLevel(l)} key={`pack_${packID}_${l.LevelID}`} />
+                        ))}
                 </ul>
             </div>
         </div>

@@ -19,7 +19,7 @@
     --theme-citrus-footer-text: #ffffff;
 }
 
-[data-theme="citrus"] {
+[data-theme='citrus'] {
     --color-theme-400: var(--theme-citrus-400);
     --color-theme-500: var(--theme-citrus-500);
     --color-theme-600: var(--theme-citrus-600);

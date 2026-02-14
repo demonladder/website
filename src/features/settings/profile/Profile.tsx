@@ -10,12 +10,13 @@ export default function ProfileSettings() {
     return (
         <section>
             <Heading1>Profile settings</Heading1>
-            {!session.user
-                ? <>
+            {!session.user ? (
+                <>
                     <p>You shouldn't be here</p>
                     <LoginButton />
                 </>
-                : <>
+            ) : (
+                <>
                     <div className='flex max-md:flex-col-reverse gap-2'>
                         <div className='md:w-3/4'>
                             <GeneralInformation userID={session.user.ID} />
@@ -25,7 +26,7 @@ export default function ProfileSettings() {
                         </div>
                     </div>
                 </>
-            }
+            )}
         </section>
     );
 }

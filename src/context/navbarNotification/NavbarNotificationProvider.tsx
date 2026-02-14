@@ -15,15 +15,14 @@ export default function NavbarNotificationProvider({ children }: { children: Rea
         setNotifications((prev) => prev.filter((n) => n.ID !== ID));
     }, []);
 
-    const contextValue = useMemo(() => ({
-        notifications,
-        addNotification,
-        removeNotification,
-    }), [notifications, addNotification, removeNotification]);
-
-    return (
-        <NavbarNotificationContext.Provider value={contextValue}>
-            {children}
-        </NavbarNotificationContext.Provider>
+    const contextValue = useMemo(
+        () => ({
+            notifications,
+            addNotification,
+            removeNotification,
+        }),
+        [notifications, addNotification, removeNotification],
     );
+
+    return <NavbarNotificationContext.Provider value={contextValue}>{children}</NavbarNotificationContext.Provider>;
 }

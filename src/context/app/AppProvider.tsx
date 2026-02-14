@@ -12,10 +12,12 @@ export default function AppProvider({ children }: { children?: React.ReactNode }
     }
 
     return (
-        <AppContext.Provider value={{
-            ...app,
-            set: setter,
-        }}>
+        <AppContext.Provider
+            value={{
+                ...app,
+                set: setter,
+            }}
+        >
             {children}
         </AppContext.Provider>
     );

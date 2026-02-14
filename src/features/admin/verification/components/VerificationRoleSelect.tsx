@@ -25,25 +25,37 @@ export default function VerificationRoleSelect() {
     function onSave() {
         const roleID = NaNToNull(parseInt(verificationRole));
 
-        void toast.promise(updateVerificationRole(roleID), {
-            pending: 'Saving...',
-            success: 'Verification role updated',
-            error: renderToastError,
-        }).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['usersEligibleForVerification'] });
-            void queryClient.invalidateQueries({ queryKey: ['verificationRole'] });
-            void queryClient.invalidateQueries({ queryKey: ['verifiedUsers'] });
-        });
+        void toast
+            .promise(updateVerificationRole(roleID), {
+                pending: 'Saving...',
+                success: 'Verification role updated',
+                error: renderToastError,
+            })
+            .then(() => {
+                void queryClient.invalidateQueries({ queryKey: ['usersEligibleForVerification'] });
+                void queryClient.invalidateQueries({ queryKey: ['verificationRole'] });
+                void queryClient.invalidateQueries({ queryKey: ['verifiedUsers'] });
+            });
     }
 
     return (
         <section className='mt-8'>
             <Heading3>Verification Role</Heading3>
             <p>Select the role used for verification</p>
-            {roles.isSuccess && <>
-                <Select id='verificationRole' activeKey={verificationRole} onChange={setVerificationRole} options={roles.data.reduce<Record<string, string>>((acc, role) => ({ ...acc, [role.ID]: role.Name }), { none: 'none' })} />
-                <PrimaryButton onClick={onSave}>Save</PrimaryButton>
-            </>}
+            {roles.isSuccess && (
+                <>
+                    <Select
+                        id='verificationRole'
+                        activeKey={verificationRole}
+                        onChange={setVerificationRole}
+                        options={roles.data.reduce<Record<string, string>>(
+                            (acc, role) => ({ ...acc, [role.ID]: role.Name }),
+                            { none: 'none' },
+                        )}
+                    />
+                    <PrimaryButton onClick={onSave}>Save</PrimaryButton>
+                </>
+            )}
         </section>
     );
 }

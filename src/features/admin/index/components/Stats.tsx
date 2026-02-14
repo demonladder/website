@@ -19,7 +19,7 @@ export function Stats() {
     return (
         <section className='col-span-1 round:rounded-xl border border-theme-outline p-4 bg-theme-800'>
             <Heading2 className='mb-2'>Queue distribution by tier</Heading2>
-            {queueStats.isSuccess &&
+            {queueStats.isSuccess && (
                 <ul className='grid gap-x-3' style={{ gridTemplateColumns: 'max-content max-content auto' }}>
                     <p>Tier</p>
                     <p className='text-end'>Pending</p>
@@ -35,7 +35,7 @@ export function Stats() {
                         </li>
                     ))}
                 </ul>
-            }
+            )}
         </section>
     );
 }

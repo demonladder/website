@@ -20,7 +20,5 @@ export default function NewLabel({ ID, TTL = ms('3d') }: Props) {
 
     if (seenAt + TTL < Date.now()) return;
 
-    return (
-        <span className='px-1 rounded bg-red-600'>new</span>
-    );
+    return <span className='px-1 rounded bg-red-600'>new</span>;
 }

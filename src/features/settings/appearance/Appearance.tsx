@@ -34,10 +34,15 @@ export default function Appearance() {
             <section className='pb-2'>
                 <Heading3>Features</Heading3>
                 <label className='flex items-center gap-2'>
-                    <CheckBox checked={app.enableBackground} onChange={(e) => app.set('enableBackground', e.target.checked)} />
+                    <CheckBox
+                        checked={app.enableBackground}
+                        onChange={(e) => app.set('enableBackground', e.target.checked)}
+                    />
                     Animated background
                 </label>
-                <p className='text-theme-400 text-sm'>Get randomized lines that move around in the background, idrk how to describe it.</p>
+                <p className='text-theme-400 text-sm'>
+                    Get randomized lines that move around in the background, idrk how to describe it.
+                </p>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
                         <CheckBox checked={app.isRounded} onChange={(e) => app.set('isRounded', e.target.checked)} />
@@ -45,17 +50,19 @@ export default function Appearance() {
                     </label>
                     <FormInputDescription>Gives pretty much everything round corners.</FormInputDescription>
                 </FormGroup>
-                {app.enableBackground !== enableBackgroundInitial &&
+                {app.enableBackground !== enableBackgroundInitial && (
                     <FormGroup>
                         <PrimaryButton onClick={() => window.location.reload()}>Reload</PrimaryButton>
                     </FormGroup>
-                }
+                )}
             </section>
             <Divider />
             <section>
                 <Heading3>Font</Heading3>
                 <Select id='fontTypeSelect' options={fontOptions} activeKey={fontKey} onChange={onFont} />
-                <FormInputDescription>Choose between the default sans-serif, serif or a monospaced font.</FormInputDescription>
+                <FormInputDescription>
+                    Choose between the default sans-serif, serif or a monospaced font.
+                </FormInputDescription>
             </section>
             <Divider />
             <ThemeSelect />

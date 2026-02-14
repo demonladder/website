@@ -31,8 +31,14 @@ export default function Skills({ userID }: { userID: number }) {
     const adjustRarityID = useId();
 
     const { data: rawData } = useQuery({
-        queryKey: ['user', userID, 'skills', { levelSpan: levelSpanKey.slice(3), tierCorrection: correctTier, adjustRarity }],
-        queryFn: () => getSkills(userID, { levelSpan: levelSpanKey.slice(3), tierCorrection: correctTier, adjustRarity }),
+        queryKey: [
+            'user',
+            userID,
+            'skills',
+            { levelSpan: levelSpanKey.slice(3), tierCorrection: correctTier, adjustRarity },
+        ],
+        queryFn: () =>
+            getSkills(userID, { levelSpan: levelSpanKey.slice(3), tierCorrection: correctTier, adjustRarity }),
         enabled: inView,
     });
 
@@ -71,7 +77,9 @@ export default function Skills({ userID }: { userID: number }) {
     };
 
     const windowSize = useWindowSize();
-    const textColor = window.getComputedStyle(document.querySelector('#root > div')!).getPropertyValue('--color-theme-text');
+    const textColor = window
+        .getComputedStyle(document.querySelector('#root > div')!)
+        .getPropertyValue('--color-theme-text');
 
     return (
         <section className='mt-6' ref={ref}>
@@ -80,49 +88,71 @@ export default function Skills({ userID }: { userID: number }) {
                 <div>
                     <label htmlFor='skillLevelSpan'>Levels included:</label>
                     <div className='max-w-xs'>
-                        <Select options={levelSpanOptions} activeKey={levelSpanKey} id='skillLevelSpan' onChange={setLevelSpanKey} />
+                        <Select
+                            options={levelSpanOptions}
+                            activeKey={levelSpanKey}
+                            id='skillLevelSpan'
+                            onChange={setLevelSpanKey}
+                        />
                     </div>
                 </div>
                 <div>
                     <p>Tier normalization:</p>
-                    <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' htmlFor={correctTierID}>
-                        <CheckBox id={correctTierID} checked={correctTier} onChange={() => setCorrectTier((prev) => !prev)} />
+                    <label
+                        className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'
+                        htmlFor={correctTierID}
+                    >
+                        <CheckBox
+                            id={correctTierID}
+                            checked={correctTier}
+                            onChange={() => setCorrectTier((prev) => !prev)}
+                        />
                         Adjust for level tier
                     </label>
                 </div>
                 <div>
                     <p>Rarity adjustment:</p>
-                    <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none' htmlFor={adjustRarityID}>
-                        <CheckBox id={adjustRarityID} checked={adjustRarity} onChange={() => setAdjustRarity((prev) => !prev)} />
+                    <label
+                        className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'
+                        htmlFor={adjustRarityID}
+                    >
+                        <CheckBox
+                            id={adjustRarityID}
+                            checked={adjustRarity}
+                            onChange={() => setAdjustRarity((prev) => !prev)}
+                        />
                         Adjust for skillset rarity
                     </label>
                 </div>
             </div>
             <Divider />
             <div className='mx-auto xl:w-1/2'>
-                <Radar data={chartData} options={{
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(255, 255, 255, 0.3)',
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.3)',
-                            },
-                            pointLabels: {
-                                color: textColor,
-                                font: {
-                                    size: windowSize.width > 720 ? 22 : 14,
+                <Radar
+                    data={chartData}
+                    options={{
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    color: 'rgba(255, 255, 255, 0.3)',
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.3)',
+                                },
+                                pointLabels: {
+                                    color: textColor,
+                                    font: {
+                                        size: windowSize.width > 720 ? 22 : 14,
+                                    },
+                                },
+                                min: 0,
+                                beginAtZero: true,
+                                ticks: {
+                                    display: false,
                                 },
                             },
-                            min: 0,
-                            beginAtZero: true,
-                            ticks: {
-                                display: false,
-                            },
                         },
-                    },
-                }} />
+                    }}
+                />
             </div>
         </section>
     );

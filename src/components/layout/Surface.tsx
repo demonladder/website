@@ -14,18 +14,18 @@ export default function Surface({ variant, size = 'md', className, ...props }: P
         '500': 'bg-theme-500',
     }[variant];
 
-    classNames += ' ' + {
-        'sm': 'shadow-sm p-2 round:rounded',
-        'md': 'shadow px-4 py-2 round:rounded-lg',
-        'lg': 'shadow-lg px-6 py-4 round:rounded-xl',
-        'xl': 'shadow-xl px-8 py-6 round:rounded-2xl',
-    }[size];
+    classNames +=
+        ' ' +
+        {
+            sm: 'shadow-sm p-2 round:rounded',
+            md: 'shadow px-4 py-2 round:rounded-lg',
+            lg: 'shadow-lg px-6 py-4 round:rounded-xl',
+            xl: 'shadow-xl px-8 py-6 round:rounded-2xl',
+        }[size];
 
     classNames += ' border border-theme-outline';
 
     if (className) classNames += ' ' + className;
 
-    return (
-        <div {...props} className={classNames} />
-    );
+    return <div {...props} className={classNames} />;
 }

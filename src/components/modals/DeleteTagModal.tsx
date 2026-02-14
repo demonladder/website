@@ -21,16 +21,21 @@ export default function DeleteTagModal({ tag, onClose: close }: Props) {
         if (isMutating) return;
         setIsMutating(true);
 
-        void toast.promise(deleteTag(tag.ID).then(() => {
-            void queryClient.invalidateQueries({ queryKey: ['tags'] });
-            close();
-        }).finally(() => {
-            setIsMutating(false);
-        }), {
-            pending: 'Deleting...',
-            success: 'Deleted tag',
-            error: renderToastError,
-        });
+        void toast.promise(
+            deleteTag(tag.ID)
+                .then(() => {
+                    void queryClient.invalidateQueries({ queryKey: ['tags'] });
+                    close();
+                })
+                .finally(() => {
+                    setIsMutating(false);
+                }),
+            {
+                pending: 'Deleting...',
+                success: 'Deleted tag',
+                error: renderToastError,
+            },
+        );
     }
 
     return (
@@ -38,7 +43,10 @@ export default function DeleteTagModal({ tag, onClose: close }: Props) {
             <div>
                 <div className='my-6'>
                     <p>This is an irreversible action!</p>
-                    <p>All tag submissions using this tag will be deleted! Are you sure you want to delete <b>{tag.Name}</b>?</p>
+                    <p>
+                        All tag submissions using this tag will be deleted! Are you sure you want to delete{' '}
+                        <b>{tag.Name}</b>?
+                    </p>
                 </div>
             </div>
             <div>

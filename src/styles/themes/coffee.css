@@ -19,7 +19,7 @@
     --theme-coffee-footer-text: #ffffff;
 }
 
-[data-theme="coffee"] {
+[data-theme='coffee'] {
     --color-theme-400: var(--theme-coffee-400);
     --color-theme-500: var(--theme-coffee-500);
     --color-theme-600: var(--theme-coffee-600);

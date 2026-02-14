@@ -23,14 +23,14 @@ export default function TagInfoModal() {
                     <Divider />
                     <div>
                         <h4 className='text-xl font-bold'>Available skillsets:</h4>
-                        <ul>{
-                            data?.map((t) => (
+                        <ul>
+                            {data?.map((t) => (
                                 <li className='mb-3' key={t.ID}>
                                     <h5 className='text-lg'>{t.Name}</h5>
                                     <p className='text-base'>{t.Description}</p>
                                 </li>
-                            ))
-                        }</ul>
+                            ))}
+                        </ul>
                     </div>
                 </div>
                 <div className='flex round:gap-1 float-right mb-4'>

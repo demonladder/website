@@ -19,10 +19,20 @@ export default function EligibleUsers() {
                         {users.data.total === 0 && <p>No eligible users</p>}
                         <div className='grid grid-cols-1 xl:grid-cols-2 gap-4'>
                             {users.data.data.map((user) => (
-                                <EligibleUser userID={user.ID} submissions={user.submissions} distinctApprovals={user.distinctApprovals} key={'eligibleUser_' + user.ID} />
+                                <EligibleUser
+                                    userID={user.ID}
+                                    submissions={user.submissions}
+                                    distinctApprovals={user.distinctApprovals}
+                                    key={'eligibleUser_' + user.ID}
+                                />
                             ))}
                         </div>
-                        <PageButtons onPageChange={setPage} page={page} limit={users.data.limit} total={users.data.total} />
+                        <PageButtons
+                            onPageChange={setPage}
+                            page={page}
+                            limit={users.data.limit}
+                            total={users.data.total}
+                        />
                     </div>
                 )}
             </div>

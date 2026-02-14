@@ -40,13 +40,18 @@ function FavoriteLevels({ userID }: { userID: number }) {
         <section className='mt-6'>
             <Heading2>Favorite levels</Heading2>
             {status === 'pending' && <LevelSkeleton />}
-            {status === 'success' && (
-                app.levelViewType === LevelViewType.LIST
-                    ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)
-                    : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-                        {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />)}
+            {status === 'success' &&
+                (app.levelViewType === LevelViewType.LIST ? (
+                    data.map((level) => (
+                        <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />
+                    ))
+                ) : (
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
+                        {data.map((level) => (
+                            <FavoriteLevel level={level} userID={userID} isFavorite={true} key={level.ID} />
+                        ))}
                     </div>
-            )}
+                ))}
         </section>
     );
 }
@@ -64,28 +69,47 @@ function LeastFavoriteLevels({ userID }: { userID: number }) {
         <section className='mt-6'>
             <Heading2>Least favorite levels</Heading2>
             {status === 'pending' && <LevelSkeleton />}
-            {status === 'success' && (
-                app.levelViewType === LevelViewType.LIST
-                    ? data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />)
-                    : <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-                        {data.map((level) => <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />)}
+            {status === 'success' &&
+                (app.levelViewType === LevelViewType.LIST ? (
+                    data.map((level) => (
+                        <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />
+                    ))
+                ) : (
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
+                        {data.map((level) => (
+                            <FavoriteLevel level={level} userID={userID} isFavorite={false} key={level.ID} />
+                        ))}
                     </div>
-            )}
+                ))}
         </section>
     );
 }
 
-function FavoriteLevel({ level, userID, isFavorite }: { level: GetFavoriteLevelsResponse, userID: number, isFavorite: boolean }) {
+function FavoriteLevel({
+    level,
+    userID,
+    isFavorite,
+}: {
+    level: GetFavoriteLevelsResponse;
+    userID: number;
+    isFavorite: boolean;
+}) {
     const session = useSession();
     const queryClient = useQueryClient();
     const deleteMutation = useMutation({
-        mutationFn: (levelID: number) => APIClient.delete(`/user/${session.user?.ID}/${isFavorite ? 'favorites' : 'least-favorites'}`, { data: { levelID } }),
+        mutationFn: (levelID: number) =>
+            APIClient.delete(`/user/${session.user?.ID}/${isFavorite ? 'favorites' : 'least-favorites'}`, {
+                data: { levelID },
+            }),
         onSuccess: (_, levelID) => {
             toast.success('Removed level');
             const queryKey = ['user', userID, isFavorite ? 'favorites' : 'least-favorites'];
             const cache = queryClient.getQueryData<{ ID: number }[]>(queryKey);
             if (!cache) return;
-            queryClient.setQueryData(queryKey, cache.filter((level) => level.ID !== levelID));
+            queryClient.setQueryData(
+                queryKey,
+                cache.filter((level) => level.ID !== levelID),
+            );
         },
         onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
     });
@@ -100,11 +124,30 @@ function FavoriteLevel({ level, userID, isFavorite }: { level: GetFavoriteLevels
 
     const app = useApp();
 
-    if (app.levelViewType === LevelViewType.LIST) return (
-        <Level onContextMenu={onContextMenu} ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Publisher?.name} difficulty={level.Meta.Difficulty} rarity={level.Meta.Rarity} />
-    );
+    if (app.levelViewType === LevelViewType.LIST)
+        return (
+            <Level
+                onContextMenu={onContextMenu}
+                ID={level.ID}
+                rating={level.Rating}
+                enjoyment={level.Enjoyment}
+                name={level.Meta.Name}
+                creator={level.Meta.Publisher?.name}
+                difficulty={level.Meta.Difficulty}
+                rarity={level.Meta.Rarity}
+            />
+        );
 
     return (
-        <GridLevel onContextMenu={onContextMenu} ID={level.ID} rating={level.Rating} enjoyment={level.Enjoyment} name={level.Meta.Name} creator={level.Meta.Publisher?.name} difficulty={level.Meta.Difficulty} rarity={level.Meta.Rarity} />
+        <GridLevel
+            onContextMenu={onContextMenu}
+            ID={level.ID}
+            rating={level.Rating}
+            enjoyment={level.Enjoyment}
+            name={level.Meta.Name}
+            creator={level.Meta.Publisher?.name}
+            difficulty={level.Meta.Difficulty}
+            rarity={level.Meta.Rarity}
+        />
     );
 }

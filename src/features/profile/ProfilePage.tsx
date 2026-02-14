@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData/*, NavLink as RRNavLink*/ } from 'react-router';
+import { Link, Outlet, useLoaderData /*, NavLink as RRNavLink*/ } from 'react-router';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import Submissions from './components/Submissions';
 import UserRoleIcon from '../../components/ui/UserRoleIcon';
@@ -31,7 +31,10 @@ export default function Profile() {
     const userColor = useUserColor(userID);
 
     const contextMenu = useContextMenu([
-        { text: 'Copy profile', onClick: () => void navigator.clipboard.writeText(`https://gdladder.com/profile/${userID}`) },
+        {
+            text: 'Copy profile',
+            onClick: () => void navigator.clipboard.writeText(`https://gdladder.com/profile/${userID}`),
+        },
         { text: 'Copy user ID', onClick: () => void navigator.clipboard.writeText(userID.toString()) },
         { type: 'divider' },
         { text: 'Report user', onClick: () => openReportUserModal(userID) },
@@ -50,42 +53,71 @@ export default function Profile() {
         return `${minPref} to ${maxPref}`;
     }, [userData]);
 
-    if (status === 'pending') return <Page><LoadingSpinner /></Page>;
+    if (status === 'pending')
+        return (
+            <Page>
+                <LoadingSpinner />
+            </Page>
+        );
     if (status === 'error') {
         if ((error as AxiosError).response?.status === 404) {
-            return <Page><Heading1>404: User does not exist</Heading1></Page>;
+            return (
+                <Page>
+                    <Heading1>404: User does not exist</Heading1>
+                </Page>
+            );
         }
 
-        return <Page><Heading1>An error ocurred</Heading1></Page>;
+        return (
+            <Page>
+                <Heading1>An error ocurred</Heading1>
+            </Page>
+        );
     }
 
     return (
         <Page title={`GDDL - ${loadedData.Name}`} key={userID}>
             <div className='mb-2 flex gap-4' onContextMenu={contextMenu}>
-                {loadedData.avatar
-                    ? <img src={`https://cdn.gdladder.com/avatars/${userID}/${loadedData.avatar}.png`} width='80' height='80' className='inline rounded-full' alt='Profile' />
-                    : <i className='bx bxs-user-circle text-[80px]' />
-                }
+                {loadedData.avatar ? (
+                    <img
+                        src={`https://cdn.gdladder.com/avatars/${userID}/${loadedData.avatar}.png`}
+                        width='80'
+                        height='80'
+                        className='inline rounded-full'
+                        alt='Profile'
+                    />
+                ) : (
+                    <i className='bx bxs-user-circle text-[80px]' />
+                )}
                 <div className='grow flex flex-col gap-1 justify-center'>
                     <div className='flex items-center gap-2 text-4xl'>
                         {flagEmoji(userData.CountryCode)}
-                        <Heading1 style={userColor ? { color: `#${userColor.toString(16).padStart(6, '0')}` } : {}}>{userData.Name} {userData.IsBot && <span className='bg-blue-500 px-2 rounded-xl ms-2'>APP</span>}</Heading1>
+                        <Heading1 style={userColor ? { color: `#${userColor.toString(16).padStart(6, '0')}` } : {}}>
+                            {userData.Name}{' '}
+                            {userData.IsBot && <span className='bg-blue-500 px-2 rounded-xl ms-2'>APP</span>}
+                        </Heading1>
                         <UserRoleIcon roles={userData.Roles} />
                     </div>
                     <p>
-                        {userData.Pronouns &&
-                            <span className='me-1'>{userData.Pronouns}</span>
-                        }
+                        {userData.Pronouns && <span className='me-1'>{userData.Pronouns}</span>}
                         {userData.CompletedPacks.map((p) => (
-                            <Link to={`/pack/${p.PackID}`} key={p.PackID}><img src={`/packIcons/${p.IconName}`} className='inline-block me-1 w-6' /></Link>
+                            <Link to={`/pack/${p.PackID}`} key={p.PackID}>
+                                <img src={`/packIcons/${p.IconName}`} className='inline-block me-1 w-6' />
+                            </Link>
                         ))}
                     </p>
                 </div>
             </div>
             <section className='flex max-sm:flex-col' onContextMenu={(e) => e.stopPropagation()}>
                 <div className='flex grow flex-col bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full min-h-40 sm:w-2/3'>
-                    <p><b>Introduction:</b></p>
-                    <textarea readOnly={true} className='border-b-2 block grow overflow-auto scrollbar-thin w-full outline-0' value={userData.Introduction ?? ''} />
+                    <p>
+                        <b>Introduction:</b>
+                    </p>
+                    <textarea
+                        readOnly={true}
+                        className='border-b-2 block grow overflow-auto scrollbar-thin w-full outline-0'
+                        value={userData.Introduction ?? ''}
+                    />
                 </div>
                 <div className='sm:w-1/3 p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow flex flex-col gap-y-2'>
                     <LevelTracker levelID={userData.HardestID} title='Hardest' />
@@ -101,12 +133,12 @@ export default function Profile() {
                         <b>Total submissions:</b>
                         <p>{userData.SubmissionCount}</p>
                     </Tracker>
-                    {userData.PendingSubmissionCount > 0 &&
+                    {userData.PendingSubmissionCount > 0 && (
                         <Tracker>
                             <b>Pending submissions:</b>
                             <p>{userData.PendingSubmissionCount}</p>
                         </Tracker>
-                    }
+                    )}
                     <Tracker>
                         <b>Total attempts:</b>
                         <p>{userData.TotalAttempts ?? 0}</p>
@@ -122,7 +154,7 @@ export default function Profile() {
                     <NavLink to='rankings'>Rankings</NavLink>
                 </ul>
             </nav> */}
-            {!userData.IsBot &&
+            {!userData.IsBot && (
                 <>
                     <LevelPreferences />
                     <Submissions user={userData} />
@@ -131,7 +163,7 @@ export default function Profile() {
                     <Skills userID={userID} />
                     <RankingsWrapper />
                 </>
-            }
+            )}
             <Outlet />
         </Page>
     );

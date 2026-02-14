@@ -1,7 +1,5 @@
 import './divider.css';
 
 export default function Divider() {
-    return (
-        <div className='divider' />
-    );
+    return <div className='divider' />;
 }

@@ -7,10 +7,7 @@ export default function useDenySubmissionModal() {
     function open(submission: Parameters<typeof DenySubmissionModal>[0]['submission']) {
         const ID = `denySubmission-${submission.ID}`;
 
-        createModal(
-            ID,
-            <DenySubmissionModal onClose={() => closeModal(ID)} submission={submission} />,
-        );
+        createModal(ID, <DenySubmissionModal onClose={() => closeModal(ID)} submission={submission} />);
     }
 
     return open;

@@ -22,11 +22,7 @@ function checkChangeEquality(change1: Change, change2: Change): boolean {
 }
 
 export default function EditPack() {
-    const {
-        activePack: packResult,
-        searchQuery,
-        SearchBox: PackSearchBox,
-    } = usePackSearch({ ID: 'editPacksSearch' });
+    const { activePack: packResult, searchQuery, SearchBox: PackSearchBox } = usePackSearch({ ID: 'editPacksSearch' });
     const [changeList, setChangeList] = useSessionStorage<Change[]>('editPackChangeList', []);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -60,12 +56,10 @@ export default function EditPack() {
         };
 
         // No duplicates
-        if (changeList.find((c) => checkChangeEquality(c, newChange))) return toast.error('Level already in changelist');
+        if (changeList.find((c) => checkChangeEquality(c, newChange)))
+            return toast.error('Level already in changelist');
 
-        setChangeList((prev) => [
-            ...prev,
-            newChange,
-        ]);
+        setChangeList((prev) => [...prev, newChange]);
     }
 
     function addLevel(levelID: number, levelName: string, EX = false) {
@@ -81,14 +75,14 @@ export default function EditPack() {
         };
 
         // No duplicates
-        if (changeList.find((c) => {
-            return checkChangeEquality(c, newChange);
-        })) return;
+        if (
+            changeList.find((c) => {
+                return checkChangeEquality(c, newChange);
+            })
+        )
+            return;
 
-        setChangeList((prev) => [
-            ...prev,
-            newChange,
-        ]);
+        setChangeList((prev) => [...prev, newChange]);
     }
 
     function removeChange(change: Change) {
@@ -99,13 +93,15 @@ export default function EditPack() {
         if (packResult === undefined) return;
         if (isLoading) return;
 
-        const request = SavePackChangesRequest(changeList).then(() => {
-            setChangeList([]);
-            void queryClient.invalidateQueries({ queryKey: ['packs'] });
-            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
-        }).finally(() => {
-            setIsLoading(false);
-        });
+        const request = SavePackChangesRequest(changeList)
+            .then(() => {
+                setChangeList([]);
+                void queryClient.invalidateQueries({ queryKey: ['packs'] });
+                void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
 
         void toast.promise(request, {
             pending: 'Saving...',
@@ -118,15 +114,17 @@ export default function EditPack() {
         if (isLoading) return;
 
         if (searchQuery.trim().length === 0) {
-            return toast.error('Name can\'t be empty');
+            return toast.error("Name can't be empty");
         }
-        const request = CreatePackRequest(searchQuery).then(() => {
-            setChangeList([]);
-            void queryClient.invalidateQueries({ queryKey: ['packs'] });
-            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
-        }).finally(() => {
-            setIsLoading(false);
-        });
+        const request = CreatePackRequest(searchQuery)
+            .then(() => {
+                setChangeList([]);
+                void queryClient.invalidateQueries({ queryKey: ['packs'] });
+                void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
 
         void toast.promise(request, {
             pending: 'Creating...',
@@ -152,49 +150,62 @@ export default function EditPack() {
             <div className='mb-4'>
                 <FormInputLabel htmlFor='editPacksSearch'>Search</FormInputLabel>
                 <div className='flex'>
-                    <div className='grow'>
-                        {PackSearchBox}
-                    </div>
-                    <PrimaryButton onClick={createPack} hidden={packResult !== undefined}>Create</PrimaryButton>
+                    <div className='grow'>{PackSearchBox}</div>
+                    <PrimaryButton onClick={createPack} hidden={packResult !== undefined}>
+                        Create
+                    </PrimaryButton>
                 </div>
             </div>
-            {hasContent &&
+            {hasContent && (
                 <div>
                     <Meta packID={packResult.ID} />
                     <List packID={packResult.ID} addLevel={addLevel} removeLevel={removeLevel} />
                 </div>
-            }
-            {changeList.length > 0 &&
+            )}
+            {changeList.length > 0 && (
                 <div>
                     <Divider />
                     <h3 className='text-xl'>Changelog</h3>
                     {getIndividualPacks().map((pack) => (
                         <div className='mb-2' key={`packChange_${pack[0]?.PackID ?? 0}`}>
-                            <h4 className='text-lg'>{pack[0]?.PackName ?? (pack[0]?.PackID && `Pack ID: ${pack[0].PackID}`) ?? 0}</h4>
+                            <h4 className='text-lg'>
+                                {pack[0]?.PackName ?? (pack[0]?.PackID && `Pack ID: ${pack[0].PackID}`) ?? 0}
+                            </h4>
                             <ul className='grid grid-cols-3'>
-                                {pack.map((c, i) => (<ChangeItem change={c} remove={removeChange} key={`change_${c.PackID}_${i}`} />))}
+                                {pack.map((c, i) => (
+                                    <ChangeItem change={c} remove={removeChange} key={`change_${c.PackID}_${i}`} />
+                                ))}
                             </ul>
                         </div>
                     ))}
-                    <PrimaryButton onClick={saveChanges} className='me-2'>Save</PrimaryButton>
+                    <PrimaryButton onClick={saveChanges} className='me-2'>
+                        Save
+                    </PrimaryButton>
                     <DangerButton onClick={() => setChangeList([])}>Clear</DangerButton>
                 </div>
-            }
-            {hasContent &&
+            )}
+            {hasContent && (
                 <div>
                     <Divider />
-                    <DangerButton onClick={() => deleteMutation.mutate(packResult.ID)} loading={deleteMutation.isPending}>Delete pack</DangerButton>
+                    <DangerButton
+                        onClick={() => deleteMutation.mutate(packResult.ID)}
+                        loading={deleteMutation.isPending}
+                    >
+                        Delete pack
+                    </DangerButton>
                 </div>
-            }
+            )}
         </div>
     );
 }
 
-function ChangeItem({ change, remove }: { change: Change, remove: (change: Change) => void }) {
+function ChangeItem({ change, remove }: { change: Change; remove: (change: Change) => void }) {
     return (
         <li className='flex gap-1'>
             <DangerButton onClick={() => remove(change)}>X</DangerButton>
-            <p>{change.LevelName}, {change.Type} {change.EX && 'EX'}</p>
+            <p>
+                {change.LevelName}, {change.Type} {change.EX && 'EX'}
+            </p>
         </li>
     );
 }

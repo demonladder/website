@@ -16,7 +16,14 @@ function SegmentedButton({ children, onClick, isActive = false, isFirst, isLast,
     if (isLast) classes.push('last');
 
     return (
-        <button type='button' className={classes.join(' ')} style={{ width: `${1 / buttonCount * 100}%` }} onClick={onClick}><i className='bx bx-check text-2xl' hidden={!isActive} /> {children}</button>
+        <button
+            type='button'
+            className={classes.join(' ')}
+            style={{ width: `${(1 / buttonCount) * 100}%` }}
+            onClick={onClick}
+        >
+            <i className='bx bx-check text-2xl' hidden={!isActive} /> {children}
+        </button>
     );
 }
 
@@ -26,11 +33,24 @@ interface Props<T extends Record<string, string>> {
     onSetActive?: (key: keyof T) => void;
 }
 
-export default function SegmentedButtonGroup<T extends Record<string, string>>({ options, activeKey, onSetActive }: Props<T>) {
+export default function SegmentedButtonGroup<T extends Record<string, string>>({
+    options,
+    activeKey,
+    onSetActive,
+}: Props<T>) {
     return (
         <div className='segmented-button-group'>
             {Object.entries(options).map(([key, label], i, arr) => (
-                <SegmentedButton key={key} buttonCount={arr.length} isActive={activeKey === key} onClick={() => onSetActive?.(key)} isFirst={i === 0} isLast={i === arr.length - 1}>{label}</SegmentedButton>
+                <SegmentedButton
+                    key={key}
+                    buttonCount={arr.length}
+                    isActive={activeKey === key}
+                    onClick={() => onSetActive?.(key)}
+                    isFirst={i === 0}
+                    isLast={i === arr.length - 1}
+                >
+                    {label}
+                </SegmentedButton>
             ))}
         </div>
     );

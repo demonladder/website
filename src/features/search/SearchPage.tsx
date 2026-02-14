@@ -129,12 +129,35 @@ export default function Search() {
     }
 
     const { status: levelSearchStatus, data: levelSearchData } = useQuery({
-        queryKey: ['searchLevels', { ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? queryParams[QueryParamNames.Difficulty] : undefined, sort: queryParams[QueryParamNames.Sort], sortDirection: queryParams[QueryParamNames.SortDirection], page }],
-        queryFn: () => getLevels({ ...savedFilters, difficulty: queryParams[QueryParamNames.Difficulty] ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1 : undefined, sort: queryParams[QueryParamNames.Sort], sortDirection: queryParams[QueryParamNames.SortDirection], page }),
+        queryKey: [
+            'searchLevels',
+            {
+                ...savedFilters,
+                difficulty: queryParams[QueryParamNames.Difficulty]
+                    ? queryParams[QueryParamNames.Difficulty]
+                    : undefined,
+                sort: queryParams[QueryParamNames.Sort],
+                sortDirection: queryParams[QueryParamNames.SortDirection],
+                page,
+            },
+        ],
+        queryFn: () =>
+            getLevels({
+                ...savedFilters,
+                difficulty: queryParams[QueryParamNames.Difficulty]
+                    ? parseInt(queryParams[QueryParamNames.Difficulty]) - 1
+                    : undefined,
+                sort: queryParams[QueryParamNames.Sort],
+                sortDirection: queryParams[QueryParamNames.SortDirection],
+                page,
+            }),
     });
 
     const [userPage, setUserPage] = useSessionStorage('user-search-page', 0);
-    const searchUserOptions = useMemo(() => ({ name: savedFilters[QueryParamNames.Name], limit: 16, page: userPage }), [savedFilters, userPage]);
+    const searchUserOptions = useMemo(
+        () => ({ name: savedFilters[QueryParamNames.Name], limit: 16, page: userPage }),
+        [savedFilters, userPage],
+    );
     const { status: userSearchStatus, data: userSearchData } = useSearchUsers(searchUserOptions);
 
     function onNameChange(newName: string) {
@@ -168,50 +191,128 @@ export default function Search() {
 
     const filters: React.ReactNode[] = useMemo(() => {
         const filters: React.ReactNode[] = [];
-        if (savedFilters[QueryParamNames.MinRating] || savedFilters[QueryParamNames.MaxRating]) filters.push(<FilterLabel label={
-            savedFilters[QueryParamNames.MinRating] && savedFilters[QueryParamNames.MaxRating] ? `tier: ${savedFilters[QueryParamNames.MinRating]} - ${savedFilters[QueryParamNames.MaxRating]}`
-                : !savedFilters[QueryParamNames.MinRating] ? `tier: < ${savedFilters[QueryParamNames.MaxRating]}`
-                    : `tier: > ${savedFilters[QueryParamNames.MinRating]}`
-        } onRemove={() => {
-            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined }));
-            setQueryParams({ ...queryParams, [QueryParamNames.MinRating]: undefined, [QueryParamNames.MaxRating]: undefined });
-        }} />);
+        if (savedFilters[QueryParamNames.MinRating] || savedFilters[QueryParamNames.MaxRating])
+            filters.push(
+                <FilterLabel
+                    label={
+                        savedFilters[QueryParamNames.MinRating] && savedFilters[QueryParamNames.MaxRating]
+                            ? `tier: ${savedFilters[QueryParamNames.MinRating]} - ${savedFilters[QueryParamNames.MaxRating]}`
+                            : !savedFilters[QueryParamNames.MinRating]
+                              ? `tier: < ${savedFilters[QueryParamNames.MaxRating]}`
+                              : `tier: > ${savedFilters[QueryParamNames.MinRating]}`
+                    }
+                    onRemove={() => {
+                        setSavedFilters((prev) => ({
+                            ...prev,
+                            [QueryParamNames.MinRating]: undefined,
+                            [QueryParamNames.MaxRating]: undefined,
+                        }));
+                        setQueryParams({
+                            ...queryParams,
+                            [QueryParamNames.MinRating]: undefined,
+                            [QueryParamNames.MaxRating]: undefined,
+                        });
+                    }}
+                />,
+            );
 
-        if (savedFilters[QueryParamNames.MinEnjoyment] || savedFilters[QueryParamNames.MaxEnjoyment]) filters.push(<FilterLabel label={
-            savedFilters[QueryParamNames.MinEnjoyment] && savedFilters[QueryParamNames.MaxEnjoyment] ? `enjoyment: ${savedFilters[QueryParamNames.MinEnjoyment]} - ${savedFilters[QueryParamNames.MaxEnjoyment]}`
-                : !savedFilters[QueryParamNames.MinEnjoyment] ? `enjoyment: < ${savedFilters[QueryParamNames.MaxEnjoyment]}`
-                    : `enjoyment: > ${savedFilters[QueryParamNames.MinEnjoyment]}`
-        } onRemove={() => {
-            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined }));
-            setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoyment]: undefined, [QueryParamNames.MaxEnjoyment]: undefined });
-        }} />);
+        if (savedFilters[QueryParamNames.MinEnjoyment] || savedFilters[QueryParamNames.MaxEnjoyment])
+            filters.push(
+                <FilterLabel
+                    label={
+                        savedFilters[QueryParamNames.MinEnjoyment] && savedFilters[QueryParamNames.MaxEnjoyment]
+                            ? `enjoyment: ${savedFilters[QueryParamNames.MinEnjoyment]} - ${savedFilters[QueryParamNames.MaxEnjoyment]}`
+                            : !savedFilters[QueryParamNames.MinEnjoyment]
+                              ? `enjoyment: < ${savedFilters[QueryParamNames.MaxEnjoyment]}`
+                              : `enjoyment: > ${savedFilters[QueryParamNames.MinEnjoyment]}`
+                    }
+                    onRemove={() => {
+                        setSavedFilters((prev) => ({
+                            ...prev,
+                            [QueryParamNames.MinEnjoyment]: undefined,
+                            [QueryParamNames.MaxEnjoyment]: undefined,
+                        }));
+                        setQueryParams({
+                            ...queryParams,
+                            [QueryParamNames.MinEnjoyment]: undefined,
+                            [QueryParamNames.MaxEnjoyment]: undefined,
+                        });
+                    }}
+                />,
+            );
 
-        if (queryParams[QueryParamNames.Difficulty]) filters.push(<FilterLabel label={`difficulty: ${difficulties[queryParams[QueryParamNames.Difficulty] as keyof typeof difficulties]}`} onRemove={() => {
-            setQueryParams({ ...queryParams, [QueryParamNames.Difficulty]: undefined });
-        }} />);
+        if (queryParams[QueryParamNames.Difficulty])
+            filters.push(
+                <FilterLabel
+                    label={`difficulty: ${difficulties[queryParams[QueryParamNames.Difficulty] as keyof typeof difficulties]}`}
+                    onRemove={() => {
+                        setQueryParams({ ...queryParams, [QueryParamNames.Difficulty]: undefined });
+                    }}
+                />,
+            );
 
-        if (savedFilters[QueryParamNames.Length]) filters.push(<FilterLabel label={`length: ${lengths[savedFilters[QueryParamNames.Length] as keyof typeof lengths]}`} onRemove={() => {
-            setQueryParams({ ...queryParams, [QueryParamNames.Length]: undefined });
-            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.Length]: undefined }));
-        }} />);
+        if (savedFilters[QueryParamNames.Length])
+            filters.push(
+                <FilterLabel
+                    label={`length: ${lengths[savedFilters[QueryParamNames.Length] as keyof typeof lengths]}`}
+                    onRemove={() => {
+                        setQueryParams({ ...queryParams, [QueryParamNames.Length]: undefined });
+                        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.Length]: undefined }));
+                    }}
+                />,
+            );
 
-        if (savedFilters[QueryParamNames.MinSubmissionCount] || savedFilters[QueryParamNames.MaxSubmissionCount]) filters.push(<FilterLabel label={
-            savedFilters[QueryParamNames.MinSubmissionCount] && savedFilters[QueryParamNames.MaxSubmissionCount] ? `submissions: ${savedFilters[QueryParamNames.MinSubmissionCount]} - ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
-                : !savedFilters[QueryParamNames.MinSubmissionCount] ? `submissions: < ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
-                    : `submissions: > ${savedFilters[QueryParamNames.MinSubmissionCount]}`
-        } onRemove={() => {
-            setQueryParams({ ...queryParams, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined });
-            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinSubmissionCount]: undefined, [QueryParamNames.MaxSubmissionCount]: undefined }));
-        }} />);
+        if (savedFilters[QueryParamNames.MinSubmissionCount] || savedFilters[QueryParamNames.MaxSubmissionCount])
+            filters.push(
+                <FilterLabel
+                    label={
+                        savedFilters[QueryParamNames.MinSubmissionCount] &&
+                        savedFilters[QueryParamNames.MaxSubmissionCount]
+                            ? `submissions: ${savedFilters[QueryParamNames.MinSubmissionCount]} - ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
+                            : !savedFilters[QueryParamNames.MinSubmissionCount]
+                              ? `submissions: < ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
+                              : `submissions: > ${savedFilters[QueryParamNames.MinSubmissionCount]}`
+                    }
+                    onRemove={() => {
+                        setQueryParams({
+                            ...queryParams,
+                            [QueryParamNames.MinSubmissionCount]: undefined,
+                            [QueryParamNames.MaxSubmissionCount]: undefined,
+                        });
+                        setSavedFilters((prev) => ({
+                            ...prev,
+                            [QueryParamNames.MinSubmissionCount]: undefined,
+                            [QueryParamNames.MaxSubmissionCount]: undefined,
+                        }));
+                    }}
+                />,
+            );
 
-        if (savedFilters[QueryParamNames.MinEnjoymentCount] || savedFilters[QueryParamNames.MaxEnjoymentCount]) filters.push(<FilterLabel label={
-            savedFilters[QueryParamNames.MinEnjoymentCount] && savedFilters[QueryParamNames.MaxEnjoymentCount] ? `enjoyment ratings: ${savedFilters[QueryParamNames.MinEnjoymentCount]} - ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
-                : !savedFilters[QueryParamNames.MinEnjoymentCount] ? `enjoyment ratings: < ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
-                    : `enjoyment ratings: > ${savedFilters[QueryParamNames.MinEnjoymentCount]}`
-        } onRemove={() => {
-            setQueryParams({ ...queryParams, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined });
-            setSavedFilters((prev) => ({ ...prev, [QueryParamNames.MinEnjoymentCount]: undefined, [QueryParamNames.MaxEnjoymentCount]: undefined }));
-        }} />);
+        if (savedFilters[QueryParamNames.MinEnjoymentCount] || savedFilters[QueryParamNames.MaxEnjoymentCount])
+            filters.push(
+                <FilterLabel
+                    label={
+                        savedFilters[QueryParamNames.MinEnjoymentCount] &&
+                        savedFilters[QueryParamNames.MaxEnjoymentCount]
+                            ? `enjoyment ratings: ${savedFilters[QueryParamNames.MinEnjoymentCount]} - ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
+                            : !savedFilters[QueryParamNames.MinEnjoymentCount]
+                              ? `enjoyment ratings: < ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
+                              : `enjoyment ratings: > ${savedFilters[QueryParamNames.MinEnjoymentCount]}`
+                    }
+                    onRemove={() => {
+                        setQueryParams({
+                            ...queryParams,
+                            [QueryParamNames.MinEnjoymentCount]: undefined,
+                            [QueryParamNames.MaxEnjoymentCount]: undefined,
+                        });
+                        setSavedFilters((prev) => ({
+                            ...prev,
+                            [QueryParamNames.MinEnjoymentCount]: undefined,
+                            [QueryParamNames.MaxEnjoymentCount]: undefined,
+                        }));
+                    }}
+                />,
+            );
         return filters;
     }, [queryParams, savedFilters, setQueryParams, setSavedFilters]);
 
@@ -219,54 +320,95 @@ export default function Search() {
         <Page title='GDDL | Search'>
             <Heading1 className='mb-2'>Levels</Heading1>
             <div className='flex gap-2 items-center transition-all'>
-                <SearchInput ref={searchInputRef} onKeyDown={onKeyDown} value={queryParams[QueryParamNames.Name] ?? ''} onChange={(e) => onNameChange(e.target.value.trimStart().slice(0, 22))} onMenu={() => setShowFilters((prev) => !prev)} autoFocus placeholder='Search by name or ID' />
-                <IconButton color='filled' onClick={() => void onSearch()}><i className='bx bx-search' /></IconButton>
+                <SearchInput
+                    ref={searchInputRef}
+                    onKeyDown={onKeyDown}
+                    value={queryParams[QueryParamNames.Name] ?? ''}
+                    onChange={(e) => onNameChange(e.target.value.trimStart().slice(0, 22))}
+                    onMenu={() => setShowFilters((prev) => !prev)}
+                    autoFocus
+                    placeholder='Search by name or ID'
+                />
+                <IconButton color='filled' onClick={() => void onSearch()}>
+                    <i className='bx bx-search' />
+                </IconButton>
             </div>
             <Filters reset={reset} show={showFilters} />
             <SortMenu />
-            {levelSearchStatus === 'error' && <Heading2 className='text-center'>An error occurred while searching</Heading2>}
-            {levelSearchStatus === 'pending' &&
+            {levelSearchStatus === 'error' && (
+                <Heading2 className='text-center'>An error occurred while searching</Heading2>
+            )}
+            {levelSearchStatus === 'pending' && (
                 <div className='my-4'>
                     {Array.from({ length: 12 }, (_, i) => (
                         <LevelSkeleton key={i} />
                     ))}
                 </div>
-            }
-            {levelSearchStatus === 'success' && <>
-                {filters.length > 0 &&
-                    <div className='py-2'>
-                        <p><b className='text-lg'>Filters:</b> {...filters}</p>
+            )}
+            {levelSearchStatus === 'success' && (
+                <>
+                    {filters.length > 0 && (
+                        <div className='py-2'>
+                            <p>
+                                <b className='text-lg'>Filters:</b> {...filters}
+                            </p>
+                        </div>
+                    )}
+                    {levelSearchData.data && app.levelViewType === LevelViewType.LIST ? (
+                        <LevelRenderer
+                            element={Level}
+                            levels={levelSearchData.data}
+                            selectedLevel={selection}
+                            className='my-2'
+                        />
+                    ) : (
+                        <LevelRenderer
+                            element={GridLevel}
+                            levels={levelSearchData.data}
+                            className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2'
+                            selectedLevel={selection}
+                        />
+                    )}
+                    <div className='my-4'>
+                        <PageButtons limit={16} total={levelSearchData.total} page={page} onPageChange={setPage} />
+                        <p className='text-center'>
+                            <b>{levelSearchData.total}</b> level{pluralS(levelSearchData.total)} found
+                        </p>
                     </div>
-                }
-                {levelSearchData.data && app.levelViewType === LevelViewType.LIST
-                    ? <LevelRenderer element={Level} levels={levelSearchData.data} selectedLevel={selection} className='my-2' />
-                    : <LevelRenderer element={GridLevel} levels={levelSearchData.data} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2' selectedLevel={selection} />
-                }
-                <div className='my-4'>
-                    <PageButtons limit={16} total={levelSearchData.total} page={page} onPageChange={setPage} />
-                    <p className='text-center'><b>{levelSearchData.total}</b> level{pluralS(levelSearchData.total)} found</p>
-                </div>
-            </>}
+                </>
+            )}
             <section>
                 <Heading1 className='mb-2'>Users</Heading1>
-                {userSearchStatus === 'pending' &&
-                    <LoadingSpinner />
-                }
-                {userSearchStatus === 'success' &&
+                {userSearchStatus === 'pending' && <LoadingSpinner />}
+                {userSearchStatus === 'success' && (
                     <>
-                        <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mb-4'>{userSearchData.data.map((user) => <UserCard key={user.ID} user={user} />)}</ul>
-                        <PageButtons limit={userSearchData.limit} total={userSearchData.total} page={userSearchData.page} onPageChange={setUserPage} />
-                        <p className='text-center'><b>{userSearchData.total}</b> user{pluralS(userSearchData.total)}</p>
+                        <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mb-4'>
+                            {userSearchData.data.map((user) => (
+                                <UserCard key={user.ID} user={user} />
+                            ))}
+                        </ul>
+                        <PageButtons
+                            limit={userSearchData.limit}
+                            total={userSearchData.total}
+                            page={userSearchData.page}
+                            onPageChange={setUserPage}
+                        />
+                        <p className='text-center'>
+                            <b>{userSearchData.total}</b> user{pluralS(userSearchData.total)}
+                        </p>
                     </>
-                }
+                )}
             </section>
         </Page>
     );
 }
 
-function FilterLabel({ label, onRemove }: { label: string, onRemove: () => void }) {
+function FilterLabel({ label, onRemove }: { label: string; onRemove: () => void }) {
     return (
-        <button className='bg-theme-500 px-1 mx-1 rounded-md border border-theme-400 hover:border-red-500 group slow-effect-transition' onClick={onRemove}>
+        <button
+            className='bg-theme-500 px-1 mx-1 rounded-md border border-theme-400 hover:border-red-500 group slow-effect-transition'
+            onClick={onRemove}
+        >
             {label} <span className='mx-1 group-hover:text-red-500 slow-effect-transition font-bold'>X</span>
         </button>
     );

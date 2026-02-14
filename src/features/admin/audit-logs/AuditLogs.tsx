@@ -23,19 +23,32 @@ export default function AuditLogs() {
             <div className='flex justify-between'>
                 <Heading2>Audit logs</Heading2>
                 <div>
-                    <SecondaryButton onClick={() => void auditLogs.refetch()}><i className='bx bx-revision' /> Refresh</SecondaryButton>
+                    <SecondaryButton onClick={() => void auditLogs.refetch()}>
+                        <i className='bx bx-revision' /> Refresh
+                    </SecondaryButton>
                 </div>
             </div>
-            <Select label={`Filter by: ${eventFilterOptions[eventFilter]}`} options={eventFilterOptions} onOption={setEventFilter} />
-            {auditLogs.isSuccess &&
+            <Select
+                label={`Filter by: ${eventFilterOptions[eventFilter]}`}
+                options={eventFilterOptions}
+                onOption={setEventFilter}
+            />
+            {auditLogs.isSuccess && (
                 <>
                     <Divider />
-                    <ul>{auditLogs.data.logs.map((log) => (
-                        <AuditLog log={log} users={auditLogs.data.users} key={log.ID} />
-                    ))}</ul>
-                    <PageButtons onPageChange={setPage} page={page} limit={auditLogs.data.limit} total={auditLogs.data.total} />
+                    <ul>
+                        {auditLogs.data.logs.map((log) => (
+                            <AuditLog log={log} users={auditLogs.data.users} key={log.ID} />
+                        ))}
+                    </ul>
+                    <PageButtons
+                        onPageChange={setPage}
+                        page={page}
+                        limit={auditLogs.data.limit}
+                        total={auditLogs.data.total}
+                    />
                 </>
-            }
+            )}
         </div>
     );
 }

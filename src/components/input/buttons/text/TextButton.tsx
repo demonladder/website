@@ -7,6 +7,8 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function TextButton({ children, outline, ...props }: Props) {
     return (
-        <button {...props} className={'text-button ' + (props.className ?? '') + (outline ? ' outlined' : '')}>{children}</button>
+        <button {...props} className={'text-button ' + (props.className ?? '') + (outline ? ' outlined' : '')}>
+            {children}
+        </button>
     );
 }

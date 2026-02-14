@@ -5,9 +5,9 @@ import { searchUsers, type UserWithRoles } from '../api/user/searchUsers';
 import GetUser from '../api/user/GetUser';
 
 interface Props {
-    ID: string,
-    userID?: number,
-    maxUsersOnList?: number,
+    ID: string;
+    userID?: number;
+    maxUsersOnList?: number;
     onUserSelect?: (user: UserWithRoles) => void;
 }
 
@@ -25,15 +25,17 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
 
     useEffect(() => {
         if (userID !== undefined) {
-            GetUser(userID).then((user) => {
-                setActiveUser({
-                    ID: user.ID,
-                    Name: user.Name,
-                    Introduction: user.Introduction,
-                    avatar: user.avatar,
-                    roles: user.Roles,
-                });
-            }).catch(console.error);
+            GetUser(userID)
+                .then((user) => {
+                    setActiveUser({
+                        ID: user.ID,
+                        Name: user.Name,
+                        Introduction: user.Introduction,
+                        avatar: user.avatar,
+                        roles: user.Roles,
+                    });
+                })
+                .catch(console.error);
         }
     }, [userID]);
 
@@ -50,21 +52,43 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         setSearchQuery(value);
     }, []);
 
-    const onSetResult = useCallback((user?: UserWithRoles) => {
-        setActiveUser(user);
-        if (user && onUserSelect) onUserSelect(user);
-    }, [onUserSelect]);
+    const onSetResult = useCallback(
+        (user?: UserWithRoles) => {
+            setActiveUser(user);
+            if (user && onUserSelect) onUserSelect(user);
+        },
+        [onUserSelect],
+    );
 
-    const result = useMemo(() => ({
-        activeUser,
-        setQuery,
-        clear,
-        markInvalid: () => setIsInvalid(true),
-        SearchBox: (<SearchBox value={search} getLabel={(r) => r.Name} getName={(r) => r.Name} onChange={setSearch} onDebouncedChange={setSearchQuery} id={ID} list={data?.data.map((d) => ({
-            ...d,
-            label: d.Name,
-        })) || []} onResult={onSetResult} status={status} placeholder='Search user...' invalid={isInvalid} />),
-    }), [activeUser, setQuery, clear, search, setSearch, ID, data, onSetResult, status, isInvalid]);
+    const result = useMemo(
+        () => ({
+            activeUser,
+            setQuery,
+            clear,
+            markInvalid: () => setIsInvalid(true),
+            SearchBox: (
+                <SearchBox
+                    value={search}
+                    getLabel={(r) => r.Name}
+                    getName={(r) => r.Name}
+                    onChange={setSearch}
+                    onDebouncedChange={setSearchQuery}
+                    id={ID}
+                    list={
+                        data?.data.map((d) => ({
+                            ...d,
+                            label: d.Name,
+                        })) || []
+                    }
+                    onResult={onSetResult}
+                    status={status}
+                    placeholder='Search user...'
+                    invalid={isInvalid}
+                />
+            ),
+        }),
+        [activeUser, setQuery, clear, search, setSearch, ID, data, onSetResult, status, isInvalid],
+    );
 
     return result;
 }

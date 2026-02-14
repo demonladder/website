@@ -37,27 +37,48 @@ export default function BetaAccess() {
     return (
         <section>
             <Heading2>Beta Access</Heading2>
-            <p>Control who can access <b>beta.gdladder.com</b></p>
+            <p>
+                Control who can access <b>beta.gdladder.com</b>
+            </p>
             <div>
                 {userSearch.SearchBox}
-                <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>Grant access</PrimaryButton>
+                <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>
+                    Grant access
+                </PrimaryButton>
             </div>
             {generatedToken && (
                 <div className='mt-3'>
-                    <p className='text-green-500'>Token generated: <code className='bg-theme-950 px-2 py-1 rounded-lg outline' onClick={selectText}>{generatedToken}</code></p>
+                    <p className='text-green-500'>
+                        Token generated:{' '}
+                        <code className='bg-theme-950 px-2 py-1 rounded-lg outline' onClick={selectText}>
+                            {generatedToken}
+                        </code>
+                    </p>
                     <p>Share this token with the user to grant them access.</p>
-                    <p>For security reasons, this token <b>will not appear again</b> when you click away!</p>
+                    <p>
+                        For security reasons, this token <b>will not appear again</b> when you click away!
+                    </p>
                 </div>
             )}
             {status === 'success' && (
                 <div className='mt-6'>
-                    <PageButtons onPageChange={setPage} page={page} limit={accessTokens.limit} total={accessTokens.total} />
+                    <PageButtons
+                        onPageChange={setPage}
+                        page={page}
+                        limit={accessTokens.limit}
+                        total={accessTokens.total}
+                    />
                     <div className='flex flex-wrap gap-8'>
                         {accessTokens.tokens.map((token) => (
                             <AccessToken token={token} key={token.ID} />
                         ))}
                     </div>
-                    <PageButtons onPageChange={setPage} page={page} limit={accessTokens.limit} total={accessTokens.total} />
+                    <PageButtons
+                        onPageChange={setPage}
+                        page={page}
+                        limit={accessTokens.limit}
+                        total={accessTokens.total}
+                    />
                 </div>
             )}
         </section>
