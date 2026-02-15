@@ -62,8 +62,8 @@ const deviceOptions: Record<Device, string> = {
 };
 
 const statusOptions: Record<SubmissionStatus, string> = {
-    beaten: 'Beaten',
-    beating: 'Beating',
+    beaten: 'Completed',
+    beating: 'In progress',
     dropped: 'Dropped',
     hold: 'On hold',
     ptb: 'Plan to beat',
