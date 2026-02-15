@@ -22,19 +22,11 @@ import { LevelViewType } from '../../../context/app/AppContext';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import type { SubmissionStatus } from '../api/getUserPendingSubmissions';
 import Select from '../../../components/input/select/Select';
+import { useStatusCounts } from '../hooks/useStatusCounts';
 
 interface Props {
     user: User;
 }
-
-const statusOptions: Record<SubmissionStatus | 'all', string> = {
-    all: 'All',
-    beaten: 'Completed',
-    beating: 'In progress',
-    dropped: 'Dropped',
-    hold: 'On hold',
-    ptb: 'Plan to beat',
-};
 
 export default function Submissions({ user }: Props) {
     const [page, setPage] = useSessionStorage(`profilePageIndex_${user.ID}`, 0);
@@ -44,7 +36,18 @@ export default function Submissions({ user }: Props) {
     });
     const app = useApp();
     const [query, lateQuery, setQuery] = useLateValue('', 500);
-    const [statusOptionsKey, setStatusOptionsKey] = useState<SubmissionStatus | 'all'>('all');
+    const [statusOptionsKey, setStatusOptionsKey] = useState<SubmissionStatus | 'all'>('beaten');
+
+    const { data: statusCounts } = useStatusCounts(user.ID);
+
+    const statusOptions: Record<SubmissionStatus | 'all', string> = {
+        all: 'All' + (statusCounts ? ` (${Object.values(statusCounts).reduce((acc, cur) => acc + cur, 0)})` : ''),
+        beaten: 'Completed' + (statusCounts ? ` (${statusCounts.beaten})` : ''),
+        beating: 'In progress' + (statusCounts ? ` (${statusCounts.beating})` : ''),
+        dropped: 'Dropped' + (statusCounts ? ` (${statusCounts.dropped})` : ''),
+        hold: 'On hold' + (statusCounts ? ` (${statusCounts.hold})` : ''),
+        ptb: 'Plan to beat' + (statusCounts ? ` (${statusCounts.ptb})` : ''),
+    };
 
     const { status, data: submissionResult } = useQuery({
         queryKey: ['user', user.ID, 'submissions', { page, name: lateQuery, status: statusOptionsKey, ...sort }],
