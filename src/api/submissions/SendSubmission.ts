@@ -1,7 +1,8 @@
+import type { SubmissionStatus } from '../../features/profile/api/getUserPendingSubmissions';
 import APIClient from '../APIClient';
-import { Device } from '../core/enums/device.enum';
+import type { Device } from '../core/enums/device.enum';
 
-interface SubmitDTO {
+interface SubmitRequest {
     levelID: number;
     rating?: number | null;
     enjoyment?: number | null;
@@ -10,12 +11,13 @@ interface SubmitDTO {
     proof?: string | null;
     isProofPrivate?: boolean;
     progress?: number;
+    status?: SubmissionStatus;
     attempts?: number;
     isSolo?: boolean;
     secondPlayerID?: number;
 }
 
-export default async function SendSubmission(submission: SubmitDTO) {
+export async function sendSubmission(submission: SubmitRequest) {
     const res = await APIClient.post<{ wasAuto: boolean }>('/submissions', submission);
     return res.data;
 }

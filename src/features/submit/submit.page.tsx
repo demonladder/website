@@ -20,7 +20,7 @@ import { validateLink } from '../../utils/validators/validateLink';
 import SegmentedButtonGroup from '../../components/input/buttons/segmented/SegmentedButtonGroup';
 import ListItem from '../../components/shared/ListItem';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import SendSubmission from '../../api/submissions/SendSubmission';
+import { sendSubmission } from '../../api/submissions/sendSubmission';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
 import useSession from '../../hooks/useSession';
@@ -149,7 +149,7 @@ export default function SubmitPage() {
     // }, [statusKey]);
 
     const submitMutation = useMutation({
-        mutationFn: SendSubmission,
+        mutationFn: sendSubmission,
     });
 
     function submitForm(e: React.FormEvent<HTMLFormElement>) {

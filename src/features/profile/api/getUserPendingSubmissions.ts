@@ -8,7 +8,7 @@ import Song from '../../level/types/Song';
 export type UserPendingSubmission = Pick<PendingSubmission, 'ID' | 'Rating' | 'Enjoyment' | 'Proof' | 'DateAdded'> & {
     Position?: number;
     Level: Pick<Level, 'ID' | 'Rating' | 'Enjoyment'> & {
-        Meta: Pick<LevelMeta, 'Name' | 'Difficulty' | 'Length' | 'Rarity' | 'IsTwoPlayer'> & {
+        Meta: Pick<LevelMeta, 'Name' | 'Difficulty' | 'Length' | 'Rarity'> & {
             Song: Pick<Song, 'Name'>;
             Publisher: Pick<Publisher, 'name'> | null;
         };
@@ -24,11 +24,14 @@ interface GetUserPendingSubmissionsResponse {
 
 export interface GetUserPendingSubmissionOptions {
     page?: number;
+    status?: SubmissionStatus;
 }
+
+export type SubmissionStatus = 'beaten' | 'beating' | 'hold' | 'dropped' | 'ptb';
 
 export async function getUserPendingSubmissions(userID: number, options?: GetUserPendingSubmissionOptions) {
     const res = await APIClient.get<GetUserPendingSubmissionsResponse>(`/user/${userID}/submissions`, {
-        params: { pending: true, sort: 'dateChanged', page: options?.page, limit: 12 },
+        params: { pending: true, sort: 'dateChanged', page: options?.page, limit: 12, status: options?.status },
     });
     return res.data;
 }

@@ -2,21 +2,21 @@ import { useRef, useState } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import { SecondaryButton } from '../../ui/buttons/SecondaryButton';
 
-interface Props<S, K> {
+interface Props<T, K> {
     label: string | React.ReactNode;
     icon?: React.ReactNode;
-    options: S;
+    options: T;
     onOption?: (key: K) => void;
     id?: string;
 }
 
-export default function Select<S extends Record<string, string>, K = S[keyof S]>({
+export default function Select<T extends Record<K, string>, K extends string>({
     label,
     icon,
     options,
     onOption,
     id,
-}: Props<S, K>) {
+}: Props<T, K>) {
     const [show, setShow] = useState(false);
     const menuRef = useRef<HTMLUListElement>(null);
     const [filter, setFilter] = useState('');
@@ -69,14 +69,14 @@ export default function Select<S extends Record<string, string>, K = S[keyof S]>
                         />
                     </li>
                     {Object.entries(options)
-                        .filter(([_, value]) => value.toLowerCase().startsWith(filter.toLowerCase()))
+                        .filter(([_, value]) => (value as string).toLowerCase().startsWith(filter.toLowerCase()))
                         .map(([key, value]) => (
                             <li key={key}>
                                 <button
                                     className='px-4 py-1 text-start w-full hover:bg-theme-700 round:rounded transition-colors'
                                     onClick={() => onClick(key as K)}
                                 >
-                                    {value}
+                                    {value as string}
                                 </button>
                             </li>
                         ))}

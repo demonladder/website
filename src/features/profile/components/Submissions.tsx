@@ -19,10 +19,22 @@ import useSession from '../../../hooks/useSession';
 import { copyText } from '../../../utils/copyText';
 import { useApp } from '../../../context/app/useApp';
 import { LevelViewType } from '../../../context/app/AppContext';
+import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
+import type { SubmissionStatus } from '../api/getUserPendingSubmissions';
+import Select from '../../../components/input/select/Select';
 
 interface Props {
     user: User;
 }
+
+const statusOptions: Record<SubmissionStatus | 'all', string> = {
+    all: 'All',
+    beaten: 'Completed',
+    beating: 'In progress',
+    dropped: 'Dropped',
+    hold: 'On hold',
+    ptb: 'Plan to beat',
+};
 
 export default function Submissions({ user }: Props) {
     const [page, setPage] = useSessionStorage(`profilePageIndex_${user.ID}`, 0);
@@ -32,11 +44,18 @@ export default function Submissions({ user }: Props) {
     });
     const app = useApp();
     const [query, lateQuery, setQuery] = useLateValue('', 500);
-    const [onlyIncomplete, setOnlyIncomplete] = useState(false);
+    const [statusOptionsKey, setStatusOptionsKey] = useState<SubmissionStatus | 'all'>('all');
 
     const { status, data: submissionResult } = useQuery({
-        queryKey: ['user', user.ID, 'submissions', { page, name: lateQuery, onlyIncomplete, ...sort }],
-        queryFn: () => getUserSubmissions({ userID: user.ID, page, name: lateQuery, onlyIncomplete, ...sort }),
+        queryKey: ['user', user.ID, 'submissions', { page, name: lateQuery, status: statusOptionsKey, ...sort }],
+        queryFn: () =>
+            getUserSubmissions({
+                userID: user.ID,
+                page,
+                name: lateQuery,
+                status: statusOptionsKey !== 'all' ? statusOptionsKey : undefined,
+                ...sort,
+            }),
     });
 
     useEffect(() => {
@@ -55,17 +74,22 @@ export default function Submissions({ user }: Props) {
                     />
                 </div>
                 <SortMenu set={setSort} />
-                <button
-                    className={
-                        'w-7 h-7 grid place-items-center text-black ' +
-                        (onlyIncomplete ? 'bg-theme-950 text-white' : 'bg-white')
-                    }
-                    onClick={() => setOnlyIncomplete((prev) => !prev)}
-                >
-                    <span>
-                        <b>%</b>
-                    </span>
-                </button>
+                <div className='lg:hidden'>
+                    <Select
+                        label={'Status'}
+                        options={statusOptions}
+                        key={statusOptionsKey}
+                        onOption={(key) => setStatusOptionsKey(key as SubmissionStatus | 'all')}
+                        id='profileSubmissionsStatusSelect'
+                    />
+                </div>
+                <div className='grow max-lg:hidden'>
+                    <SegmentedButtonGroup
+                        options={statusOptions}
+                        activeKey={statusOptionsKey}
+                        onSetActive={setStatusOptionsKey}
+                    />
+                </div>
             </div>
             {status === 'pending' && Array.from({ length: 16 }).map((_, i) => <LevelSkeleton key={i} />)}
             {status === 'success' && (
@@ -75,7 +99,7 @@ export default function Submissions({ user }: Props) {
                     ) : (
                         <GridList levels={submissionResult.submissions} user={user} />
                     )}
-                    {submissionResult.submissions.length === 0 && <p>No levels</p>}
+                    {submissionResult.submissions.length === 0 && <p>No submissions</p>}
                     <PageButtons
                         onPageChange={setPage}
                         page={page}

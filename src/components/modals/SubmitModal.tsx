@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Modal from '../layout/Modal';
 import Select from '../shared/input/Select';
-import SendSubmission from '../../api/submissions/SendSubmission';
+import { sendSubmission } from '../../api/submissions/sendSubmission';
 import { NumberInput, URLInput } from '../shared/input/Input';
 import { SecondaryButton } from '../ui/buttons/SecondaryButton';
 import { PrimaryButton } from '../ui/buttons/PrimaryButton';
@@ -23,6 +23,8 @@ import FormGroup from '../form/FormGroup';
 import { Device } from '../../api/core/enums/device.enum';
 import { useApp } from '../../context/app/useApp';
 import Checkbox from '../input/CheckBox';
+import type { SubmissionStatus } from '../../features/profile/api/getUserPendingSubmissions';
+import { clamp } from '../../utils/clamp';
 
 interface Props {
     level: {
@@ -59,6 +61,14 @@ const deviceOptions: Record<Device, string> = {
     mobile: 'Mobile',
 };
 
+const statusOptions: Record<SubmissionStatus, string> = {
+    beaten: 'Beaten',
+    beating: 'Beating',
+    dropped: 'Dropped',
+    hold: 'On hold',
+    ptb: 'Plan to beat',
+};
+
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
 
@@ -70,7 +80,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const [refreshRate, setRefreshRate] = useState((app.defaultRefreshRate ?? 60).toString());
     const [proof, setProof] = useState('');
     const [isProofPrivate, setIsProofPrivate] = useState(false);
-    const [progress, setProgress] = useState('');
+    const [progress, setProgress] = useState(100);
     const [attempts, setAttempts] = useState('');
     const [wasSolo, setWasSolo] = useState(true);
     const [randomAttempts] = useState(
@@ -79,6 +89,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             return 15 * x ** 2 + 200 + (Math.random() * 2 - 1) * x ** 0.5 * 100;
         })(level.Rating),
     );
+    const [statusOptionsKey, setStatusOptionsKey] = useState<SubmissionStatus>('beaten');
 
     const session = useSession();
 
@@ -96,7 +107,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         setRefreshRate(userSubmission.RefreshRate.toString());
         setDeviceKey(userSubmission.Device);
         if (userSubmission.Proof !== null) setProof(userSubmission.Proof.toString());
-        setProgress(userSubmission.Progress.toString());
+        setProgress(userSubmission.Progress);
         if (userSubmission.Attempts !== null) setAttempts(userSubmission.Attempts.toString());
         setWasSolo(userSubmission.IsSolo);
         if (userSubmission.SecondaryUser) secondPlayerSearch.setQuery(userSubmission.SecondaryUser.Name);
@@ -123,7 +134,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     });
 
     const submitMutation = useMutation({
-        mutationFn: SendSubmission,
+        mutationFn: sendSubmission,
     });
 
     function submitForm(e: React.FormEvent<HTMLFormElement>) {
@@ -171,7 +182,8 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 device: deviceKey,
                 proof: proof.length > 0 ? proof : undefined,
                 isProofPrivate,
-                progress: parseInt(progress),
+                progress,
+                status: statusOptionsKey,
                 attempts: attemptCount,
                 isSolo: wasSolo,
                 secondPlayerID: secondPlayerSearch.activeUser?.ID,
@@ -208,6 +220,29 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
 
     function ratingChange(e: React.ChangeEvent<HTMLInputElement>) {
         validateIntInputChange(e, setTier);
+    }
+
+    function handleProgressChange(value: number) {
+        const p = Math.min(value, 100);
+        setProgress(p);
+        if (p === 100) {
+            setStatusOptionsKey('beaten');
+        } else if (p === 0) {
+            setStatusOptionsKey('ptb');
+        } else if (statusOptionsKey === 'beaten') {
+            setStatusOptionsKey('beating');
+        }
+    }
+
+    function handleStatusChange(status: SubmissionStatus) {
+        setStatusOptionsKey(status);
+        if (status === 'beaten') {
+            setProgress(100);
+        } else if (status === 'ptb') {
+            setProgress(0);
+        } else {
+            setProgress(clamp(progress, 1, 99));
+        }
     }
 
     const isTierValid = useMemo(() => {
@@ -318,17 +353,27 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         <FormInputLabel>Percent</FormInputLabel>
                         <NumberInput
                             value={progress}
-                            onChange={(e) => setProgress(e.target.value)}
+                            onChange={(e) => handleProgressChange(parseInt(e.target.value))}
                             min={1}
                             max={100}
                             inputMode='numeric'
                             placeholder='100'
+                            required
                         />
                         <FormInputDescription>
                             Optional, defaults to 100. Will not affect ratings if less than 100.
                         </FormInputDescription>
                     </FormGroup>
                 )}
+                <FormGroup>
+                    <FormInputLabel htmlFor='submitStatus'>Status</FormInputLabel>
+                    <Select
+                        id='submitStatus'
+                        options={statusOptions}
+                        activeKey={statusOptionsKey}
+                        onChange={handleStatusChange}
+                    />
+                </FormGroup>
                 <FormGroup>
                     <FormInputLabel>Attempts</FormInputLabel>
                     <NumberInput
