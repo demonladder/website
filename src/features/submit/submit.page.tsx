@@ -5,7 +5,6 @@ import { routes } from '../../routes/route-definitions';
 import type { FullLevel } from '../../api/types/compounds/FullLevel';
 import WarningBox from '../../components/message/WarningBox';
 import { LevelLengths } from '../level/types/LevelMeta';
-import FormGroup from '../../components/form/FormGroup';
 import FormInputLabel from '../../components/form/FormInputLabel';
 import { NumberInput, URLInput } from '../../components/shared/input/Input';
 import Select from '../../components/shared/input/Select';
@@ -20,13 +19,14 @@ import { validateLink } from '../../utils/validators/validateLink';
 import SegmentedButtonGroup from '../../components/input/buttons/segmented/SegmentedButtonGroup';
 import ListItem from '../../components/shared/ListItem';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import SendSubmission from '../../api/submissions/SendSubmission';
+import { sendSubmission } from '../../api/submissions/sendSubmission';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
 import useSession from '../../hooks/useSession';
 import useUserSearch from '../../hooks/useUserSearch';
 import { useSubmission } from '../../components/modals/useSubmission';
 import FloatingLoadingSpinner from '../../components/ui/FloatingLoadingSpinner';
+import type { SubmissionStatus } from '../profile/api/getUserPendingSubmissions';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
@@ -52,12 +52,13 @@ const deviceOptions: Record<Device, string> = {
     mobile: 'Mobile',
 };
 
-// const statusOptions: Record<string, string> = {
-//     planning: 'Plan to beat',
-//     beating: 'Beating',
-//     completed: 'Completed',
-//     dropped: 'Dropped',
-// };
+const statusOptions: Record<SubmissionStatus, string> = {
+    beaten: 'Completed',
+    beating: 'In progress',
+    hold: 'On hold',
+    dropped: 'Dropped',
+    ptb: 'Plan to beat',
+};
 
 export default function SubmitPage() {
     const level = useLoaderData<FullLevel | null>();
@@ -73,12 +74,12 @@ export default function SubmitPage() {
     const [tier, setTier] = useState<string>('');
     const [enjoymentKey, setEnjoymentKey] = useState<EnjoymentOptions>('-1');
     const [deviceKey, setDeviceKey] = useState(app.defaultDevice ?? Device.PC);
-    // const [statusKey, setStatusKey] = useState('completed');
+    const [statusKey, setStatusKey] = useState<keyof typeof statusOptions>('beaten');
     const [refreshRate, setRefreshRate] = useState((app.defaultRefreshRate ?? 60).toString());
     const [proof, setProof] = useState('');
     const [isProofPrivate, setIsProofPrivate] = useState(false);
-    const [progress, setProgress] = useState('');
-    const [attempts, setAttempts] = useState('');
+    const [progress, setProgress] = useState(100);
+    const [attempts, setAttempts] = useState<number>();
     const [wasSolo, setWasSolo] = useState(true);
     const [randomAttempts] = useState(
         ((x: number | null) => {
@@ -105,8 +106,8 @@ export default function SubmitPage() {
             setDeviceKey(existingSubmission.Device);
             setProof(existingSubmission.Proof ?? '');
             setIsProofPrivate(existingSubmission.IsProofPrivate);
-            setProgress(existingSubmission.Progress.toString());
-            setAttempts(existingSubmission.Attempts?.toString() ?? '');
+            setProgress(existingSubmission.Progress);
+            setAttempts(existingSubmission.Attempts ?? undefined);
             setWasSolo(existingSubmission.IsSolo);
         }
     }, [existingSubmission]);
@@ -124,32 +125,43 @@ export default function SubmitPage() {
         validateIntInputChange(e, setTier);
     }
 
-    const isTierValid = useMemo(() => {
-        if (tier === '') return false;
-        const rating = parseInt(tier);
-        return !isNaN(rating) && rating >= 1 && rating <= MAX_TIER;
-    }, [tier]);
-
-    const isEnjoymentValid = useMemo(() => {
-        return enjoymentKey !== '-1';
-    }, [enjoymentKey]);
-
-    const tierEnjoymentInvalid = !isTierValid && !isEnjoymentValid;
-
     const requiresProof = useMemo(() => {
         if (Math.round(level?.Rating ?? level?.DefaultRating ?? 1) >= 25) return true;
         if (parseInt(tier) >= 25) return true;
         return false;
     }, [level?.Rating, level?.DefaultRating, tier]);
 
-    // useEffect(() => {
-    //     if (statusKey === 'completed') {
-    //         setProgress('100');
-    //     }
-    // }, [statusKey]);
+    function handleStatusChange(status: SubmissionStatus) {
+        setStatusKey(status);
+        if (status === 'beaten') {
+            setProgress(100);
+        } else if (status === 'ptb') {
+            setTier('');
+            setEnjoymentKey('-1');
+            setProgress(0);
+            setAttempts(undefined);
+        } else {
+            setProgress(Math.min(Math.max(progress, 1), 99));
+        }
+    }
+
+    function handleProgressChange(value: number) {
+        const p = Math.min(Math.max(value, 0), 100);
+        setProgress(p);
+        if (p === 100) {
+            setStatusKey('beaten');
+        } else if (p === 0) {
+            setStatusKey('ptb');
+            setTier('');
+            setEnjoymentKey('-1');
+            setAttempts(undefined);
+        } else if (statusKey === 'ptb' || statusKey === 'beaten') {
+            setStatusKey('beating');
+        }
+    }
 
     const submitMutation = useMutation({
-        mutationFn: SendSubmission,
+        mutationFn: sendSubmission,
     });
 
     function submitForm(e: React.FormEvent<HTMLFormElement>) {
@@ -167,8 +179,6 @@ export default function SubmitPage() {
             if (rating >= 25 && !proof) {
                 return toast.error('Proof is required if you want to rate a level 25 or higher!');
             }
-        } else if (enjoyment === null) {
-            return toast.error("Rating and enjoyment can't both be empty!");
         }
 
         if (parseInt(refreshRate) < MINIMUM_REFRESH_RATE) {
@@ -179,9 +189,8 @@ export default function SubmitPage() {
             return toast.error('Proof link is invalid!');
         }
 
-        const attemptCount = parseInt(attempts);
-        if (!isNaN(attemptCount) && (attemptCount <= 0 || attemptCount.toString() !== attempts)) {
-            return toast.error('Attempt count must be a whole number greater than 0!');
+        if (attempts && attempts <= 0) {
+            return toast.error('Attempt count must be a number greater than 0!');
         }
 
         const loadingHandle = toast.loading('Submitting...');
@@ -194,8 +203,9 @@ export default function SubmitPage() {
                 device: deviceKey,
                 proof: proof || null,
                 isProofPrivate,
-                progress: parseInt(progress),
-                attempts: attemptCount,
+                progress,
+                status: statusKey,
+                attempts,
                 isSolo: wasSolo,
                 secondPlayerID: secondPlayerSearch.activeUser?.ID,
             },
@@ -230,7 +240,7 @@ export default function SubmitPage() {
                                 autoCorrect='off'
                                 autoCapitalize='off'
                                 spellCheck='false'
-                                className='grid grid-cols-2 gap-4 relative'
+                                className='grid grid-cols-2 gap-4 relative mt-4'
                             >
                                 <FloatingLoadingSpinner isLoading={status === 'pending'} />
                                 {level.Meta.Length === LevelLengths.PLATFORMER && (
@@ -239,7 +249,7 @@ export default function SubmitPage() {
                                         tiers yet!
                                     </WarningBox>
                                 )}
-                                <FormGroup>
+                                <div>
                                     <FormInputLabel htmlFor='submitRating'>Tier</FormInputLabel>
                                     <NumberInput
                                         id='submitRating'
@@ -248,24 +258,21 @@ export default function SubmitPage() {
                                         inputMode='numeric'
                                         min={1}
                                         max={MAX_TIER}
-                                        invalid={tierEnjoymentInvalid}
-                                        required={tierEnjoymentInvalid}
                                         autoFocus
                                         disabled={level.Meta.Length === LevelLengths.PLATFORMER}
                                     />
-                                </FormGroup>
-                                <FormGroup>
+                                </div>
+                                <div>
                                     <FormInputLabel>Enjoyment</FormInputLabel>
                                     <Select
                                         id='submitEnjoyment'
                                         options={enjoymentOptions}
                                         activeKey={enjoymentKey}
                                         onChange={setEnjoymentKey}
-                                        invalid={tierEnjoymentInvalid}
                                         zIndex={1030}
                                     />
-                                </FormGroup>
-                                <FormGroup>
+                                </div>
+                                <div>
                                     <FormInputLabel htmlFor='submitRefreshRate'>FPS</FormInputLabel>
                                     <NumberInput
                                         id='submitRefreshRate'
@@ -275,8 +282,8 @@ export default function SubmitPage() {
                                         invalid={parseInt(refreshRate) < MINIMUM_REFRESH_RATE}
                                     />
                                     <p className='text-sm text-gray-400'>At least {MINIMUM_REFRESH_RATE}fps</p>
-                                </FormGroup>
-                                <FormGroup>
+                                </div>
+                                <div>
                                     <FormInputLabel htmlFor='submitDevice'>
                                         Device <span className='text-red-600'>*</span>
                                     </FormInputLabel>
@@ -285,12 +292,8 @@ export default function SubmitPage() {
                                         onSetActive={setDeviceKey}
                                         options={deviceOptions}
                                     />
-                                </FormGroup>
-                                {/*<FormGroup className='col-span-2'>
-                                <FormInputLabel htmlFor='submitStatus'>Status</FormInputLabel>
-                                <SegmentedButtonGroup activeKey={statusKey} onSetActive={setStatusKey} options={statusOptions} />
-                            </FormGroup>*/}
-                                <FormGroup className='col-span-2'>
+                                </div>
+                                <div className='col-span-2'>
                                     <FormInputLabel htmlFor='submitProof'>
                                         Proof {requiresProof && <span className='text-red-600'>*</span>}{' '}
                                         <a href='/about#proof' target='_blank'>
@@ -312,36 +315,45 @@ export default function SubmitPage() {
                                         />
                                         Private
                                     </label>
-                                </FormGroup>
+                                </div>
                                 {level.Meta.Length !== LevelLengths.PLATFORMER && (
-                                    <FormGroup>
+                                    <div>
                                         <FormInputLabel>Percent</FormInputLabel>
                                         <NumberInput
                                             value={progress}
-                                            onChange={(e) => setProgress(e.target.value)}
-                                            min={1}
+                                            onChange={(e) => handleProgressChange(parseInt(e.target.value))}
+                                            min={0}
                                             max={100}
                                             inputMode='numeric'
                                             placeholder='100'
                                         />
                                         <FormInputDescription>
-                                            Optional, defaults to 100. Will not affect ratings if less than 100.
+                                            Optional, defaults to 100. Will not affect the level rating if set to less
+                                            than 100.
                                         </FormInputDescription>
-                                    </FormGroup>
+                                    </div>
                                 )}
-                                <FormGroup>
+                                <div>
                                     <FormInputLabel>Attempts</FormInputLabel>
                                     <NumberInput
                                         value={attempts}
-                                        onChange={(e) => setAttempts(e.target.value)}
+                                        onChange={(e) => setAttempts(parseInt(e.target.value))}
                                         min={1}
                                         inputMode='numeric'
                                         placeholder={randomAttempts.toFixed()}
                                     />
                                     <FormInputDescription>Optional.</FormInputDescription>
-                                </FormGroup>
+                                </div>
+                                <div className='col-span-2 max-2xl:text-xs'>
+                                    <FormInputLabel htmlFor='submitStatus'>Status</FormInputLabel>
+                                    <SegmentedButtonGroup
+                                        activeKey={statusKey}
+                                        onSetActive={handleStatusChange}
+                                        options={statusOptions}
+                                    />
+                                </div>
                                 {level.Meta.IsTwoPlayer && (
-                                    <FormGroup className='col-span-2'>
+                                    <div className='col-span-2'>
                                         <label className='flex items-center gap-2 mb-2'>
                                             <Checkbox
                                                 checked={wasSolo}
@@ -359,9 +371,9 @@ export default function SubmitPage() {
                                                 </p>
                                             </div>
                                         )}
-                                    </FormGroup>
+                                    </div>
                                 )}
-                                <PrimaryButton className='col-span-2' size='md' type='submit'>
+                                <PrimaryButton className='col-span-2 mt-4' size='md' type='submit'>
                                     Submit
                                 </PrimaryButton>
                             </form>

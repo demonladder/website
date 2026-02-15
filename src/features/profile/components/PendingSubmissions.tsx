@@ -25,16 +25,27 @@ import User from '../../../api/types/User';
 import PageButtons from '../../../components/shared/PageButtons';
 import { useApp } from '../../../context/app/useApp';
 import { LevelViewType } from '../../../context/app/AppContext';
+import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
 
 interface Props {
     userID: number;
 }
 
+const statusOptions = {
+    all: 'All',
+    beaten: 'Completed',
+    beating: 'In progress',
+};
+
 export default function PendingSubmissions({ userID }: Props) {
     const app = useApp();
     const [page, setPage] = useState(0);
+    const [statusOptionsKey, setStatusOptionsKey] = useState<keyof typeof statusOptions | 'all'>('all');
 
-    const { status, data: submissionResult } = useUserPendingSubmissions(userID, { page });
+    const { status, data: submissionResult } = useUserPendingSubmissions(userID, {
+        page,
+        status: statusOptionsKey !== 'all' ? statusOptionsKey : undefined,
+    });
     const user = useUserQuery(userID);
 
     if (user.data?.PendingSubmissionCount === 0) return;
@@ -42,6 +53,13 @@ export default function PendingSubmissions({ userID }: Props) {
     return (
         <div className='mt-6'>
             <Heading2 id='pendingSubmissions'>Pending submissions</Heading2>
+            <div className='mb-4'>
+                <SegmentedButtonGroup
+                    options={statusOptions}
+                    activeKey={statusOptionsKey}
+                    onSetActive={setStatusOptionsKey}
+                />
+            </div>
             {status === 'pending' && <LoadingSpinner />}
             {status === 'error' && <p>Error loading submissions</p>}
             {status === 'success' && user.data && (

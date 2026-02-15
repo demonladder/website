@@ -261,7 +261,11 @@ export default function Submissions({
                 setShowTwoPlayerStats={setShowTwoPlayerStats}
             />
             <div className='flex flex-wrap gap-2 mb-2'>
-                <Select label={`Sort by: ${sorts[sorter]}`} options={sorts} onOption={setSorter} />
+                <Select
+                    label={`Sort by: ${sorts[sorter]}`}
+                    options={sorts}
+                    onOption={(sort) => setSorter(sort as SubmissionSort)}
+                />
                 <button
                     className='px-3 bg-secondary-container text-on-secondary-container rounded-full'
                     onClick={() => setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))}

@@ -1,6 +1,7 @@
 import APIClient from '../../../api/APIClient';
 import Submission from '../../../api/types/Submission';
 import { Difficulties, LevelLengths, Rarity } from '../../level/types/LevelMeta';
+import type { SubmissionStatus } from './getUserPendingSubmissions';
 
 export type UserSubmission = {
     ID: number;
@@ -51,14 +52,14 @@ export async function getUserSubmissions({
     name,
     sort,
     sortDirection,
-    onlyIncomplete,
+    status,
 }: {
     userID: number;
     page?: number;
     name?: string;
     sort: Sorts;
     sortDirection: string;
-    onlyIncomplete?: boolean;
+    status?: SubmissionStatus;
 }) {
     const res = await APIClient.get<GetUserSubmissionsResponses>(`/user/${userID}/submissions`, {
         params: {
@@ -67,7 +68,7 @@ export async function getUserSubmissions({
             sort,
             sortDirection,
             limit: 16,
-            onlyIncomplete: onlyIncomplete === true,
+            status,
         },
     });
 

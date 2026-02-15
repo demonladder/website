@@ -12,7 +12,7 @@ import useUserSearch from '../../../hooks/useUserSearch';
 import FormInputLabel from '../../../components/form/FormInputLabel';
 import FormInputDescription from '../../../components/form/FormInputDescription';
 import { Difficulties } from '../../level/types/LevelMeta';
-import SendSubmission from '../../../api/submissions/SendSubmission';
+import { sendSubmission } from '../../../api/submissions/sendSubmission';
 import { Device } from '../../../api/core/enums/device.enum';
 
 const deviceOptions: Record<Device, string> = {
@@ -69,7 +69,7 @@ export default function AddSubmission() {
         // Send
         setIsMutating(true);
         void toast.promise(
-            SendSubmission(submission)
+            sendSubmission(submission)
                 .then(() => {
                     void queryClient.invalidateQueries({ queryKey: ['submissions'] });
                     void queryClient.invalidateQueries({ queryKey: ['level', activeLevel.ID] });

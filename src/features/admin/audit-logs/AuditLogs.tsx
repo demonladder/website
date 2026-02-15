@@ -31,7 +31,7 @@ export default function AuditLogs() {
             <Select
                 label={`Filter by: ${eventFilterOptions[eventFilter]}`}
                 options={eventFilterOptions}
-                onOption={setEventFilter}
+                onOption={(event) => setEventFilter(parseInt(event))}
             />
             {auditLogs.isSuccess && (
                 <>
