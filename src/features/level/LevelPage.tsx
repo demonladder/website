@@ -126,7 +126,7 @@ export default function LevelPage() {
                                     <li>
                                         <Link to={`/mod/edit-level/${level.ID}`}>
                                             <button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700'>
-                                                Edit
+                                                Edit (staff)
                                             </button>
                                         </Link>
                                     </li>

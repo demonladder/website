@@ -148,11 +148,9 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 return toast.error(`Rating must be between 1 and ${MAX_TIER}!`);
             }
 
-            if (rating >= 21 && !proof) {
-                return toast.error('Proof is required if you want to rate a level 21 or higher!');
+            if (rating >= 25 && !proof) {
+                return toast.error('Proof is required if you want to rate a level 25 or higher!');
             }
-        } else if (enjoyment === null) {
-            return toast.error("Rating and enjoyment can't both be empty!");
         }
 
         if (parseInt(refreshRate) < MINIMUM_REFRESH_RATE) {
@@ -245,18 +243,6 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         }
     }
 
-    const isTierValid = useMemo(() => {
-        if (tier === '') return false;
-        const rating = parseInt(tier);
-        return !isNaN(rating) && rating >= 1 && rating <= MAX_TIER;
-    }, [tier]);
-
-    const isEnjoymentValid = useMemo(() => {
-        return enjoymentKey !== '-1';
-    }, [enjoymentKey]);
-
-    const tierEnjoymentInvalid = !isTierValid && !isEnjoymentValid;
-
     const requiresProof = useMemo(() => {
         if (level.Meta.Difficulty === Difficulties.Extreme) return true;
         if (parseInt(tier) >= 21) return true;
@@ -286,8 +272,6 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         inputMode='numeric'
                         min={1}
                         max={MAX_TIER}
-                        invalid={tierEnjoymentInvalid}
-                        required={tierEnjoymentInvalid}
                         autoFocus
                         disabled={level.Meta.Length === LevelLengths.PLATFORMER}
                     />
@@ -300,7 +284,6 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                         options={enjoymentOptions}
                         activeKey={enjoymentKey}
                         onChange={setEnjoymentKey}
-                        invalid={tierEnjoymentInvalid}
                         zIndex={1030}
                     />
                 </FormGroup>
