@@ -77,7 +77,7 @@ export default function Meta({ packID }: Props) {
                 <Select
                     options={categories}
                     label={packsData.categories.find((category) => category.ID === categoryKey)?.Name ?? 'Unknown'}
-                    onOption={setCategoryKey}
+                    onOption={(category) => setCategoryKey(parseInt(category))}
                     id='editPackCategory'
                 />
             </FormGroup>
