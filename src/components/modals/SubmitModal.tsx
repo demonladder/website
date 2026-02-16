@@ -148,7 +148,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 return toast.error(`Rating must be between 1 and ${MAX_TIER}!`);
             }
 
-            if (rating >= 25 && !proof) {
+            if (rating >= 25 && !proof && statusOptionsKey !== 'ptb') {
                 return toast.error('Proof is required if you want to rate a level 25 or higher!');
             }
         }
@@ -161,7 +161,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             return toast.error('Proof link is invalid!');
         }
 
-        if (level.Meta.Difficulty === Difficulties.Extreme && !proof) {
+        if (level.Meta.Difficulty === Difficulties.Extreme && !proof && statusOptionsKey !== 'ptb') {
             return toast.error('No proof provided!');
         }
 
@@ -244,10 +244,12 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     }
 
     const requiresProof = useMemo(() => {
+        // No proof required for "Plan to beat" status
+        if (statusOptionsKey === 'ptb') return false;
         if (level.Meta.Difficulty === Difficulties.Extreme) return true;
         if (parseInt(tier) >= 21) return true;
         return false;
-    }, [tier, level.Meta.Difficulty]);
+    }, [tier, level.Meta.Difficulty, statusOptionsKey]);
 
     return (
         <Modal title='Submit rating' show={true} onClose={onClose}>

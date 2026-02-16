@@ -126,10 +126,12 @@ export default function SubmitPage() {
     }
 
     const requiresProof = useMemo(() => {
+        // No proof required for "Plan to beat" status
+        if (statusKey === 'ptb') return false;
         if (Math.round(level?.Rating ?? level?.DefaultRating ?? 1) >= 25) return true;
         if (parseInt(tier) >= 25) return true;
         return false;
-    }, [level?.Rating, level?.DefaultRating, tier]);
+    }, [level?.Rating, level?.DefaultRating, tier, statusKey]);
 
     function handleStatusChange(status: SubmissionStatus) {
         setStatusKey(status);
@@ -176,7 +178,7 @@ export default function SubmitPage() {
                 return toast.error(`Rating must be between 1 and ${MAX_TIER}!`);
             }
 
-            if (rating >= 25 && !proof) {
+            if (rating >= 25 && !proof && statusKey !== 'ptb') {
                 return toast.error('Proof is required if you want to rate a level 25 or higher!');
             }
         }
