@@ -81,7 +81,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const [proof, setProof] = useState('');
     const [isProofPrivate, setIsProofPrivate] = useState(false);
     const [progress, setProgress] = useState(100);
-    const [attempts, setAttempts] = useState('');
+    const [attempts, setAttempts] = useState<number>();
     const [wasSolo, setWasSolo] = useState(true);
     const [randomAttempts] = useState(
         ((x: number | null) => {
@@ -108,7 +108,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         setDeviceKey(userSubmission.Device);
         if (userSubmission.Proof !== null) setProof(userSubmission.Proof.toString());
         setProgress(userSubmission.Progress);
-        if (userSubmission.Attempts !== null) setAttempts(userSubmission.Attempts.toString());
+        if (userSubmission.Attempts !== null) setAttempts(userSubmission.Attempts);
         setWasSolo(userSubmission.IsSolo);
         if (userSubmission.SecondaryUser) secondPlayerSearch.setQuery(userSubmission.SecondaryUser.Name);
     }, [userSubmission, secondPlayerSearch]);
@@ -153,20 +153,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
             }
         }
 
-        if (parseInt(refreshRate) < MINIMUM_REFRESH_RATE) {
-            return toast.error(`Refresh rate has to be at least ${MINIMUM_REFRESH_RATE}!`);
-        }
-
-        if (proof && !validateLink(proof)) {
-            return toast.error('Proof link is invalid!');
-        }
-
-        if (level.Meta.Difficulty === Difficulties.Extreme && !proof) {
-            return toast.error('No proof provided!');
-        }
-
-        const attemptCount = parseInt(attempts);
-        if (!isNaN(attemptCount) && (attemptCount <= 0 || attemptCount.toString() !== attempts)) {
+        if (attempts && attempts <= 0) {
             return toast.error('Attempt count must be a whole number greater than 0!');
         }
 
@@ -182,7 +169,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 isProofPrivate,
                 progress,
                 status: statusOptionsKey,
-                attempts: attemptCount,
+                attempts,
                 isSolo: wasSolo,
                 secondPlayerID: secondPlayerSearch.activeUser?.ID,
             },
@@ -212,21 +199,16 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         setRefreshRate(newVal?.toString() ?? (app.defaultRefreshRate ?? 60).toString());
     }
 
-    function FPSChange(e: React.ChangeEvent<HTMLInputElement>) {
-        validateIntInputChange(e, setRefreshRate);
-    }
-
-    function ratingChange(e: React.ChangeEvent<HTMLInputElement>) {
-        validateIntInputChange(e, setTier);
-    }
-
     function handleProgressChange(value: number) {
-        const p = Math.min(value, 100);
+        const p = Math.min(Math.max(value, 0), 100);
         setProgress(p);
         if (p === 100) {
             setStatusOptionsKey('beaten');
         } else if (p === 0) {
             setStatusOptionsKey('ptb');
+            setTier('');
+            setEnjoymentKey('-1');
+            setAttempts(undefined);
         } else if (statusOptionsKey === 'beaten') {
             setStatusOptionsKey('beating');
         }
@@ -237,17 +219,21 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         if (status === 'beaten') {
             setProgress(100);
         } else if (status === 'ptb') {
+            setTier('');
+            setEnjoymentKey('-1');
             setProgress(0);
+            setAttempts(undefined);
         } else {
             setProgress(clamp(progress, 1, 99));
         }
     }
 
     const requiresProof = useMemo(() => {
+        if (statusOptionsKey === 'ptb') return false;
         if (level.Meta.Difficulty === Difficulties.Extreme) return true;
         if (parseInt(tier) >= 21) return true;
         return false;
-    }, [tier, level.Meta.Difficulty]);
+    }, [statusOptionsKey, level.Meta.Difficulty, tier]);
 
     return (
         <Modal title='Submit rating' show={true} onClose={onClose}>
@@ -268,7 +254,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     <NumberInput
                         id='submitRating'
                         value={tier}
-                        onChange={ratingChange}
+                        onChange={(e) => validateIntInputChange(e, setTier)}
                         inputMode='numeric'
                         min={1}
                         max={MAX_TIER}
@@ -292,7 +278,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     <NumberInput
                         id='submitRefreshRate'
                         value={refreshRate}
-                        onChange={FPSChange}
+                        onChange={(e) => validateIntInputChange(e, setRefreshRate)}
                         onBlur={onBlur}
                         invalid={parseInt(refreshRate) < MINIMUM_REFRESH_RATE}
                     />
@@ -361,7 +347,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                     <FormInputLabel>Attempts</FormInputLabel>
                     <NumberInput
                         value={attempts}
-                        onChange={(e) => setAttempts(e.target.value)}
+                        onChange={(e) => setAttempts(parseInt(e.target.value))}
                         min={1}
                         inputMode='numeric'
                         placeholder={randomAttempts.toFixed()}

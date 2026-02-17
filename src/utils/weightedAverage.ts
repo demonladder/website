@@ -1,18 +1,6 @@
 import { average } from './average';
 import standardDeviation from './standardDeviation';
 
-export default function weightedAverage(points: number[], getWeight: (p: number) => number): number {
-    let weightSum = 0;
-
-    const sum = points.reduce((acc, cur) => {
-        const weight = getWeight(cur);
-        weightSum += weight;
-        return acc + cur * weight;
-    }, 0);
-
-    return sum / weightSum;
-}
-
 export function ratingToWeight(rating: number, avg: number, standardDeviation: number): number {
     if (standardDeviation === 0) return 1;
 
@@ -29,9 +17,14 @@ export function ratingToWeight(rating: number, avg: number, standardDeviation: n
 export function weightedRatingAverage(ratings: number[]): number {
     if (ratings.length === 0) return 0;
 
-    const avg = average(ratings);
-    if (avg === null) throw new Error('Average should not be null');
+    const avg = average(ratings)!;
     const stdDev = standardDeviation(ratings, avg);
 
-    return weightedAverage(ratings, (p) => ratingToWeight(p, avg, stdDev));
+    let weightSum = 0;
+    const sum = ratings.reduce((acc, cur) => {
+        const weight = ratingToWeight(cur, avg, stdDev);
+        weightSum += weight;
+        return acc + cur * weight;
+    }, 0);
+    return sum / weightSum;
 }
