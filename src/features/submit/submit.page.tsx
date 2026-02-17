@@ -126,10 +126,11 @@ export default function SubmitPage() {
     }
 
     const requiresProof = useMemo(() => {
+        if (statusKey === 'ptb') return false;
         if (Math.round(level?.Rating ?? level?.DefaultRating ?? 1) >= 25) return true;
         if (parseInt(tier) >= 25) return true;
         return false;
-    }, [level?.Rating, level?.DefaultRating, tier]);
+    }, [level?.DefaultRating, level?.Rating, statusKey, tier]);
 
     function handleStatusChange(status: SubmissionStatus) {
         setStatusKey(status);
@@ -179,14 +180,6 @@ export default function SubmitPage() {
             if (rating >= 25 && !proof) {
                 return toast.error('Proof is required if you want to rate a level 25 or higher!');
             }
-        }
-
-        if (parseInt(refreshRate) < MINIMUM_REFRESH_RATE) {
-            return toast.error(`Refresh rate has to be at least ${MINIMUM_REFRESH_RATE}!`);
-        }
-
-        if (proof && !validateLink(proof)) {
-            return toast.error('Proof link is invalid!');
         }
 
         if (attempts && attempts <= 0) {
