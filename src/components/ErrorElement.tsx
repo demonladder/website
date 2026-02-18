@@ -12,7 +12,7 @@ export default function ErrorElement() {
         errorMessage = error.message;
 
         if (error instanceof AxiosError) {
-            const msg = (error.response?.data as GDDLError).message;
+            const msg = (error.response?.data as GDDLError).message ?? error.message;
             if (Array.isArray(msg)) errorMessage = msg[0];
             else errorMessage = msg;
         }

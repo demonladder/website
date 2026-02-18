@@ -1,12 +1,10 @@
 import APIClient from '../APIClient';
-import Level from '../../features/level/types/Level';
-import LevelMeta from '../../features/level/types/LevelMeta';
 import Submission from '../types/Submission';
 import User from '../types/User';
 
-type GetSingleSubmissionResponse = Submission & { Level: Level & { Meta: LevelMeta } } & { User: User } & {
+interface GetSingleSubmissionResponse extends Submission {
     SecondaryUser: User | null;
-};
+}
 
 export default async function GetSingleSubmission(levelID: number, userID: number | undefined) {
     if (userID === undefined) return;

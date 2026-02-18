@@ -23,6 +23,7 @@ import { useAddFavoriteMutation } from './hooks/useAddFavoriteMutation';
 import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation';
 import { routes } from '../../routes/route-definitions';
 import { useApp } from '../../context/app/useApp';
+import { QuickSubmit } from './components';
 
 const levelLengths = {
     1: 'Tiny',
@@ -237,6 +238,7 @@ export default function LevelPage() {
                     )}
                 </div>
             </Surface>
+            <QuickSubmit level={level} />
             <TagBox level={level} />
             <Submissions
                 page={submissionPage}

@@ -1,0 +1,1 @@
+export { QuickSubmit } from './QuickSubmit';

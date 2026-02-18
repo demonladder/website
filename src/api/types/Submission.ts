@@ -1,3 +1,4 @@
+import type { SubmissionStatus } from '../../features/profile/api/getUserPendingSubmissions';
 import { Device } from '../core/enums/device.enum';
 import type { Level } from './Level';
 import type User from './User';
@@ -15,6 +16,7 @@ export default interface Submission {
     IsSolo: boolean;
     SecondPlayerID: number | null;
     Progress: number;
+    status: SubmissionStatus;
     Attempts: number | null;
     ApprovedBy: number | null;
     DateAdded: string;

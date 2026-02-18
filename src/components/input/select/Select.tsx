@@ -59,15 +59,17 @@ export default function Select<T extends Record<K, string>, K extends string>({
                         (show ? 'opacity-100' : 'opacity-0 pointer-events-none')
                     }
                 >
-                    <li>
-                        <input
-                            type='text'
-                            className='w-full px-4 py-1 outline-none'
-                            value={filter}
-                            onChange={(e) => setFilter(e.target.value)}
-                            placeholder='Search...'
-                        />
-                    </li>
+                    {Object.entries(options).length > 5 && (
+                        <li>
+                            <input
+                                type='text'
+                                className='w-full px-4 py-1 outline-none'
+                                value={filter}
+                                onChange={(e) => setFilter(e.target.value)}
+                                placeholder='Search...'
+                            />
+                        </li>
+                    )}
                     {Object.entries(options)
                         .filter(([_, value]) => (value as string).toLowerCase().startsWith(filter.toLowerCase()))
                         .map(([key, value]) => (
