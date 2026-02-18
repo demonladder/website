@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import PageButtons from '../../../components/shared/PageButtons';
@@ -214,7 +214,7 @@ export default function Submissions({
         withDefault(createEnumParam(Object.values(SubmissionSort)), SubmissionSort.DATE_ADDED),
     );
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-    const [statusOptionsKey, setStatusOptionsKey] = useState<StatusOptions>('all');
+    const [statusOptionsKey, setStatusOptionsKey] = useState<StatusOptions>('completed');
 
     const { data: submissions, status } = useQuery({
         queryKey: [
@@ -239,6 +239,12 @@ export default function Submissions({
                 page,
             }),
     });
+
+    useEffect(() => {
+        if (submissions?.total === undefined || submissions.limit === undefined) return;
+
+        if (page > 0 && submissions.data.length === 0) setPage(Math.floor(submissions?.total / submissions?.limit));
+    }, [page, setPage, submissions?.data.length, submissions?.limit, submissions?.total]);
 
     if (status === 'error' || status === 'pending')
         return (
