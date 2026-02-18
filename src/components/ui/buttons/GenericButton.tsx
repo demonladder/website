@@ -36,7 +36,7 @@ export function Generic({ loading = false, size = 'sm', children, className, ...
         >
             <span className={'flex justify-center items-center ' + (loading ? 'opacity-0' : '')}>{children}</span>
             {loading && (
-                <span className='absolute left-1/2 -translate-x-1/2'>
+                <span className='absolute inset-0 grid place-items-center'>
                     <InlineLoadingSpinner />
                 </span>
             )}

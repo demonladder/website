@@ -161,6 +161,19 @@ input.no-spinner::-webkit-inner-spin-button {
     margin: 0;
 }
 
+.spinner {
+    animation: rotation 1.5s linear infinite;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .bg-fade {
     animation: bg-fade 1s;
 }
