@@ -14,7 +14,7 @@ export default function Category({ category, packs }: Props) {
     return (
         <div className='mb-6'>
             <Heading2>{category.Name}</Heading2>
-            <p className='mb-0'>{category.Description}</p>
+            <p className='mb-2 -mt-2'>{category.Description}</p>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-center'>
                 {packs.map((p) => (
                     <PackRef pack={p} meta={p.Meta} key={category.Name + p.Name} />
