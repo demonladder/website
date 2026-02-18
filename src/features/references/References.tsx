@@ -45,7 +45,7 @@ export default function References() {
 
     return (
         <div className='max-w-[95%] overflow-x-scroll scrollbar-thin mx-auto my-4'>
-            <title>GDDL | References</title>
+            <title>References - GD Demon Ladder</title>
             <div className='flex max-sm:flex-col'>
                 {diffs.map((diff) => (
                     <Difficulty

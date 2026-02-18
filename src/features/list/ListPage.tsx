@@ -132,7 +132,7 @@ export default function List() {
         );
 
     return (
-        <Page title={`GDDL | List | ${list.Name}`}>
+        <Page title={`List | ${list.Name}`}>
             {!isEditingName ? (
                 <Heading1 onClick={onNameClicked}>
                     {list.Name} {canEdit && <i className='bx bxs-pencil cursor-text' />}

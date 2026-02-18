@@ -7,7 +7,7 @@ interface Props extends Omit<React.DetailedHTMLProps<React.HTMLAttributes<HTMLEl
 export default function Page({ title, children, onContextMenu, ...props }: Props) {
     return (
         <main {...props} className='grow py-4'>
-            {title && <title>{title}</title>}
+            {title && <title>{title} - GD Demon Ladder</title>}
             <Container onContextMenu={onContextMenu}>{children}</Container>
         </main>
     );

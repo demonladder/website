@@ -317,7 +317,7 @@ export default function Search() {
     }, [queryParams, savedFilters, setQueryParams, setSavedFilters]);
 
     return (
-        <Page title='GDDL | Search'>
+        <Page title='Search'>
             <Heading1 className='mb-2'>Levels</Heading1>
             <div className='flex gap-2 items-center transition-all'>
                 <SearchInput

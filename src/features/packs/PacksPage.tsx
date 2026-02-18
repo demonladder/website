@@ -15,20 +15,19 @@ export default function Packs() {
 
     if (status === 'pending')
         return (
-            <Page>
+            <Page title='Packs'>
                 <LoadingSpinner />
             </Page>
         );
     if (status === 'error')
         return (
-            <Page>
+            <Page title='Packs'>
                 <p>Error: could not fetch packs from server</p>
             </Page>
         );
 
     return (
-        <Page>
-            <title>GDDL | Packs</title>
+        <Page title='Packs'>
             <section>
                 <Heading1>Packs</Heading1>
                 <p className='mb-8'>
