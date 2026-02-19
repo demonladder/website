@@ -141,7 +141,7 @@ export default function MainLayout() {
 
     const session = useSession();
     useEffect(() => {
-        const widget = document.querySelector<HTMLDivElement>('[id^="kofi-widget-overlay-"');
+        const widget = document.querySelector<HTMLDivElement>('[id^="kofi-widget-overlay-"]');
 
         if (!session.user || session.user.Roles.length === 0) return;
 
@@ -164,6 +164,10 @@ export default function MainLayout() {
                 notifyError(
                     'The Discord account linked to this GDDL account does not match the Discord account you are trying to link with.',
                 );
+            else if (error === 'external_already_linked')
+                notifyError('The external account is already connected to a GDDL account!');
+            else if (error === 'unknown') notifyError('An unknow error has occurred, please try again later.');
+            else notifyError(error);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

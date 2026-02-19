@@ -1,8 +1,11 @@
 import { Outlet } from 'react-router';
 import { NavButton } from '../../components/ui/NavButton';
 import Page from '../../components/layout/Page';
+import useSession from '../../hooks/useSession.ts';
 
 export default function Settings() {
+    const session = useSession();
+
     return (
         <Page>
             <div className='flex max-xl:flex-col gap-8 xl:gap-4'>
@@ -12,6 +15,7 @@ export default function Settings() {
                         <NavButton to='/settings/site'>Site</NavButton>
                         <NavButton to='/settings/profile'>Profile</NavButton>
                         <NavButton to='/settings/account'>Account</NavButton>
+                        {session.user && <NavButton to='/settings/connections'>Connections</NavButton>}
                         <NavButton to='/settings/appearance'>Appearance</NavButton>
                         <NavButton to='/settings/submission'>Submissions</NavButton>
                         <NavButton to='/settings/developer'>Developer</NavButton>

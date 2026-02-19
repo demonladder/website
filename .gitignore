@@ -3,6 +3,7 @@
 *.key
 sslcert
 .VSCodeCounter
+.idea/
 build/
 
 public/**/*.js

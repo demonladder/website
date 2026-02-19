@@ -7,18 +7,25 @@ import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { validateUsername } from '../../../../utils/validators/validateUsername';
 import { UserResponse } from '../../../../api/user/GetUser';
 import TextArea from '../../../../components/input/TextArea';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { saveProfile } from '../../../settings/profile/api/saveProfile';
 import renderToastError from '../../../../utils/renderToastError';
 import { Heading3 } from '../../../../components/headings';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
-import { unlinkUserDiscord } from '../api/unlinkUserDiscord';
+import { connectionsClient } from '../../../../api/connections/connectionsClient.ts';
+import { AppToIcon } from '../../../../components/shared/connections/AppToIcon.tsx';
+import { X } from '@boxicons/react';
+import { appToDisplayName } from '../../../../components/shared/connections/AppToDisplayName.tsx';
+import FloatingLoadingSpinner from '../../../../components/ui/FloatingLoadingSpinner.tsx';
 
 export default function EditInformation({ user }: { user: UserResponse }) {
     const nameID = useId();
     const introductionID = useId();
     const [newName, setNewName] = useState<string>(user.Name);
     const [newIntroduction, setNewIntroduction] = useState<string>(user.Introduction ?? '');
+    const { data: connections, status: connectionsStatus } = useQuery({
+        queryKey: ['user', user.ID, 'connections'],
+        queryFn: () => connectionsClient.listPublic(user.ID),
+    });
 
     const isChanged = useMemo(() => {
         return user.Name !== newName || (user.Introduction ?? '') !== newIntroduction;
@@ -45,18 +52,20 @@ export default function EditInformation({ user }: { user: UserResponse }) {
     }
 
     const unlinkMutation = useMutation({
-        mutationFn: unlinkUserDiscord,
+        mutationFn: (connectionId: string) => connectionsClient.delete(connectionId),
     });
-    function handleUnlink() {
+    function handleUnlink(connectionId: string) {
         const handle = toast.loading('Unlinking...');
-        unlinkMutation.mutate(user.ID, {
-            onSuccess: () =>
+        unlinkMutation.mutate(connectionId, {
+            onSuccess: () => {
                 toast.update(handle, {
                     render: 'Account unlinked',
                     type: 'success',
                     isLoading: false,
                     autoClose: 3000,
-                }),
+                });
+                void queryClient.invalidateQueries({ queryKey: ['user', user.ID, 'connections'] });
+            },
             onError: (err) =>
                 toast.update(handle, {
                     render: renderToastError.render({ data: err }),
@@ -98,21 +107,39 @@ export default function EditInformation({ user }: { user: UserResponse }) {
                     <p>{newIntroduction.length}/500</p>
                 </div>
             </form>
-            <div>
-                <Heading3 className='mt-4'>Discord link</Heading3>
-                {user.Account ? (
-                    <>
-                        <p>
-                            ID: <b>{user.Account.ID}</b>
-                        </p>
-                        <p>
-                            Username: <b>{user.Account.discordUsername}</b>
-                        </p>
-                    </>
+            <div className='relative'>
+                <Heading3 className='mt-4'>Connections</Heading3>
+                <FloatingLoadingSpinner isLoading={connectionsStatus === 'pending' || unlinkMutation.isPending} />
+                {connections && connections.length > 0 ? (
+                    <ul>
+                        {connections.map((connection) => (
+                            <li className='mb-2' key={connection.id}>
+                                <div className='flex items-center mb-1'>
+                                    <AppToIcon app={connection.appName} />
+                                    <div className='flex justify-between grow'>
+                                        <div>
+                                            <p>
+                                                {connection.accountName} ({connection.accountId})
+                                            </p>
+                                            <p className='text-xs'>{appToDisplayName(connection.appName)}</p>
+                                        </div>
+                                        <button
+                                            onClick={() => handleUnlink(connection.id)}
+                                            disabled={unlinkMutation.isPending}
+                                            title='Remove connection'
+                                        >
+                                            <X className='-me-1' />{' '}
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                    <p>User's profile is not linked to any Discord account!</p>
+                    <p>
+                        <i>Account is not connected to anything!</i>
+                    </p>
                 )}
-                <SecondaryButton onClick={() => handleUnlink()}>Un-link</SecondaryButton>
             </div>
         </section>
     );
