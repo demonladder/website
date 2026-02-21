@@ -18,14 +18,14 @@ export function Connections({ userId }: Props) {
             {query.isSuccess && (
                 <>
                     <Heading2>Connections</Heading2>
-                    <ul className='flex flex-wrap'>
+                    <ul className='flex flex-wrap gap-2'>
                         {query.data.map((connection) => (
                             <li
-                                className='flex items-center bg-theme-700 px-2 py-1 round:rounded-lg'
+                                className='flex items-center bg-theme-700 border border-theme-outline px-2 py-1 round:rounded-xl'
                                 key={connection.id}
                             >
                                 <AppToIcon app={connection.appName} />
-                                <p>{connection.accountName}</p>
+                                <p className='ms-2'>{connection.accountName}</p>
                             </li>
                         ))}
                     </ul>
