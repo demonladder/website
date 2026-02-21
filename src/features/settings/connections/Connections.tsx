@@ -2,10 +2,16 @@ import { Heading1, Heading2 } from '../../../components/headings';
 import { DiscordAlt, X } from '@boxicons/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useSession from '../../../hooks/useSession.ts';
-import { connectionsClient } from '../../../api/connections/connectionsClient.ts';
+import { ConnectableApps, connectionsClient } from '../../../api/connections/connectionsClient.ts';
 import Checkbox from '../../../components/input/CheckBox.tsx';
 import { AppToIcon } from '../../../components/shared/connections/AppToIcon.tsx';
 import { appToDisplayName } from '../../../components/shared/connections/AppToDisplayName.tsx';
+import { toast } from 'react-toastify';
+import renderToastError from '../../../utils/renderToastError.ts';
+import { AxiosError } from 'axios';
+
+const connectionClasses =
+    'p-2 bg-theme-700 hover:bg-theme-600 slow-effect-transition border border-theme-outline round:rounded-lg';
 
 export function Connections() {
     const session = useSession();
@@ -32,7 +38,39 @@ export function Connections() {
             query.data!.find((c) => c.id === connectionId)!.display = display ? 1 : 0;
             queryClient.setQueryData(['user', session.user?.ID, 'connections'], query.data!);
         },
+        onError: (error: AxiosError) => toast.error(renderToastError.render({ data: error })),
     });
+
+    const connectToAredlMutation = useMutation({
+        mutationFn: () => connectionsClient.connectAredl(),
+        onMutate: () => toast.loading('Connecting...'),
+        onSuccess: (connection, _, toastId) => {
+            queryClient.setQueryData(['user', session.user?.ID, 'connections'], [...query.data!, connection]);
+            toast.update(toastId, {
+                autoClose: 5000,
+                isLoading: false,
+                render: 'Connected successfully',
+                type: 'success',
+            });
+        },
+        onError: (error: AxiosError, _, toastId) =>
+            toast.update(toastId!, {
+                autoClose: 5000,
+                isLoading: false,
+                render: renderToastError.render({ data: error }),
+                type: 'error',
+            }),
+    });
+
+    function onAredlClicked() {
+        if (!query.data?.some((connection) => connection.appName === ConnectableApps.DISCORD))
+            return toast.error('You must connect to Discord first!');
+
+        if (query.data?.some((connection) => connection.appName === ConnectableApps.AREDL))
+            return toast.warning('Already connected!');
+
+        connectToAredlMutation.mutate();
+    }
 
     return (
         <section>
@@ -41,13 +79,14 @@ export function Connections() {
                 You can connect external accounts belonging to you by clicking any of the icons below
             </p>
             <div className='flex gap-2'>
-                <a
-                    className='p-2 bg-theme-700 inline-block border border-theme-outline round:rounded-lg'
-                    href='/api/connections/discord'
-                >
+                <a className={connectionClasses} href='/api/connections/discord'>
                     <DiscordAlt size='lg' />
                 </a>
-                <button className='p-2 bg-theme-700 inline-block border border-theme-outline round:rounded-lg' disabled>
+                <button
+                    className={connectionClasses}
+                    onClick={onAredlClicked}
+                    disabled={connectToAredlMutation.isPending}
+                >
                     <img src='https://aredl.net/favicon.ico' width={48} height={48} className='rounded-full' />
                 </button>
             </div>
@@ -67,7 +106,7 @@ export function Connections() {
                             >
                                 <div className='flex items-center mb-1'>
                                     <AppToIcon app={connection.appName} />
-                                    <div className='flex justify-between grow'>
+                                    <div className='flex justify-between grow ms-2'>
                                         <div>
                                             <p>{connection.accountName}</p>
                                             <p className='text-xs'>{appToDisplayName(connection.appName)}</p>

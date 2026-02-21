@@ -1,6 +1,7 @@
 import APIClient from '../APIClient.ts';
 
 export enum ConnectableApps {
+    AREDL = 'aredl',
     DISCORD = 'discord',
 }
 
@@ -23,6 +24,11 @@ type ConnectionListResponse = Partial<Omit<Connection, 'id' | 'appName' | 'accou
     Pick<Connection, 'id' | 'appName' | 'accountName'>;
 
 class ConnectionsClient {
+    async connectAredl() {
+        const res = await APIClient.post<Connection>('/connections/aredl');
+        return res.data;
+    }
+
     async list() {
         const res = await APIClient.get<Connection[]>('/connections');
         return res.data;
