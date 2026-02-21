@@ -78,7 +78,7 @@ export default function About() {
                         </ul>
                     </li>
                     <li className='mb-5'>
-                        <p className='mb-1'>3) You can safely ignore the official difficutly in-game.</p>
+                        <p className='mb-1'>3) You can safely ignore the official difficulty in-game.</p>
                         <ul>
                             <ListItem>They are in many cases inaccurate, and should not be fully relied on.</ListItem>
                         </ul>
@@ -117,8 +117,8 @@ export default function About() {
                                 For levels that are tier 31 or higher, audible clicks are required in the proof.
                             </ListItem>
                             <ListItem>
-                                The entire run must be included; from at least the first click to the endscreen. The
-                                endscreen must be included.
+                                The entire run must be included; from at least the first click to the end-screen. The
+                                end-screen must be included.
                             </ListItem>
                         </ul>
                     </li>
@@ -153,7 +153,7 @@ export default function About() {
                     button under the level's rating that says "Submit <i className='bx bx-list-plus text-xl' />"
                 </p>
                 <p>Click that button, and a pop-up will appear where you can enter your submission.</p>
-                <img className='w-11/12 mx-auto my-2' src='/assets/images/howToRate.png' alt='' />
+                <img className='w-11/12 mx-auto my-2' src='/images/howToRate.png' alt='' />
             </section>
             <section className='mt-8'>
                 <h2 className='text-3xl text-theme-header mb-3' id='proof'>
@@ -178,7 +178,7 @@ export default function About() {
                     to non-extremes of course.
                 </p>
                 <p>For levels that are tier 31 or more, audible clicks are required in the proof.</p>
-                <p>Proof must contain the endscreen.</p>
+                <p>Proof must contain the end-screen.</p>
             </section>
             <section className='mt-8'>
                 <h2 id='autoAccept' className='text-3xl text-theme-header mb-3'>

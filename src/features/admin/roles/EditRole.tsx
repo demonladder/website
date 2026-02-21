@@ -26,7 +26,7 @@ export default function EditRole() {
 
     const navigate = useNavigate();
     const openDeleteRoleModal = useDeleteRoleModal({
-        onSucces: () => void navigate('/mod/roles'),
+        onSuccess: () => void navigate('/mod/roles'),
     });
 
     const { data } = useRoles();

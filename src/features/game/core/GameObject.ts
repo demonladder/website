@@ -5,7 +5,7 @@ import { pixelsPerBlock } from '../constants';
 export default abstract class GameObject extends Hitbox {
     position: P5.Vector;
 
-    constructor(x?: number, y?: number) {
+    protected constructor(x?: number, y?: number) {
         super();
 
         this.position = new P5.Vector(x, y);

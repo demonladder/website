@@ -71,7 +71,7 @@ export default function Profile() {
 
         return (
             <Page>
-                <Heading1>An error ocurred</Heading1>
+                <Heading1>An error occurred</Heading1>
             </Page>
         );
     }

@@ -143,8 +143,7 @@ export default function BulkSubmit() {
 function validateFPS(input: string): boolean {
     const fps = parseInt(input);
     if (fps.toString() !== input) return false;
-    if (fps < 30 || fps > 999) return false;
-    return true;
+    return fps >= 30 && fps <= 999;
 }
 
 function validateURL(input: string): boolean {
@@ -176,9 +175,7 @@ function validateUsingLevelID(val: string): boolean {
     if (device !== 'pc' && device !== 'mobile') return false;
 
     if (!params[5]) return true;
-    if (!validateURL(params[5])) return false;
-
-    return true;
+    return validateURL(params[5]);
 }
 
 function validateUsingCreator(val: string): boolean {
@@ -203,7 +200,5 @@ function validateUsingCreator(val: string): boolean {
     if (device !== 'pc' && device !== 'mobile') return false;
 
     if (!params[6]) return true;
-    if (!validateURL(params[6])) return false;
-
-    return true;
+    return validateURL(params[6]);
 }

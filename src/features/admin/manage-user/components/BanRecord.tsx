@@ -16,16 +16,16 @@ export default function BanRecord({ record }: Props) {
     const duration = record.BanStop ? new Date(record.BanStop).getTime() - new Date(record.BanStart).getTime() : null;
     const isActive = record.BanStop ? new Date(record.BanStop).getTime() > new Date().getTime() : true;
 
-    const [isLoading, setIsloading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     function onRevoke() {
-        setIsloading(true);
+        setIsLoading(true);
 
         const promise = revokeBan(record.UserID)
             .then(() => {
                 record.BanStop = new Date().toISOString().replace('T', ' ').replace('Z', ' +00:00');
             })
             .finally(() => {
-                setIsloading(false);
+                setIsLoading(false);
             });
 
         void toast.promise(promise, {

@@ -57,7 +57,7 @@ export default function FiltersExtended() {
         QueryParamNames.ExcludeUnrated,
         withDefault(BooleanParam, false),
     );
-    const [exculdeUnratedEnj, setExcludeUnratedEnj] = useQueryParam(
+    const [excludeUnratedEnj, setExcludeUnratedEnj] = useQueryParam(
         QueryParamNames.ExcludeUnratedEnjoyment,
         withDefault(BooleanParam, false),
     );
@@ -239,7 +239,7 @@ export default function FiltersExtended() {
                     Rated tier only
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>
-                    <CheckBox checked={exculdeUnratedEnj} onChange={() => setExcludeUnratedEnj((prev) => !prev)} />
+                    <CheckBox checked={excludeUnratedEnj} onChange={() => setExcludeUnratedEnj((prev) => !prev)} />
                     Has enjoyment
                 </label>
                 <label className='col-span-12 md:col-span-6 xl:col-span-4 flex items-center gap-2 select-none'>

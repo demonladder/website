@@ -5,10 +5,8 @@ import useModal from './useModal';
 export default function useSyncDiscordModal() {
     const { createModal, closeModal } = useModal();
 
-    const open = useCallback(() => {
+    return useCallback(() => {
         const ID = 'sync-discord';
         createModal(ID, <SyncDiscordModal onClose={() => closeModal(ID)} />);
     }, [closeModal, createModal]);
-
-    return open;
 }

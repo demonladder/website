@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Heading2 } from '../../../../components/headings';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
-import { statsClient } from '../../../../api/stats';
+import { statsClient } from '../../../../api';
 
 export function Stats() {
     const queueStats = useQuery({

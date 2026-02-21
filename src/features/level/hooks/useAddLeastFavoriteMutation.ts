@@ -27,7 +27,7 @@ export function useAddLeastFavoriteMutation(options?: Options) {
 
             const level = queryClient.getQueryData<FullLevel>(['level', levelID]);
             if (!level) {
-                // If we don't have the level in cache, refetch least favorites list instead
+                // If we don't have the level in cache, refetch the least favorites list instead
                 void queryClient.invalidateQueries({ queryKey: ['user', userID, 'least-favorites'] });
                 options?.onSuccess?.();
                 return;

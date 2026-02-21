@@ -67,7 +67,7 @@ export default function Game() {
         });
         player.unTranslateCanvas(p5);
 
-        // Check colissions
+        // Check collisions
         for (const obj of sceneObjects) {
             if (obj === player) continue;
 

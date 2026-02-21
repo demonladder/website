@@ -134,13 +134,13 @@ export default function EditLevel() {
                     Re-calculate stats
                 </PrimaryButton>
                 <FormInputDescription>
-                    Should only really be used if an error has occurred in the stat calucation which happens when I do a
-                    lil oopsie.
+                    Should only really be used if an error has occurred in the stat calculation which happens when I do
+                    a lil oopsie.
                 </FormInputDescription>
             </FormGroup>
             <FormGroup>
                 <DangerButton onClick={onRemoveLevel} loading={deleteMutation.isPending}>
-                    {confirmRemove ? 'Confirm r' : 'R'}emove level
+                    {confirmRemove ? 'Confirm remove' : 'Remove'} level
                 </DangerButton>
                 <FormInputDescription>If the level gets unrated.</FormInputDescription>
             </FormGroup>
