@@ -1,5 +1,5 @@
 import { ConnectableApps } from '../../../api/connections/connectionsClient.ts';
-import { Discord } from '@boxicons/react';
+import { Discord, Github } from '@boxicons/react';
 
 export function AppToIcon({ app }: { app: ConnectableApps }) {
     switch (app) {
@@ -7,5 +7,7 @@ export function AppToIcon({ app }: { app: ConnectableApps }) {
             return <img src='https://aredl.net/favicon.ico' width={48} height={48} className='rounded-full' />;
         case ConnectableApps.DISCORD:
             return <Discord size='lg' />;
+        case ConnectableApps.GITHUB:
+            return <Github size='lg' />;
     }
 }

@@ -3,6 +3,7 @@ import APIClient from '../APIClient.ts';
 export enum ConnectableApps {
     AREDL = 'aredl',
     DISCORD = 'discord',
+    GITHUB = 'github',
 }
 
 interface Connection {

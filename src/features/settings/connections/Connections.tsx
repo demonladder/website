@@ -1,5 +1,5 @@
 import { Heading1, Heading2 } from '../../../components/headings';
-import { DiscordAlt, X } from '@boxicons/react';
+import { DiscordAlt, Github, X } from '@boxicons/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useSession from '../../../hooks/useSession.ts';
 import { ConnectableApps, connectionsClient } from '../../../api/connections/connectionsClient.ts';
@@ -89,6 +89,9 @@ export function Connections() {
                 >
                     <img src='https://aredl.net/favicon.ico' width={48} height={48} className='rounded-full' />
                 </button>
+                <a className={connectionClasses} href='/api/connections/github'>
+                    <Github size='lg' />
+                </a>
             </div>
             {query.isSuccess && (
                 <section className='mt-8'>

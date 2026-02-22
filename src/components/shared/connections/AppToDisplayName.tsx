@@ -6,5 +6,7 @@ export function appToDisplayName(app: ConnectableApps) {
             return 'AREDL';
         case ConnectableApps.DISCORD:
             return 'Discord';
+        case ConnectableApps.GITHUB:
+            return 'GitHub';
     }
 }
