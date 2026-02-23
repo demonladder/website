@@ -46,9 +46,11 @@ export default function ForgotPassword() {
                 <div className='w-11/12 md:w-1/2 lg:w-2/6'>
                     <Heading1 className='mb-4'>Forgot password?</Heading1>
                     <p>
-                        Enter your <b>Discord username</b> below and you will be sent a link to reset your password.
+                        Enter your <b className='text-xl text-yellow-400'>Discord username</b> below and you will be
+                        sent a link to reset your password.
                     </p>
                     <p>You must share a server with our bot and have DMs open!</p>
+                    <p>This will only work if you have previously connected your GDDL account to Discord.</p>
                     <p className='my-2'>
                         If you have not linked your GDDL account to Discord, join{' '}
                         <a className='underline text-blue-400' href='https://discord.gg/gddl'>
