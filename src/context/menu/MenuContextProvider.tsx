@@ -3,6 +3,7 @@ import { MenuContext } from './MenuContext';
 import { PermissionFlags } from '../../features/admin/roles/PermissionFlags';
 import useSession from '../../hooks/useSession';
 import { Link } from 'react-router';
+import { useWindowSize } from 'usehooks-ts';
 
 export interface ButtonData {
     text?: React.ReactNode;
@@ -66,14 +67,19 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         [menuData?.buttons, session],
     );
 
+    const windowSize = useWindowSize();
+
     return (
         <MenuContext.Provider value={{ menuData, setMenuData }}>
             {children}
             {menuData && (
                 <div
                     ref={menuRef}
-                    className='fixed z-50 bg-theme-900 text-theme-text rounded-lg border border-theme-400 shadow-2xl'
-                    style={{ left: `${menuData.x}px`, top: `${menuData.y}px` }}
+                    className='fixed z-50 bg-theme-900 text-theme-text text-sm w-60 rounded-lg border border-theme-400 shadow-2xl'
+                    style={{
+                        left: `${menuData.x - (windowSize.width - menuData.x < 248 ? 248 : 0)}px`,
+                        top: `${menuData.y}px`,
+                    }}
                 >
                     {
                         <ul className='p-1'>
