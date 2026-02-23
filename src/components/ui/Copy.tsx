@@ -12,5 +12,10 @@ export default function Copy({ text }: { text: string }) {
         [text],
     );
 
-    return <i className='bx bx-clipboard hover:-translate-y-[2px] transition-transform' onClick={(e) => click(e)} />;
+    return (
+        <i
+            className='bx bx-clipboard hover:-translate-y-[2px] cursor-pointer transition-transform'
+            onClick={(e) => click(e)}
+        />
+    );
 }

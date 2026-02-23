@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import DemonFace from './DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
 import Copy from '../ui/Copy';
@@ -8,6 +8,7 @@ import { useApp } from '../../context/app/useApp';
 import YesTick from '../images/YesTick';
 import './GridLevel.css';
 import { getWordLength } from '../../utils/wordLength';
+import { DotsVerticalRounded } from '@boxicons/react';
 
 interface GridProps {
     ID: number;
@@ -42,19 +43,7 @@ export function GridLevel({
     position,
     onContextMenu,
 }: GridProps) {
-    const navigate = useNavigate();
     const app = useApp();
-
-    function handleClick() {
-        void navigate(`/level/${ID}`);
-    }
-
-    function handleProofClick(e: React.MouseEvent) {
-        e.stopPropagation();
-        if (!proof) return;
-
-        window.open(proof.startsWith('https://') ? proof : `https://${proof}`, '_blank');
-    }
 
     const roundedRating = rating !== null ? Math.round(rating) : 0;
     const roundedEnjoyment = enjoyment !== null ? Math.round(enjoyment) : -1;
@@ -64,10 +53,7 @@ export function GridLevel({
 
     return (
         <div
-            className={
-                'grid-level relative group cursor-pointer min-h-40 round:rounded-xl' + (selected ? ' outline' : '')
-            }
-            onClick={handleClick}
+            className={'grid-level relative group min-h-40 round:rounded-xl' + (selected ? ' outline' : '')}
             onContextMenu={onContextMenu}
             style={{
                 backgroundImage: app.enableLevelThumbnails
@@ -86,7 +72,7 @@ export function GridLevel({
                               : 'bg-theme-600'))
                 }
             >
-                <div className='flex justify-between'>
+                <div className='relative flex justify-between'>
                     <div>
                         <p>
                             <b
@@ -98,7 +84,7 @@ export function GridLevel({
                                         : '')
                                 }
                             >
-                                <Copy text={ID.toString()} /> {name}
+                                <Copy text={ID.toString()} /> <Link to={'/level/' + ID}>{name}</Link>
                             </b>
                             {completed && app.highlightCompleted && (
                                 <YesTick className='inline-block ms-1 mb-1 size-6' />
@@ -109,6 +95,14 @@ export function GridLevel({
                     </div>
                     <div className='self-center'>
                         <DemonFace diff={difficulty} rarity={rarity} size={DemonLogoSizes.MEDIUM} />
+                    </div>
+                    <div className='absolute right-0 top-0'>
+                        <button
+                            className='block hover:bg-white/20 transition-colors rounded-full float-right'
+                            onClick={onContextMenu}
+                        >
+                            <DotsVerticalRounded pack='filled' />
+                        </button>
                     </div>
                 </div>
                 <div className='flex justify-between'>
@@ -124,11 +118,12 @@ export function GridLevel({
                             </b>
                         </p>
                         {proof && (
-                            <i
-                                className='bx bxl-youtube p-1 cursor-pointer rounded transition-colors hover:bg-theme-500 text-xl'
-                                onClick={handleProofClick}
-                                title='Showcase of the level'
-                            />
+                            <a href={proof} target='_blank' rel='noreferrer'>
+                                <i
+                                    className='bx bxl-youtube p-1 cursor-pointer rounded transition-colors hover:bg-theme-500 text-xl'
+                                    title='Showcase of the level'
+                                />
+                            </a>
                         )}
                         {inPack && <i className='bx bx-box text-2xl p-1' title='This level is in a pack' />}
                     </div>
