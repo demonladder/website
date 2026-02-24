@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ConnectableApps, connectionsClient } from '../../../api/connections/connectionsClient.ts';
 import { AppToIcon } from '../../../components/shared/connections/AppToIcon.tsx';
 import { Heading2 } from '../../../components/headings';
+import { EyeSlash } from '@boxicons/react';
 
 interface Props {
     userId: number;
@@ -20,7 +21,7 @@ export function Connections({ userId }: Props) {
                     <Heading2>Connections</Heading2>
                     <ul className='flex flex-wrap gap-2'>
                         {query.data.map((connection) => (
-                            <Connection {...connection} key={connection.id} />
+                            <Connection {...connection} hidden={connection.display === 0} key={connection.id} />
                         ))}
                     </ul>
                 </>
@@ -29,7 +30,15 @@ export function Connections({ userId }: Props) {
     );
 }
 
-function Connection({ accountName, appName }: { accountName: string; appName: ConnectableApps }) {
+function Connection({
+    accountName,
+    appName,
+    hidden,
+}: {
+    accountName: string;
+    appName: ConnectableApps;
+    hidden?: boolean;
+}) {
     let link: string | null = null;
 
     if (appName === ConnectableApps.GITHUB) {
@@ -44,8 +53,9 @@ function Connection({ accountName, appName }: { accountName: string; appName: Co
                     {accountName}
                 </a>
             ) : (
-                <p className='ms-2'>{accountName}</p>
+                <p className='ms-2'>{accountName} </p>
             )}
+            {hidden && <EyeSlash className='ms-1' size='sm' />}
         </li>
     );
 }
