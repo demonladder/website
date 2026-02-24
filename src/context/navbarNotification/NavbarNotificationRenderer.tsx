@@ -7,7 +7,7 @@ export default function NavbarNotificationRenderer() {
     return (
         <>
             {context.notifications.map((n) => (
-                <React.Fragment key={n.ID}>{n.element}</React.Fragment>
+                <React.Fragment key={n.id}>{n.element}</React.Fragment>
             ))}
         </>
     );
