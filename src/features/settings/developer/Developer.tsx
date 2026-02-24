@@ -102,7 +102,7 @@ export default function Developer() {
                 )}
                 <Divider />
                 <Heading3>Applications</Heading3>
-                <Link to={routes.developer.applications} className='text-blue-500'>
+                <Link to={routes.developer.applications} className='text-blue-500 underline-t'>
                     Go to applications
                 </Link>
             </div>
