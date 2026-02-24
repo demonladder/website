@@ -24,12 +24,26 @@ export function Connections() {
     const queryClient = useQueryClient();
     const deleteMutation = useMutation({
         mutationFn: (connectionId: string) => connectionsClient.delete(connectionId),
-        onSuccess: (_, connectionId) => {
+        onMutate: () => toast.loading('Removing...'),
+        onSuccess: (_, connectionId, toastId) => {
             queryClient.setQueryData(
                 ['user', session.user?.ID, 'connections'],
                 query.data?.filter((c) => c.id !== connectionId),
             );
+            toast.update(toastId, {
+                autoClose: 5000,
+                isLoading: false,
+                render: 'Removed successfully',
+                type: 'success',
+            });
         },
+        onError: (error: AxiosError, _, toastId) =>
+            toast.update(toastId!, {
+                autoClose: 5000,
+                isLoading: false,
+                render: renderToastError.render({ data: error }),
+                type: 'error',
+            }),
     });
 
     const updateDisplayMutation = useMutation({
