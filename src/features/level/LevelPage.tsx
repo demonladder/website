@@ -24,6 +24,7 @@ import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation
 import { routes } from '../../routes/route-definitions';
 import { useApp } from '../../context/app/useApp';
 import { QuickSubmit } from './components';
+import { Gamemodes } from './components/Gamemodes.tsx';
 
 const levelLengths = {
     1: 'Tiny',
@@ -240,6 +241,7 @@ export default function LevelPage() {
             </Surface>
             <QuickSubmit level={level} />
             <TagBox level={level} />
+            <Gamemodes />
             <Submissions
                 page={submissionPage}
                 setPage={setSubmissionPage}
