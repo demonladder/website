@@ -25,11 +25,10 @@ export default function TagInfoModal() {
                     <p>You may vote on tags once you have an approved submission for this level.</p>
                     <Divider />
                     <div>
-                        <h4 className='text-xl font-bold'>Available skillsets:</h4>
                         <ul>
                             {data?.map((t) => (
                                 <li className='mb-3' key={t.ID}>
-                                    <h5 className='text-lg'>{t.Name}</h5>
+                                    <h5 className='text-lg font-bold'>{t.Name}</h5>
                                     <p className='text-base'>{t.Description}</p>
                                 </li>
                             ))}

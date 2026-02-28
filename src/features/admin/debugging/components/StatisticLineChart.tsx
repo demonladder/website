@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import GenericLineChart from './GenericLineChart';
 import rawDataToChartData from './rawDataToChartData';
-import { statsClient, type Metrics } from '../../../../api/stats';
+import { statsClient, type Metrics } from '../../../../api';
 import FloatingLoadingSpinner from '../../../../components/ui/FloatingLoadingSpinner';
 
 interface Props {

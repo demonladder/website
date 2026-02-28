@@ -80,6 +80,7 @@ import SubmitPage from '../features/submit/submit.page';
 import { routes } from './route-definitions';
 import { submitLoader } from '../features/submit/submit.loader';
 import SubmissionSearch from '../features/admin/submission-search/submission-search.page';
+import { Connections } from '../features/settings';
 
 export const router = (queryClient: QueryClient) =>
     createBrowserRouter(
@@ -122,6 +123,7 @@ export const router = (queryClient: QueryClient) =>
                     <Route path='account' element={<AccountSettings />} />
                     <Route path='site' element={<ClientSiteSettings />} />
                     <Route path='profile' element={<ProfileSettings />} />
+                    <Route path='connections' element={<Connections />} />
                     <Route path='submission' element={<SubmissionSettings />} />
                     <Route path='appearance' element={<Appearance />} />
                     <Route path='developer' element={<Developer />} />

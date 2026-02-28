@@ -86,7 +86,7 @@ export default function GeneralInformation() {
                     </SecondaryButton>
                 </div>
                 <FormInputDescription>Do not share this secret with anyone!</FormInputDescription>
-                {secret && <p>Copy the secret now as it will dissappear when you leave this page</p>}
+                {secret && <p>Copy the secret now as it will disappear when you leave this page</p>}
             </FormGroup>
         </section>
     );

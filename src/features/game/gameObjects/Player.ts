@@ -70,7 +70,7 @@ export default class Player extends GameObject {
     }
 
     update(p5: P5) {
-        this.velocity.y = (p5.mouseIsPressed || keysPressed[' '] === true ? 1 : -1) * this.speed;
+        this.velocity.y = (p5.mouseIsPressed || keysPressed[' '] ? 1 : -1) * this.speed;
 
         if (!this.isDead) this.position.add(this.velocity.copy().div(60));
 

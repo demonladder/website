@@ -128,8 +128,7 @@ export default function SubmitPage() {
     const requiresProof = useMemo(() => {
         if (statusKey === 'ptb') return false;
         if (Math.round(level?.Rating ?? level?.DefaultRating ?? 1) >= 25) return true;
-        if (parseInt(tier) >= 25) return true;
-        return false;
+        return parseInt(tier) >= 25;
     }, [level?.DefaultRating, level?.Rating, statusKey, tier]);
 
     function handleStatusChange(status: SubmissionStatus) {

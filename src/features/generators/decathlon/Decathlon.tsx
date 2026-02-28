@@ -69,7 +69,7 @@ export default function Decathlon() {
             <p>1-5: 7 re-rolls</p>
             <p>The decathlon will not contain levels you have already beaten.</p>
             <PrimaryButton onClick={() => generateMutation.mutate()} loading={generateMutation.isPending}>
-                {data ? 'Re-g' : 'G'}enerate
+                {data ? 'Re-generate' : 'Generate'}
             </PrimaryButton>
             {data && (
                 <>

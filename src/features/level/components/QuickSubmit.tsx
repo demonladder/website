@@ -135,7 +135,7 @@ export function QuickSubmit({ level }: Props) {
             </div>
             <div className='ms-auto'>
                 <Link to={`/submit/${level.ID}`} className='me-2 text-sm text-blue-400 underline-t'>
-                    advanced...
+                    advanced
                 </Link>
                 <PrimaryButton>{query.data ? 'Save' : 'Submit'}</PrimaryButton>
             </div>

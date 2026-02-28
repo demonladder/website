@@ -231,8 +231,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
     const requiresProof = useMemo(() => {
         if (statusOptionsKey === 'ptb') return false;
         if (level.Meta.Difficulty === Difficulties.Extreme) return true;
-        if (parseInt(tier) >= 21) return true;
-        return false;
+        return parseInt(tier) >= 21;
     }, [statusOptionsKey, level.Meta.Difficulty, tier]);
 
     return (

@@ -11,10 +11,10 @@ import { rolesClient } from '../../api';
 interface Props {
     role: Role;
     onClose: () => void;
-    onSucces?: () => void;
+    onSuccess?: () => void;
 }
 
-export default function DeleteRoleModal({ role, onClose: close, onSucces }: Props) {
+export default function DeleteRoleModal({ role, onClose: close, onSuccess }: Props) {
     const queryClient = useQueryClient();
 
     const onDeleteRole = useCallback(
@@ -25,7 +25,7 @@ export default function DeleteRoleModal({ role, onClose: close, onSucces }: Prop
                 rolesClient.delete(roleID).then(() => {
                     void queryClient.invalidateQueries({ queryKey: ['roles'] });
                     close();
-                    if (onSucces) onSucces();
+                    if (onSuccess) onSuccess();
                 }),
                 {
                     pending: 'Deleting...',
@@ -34,7 +34,7 @@ export default function DeleteRoleModal({ role, onClose: close, onSucces }: Prop
                 },
             );
         },
-        [onSucces, close, queryClient],
+        [onSuccess, close, queryClient],
     );
 
     return (

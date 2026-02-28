@@ -3,7 +3,7 @@ import DeleteRoleModal from '../../components/modals/DeleteRoleModal';
 import useModal from './useModal';
 
 interface Options {
-    onSucces?: () => void;
+    onSuccess?: () => void;
 }
 
 export default function useDeleteRoleModal(options?: Options) {
@@ -12,7 +12,7 @@ export default function useDeleteRoleModal(options?: Options) {
     function open(role: Role) {
         const ID = `deleteRole-${role.ID}`;
 
-        createModal(ID, <DeleteRoleModal role={role} onClose={() => closeModal(ID)} onSucces={options?.onSucces} />);
+        createModal(ID, <DeleteRoleModal role={role} onClose={() => closeModal(ID)} onSuccess={options?.onSuccess} />);
     }
 
     return open;

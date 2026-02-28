@@ -1,5 +1,5 @@
 import { ChartData } from 'chart.js';
-import { StatRecordNullable } from '../../../../api/stats/padDataSet';
+import { StatRecordNullable } from '../../../../api';
 
 export default function rawDataToChartData(
     rawData?: StatRecordNullable[],

@@ -36,12 +36,10 @@ const suffixes = [
 ];
 
 export function toUwU(text: string) {
-    const replaced = text
+    return text
         .split(' ')
         .map((s) => wordToUwU(s))
         .join(' ');
-
-    return replaced;
 }
 
 function wordToUwU(word: string) {

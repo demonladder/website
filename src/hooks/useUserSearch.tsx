@@ -60,7 +60,7 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         [onUserSelect],
     );
 
-    const result = useMemo(
+    return useMemo(
         () => ({
             activeUser,
             setQuery,
@@ -89,6 +89,4 @@ export default function useUserSearch({ ID, userID, maxUsersOnList, onUserSelect
         }),
         [activeUser, setQuery, clear, search, setSearch, ID, data, onSetResult, status, isInvalid],
     );
-
-    return result;
 }

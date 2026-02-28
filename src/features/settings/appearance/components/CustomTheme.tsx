@@ -110,7 +110,7 @@ export default function CustomTheme() {
                 }
             })
             .catch(() => {
-                toast.error("Could't parse text");
+                toast.error("Couldn't parse text");
             });
     }
 

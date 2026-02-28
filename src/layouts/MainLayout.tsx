@@ -137,11 +137,11 @@ export default function MainLayout() {
     }, [app.enableBackground, draw, windowSize.height, windowSize.width]);
 
     useResizeObserver(containerRef, setup);
-    const { error: notifyError } = useNavbarNotification();
+    const { error: notifyError, close: closeNotif } = useNavbarNotification();
 
     const session = useSession();
     useEffect(() => {
-        const widget = document.querySelector<HTMLDivElement>('[id^="kofi-widget-overlay-"');
+        const widget = document.querySelector<HTMLDivElement>('[id^="kofi-widget-overlay-"]');
 
         if (!session.user || session.user.Roles.length === 0) return;
 
@@ -157,15 +157,25 @@ export default function MainLayout() {
     useEffect(() => {
         const url = new URLSearchParams(location.search);
         const error = url.get('error');
+
+        let notifId: string | null = null;
         if (error) {
             if (error === 'already_linked')
-                notifyError('This Discord account is already linked to another GDDL account.');
+                notifId = notifyError('This Discord account is already linked to another GDDL account.');
             else if (error === 'mismatching_discord_id')
-                notifyError(
+                notifId = notifyError(
                     'The Discord account linked to this GDDL account does not match the Discord account you are trying to link with.',
                 );
+            else if (error === 'external_already_linked')
+                notifId = notifyError('The external account is already connected to a GDDL account!');
+            else if (error === 'unknown')
+                notifId = notifyError('An unknow error has occurred, please try again later.');
+            else notifId = notifyError(error);
         }
 
+        return () => {
+            if (notifId) closeNotif(notifId);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

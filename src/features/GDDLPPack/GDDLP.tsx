@@ -10,7 +10,7 @@ interface Props {
     pack: PackResponse;
 }
 
-// Function that takes a comma separated string like "13.1-5" and returns a human readable string like "13 tier 1 to 5s"
+// Function that takes a comma separated string like "13.1-5" and returns a human-readable string like "13 tier 1 to 5s"
 function parseCriteria(criteria: string) {
     return criteria
         .split(',')

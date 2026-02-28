@@ -66,7 +66,7 @@ export default function AddLevelToListModal({ onClose, userID, levelID }: Props)
         <Modal title='Add level to list' show={true} onClose={onClose}>
             <div>
                 {status === 'error' ? (
-                    <p>An error occured, please try again later</p>
+                    <p>An error occurred, please try again later</p>
                 ) : (
                     <>
                         <ol className='my-6'>

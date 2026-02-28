@@ -21,6 +21,7 @@ import { useMemo } from 'react';
 import LevelPreferences from './components/LevelPreferences';
 import RankingsWrapper from './components/Rankings';
 import User from '../../api/types/User';
+import { Connections } from './components/Connections';
 
 export default function Profile() {
     const loadedData = useLoaderData<User>();
@@ -70,7 +71,7 @@ export default function Profile() {
 
         return (
             <Page>
-                <Heading1>An error ocurred</Heading1>
+                <Heading1>An error occurred</Heading1>
             </Page>
         );
     }
@@ -156,6 +157,7 @@ export default function Profile() {
             </nav> */}
             {!userData.IsBot && (
                 <>
+                    <Connections userId={userID} />
                     <LevelPreferences />
                     <Submissions user={userData} />
                     <PendingSubmissions userID={userID} />

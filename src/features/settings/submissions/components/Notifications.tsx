@@ -47,7 +47,7 @@ export default function Notifications() {
 
     function submit() {
         if (data === undefined || wantBitField === undefined) {
-            toast.error('An error ocurred');
+            toast.error('An error occurred');
             return;
         }
 

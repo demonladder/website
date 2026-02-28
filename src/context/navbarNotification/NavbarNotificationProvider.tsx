@@ -4,22 +4,26 @@ import { NavbarNotificationContext, Notification } from './NavbarNotificationCon
 export default function NavbarNotificationProvider({ children }: { children: React.ReactNode }) {
     const [notifications, setNotifications] = useState<Notification[]>([]);
 
-    const addNotification = useCallback((ID: string, element: React.ReactNode) => {
-        setNotifications((prev) => {
-            if (!prev.find((n) => n.ID === ID)) return [...prev, { ID, element }];
-            return prev;
-        });
+    const addNotification = useCallback((element: React.ReactNode) => {
+        const id = crypto.randomUUID();
+        setNotifications((prev) => [...prev, { id, element }]);
+        return id;
     }, []);
 
     const removeNotification = useCallback((ID: string) => {
-        setNotifications((prev) => prev.filter((n) => n.ID !== ID));
+        setNotifications((prev) => prev.filter((n) => n.id !== ID));
     }, []);
+
+    const popNotification = () => {
+        setNotifications((prev) => prev.slice(0, -1));
+    };
 
     const contextValue = useMemo(
         () => ({
             notifications,
             addNotification,
             removeNotification,
+            pop: popNotification,
         }),
         [notifications, addNotification, removeNotification],
     );

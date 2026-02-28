@@ -1,20 +1,22 @@
 import { createContext } from 'react';
 
 export interface Notification {
-    ID: string;
+    id: string;
     element: React.ReactNode;
 }
 
 interface Context {
     notifications: Notification[];
-    addNotification: (ID: string, element: React.ReactNode) => void;
+    addNotification: (element: React.ReactNode) => string;
     removeNotification: (ID: string) => void;
+    pop: () => void;
 }
 
 const defaultContext: Context = {
     notifications: [],
-    addNotification: () => {},
+    addNotification: () => 'foo',
     removeNotification: () => {},
+    pop: () => {},
 };
 
 export const NavbarNotificationContext = createContext(defaultContext);
