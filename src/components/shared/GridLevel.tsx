@@ -96,14 +96,16 @@ export function GridLevel({
                     <div className='self-center'>
                         <DemonFace diff={difficulty} rarity={rarity} size={DemonLogoSizes.MEDIUM} />
                     </div>
-                    <div className='absolute right-0 top-0'>
-                        <button
-                            className='block hover:bg-white/20 transition-colors rounded-full float-right'
-                            onClick={onContextMenu}
-                        >
-                            <DotsVerticalRounded pack='filled' />
-                        </button>
-                    </div>
+                    {onContextMenu && (
+                        <div className='absolute right-0 top-0'>
+                            <button
+                                className='block hover:bg-white/20 transition-colors rounded-full float-right'
+                                onClick={onContextMenu}
+                            >
+                                <DotsVerticalRounded pack='filled' />
+                            </button>
+                        </div>
+                    )}
                 </div>
                 <div className='flex justify-between'>
                     <div className='flex gap-1'>

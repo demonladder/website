@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Level, { LevelSkeleton } from '../../components/shared/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
@@ -22,20 +22,26 @@ import PageButtons from '../../components/shared/PageButtons';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { UserCard } from './components/UserCard';
 import { useSearchUsers } from './hooks/useSearchUsers';
+import { RangeFilterLabel } from './components/RangeFilterLabel.tsx';
+import { FilterLabel } from './components/FilterLabel.tsx';
 
-// TODO: Expand filters to include all filters from the level search page
 interface SavedFilters {
     [QueryParamNames.Name]: string | null;
     [QueryParamNames.MaxRating]: number | null;
     [QueryParamNames.MinRating]: number | null;
     [QueryParamNames.MaxEnjoyment]: number | null;
     [QueryParamNames.MinEnjoyment]: number | null;
-    [QueryParamNames.Length]: number | null;
+    [QueryParamNames.Length]: keyof typeof lengths | null;
+    [QueryParamNames.Difficulty]: keyof typeof difficulties | null;
     [QueryParamNames.MinSubmissionCount]: number | null;
     [QueryParamNames.MaxSubmissionCount]: number | null;
     [QueryParamNames.MinEnjoymentCount]: number | null;
     [QueryParamNames.MaxEnjoymentCount]: number | null;
 }
+
+type NumericFilterKeys = {
+    [K in keyof SavedFilters]: SavedFilters[K] extends number | null ? K : never;
+}[keyof SavedFilters];
 
 const difficulties = {
     '1': 'official',
@@ -119,7 +125,7 @@ export default function Search() {
     }, [registerShortcut, scrollToSearchInput, unregisterShortcut]);
 
     const onSearch = useCallback(() => {
-        setSavedFilters(queryParams);
+        setSavedFilters(queryParams as typeof savedFilters);
         setShowFilters(false);
     }, [queryParams, setSavedFilters, setShowFilters]);
 
@@ -189,131 +195,56 @@ export default function Search() {
         }
     }
 
-    const filters: React.ReactNode[] = useMemo(() => {
-        const filters: React.ReactNode[] = [];
-        if (savedFilters[QueryParamNames.MinRating] || savedFilters[QueryParamNames.MaxRating])
-            filters.push(
+    const filterLabels: ReactNode[] = useMemo(() => {
+        const filterLabels: ReactNode[] = [];
+
+        const addRangeFilterLabel = (minKey: NumericFilterKeys, maxKey: NumericFilterKeys, label: string) => {
+            const minValue = savedFilters[minKey] ?? undefined;
+            const maxValue = savedFilters[maxKey] ?? undefined;
+
+            if (minValue !== undefined || maxValue !== undefined) {
+                filterLabels.push(
+                    <RangeFilterLabel
+                        min={minValue}
+                        max={maxValue}
+                        label={label}
+                        onRemove={() => {
+                            const updates = { [minKey]: undefined, [maxKey]: undefined };
+                            setQueryParams({ ...queryParams, ...updates });
+                            setSavedFilters((prev) => ({ ...prev, ...updates }));
+                        }}
+                    />,
+                );
+            }
+        };
+
+        const addStringFilterLabel = (filter: string, value: string, paramKey: keyof SavedFilters) => {
+            if (!value) return;
+            filterLabels.push(
                 <FilterLabel
-                    label={
-                        savedFilters[QueryParamNames.MinRating] && savedFilters[QueryParamNames.MaxRating]
-                            ? `tier: ${savedFilters[QueryParamNames.MinRating]} - ${savedFilters[QueryParamNames.MaxRating]}`
-                            : !savedFilters[QueryParamNames.MinRating]
-                              ? `tier: < ${savedFilters[QueryParamNames.MaxRating]}`
-                              : `tier: > ${savedFilters[QueryParamNames.MinRating]}`
-                    }
+                    label={`${filter}: ${value}`}
                     onRemove={() => {
-                        setSavedFilters((prev) => ({
-                            ...prev,
-                            [QueryParamNames.MinRating]: undefined,
-                            [QueryParamNames.MaxRating]: undefined,
-                        }));
-                        setQueryParams({
-                            ...queryParams,
-                            [QueryParamNames.MinRating]: undefined,
-                            [QueryParamNames.MaxRating]: undefined,
-                        });
+                        setQueryParams({ ...queryParams, [paramKey]: undefined });
                     }}
                 />,
             );
+        };
 
-        if (savedFilters[QueryParamNames.MinEnjoyment] || savedFilters[QueryParamNames.MaxEnjoyment])
-            filters.push(
-                <FilterLabel
-                    label={
-                        savedFilters[QueryParamNames.MinEnjoyment] && savedFilters[QueryParamNames.MaxEnjoyment]
-                            ? `enjoyment: ${savedFilters[QueryParamNames.MinEnjoyment]} - ${savedFilters[QueryParamNames.MaxEnjoyment]}`
-                            : !savedFilters[QueryParamNames.MinEnjoyment]
-                              ? `enjoyment: < ${savedFilters[QueryParamNames.MaxEnjoyment]}`
-                              : `enjoyment: > ${savedFilters[QueryParamNames.MinEnjoyment]}`
-                    }
-                    onRemove={() => {
-                        setSavedFilters((prev) => ({
-                            ...prev,
-                            [QueryParamNames.MinEnjoyment]: undefined,
-                            [QueryParamNames.MaxEnjoyment]: undefined,
-                        }));
-                        setQueryParams({
-                            ...queryParams,
-                            [QueryParamNames.MinEnjoyment]: undefined,
-                            [QueryParamNames.MaxEnjoyment]: undefined,
-                        });
-                    }}
-                />,
+        addRangeFilterLabel(QueryParamNames.MinRating, QueryParamNames.MaxRating, 'tier');
+        addRangeFilterLabel(QueryParamNames.MinEnjoyment, QueryParamNames.MaxEnjoyment, 'enjoyment');
+        addRangeFilterLabel(QueryParamNames.MinSubmissionCount, QueryParamNames.MaxSubmissionCount, 'submissions');
+        addRangeFilterLabel(QueryParamNames.MinEnjoymentCount, QueryParamNames.MaxEnjoymentCount, 'enjoyment ratings');
+
+        if (savedFilters[QueryParamNames.Difficulty])
+            addStringFilterLabel(
+                'difficulty',
+                difficulties[savedFilters[QueryParamNames.Difficulty]],
+                QueryParamNames.Difficulty,
             );
-
-        if (queryParams[QueryParamNames.Difficulty])
-            filters.push(
-                <FilterLabel
-                    label={`difficulty: ${difficulties[queryParams[QueryParamNames.Difficulty] as keyof typeof difficulties]}`}
-                    onRemove={() => {
-                        setQueryParams({ ...queryParams, [QueryParamNames.Difficulty]: undefined });
-                    }}
-                />,
-            );
-
         if (savedFilters[QueryParamNames.Length])
-            filters.push(
-                <FilterLabel
-                    label={`length: ${lengths[savedFilters[QueryParamNames.Length] as keyof typeof lengths]}`}
-                    onRemove={() => {
-                        setQueryParams({ ...queryParams, [QueryParamNames.Length]: undefined });
-                        setSavedFilters((prev) => ({ ...prev, [QueryParamNames.Length]: undefined }));
-                    }}
-                />,
-            );
+            addStringFilterLabel('length', lengths[savedFilters[QueryParamNames.Length]], QueryParamNames.Length);
 
-        if (savedFilters[QueryParamNames.MinSubmissionCount] || savedFilters[QueryParamNames.MaxSubmissionCount])
-            filters.push(
-                <FilterLabel
-                    label={
-                        savedFilters[QueryParamNames.MinSubmissionCount] &&
-                        savedFilters[QueryParamNames.MaxSubmissionCount]
-                            ? `submissions: ${savedFilters[QueryParamNames.MinSubmissionCount]} - ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
-                            : !savedFilters[QueryParamNames.MinSubmissionCount]
-                              ? `submissions: < ${savedFilters[QueryParamNames.MaxSubmissionCount]}`
-                              : `submissions: > ${savedFilters[QueryParamNames.MinSubmissionCount]}`
-                    }
-                    onRemove={() => {
-                        setQueryParams({
-                            ...queryParams,
-                            [QueryParamNames.MinSubmissionCount]: undefined,
-                            [QueryParamNames.MaxSubmissionCount]: undefined,
-                        });
-                        setSavedFilters((prev) => ({
-                            ...prev,
-                            [QueryParamNames.MinSubmissionCount]: undefined,
-                            [QueryParamNames.MaxSubmissionCount]: undefined,
-                        }));
-                    }}
-                />,
-            );
-
-        if (savedFilters[QueryParamNames.MinEnjoymentCount] || savedFilters[QueryParamNames.MaxEnjoymentCount])
-            filters.push(
-                <FilterLabel
-                    label={
-                        savedFilters[QueryParamNames.MinEnjoymentCount] &&
-                        savedFilters[QueryParamNames.MaxEnjoymentCount]
-                            ? `enjoyment ratings: ${savedFilters[QueryParamNames.MinEnjoymentCount]} - ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
-                            : !savedFilters[QueryParamNames.MinEnjoymentCount]
-                              ? `enjoyment ratings: < ${savedFilters[QueryParamNames.MaxEnjoymentCount]}`
-                              : `enjoyment ratings: > ${savedFilters[QueryParamNames.MinEnjoymentCount]}`
-                    }
-                    onRemove={() => {
-                        setQueryParams({
-                            ...queryParams,
-                            [QueryParamNames.MinEnjoymentCount]: undefined,
-                            [QueryParamNames.MaxEnjoymentCount]: undefined,
-                        });
-                        setSavedFilters((prev) => ({
-                            ...prev,
-                            [QueryParamNames.MinEnjoymentCount]: undefined,
-                            [QueryParamNames.MaxEnjoymentCount]: undefined,
-                        }));
-                    }}
-                />,
-            );
-        return filters;
+        return filterLabels;
     }, [queryParams, savedFilters, setQueryParams, setSavedFilters]);
 
     return (
@@ -347,11 +278,16 @@ export default function Search() {
             )}
             {levelSearchStatus === 'success' && (
                 <>
-                    {filters.length > 0 && (
+                    {filterLabels.length > 0 && (
                         <div className='py-2'>
                             <p>
-                                <b className='text-lg'>Filters:</b> {...filters}
+                                <b className='text-lg'>Filters:</b>
                             </p>
+                            <ul className='flex gap-2'>
+                                {filterLabels.map((filter, i) => (
+                                    <li key={i}>{filter}</li>
+                                ))}
+                            </ul>
                         </div>
                     )}
                     {levelSearchData.data && app.levelViewType === LevelViewType.LIST ? (
@@ -400,16 +336,5 @@ export default function Search() {
                 )}
             </section>
         </Page>
-    );
-}
-
-function FilterLabel({ label, onRemove }: { label: string; onRemove: () => void }) {
-    return (
-        <button
-            className='bg-theme-500 px-1 mx-1 rounded-md border border-theme-400 hover:border-red-500 group slow-effect-transition'
-            onClick={onRemove}
-        >
-            {label} <span className='mx-1 group-hover:text-red-500 slow-effect-transition font-bold'>X</span>
-        </button>
     );
 }
