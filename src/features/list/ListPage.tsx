@@ -19,6 +19,7 @@ import { AxiosError } from 'axios';
 import { useList } from './hooks/useList';
 import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
 import { type List } from './types/List';
+import { Progress } from './components/Progress.tsx';
 
 export default function List() {
     const loadedData = useLoaderData<List>();
@@ -35,6 +36,7 @@ export default function List() {
     const queryClient = useQueryClient();
 
     const { data: list, status } = useList(listID);
+    const completedCount = list?.Levels.reduce((acc, cur) => acc + cur.Level.completed, 0) ?? 0;
 
     const setPosition = useCallback(
         (oldPosition: number, newPosition: number) => {
@@ -174,9 +176,11 @@ export default function List() {
                     </div>
                 </>
             )}
+            <Progress completed={completedCount} total={list.Levels.length} />
             <ol className='mt-4'>
                 {list.Levels.map((level) => (
                     <Level
+                        completed={level.Level.completed === 1}
                         list={list}
                         listLevel={level}
                         setPosition={setPosition}

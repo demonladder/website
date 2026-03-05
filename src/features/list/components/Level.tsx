@@ -11,15 +11,17 @@ import { List } from '../types/List';
 import { GetListResponse } from '../api/getList';
 import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
 import { useWindowSize } from 'usehooks-ts';
+import YesTick from '../../../components/images/YesTick.tsx';
 
 interface Props {
+    completed: boolean;
     list: Pick<List, 'ID' | 'OwnerID'>;
     listLevel: GetListResponse['Levels'][0];
     setPosition: (oldPosition: number, newPosition: number) => void;
     dragLocked: boolean;
 }
 
-export default function Level({ list, listLevel, setPosition, dragLocked }: Props) {
+export default function Level({ completed, list, listLevel, setPosition, dragLocked }: Props) {
     const [isDragged, setIsDragged] = useState(false);
     const [dragOver, setDragOver] = useState(false);
     const itemRef = useRef<HTMLLIElement>(null);
@@ -135,8 +137,14 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
                         size={windowSize.width < 1024 ? DemonLogoSizes.SMALL : DemonLogoSizes.MEDIUM}
                     />
                     <div className='self-center text-sm lg:text-xl ms-2 grow'>
-                        <h3 className='lg:text-2xl font-bold break-all whitespace-pre-wrap'>
+                        <h3
+                            className={
+                                'lg:text-2xl font-bold break-all whitespace-pre-wrap' +
+                                (completed ? ' text-green-400' : '')
+                            }
+                        >
                             {listLevel.Level.Meta?.Name}
+                            {completed && <YesTick className='inline-block ms-1' width={30} height={30} />}
                         </h3>
                         <p className='text-gray-300'>
                             <i>{listLevel.Level.Meta?.Publisher?.name}</i>
