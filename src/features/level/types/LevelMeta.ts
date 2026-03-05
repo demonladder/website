@@ -44,6 +44,8 @@ export default interface LevelMeta {
     Rarity: Rarity;
     PublisherID: number;
     UploadedAt: string | null;
+    seconds: number | null;
+    objects: number | null;
 }
 
 export enum Rarity {

@@ -1,7 +1,6 @@
 import { Link, useLoaderData, useNavigate } from 'react-router';
 import DemonFace from '../../components/shared/DemonFace';
 import { DemonLogoSizes } from '../../utils/difficultyToImgSrc';
-import IDButton from '../../components/ui/IDButton';
 import Packs from './components/Packs';
 import Submissions from './components/Submissions';
 import TagBox from './components/TagBox';
@@ -13,7 +12,6 @@ import { BooleanParam, NumberParam, useQueryParam, withDefault } from 'use-query
 import { Heading1 } from '../../components/headings';
 import FAB from '../../components/input/buttons/FAB/FAB';
 import IconButton from '../../components/input/buttons/icon/IconButton';
-import Surface from '../../components/layout/Surface';
 import useSession from '../../hooks/useSession';
 import { useState } from 'react';
 import useAddListLevelModal from '../../hooks/modals/useAddListLevelModal';
@@ -24,15 +22,7 @@ import { useAddLeastFavoriteMutation } from './hooks/useAddLeastFavoriteMutation
 import { routes } from '../../routes/route-definitions';
 import { useApp } from '../../context/app/useApp';
 import { QuickSubmit } from './components';
-
-const levelLengths = {
-    1: 'Tiny',
-    2: 'Short',
-    3: 'Medium',
-    4: 'Long',
-    5: 'XL',
-    6: 'Platformer',
-};
+import { Meta } from './components/Meta.tsx';
 
 export default function LevelPage() {
     const level = useLoaderData<FullLevel>();
@@ -182,62 +172,7 @@ export default function LevelPage() {
                     </section>
                 </div>
             </div>
-            <Surface variant='700' className='flex flex-wrap gap-2 my-2'>
-                <Surface variant='600' className='w-full md:w-1/3 mb-2'>
-                    <p className='text-lg'>
-                        {level.Meta.Song.Name}
-                        {level.Meta.SongID > 0 && (
-                            <a
-                                href={`https://www.newgrounds.com/audio/listen/${level.Meta.SongID}`}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                className='float-right me-1 text-2xl'
-                            >
-                                <i className='bx bx-link-external' />
-                            </a>
-                        )}
-                    </p>
-                    <p className='text-base'>by {level.Meta.Song.Author}</p>
-                    {level.Meta.SongID > 0 && (
-                        <p className='mt-2 text-xs'>
-                            <span className='text-theme-300'>Song ID:</span> {level.Meta.SongID}{' '}
-                            <span className='ms-2 text-theme-300'>Size:</span> {level.Meta.Song.Size}
-                        </p>
-                    )}
-                </Surface>
-                <div className='grow md:text-lg flex flex-wrap justify-around items-center gap-1'>
-                    <Surface variant='600'>
-                        <p>Position</p>
-                        <p className='text-xl'>
-                            <b>#{level.DifficultyIndex ?? '-'}</b>
-                        </p>
-                    </Surface>
-                    <Surface variant='600'>
-                        <p>Popularity</p>
-                        <p className='text-xl'>
-                            <b>#{level.PopularityIndex ?? '-'}</b>
-                        </p>
-                    </Surface>
-                    <Surface variant='600'>
-                        <p>Submitters</p>
-                        <p className='text-xl'>
-                            <b>{level.SubmissionCount}</b>
-                        </p>
-                    </Surface>
-                    <Surface variant='600'>
-                        <p>Length</p>
-                        <p className='text-xl'>
-                            <b>{levelLengths[level.Meta.Length]}</b>
-                        </p>
-                    </Surface>
-                    {level.ID > 3 && (
-                        <Surface variant='600'>
-                            <p>ID</p>
-                            <IDButton className='font-bold' id={level.ID} />
-                        </Surface>
-                    )}
-                </div>
-            </Surface>
+            <Meta level={level} />
             <QuickSubmit level={level} />
             <TagBox level={level} />
             <Submissions

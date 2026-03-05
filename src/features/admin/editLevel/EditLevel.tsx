@@ -20,6 +20,7 @@ const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 
 export default function EditLevel() {
     const level = useLoaderData<FullLevel>();
+    const [duration, setDuration] = useState(level.Meta.seconds?.toString() ?? '');
     const [defaultRating, setDefaultRating] = useState(level.DefaultRating?.toString() ?? '');
     const defaultRatingID = useId();
     const [showcase, setShowcase] = useState(level.Showcase ?? '');
@@ -38,9 +39,10 @@ export default function EditLevel() {
                 success: 'Saved!',
                 error: renderToastError,
             }),
-        onSuccess: (data) => {
+        onSuccess: (data, variables) => {
             level.Showcase = data.Showcase;
             level.DefaultRating = data.DefaultRating;
+            level.Meta.seconds = variables[1].duration;
         },
     });
 
@@ -58,9 +60,9 @@ export default function EditLevel() {
         },
     });
 
-    function onSubmit(e: React.FormEvent) {
+    function onSubmit(e: React.SubmitEvent) {
         e.preventDefault();
-        mutation.mutate([level.ID, { defaultRating, showcase }]);
+        mutation.mutate([level.ID, { defaultRating, duration: duration ? parseFloat(duration) : null, showcase }]);
     }
 
     const recalculateMutation = useMutation({
@@ -95,6 +97,10 @@ export default function EditLevel() {
                 by {level.Meta.Publisher?.name ?? '(-)'}
             </p>
             <form onSubmit={onSubmit} className='mt-4'>
+                <FormGroup>
+                    <FormInputLabel>Length in seconds</FormInputLabel>
+                    <NumberInput value={duration} onChange={(e) => setDuration(e.target.value)} />
+                </FormGroup>
                 <FormGroup>
                     <FormInputLabel htmlFor={defaultRatingID}>Default rating</FormInputLabel>
                     <NumberInput
