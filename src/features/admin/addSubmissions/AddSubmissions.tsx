@@ -14,6 +14,7 @@ import FormInputDescription from '../../../components/form/FormInputDescription'
 import { Difficulties } from '../../level/types/LevelMeta';
 import { sendSubmission } from '../../../api/submissions/sendSubmission';
 import { Device } from '../../../api/core/enums/device.enum';
+import { SearchLevelResponse } from '../../search/api/getLevels.ts';
 
 const deviceOptions: Record<Device, string> = {
     pc: 'PC',
@@ -24,28 +25,28 @@ export default function AddSubmission() {
     const [deviceKey, setDeviceKey] = useState(Device.PC);
     const [isMutating, setIsMutating] = useState(false);
 
+    const [level, setLevel] = useState<SearchLevelResponse>();
     const [rating, setRating] = useState<number>();
     const [enjoyment, setEnjoyment] = useState<number>();
     const [proof, setProof] = useState('');
     const [refreshRate, setRefreshRate] = useState<number>(60);
 
     const queryClient = useQueryClient();
+    const [isLevelInvalid, setIsLevelInvalid] = useState(false);
 
-    const {
-        activeLevel,
-        markInvalid: markInvalidLevel,
-        SearchBox,
-        clear: clearActiveLevel,
-    } = useLevelSearch('addSubmissionSearch');
+    const { SearchBox, clear: clearActiveLevel } = useLevelSearch('addSubmissionSearch', {
+        onLevel: setLevel,
+        isInvalid: isLevelInvalid,
+    });
     const userSearch = useUserSearch({
         ID: 'addSubmissionUserSearch',
     });
 
     function submit() {
         // Validate
-        if (!activeLevel || !userSearch.activeUser) {
-            if (!activeLevel) {
-                markInvalidLevel();
+        if (!level || !userSearch.activeUser) {
+            if (!level) {
+                setIsLevelInvalid(true);
                 toast.error('You must select a level!');
             }
             if (!userSearch.activeUser) {
@@ -57,7 +58,7 @@ export default function AddSubmission() {
         }
 
         const submission = {
-            levelID: activeLevel.ID,
+            levelID: level.ID,
             userID: userSearch.activeUser.ID,
             rating: rating,
             enjoyment: enjoyment,
@@ -72,7 +73,7 @@ export default function AddSubmission() {
             sendSubmission(submission)
                 .then(() => {
                     void queryClient.invalidateQueries({ queryKey: ['submissions'] });
-                    void queryClient.invalidateQueries({ queryKey: ['level', activeLevel.ID] });
+                    void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
                     void queryClient.invalidateQueries({ queryKey: ['user', submission.userID] });
                 })
                 .finally(() => setIsMutating(false)),
@@ -91,7 +92,7 @@ export default function AddSubmission() {
         setDeviceKey(Device.PC);
         setProof('');
         clearActiveLevel();
-        markInvalidLevel();
+        setIsLevelInvalid(false);
         userSearch.clear();
         userSearch.markInvalid();
     }
@@ -156,7 +157,7 @@ export default function AddSubmission() {
                         id='addSubmissionProof'
                         value={proof}
                         onChange={(e) => setProof(e.target.value)}
-                        invalid={!validateProof(proof, activeLevel?.Meta.Difficulty)}
+                        invalid={!validateProof(proof, level?.Meta.Difficulty)}
                     />
                     <FormInputDescription>Optional. Has to a valid URL.</FormInputDescription>
                 </div>

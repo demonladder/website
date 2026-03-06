@@ -4,6 +4,8 @@ import useLevelSearch from '../../../../hooks/useLevelSearch';
 import usePackLevels from '../../../singlePack/hooks/usePackLevels';
 import { GetPackLevelsResponse as PackLevel } from '../../../singlePack/api/getPackLevels';
 import Divider from '../../../../components/divider/Divider';
+import { useState } from 'react';
+import { SearchLevelResponse } from '../../../search/api/getLevels.ts';
 
 interface Props {
     addLevel: (levelID: number, levelName: string, ex?: boolean) => void;
@@ -12,15 +14,16 @@ interface Props {
 }
 
 export default function List({ addLevel, packID, removeLevel }: Props) {
-    const addLevelSearch = useLevelSearch('editPacksAddSearch', {});
+    const [level, setLevel] = useState<SearchLevelResponse>();
+    const addLevelSearch = useLevelSearch('editPacksAddSearch', { onLevel: setLevel });
     const levelFilter = addLevelSearch.value;
 
     const { data } = usePackLevels(packID);
 
     function onAdd(EX = false) {
-        if (addLevelSearch.activeLevel === undefined) return;
+        if (level === undefined) return;
 
-        addLevel(addLevelSearch.activeLevel.ID, addLevelSearch.activeLevel.Meta.Name, EX);
+        addLevel(level.ID, level.Meta.Name, EX);
     }
 
     return (

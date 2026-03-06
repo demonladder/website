@@ -9,7 +9,7 @@ import { NumberParam, useQueryParam, withDefault } from 'use-query-params';
 import { Heading1 } from '../../../components/headings';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import pluralS from '../../../utils/pluralS';
-import LevelSearchBox from '../../../components/SearchBox/LevelSearchBox';
+import useLevelSearch from '../../../hooks/useLevelSearch.tsx';
 import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
 import { useEffect } from 'react';
 
@@ -24,6 +24,9 @@ export default function Queue() {
     const [proofFilter, setProofFilter] = useSessionStorage<keyof typeof proofFilterOptions>('queue.filter', 'all');
     const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
     const [levelID, setLevelID] = useQueryParam('levelID', NumberParam);
+    const levelFilter = useLevelSearch('queueLevelFilter', {
+        onLevel: (level) => setLevelID(level?.ID),
+    });
 
     const {
         status,
@@ -76,8 +79,8 @@ export default function Queue() {
                 <div>
                     <p>Level</p>
                     <div className='flex gap-2'>
-                        <LevelSearchBox ID='queueLevelSearch' onLevel={(level) => setLevelID(level?.ID)} />
-                        <SecondaryButton onClick={() => setLevelID(undefined)}>Clear</SecondaryButton>
+                        {levelFilter.SearchBox}
+                        <SecondaryButton onClick={() => levelFilter.clear()}>Clear</SecondaryButton>
                     </div>
                 </div>
             </div>

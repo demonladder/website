@@ -16,6 +16,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Heading1 } from '../../../../components/headings';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import useSession from '../../../../hooks/useSession';
+import { SearchLevelResponse } from '../../../search/api/getLevels.ts';
 
 const pronounOptions = {
     '-': 'Select your pronouns',
@@ -49,7 +50,11 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     const arePronounsValid = /^[a-z]{1,6}(\/[a-z]{1,6}){0,7}$/.test(customPronouns);
     const countrySelectID = useId();
 
-    const hardestSearch = useLevelSearch('profileSettingsHardest', { defaultLevel: data?.HardestID });
+    const [hardest, setHardest] = useState<SearchLevelResponse>();
+    const hardestSearch = useLevelSearch('profileSettingsHardest', {
+        defaultLevel: data?.HardestID,
+        onLevel: setHardest,
+    });
 
     const minPrefRef = useRef<HTMLInputElement>(null);
     const maxPrefRef = useRef<HTMLInputElement>(null);
@@ -106,7 +111,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             introduction: introduction || null,
             pronouns,
             countryCode: countryKey === '-' ? null : countryKey,
-            hardest: hardestSearch.activeLevel?.ID ?? null,
+            hardest: hardest?.ID ?? null,
             minPref: parseInt(minPrefRef.current.value) || null,
             maxPref: parseInt(maxPrefRef.current.value) || null,
         });
