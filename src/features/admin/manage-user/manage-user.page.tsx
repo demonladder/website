@@ -7,7 +7,7 @@ export default function ManageUser() {
     const { SearchBox } = useUserSearch({
         ID: 'user-search',
         maxUsersOnList: 10,
-        onUserSelect: (user) => void navigate(user.ID.toString()),
+        onUser: (user) => user && void navigate(user.ID.toString()),
     });
 
     return (

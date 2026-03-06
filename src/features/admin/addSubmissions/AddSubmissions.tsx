@@ -15,6 +15,7 @@ import { Difficulties } from '../../level/types/LevelMeta';
 import { sendSubmission } from '../../../api/submissions/sendSubmission';
 import { Device } from '../../../api/core/enums/device.enum';
 import { SearchLevelResponse } from '../../search/api/getLevels.ts';
+import { UserWithRoles } from '../../../api/user/searchUsers.ts';
 
 const deviceOptions: Record<Device, string> = {
     pc: 'PC',
@@ -26,6 +27,7 @@ export default function AddSubmission() {
     const [isMutating, setIsMutating] = useState(false);
 
     const [level, setLevel] = useState<SearchLevelResponse>();
+    const [user, setUser] = useState<UserWithRoles>();
     const [rating, setRating] = useState<number>();
     const [enjoyment, setEnjoyment] = useState<number>();
     const [proof, setProof] = useState('');
@@ -33,6 +35,7 @@ export default function AddSubmission() {
 
     const queryClient = useQueryClient();
     const [isLevelInvalid, setIsLevelInvalid] = useState(false);
+    const [isUserInvalid, setIsUserInvalid] = useState(false);
 
     const { SearchBox, clear: clearActiveLevel } = useLevelSearch('addSubmissionSearch', {
         onLevel: setLevel,
@@ -40,26 +43,30 @@ export default function AddSubmission() {
     });
     const userSearch = useUserSearch({
         ID: 'addSubmissionUserSearch',
+        onUser: setUser,
+        isInvalid: isUserInvalid,
     });
 
     function submit() {
         // Validate
-        if (!level || !userSearch.activeUser) {
+        if (!level || !user) {
             if (!level) {
                 setIsLevelInvalid(true);
                 toast.error('You must select a level!');
             }
-            if (!userSearch.activeUser) {
-                userSearch.markInvalid();
+            if (!user) {
+                setIsUserInvalid(true);
                 toast.error('You must select a user!');
             }
 
             return;
         }
 
+        setIsLevelInvalid(false);
+        setIsUserInvalid(false);
         const submission = {
             levelID: level.ID,
-            userID: userSearch.activeUser.ID,
+            userID: user.ID,
             rating: rating,
             enjoyment: enjoyment,
             refreshRate,
@@ -93,8 +100,8 @@ export default function AddSubmission() {
         setProof('');
         clearActiveLevel();
         setIsLevelInvalid(false);
+        setIsUserInvalid(false);
         userSearch.clear();
-        userSearch.markInvalid();
     }
 
     const tierValid = validateTier(rating);

@@ -27,6 +27,7 @@ import useUserSearch from '../../hooks/useUserSearch';
 import { useSubmission } from '../../components/modals/useSubmission';
 import FloatingLoadingSpinner from '../../components/ui/FloatingLoadingSpinner';
 import type { SubmissionStatus } from '../profile/api/getUserPendingSubmissions';
+import { UserWithRoles } from '../../api/user/searchUsers.ts';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
@@ -90,7 +91,8 @@ export default function SubmitPage() {
     const queryClient = useQueryClient();
     const session = useSession();
     const userID = session.user?.ID;
-    const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });
+    const [secondPlayer, setSecondPlayer] = useState<UserWithRoles>();
+    const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2, onUser: setSecondPlayer });
 
     const { data: existingSubmission, status } = useSubmission(level?.ID ?? 0, userID, {});
 
@@ -199,7 +201,7 @@ export default function SubmitPage() {
                 status: statusKey,
                 attempts,
                 isSolo: wasSolo,
-                secondPlayerID: secondPlayerSearch.activeUser?.ID,
+                secondPlayerID: secondPlayer?.ID,
             },
             {
                 onSuccess: (data) => {

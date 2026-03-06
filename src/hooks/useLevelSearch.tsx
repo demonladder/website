@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useEffectEvent } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getLevel } from '../features/level/api/getLevel';
 import { getLevels, SearchLevelResponse } from '../features/search/api/getLevels';
@@ -15,8 +15,6 @@ export default function useLevelSearch(ID: string, { defaultLevel, inPack, isInv
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const ref = useRef<HTMLInputElement>(null);
-
     const { data, status } = useQuery({
         queryKey: ['levelSearch', searchQuery],
         queryFn: () => getLevels({ inPack, name: searchQuery, limit: 5, page: 0 }),
@@ -28,35 +26,29 @@ export default function useLevelSearch(ID: string, { defaultLevel, inPack, isInv
         enabled: defaultLevel !== null,
     });
 
+    const onLevelEvent = useEffectEvent(onLevel);
     useEffect(() => {
-        if (search === '') onLevel(undefined);
+        if (search === '') onLevelEvent(undefined);
     }, [search]);
 
     useEffect(() => {
-        if (!defaultData) return;
+        if (!defaultData?.Meta.Name) return;
 
-        if (ref.current) ref.current.value = defaultData?.Meta.Name;
         setSearch(defaultData?.Meta.Name);
-    }, [defaultData]);
+    }, [defaultData?.Meta.Name]);
 
-    function clear() {
+    const clear = () => {
         setSearch('');
         setSearchQuery('');
         onLevel(undefined);
-    }
+    };
 
-    function setText(query: string) {
-        setSearch(query);
-        setSearchQuery(query);
-    }
-
-    function onResult(level?: SearchLevelResponse) {
+    const handleResult = (level?: SearchLevelResponse) => {
         setSearch(level?.Meta.Name ?? '-');
         onLevel(level);
-    }
+    };
 
     return {
-        setText,
         clear,
         SearchBox: (
             <SearchBox<SearchLevelResponse>
@@ -67,7 +59,7 @@ export default function useLevelSearch(ID: string, { defaultLevel, inPack, isInv
                 onDebouncedChange={setSearchQuery}
                 id={ID}
                 list={data?.data ?? []}
-                onResult={onResult}
+                onResult={handleResult}
                 status={status}
                 invalid={isInvalid}
                 placeholder={defaultData?.Meta.Name ?? 'Search for a level...'}

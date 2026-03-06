@@ -97,7 +97,12 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         enabled: session.user !== undefined,
     });
 
-    const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2 });
+    const [secondPlayerId, setSecondPlayerId] = useState<number>();
+    const secondPlayerSearch = useUserSearch({
+        ID: 'secondPlayerSubmit',
+        maxUsersOnList: 2,
+        onUser: (user) => setSecondPlayerId(user?.ID),
+    });
 
     useEffect(() => {
         if (userSubmission === undefined) return;
@@ -110,7 +115,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
         setProgress(userSubmission.Progress);
         if (userSubmission.Attempts !== null) setAttempts(userSubmission.Attempts);
         setWasSolo(userSubmission.IsSolo);
-        if (userSubmission.SecondaryUser) secondPlayerSearch.setQuery(userSubmission.SecondaryUser.Name);
+        if (userSubmission.SecondaryUser) secondPlayerSearch.setText(userSubmission.SecondaryUser.Name);
     }, [userSubmission, secondPlayerSearch]);
 
     const queryClient = useQueryClient();
@@ -171,7 +176,7 @@ export default function SubmitModal({ onClose, level, userID }: Props) {
                 status: statusOptionsKey,
                 attempts,
                 isSolo: wasSolo,
-                secondPlayerID: secondPlayerSearch.activeUser?.ID,
+                secondPlayerID: secondPlayerId,
             },
             {
                 onSuccess: (data) => {
