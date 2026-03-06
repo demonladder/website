@@ -15,6 +15,7 @@
 @import './themes/white.css';
 
 @theme {
+    --color-theme-300: #b9b9b9;
     --color-theme-400: #929292;
     --color-theme-500: #4d4d4d;
     --color-theme-600: #454545;

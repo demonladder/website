@@ -14,6 +14,7 @@ import { useWindowSize } from 'usehooks-ts';
 import YesTick from '../../../components/images/YesTick.tsx';
 
 interface Props {
+    compact: boolean;
     completed: boolean;
     list: Pick<List, 'ID' | 'OwnerID'>;
     listLevel: GetListResponse['Levels'][0];
@@ -21,7 +22,7 @@ interface Props {
     dragLocked: boolean;
 }
 
-export default function Level({ completed, list, listLevel, setPosition, dragLocked }: Props) {
+export default function Level({ compact, completed, list, listLevel, setPosition, dragLocked }: Props) {
     const [isDragged, setIsDragged] = useState(false);
     const [dragOver, setDragOver] = useState(false);
     const itemRef = useRef<HTMLLIElement>(null);
@@ -100,6 +101,44 @@ export default function Level({ completed, list, listLevel, setPosition, dragLoc
     ]);
 
     const windowSize = useWindowSize();
+
+    if (compact) {
+        return (
+            <li
+                ref={itemRef}
+                id={listLevel.LevelID.toString()}
+                draggable={true}
+                onDragStart={dragStartHandler}
+                onDragEnd={dragStopHandler}
+                onDragOver={dragOverHandler}
+                onDragLeave={dragLeaveHandler}
+                onDrop={(e) => dropHandler(e)}
+                className={
+                    'grid grid-cols-subgrid col-span-5' + (isDragged ? ' opacity-0' : dragOver ? ' opacity-50' : '')
+                }
+                onContextMenu={openContext}
+            >
+                <p className='text-right text-theme-300'>{listLevel.Position}.</p>
+                <Link to={'/level/' + listLevel.LevelID} className={'ps-10' + (completed ? ' text-green-400' : '')}>
+                    {listLevel.Level.Meta?.Name}{' '}
+                    {completed && <YesTick className='inline-block ms-1' width={24} height={24} />}
+                </Link>
+                <p className='text-theme-300 ps-10'>{listLevel.Level.Meta?.Publisher?.name}</p>
+                <div className={'ms-auto py-0.5 w-12 grid place-items-center group ' + ratingClass}>
+                    <p className='group-hover:hidden '>{listLevel.Level.Rating !== null ? roundedRating : 'N/A'}</p>
+                    <p className='hidden group-hover:block'>{listLevel.Level.Rating !== null ? fixedRating : 'N/A'}</p>
+                </div>
+                <div className={'py-0.5 w-12 grid place-items-center group ' + enjoymentClass}>
+                    <p className='group-hover:hidden '>
+                        {listLevel.Level.Enjoyment !== null ? roundedEnjoyment : 'N/A'}
+                    </p>
+                    <p className='hidden group-hover:block '>
+                        {listLevel.Level.Enjoyment !== null ? fixedEnjoyment : 'N/A'}
+                    </p>
+                </div>
+            </li>
+        );
+    }
 
     return (
         <li

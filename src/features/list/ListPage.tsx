@@ -20,6 +20,7 @@ import { useList } from './hooks/useList';
 import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
 import { type List } from './types/List';
 import { Progress } from './components/Progress.tsx';
+import { List as ListIcon, ListUl } from '@boxicons/react';
 
 export default function List() {
     const loadedData = useLoaderData<List>();
@@ -29,6 +30,7 @@ export default function List() {
     const [description, setDescription] = useState(loadedData.Description ?? '');
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
+    const [isCompact, setIsCompact] = useState(false);
 
     const openDeleteModal = useDeleteListModal();
     const session = useSession();
@@ -177,18 +179,62 @@ export default function List() {
                 </>
             )}
             <Progress completed={completedCount} total={list.Levels.length} />
-            <ol className='mt-4'>
-                {list.Levels.map((level) => (
-                    <Level
-                        completed={level.Level.completed === 1}
-                        list={list}
-                        listLevel={level}
-                        setPosition={setPosition}
-                        dragLocked={isDragLocked}
-                        key={level.LevelID}
-                    />
-                ))}
-            </ol>
+            <div className='flex justify-between'>
+                <div></div>
+                <div>
+                    <button
+                        className='text-theme-400 hover:text-theme-text transition-colors'
+                        onClick={() => setIsCompact((prev) => !prev)}
+                    >
+                        {isCompact ? (
+                            <>
+                                Compact <ListIcon className='inline-block -mt-1' />
+                            </>
+                        ) : (
+                            <>
+                                List <ListUl className='inline-block -mt-1' />
+                            </>
+                        )}
+                    </button>
+                </div>
+            </div>
+            {isCompact ? (
+                <ol className='lg:text-lg mt-4 grid' style={{ gridTemplateColumns: '2rem max-content 1fr auto auto' }}>
+                    <div className='grid grid-cols-subgrid col-span-5'>
+                        <p className='text-right text-theme-300'>#</p>
+                        <p className='text-theme-300 ps-10'>Name</p>
+                        <p className='text-theme-300 ps-10'>Creator</p>
+                        <p className='text-theme-300 ps-10 text-center'>Tier</p>
+                        <p className='text-theme-300 text-center'>Enj.</p>
+                    </div>
+                    <div className='border-b border-theme-400 h-px col-span-5 mt-2 mb-4 mx-2' />
+                    {list.Levels.map((level) => (
+                        <Level
+                            compact={isCompact}
+                            completed={level.Level.completed === 1}
+                            list={list}
+                            listLevel={level}
+                            setPosition={setPosition}
+                            dragLocked={isDragLocked}
+                            key={level.LevelID}
+                        />
+                    ))}
+                </ol>
+            ) : (
+                <ol className='lg:text-lg mt-4'>
+                    {list.Levels.map((level) => (
+                        <Level
+                            compact={isCompact}
+                            completed={level.Level.completed === 1}
+                            list={list}
+                            listLevel={level}
+                            setPosition={setPosition}
+                            dragLocked={isDragLocked}
+                            key={level.LevelID}
+                        />
+                    ))}
+                </ol>
+            )}
             {list.Levels.length === 0 && (
                 <p>
                     <i>This list doesn't have any levels yet</i>
