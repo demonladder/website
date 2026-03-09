@@ -21,6 +21,7 @@ import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
 import { type List } from './types/List';
 import { Progress } from './components/Progress.tsx';
 import { List as ListIcon, ListUl } from '@boxicons/react';
+import { useLocalStorage } from 'usehooks-ts';
 
 export default function List() {
     const loadedData = useLoaderData<List>();
@@ -30,7 +31,7 @@ export default function List() {
     const [description, setDescription] = useState(loadedData.Description ?? '');
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
-    const [isCompact, setIsCompact] = useState(false);
+    const [isCompact, setIsCompact] = useLocalStorage('compactList', false);
 
     const openDeleteModal = useDeleteListModal();
     const session = useSession();
@@ -203,7 +204,7 @@ export default function List() {
                     <div className='grid grid-cols-subgrid col-span-5'>
                         <p className='text-right text-theme-300'>#</p>
                         <p className='text-theme-300 ps-10'>Name</p>
-                        <p className='text-theme-300 ps-10'>Creator</p>
+                        <p className='text-theme-300 ps-20'>Creator</p>
                         <p className='text-theme-300 ps-10 text-center'>Tier</p>
                         <p className='text-theme-300 text-center'>Enj.</p>
                     </div>
