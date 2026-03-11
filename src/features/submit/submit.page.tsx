@@ -13,7 +13,7 @@ import FormInputDescription from '../../components/form/FormInputDescription';
 import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
 import { Device } from '../../api/core/enums/device.enum';
 import { useApp } from '../../context/app/useApp';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { validateIntChange, validateIntInputChange } from '../../utils/validators/validateIntChange';
 import { validateLink } from '../../utils/validators/validateLink';
 import SegmentedButtonGroup from '../../components/input/buttons/segmented/SegmentedButtonGroup';
@@ -28,6 +28,8 @@ import { useSubmission } from '../../components/modals/useSubmission';
 import FloatingLoadingSpinner from '../../components/ui/FloatingLoadingSpinner';
 import type { SubmissionStatus } from '../profile/api/getUserPendingSubmissions';
 import { UserWithRoles } from '../../api/user/searchUsers.ts';
+import type { GetSingleSubmissionResponse } from '../../api/submissions/GetSingleSubmission.ts';
+import InlineLoadingSpinner from '../../components/ui/InlineLoadingSpinner.tsx';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 const MINIMUM_REFRESH_RATE = parseInt(import.meta.env.VITE_MINIMUM_REFRESH_RATE);
@@ -63,6 +65,21 @@ const statusOptions: Record<SubmissionStatus, string> = {
 
 export default function SubmitPage() {
     const level = useLoaderData<FullLevel | null>();
+    const session = useSession();
+    const userID = session.user?.ID;
+    const { data: existingSubmission, status } = useSubmission(level?.ID ?? 0, userID, {});
+
+    if (status === 'pending') return <InlineLoadingSpinner />;
+
+    return <SubmitPagePresenter submission={existingSubmission} key={existingSubmission?.ID} />;
+}
+
+interface SubmitPagePresenterProps {
+    submission?: GetSingleSubmissionResponse;
+}
+
+function SubmitPagePresenter({ submission: existingSubmission }: SubmitPagePresenterProps) {
+    const level = useLoaderData<FullLevel | null>();
     const navigate = useNavigate();
     const { SearchBox: LevelSearchBox } = useLevelSearch('submitLevelSearchBox', {
         onLevel(level) {
@@ -72,47 +89,37 @@ export default function SubmitPage() {
     });
 
     const app = useApp();
-    const [tier, setTier] = useState<string>('');
-    const [enjoymentKey, setEnjoymentKey] = useState<EnjoymentOptions>('-1');
-    const [deviceKey, setDeviceKey] = useState(app.defaultDevice ?? Device.PC);
+    const [tier, setTier] = useState<string>(existingSubmission?.Rating?.toString() ?? '');
+    const [enjoymentKey, setEnjoymentKey] = useState<EnjoymentOptions>(
+        existingSubmission?.Enjoyment !== null && existingSubmission?.Enjoyment !== undefined
+            ? (existingSubmission.Enjoyment.toString() as EnjoymentOptions)
+            : '-1',
+    );
+    const [deviceKey, setDeviceKey] = useState(existingSubmission?.Device ?? app.defaultDevice ?? Device.PC);
     const [statusKey, setStatusKey] = useState<keyof typeof statusOptions>('beaten');
-    const [refreshRate, setRefreshRate] = useState((app.defaultRefreshRate ?? 60).toString());
-    const [proof, setProof] = useState('');
-    const [isProofPrivate, setIsProofPrivate] = useState(false);
-    const [progress, setProgress] = useState(100);
-    const [attempts, setAttempts] = useState<number>();
-    const [wasSolo, setWasSolo] = useState(true);
+    const [refreshRate, setRefreshRate] = useState(
+        existingSubmission?.RefreshRate?.toString() ?? (app.defaultRefreshRate ?? 60).toString(),
+    );
+    const [proof, setProof] = useState(existingSubmission?.Proof ?? '');
+    const [isProofPrivate, setIsProofPrivate] = useState(existingSubmission?.IsProofPrivate ?? false);
+    const [progress, setProgress] = useState(existingSubmission?.Progress ?? 100);
+    const [attempts, setAttempts] = useState<number | undefined>(existingSubmission?.Attempts ?? undefined);
+    const [wasSolo, setWasSolo] = useState(existingSubmission?.IsSolo ?? true);
+
+    const [r1] = useState(() => Math.random());
+    const [r2] = useState(() => Math.random());
     const [randomAttempts] = useState(
         ((x: number | null) => {
-            if (!x) x = Math.random() + 4.5;
-            return 15 * x ** 2 + 200 + (Math.random() * 2 - 1) * x ** 0.5 * 100;
+            if (!x) x = r1 + 4.5;
+            return 15 * x ** 2 + 200 + (r2 * 2 - 1) * x ** 0.5 * 100;
         })(level?.Rating ?? 1),
     );
+
     const queryClient = useQueryClient();
     const session = useSession();
     const userID = session.user?.ID;
     const [secondPlayer, setSecondPlayer] = useState<UserWithRoles>();
     const secondPlayerSearch = useUserSearch({ ID: 'secondPlayerSubmit', maxUsersOnList: 2, onUser: setSecondPlayer });
-
-    const { data: existingSubmission, status } = useSubmission(level?.ID ?? 0, userID, {});
-
-    useEffect(() => {
-        if (existingSubmission) {
-            setTier(existingSubmission.Rating?.toString() ?? '');
-            setEnjoymentKey(
-                existingSubmission.Enjoyment !== null && existingSubmission.Enjoyment !== undefined
-                    ? (existingSubmission.Enjoyment.toString() as EnjoymentOptions)
-                    : '-1',
-            );
-            setRefreshRate(existingSubmission.RefreshRate.toString());
-            setDeviceKey(existingSubmission.Device);
-            setProof(existingSubmission.Proof ?? '');
-            setIsProofPrivate(existingSubmission.IsProofPrivate);
-            setProgress(existingSubmission.Progress);
-            setAttempts(existingSubmission.Attempts ?? undefined);
-            setWasSolo(existingSubmission.IsSolo);
-        }
-    }, [existingSubmission]);
 
     function onBlur(e: React.FocusEvent<HTMLInputElement>) {
         const newVal = validateIntChange(e.target.value);

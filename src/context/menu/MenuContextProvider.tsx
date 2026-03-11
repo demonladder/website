@@ -108,7 +108,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                             <button
                                                 onClick={(e) => handleClick(e, b)}
                                                 className={
-                                                    'w-full text-start pe-4 py-1 rounded ' +
+                                                    'w-full text-start pe-4 py-1 rounded flex align-center ' +
                                                     (!(b.type === 'danger')
                                                         ? 'hover:bg-theme-700'
                                                         : 'hover:bg-red-600') +
@@ -118,7 +118,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                                 }
                                             >
                                                 <span className='inline-block w-4 mx-2'>{b.icon}</span>
-                                                {b.text}
+                                                <span>{b.text}</span>
                                             </button>
                                         )}
                                     </li>

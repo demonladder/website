@@ -18,6 +18,7 @@ import { NumberParam, useQueryParam } from 'use-query-params';
 import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
 import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { useNow } from '../../../../hooks/useNow';
 
 interface Props {
     submission: QueueSubmission;
@@ -114,15 +115,16 @@ export default function Submission({ submission }: Props) {
     }
 
     const [queueLevelIDFilter, setQueueLevelIDFilter] = useQueryParam('levelID', NumberParam);
-    function onFilter(levelID: number) {
+    const onFilter = (levelID: number) => {
         if (queueLevelIDFilter === levelID) setQueueLevelIDFilter(undefined);
         else setQueueLevelIDFilter(levelID);
-    }
+    };
 
     const approveSubmission = useApproveClicked();
 
+    const now = useNow();
     const secondsAgo = Math.floor(
-        (Date.now() - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000,
+        (now - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000,
     );
 
     return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { TextInput } from '../../../../components/shared/input/Input';
@@ -10,40 +10,30 @@ import { getPacks } from '../../../packs/api/getPacks';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import FormInputLabel from '../../../../components/form/FormInputLabel';
 import FormGroup from '../../../../components/form/FormGroup';
-import usePack from '../../../singlePack/hooks/usePack';
 import Select from '../../../../components/input/select/Select';
+import Pack from '../../../singlePack/types/Pack.ts';
 
 interface Props {
-    packID: number;
+    pack: Pack;
 }
 
-export default function Meta({ packID }: Props) {
-    const [description, setDescription] = useState('');
-    const [roleID, setRoleID] = useState('');
-    const [categoryKey, setCategoryKey] = useState(1);
+export default function Meta({ pack }: Props) {
+    const [description, setDescription] = useState(pack.Description ?? '');
+    const [roleID, setRoleID] = useState(pack.RoleID ?? '');
+    const [categoryKey, setCategoryKey] = useState(pack.CategoryID ?? 1);
     const [isLoading, setIsLoading] = useState(false);
     const queryClient = useQueryClient();
-
-    const { data } = usePack(packID);
 
     const { data: packsData } = useQuery({
         queryKey: ['packs'],
         queryFn: getPacks,
     });
 
-    useEffect(() => {
-        if (data === undefined) return;
-
-        setDescription(data.Description || '');
-        setCategoryKey(data.CategoryID);
-        setRoleID(data.RoleID || '');
-    }, [data]);
-
     function save() {
         if (isLoading) return;
         setIsLoading(true);
 
-        const request = SavePackMetaRequest(packID, categoryKey, description || undefined, roleID)
+        const request = SavePackMetaRequest(pack.ID, categoryKey, description || undefined, roleID)
             .then(() => {
                 void queryClient.invalidateQueries({ queryKey: ['packs'] });
                 void queryClient.invalidateQueries({ queryKey: ['packSearch'] });

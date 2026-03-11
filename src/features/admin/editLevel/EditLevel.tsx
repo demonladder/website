@@ -39,8 +39,7 @@ export default function EditLevel() {
                 error: renderToastError,
             }),
         onSuccess: (data) => {
-            level.Showcase = data.Showcase;
-            level.DefaultRating = data.DefaultRating;
+            queryClient.setQueryData(['level', level.ID], () => ({ ...level, ...data }));
         },
     });
 

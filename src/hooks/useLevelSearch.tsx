@@ -34,6 +34,7 @@ export default function useLevelSearch(ID: string, { defaultLevel, inPack, isInv
     useEffect(() => {
         if (!defaultData?.Meta.Name) return;
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSearch(defaultData?.Meta.Name);
     }, [defaultData?.Meta.Name]);
 

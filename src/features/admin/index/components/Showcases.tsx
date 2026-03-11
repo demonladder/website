@@ -21,13 +21,6 @@ export default function Showcases() {
     const [videoHeight, setVideoHeight] = useState(400);
 
     useEffect(() => {
-        if (!suggestions?.total) return;
-        if (suggestions.total > 0 && suggestions.suggestions.length === 0) {
-            setPage(Math.max(0, Math.ceil(suggestions.total / 2) - 1));
-        }
-    }, [suggestions?.suggestions.length, suggestions?.total, setPage]);
-
-    useEffect(() => {
         if (!ulRef.current) return;
 
         setVideoHeight((ulRef.current.clientWidth * 9) / 16 / 2.1165857);
@@ -45,11 +38,20 @@ export default function Showcases() {
         };
     }, [status]);
 
+    const updateQueryAndPage = () => {
+        void queryClient.invalidateQueries({
+            queryKey: ['showcase-suggestions'],
+            predicate: (query) => (query.queryKey[1] as { page: number }).page >= page - 1,
+        });
+        if (suggestions?.suggestions.length === 1)
+            setPage(Math.max(0, Math.ceil((suggestions.total - 1) / suggestions.limit) - 1));
+    };
+
     const acceptMutation = useMutation({
         mutationFn: acceptShowcaseSuggestion,
         onSuccess: () => {
             toast.success('Showcase accepted');
-            void queryClient.invalidateQueries({ queryKey: ['showcase-suggestions'] });
+            updateQueryAndPage();
         },
     });
 
@@ -57,7 +59,7 @@ export default function Showcases() {
         mutationFn: deleteShowcaseSuggestion,
         onSuccess: () => {
             toast.warn('Showcase deleted');
-            void queryClient.invalidateQueries({ queryKey: ['showcase-suggestions'] });
+            updateQueryAndPage();
         },
     });
 

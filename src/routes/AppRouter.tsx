@@ -55,7 +55,7 @@ import EditLevel from '../features/admin/editLevel/EditLevel';
 import EditTags from '../features/admin/editTags/EditTags';
 import Debugging from '../features/admin/debugging/debugging.page';
 import Roles from '../features/admin/roles/Roles';
-import EditRole from '../features/admin/roles/EditRole';
+import { EditRoleContainer } from '../features/admin/roles/EditRoleContainer.tsx';
 import MainLayout from '../layouts/MainLayout';
 import SubmissionMerge from '../features/admin/submissionMerging/SubmissionMerge';
 import AdminLayout from '../features/admin/AdminLayout';
@@ -179,7 +179,7 @@ export const router = (queryClient: QueryClient) =>
                 <Route path='siteSettings' element={<SiteSettings />} />
                 <Route path='debugging' element={<Debugging />} />
                 <Route path='roles' element={<Roles />} />
-                <Route path='roles/:roleID' element={<EditRole />} />
+                <Route path='roles/:roleID' element={<EditRoleContainer />} />
                 <Route path='mergeSubmissions' element={<SubmissionMerge />} />
                 <Route path={routes.staff.submissions.search.path} element={<SubmissionSearch />} />
             </Route>,

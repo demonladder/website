@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import { Link, useLoaderData } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';

@@ -7,7 +7,7 @@ import stylistic from '@stylistic/eslint-plugin';
 export default tseslint.config(
     eslint.configs.recommended,
     tseslint.configs.recommendedTypeChecked,
-    reactHooks.configs['recommended-latest'],
+    reactHooks.configs.flat.recommended,
     reactRefresh.configs.recommended,
     {
         languageOptions: {

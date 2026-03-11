@@ -44,21 +44,6 @@ export default function Queue() {
         }
     }, [queue?.submissions.length, queue?.total, setPage]);
 
-    function Content() {
-        if (status === 'pending') return <LoadingSpinner />;
-        if (status === 'error') return <p>Error: couldn't fetch queue</p>;
-
-        if (queue.total === 0) return <h5>Queue empty :D</h5>;
-
-        return (
-            <ul>
-                {queue.submissions.map((s) => (
-                    <Submission submission={s} key={s.ID} />
-                ))}
-            </ul>
-        );
-    }
-
     return (
         <div>
             <FloatingLoadingSpinner isLoading={isFetching} />
@@ -84,7 +69,18 @@ export default function Queue() {
                     </div>
                 </div>
             </div>
-            <Content />
+            <LoadingSpinner isLoading={status === 'pending'} />
+            {status === 'error' && <p>Error: couldn't fetch queue</p>}
+            {status === 'success' &&
+                (queue.total === 0 ? (
+                    <h5>Queue empty :D</h5>
+                ) : (
+                    <ul>
+                        {queue.submissions.map((s) => (
+                            <Submission submission={s} key={s.ID} />
+                        ))}
+                    </ul>
+                ))}
             <PageButtons page={page} limit={5} total={queue?.total ?? 0} onPageChange={(p) => setPage(p)} />
             <p className='text-center'>
                 <b>{queue?.total ?? 0}</b> submission{pluralS(queue?.total ?? 0)} found

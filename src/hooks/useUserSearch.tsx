@@ -33,10 +33,11 @@ export default function useUserSearch({ ID, isInvalid, userID, maxUsersOnList, o
     }, [search]);
 
     useEffect(() => {
-        if (!defaultQuery.data) return;
+        if (!defaultQuery.data?.Name) return;
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSearch(defaultQuery.data.Name);
-    }, [defaultQuery.data]);
+    }, [defaultQuery.data?.Name]);
 
     const clear = useCallback(() => {
         setSearch('');
