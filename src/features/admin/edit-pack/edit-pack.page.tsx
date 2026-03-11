@@ -158,7 +158,7 @@ export default function EditPack() {
             </div>
             {hasContent && (
                 <div>
-                    <Meta packID={packResult.ID} />
+                    <Meta pack={packResult} />
                     <List packID={packResult.ID} addLevel={addLevel} removeLevel={removeLevel} />
                 </div>
             )}

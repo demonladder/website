@@ -11,15 +11,18 @@ import { List } from '../types/List';
 import { GetListResponse } from '../api/getList';
 import { DemonLogoSizes } from '../../../utils/difficultyToImgSrc';
 import { useWindowSize } from 'usehooks-ts';
+import YesTick from '../../../components/images/YesTick.tsx';
 
 interface Props {
+    compact: boolean;
+    completed: boolean;
     list: Pick<List, 'ID' | 'OwnerID'>;
     listLevel: GetListResponse['Levels'][0];
     setPosition: (oldPosition: number, newPosition: number) => void;
     dragLocked: boolean;
 }
 
-export default function Level({ list, listLevel, setPosition, dragLocked }: Props) {
+export default function Level({ compact, completed, list, listLevel, setPosition, dragLocked }: Props) {
     const [isDragged, setIsDragged] = useState(false);
     const [dragOver, setDragOver] = useState(false);
     const itemRef = useRef<HTMLLIElement>(null);
@@ -99,6 +102,44 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
 
     const windowSize = useWindowSize();
 
+    if (compact) {
+        return (
+            <li
+                ref={itemRef}
+                id={listLevel.LevelID.toString()}
+                draggable={true}
+                onDragStart={dragStartHandler}
+                onDragEnd={dragStopHandler}
+                onDragOver={dragOverHandler}
+                onDragLeave={dragLeaveHandler}
+                onDrop={(e) => dropHandler(e)}
+                className={
+                    'grid grid-cols-subgrid col-span-5' + (isDragged ? ' opacity-0' : dragOver ? ' opacity-50' : '')
+                }
+                onContextMenu={openContext}
+            >
+                <p className='text-right text-theme-300'>{listLevel.Position}.</p>
+                <Link to={'/level/' + listLevel.LevelID} className={'ps-10' + (completed ? ' text-green-400' : '')}>
+                    {listLevel.Level.Meta?.Name}{' '}
+                    {completed && <YesTick className='inline-block ms-1' width={24} height={24} />}
+                </Link>
+                <p className='text-theme-300 ps-10'>{listLevel.Level.Meta?.Publisher?.name}</p>
+                <div className={'ms-auto py-0.5 w-12 grid place-items-center group ' + ratingClass}>
+                    <p className='group-hover:hidden '>{listLevel.Level.Rating !== null ? roundedRating : 'N/A'}</p>
+                    <p className='hidden group-hover:block'>{listLevel.Level.Rating !== null ? fixedRating : 'N/A'}</p>
+                </div>
+                <div className={'py-0.5 w-12 grid place-items-center group ' + enjoymentClass}>
+                    <p className='group-hover:hidden '>
+                        {listLevel.Level.Enjoyment !== null ? roundedEnjoyment : 'N/A'}
+                    </p>
+                    <p className='hidden group-hover:block '>
+                        {listLevel.Level.Enjoyment !== null ? fixedEnjoyment : 'N/A'}
+                    </p>
+                </div>
+            </li>
+        );
+    }
+
     return (
         <li
             ref={itemRef}
@@ -135,8 +176,14 @@ export default function Level({ list, listLevel, setPosition, dragLocked }: Prop
                         size={windowSize.width < 1024 ? DemonLogoSizes.SMALL : DemonLogoSizes.MEDIUM}
                     />
                     <div className='self-center text-sm lg:text-xl ms-2 grow'>
-                        <h3 className='lg:text-2xl font-bold break-all whitespace-pre-wrap'>
+                        <h3
+                            className={
+                                'lg:text-2xl font-bold break-all whitespace-pre-wrap' +
+                                (completed ? ' text-green-400' : '')
+                            }
+                        >
                             {listLevel.Level.Meta?.Name}
+                            {completed && <YesTick className='inline-block ms-1' width={30} height={30} />}
                         </h3>
                         <p className='text-gray-300'>
                             <i>{listLevel.Level.Meta?.Publisher?.name}</i>

@@ -117,6 +117,7 @@ export default function Game() {
         switch (p5.key) {
             case 'ArrowUp':
             case ' ': {
+                // eslint-disable-next-line react-hooks/immutability
                 keysPressed[' '] = true;
                 player.mouseChanged();
                 break;

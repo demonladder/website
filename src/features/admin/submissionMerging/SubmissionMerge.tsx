@@ -28,7 +28,7 @@ export default function SubmissionMerge() {
 
     const searchUser = useUserSearch({
         ID: 'searchUser',
-        onUserSelect: (user) => {
+        onUser: (user) => {
             if (!sourceUser) setSourceUser(user);
             else if (!targetUser) setTargetUser(user);
         },

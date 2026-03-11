@@ -8,6 +8,7 @@ import GetUser from '../../../../api/user/GetUser';
 import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 import { useDocumentTitle } from 'usehooks-ts';
 import Submissions from './Submissions';
+import { Fragment } from 'react';
 
 export default function ManageUserContent() {
     const userID = useParams().userID;
@@ -25,7 +26,7 @@ export default function ManageUserContent() {
     if (status === 'error') return <p>Error: couldn't fetch user</p>;
 
     return (
-        <>
+        <Fragment key={fetchedUser.ID}>
             <p>
                 Selected user:{' '}
                 <b>
@@ -39,6 +40,6 @@ export default function ManageUserContent() {
                 <Notes user={fetchedUser} />
                 <BanHistory user={fetchedUser} />
             </div>
-        </>
+        </Fragment>
     );
 }

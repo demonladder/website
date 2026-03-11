@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinner';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
-import AutoAccepter from './components/AutoAccepter';
+import AutoAccepterContainer from './components/AutoAccepterContainer.tsx';
 import Divider from '../../../components/divider/Divider';
 
 export default function SiteSettings() {
@@ -22,7 +22,7 @@ export default function SiteSettings() {
     const queryClient = useQueryClient();
 
     const { data, status, fetchStatus } = useQuery({
-        queryKey: ['siteSettings'],
+        queryKey: ['site-settings'],
         queryFn: GetSiteSettings,
     });
 
@@ -132,7 +132,7 @@ export default function SiteSettings() {
                 </form>
             </section>
             <Divider />
-            <AutoAccepter />
+            <AutoAccepterContainer />
         </div>
     );
 }

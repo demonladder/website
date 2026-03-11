@@ -16,6 +16,8 @@ import { useMutation } from '@tanstack/react-query';
 import { Heading1 } from '../../../../components/headings';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import useSession from '../../../../hooks/useSession';
+import { SearchLevelResponse } from '../../../search/api/getLevels.ts';
+import type { UserResponse } from '../../../../api/user/GetUser.ts';
 
 const pronounOptions = {
     '-': 'Select your pronouns',
@@ -40,40 +42,54 @@ export default function GeneralInformation({ userID }: { userID: number }) {
 
     const { data, status, refetch: invalidateUser } = useUserQuery(userID, { enabled: session.user !== undefined });
 
-    const [name, setName] = useState('');
-    const [introduction, setIntroduction] = useState('');
-    const [countryKey, setCountryKey] = useState<CountryOptionKey>('-');
-    const [pronounKey, setPronounKey] = useState<PronounOptionKey>('-');
+    if (status === 'pending') return <LoadingSpinner />;
+    if (status === 'error')
+        return (
+            <div>
+                <p>An error occurred while fetching user data.</p>
+            </div>
+        );
+
+    return <GeneralInformationPresenter data={data} refetchUser={invalidateUser} userID={userID} key={userID} />;
+}
+
+interface GeneralInformationPresenterProps {
+    data: UserResponse;
+    refetchUser: () => Promise<unknown>;
+    userID: number;
+}
+
+function GeneralInformationPresenter({ data, refetchUser, userID }: GeneralInformationPresenterProps) {
+    const [name, setName] = useState(data.Name);
+    const [introduction, setIntroduction] = useState(data.Introduction ?? '');
+    const [countryKey, setCountryKey] = useState<CountryOptionKey>((data.CountryCode as CountryOptionKey) ?? '-');
+    const [pronounKey, setPronounKey] = useState<PronounOptionKey>(() => {
+        if (data.Pronouns) {
+            if (data.Pronouns !== '-' && Object.keys(pronounOptions).includes(data.Pronouns))
+                return data.Pronouns as PronounOptionKey;
+            return 'other';
+        }
+        return '-';
+    });
     const pronounSelectID = useId();
-    const [customPronouns, setCustomPronouns] = useState('');
+    const [customPronouns, setCustomPronouns] = useState(() => {
+        if (data.Pronouns && (data.Pronouns === '-' || !Object.keys(pronounOptions).includes(data.Pronouns)))
+            return data.Pronouns;
+        return '';
+    });
     const arePronounsValid = /^[a-z]{1,6}(\/[a-z]{1,6}){0,7}$/.test(customPronouns);
     const countrySelectID = useId();
 
-    const hardestSearch = useLevelSearch('profileSettingsHardest', { defaultLevel: data?.HardestID });
+    const [hardest, setHardest] = useState<SearchLevelResponse>();
+    const hardestSearch = useLevelSearch('profileSettingsHardest', {
+        defaultLevel: data?.HardestID,
+        onLevel: setHardest,
+    });
 
     const minPrefRef = useRef<HTMLInputElement>(null);
     const maxPrefRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (data === undefined) return;
-
-        setName(data.Name);
-        if (data.Introduction) setIntroduction(data.Introduction);
-
-        if (data.Pronouns) {
-            if (data.Pronouns !== '-' && Object.keys(pronounOptions).includes(data.Pronouns)) {
-                setPronounKey(data.Pronouns as PronounOptionKey);
-            } else {
-                setPronounKey('other');
-                setCustomPronouns(data.Pronouns);
-            }
-        } else {
-            setPronounKey('-');
-        }
-
-        if (data.CountryCode) setCountryKey(data.CountryCode as CountryOptionKey);
-        else setCountryKey('-');
-
         if (minPrefRef.current && data.MinPref) minPrefRef.current.value = data.MinPref.toString();
         if (maxPrefRef.current && data.MaxPref) maxPrefRef.current.value = data.MaxPref.toString();
     }, [data]);
@@ -81,7 +97,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
     const updateMutation = useMutation({
         mutationFn: saveProfile,
         onSuccess: async () => {
-            await invalidateUser();
+            await refetchUser();
             toast.success('Profile updated successfully!');
         },
         onError: (error: Error) => void toast.error(renderToastError.render({ data: error })),
@@ -106,7 +122,7 @@ export default function GeneralInformation({ userID }: { userID: number }) {
             introduction: introduction || null,
             pronouns,
             countryCode: countryKey === '-' ? null : countryKey,
-            hardest: hardestSearch.activeLevel?.ID ?? null,
+            hardest: hardest?.ID ?? null,
             minPref: parseInt(minPrefRef.current.value) || null,
             maxPref: parseInt(maxPrefRef.current.value) || null,
         });

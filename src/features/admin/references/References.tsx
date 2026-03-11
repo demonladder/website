@@ -16,6 +16,7 @@ import Divider from '../../../components/divider/Divider';
 import ChangeLevel from './components/ChangeLevel';
 import Level from './components/Level';
 import RemoveList from './components/RemoveList';
+import { SearchLevelResponse } from '../../search/api/getLevels.ts';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 
@@ -41,16 +42,17 @@ export default function EditReferences() {
         mutation.mutate(changeList);
     }
 
-    const { activeLevel, SearchBox } = useLevelSearch('editReferenceLevelInput');
+    const [level, setLevel] = useState<SearchLevelResponse>();
+    const { SearchBox } = useLevelSearch('editReferenceLevelInput', { onLevel: setLevel });
     function addChange() {
-        if (!activeLevel) return toast.error('No level selected');
+        if (!level) return toast.error('No level selected');
 
-        if (changeList.filter((c) => c.ID === activeLevel.ID && c.Type === ChangeType.Add).length === 1) return;
+        if (changeList.filter((c) => c.ID === level.ID && c.Type === ChangeType.Add).length === 1) return;
 
         const newChange: Change = {
-            Tier: activeLevel.Rating,
-            ID: activeLevel.ID,
-            Name: activeLevel.Meta.Name,
+            Tier: level.Rating,
+            ID: level.ID,
+            Name: level.Meta.Name,
             Type: ChangeType.Add,
         };
         newChange.Tier = tier;

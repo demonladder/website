@@ -13,6 +13,8 @@ import { useApp } from '../../../context/app/useApp';
 import { LevelViewType } from '../../../context/app/AppContext';
 import type { AxiosError } from 'axios';
 import renderToastError from '../../../utils/renderToastError';
+import { PermissionFlags } from '../../admin/roles/PermissionFlags.tsx';
+import { Trash } from '@boxicons/react';
 
 export default function LevelPreferences() {
     const userID = useParams().userID;
@@ -98,7 +100,7 @@ function FavoriteLevel({
     const queryClient = useQueryClient();
     const deleteMutation = useMutation({
         mutationFn: (levelID: number) =>
-            APIClient.delete(`/user/${session.user?.ID}/${isFavorite ? 'favorites' : 'least-favorites'}`, {
+            APIClient.delete(`/user/${userID}/${isFavorite ? 'favorites' : 'least-favorites'}`, {
                 data: { levelID },
             }),
         onSuccess: (_, levelID) => {
@@ -120,6 +122,13 @@ function FavoriteLevel({
         { text: 'Add to list', onClick: () => openAddListLevelModal(session.user!.ID, level.ID), requireSession: true },
         { type: 'divider', userID },
         { type: 'danger', text: 'Remove', onClick: () => deleteMutation.mutate(level.ID), userID },
+        {
+            type: 'danger',
+            text: 'Remove',
+            onClick: () => deleteMutation.mutate(level.ID),
+            permission: PermissionFlags.MANAGE_FAVORITE_LEVELS,
+            icon: <Trash size='xs' />,
+        },
     ]);
 
     const app = useApp();

@@ -4,7 +4,13 @@ import PackCategory from '../../singlePack/types/PackCategory';
 import PackMeta from '../../singlePack/types/PackMeta';
 
 export interface GetPacksResponse {
-    packs: (Pack & { Meta: PackMeta | null; Completed: 0 | 1 })[];
+    packs: (Pick<Pack, 'ID' | 'CategoryID' | 'Name' | 'IconName'> & {
+        Meta:
+            | (PackMeta & {
+                  completed?: number;
+              })
+            | null;
+    })[];
     categories: PackCategory[];
 }
 

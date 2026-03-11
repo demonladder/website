@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CheckBox from '../../../../components/input/CheckBox';
 import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -11,6 +11,7 @@ import GetWants from '../../../../api/user/GetWants';
 import useSession from '../../../../hooks/useSession';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import Divider from '../../../../components/divider/Divider';
+import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 
 enum NotificationsBitField {
     Accept = 2 ** 0,
@@ -20,30 +21,30 @@ enum NotificationsBitField {
 export default function Notifications() {
     const session = useSession();
 
-    const queryClient = useQueryClient();
-    const { data } = useQuery({
+    const { data, status } = useQuery({
         queryKey: ['user', session.user?.ID, 'wants'],
         queryFn: GetWants,
     });
 
-    const [acceptNotifs, setAcceptNotifs] = useState<boolean>(
-        ((data?.bitField || 0) & NotificationsBitField.Accept) !== 0,
-    );
-    const [DMNotifs, setDMNotifs] = useState<boolean>(((data?.bitField || 0) & NotificationsBitField.DMs) !== 0);
-    const [DMTierLimit, setDMTierLimit] = useState(`${data?.DMTierLimit ?? 1}`);
-    const [wantBitField, setWantBitField] = useState<BitField>();
+    if (status === 'pending') return <InlineLoadingSpinner />;
+    if (status === 'error' || data === undefined)
+        return <p>'An error occurred while fetching your notification settings'</p>;
 
-    useEffect(() => {
-        if (data === undefined) {
-            setWantBitField(undefined);
-            return;
-        }
+    return <NotificationsPresenter data={data} />;
+}
 
-        setWantBitField(new BitField(data.bitField));
-        setAcceptNotifs((data.bitField & NotificationsBitField.Accept) !== 0);
-        setDMNotifs((data.bitField & NotificationsBitField.DMs) !== 0);
-        if (data.DMTierLimit !== undefined) setDMTierLimit(`${data.DMTierLimit}`);
-    }, [data]);
+interface NotificationsPresenterProps {
+    data: Awaited<ReturnType<typeof GetWants>>;
+}
+
+function NotificationsPresenter({ data }: NotificationsPresenterProps) {
+    const session = useSession();
+    const queryClient = useQueryClient();
+
+    const [wantBitField] = useState<BitField>(new BitField(data.bitField));
+    const [acceptNotifs, setAcceptNotifs] = useState<boolean>(wantBitField.has(NotificationsBitField.Accept));
+    const [DMNotifs, setDMNotifs] = useState<boolean>(wantBitField.has(NotificationsBitField.DMs));
+    const [DMTierLimit, setDMTierLimit] = useState(`${data.DMTierLimit ?? 1}`);
 
     function submit() {
         if (data === undefined || wantBitField === undefined) {

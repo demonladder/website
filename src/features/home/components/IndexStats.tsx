@@ -6,6 +6,7 @@ import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 import { statsClient } from '../../../api';
 import { Heading2, Heading3 } from '../../../components/headings';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
+import { useNow } from '../../../hooks/useNow';
 
 function anyOrLoading<T>(value: T) {
     return value ?? <InlineLoadingSpinner />;
@@ -20,6 +21,7 @@ function Statistic({ label, children }: { label: string; children: number | stri
 }
 
 export default function IndexStats() {
+    const now = useNow();
     const { data, status } = useQuery({
         queryKey: ['stats'],
         queryFn: () => statsClient.getStats(),
@@ -55,7 +57,7 @@ export default function IndexStats() {
                             <span className='float-right'>
                                 {data.oldestQueuedSubmission
                                     ? ms(
-                                          Date.now() -
+                                          now -
                                               new Date(
                                                   data.oldestQueuedSubmission.replace(' +00:00', 'Z').replace(' ', 'T'),
                                               ).getTime(),

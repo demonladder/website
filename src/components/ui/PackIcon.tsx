@@ -1,12 +1,10 @@
-import Pack from '../../features/singlePack/types/Pack';
-
 interface Props {
-    pack: Pack;
     className?: string;
+    src: string | null;
 }
 
-export default function PackIcon({ pack, className }: Props) {
-    if (!pack.IconName) return;
+export default function PackIcon({ className, src }: Props) {
+    if (!src) return;
 
-    return <img width='24px' height='24px' src={'/packIcons/' + pack.IconName} className={className} />;
+    return <img width='24px' height='24px' src={'/packIcons/' + src} className={className} />;
 }
