@@ -74,7 +74,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
             {menuData && (
                 <div
                     ref={menuRef}
-                    className='fixed z-50 bg-theme-900 text-theme-text text-sm w-60 rounded-lg border border-theme-400 shadow-2xl'
+                    className='fixed z-50 bg-theme-900 text-theme-text text-sm w-60 round:rounded-lg shadow-2xl'
                     style={{
                         left: `${menuData.x - (windowSize.width - menuData.x < 248 ? 248 : 0)}px`,
                         top: `${menuData.y}px`,
@@ -84,7 +84,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                         <ul className='p-1'>
                             {filteredButtons?.map((b) =>
                                 b.type === 'divider' ? (
-                                    <li key={b.ID} className='bg-theme-500 mx-2 h-0.5 my-1' />
+                                    <li key={b.ID} className='bg-theme-500 h-0.5 my-1' />
                                 ) : (
                                     <li key={b.ID}>
                                         {b.to ? (
@@ -92,7 +92,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                                 to={b.to}
                                                 onClick={() => setMenuData(undefined)}
                                                 className={
-                                                    'inline-block w-full text-start pe-4 py-1 rounded ' +
+                                                    'inline-block w-full text-start pe-4 py-1 round:rounded-lg ' +
                                                     (!(b.type === 'danger')
                                                         ? 'hover:bg-theme-700'
                                                         : 'hover:bg-red-600') +
@@ -108,7 +108,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                             <button
                                                 onClick={(e) => handleClick(e, b)}
                                                 className={
-                                                    'w-full text-start pe-4 py-1 rounded flex align-center ' +
+                                                    'w-full text-start pe-4 py-1 round:rounded-lg flex align-center ' +
                                                     (!(b.type === 'danger')
                                                         ? 'hover:bg-theme-700'
                                                         : 'hover:bg-red-600') +

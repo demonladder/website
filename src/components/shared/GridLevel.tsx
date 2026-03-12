@@ -68,7 +68,7 @@ export function GridLevel({
                         ? 'text-white'
                         : 'text-theme-text round:rounded-xl ' +
                           (completed && app.highlightCompleted
-                              ? 'bg-gradient-to-br from-green-600 via-green-500 to-green-600'
+                              ? 'bg-linear-to-br from-green-600 via-green-500 to-green-600'
                               : 'bg-theme-600'))
                 }
             >
@@ -127,7 +127,7 @@ export function GridLevel({
                                 />
                             </a>
                         )}
-                        {inPack && <i className='bx bx-box text-2xl p-1' title='This level is in a pack' />}
+                        {inPack && <i className='bx bx-box text-2xl' title='This level is in a pack' />}
                     </div>
                     {date && (
                         <p className='text-shadow'>

@@ -1,14 +1,12 @@
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Level, { LevelSkeleton } from '../../components/shared/Level';
+import { LevelSkeleton } from '../../components/shared/Level';
 import Filters from './components/Filters';
 import SortMenu from './components/SortMenu';
 import { getLevels } from './api/getLevels';
 import { useQuery } from '@tanstack/react-query';
-import { GridLevel } from '../../components/shared/GridLevel';
 import useSessionStorage from '../../hooks/useSessionStorage';
 import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
 import { QueryParamNames } from './enums/QueryParamNames';
-import { LevelRenderer } from '../../components/layout/LevelRenderer';
 import { Heading1, Heading2 } from '../../components/headings';
 import Page from '../../components/layout/Page';
 import { useNavigate } from 'react-router';
@@ -24,6 +22,8 @@ import { UserCard } from './components/UserCard';
 import { useSearchUsers } from './hooks/useSearchUsers';
 import { RangeFilterLabel } from './components/RangeFilterLabel.tsx';
 import { FilterLabel } from './components/FilterLabel.tsx';
+import { GridLevelPresenter, ListLevelPresenter } from './components/LevelPresenter.tsx';
+import { Grid, List as ListIcon } from '@boxicons/react';
 
 interface SavedFilters {
     [QueryParamNames.Name]: string | null;
@@ -265,7 +265,28 @@ export default function Search() {
                 </IconButton>
             </div>
             <Filters reset={reset} show={showFilters} />
-            <SortMenu />
+            <div className='flex justify-between'>
+                <SortMenu />
+                <button
+                    className='text-theme-400 hover:text-theme-text transition-colors self-end'
+                    onClick={() =>
+                        app.set(
+                            'levelViewType',
+                            app.levelViewType === LevelViewType.GRID ? LevelViewType.LIST : LevelViewType.GRID,
+                        )
+                    }
+                >
+                    {app.levelViewType === LevelViewType.LIST ? (
+                        <>
+                            List <ListIcon className='inline-block -mt-1' />
+                        </>
+                    ) : (
+                        <>
+                            Grid <Grid className='inline-block -mt-1' />
+                        </>
+                    )}
+                </button>
+            </div>
             {levelSearchStatus === 'error' && (
                 <Heading2 className='text-center'>An error occurred while searching</Heading2>
             )}
@@ -291,19 +312,9 @@ export default function Search() {
                         </div>
                     )}
                     {levelSearchData.data && app.levelViewType === LevelViewType.LIST ? (
-                        <LevelRenderer
-                            element={Level}
-                            levels={levelSearchData.data}
-                            selectedLevel={selection}
-                            className='my-2'
-                        />
+                        <ListLevelPresenter levels={levelSearchData.data} selectedLevel={selection} />
                     ) : (
-                        <LevelRenderer
-                            element={GridLevel}
-                            levels={levelSearchData.data}
-                            className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 my-2'
-                            selectedLevel={selection}
-                        />
+                        <GridLevelPresenter levels={levelSearchData.data} selectedLevel={selection} />
                     )}
                     <div className='my-4'>
                         <PageButtons limit={16} total={levelSearchData.total} page={page} onPageChange={setPage} />
