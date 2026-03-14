@@ -78,6 +78,7 @@ function useLevelContextMenu(levelId: number, userId?: number) {
     const openAddToListModal = useAddListLevelModal();
     return useContextMenu([
         { text: 'Open', to: `/level/${levelId}` },
+        { text: 'Play', uri: 'geode://gddl/play/' + levelId },
         { text: 'Add to list', onClick: () => openAddToListModal(userId!, levelId), requireSession: true },
         { type: 'divider' },
         { text: 'Copy ID', onClick: () => copyText(levelId.toString()) },

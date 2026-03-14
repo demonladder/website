@@ -129,6 +129,7 @@ function InlineList({ levels, user }: { levels: UserSubmission[]; user: User }) 
             y: e.clientY,
             buttons: [
                 { text: 'Go to level', to: `/level/${submission.Level.ID}` },
+                { text: 'Play', uri: 'geode://gddl/play/' + submission.Level.ID },
                 {
                     text: 'Add to list',
                     onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID),
@@ -208,6 +209,7 @@ function GridList({ levels, user }: { levels: UserSubmission[]; user: User }) {
             y: e.clientY,
             buttons: [
                 { text: 'Go to level', to: `/level/${submission.Level.ID}` },
+                { text: 'Play', uri: 'geode://gddl/play/' + submission.Level.ID },
                 {
                     text: 'Add to list',
                     onClick: () => openAddListLevelModal(session.user!.ID, submission.Level.ID),

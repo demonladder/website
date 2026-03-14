@@ -9,6 +9,7 @@ export interface ButtonData {
     text?: React.ReactNode;
     icon?: React.ReactNode;
     to?: string;
+    uri?: string;
     onClick?: React.MouseEventHandler;
     type?: 'info' | 'danger' | 'divider';
     disabled?: boolean;
@@ -104,6 +105,16 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                                 <span className='inline-block w-4 mx-2'>{b.icon}</span>
                                                 {b.text}
                                             </Link>
+                                        ) : b.uri ? (
+                                            <a
+                                                href={b.uri}
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                                className='w-full text-start pe-4 py-1 round:rounded-lg flex align-center hover:bg-theme-700'
+                                            >
+                                                <span className='inline-block w-4 mx-2'>{b.icon}</span>
+                                                <span>{b.text}</span>
+                                            </a>
                                         ) : (
                                             <button
                                                 onClick={(e) => handleClick(e, b)}
