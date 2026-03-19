@@ -1,6 +1,6 @@
 {
     "name": "gddl",
-    "version": "3.0.0-beta.0",
+    "version": "3.0.0-beta.1",
     "author": "Daniel Iversen Sato <diversensato@gmail.com>",
     "license": "SEE LICENSE IN LICENSE",
     "private": true,
@@ -19,12 +19,13 @@
         "dev": "bunx --bun vite --host",
         "type-check": "tsc --noEmit",
         "build": "tsc && vite build",
-        "build:staging": "tsc && vite build --mode staging",
+        "build:staging": "tsc && npm run version:prerelease && vite build --mode staging",
         "lint": "eslint src --ignore-pattern \"**/*.d.ts*\" --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview",
         "prepare": "husky",
         "format": "prettier --write **/*.[jt]s",
-        "format:check": "prettier --check **/*.[jt]s"
+        "format:check": "prettier --check **/*.[jt]s",
+        "version:prerelease": "npm version prerelease --preid=beta --no-git-tag-version"
     },
     "dependencies": {
         "@boxicons/react": "^1.0.3",
