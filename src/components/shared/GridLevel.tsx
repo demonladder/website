@@ -72,7 +72,7 @@ export function GridLevel({
                               : 'bg-theme-600'))
                 }
             >
-                <div className='relative flex justify-between'>
+                <Link to={'/level/' + ID} className='relative flex justify-between'>
                     <div>
                         <p>
                             <b
@@ -84,7 +84,7 @@ export function GridLevel({
                                         : '')
                                 }
                             >
-                                <Copy text={ID.toString()} /> <Link to={'/level/' + ID}>{name}</Link>
+                                <Copy text={ID.toString()} /> <span>{name}</span>
                             </b>
                             {completed && app.highlightCompleted && (
                                 <YesTick className='inline-block ms-1 mb-1 size-6' />
@@ -106,7 +106,7 @@ export function GridLevel({
                             </button>
                         </div>
                     )}
-                </div>
+                </Link>
                 <div className='flex justify-between'>
                     <div className='flex gap-1'>
                         <p>
