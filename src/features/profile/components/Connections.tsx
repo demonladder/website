@@ -14,6 +14,8 @@ export function Connections({ userId }: Props) {
         queryFn: () => connectionsClient.listPublic(userId),
     });
 
+    if (!query.data?.length) return;
+
     return (
         <section className='mt-4'>
             {query.isSuccess && (
