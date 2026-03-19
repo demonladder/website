@@ -65,10 +65,7 @@ export default function Footer() {
                     </ul>
                 </div>
                 <div className='text-sm'>
-                    <p>
-                        Build version: v{APP_VERSION}
-                        {import.meta.env.DEV && '-d'}
-                    </p>
+                    <p>Build version: v{APP_VERSION}</p>
                     <p>
                         <a
                             className='font-bold'
