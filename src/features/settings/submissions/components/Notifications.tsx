@@ -12,6 +12,7 @@ import useSession from '../../../../hooks/useSession';
 import FormInputDescription from '../../../../components/form/FormInputDescription';
 import Divider from '../../../../components/divider/Divider';
 import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
+import { Heading2 } from '../../../../components/headings';
 
 enum NotificationsBitField {
     Accept = 2 ** 0,
@@ -78,7 +79,7 @@ function NotificationsPresenter({ data }: NotificationsPresenterProps) {
     return (
         <>
             <Divider />
-            <b>Notifications</b>
+            <Heading2>Notifications</Heading2>
             <div>
                 <label className='flex items-center gap-2 mb-2'>
                     <CheckBox

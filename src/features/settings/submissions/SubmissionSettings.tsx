@@ -8,6 +8,7 @@ import Divider from '../../../components/divider/Divider';
 import { useApp } from '../../../context/app/useApp';
 import { Device } from '../../../api/core/enums/device.enum';
 import { Heading1 } from '../../../components/headings';
+import { ImportSave } from './components/ImportSave';
 
 const deviceOptions = {
     [Device.PC]: 'PC',
@@ -64,6 +65,8 @@ export default function SubmissionSettings() {
             <Notifications />
             <Divider />
             <DiscordRoles />
+            <Divider />
+            <ImportSave />
         </section>
     );
 }
