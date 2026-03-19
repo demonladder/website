@@ -37,7 +37,7 @@
         "chartjs-adapter-date-fns": "^3.0.0",
         "country-flag-icons": "^1.6.15",
         "date-fns": "^4.1.0",
-        "fast-xml-parser": "^5.5.6",
+        "fast-xml-parser": "^5.5.7",
         "js-cookie": "^3.0.5",
         "lodash": "^4.17.23",
         "ms": "^2.1.3",
