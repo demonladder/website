@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ConnectableApps, connectionsClient } from '../../../api/connections/connectionsClient.ts';
 import { AppToIcon } from '../../../components/shared/connections/AppToIcon.tsx';
-import { Heading2 } from '../../../components/headings';
 import { EyeSlash } from '@boxicons/react';
 
 interface Props {
@@ -17,18 +16,11 @@ export function Connections({ userId }: Props) {
     if (!query.data?.length) return;
 
     return (
-        <section className='mt-4'>
-            {query.isSuccess && (
-                <>
-                    <Heading2>Connections</Heading2>
-                    <ul className='flex flex-wrap gap-2'>
-                        {query.data.map((connection) => (
-                            <Connection {...connection} hidden={connection.display === 0} key={connection.id} />
-                        ))}
-                    </ul>
-                </>
-            )}
-        </section>
+        <ul className='flex flex-wrap gap-2'>
+            {query.data.map((connection) => (
+                <Connection {...connection} hidden={connection.display === 0} key={connection.id} />
+            ))}
+        </ul>
     );
 }
 
