@@ -61,7 +61,7 @@ function ListCard({ list }: { list: GetUserListsResponse }) {
         >
             <img
                 width='100%'
-                className='h-[120px] object-cover'
+                className='h-30 object-cover'
                 src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`}
                 alt={`Banner image for ${list.Name} list`}
             />
@@ -71,17 +71,15 @@ function ListCard({ list }: { list: GetUserListsResponse }) {
             <p className='mx-4'>{list.Description ?? <i className='text-theme-400'>No description</i>}</p>
             <div className='text-sm p-4'>
                 <p className='text-theme-400'>
-                    Created {secondsToHumanReadable(secondsSinceCreation)}
-                    {secondsSinceCreation < 60 && ' ago'} <span className='mx-1'>-</span> modified{' '}
-                    {secondsToHumanReadable(secondsSinceUpdate)}
-                    {secondsSinceUpdate < 60 && ' ago'}
+                    Created {secondsToHumanReadable(secondsSinceCreation)} ago
+                    <span className='mx-1'>-</span> modified {secondsToHumanReadable(secondsSinceUpdate)} ago
                 </p>
                 <ul className='flex flex-wrap gap-2 mt-1'>
                     {list.tags
                         .map((tagID) => tags?.find((tag) => tag.ID === tagID))
                         .map((tag) => (
                             <li>
-                                <span className='px-2 py-[2px] rounded bg-theme-600'>{tag?.Name}</span>
+                                <span className='px-2 py-0.5 rounded bg-theme-600'>{tag?.Name}</span>
                             </li>
                         ))}
                 </ul>
