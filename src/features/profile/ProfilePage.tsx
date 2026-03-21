@@ -22,6 +22,8 @@ import LevelPreferences from './components/LevelPreferences';
 import RankingsWrapper from './components/Rankings';
 import User from '../../api/types/User';
 import { Connections } from './components/Connections';
+import Markdown from 'react-markdown';
+import markdownComponents from '../../utils/markdownComponents';
 
 export default function Profile() {
     const loadedData = useLoaderData<User>();
@@ -114,11 +116,12 @@ export default function Profile() {
                     <p>
                         <b>Introduction:</b>
                     </p>
-                    <textarea
+                    <Markdown components={markdownComponents}>{userData.Introduction ?? ''}</Markdown>
+                    {/* <textarea
                         readOnly={true}
                         className='border-b-2 block grow overflow-auto scrollbar-thin w-full outline-0'
                         value={userData.Introduction ?? ''}
-                    />
+                    /> */}
                 </div>
                 <div className='sm:w-1/3 p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow flex flex-col gap-y-2'>
                     <LevelTracker levelID={userData.HardestID} title='Hardest' />

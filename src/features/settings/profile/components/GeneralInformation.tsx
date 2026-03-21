@@ -18,6 +18,8 @@ import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import useSession from '../../../../hooks/useSession';
 import { SearchLevelResponse } from '../../../search/api/getLevels.ts';
 import type { UserResponse } from '../../../../api/user/GetUser.ts';
+import Markdown from 'react-markdown';
+import markdownComponents from '../../../../utils/markdownComponents.tsx';
 
 const pronounOptions = {
     '-': 'Select your pronouns',
@@ -146,12 +148,26 @@ function GeneralInformationPresenter({ data, refetchUser, userID }: GeneralInfor
                     invalid={!name.match(/^[a-zA-Z0-9._]{0,32}$/)}
                 />
             </FormGroup>
-            <FormGroup>
-                <FormInputLabel>Introduction</FormInputLabel>
-                <TextArea spellCheck={false} value={introduction} onChange={(e) => setIntroduction(e.target.value)} />
-                <FormInputDescription>
-                    Your introduction is visible to everyone visiting your profile.
-                </FormInputDescription>
+            <FormGroup className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <div>
+                    <FormInputLabel>Introduction</FormInputLabel>
+                    <TextArea
+                        spellCheck={false}
+                        value={introduction}
+                        onChange={(e) => setIntroduction(e.target.value)}
+                    />
+                    <FormInputDescription>
+                        Your introduction is visible to everyone visiting your profile.
+                    </FormInputDescription>
+                </div>
+                <div>
+                    <FormInputLabel>Preview</FormInputLabel>
+                    <div className='border-b-2 p-2 bg-theme-950/70 min-h-32'>
+                        <Markdown components={markdownComponents}>
+                            {introduction || 'No introduction provided.'}
+                        </Markdown>
+                    </div>
+                </div>
             </FormGroup>
             <FormGroup>
                 <FormInputLabel>Pronouns</FormInputLabel>

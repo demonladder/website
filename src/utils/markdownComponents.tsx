@@ -19,6 +19,9 @@ const components: Partial<Components> = {
             </Link>
         );
     },
+    img() {
+        return <p>{'[Image]'}</p>;
+    },
 };
 
 export default components;
