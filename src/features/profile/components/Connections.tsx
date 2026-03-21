@@ -16,7 +16,7 @@ export function Connections({ userId }: Props) {
     if (!query.data?.length) return;
 
     return (
-        <ul className='flex flex-wrap gap-2'>
+        <ul className='flex flex-wrap gap-2 mt-2'>
             {query.data.map((connection) => (
                 <Connection {...connection} hidden={connection.display === 0} key={connection.id} />
             ))}
