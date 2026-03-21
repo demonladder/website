@@ -31,7 +31,7 @@ export default function Home() {
                             beat or compare a certain demon to another.
                             <br />
                             <br />
-                            <Link to={'/about'} className='text-blue-500'>
+                            <Link to={'/about'} className='link'>
                                 About us
                             </Link>
                         </Body>
@@ -60,7 +60,7 @@ export default function Home() {
                                 is decided by our community until we're able to generalise the levels into tiers.
                             </p>
                             <br />
-                            <Link to={'/platformerList'} className='text-blue-500'>
+                            <Link to={'/platformerList'} className='link'>
                                 Go to list
                             </Link>
                         </Body>

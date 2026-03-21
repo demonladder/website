@@ -386,7 +386,7 @@ function SubmitPagePresenter({ submission: existingSubmission }: SubmitPagePrese
                     <section>
                         <p className='mb-2'>
                             Make sure you have read the{' '}
-                            <Link to='/about#guidelines' className='text-blue-500'>
+                            <Link to='/about#guidelines' className='link'>
                                 rating guidelines
                             </Link>{' '}
                             before submitting your rating. Here is a brief rundown:

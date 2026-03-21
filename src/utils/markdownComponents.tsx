@@ -14,7 +14,7 @@ const components: Partial<Components> = {
     },
     a({ children, className: _className, node: _node, ...rest }) {
         return (
-            <Link to={rest.href ?? '/'} className='text-blue-500'>
+            <Link to={rest.href ?? '/'} className='link'>
                 {children}
             </Link>
         );

@@ -163,6 +163,10 @@ input.no-spinner::-webkit-inner-spin-button {
     animation: rotation 1.5s linear infinite;
 }
 
+.link {
+    @apply bg-linear-to-r from-theme-primary to-theme-primary-accent bg-clip-text text-transparent font-bold hover:from-blue-400 hover:to-blue-400 transition-colors;
+}
+
 @keyframes rotation {
     from {
         transform: rotate(0deg);

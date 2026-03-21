@@ -77,7 +77,7 @@ export default function SignUp() {
                         <p>
                             Already have your name on the site from the sheet days? Contact the staff{' '}
                             <a
-                                className='text-blue-500 font-bold underline'
+                                className='link'
                                 href='https://discord.gg/gddl'
                                 target='_blank'
                                 rel='noopener noreferrer'

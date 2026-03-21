@@ -107,12 +107,12 @@ export default function Login() {
                     <div className='mt-8'>
                         <p className='text-center'>
                             Don't have an account? Register{' '}
-                            <Link to='/signup' className='text-blue-400 underline'>
+                            <Link to='/signup' className='link'>
                                 here!
                             </Link>
                         </p>
                         <p className='text-center mt-1'>
-                            <Link to='/forgotPassword' className='text-blue-400 underline'>
+                            <Link to='/forgotPassword' className='link'>
                                 Forgot password?
                             </Link>
                         </p>

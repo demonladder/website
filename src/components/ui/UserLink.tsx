@@ -5,8 +5,8 @@ export default function UserLink({ userID }: { userID: number }) {
     const { data } = useUserQuery(userID);
 
     return (
-        <Link to={`/profile/${userID}`} className={data !== undefined ? 'underline font-bold' : ''}>
-            {data !== undefined ? data.Name : userID}
+        <Link to={`/profile/${userID}`} className='link'>
+            {data?.Name ?? userID}
         </Link>
     );
 }
