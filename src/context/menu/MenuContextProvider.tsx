@@ -60,8 +60,12 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         () =>
             menuData?.buttons.filter((button) => {
                 if (button.requireSession && !session.user) return false;
-                if (button.permission && !session.hasPermission(button.permission)) return false;
-                return !(button.userID && button.userID !== session.user?.ID);
+
+                if (button.permission && button.userID) {
+                    if (!session.hasPermission(button.permission) && session.user?.ID !== button.userID) return false;
+                } else if (button.permission && !session.hasPermission(button.permission)) return false;
+                else if (button.userID && button.userID !== session.user?.ID) return false;
+                return true;
             }),
         [menuData?.buttons, session],
     );
