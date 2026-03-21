@@ -132,7 +132,7 @@ export default function Profile() {
                     </div>
                     <Tracker>
                         <b>Total submissions:</b>
-                        <p>{userData.SubmissionCount}</p>
+                        <p>{userData.SubmissionCount.toLocaleString()}</p>
                     </Tracker>
                     {userData.PendingSubmissionCount > 0 && (
                         <Tracker>
@@ -142,7 +142,7 @@ export default function Profile() {
                     )}
                     <Tracker>
                         <b>Total attempts:</b>
-                        <p>{userData.TotalAttempts ?? 0}</p>
+                        <p>{userData.TotalAttempts?.toLocaleString() ?? 0}</p>
                     </Tracker>
                 </div>
             </section>

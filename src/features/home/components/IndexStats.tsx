@@ -35,23 +35,25 @@ export default function IndexStats() {
                 <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-8'>
                     <div>
                         <Heading3>Users</Heading3>
-                        <Statistic label='Total users'>{data.users.now}</Statistic>
-                        <Statistic label='Registered users'>{data.registeredUsers}</Statistic>
-                        <Statistic label='Active users'>{data.activeUsers}</Statistic>
+                        <Statistic label='Total users'>{data.users.now.toLocaleString()}</Statistic>
+                        <Statistic label='Registered users'>{data.registeredUsers.toLocaleString()}</Statistic>
+                        <Statistic label='Active users'>{data.activeUsers.toLocaleString()}</Statistic>
                     </div>
                     <div>
                         <Heading3>Levels</Heading3>
-                        <Statistic label='Levels'>{data.totalLevels.now}</Statistic>
-                        <Statistic label='Rated levels'>{data.totalRatedLevels}</Statistic>
+                        <Statistic label='Levels'>{data.totalLevels.now.toLocaleString()}</Statistic>
+                        <Statistic label='Rated levels'>{data.totalRatedLevels.toLocaleString()}</Statistic>
                         <Statistic label='Coverage'>
                             {(((data.totalRatedLevels ?? 0) / (data.totalLevels.now ?? 1)) * 100).toFixed(1) + '%'}
                         </Statistic>
                     </div>
                     <div>
                         <Heading3>Submissions</Heading3>
-                        <Statistic label='Total submissions'>{data.submissions.now}</Statistic>
-                        <Statistic label='Pending submissions'>{data.pendingSubmissions.now}</Statistic>
-                        <Statistic label='Submissions last 24h'>{data.recentSubmissions}</Statistic>
+                        <Statistic label='Total submissions'>{data.submissions.now.toLocaleString()}</Statistic>
+                        <Statistic label='Pending submissions'>
+                            {data.pendingSubmissions.now.toLocaleString()}
+                        </Statistic>
+                        <Statistic label='Submissions last 24h'>{data.recentSubmissions.toLocaleString()}</Statistic>
                         <p>
                             Oldest pending{' '}
                             <span className='float-right'>
