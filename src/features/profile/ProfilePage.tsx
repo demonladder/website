@@ -112,7 +112,7 @@ export default function Profile() {
                 </div>
             </div>
             <section className='flex max-sm:flex-col' onContextMenu={(e) => e.stopPropagation()}>
-                <div className='flex grow flex-col bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full min-h-40 sm:w-2/3'>
+                <div className='flex grow flex-col bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full min-h-40 max-h-80 overflow-auto scrollbar-thin sm:w-2/3 wrap-break-word'>
                     <p>
                         <b>Introduction:</b>
                     </p>
@@ -123,7 +123,7 @@ export default function Profile() {
                         value={userData.Introduction ?? ''}
                     /> */}
                 </div>
-                <div className='sm:w-1/3 p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow flex flex-col gap-y-2'>
+                <div className='sm:w-1/3 p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl grow flex flex-col gap-y-2'>
                     <LevelTracker levelID={userData.HardestID} title='Hardest' />
                     <Tracker>
                         <b>Tier preference:</b>

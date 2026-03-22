@@ -162,7 +162,7 @@ function GeneralInformationPresenter({ data, refetchUser, userID }: GeneralInfor
                 </div>
                 <div>
                     <FormInputLabel>Preview</FormInputLabel>
-                    <div className='border-b-2 p-2 bg-theme-950/70 min-h-32'>
+                    <div className='border-b-2 p-2 bg-theme-950/70 min-h-32 max-h-64 overflow-auto scrollbar-thin wrap-break-word'>
                         <Markdown components={markdownComponents}>
                             {introduction || 'No introduction provided.'}
                         </Markdown>
