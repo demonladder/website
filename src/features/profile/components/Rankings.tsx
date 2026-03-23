@@ -6,19 +6,12 @@ import { useParams } from 'react-router';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 
+const RANKS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'S'];
+
 function percentToRank(percent: number): string {
+    if (percent === 0) return '0';
     if (percent >= 100) return 'S';
-    if (percent >= 90) return 'X';
-    if (percent >= 80) return 'IX';
-    if (percent >= 70) return 'VIII';
-    if (percent >= 60) return 'VII';
-    if (percent >= 50) return 'VI';
-    if (percent >= 40) return 'V';
-    if (percent >= 30) return 'IV';
-    if (percent >= 20) return 'III';
-    if (percent >= 10) return 'II';
-    if (percent > 0) return 'I';
-    return '0';
+    return RANKS[Math.floor(percent / 10)];
 }
 
 function Rank({ tier, count, total }: { tier?: string; count: number; total: number }) {
@@ -38,7 +31,7 @@ function Rank({ tier, count, total }: { tier?: string; count: number; total: num
             <td className='px-2 whitespace-nowrap w-24 self-center mx-2'>
                 {count}/{total}
             </td>
-            <td className='px-2 grow'>
+            <td className=' ps-2 pe-1 grow'>
                 <span className='block relative'>
                     <span
                         className={`absolute block left-0 top-0 align-middle h-9 tier-${tier ?? Math.min(Math.floor(0.36 * percent + 1), MAX_TIER)}`}
