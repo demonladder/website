@@ -135,7 +135,7 @@ function QuickSubmitPresenter({ levelId, submission }: QuickSubmitPresenterProps
                 )}
             </div>
             <div className='ms-auto'>
-                <Link to={`/submit/${levelId}`} className='me-2 text-sm text-blue-400 underline-t'>
+                <Link to={`/submit/${levelId}`} className='me-2 text-sm link'>
                     advanced
                 </Link>
                 <PrimaryButton>{submission ? 'Save' : 'Submit'}</PrimaryButton>

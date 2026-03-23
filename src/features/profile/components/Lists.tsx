@@ -59,12 +59,14 @@ function ListCard({ list }: { list: GetUserListsResponse }) {
             onContextMenu={contextMenu}
             className='grid grid-rows-subgrid gap-0 row-span-4 mb-4 bg-theme-700 rounded-xl overflow-hidden border border-theme-600'
         >
-            <img
-                width='100%'
-                className='h-30 object-cover'
-                src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`}
-                alt={`Banner image for ${list.Name} list`}
-            />
+            <Link to={`/list/${list.ID}`}>
+                <img
+                    width='100%'
+                    className='h-30 object-cover'
+                    src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`}
+                    alt={`Banner image for ${list.Name} list`}
+                />
+            </Link>
             <Link to={`/list/${list.ID}`}>
                 <Heading3 className='mx-4'>{list.Name}</Heading3>
             </Link>

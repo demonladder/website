@@ -83,6 +83,7 @@ export default function LevelPage() {
                                     href={`/search?creator=${level.Meta.Publisher.name}`}
                                     target='_blank'
                                     rel='noopener noreferrer'
+                                    className='link'
                                 >
                                     {level.Meta.Publisher.name}
                                 </a>

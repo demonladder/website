@@ -157,7 +157,7 @@ export default function List() {
             )}
             <h2 className='text-2xl'>
                 by{' '}
-                <Link to={`/profile/${list.OwnerID}`} className='text-blue-400 underline'>
+                <Link to={`/profile/${list.OwnerID}`} className='link'>
                     {list.Owner.Name}
                 </Link>
             </h2>
