@@ -3,6 +3,7 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { Heading2 } from '../../../components/headings';
 import { getUserRankings } from '../api/getUserRankings';
 import { useParams } from 'react-router';
+import map from '../../../utils/map';
 
 const MAX_TIER = parseInt(import.meta.env.VITE_MAX_TIER);
 
@@ -34,7 +35,7 @@ function Rank({ tier, count, total }: { tier?: string; count: number; total: num
             <td className=' ps-2 pe-1 grow'>
                 <span className='block relative'>
                     <span
-                        className={`absolute block left-0 top-0 align-middle h-9 tier-${tier ?? Math.min(Math.floor(0.36 * percent + 1), MAX_TIER)}`}
+                        className={`absolute block left-0 top-0 align-middle h-9 tier-${tier ?? Math.floor(map(percent, 0, 100, 1, MAX_TIER))}`}
                         style={{ width: `${percent}%` }}
                     />
                 </span>
