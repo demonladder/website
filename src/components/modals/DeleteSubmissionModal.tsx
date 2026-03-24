@@ -8,7 +8,8 @@ import renderToastError from '../../utils/renderToastError';
 import { FormGroup } from '../form';
 import { FormInputLabel } from '../form';
 import { TextInput } from '../shared/input/Input';
-import { useId, useState } from 'react';
+import { useId, useState, type SubmitEvent } from 'react';
+import useSession from '../../hooks/useSession';
 
 interface Props {
     levelID: number;
@@ -22,12 +23,14 @@ export default function DeleteSubmissionModal({ userID, levelID, submissionID, u
     const [deleteReason, setDeleteReason] = useState('');
     const deleteInputID = useId();
     const queryClient = useQueryClient();
+    const session = useSession();
+    const isOwnSubmission = session.user?.ID === userID;
 
-    function deleteSubmission(e: React.FormEvent) {
+    const deleteSubmission = (e: SubmitEvent) => {
         e.preventDefault();
 
         void toast.promise(
-            DeleteSubmission(submissionID, deleteReason).then(() => {
+            DeleteSubmission(submissionID, deleteReason || undefined).then(() => {
                 void queryClient.invalidateQueries({ queryKey: ['level', levelID] });
                 void queryClient.invalidateQueries({ queryKey: ['user', userID, 'submissions'] });
                 close();
@@ -38,7 +41,7 @@ export default function DeleteSubmissionModal({ userID, levelID, submissionID, u
                 error: renderToastError,
             },
         );
-    }
+    };
 
     return (
         <Modal title='Delete submission' show={true} onClose={close}>
@@ -52,7 +55,8 @@ export default function DeleteSubmissionModal({ userID, levelID, submissionID, u
                         value={deleteReason}
                         onChange={(e) => setDeleteReason(e.target.value)}
                         id={deleteInputID}
-                        required
+                        required={isOwnSubmission}
+                        invalid={!isOwnSubmission && deleteReason.length < 3}
                         minLength={3}
                     />
                 </FormGroup>

@@ -75,7 +75,9 @@ export default function IndexStats() {
                             {anyOrLoading(
                                 data.topRaters.map((user) => (
                                     <li key={user.UserID}>
-                                        <Link to={`/profile/${user.UserID}`}>{user.Name}</Link>
+                                        <Link to={`/profile/${user.UserID}`} className='link'>
+                                            {user.Name}
+                                        </Link>
                                     </li>
                                 )),
                             )}
