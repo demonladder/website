@@ -1,4 +1,4 @@
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../../components/ui/buttons';
 import { Reference } from '../../../references/api/getReferences';
 
 interface Props {

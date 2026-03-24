@@ -3,7 +3,7 @@ import { Heading2 } from '../../../components/headings';
 import PageButtons from '../../../components/shared/PageButtons';
 import { useAccessTokens } from './hooks/useAccessTokens';
 import useUserSearch from '../../../hooks/useUserSearch';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import { generateToken } from './api/generateToken';
 import { useMutation } from '@tanstack/react-query';

@@ -10,7 +10,7 @@ import { Heading1 } from '../../../components/headings';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import pluralS from '../../../utils/pluralS';
 import useLevelSearch from '../../../hooks/useLevelSearch.tsx';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { SecondaryButton } from '../../../components/ui/buttons';
 import { useEffect } from 'react';
 
 const proofFilterOptions = {

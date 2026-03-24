@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Heading3 } from '../../../../components/headings';
 import Select from '../../../../components/shared/input/Select';
 import useRoles from '../../../../hooks/api/useRoles';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { NaNToNull } from '../../../../utils/NaNToNull';
 import { toast } from 'react-toastify';
 import { updateVerificationRole } from '../api/updateVerificationRole';

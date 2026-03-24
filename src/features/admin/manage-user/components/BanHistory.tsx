@@ -7,12 +7,11 @@ import useSelect from '../../../../hooks/useSelect';
 import { useId, useState } from 'react';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormGroup, FormInputLabel } from '../../../../components/form';
 import { Heading3, Heading4 } from '../../../../components/headings';
 import { useUserBans } from '../../../../hooks/api/user/useUserBans';
 import { banUser } from '../../../../api/user/bans/banUser';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../../components/ui/buttons';
 import ms from 'ms';
 
 export default function BanHistory({ user }: { user: UserResponse }) {

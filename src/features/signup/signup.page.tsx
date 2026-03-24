@@ -1,15 +1,13 @@
 import { useId, useMemo, useState } from 'react';
 import { useLocation } from 'react-router';
 import { PasswordInput, TextInput } from '../../components/shared/input/Input';
-import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
-import FormInputDescription from '../../components/form/FormInputDescription';
-import FormInputLabel from '../../components/form/FormInputLabel';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../components/form';
 import { validateUsername } from '../../utils/validators/validateUsername';
 import Page from '../../components/layout/Page';
 import { Heading1 } from '../../components/headings';
-import FormGroup from '../../components/form/FormGroup';
 import { useMutation } from '@tanstack/react-query';
 import SignUpFn from '../../api/auth/SignUp';
 import { getPasswordStrength } from '../../utils/getPasswordStrength';

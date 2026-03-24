@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import CheckBox from '../../../components/input/CheckBox';
-import FormGroup from '../../../components/form/FormGroup';
+import { FormGroup } from '../../../components/form';
 import SaveSiteSettings from '../../../api/settings/SaveSiteSettings';
 import GetSiteSettings from '../../../api/settings/GetSiteSettings';
 import { useQuery, useQueryClient } from '@tanstack/react-query';

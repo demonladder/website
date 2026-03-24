@@ -5,8 +5,8 @@ import Modal from '../layout/Modal';
 import DeleteSubmission from '../../api/submissions/DeleteSubmission';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../utils/renderToastError';
-import FormGroup from '../form/FormGroup';
-import FormInputLabel from '../form/FormInputLabel';
+import { FormGroup } from '../form';
+import { FormInputLabel } from '../form';
 import { TextInput } from '../shared/input/Input';
 import { useId, useState } from 'react';
 

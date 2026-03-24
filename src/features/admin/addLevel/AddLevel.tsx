@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { TextInput } from '../../../components/shared/input/Input';
 import { toast } from 'react-toastify';
 import { addLevelFromGD } from './api/addLevelFromGD';

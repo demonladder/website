@@ -1,4 +1,4 @@
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { Level } from './Level';
 import useLevelSearch from '../../../../hooks/useLevelSearch';
 import usePackLevels from '../../../singlePack/hooks/usePackLevels';

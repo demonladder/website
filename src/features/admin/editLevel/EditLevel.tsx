@@ -1,16 +1,13 @@
 import { useId, useState } from 'react';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { DangerButton, PrimaryButton } from '../../../components/ui/buttons';
 import { NumberInput, TextInput } from '../../../components/shared/input/Input';
 import { validateIntInputChange } from '../../../utils/validators/validateIntChange';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../utils/renderToastError';
 import { updateLevel } from './api/updateLevel';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputDescription from '../../../components/form/FormInputDescription';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../components/form';
 import { recalculateLevelStats } from './api/recalculateStats';
-import FormInputLabel from '../../../components/form/FormInputLabel';
 import { removeLevel } from './api/removeLevel';
 import { Link, useLoaderData } from 'react-router';
 import { Heading1 } from '../../../components/headings';

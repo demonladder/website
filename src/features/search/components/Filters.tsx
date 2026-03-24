@@ -1,7 +1,7 @@
 import Select from '../../../components/shared/input/Select';
 import FiltersExtended from './FiltersExtended';
 import { TextInput } from '../../../components/shared/input/Input';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../components/ui/buttons';
 import RatingFilter from './filters/RatingFilter';
 import EnjoymentFilter from './filters/EnjoymentFilter';
 import { createEnumParam, NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';

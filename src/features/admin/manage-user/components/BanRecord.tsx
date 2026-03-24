@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import UserLink from '../../../../components/ui/UserLink';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../../components/ui/buttons';
 import UserBan from '../../../../api/types/UserBan';
 import { revokeBan } from '../../../../api/user/bans/revokeBan';
 import ms from 'ms';

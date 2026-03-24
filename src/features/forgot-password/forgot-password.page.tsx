@@ -1,15 +1,14 @@
 import { useRef, useState } from 'react';
-import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../components/ui/buttons';
 import { TextInput } from '../../components/shared/input/Input';
 import { Heading1 } from '../../components/headings';
 import Page from '../../components/layout/Page';
-import FormGroup from '../../components/form/FormGroup';
+import { FormGroup, FormInputDescription } from '../../components/form';
 import { useMutation } from '@tanstack/react-query';
 import { Id, toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
 import { AxiosError } from 'axios';
 import { forgotPassword } from '../../api/auth/forgotPassword';
-import FormInputDescription from '../../components/form/FormInputDescription';
 
 export default function ForgotPassword() {
     const [username, setUsername] = useState('');

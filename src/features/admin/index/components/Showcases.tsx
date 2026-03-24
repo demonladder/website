@@ -4,7 +4,7 @@ import PageButtons from '../../../../components/shared/PageButtons';
 import { Heading2, Heading3 } from '../../../../components/headings';
 import DemonFace from '../../../../components/shared/DemonFace';
 import { DemonLogoSizes } from '../../../../utils/difficultyToImgSrc';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
+import { SecondaryButton } from '../../../../components/ui/buttons';
 import TextButton from '../../../../components/input/buttons/text/TextButton';
 import { Link } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

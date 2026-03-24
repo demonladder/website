@@ -7,9 +7,7 @@ import { createList } from '../../features/list/api/createList';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
-import FormGroup from '../form/FormGroup';
-import FormInputLabel from '../form/FormInputLabel';
-import FormInputDescription from '../form/FormInputDescription';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../form';
 
 interface Props {
     userID: number;

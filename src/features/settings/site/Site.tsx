@@ -1,10 +1,8 @@
 import CheckBox from '../../../components/input/CheckBox';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputDescription from '../../../components/form/FormInputDescription';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../components/form';
 import { useApp } from '../../../context/app/useApp';
 import { Heading1 } from '../../../components/headings';
 import { LevelViewType } from '../../../context/app/AppContext';
-import FormInputLabel from '../../../components/form/FormInputLabel';
 
 export default function ClientSiteSettings() {
     const app = useApp();

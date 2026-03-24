@@ -3,7 +3,7 @@ import { NumberInput } from '../../../components/shared/input/Input';
 import Select from '../../../components/shared/input/Select';
 import Notifications from './components/Notifications';
 import DiscordRoles from './components/DiscordRoles';
-import FormInputDescription from '../../../components/form/FormInputDescription';
+import { FormInputDescription } from '../../../components/form';
 import Divider from '../../../components/divider/Divider';
 import { useApp } from '../../../context/app/useApp';
 import { Device } from '../../../api/core/enums/device.enum';

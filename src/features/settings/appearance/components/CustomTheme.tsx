@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Heading1, Heading2, Heading3, Heading4, Heading5 } from '../../../../components/headings';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
+import { SecondaryButton } from '../../../../components/ui/buttons';
 import { useTheme } from '../../../../context/theme/useTheme';
 import TextButton from '../../../../components/input/buttons/text/TextButton';
 import { toast } from 'react-toastify';

@@ -1,15 +1,13 @@
 import { useState, useEffect, useRef, useId } from 'react';
 import { NumberInput, TextInput } from '../../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import TextArea from '../../../../components/input/TextArea';
-import FormGroup from '../../../../components/form/FormGroup';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import useLevelSearch from '../../../../hooks/useLevelSearch';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';
 import { saveProfile } from '../api/saveProfile';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../../components/form';
 import Select from '../../../../components/shared/input/Select';
 import { ISO3611Alpha2 } from '../ISO3611-1-alpha-2';
 import { useMutation } from '@tanstack/react-query';

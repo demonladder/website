@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Divider from '../../../components/divider/Divider';
 import { Heading2 } from '../../../components/headings';
 import PageButtons from '../../../components/shared/PageButtons';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { SecondaryButton } from '../../../components/ui/buttons';
 import AuditLog from './components/AuditLog';
 import { useAuditLogs } from './hooks/useAuditLogs';
 import Select from '../../../components/input/select/Select';

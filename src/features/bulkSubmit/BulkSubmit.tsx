@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../components/ui/buttons';
 import TextArea from '../../components/input/TextArea';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';

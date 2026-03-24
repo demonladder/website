@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
+import { DangerButton } from '../../../../components/ui/buttons';
+import { FormInputDescription } from '../../../../components/form';
 import { useMutation } from '@tanstack/react-query';
 import { deletePendingSubmissions } from '../../../../api/user/submissions/deletePendingSubmissions';
 import User from '../../../../api/types/User';

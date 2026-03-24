@@ -1,7 +1,5 @@
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import FormGroup from '../../../components/form/FormGroup';
+import { DangerButton, SecondaryButton } from '../../../components/ui/buttons';
+import { FormGroup, FormInputDescription } from '../../../components/form';
 import Modal from '../../../components/layout/Modal';
 import React, { useState } from 'react';
 import { TextInput } from '../../../components/shared/input/Input';

@@ -1,6 +1,6 @@
 import { SubmitEvent } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { NumberInput } from '../../../../components/shared/input/Input';
 import GetAutoAcceptSettings from '../../../../api/settings/autoAccept/GetAutoAcceptSettings';
 import { ReactNode, useState } from 'react';
@@ -9,9 +9,7 @@ import SaveAutoAcceptSettings from '../../../../api/settings/autoAccept/SaveAuto
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import { Heading3 } from '../../../../components/headings';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../../components/form';
 import { AutoAcceptSettings } from '../../../../api/settings/autoAccept/AutoAcceptSettings.ts';
 import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner.tsx';
 

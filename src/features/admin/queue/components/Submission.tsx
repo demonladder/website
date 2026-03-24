@@ -15,9 +15,7 @@ import standardDeviation from '../../../../utils/standardDeviation';
 import { secondsToHumanReadable } from '../../../../utils/secondsToHumanReadable';
 import useSessionStorage from '../../../../hooks/useSessionStorage';
 import { NumberParam, useQueryParam } from 'use-query-params';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { DangerButton, PrimaryButton, SecondaryButton } from '../../../../components/ui/buttons';
 import { useNow } from '../../../../hooks/useNow';
 
 interface Props {

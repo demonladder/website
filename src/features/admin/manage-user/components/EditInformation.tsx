@@ -1,9 +1,8 @@
 import { useId, useMemo, useState, SubmitEvent } from 'react';
 import { toast } from 'react-toastify';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormGroup, FormInputLabel } from '../../../../components/form';
 import { TextInput } from '../../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { validateUsername } from '../../../../utils/validators/validateUsername';
 import { UserResponse } from '../../../../api/user/GetUser';
 import TextArea from '../../../../components/input/TextArea';

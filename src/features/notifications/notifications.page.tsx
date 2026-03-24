@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import GetNotifications, { NotificationResponse, UnreadFilter } from '../../api/notifications/GetNotificationsRequest';
 import MarkReadNotifications from '../../api/notifications/MarkReadNotifications';
 import { useState } from 'react';
-import { SecondaryButton } from '../../components/ui/buttons/SecondaryButton';
+import { SecondaryButton } from '../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import MarkAllReadRequest from '../../api/notifications/MarkAllReadRequest';
 import renderToastError from '../../utils/renderToastError';
@@ -45,8 +45,7 @@ export default function Notifications() {
             <div className='mb-4'>
                 <button
                     className={
-                        (allOrUnread === 'all' ? 'bg-white text-black' : 'bg-gray-500') +
-                        ' px-2 py-[2px] round:rounded-s'
+                        (allOrUnread === 'all' ? 'bg-white text-black' : 'bg-gray-500') + ' px-2 py-0.5 round:rounded-s'
                     }
                     onClick={() => setAllOrUnread('all')}
                 >
@@ -55,7 +54,7 @@ export default function Notifications() {
                 <button
                     className={
                         (allOrUnread === 'unread' ? 'bg-white text-black' : 'bg-gray-500') +
-                        ' px-2 py-[2px] round:rounded-e'
+                        ' px-2 py-0.5 round:rounded-e'
                     }
                     onClick={() => setAllOrUnread('unread')}
                 >

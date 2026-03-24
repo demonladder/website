@@ -5,9 +5,9 @@ import { GameManagerParseError, parseGameManager } from '../../../../utils/parse
 import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 import SegmentedButtonGroup from '../../../../components/input/buttons/segmented/SegmentedButtonGroup';
 import { NumberInput } from '../../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { useApp } from '../../../../context/app/useApp';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormInputLabel } from '../../../../components/form';
 import { useMutation } from '@tanstack/react-query';
 import { importSave, type ImportSaveRequest } from '../api/importSave';
 import { Device } from '../../../../api/core/enums/device.enum';

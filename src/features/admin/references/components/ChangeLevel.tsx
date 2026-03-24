@@ -1,5 +1,5 @@
 import { Change, ChangeType } from '../../../../api/references/ChangeReferences';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../../components/ui/buttons';
 
 interface ChangeLevelProps {
     data: Change;

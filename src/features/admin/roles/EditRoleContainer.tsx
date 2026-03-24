@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { TextInput } from '../../../components/shared/input/Input';
 import { useCallback, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
@@ -11,8 +11,7 @@ import renderToastError from '../../../utils/renderToastError';
 import { rolesClient } from '../../../api';
 import useDeleteRoleModal from '../../../hooks/modals/useDeleteRoleModal';
 import Users from './components/Users';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormInputDescription, FormInputLabel } from '../../../components/form';
 import { Heading2, Heading3 } from '../../../components/headings';
 import Divider from '../../../components/divider/Divider';
 import Role from '../../../api/types/Role.ts';

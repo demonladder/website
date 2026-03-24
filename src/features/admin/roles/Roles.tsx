@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import useRoles from '../../../hooks/api/useRoles';
 import { TextInput } from '../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Level } from '../../../api/types/Level';
 import { useSubmission } from '../../../components/modals/useSubmission';
 import { NumberInput } from '../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import useSession from '../../../hooks/useSession';
 import type { SubmissionStatus } from '../../profile/api/getUserPendingSubmissions';
 import { clamp } from '../../../utils/clamp';

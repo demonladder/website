@@ -1,10 +1,9 @@
 import { useRef, useState } from 'react';
 import APIClient from '../../../api/APIClient';
 import { Heading1, Heading3 } from '../../../components/headings';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { DangerButton, PrimaryButton } from '../../../components/ui/buttons';
 import { useMutation } from '@tanstack/react-query';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
+import { FormInputDescription } from '../../../components/form';
 import { AxiosError } from 'axios';
 import renderToastError from '../../../utils/renderToastError';
 import { Id, toast } from 'react-toastify';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import CheckBox from '../../../../components/input/CheckBox';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import UpdateSubmissionSettings, { BitField } from '../../../../api/user/UpdateWants';
@@ -9,7 +9,7 @@ import { NumberInput } from '../../../../components/shared/input/Input';
 import { validateIntInputChange } from '../../../../utils/validators/validateIntChange';
 import GetWants from '../../../../api/user/GetWants';
 import useSession from '../../../../hooks/useSession';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
+import { FormInputDescription } from '../../../../components/form';
 import Divider from '../../../../components/divider/Divider';
 import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 import { Heading2 } from '../../../../components/headings';

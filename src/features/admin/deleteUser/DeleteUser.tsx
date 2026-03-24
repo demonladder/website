@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { DangerButton, PrimaryButton } from '../../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import WarningBox from '../../../components/message/WarningBox';
 import renderToastError from '../../../utils/renderToastError';
@@ -9,7 +8,7 @@ import { TinyUser } from '../../../api/types/TinyUser';
 import Modal from '../../../components/layout/Modal';
 import { useQueryClient } from '@tanstack/react-query';
 import DeleteUserRequest from '../../../api/user/Delete';
-import FormGroup from '../../../components/form/FormGroup';
+import { FormGroup } from '../../../components/form';
 import { useAPI } from '../../../hooks/useAPI';
 
 export default function DeleteUser() {

@@ -9,7 +9,7 @@ import renderToastError from '../../utils/renderToastError';
 import { List } from '../../features/list/types/List';
 import { TextInput } from '../shared/input/Input';
 import { useNavigate } from 'react-router';
-import FormGroup from '../form/FormGroup';
+import { FormGroup } from '../form';
 
 interface Props {
     list: Pick<List, 'ID' | 'Name' | 'OwnerID'>;

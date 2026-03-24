@@ -1,7 +1,5 @@
 import { useId, useState } from 'react';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../../components/form';
 import { Heading2 } from '../../../../components/headings';
 import { TextInput } from '../../../../components/shared/input/Input';
 import TextArea from '../../../../components/input/TextArea';
@@ -12,8 +10,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import APIClient from '../../../../api/APIClient';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
+import { PrimaryButton, SecondaryButton } from '../../../../components/ui/buttons';
 
 export default function GeneralInformation() {
     const app = useLoaderData<Application>();

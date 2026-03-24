@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { Heading1 } from '../../../components/headings';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 
 export default function Invalid() {
     return (

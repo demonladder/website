@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Reference } from '../../references/api/getReferences';
 import ChangeReferences, { Change, ChangeType } from '../../../api/references/ChangeReferences';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import { useReferences } from '../../references/hooks/useReferences';
