@@ -17,6 +17,7 @@ export function difficultyToImgSrc(diff?: Difficulties | number, size: DemonLogo
             return `/images/demon_logos/medium_${size}.webp`;
         case Difficulties.Official:
         case Difficulties.Hard:
+        default:
         case 3:
             return `/images/demon_logos/hard_${size}.webp`;
         case Difficulties.Insane:
