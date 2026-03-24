@@ -14,6 +14,6 @@ interface ImportSaveResponse {
 }
 
 export async function importSave(options: ImportSaveRequest) {
-    const res = await APIClient.post<ImportSaveResponse>('/submissions/import-save', options);
+    const res = await APIClient.post<ImportSaveResponse>('/submissions/import-save', options, { timeout: 30_000 });
     return res.data;
 }
