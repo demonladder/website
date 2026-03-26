@@ -10,12 +10,24 @@ import { AuditEvents } from './enums/audit-events.enum';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { TextInput } from '../../../components/shared/input/Input';
 import { FormInputLabel } from '../../../components/form';
+import useRoles from '../../../hooks/api/useRoles';
 
 const eventFilterOptions: Partial<Record<AuditEvents | 0, string>> = {
     0: 'All Events',
+    [AuditEvents.USER_UPDATE]: 'Updated Users',
+    [AuditEvents.USER_DELETE]: 'Deleted Users',
     [AuditEvents.SUBMISSION_UPDATE]: 'Updated Submissions',
+    [AuditEvents.SUBMISSION_DELETE]: 'Deleted Submissions',
+    [AuditEvents.SUBMISSION_BULK_DELETE]: 'Bulk Delete Submissions',
+    [AuditEvents.SUBMISSION_ENJOYMENT_DELETE]: 'Bulk Delete Enjoyments',
+    [AuditEvents.SUBMISSION_MERGE]: 'Merged Submissions',
     [AuditEvents.PENDING_SUBMISSION_DELETE]: 'Denied Submissions',
     [AuditEvents.PACK_CREATE]: 'Created Packs',
+    [AuditEvents.PACK_UPDATE]: 'Updated Packs',
+    [AuditEvents.USER_BAN_CREATE]: 'Created Bans',
+    [AuditEvents.USER_BAN_REVOKE]: 'Revoked Bans',
+    [AuditEvents.ROLE_UPDATE]: 'Updated Roles',
+    [AuditEvents.USER_ROLE_UPDATE]: 'Updated User Roles',
 };
 
 export default function AuditLogs() {
@@ -27,6 +39,7 @@ export default function AuditLogs() {
         ID: 'auditUserTrigger',
         onUser: (user) => setUserId(user?.ID),
     });
+    const roles = useRoles();
 
     const auditLogs = useAuditLogs({ eventType: eventFilter, page, userId, targetId });
 
@@ -75,7 +88,7 @@ export default function AuditLogs() {
                     <Divider />
                     <ul>
                         {auditLogs.data.logs.map((log) => (
-                            <AuditLog log={log} users={auditLogs.data.users} key={log.ID} />
+                            <AuditLog log={log} users={auditLogs.data.users} roles={roles.data ?? []} key={log.ID} />
                         ))}
                     </ul>
                     <PageButtons
