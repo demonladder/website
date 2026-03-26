@@ -8,6 +8,7 @@ interface Props<T, K> {
     options: T;
     onOption?: (key: K) => void;
     id?: string;
+    className?: string;
 }
 
 export default function Select<T extends Record<K, string>, K extends string>({
@@ -16,6 +17,7 @@ export default function Select<T extends Record<K, string>, K extends string>({
     options,
     onOption,
     id,
+    className,
 }: Props<T, K>) {
     const [show, setShow] = useState(false);
     const menuRef = useRef<HTMLUListElement>(null);
@@ -48,14 +50,14 @@ export default function Select<T extends Record<K, string>, K extends string>({
     return (
         <>
             {show && <div className='absolute inset-0 z-30' onClick={() => setShow(false)} />}
-            <div className='relative inline-block' id={id}>
+            <div className={`relative inline-block ${className}`} id={id}>
                 <SecondaryButton className='h-8 px-4' isPressedOverride={show} onClick={() => setShow((prev) => !prev)}>
                     {icon} {label}
                 </SecondaryButton>
                 <ul
                     ref={menuRef}
                     className={
-                        'absolute z-40 p-1 round:rounded-lg min-w-28 bg-theme-900 border border-theme-400 shadow-2xl transition-opacity ' +
+                        'absolute z-40 p-1 round:rounded-lg min-w-28 w-max bg-theme-900 border border-theme-400 shadow-2xl transition-opacity ' +
                         (show ? 'opacity-100' : 'opacity-0 pointer-events-none')
                     }
                 >

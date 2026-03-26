@@ -3,6 +3,7 @@ import LoadingSpinner from '../shared/LoadingSpinner';
 import SearchResult from './SearchResult';
 import { useEventListener } from 'usehooks-ts';
 import { TextInput } from '../shared/input/Input';
+import { XIcon } from '../shared/icons';
 
 interface Props<T> {
     value?: string;
@@ -81,7 +82,7 @@ export default function SearchBox<T>({
     }
 
     return (
-        <div className='grow'>
+        <div className='grow relative'>
             <TextInput
                 ref={inputRef}
                 value={value}
@@ -92,6 +93,11 @@ export default function SearchBox<T>({
                 onFocus={() => setVisible(true)}
                 invalid={invalid}
             />
+            {value !== '' && (
+                <button className='absolute top-0 right-0' onClick={() => setChange('')}>
+                    <XIcon />
+                </button>
+            )}
             <div
                 className={
                     (visible ? 'block' : 'hidden') +

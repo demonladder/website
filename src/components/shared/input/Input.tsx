@@ -54,7 +54,7 @@ export function RadioButton(props: DetailedHTMLProps<InputHTMLAttributes<HTMLInp
         <input
             {...props}
             type='radio'
-            className='appearance-none rounded-none w-4 h-4 border-[1px] border-current grid place-items-center before:w-3 before:h-3 before:bg-white before:scale-0 checked:before:scale-100 before:transition-transform'
+            className='appearance-none rounded-none w-4 h-4 border border-current grid place-items-center before:w-3 before:h-3 before:bg-white before:scale-0 checked:before:scale-100 before:transition-transform'
         />
     );
 }

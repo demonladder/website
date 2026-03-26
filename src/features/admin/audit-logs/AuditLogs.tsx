@@ -7,16 +7,27 @@ import AuditLog from './components/AuditLog';
 import { useAuditLogs } from './hooks/useAuditLogs';
 import Select from '../../../components/input/select/Select';
 import { AuditEvents } from './enums/audit-events.enum';
+import useUserSearch from '../../../hooks/useUserSearch';
+import { TextInput } from '../../../components/shared/input/Input';
 
-const eventFilterOptions = {
+const eventFilterOptions: Partial<Record<AuditEvents | 0, string>> = {
     0: 'All',
+    [AuditEvents.SUBMISSION_UPDATE]: 'Updated submissions',
     [AuditEvents.PENDING_SUBMISSION_DELETE]: 'Denied submissions',
+    [AuditEvents.PACK_CREATE]: 'Created packs',
 };
 
 export default function AuditLogs() {
     const [page, setPage] = useState(0);
     const [eventFilter, setEventFilter] = useState<keyof typeof eventFilterOptions>(0);
-    const auditLogs = useAuditLogs({ eventType: eventFilter, page });
+    const [userId, setUserId] = useState<number>();
+    const [targetId, setTargetId] = useState<number>();
+    const user = useUserSearch({
+        ID: 'auditUserTrigger',
+        onUser: (user) => setUserId(user?.ID),
+    });
+
+    const auditLogs = useAuditLogs({ eventType: eventFilter, page, userId, targetId });
 
     return (
         <div>
@@ -28,11 +39,34 @@ export default function AuditLogs() {
                     </SecondaryButton>
                 </div>
             </div>
-            <Select
-                label={`Filter by: ${eventFilterOptions[eventFilter]}`}
-                options={eventFilterOptions}
-                onOption={(event) => setEventFilter(parseInt(event))}
-            />
+            <div className='flex flex-wrap gap-4'>
+                <div>
+                    <p>
+                        <b>User</b>
+                    </p>
+                    {user.SearchBox}
+                </div>
+                <div>
+                    <p>
+                        <b>Event</b>
+                    </p>
+                    <Select
+                        label={`Filter by: ${eventFilterOptions[eventFilter]}`}
+                        options={eventFilterOptions}
+                        onOption={(event) => setEventFilter(parseInt(event))}
+                    />
+                </div>
+                <div>
+                    <p>
+                        <b>Target ID</b>
+                    </p>
+                    <TextInput
+                        placeholder='Enter target ID...'
+                        value={targetId}
+                        onChange={(e) => setTargetId(e.target.value ? parseInt(e.target.value) : undefined)}
+                    />
+                </div>
+            </div>
             {auditLogs.isSuccess && (
                 <>
                     <Divider />
