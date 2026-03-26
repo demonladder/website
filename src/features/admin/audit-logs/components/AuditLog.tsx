@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Heading3 } from '../../../../components/headings';
 import { AuditEvents } from '../enums/audit-events.enum';
 import { IAuditLog } from '../types/IAuditLog';
 import { parseDate } from '../../../../utils/parse/parseDate';
+import type { AuditLogChange } from '../types/AuditLogChange';
 
 interface Props {
     log: IAuditLog;
@@ -50,7 +51,13 @@ function getEvent(log: IAuditLog, users: Props['users']) {
         case AuditEvents.USER_ROLE_UPDATE:
             return (
                 <>
-                    <b>{log.userID}</b> updated roles of user <b>{log.targetID}</b>
+                    <b>{user?.Name ?? log.userID}</b> updated roles of user <b>{targetUser?.Name ?? log.targetID}</b>
+                </>
+            );
+        case AuditEvents.SUBMISSION_UPDATE:
+            return (
+                <>
+                    <b>{user?.Name ?? log.userID}</b> updated <b>{targetUser?.Name ?? log.targetID}</b>s submission
                 </>
             );
         default:
@@ -58,13 +65,80 @@ function getEvent(log: IAuditLog, users: Props['users']) {
     }
 }
 
+interface EventTransformer {
+    getLabel: (log: IAuditLog, users: Props['users']) => ReactNode;
+    getChanges: (change: IAuditLog['changes']) => ReactNode[];
+}
+const eventTransformers: Partial<Record<AuditEvents, EventTransformer>> = {
+    [AuditEvents.SUBMISSION_UPDATE]: {
+        getLabel: (log, users) => {
+            const user = users.find((u) => u.ID === log.userID);
+            const targetUser = users.find((u) => u.ID === log.targetID);
+            return (
+                <>
+                    <b>{user?.Name ?? log.userID}</b> updated <b>{targetUser?.Name ?? log.targetID}</b>s submission
+                </>
+            );
+        },
+        getChanges: (changes) => {
+            const transformedChanges: ReactNode[] = [];
+
+            for (const change of changes ?? []) {
+                if (change.key === 'LevelID') {
+                    transformedChanges.push(
+                        <p>
+                            Updated submission for level with ID <b>{change.oldValue}</b>
+                        </p>,
+                    );
+                } else transformedChanges.push(defaultChangeTransformer(change));
+            }
+
+            return transformedChanges;
+        },
+    },
+};
+
+function defaultChangeTransformer(change: AuditLogChange) {
+    const isAdded = change.oldValue === undefined;
+    const isDeleted = change.newValue === undefined;
+
+    if (isDeleted)
+        return (
+            <p>
+                Removed {change.key}: <b>{change.oldValue}</b>
+            </p>
+        );
+    if (isAdded)
+        return (
+            <p>
+                Added {change.key} as <b>{change.newValue}</b>
+            </p>
+        );
+    return (
+        <p>
+            Changed {change.key} from <b>{change.oldValue}</b> to <b>{change.newValue}</b>
+        </p>
+    );
+}
+
 export default function AuditLog({ log, users }: Props) {
     const [showDetails, setShowDetails] = useState(false);
 
     const hasChanges = (log.changes?.length ?? 0) > 0;
+    const transformer = useMemo(
+        () =>
+            eventTransformers[log.event] ??
+            ({
+                getLabel: getEvent,
+                getChanges: (changes) => changes?.map(defaultChangeTransformer) ?? [],
+            } as EventTransformer),
+        [log.event],
+    );
+
+    const changes = useMemo(() => transformer.getChanges(log.changes), [log.changes, transformer]);
 
     return (
-        <div className='border border-theme-500 bg-theme-800 p-2 my-2 round:rounded-xl'>
+        <div className='border border-theme-500 bg-theme-800 p-4 my-2 round:rounded-xl'>
             <div
                 className={'flex justify-between items-center mb-2' + (hasChanges ? ' cursor-pointer' : '')}
                 onClick={() => setShowDetails((prev) => hasChanges && !prev)}
@@ -80,7 +154,7 @@ export default function AuditLog({ log, users }: Props) {
                         <i className='bx bxs-user-circle text-6xl' />
                     )}
                     <div>
-                        <Heading3>{getEvent(log, users)}</Heading3>
+                        <Heading3>{transformer.getLabel(log, users)}</Heading3>
                         <p className='text-theme-400'>{parseDate(log.createdAt).toLocaleString()}</p>
                     </div>
                 </div>
@@ -91,35 +165,30 @@ export default function AuditLog({ log, users }: Props) {
                         <i className='bx bx-chevron-down ms-auto self-center text-2xl' />
                     ))}
             </div>
-            {showDetails && (
+            {showDetails && changes.length > 0 && (
                 <ul>
-                    {log.changes?.map((change) => {
-                        if (change.oldValue !== undefined && change.newValue !== undefined)
-                            return (
-                                <li>
-                                    <p>
-                                        - Removed {change.key.toLowerCase()} of <b>"{change.oldValue}"</b>
-                                    </p>{' '}
-                                    <p>
-                                        + Added {change.key.toLowerCase()} as <b>"{change.newValue}"</b>
-                                    </p>
-                                </li>
-                            );
-                        if (change.oldValue !== undefined)
-                            return (
-                                <li>
-                                    - Removed {change.key.toLowerCase()} of {change.oldValue}
-                                </li>
-                            );
-                        return (
-                            <li>
-                                + Set {change.key.toLowerCase()} to <b>"{change.newValue}"</b>
-                            </li>
-                        );
-                    })}
+                    {changes.map((change, i) => (
+                        <li className='flex' key={i}>
+                            <span className='text-theme-primary'>
+                                <code>
+                                    {(i + 1).toString().padStart(2, '0')}
+                                    <span className='mx-2'>-</span>
+                                </code>
+                            </span>
+                            <div>{change}</div>
+                        </li>
+                    ))}
                     {log.reason && (
                         <li>
-                            - With reason: <b>{log.reason}</b>
+                            <span className='text-theme-primary'>
+                                <code>
+                                    {(changes.length + 1).toString().padStart(2, '0')}
+                                    <span className='mx-2'>-</span>
+                                </code>
+                            </span>
+                            <div>
+                                With reason: <b>{log.reason}</b>
+                            </div>
                         </li>
                     )}
                 </ul>
