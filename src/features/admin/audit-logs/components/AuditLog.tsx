@@ -165,7 +165,7 @@ export default function AuditLog({ log, users }: Props) {
                         <i className='bx bx-chevron-down ms-auto self-center text-2xl' />
                     ))}
             </div>
-            {showDetails && changes.length > 0 && (
+            {showDetails && (changes.length > 0 || log.reason) && (
                 <ul>
                     {changes.map((change, i) => (
                         <li className='flex' key={i}>
@@ -179,7 +179,7 @@ export default function AuditLog({ log, users }: Props) {
                         </li>
                     ))}
                     {log.reason && (
-                        <li>
+                        <li className='flex'>
                             <span className='text-theme-primary'>
                                 <code>
                                     {(changes.length + 1).toString().padStart(2, '0')}
