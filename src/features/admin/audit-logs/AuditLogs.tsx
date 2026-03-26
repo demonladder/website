@@ -9,12 +9,13 @@ import Select from '../../../components/input/select/Select';
 import { AuditEvents } from './enums/audit-events.enum';
 import useUserSearch from '../../../hooks/useUserSearch';
 import { TextInput } from '../../../components/shared/input/Input';
+import { FormInputLabel } from '../../../components/form';
 
 const eventFilterOptions: Partial<Record<AuditEvents | 0, string>> = {
-    0: 'All',
-    [AuditEvents.SUBMISSION_UPDATE]: 'Updated submissions',
-    [AuditEvents.PENDING_SUBMISSION_DELETE]: 'Denied submissions',
-    [AuditEvents.PACK_CREATE]: 'Created packs',
+    0: 'All Events',
+    [AuditEvents.SUBMISSION_UPDATE]: 'Updated Submissions',
+    [AuditEvents.PENDING_SUBMISSION_DELETE]: 'Denied Submissions',
+    [AuditEvents.PACK_CREATE]: 'Created Packs',
 };
 
 export default function AuditLogs() {
@@ -41,26 +42,28 @@ export default function AuditLogs() {
             </div>
             <div className='flex flex-wrap gap-4'>
                 <div>
-                    <p>
-                        <b>User</b>
-                    </p>
+                    <FormInputLabel htmlFor='auditUserTrigger'>
+                        <b>Filter by User</b>
+                    </FormInputLabel>
                     {user.SearchBox}
                 </div>
                 <div>
-                    <p>
-                        <b>Event</b>
-                    </p>
+                    <FormInputLabel htmlFor='auditEventFilter'>
+                        <b>Filter by Event</b>
+                    </FormInputLabel>
                     <Select
-                        label={`Filter by: ${eventFilterOptions[eventFilter]}`}
+                        id='auditEventFilter'
+                        label={eventFilterOptions[eventFilter]}
                         options={eventFilterOptions}
                         onOption={(event) => setEventFilter(parseInt(event))}
                     />
                 </div>
                 <div>
-                    <p>
-                        <b>Target ID</b>
-                    </p>
+                    <FormInputLabel htmlFor='auditTargetIdFilter'>
+                        <b>Filter by Target ID</b>
+                    </FormInputLabel>
                     <TextInput
+                        id='auditTargetIdFilter'
                         placeholder='Enter target ID...'
                         value={targetId}
                         onChange={(e) => setTargetId(e.target.value ? parseInt(e.target.value) : undefined)}
