@@ -166,12 +166,15 @@ export default function Search() {
     );
     const { status: userSearchStatus, data: userSearchData } = useSearchUsers(searchUserOptions);
 
-    function onNameChange(newName: string) {
-        setQueryParams({
-            ...queryParams,
-            [QueryParamNames.Name]: newName,
-        });
-    }
+    const onNameChange = useCallback(
+        (newName: string) => {
+            setQueryParams({
+                ...queryParams,
+                [QueryParamNames.Name]: newName || undefined,
+            });
+        },
+        [queryParams, setQueryParams],
+    );
 
     // Up and down arrow key navigation
     const [selection, setSelection] = useState(0);
@@ -256,6 +259,7 @@ export default function Search() {
                     onKeyDown={onKeyDown}
                     value={queryParams[QueryParamNames.Name] ?? ''}
                     onChange={(e) => onNameChange(e.target.value.trimStart().slice(0, 22))}
+                    onClear={() => onNameChange('')}
                     onMenu={() => setShowFilters((prev) => !prev)}
                     autoFocus
                     placeholder='Search by name or ID'

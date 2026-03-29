@@ -1,3 +1,4 @@
+import { XIcon } from '../../shared/icons';
 import './search.css';
 
 interface Props extends Omit<
@@ -5,13 +6,19 @@ interface Props extends Omit<
     'type'
 > {
     onMenu?: (e: React.MouseEvent) => void;
+    onClear?: () => void;
 }
 
-export default function Search({ onMenu, placeholder, ...props }: Props) {
+export default function Search({ onMenu, placeholder, value, onClear, ...props }: Props) {
     return (
-        <div className='search'>
+        <div className='relative search'>
             {onMenu && <i className='bx bx-filter text-2xl cursor-pointer' onClick={onMenu} />}
-            <input type='text' {...props} placeholder={placeholder ?? 'Search...'} />
+            <input type='text' value={value} {...props} placeholder={placeholder ?? 'Search...'} />
+            {value !== '' && (
+                <button className='absolute right-3 ' onClick={onClear}>
+                    <XIcon size={40} />
+                </button>
+            )}
         </div>
     );
 }
