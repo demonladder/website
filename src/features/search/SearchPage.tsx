@@ -5,7 +5,7 @@ import SortMenu from './components/SortMenu';
 import { getLevels } from './api/getLevels';
 import { useQuery } from '@tanstack/react-query';
 import useSessionStorage from '../../hooks/useSessionStorage';
-import { BooleanParam, NumberParam, StringParam, useQueryParams, withDefault } from 'use-query-params';
+import { BooleanParam, NumberParam, StringParam, useQueryParam, useQueryParams, withDefault } from 'use-query-params';
 import { QueryParamNames } from './enums/QueryParamNames';
 import { Heading1, Heading2 } from '../../components/headings';
 import Page from '../../components/layout/Page';
@@ -64,7 +64,7 @@ const lengths = {
 export default function Search() {
     const [savedFilters, setSavedFilters] = useSessionStorage<Partial<SavedFilters>>('level-filters', {});
     const [showFilters, setShowFilters] = useSessionStorage('show-filters', false);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useQueryParam('page', withDefault(NumberParam, 0));
     const app = useApp();
 
     const [queryParams, setQueryParams] = useQueryParams({
