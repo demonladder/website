@@ -25,7 +25,7 @@ function LinkButton({ link, message }: { link: string; message: string }) {
             href={link}
             target='_blank'
             rel='noopener noreferrer'
-            className='px-4 py-2 bg-theme-500 shadow-md round:rounded-md border border-white/0 hover:border-white/100 transition-colors'
+            className='px-4 py-2 bg-theme-500 shadow-md round:rounded-md border border-white/0 hover:border-white transition-colors'
         >
             {message} <i className='bx bx-link-external float-right pt-1' />
         </a>

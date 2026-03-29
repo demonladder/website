@@ -26,6 +26,7 @@ export default function Showcase({ level }: Props) {
                 thumbnail={`https://i.ytimg.com/vi/${level.Showcase}/maxresdefault.jpg`}
                 id={level.Showcase}
                 title={`Showcase video for ${level.Meta.Name}`}
+                wrapperClass='yt-lite round:rounded-xl'
             />
         </div>
     );
