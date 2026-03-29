@@ -14,16 +14,25 @@ export default function Tooltip({ children, label }: Props) {
     const childrenRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!ref.current || !childrenRef.current) return;
+        const translateX = () => {
+            if (!ref.current || !childrenRef.current) return;
 
-        const rect = ref.current.getBoundingClientRect();
-        const childrenRect = childrenRef.current.getBoundingClientRect();
+            const rect = ref.current.getBoundingClientRect();
+            const childrenRect = childrenRef.current.getBoundingClientRect();
 
-        const targetDx = childrenRect.width / 2 - rect.width / 2;
-        const targetX = childrenRect.x + targetDx;
-        const clampedX = clamp(targetX, 0, window.outerWidth - rect.width);
+            const targetDx = childrenRect.width / 2 - rect.width / 2;
+            const targetX = childrenRect.x + targetDx;
+            const clampedX = clamp(targetX, 0, window.outerWidth - rect.width);
 
-        ref.current.style.left = `${clampedX}px`;
+            ref.current.style.left = `${clampedX}px`;
+        };
+
+        window.addEventListener('resize', translateX);
+        translateX();
+
+        return () => {
+            window.removeEventListener('resize', translateX);
+        };
     }, [label]);
 
     return (
