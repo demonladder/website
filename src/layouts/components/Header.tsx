@@ -1,5 +1,5 @@
 import Search from '../../components/input/search/Search';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type SubmitEvent } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useWindowSize } from 'usehooks-ts';
 import ProfileButtons from '../../components/shared/ProfileButtons';
@@ -33,15 +33,23 @@ export default function Header() {
         };
     }, [registerShortcut, unregisterShortcut]);
 
-    function onSearch(e: React.FormEvent) {
-        e.preventDefault();
-        if (text === '') {
-            return;
-        }
+    const onSearch = useCallback(
+        (e: SubmitEvent) => {
+            e.preventDefault();
+            if (text === '') {
+                return;
+            }
 
-        sessionStorage.setItem('level-filters', JSON.stringify({ name: text }));
-        void navigate(`/search?name=${encodeURIComponent(text)}`);
-    }
+            sessionStorage.setItem('level-filters', JSON.stringify({ name: text }));
+
+            if (window.location.pathname === '/search') {
+                window.location.reload();
+            } else {
+                void navigate(`/search?name=${encodeURIComponent(text)}`);
+            }
+        },
+        [navigate, text],
+    );
 
     return (
         <header className='bg-theme-header text-theme-header-text shadow-lg outline-b outline-theme-outline sticky top-0 left-0 right-0 z-20'>
