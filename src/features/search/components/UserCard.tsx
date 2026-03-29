@@ -7,7 +7,7 @@ export function UserCard({ user }: { user: UserWithRoles }) {
 
     return (
         <li
-            className='bg-theme-700 border border-theme-600 p-2 rounded-xl overflow-hidden grid grid-rows-subgrid row-span-2 gap-1'
+            className='bg-theme-700 border border-theme-600 p-2 round:rounded-xl overflow-hidden grid grid-rows-subgrid row-span-2 gap-1'
             key={user.ID}
         >
             <Link to={`/profile/${user.ID}`} className='flex align-middle gap-2'>

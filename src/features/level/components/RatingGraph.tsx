@@ -104,7 +104,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                                             </td>
                                             <td className='flex items-center'>
                                                 <span
-                                                    className={`inline-block h-6 tier-${d.Rating} rounded shadow`}
+                                                    className={`inline-block h-6 tier-${d.Rating} round:rounded shadow`}
                                                     style={{ width: `${(d.Count / maxRatingCount) * 100}%` }}
                                                 />
                                             </td>
@@ -146,7 +146,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                                             </td>
                                             <td className='flex items-center'>
                                                 <span
-                                                    className={`inline-block h-6 enj-${d.Enjoyment} rounded shadow`}
+                                                    className={`inline-block h-6 enj-${d.Enjoyment} round:rounded shadow`}
                                                     style={{ width: `${(d.Count / maxEnjoymentCount) * 100}%` }}
                                                 />
                                             </td>

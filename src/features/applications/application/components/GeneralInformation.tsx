@@ -75,7 +75,7 @@ export default function GeneralInformation() {
             <FormGroup>
                 <FormInputLabel>Secret</FormInputLabel>
                 <div className='flex gap-2 items-center'>
-                    <p className='grow bg-theme-950 px-2 py-1 outline rounded outline-white/15 font-mono'>
+                    <p className='grow bg-theme-950 px-2 py-1 outline round:rounded outline-white/15 font-mono'>
                         {secret ?? '************************************************************************'}
                     </p>
                     <SecondaryButton className='my-1' onClick={() => resetMutation.mutate()}>

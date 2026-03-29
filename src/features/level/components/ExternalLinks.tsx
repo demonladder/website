@@ -106,7 +106,7 @@ export default function ExternalLinks({ level }: Props) {
                                 {n.songName}{' '}
                                 <a
                                     href={n.downloadUrl}
-                                    className='inline-block bg-gradient-to-b from-button-primary-1 to-button-primary-3 hover:to-button-primary-2 active:to-button-primary-1 px-1 rounded'
+                                    className='inline-block bg-linear-to-b from-button-primary-1 to-button-primary-3 hover:to-button-primary-2 active:to-button-primary-1 px-1 round:rounded'
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >

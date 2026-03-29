@@ -96,7 +96,7 @@ export default function DenySubmissionModal({ submission, onClose }: Props) {
                         Deny
                     </DangerButton>
                     <button
-                        className='my-2 py-1 block w-full border rounded border-theme-text/35'
+                        className='my-2 py-1 block w-full border round:rounded border-theme-text/35'
                         type='button'
                         onClick={() => onClose()}
                     >

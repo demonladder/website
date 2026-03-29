@@ -50,10 +50,10 @@ export default function StaffLeaderboard() {
             <p>You get more points the higher the tier of the level is</p>
             <p>Bonus points for proof (Remember to check it)</p>
             <p>Points are also awarded for denied submissions so no mindlessly approving submissions</p>
-            <div className='my-2 p-1 bg-theme-800/60 rounded-md inline-block'>
+            <div className='my-2 p-1 bg-theme-700/60 round:rounded-md inline-block'>
                 <button
                     className={
-                        'px-4 py-1 me-1 rounded-md ' +
+                        'px-4 py-1 me-1 round:rounded-md ' +
                         (view === 'monthly' ? 'bg-theme-500 hover:bg-theme-500/80' : 'hover:bg-theme-900/40')
                     }
                     onClick={() => setView('monthly')}
@@ -62,7 +62,7 @@ export default function StaffLeaderboard() {
                 </button>
                 <button
                     className={
-                        'px-4 py-1 rounded-md ' +
+                        'px-4 py-1 round:rounded-md ' +
                         (view === 'allTime' ? 'bg-theme-500 hover:bg-theme-500/80' : 'hover:bg-theme-900/40')
                     }
                     onClick={() => setView('allTime')}

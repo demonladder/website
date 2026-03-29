@@ -11,7 +11,7 @@ export default function Tooltip({ children, label }: Props) {
                 <svg width='20' height='10' className='mx-auto' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M0 10 L10 0 L20 10 Z' style={{ fill: 'var(--color-theme-500)' }} />
                 </svg>
-                <div className='bg-theme-500 text-theme-text px-2 py-1 rounded-md shadow-lg w-72 text-base'>
+                <div className='bg-theme-500 text-theme-text px-2 py-1 round:rounded-md shadow-lg w-72 text-base'>
                     {label}
                 </div>
             </div>

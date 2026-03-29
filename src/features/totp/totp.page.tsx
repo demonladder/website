@@ -95,7 +95,7 @@ export default function TOTPPage() {
 
     return (
         <div className='grow flex flex-col justify-center items-center'>
-            <form onSubmit={handleSubmit} className='bg-theme-800 p-4 rounded shadow-md w-lg text-center'>
+            <form onSubmit={handleSubmit} className='bg-theme-800 p-4 round:rounded shadow-md w-lg text-center'>
                 <Heading1>Two-Factor Authentication</Heading1>
                 <p className='mb-2'>Enter the code from your authenticator app below to continue</p>
                 <div className='flex gap-2'>
@@ -168,7 +168,7 @@ export default function TOTPPage() {
                 </div>
                 <button
                     type='submit'
-                    className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white rounded px-4 py-2 mt-4 w-full'
+                    className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white round:rounded px-4 py-2 mt-4 w-full'
                 >
                     Submit
                 </button>

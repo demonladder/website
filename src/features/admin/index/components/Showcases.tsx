@@ -106,7 +106,7 @@ export default function Showcases() {
                                             </div>
                                         </div>
                                         <iframe
-                                            className='rounded-xl'
+                                            className='round:rounded-xl'
                                             width='100%'
                                             height={videoHeight}
                                             src={`https://www.youtube.com/embed/${suggestion.videoID}?si=41vSsQ4VYRJP2MeR`}

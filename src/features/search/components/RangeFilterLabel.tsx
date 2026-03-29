@@ -12,7 +12,7 @@ export function RangeFilterLabel({ label, min, max, onRemove }: Props) {
 
     return (
         <button
-            className='bg-theme-500 px-1 rounded-md border border-theme-400 hover:border-red-500 group slow-effect-transition flex gap-1'
+            className='bg-theme-500 px-1 round:rounded-md border border-theme-400 hover:border-red-500 group slow-effect-transition flex gap-1'
             onClick={onRemove}
         >
             <span>{label}:</span>

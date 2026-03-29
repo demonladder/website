@@ -53,7 +53,7 @@ export default function BetaAccess() {
                 <div className='mt-3'>
                     <p className='text-green-500'>
                         Token generated:{' '}
-                        <code className='bg-theme-950 px-2 py-1 rounded-lg outline' onClick={selectText}>
+                        <code className='bg-theme-950 px-2 py-1 round:rounded-lg outline' onClick={selectText}>
                             {generatedToken}
                         </code>
                     </p>

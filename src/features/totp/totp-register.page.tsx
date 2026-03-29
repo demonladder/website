@@ -52,7 +52,7 @@ export default function TOTPRegisterPage() {
 
     return (
         <div className='grow flex flex-col justify-center items-center'>
-            <div className='bg-theme-800 p-4 rounded-xl shadow-md w-xl text-center'>
+            <div className='bg-theme-800 p-4 round:rounded-xl shadow-md w-xl text-center'>
                 <Heading1>Add 2FA</Heading1>
                 <p>Two-factor authentication adds an extra layer of security to your account.</p>
                 <p className='mt-4'>
@@ -81,18 +81,18 @@ export default function TOTPRegisterPage() {
                         onChange={(e) => setCode(e.target.value)}
                         placeholder='XXXXXX'
                         maxLength={6}
-                        className='w-full border text-4xl text-center spacing rounded no-spinner my-4'
+                        className='w-full border text-4xl text-center spacing round:rounded no-spinner my-4'
                     />
                     <button
                         type='submit'
-                        className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white rounded px-4 py-2 mt-2 w-full'
+                        className='bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white round:rounded px-4 py-2 mt-2 w-full'
                     >
                         Save
                     </button>
                     <button
                         onClick={goBack}
                         type='button'
-                        className='mt-2 w-full block border border-theme-400 py-2 rounded'
+                        className='mt-2 w-full block border border-theme-400 py-2 round:rounded'
                     >
                         Cancel
                     </button>

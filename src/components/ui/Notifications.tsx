@@ -47,7 +47,7 @@ export default function NotificationButton() {
             {showNotifications && (
                 <>
                     <div className='fixed z-30 inset-0' onClick={() => setShowNotifications(false)}></div>
-                    <div className='absolute z-30 right-0 bg-theme-700 text-theme-text border border-theme-400 rounded-lg shadow-lg w-md'>
+                    <div className='absolute z-30 right-0 bg-theme-700 text-theme-text border border-theme-400 round:rounded-lg shadow-lg w-md'>
                         <div className='flex justify-between items-center px-4 py-2 border-b border-theme-400'>
                             <Heading4>Notifications</Heading4>
                             <button

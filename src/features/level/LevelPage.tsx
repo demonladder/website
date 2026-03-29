@@ -92,7 +92,7 @@ export default function LevelPage() {
                             <ul className='p-1'>
                                 <li>
                                     <button
-                                        className='w-full px-4 py-1 text-start rounded hover:bg-theme-700'
+                                        className='w-full px-4 py-1 text-start round:rounded hover:bg-theme-700'
                                         onClick={() => addFavoriteMutation.mutate(level.ID)}
                                     >
                                         Add favorite
@@ -100,7 +100,7 @@ export default function LevelPage() {
                                 </li>
                                 <li>
                                     <button
-                                        className='w-full px-4 py-1 text-start rounded hover:bg-theme-700'
+                                        className='w-full px-4 py-1 text-start round:rounded hover:bg-theme-700'
                                         onClick={() => addLeastFavoriteMutation.mutate(level.ID)}
                                     >
                                         Add least favorite
@@ -108,7 +108,7 @@ export default function LevelPage() {
                                 </li>
                                 <li>
                                     <button
-                                        className='w-full px-4 py-1 text-start rounded hover:bg-theme-700'
+                                        className='w-full px-4 py-1 text-start round:rounded hover:bg-theme-700'
                                         onClick={() => session.user && openAddListLevelModal(session.user.ID, level.ID)}
                                     >
                                         Add to list
@@ -117,7 +117,7 @@ export default function LevelPage() {
                                 {session.hasPermission(PermissionFlags.MANAGE_SUBMISSIONS) && (
                                     <li>
                                         <Link to={`/mod/edit-level/${level.ID}`}>
-                                            <button className='w-full px-4 py-1 text-start rounded hover:bg-theme-700'>
+                                            <button className='w-full px-4 py-1 text-start round:rounded hover:bg-theme-700'>
                                                 Edit (staff)
                                             </button>
                                         </Link>

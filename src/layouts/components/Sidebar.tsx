@@ -28,7 +28,7 @@ function MenuLink({ to, children, label }: { to: string; children: React.ReactNo
                 to={to}
                 onClick={() => app.set('showSideBar', false)}
                 className={({ isActive }) =>
-                    'flex align-middle gap-1 p-2 hover:bg-theme-700 transition-colors rounded-lg' +
+                    'flex align-middle gap-1 p-2 hover:bg-theme-700 transition-colors round:rounded-lg' +
                     (isActive ? ' bg-theme-700 font-bold' : ' ')
                 }
             >
@@ -113,7 +113,7 @@ export default function Sidebar() {
                         )}
                     </ul>
                     {session.user && (
-                        <ul className='bg-theme-900 p-2 rounded-xl my-2'>
+                        <ul className='bg-theme-900 p-2 round:rounded-xl my-2'>
                             <p className='px-2 text-theme-400 text-sm'>Account</p>
                             <MenuLink to={'/profile/' + session.user?.ID} label='Profile'>
                                 <User />
@@ -126,13 +126,13 @@ export default function Sidebar() {
                             </MenuLink>
                             <button
                                 onClick={onSignOut}
-                                className='p-2 hover:bg-theme-700 transition-colors rounded-lg w-full mt-2 flex items-center gap-1'
+                                className='p-2 hover:bg-theme-700 transition-colors round:rounded-lg w-full mt-2 flex items-center gap-1'
                             >
                                 <DoorOpenAlt /> Sign out
                             </button>
                         </ul>
                     )}
-                    <ul className='bg-theme-900 p-2 rounded-xl my-2'>
+                    <ul className='bg-theme-900 p-2 round:rounded-xl my-2'>
                         <p className='px-2 text-theme-400 text-sm'>GDDL</p>
                         <MenuLink to='/search' label='Search'>
                             <Search />
@@ -146,13 +146,13 @@ export default function Sidebar() {
                         {session.user && (
                             <Link
                                 to='/submit'
-                                className='p-2 mt-2 transition-colors rounded-lg bg-blue-600 inline-block w-full text-center'
+                                className='p-2 mt-2 transition-colors round:rounded-lg bg-blue-600 inline-block w-full text-center'
                             >
                                 Submit
                             </Link>
                         )}
                     </ul>
-                    <ul className='bg-theme-900 p-2 rounded-xl my-2'>
+                    <ul className='bg-theme-900 p-2 round:rounded-xl my-2'>
                         <p className='px-2 text-theme-400 text-sm'>Misc</p>
                         <MenuLink to='/packs' label='Packs'>
                             <Package />

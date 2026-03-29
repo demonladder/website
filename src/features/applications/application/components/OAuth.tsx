@@ -72,7 +72,9 @@ export default function OAuth() {
                     />
                 ))}
             </div>
-            <p className='bg-theme-950 px-2 py-1 outline rounded outline-white/15 font-mono break-all'>{oauth2URL}</p>
+            <p className='bg-theme-950 px-2 py-1 outline round:rounded outline-white/15 font-mono break-all'>
+                {oauth2URL}
+            </p>
             <SecondaryButton className='mt-1' onClick={() => copyText(oauth2URL)}>
                 Copy
             </SecondaryButton>

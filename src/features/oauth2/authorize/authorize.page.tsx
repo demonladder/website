@@ -9,7 +9,7 @@ import { useRef, useState } from 'react';
 
 function PageWrapper({ children }: { children?: React.ReactNode }) {
     return (
-        <div className='bg-theme-800 rounded-2xl text-theme-text p-4 border border-theme-700 shadow-xl max-sm:w-full sm:min-w-md'>
+        <div className='bg-theme-800 round:rounded-2xl text-theme-text p-4 border border-theme-700 shadow-xl max-sm:w-full sm:min-w-md'>
             {children}
         </div>
     );
@@ -52,7 +52,7 @@ export default function Authorize() {
                 <b>{client.name}</b>
             </p>
             <p className='text-center'>wants to access your GDDL account</p>
-            <div className='my-4 px-6 py-8 bg-theme-700 rounded-lg border border-theme-600 max-h-95 overflow-y-scroll scrollbar-thin'>
+            <div className='my-4 px-6 py-8 bg-theme-700 round:rounded-lg border border-theme-600 max-h-95 overflow-y-scroll scrollbar-thin'>
                 <p>Authorizing will allow this application to:</p>
                 <ul className='mt-3 flex flex-col gap-3'>
                     {initialScope?.split(' ').map((scope) => (

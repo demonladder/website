@@ -29,7 +29,7 @@ export function Generic({ loading = false, size = 'sm', children, className, ...
         <button
             {...props}
             className={
-                'text-center relative rounded-4xl active:rounded-xl disabled:pointer-events-none fast-spatial-transition px-3 min-h-[1.75rem]' +
+                'text-center relative rounded-4xl active:rounded-xl disabled:pointer-events-none fast-spatial-transition px-3 min-h-7' +
                 sizeClass +
                 (className ? ' ' + className : '')
             }

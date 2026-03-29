@@ -33,7 +33,7 @@ export default function AccessToken({ token }: Props) {
     });
 
     return (
-        <div className='flex gap-2 bg-theme-700 shadow-lg px-4 py-2 rounded-xl'>
+        <div className='flex gap-2 bg-theme-700 shadow-lg px-4 py-2 round:rounded-xl'>
             {token.Owner.avatar ? (
                 <img
                     src={`https://cdn.gdladder.com/avatars/${token.Owner.ID}/${token.Owner.avatar}.png`}

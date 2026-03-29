@@ -229,7 +229,7 @@ function SubmitPagePresenter({ submission: existingSubmission }: SubmitPagePrese
 
     return (
         <div className='grow container mx-auto p-4'>
-            <div className='max-md:flex flex-col grid grid-cols-2 bg-theme-800 border border-theme-500/20 rounded-xl p-4 gap-8'>
+            <div className='max-md:flex flex-col grid grid-cols-2 bg-theme-800 border border-theme-500/20 round:rounded-xl p-4 gap-8'>
                 <div>
                     <Heading2>Submit</Heading2>
                     {LevelSearchBox}

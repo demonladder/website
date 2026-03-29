@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 function Supporter({ supporter }: { supporter: { ID: number; name: string } }) {
     return (
         <li>
-            <p className='text-xl px-2 py-1 text-yellow-400 bg-theme-700 rounded'>
+            <p className='text-xl px-2 py-1 text-yellow-400 bg-theme-700 round:rounded'>
                 <b>
                     <Link to={`/profile/${supporter.ID}`}>{supporter.name}</Link>
                 </b>
@@ -26,7 +26,7 @@ export default function Supporters() {
         <Surface variant='800' size='xl'>
             <Heading2 className='mb-4 text-center'>Supporters</Heading2>
             {status === 'success' && (
-                <ul className='flex flex-wrap gap-2 overflow-y-auto max-h-[400px]' style={{ scrollbarWidth: 'thin' }}>
+                <ul className='flex flex-wrap gap-2 overflow-y-auto max-h-100' style={{ scrollbarWidth: 'thin' }}>
                     {supporters.map((supporter) => (
                         <Supporter supporter={supporter} key={supporter.ID} />
                     ))}

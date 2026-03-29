@@ -105,19 +105,19 @@ export function GridLevel({
                 <div className='flex justify-between'>
                     <div className='flex gap-1'>
                         <p>
-                            <b className={`px-2 py-1 text-xl shadow rounded tier-${roundedRating}`}>
+                            <b className={`px-2 py-1 text-xl shadow round:rounded tier-${roundedRating}`}>
                                 {rating?.toFixed() ?? '-'}
                             </b>
                         </p>
                         <p>
-                            <b className={`px-2 py-1 text-xl shadow rounded enj-${roundedEnjoyment}`}>
+                            <b className={`px-2 py-1 text-xl shadow round:rounded enj-${roundedEnjoyment}`}>
                                 {enjoyment?.toFixed() ?? '-'}
                             </b>
                         </p>
                         {proof && (
                             <a href={proof} target='_blank' rel='noreferrer'>
                                 <i
-                                    className='bx bxl-youtube p-1 cursor-pointer rounded transition-colors hover:bg-theme-500 text-xl'
+                                    className='bx bxl-youtube p-1 cursor-pointer round:rounded transition-colors hover:bg-theme-500 text-xl'
                                     title='Showcase of the level'
                                 />
                             </a>

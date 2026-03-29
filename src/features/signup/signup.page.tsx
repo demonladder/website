@@ -119,7 +119,7 @@ export default function SignUp() {
                             required
                         />
                         <div
-                            className='h-1 rounded-b'
+                            className='h-1 round:rounded-b'
                             style={{
                                 backgroundImage: `linear-gradient(to left, ${strengthColor}, ${strengthColor})`,
                                 backgroundSize: `${strength}%`,

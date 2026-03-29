@@ -46,7 +46,7 @@ export default function Home() {
                     sandbox='allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts'
                 />
                 <PopularLevels />
-                <div className='xl:col-span-2 rounded-2xl overflow-hidden'>
+                <div className='xl:col-span-2 round:rounded-2xl overflow-hidden'>
                     <Heading2>Celebrating GDDL's 5-year anniversary</Heading2>
                     <LiteYouTubeEmbed id='wbGyG7ovHaA' title='GDDL 5' />
                 </div>

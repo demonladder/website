@@ -57,7 +57,7 @@ function ListCard({ list }: { list: GetUserListsResponse }) {
     return (
         <div
             onContextMenu={contextMenu}
-            className='grid grid-rows-subgrid gap-0 row-span-4 mb-4 bg-theme-700 rounded-xl overflow-hidden border border-theme-600'
+            className='grid grid-rows-subgrid gap-0 row-span-4 mb-4 bg-theme-700 round:rounded-xl overflow-hidden border border-theme-600'
         >
             <Link to={`/list/${list.ID}`}>
                 <img
@@ -81,7 +81,7 @@ function ListCard({ list }: { list: GetUserListsResponse }) {
                         .map((tagID) => tags?.find((tag) => tag.ID === tagID))
                         .map((tag) => (
                             <li>
-                                <span className='px-2 py-0.5 rounded bg-theme-600'>{tag?.Name}</span>
+                                <span className='px-2 py-0.5 round:rounded bg-theme-600'>{tag?.Name}</span>
                             </li>
                         ))}
                 </ul>
