@@ -13,6 +13,7 @@ import { PermissionFlags } from '../../admin/roles/PermissionFlags';
 import renderToastError from '../../../utils/renderToastError';
 import Select from '../../../components/input/select/Select';
 import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
+import Tooltip from '../../../components/ui/Tooltip';
 
 export default function TagBox({ level }: { level: FullLevel }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -136,25 +137,22 @@ function Tag({ levelID, submission, eligible = false }: { levelID: number; submi
     }
 
     return (
-        <button
-            onClick={handleClick}
-            onContextMenu={onContextMenu}
-            className={
-                (eligible ? 'cursor-pointer hover:border-white ' : '') +
-                'text-xl px-2 py-1 group round:rounded-lg select-none relative border ' +
-                (submission.HasVoted
-                    ? 'bg-blue-600/25 border-blue-400'
-                    : 'bg-theme-600 border-theme-600  transition-colors')
-            }
-        >
-            <span>
-                {tag.Name} {submission.ReactCount}
-            </span>
-            {tag.Description && (
-                <div className='pointer-events-none text-base absolute z-30 w-56 opacity-0 group-hover:opacity-100 transition-opacity left-1/2 top-full -translate-x-1/2 translate-y-1 bg-theme-500 border border-theme-400 round:rounded-lg shadow-lg px-2 py-1'>
-                    {tag.Description}
-                </div>
-            )}
-        </button>
+        <Tooltip label={tag.Description || 'No description available'}>
+            <button
+                onClick={handleClick}
+                onContextMenu={onContextMenu}
+                className={
+                    (eligible ? 'cursor-pointer hover:border-white ' : '') +
+                    'text-xl px-2 py-1 group round:rounded-lg select-none relative border ' +
+                    (submission.HasVoted
+                        ? 'bg-blue-600/25 border-blue-400'
+                        : 'bg-theme-600 border-theme-600  transition-colors')
+                }
+            >
+                <span>
+                    {tag.Name} {submission.ReactCount}
+                </span>
+            </button>
+        </Tooltip>
     );
 }

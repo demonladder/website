@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function Showcase({ level }: Props) {
-    if (level.Showcase === null) return <SuggestShowcase levelID={level.Meta.ID} />;
+    if (level.Showcase === null) return <SuggestShowcase levelID={level.ID} />;
 
     return (
         <div className='mt-6'>
