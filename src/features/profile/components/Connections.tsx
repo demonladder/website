@@ -37,13 +37,15 @@ function Connection({
 
     if (appName === ConnectableApps.GITHUB) {
         link = 'https://github.com/' + accountName;
+    } else if (appName === ConnectableApps.AREDL) {
+        link = 'https://aredl.net/profile/user/' + accountName;
     }
 
     return (
         <li className='flex items-center bg-theme-700 border border-theme-outline px-2 py-1 round:rounded-xl'>
             <AppToIcon app={appName} />
             {link ? (
-                <a className='ms-2' href={link} referrerPolicy='no-referrer' target='_blank'>
+                <a className='ms-2' href={link} target='_blank' rel='noreferrer'>
                     {accountName}
                 </a>
             ) : (
