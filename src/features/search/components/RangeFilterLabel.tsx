@@ -1,4 +1,5 @@
 import { GreaterThanEqual, LessThanEqual } from '@boxicons/react';
+import { XIcon } from '../../../components/shared/icons';
 
 interface Props {
     label: string;
@@ -27,7 +28,9 @@ export function RangeFilterLabel({ label, min, max, onRemove }: Props) {
                     <GreaterThanEqual size='xs' /> <span className='ms-0.5'>{min}</span>
                 </span>
             )}{' '}
-            <span className='mx-1 group-hover:text-red-500 slow-effect-transition font-bold'>X</span>
+            <span className='group-hover:text-red-500 slow-effect-transition'>
+                <XIcon />
+            </span>
         </button>
     );
 }
