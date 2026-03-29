@@ -1,13 +1,14 @@
 import CheckBox from '../../../components/input/CheckBox';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputDescription from '../../../components/form/FormInputDescription';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../components/form';
 import { useApp } from '../../../context/app/useApp';
-import { Heading1 } from '../../../components/headings';
+import { Heading1, Heading2 } from '../../../components/headings';
 import { LevelViewType } from '../../../context/app/AppContext';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import Divider from '../../../components/divider/Divider';
+import { useTrustedDomains } from '../../../hooks/useTrustedDomains';
 
 export default function ClientSiteSettings() {
     const app = useApp();
+    const [trustedDomains, setTrustedDomains] = useTrustedDomains();
 
     return (
         <main>
@@ -18,7 +19,7 @@ export default function ClientSiteSettings() {
                     <img width='32px' src='/images/oreo.jpg' />
                 </span>
             </p>
-            <div className='text-lg'>
+            <section>
                 <FormGroup>
                     <label className='flex items-center gap-2'>
                         <CheckBox
@@ -80,7 +81,32 @@ export default function ClientSiteSettings() {
                     </div>
                     <FormInputDescription>Select how levels are displayed across the site.</FormInputDescription>
                 </div>
-            </div>
+            </section>
+            <Divider />
+            <section className='mt-4'>
+                <Heading2>Trusted sites</Heading2>
+                <p className='mb-4'>Manage the list of sites that can be opened without a warning.</p>
+                {trustedDomains.length === 0 && (
+                    <p>
+                        <i>No trusted sites yet.</i>
+                    </p>
+                )}
+                {trustedDomains.length > 0 && (
+                    <ul className='flex flex-wrap gap-3'>
+                        {trustedDomains.map((domain) => (
+                            <li key={domain} className='flex items-center gap-2 mb-2 bg-theme-700 p-2 round:rounded-lg'>
+                                <span>{domain}</span>
+                                <button
+                                    onClick={() => setTrustedDomains((prev) => prev.filter((d) => d !== domain))}
+                                    className='text-red-500'
+                                >
+                                    Remove
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </section>
         </main>
     );
 }

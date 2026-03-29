@@ -3,6 +3,8 @@ import { getAuditLogs } from '../api/getAuditLogs';
 
 export interface GetAuditLogsOptions {
     eventType?: number;
+    userId?: number;
+    targetId?: number;
     page?: number;
 }
 

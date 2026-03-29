@@ -1,3 +1,3 @@
-export default function isStringAFloat(num: string): boolean {
-    return num.match(/^-?\d+\.\d+$/) !== null;
+export function isStringAFloat(num: string): boolean {
+    return /^-?\d+\.\d+$/.test(num);
 }

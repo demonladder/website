@@ -1,4 +1,4 @@
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../../components/ui/buttons';
 import type { GetPackLevelsResponse as PackLevel } from '../../../singlePack/api/getPackLevels';
 
 export function Level({ level, onRemove }: { level: PackLevel; onRemove: () => void }) {

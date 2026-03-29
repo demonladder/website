@@ -2,7 +2,7 @@ import APIClient from '../APIClient';
 import Submission from '../types/Submission';
 import User from '../types/User';
 
-interface GetSingleSubmissionResponse extends Submission {
+export interface GetSingleSubmissionResponse extends Submission {
     SecondaryUser: User | null;
 }
 

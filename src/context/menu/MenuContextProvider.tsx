@@ -60,8 +60,12 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
         () =>
             menuData?.buttons.filter((button) => {
                 if (button.requireSession && !session.user) return false;
-                if (button.permission && !session.hasPermission(button.permission)) return false;
-                return !(button.userID && button.userID !== session.user?.ID);
+
+                if (button.permission && button.userID) {
+                    if (!session.hasPermission(button.permission) && session.user?.ID !== button.userID) return false;
+                } else if (button.permission && !session.hasPermission(button.permission)) return false;
+                else if (button.userID && button.userID !== session.user?.ID) return false;
+                return true;
             }),
         [menuData?.buttons, session],
     );
@@ -74,7 +78,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
             {menuData && (
                 <div
                     ref={menuRef}
-                    className='fixed z-50 bg-theme-900 text-theme-text text-sm w-60 rounded-lg border border-theme-400 shadow-2xl'
+                    className='fixed z-50 bg-theme-900 text-theme-text text-sm w-60 round:rounded-lg shadow-2xl'
                     style={{
                         left: `${menuData.x - (windowSize.width - menuData.x < 248 ? 248 : 0)}px`,
                         top: `${menuData.y}px`,
@@ -84,7 +88,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                         <ul className='p-1'>
                             {filteredButtons?.map((b) =>
                                 b.type === 'divider' ? (
-                                    <li key={b.ID} className='bg-theme-500 mx-2 h-0.5 my-1' />
+                                    <li key={b.ID} className='bg-theme-500 h-0.5 my-1' />
                                 ) : (
                                     <li key={b.ID}>
                                         {b.to ? (
@@ -92,7 +96,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                                 to={b.to}
                                                 onClick={() => setMenuData(undefined)}
                                                 className={
-                                                    'inline-block w-full text-start pe-4 py-1 rounded ' +
+                                                    'inline-block w-full text-start pe-4 py-1 round:rounded-lg ' +
                                                     (!(b.type === 'danger')
                                                         ? 'hover:bg-theme-700'
                                                         : 'hover:bg-red-600') +
@@ -108,7 +112,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                             <button
                                                 onClick={(e) => handleClick(e, b)}
                                                 className={
-                                                    'w-full text-start pe-4 py-1 rounded ' +
+                                                    'w-full text-start pe-4 py-1 round:rounded-lg flex align-center ' +
                                                     (!(b.type === 'danger')
                                                         ? 'hover:bg-theme-700'
                                                         : 'hover:bg-red-600') +
@@ -118,7 +122,7 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                                                 }
                                             >
                                                 <span className='inline-block w-4 mx-2'>{b.icon}</span>
-                                                {b.text}
+                                                <span>{b.text}</span>
                                             </button>
                                         )}
                                     </li>

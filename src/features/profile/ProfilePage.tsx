@@ -22,6 +22,8 @@ import LevelPreferences from './components/LevelPreferences';
 import RankingsWrapper from './components/Rankings';
 import User from '../../api/types/User';
 import { Connections } from './components/Connections';
+import Markdown from 'react-markdown';
+import markdownComponents from '../../utils/markdownComponents';
 
 export default function Profile() {
     const loadedData = useLoaderData<User>();
@@ -110,17 +112,18 @@ export default function Profile() {
                 </div>
             </div>
             <section className='flex max-sm:flex-col' onContextMenu={(e) => e.stopPropagation()}>
-                <div className='flex grow flex-col bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full min-h-40 sm:w-2/3'>
+                <div className='flex grow flex-col bg-theme-950 sm:round:rounded-s-xl max-sm:round:rounded-t-xl p-3 w-full min-h-40 max-h-80 overflow-auto scrollbar-thin sm:w-2/3 wrap-break-word'>
                     <p>
                         <b>Introduction:</b>
                     </p>
-                    <textarea
+                    <Markdown components={markdownComponents}>{userData.Introduction ?? ''}</Markdown>
+                    {/* <textarea
                         readOnly={true}
                         className='border-b-2 block grow overflow-auto scrollbar-thin w-full outline-0'
                         value={userData.Introduction ?? ''}
-                    />
+                    /> */}
                 </div>
-                <div className='sm:w-1/3 p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl flex-grow flex flex-col gap-y-2'>
+                <div className='sm:w-1/3 p-3 bg-theme-700 sm:round:rounded-e-xl max-sm:round:rounded-b-xl grow flex flex-col gap-y-2'>
                     <LevelTracker levelID={userData.HardestID} title='Hardest' />
                     <Tracker>
                         <b>Tier preference:</b>
@@ -132,7 +135,7 @@ export default function Profile() {
                     </div>
                     <Tracker>
                         <b>Total submissions:</b>
-                        <p>{userData.SubmissionCount}</p>
+                        <p>{userData.SubmissionCount.toLocaleString()}</p>
                     </Tracker>
                     {userData.PendingSubmissionCount > 0 && (
                         <Tracker>
@@ -142,7 +145,7 @@ export default function Profile() {
                     )}
                     <Tracker>
                         <b>Total attempts:</b>
-                        <p>{userData.TotalAttempts ?? 0}</p>
+                        <p>{userData.TotalAttempts?.toLocaleString() ?? 0}</p>
                     </Tracker>
                 </div>
             </section>

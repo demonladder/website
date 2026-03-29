@@ -15,6 +15,7 @@
 @import './themes/white.css';
 
 @theme {
+    --color-theme-300: #b9b9b9;
     --color-theme-400: #929292;
     --color-theme-500: #4d4d4d;
     --color-theme-600: #454545;
@@ -23,6 +24,8 @@
     --color-theme-900: #262626;
     --color-theme-950: #1a1a1a;
 
+    --color-theme-primary: #efa51c;
+    --color-theme-primary-accent: #e4d50a;
     --color-theme-header: #efa51c;
     --color-theme-header-text: black;
 

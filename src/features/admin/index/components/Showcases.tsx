@@ -4,7 +4,7 @@ import PageButtons from '../../../../components/shared/PageButtons';
 import { Heading2, Heading3 } from '../../../../components/headings';
 import DemonFace from '../../../../components/shared/DemonFace';
 import { DemonLogoSizes } from '../../../../utils/difficultyToImgSrc';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
+import { SecondaryButton } from '../../../../components/ui/buttons';
 import TextButton from '../../../../components/input/buttons/text/TextButton';
 import { Link } from 'react-router';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -19,13 +19,6 @@ export default function Showcases() {
     const queryClient = useQueryClient();
     const ulRef = useRef<HTMLUListElement>(null);
     const [videoHeight, setVideoHeight] = useState(400);
-
-    useEffect(() => {
-        if (!suggestions?.total) return;
-        if (suggestions.total > 0 && suggestions.suggestions.length === 0) {
-            setPage(Math.max(0, Math.ceil(suggestions.total / 2) - 1));
-        }
-    }, [suggestions?.suggestions.length, suggestions?.total, setPage]);
 
     useEffect(() => {
         if (!ulRef.current) return;
@@ -45,11 +38,20 @@ export default function Showcases() {
         };
     }, [status]);
 
+    const updateQueryAndPage = () => {
+        void queryClient.invalidateQueries({
+            queryKey: ['showcase-suggestions'],
+            predicate: (query) => (query.queryKey[1] as { page: number }).page >= page - 1,
+        });
+        if (suggestions?.suggestions.length === 1)
+            setPage(Math.max(0, Math.ceil((suggestions.total - 1) / suggestions.limit) - 1));
+    };
+
     const acceptMutation = useMutation({
         mutationFn: acceptShowcaseSuggestion,
         onSuccess: () => {
             toast.success('Showcase accepted');
-            void queryClient.invalidateQueries({ queryKey: ['showcase-suggestions'] });
+            updateQueryAndPage();
         },
     });
 
@@ -57,7 +59,7 @@ export default function Showcases() {
         mutationFn: deleteShowcaseSuggestion,
         onSuccess: () => {
             toast.warn('Showcase deleted');
-            void queryClient.invalidateQueries({ queryKey: ['showcase-suggestions'] });
+            updateQueryAndPage();
         },
     });
 

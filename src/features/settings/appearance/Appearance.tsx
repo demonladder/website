@@ -2,13 +2,12 @@ import { useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import Select from '../../../components/shared/input/Select';
 import { Heading1, Heading3 } from '../../../components/headings';
-import FormInputDescription from '../../../components/form/FormInputDescription';
+import { FormGroup, FormInputDescription } from '../../../components/form';
 import CustomTheme from './components/CustomTheme';
 import Divider from '../../../components/divider/Divider';
 import ThemeSelect from './components/ThemeSelect';
-import FormGroup from '../../../components/form/FormGroup';
 import { useApp } from '../../../context/app/useApp';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 
 const fontOptions = {
     default: 'Default',

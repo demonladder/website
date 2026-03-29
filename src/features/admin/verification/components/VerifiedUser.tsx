@@ -6,7 +6,7 @@ import { Heading4 } from '../../../../components/headings';
 import { UserStat } from './UserStat';
 import { usersClient } from '../../../../api';
 import { Link } from 'react-router';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../../components/ui/buttons';
 import { useVerificationRole } from '../hooks/useVerificationRole';
 
 interface Props {

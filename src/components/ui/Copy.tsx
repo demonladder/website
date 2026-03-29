@@ -5,6 +5,7 @@ export default function Copy({ text }: { text: string }) {
     const click = useCallback(
         (e: React.MouseEvent) => {
             e.stopPropagation();
+            e.preventDefault();
 
             void navigator.clipboard.writeText(text);
             toast.success('Copied level ID');
@@ -14,7 +15,7 @@ export default function Copy({ text }: { text: string }) {
 
     return (
         <i
-            className='bx bx-clipboard hover:-translate-y-[2px] cursor-pointer transition-transform'
+            className='bx bx-clipboard hover:-translate-y-0.5 cursor-pointer transition-transform'
             onClick={(e) => click(e)}
         />
     );

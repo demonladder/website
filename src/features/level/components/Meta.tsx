@@ -38,20 +38,20 @@ export function Meta({ level }: Props) {
                     <Surface variant='600'>
                         <p>Position</p>
                         <p className='text-xl'>
-                            <b>#{level.DifficultyIndex}</b>
+                            <b>#{level.DifficultyIndex.toLocaleString()}</b>
                         </p>
                     </Surface>
                 )}
                 <Surface variant='600'>
                     <p>Popularity</p>
                     <p className='text-xl'>
-                        <b>#{level.PopularityIndex ?? '-'}</b>
+                        <b>#{level.PopularityIndex?.toLocaleString() ?? '-'}</b>
                     </p>
                 </Surface>
                 <Surface variant='600'>
                     <p>Submitters</p>
                     <p className='text-xl'>
-                        <b>{level.SubmissionCount}</b>
+                        <b>{level.SubmissionCount.toLocaleString()}</b>
                     </p>
                 </Surface>
                 <Surface variant='600'>

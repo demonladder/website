@@ -1,14 +1,13 @@
 import { Link, useNavigate } from 'react-router';
 import { PasswordInput, TextInput } from '../../components/shared/input/Input';
-import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../components/ui/buttons';
 import { useId, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import renderToastError, { type GDDLError } from '../../utils/renderToastError';
-import FormInputLabel from '../../components/form/FormInputLabel';
+import { FormGroup, FormInputLabel } from '../../components/form';
 import Page from '../../components/layout/Page';
 import { Heading1 } from '../../components/headings';
-import FormGroup from '../../components/form/FormGroup';
 import { accountLogin } from './api/accountLogin';
 import useTurnstile from '../../hooks/useTurnstile';
 import type { AxiosError } from 'axios';
@@ -107,12 +106,12 @@ export default function Login() {
                     <div className='mt-8'>
                         <p className='text-center'>
                             Don't have an account? Register{' '}
-                            <Link to='/signup' className='text-blue-400 underline'>
+                            <Link to='/signup' className='link'>
                                 here!
                             </Link>
                         </p>
                         <p className='text-center mt-1'>
-                            <Link to='/forgotPassword' className='text-blue-400 underline'>
+                            <Link to='/forgotPassword' className='link'>
                                 Forgot password?
                             </Link>
                         </p>

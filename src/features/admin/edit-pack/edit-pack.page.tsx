@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { DangerButton, PrimaryButton } from '../../../components/ui/buttons';
 import useSessionStorage from '../../../hooks/useSessionStorage';
 import renderToastError from '../../../utils/renderToastError';
 import { Change } from './types/Change';
@@ -11,7 +10,7 @@ import usePackSearch from '../../../hooks/usePackSearch';
 import CreatePackRequest from '../../../api/pack/requests/CreatePackRequest';
 import DeletePackRequest from '../../../api/pack/requests/DeletePackRequest';
 import Meta from './components/Meta';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormInputLabel } from '../../../components/form';
 import usePack from '../../singlePack/hooks/usePack';
 import List from './components/List';
 import { GetPackLevelsResponse as PackLevel } from '../../singlePack/api/getPackLevels';
@@ -158,7 +157,7 @@ export default function EditPack() {
             </div>
             {hasContent && (
                 <div>
-                    <Meta packID={packResult.ID} />
+                    <Meta pack={packResult} />
                     <List packID={packResult.ID} addLevel={addLevel} removeLevel={removeLevel} />
                 </div>
             )}

@@ -59,29 +59,29 @@ function ListCard({ list }: { list: GetUserListsResponse }) {
             onContextMenu={contextMenu}
             className='grid grid-rows-subgrid gap-0 row-span-4 mb-4 bg-theme-700 rounded-xl overflow-hidden border border-theme-600'
         >
-            <img
-                width='100%'
-                className='h-[120px] object-cover'
-                src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`}
-                alt={`Banner image for ${list.Name} list`}
-            />
+            <Link to={`/list/${list.ID}`}>
+                <img
+                    width='100%'
+                    className='h-30 object-cover'
+                    src={`https://levelthumbs.prevter.me/thumbnail/${IDMapper(list.thumbnailLevelID ?? 87425029)}`}
+                    alt={`Banner image for ${list.Name} list`}
+                />
+            </Link>
             <Link to={`/list/${list.ID}`}>
                 <Heading3 className='mx-4'>{list.Name}</Heading3>
             </Link>
             <p className='mx-4'>{list.Description ?? <i className='text-theme-400'>No description</i>}</p>
             <div className='text-sm p-4'>
                 <p className='text-theme-400'>
-                    Created {secondsToHumanReadable(secondsSinceCreation)}
-                    {secondsSinceCreation < 60 && ' ago'} <span className='mx-1'>-</span> modified{' '}
-                    {secondsToHumanReadable(secondsSinceUpdate)}
-                    {secondsSinceUpdate < 60 && ' ago'}
+                    Created {secondsToHumanReadable(secondsSinceCreation)} ago
+                    <span className='mx-1'>-</span> modified {secondsToHumanReadable(secondsSinceUpdate)} ago
                 </p>
                 <ul className='flex flex-wrap gap-2 mt-1'>
                     {list.tags
                         .map((tagID) => tags?.find((tag) => tag.ID === tagID))
                         .map((tag) => (
                             <li>
-                                <span className='px-2 py-[2px] rounded bg-theme-600'>{tag?.Name}</span>
+                                <span className='px-2 py-0.5 rounded bg-theme-600'>{tag?.Name}</span>
                             </li>
                         ))}
                 </ul>

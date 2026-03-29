@@ -1,28 +1,42 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Heading3 } from '../../../../components/headings';
 import Select from '../../../../components/shared/input/Select';
 import useRoles from '../../../../hooks/api/useRoles';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { NaNToNull } from '../../../../utils/NaNToNull';
 import { toast } from 'react-toastify';
 import { updateVerificationRole } from '../api/updateVerificationRole';
 import renderToastError from '../../../../utils/renderToastError';
 import { useQueryClient } from '@tanstack/react-query';
 import { useVerificationRole } from '../hooks/useVerificationRole';
+import InlineLoadingSpinner from '../../../../components/ui/InlineLoadingSpinner';
 
 export default function VerificationRoleSelect() {
     const roles = useRoles();
     const verificationRoleQuery = useVerificationRole();
-    const [verificationRole, setVerificationRole] = useState(verificationRoleQuery.data?.ID.toString() ?? 'none');
+
+    if (verificationRoleQuery.isLoading || roles.isLoading) return <InlineLoadingSpinner />;
+    if (verificationRoleQuery.isError || roles.isError) return <p>Error loading verification role</p>;
+
+    return (
+        <VerificationRoleSelectPresenter
+            currentVerificationRoleId={verificationRoleQuery.data?.ID}
+            roles={roles}
+            key={verificationRoleQuery.data?.ID}
+        />
+    );
+}
+
+interface VerificationRoleSelectPresenterProps {
+    currentVerificationRoleId?: number;
+    roles: ReturnType<typeof useRoles>;
+}
+
+function VerificationRoleSelectPresenter({ currentVerificationRoleId, roles }: VerificationRoleSelectPresenterProps) {
+    const [verificationRole, setVerificationRole] = useState(currentVerificationRoleId?.toString() ?? 'none');
+
     const queryClient = useQueryClient();
-
-    useEffect(() => {
-        if (verificationRoleQuery.isSuccess) {
-            setVerificationRole(verificationRoleQuery.data.ID.toString());
-        }
-    }, [verificationRoleQuery.data?.ID, verificationRoleQuery.isSuccess]);
-
-    function onSave() {
+    const onSave = () => {
         const roleID = NaNToNull(parseInt(verificationRole));
 
         void toast
@@ -36,7 +50,7 @@ export default function VerificationRoleSelect() {
                 void queryClient.invalidateQueries({ queryKey: ['verificationRole'] });
                 void queryClient.invalidateQueries({ queryKey: ['verifiedUsers'] });
             });
-    }
+    };
 
     return (
         <section className='mt-8'>

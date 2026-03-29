@@ -1,6 +1,7 @@
 import pluralS from './pluralS';
 
-export function secondsToHumanReadable(seconds: number, expand = false): string {
+export function secondsToHumanReadable(_seconds: number, expand = false): string {
+    const seconds = Math.floor(_seconds);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
@@ -21,5 +22,5 @@ export function secondsToHumanReadable(seconds: number, expand = false): string 
     if (days > 0) return `${days} day${pluralS(days)}`;
     if (hours > 0) return `${hours} hour${pluralS(hours)}`;
     if (minutes > 0) return `${minutes} minute${pluralS(minutes)}`;
-    return 'just now';
+    return `${seconds} second${pluralS(seconds)}`;
 }

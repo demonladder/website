@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { Heading4 } from '../../../../components/headings';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import useUserQuery from '../../../../hooks/queries/useUserQuery';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import renderToastError from '../../../../utils/renderToastError';
 import { UserStat } from './UserStat';

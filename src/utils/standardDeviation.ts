@@ -4,5 +4,5 @@ export default function standardDeviation(data: number[], average?: number): num
 
     const avg = average ?? data.reduce((acc, cur) => acc + cur, 0) / data.length;
 
-    return Math.sqrt(data.reduce((acc, cur) => acc + (cur - avg) ** 2, 0) / data.length);
+    return Math.sqrt(data.reduce((acc, cur) => acc + (cur - avg) ** 2, 0) / (data.length - 1));
 }

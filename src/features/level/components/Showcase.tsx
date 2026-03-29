@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { FullLevel } from '../../../api/types/compounds/FullLevel';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../components/form';
 import { Heading2 } from '../../../components/headings';
 import { URLInput } from '../../../components/shared/input/Input';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { SecondaryButton } from '../../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
 import APIClient from '../../../api/APIClient';

@@ -21,4 +21,8 @@ export class BitField {
     remove(bit: number) {
         this._bits = this._bits - (this._bits & bit);
     }
+
+    has(flags: number): boolean {
+        return (this._bits & flags) !== 0;
+    }
 }

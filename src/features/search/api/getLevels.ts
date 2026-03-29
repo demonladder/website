@@ -22,6 +22,7 @@ export interface SearchLevelResponse {
     ID: number;
     Rating: number | null;
     Enjoyment: number | null;
+    Showcase: string | null;
     Completed?: 0 | 1;
     InPack: 0 | 1;
     Meta: {

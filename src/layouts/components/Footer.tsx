@@ -33,16 +33,24 @@ export default function Footer() {
                     <h2 className='mb-2 font-bold'>GDDL</h2>
                     <ul className='flex flex-col gap-1'>
                         <li>
-                            <Link to='/about'>About</Link>
+                            <Link to='/about' className='link'>
+                                About
+                            </Link>
                         </li>
                         <li>
-                            <a href='/about#guidelines'>Rating guidelines</a>
+                            <a href='/about#guidelines' className='link'>
+                                Rating guidelines
+                            </a>
                         </li>
                         <li>
-                            <Link to='/changeLogs'>Change logs</Link>
+                            <Link to='/changeLogs' className='link'>
+                                Change logs
+                            </Link>
                         </li>
                         <li>
-                            <Link to='/staff'>Staff</Link>
+                            <Link to='/staff' className='link'>
+                                Staff
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -65,10 +73,7 @@ export default function Footer() {
                     </ul>
                 </div>
                 <div className='text-sm'>
-                    <p>
-                        Build version: v{APP_VERSION}
-                        {import.meta.env.DEV && '-d'}
-                    </p>
+                    <p>Build version: v{APP_VERSION}</p>
                     <p>
                         <a
                             className='font-bold'

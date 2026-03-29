@@ -1,13 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import GenerateTierRoulette, { TierRouletteResponse } from '../../../api/generators/GenerateTierRoulette';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { Link } from 'react-router';
 import IDButton from '../../../components/ui/IDButton';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormGroup, FormInputLabel } from '../../../components/form';
 import { NumberInput } from '../../../components/shared/input/Input';
 
 export default function TierRoulette() {

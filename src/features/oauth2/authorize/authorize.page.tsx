@@ -1,6 +1,5 @@
 import { useLoaderData } from 'react-router';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { PrimaryButton, SecondaryButton } from '../../../components/ui/buttons';
 import Checkbox from '../../../components/input/CheckBox';
 import useSession from '../../../hooks/useSession';
 import { Heading1 } from '../../../components/headings';
@@ -53,7 +52,7 @@ export default function Authorize() {
                 <b>{client.name}</b>
             </p>
             <p className='text-center'>wants to access your GDDL account</p>
-            <div className='my-4 px-6 py-8 bg-theme-700 rounded-lg border border-theme-600 max-h-[380px] overflow-y-scroll scrollbar-thin'>
+            <div className='my-4 px-6 py-8 bg-theme-700 rounded-lg border border-theme-600 max-h-95 overflow-y-scroll scrollbar-thin'>
                 <p>Authorizing will allow this application to:</p>
                 <ul className='mt-3 flex flex-col gap-3'>
                     {initialScope?.split(' ').map((scope) => (

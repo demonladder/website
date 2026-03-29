@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const CF_TURNSTILE_SITE_KEY = import.meta.env.VITE_CF_TURNSTILE_SITE_KEY;
 
@@ -23,14 +23,11 @@ declare const turnstile: {
 };
 
 export default function useTurnstile(containerID: string) {
-    const [token, setToken] = useState<string>();
-    const [widgetID, setWidgetID] = useState<string>();
+    const [token, setToken] = useState<string | null>(import.meta.env.MODE === 'development' ? 'dev-mode-token' : null);
+    const widgetIdRef = useRef<string>(null);
 
     useEffect(() => {
-        if (import.meta.env.MODE === 'development') {
-            setToken('dev-mode-token');
-            return;
-        }
+        if (import.meta.env.MODE === 'development') return;
 
         const widgetID = turnstile.render(`#${containerID}`, {
             sitekey: CF_TURNSTILE_SITE_KEY,
@@ -40,10 +37,10 @@ export default function useTurnstile(containerID: string) {
                 setToken(token);
             },
             'error-callback': () => {
-                setToken(undefined);
+                setToken(null);
             },
         });
-        setWidgetID(widgetID);
+        widgetIdRef.current = widgetID;
 
         return () => {
             turnstile.remove(widgetID);
@@ -53,7 +50,7 @@ export default function useTurnstile(containerID: string) {
     return {
         token,
         reset: () => {
-            if (widgetID) turnstile.reset(widgetID);
+            if (widgetIdRef.current) turnstile.reset(widgetIdRef.current);
         },
     };
 }

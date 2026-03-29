@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormGroup, FormInputLabel } from '../../../components/form';
 import { TextInput } from '../../../components/shared/input/Input';
 import Modal from '../../../components/layout/Modal';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
-import FormGroup from '../../../components/form/FormGroup';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { useMutation } from '@tanstack/react-query';
 import { createApplication } from '../api/createApplication';
 import { useNavigate } from 'react-router';

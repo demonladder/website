@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { SecondaryButton } from '../../../components/ui/buttons/SecondaryButton';
+import { DangerButton, SecondaryButton } from '../../../components/ui/buttons';
 import APIClient from '../../../api/APIClient';
 import { toast } from 'react-toastify';
 import { Metrics } from '../../../api';

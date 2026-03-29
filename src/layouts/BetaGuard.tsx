@@ -1,6 +1,6 @@
 import useLocalStorage from '../hooks/useLocalStorage';
 import { TextInput } from '../components/shared/input/Input';
-import { PrimaryButton } from '../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../components/ui/buttons';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Heading1 } from '../components/headings';

@@ -6,6 +6,7 @@ import InlineLoadingSpinner from '../../../components/ui/InlineLoadingSpinner';
 import { statsClient } from '../../../api';
 import { Heading2, Heading3 } from '../../../components/headings';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
+import { useNow } from '../../../hooks/useNow';
 
 function anyOrLoading<T>(value: T) {
     return value ?? <InlineLoadingSpinner />;
@@ -20,6 +21,7 @@ function Statistic({ label, children }: { label: string; children: number | stri
 }
 
 export default function IndexStats() {
+    const now = useNow();
     const { data, status } = useQuery({
         queryKey: ['stats'],
         queryFn: () => statsClient.getStats(),
@@ -33,29 +35,31 @@ export default function IndexStats() {
                 <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-8'>
                     <div>
                         <Heading3>Users</Heading3>
-                        <Statistic label='Total users'>{data.users.now}</Statistic>
-                        <Statistic label='Registered users'>{data.registeredUsers}</Statistic>
-                        <Statistic label='Active users'>{data.activeUsers}</Statistic>
+                        <Statistic label='Total users'>{data.users.now.toLocaleString()}</Statistic>
+                        <Statistic label='Registered users'>{data.registeredUsers.toLocaleString()}</Statistic>
+                        <Statistic label='Active users'>{data.activeUsers.toLocaleString()}</Statistic>
                     </div>
                     <div>
                         <Heading3>Levels</Heading3>
-                        <Statistic label='Levels'>{data.totalLevels.now}</Statistic>
-                        <Statistic label='Rated levels'>{data.totalRatedLevels}</Statistic>
+                        <Statistic label='Levels'>{data.totalLevels.now.toLocaleString()}</Statistic>
+                        <Statistic label='Rated levels'>{data.totalRatedLevels.toLocaleString()}</Statistic>
                         <Statistic label='Coverage'>
                             {(((data.totalRatedLevels ?? 0) / (data.totalLevels.now ?? 1)) * 100).toFixed(1) + '%'}
                         </Statistic>
                     </div>
                     <div>
                         <Heading3>Submissions</Heading3>
-                        <Statistic label='Total submissions'>{data.submissions.now}</Statistic>
-                        <Statistic label='Pending submissions'>{data.pendingSubmissions.now}</Statistic>
-                        <Statistic label='Submissions last 24h'>{data.recentSubmissions}</Statistic>
+                        <Statistic label='Total submissions'>{data.submissions.now.toLocaleString()}</Statistic>
+                        <Statistic label='Pending submissions'>
+                            {data.pendingSubmissions.now.toLocaleString()}
+                        </Statistic>
+                        <Statistic label='Submissions last 24h'>{data.recentSubmissions.toLocaleString()}</Statistic>
                         <p>
                             Oldest pending{' '}
                             <span className='float-right'>
                                 {data.oldestQueuedSubmission
                                     ? ms(
-                                          Date.now() -
+                                          now -
                                               new Date(
                                                   data.oldestQueuedSubmission.replace(' +00:00', 'Z').replace(' ', 'T'),
                                               ).getTime(),
@@ -71,7 +75,9 @@ export default function IndexStats() {
                             {anyOrLoading(
                                 data.topRaters.map((user) => (
                                     <li key={user.UserID}>
-                                        <Link to={`/profile/${user.UserID}`}>{user.Name}</Link>
+                                        <Link to={`/profile/${user.UserID}`} className='link'>
+                                            {user.Name}
+                                        </Link>
                                     </li>
                                 )),
                             )}

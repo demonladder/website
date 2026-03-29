@@ -3,7 +3,7 @@ import { Heading2 } from '../../../components/headings';
 import PageButtons from '../../../components/shared/PageButtons';
 import { useAccessTokens } from './hooks/useAccessTokens';
 import useUserSearch from '../../../hooks/useUserSearch';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import { generateToken } from './api/generateToken';
 import { useMutation } from '@tanstack/react-query';
@@ -11,20 +11,23 @@ import { AxiosError } from 'axios';
 import renderToastError from '../../../utils/renderToastError';
 import AccessToken from './components/AccessToken';
 import { selectText } from '../../../utils/selectText';
+import { UserWithRoles } from '../../../api/user/searchUsers.ts';
 
 export default function BetaAccess() {
     const { data: accessTokens, status, refetch: refetchTokens } = useAccessTokens();
     const [page, setPage] = useState(0);
     const [generatedToken, setGeneratedToken] = useState<string>();
 
+    const [user, setUser] = useState<UserWithRoles>();
     const userSearch = useUserSearch({
         ID: 'userSearch',
+        onUser: setUser,
     });
 
     async function onGrantAccess() {
-        if (!userSearch.activeUser) return toast.error('No user selected');
+        if (!user) return toast.error('No user selected');
 
-        const token = await generateToken(userSearch.activeUser.ID);
+        const token = await generateToken(user.ID);
         setGeneratedToken(token);
         await refetchTokens();
     }

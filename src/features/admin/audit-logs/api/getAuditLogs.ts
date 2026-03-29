@@ -21,10 +21,7 @@ export async function getAuditLogs(options?: GetAuditLogsOptions) {
         logs: AuditLog[];
         users: { ID: number; Name: string; avatar: string }[];
     }>('/audit-logs', {
-        params: {
-            eventType: options?.eventType,
-            page: options?.page,
-        },
+        params: options,
     });
 
     return {

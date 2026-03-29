@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { NumberInput, TextInput } from '../../../components/shared/input/Input';
 import Select from '../../../components/shared/input/Select';
-import { DangerButton } from '../../../components/ui/buttons/DangerButton';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { DangerButton, PrimaryButton } from '../../../components/ui/buttons';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import renderToastError from '../../../utils/renderToastError';
 import FloatingLoadingSpinner from '../../../components/ui/FloatingLoadingSpinner';
 import useLevelSearch from '../../../hooks/useLevelSearch';
 import useUserSearch from '../../../hooks/useUserSearch';
-import FormInputLabel from '../../../components/form/FormInputLabel';
-import FormInputDescription from '../../../components/form/FormInputDescription';
+import { FormInputDescription, FormInputLabel } from '../../../components/form';
 import { Difficulties } from '../../level/types/LevelMeta';
 import { sendSubmission } from '../../../api/submissions/sendSubmission';
 import { Device } from '../../../api/core/enums/device.enum';
+import { SearchLevelResponse } from '../../search/api/getLevels.ts';
+import { UserWithRoles } from '../../../api/user/searchUsers.ts';
 
 const deviceOptions: Record<Device, string> = {
     pc: 'PC',
@@ -24,41 +24,47 @@ export default function AddSubmission() {
     const [deviceKey, setDeviceKey] = useState(Device.PC);
     const [isMutating, setIsMutating] = useState(false);
 
+    const [level, setLevel] = useState<SearchLevelResponse>();
+    const [user, setUser] = useState<UserWithRoles>();
     const [rating, setRating] = useState<number>();
     const [enjoyment, setEnjoyment] = useState<number>();
     const [proof, setProof] = useState('');
     const [refreshRate, setRefreshRate] = useState<number>(60);
 
     const queryClient = useQueryClient();
+    const [isLevelInvalid, setIsLevelInvalid] = useState(false);
+    const [isUserInvalid, setIsUserInvalid] = useState(false);
 
-    const {
-        activeLevel,
-        markInvalid: markInvalidLevel,
-        SearchBox,
-        clear: clearActiveLevel,
-    } = useLevelSearch('addSubmissionSearch');
+    const { SearchBox, clear: clearActiveLevel } = useLevelSearch('addSubmissionSearch', {
+        onLevel: setLevel,
+        isInvalid: isLevelInvalid,
+    });
     const userSearch = useUserSearch({
         ID: 'addSubmissionUserSearch',
+        onUser: setUser,
+        isInvalid: isUserInvalid,
     });
 
     function submit() {
         // Validate
-        if (!activeLevel || !userSearch.activeUser) {
-            if (!activeLevel) {
-                markInvalidLevel();
+        if (!level || !user) {
+            if (!level) {
+                setIsLevelInvalid(true);
                 toast.error('You must select a level!');
             }
-            if (!userSearch.activeUser) {
-                userSearch.markInvalid();
+            if (!user) {
+                setIsUserInvalid(true);
                 toast.error('You must select a user!');
             }
 
             return;
         }
 
+        setIsLevelInvalid(false);
+        setIsUserInvalid(false);
         const submission = {
-            levelID: activeLevel.ID,
-            userID: userSearch.activeUser.ID,
+            levelID: level.ID,
+            userID: user.ID,
             rating: rating,
             enjoyment: enjoyment,
             refreshRate,
@@ -72,7 +78,7 @@ export default function AddSubmission() {
             sendSubmission(submission)
                 .then(() => {
                     void queryClient.invalidateQueries({ queryKey: ['submissions'] });
-                    void queryClient.invalidateQueries({ queryKey: ['level', activeLevel.ID] });
+                    void queryClient.invalidateQueries({ queryKey: ['level', level.ID] });
                     void queryClient.invalidateQueries({ queryKey: ['user', submission.userID] });
                 })
                 .finally(() => setIsMutating(false)),
@@ -91,9 +97,9 @@ export default function AddSubmission() {
         setDeviceKey(Device.PC);
         setProof('');
         clearActiveLevel();
-        markInvalidLevel();
+        setIsLevelInvalid(false);
+        setIsUserInvalid(false);
         userSearch.clear();
-        userSearch.markInvalid();
     }
 
     const tierValid = validateTier(rating);
@@ -156,7 +162,7 @@ export default function AddSubmission() {
                         id='addSubmissionProof'
                         value={proof}
                         onChange={(e) => setProof(e.target.value)}
-                        invalid={!validateProof(proof, activeLevel?.Meta.Difficulty)}
+                        invalid={!validateProof(proof, level?.Meta.Difficulty)}
                     />
                     <FormInputDescription>Optional. Has to a valid URL.</FormInputDescription>
                 </div>

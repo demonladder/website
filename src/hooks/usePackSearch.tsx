@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBox from '../components/SearchBox/SearchBox';
 import SearchPacks from '../api/packs/requests/SearchPacks';
@@ -17,21 +17,15 @@ export default function usePackSearch({ ID }: Props) {
     const [searchQuery, setSearchQuery] = useState('');
 
     const [activePack, setActivePack] = useState<Pack>();
-    const [isInvalid, setIsInvalid] = useState(false);
 
     const { data, status } = useQuery({
         queryKey: ['packSearch', searchQuery],
         queryFn: () => SearchPacks(searchQuery),
     });
 
-    useEffect(() => {
-        setIsInvalid(false);
-    }, [search, activePack]);
-
     return {
         activePack,
         searchQuery: search,
-        markInvalid: () => setIsInvalid(true),
         SearchBox: (
             <SearchBox<ListType>
                 getLabel={(r) => r.Name}
@@ -43,7 +37,6 @@ export default function usePackSearch({ ID }: Props) {
                 list={data?.map((d) => ({ ...d, label: d.Name })) || []}
                 onResult={setActivePack}
                 status={status}
-                invalid={isInvalid}
             />
         ),
     };

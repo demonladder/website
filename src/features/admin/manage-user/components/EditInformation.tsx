@@ -1,9 +1,8 @@
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useId, useMemo, useState, SubmitEvent } from 'react';
 import { toast } from 'react-toastify';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormGroup, FormInputLabel } from '../../../../components/form';
 import { TextInput } from '../../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import { validateUsername } from '../../../../utils/validators/validateUsername';
 import { UserResponse } from '../../../../api/user/GetUser';
 import TextArea from '../../../../components/input/TextArea';
@@ -31,11 +30,6 @@ export default function EditInformation({ user }: { user: UserResponse }) {
         return user.Name !== newName || (user.Introduction ?? '') !== newIntroduction;
     }, [newName, newIntroduction, user.Introduction, user.Name]);
 
-    useEffect(() => {
-        setNewName(user.Name);
-        setNewIntroduction(user.Introduction ?? '');
-    }, [user]);
-
     const queryClient = useQueryClient();
     const editMutation = useMutation({
         mutationFn: (body: Parameters<typeof saveProfile>[0]) =>
@@ -46,7 +40,7 @@ export default function EditInformation({ user }: { user: UserResponse }) {
         },
     });
 
-    function submitHandler(e: React.FormEvent) {
+    function submitHandler(e: SubmitEvent) {
         e.preventDefault();
         editMutation.mutate({ ID: user.ID, name: newName, introduction: newIntroduction });
     }

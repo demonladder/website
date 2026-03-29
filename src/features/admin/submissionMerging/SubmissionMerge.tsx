@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Heading2 } from '../../../components/headings';
 import useUserSearch from '../../../hooks/useUserSearch';
 import SegmentedButtonGroup from '../../../components/input/buttons/segmented/SegmentedButtonGroup';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { ModeType } from './api/enums/ModeType';
 import { useMutation } from '@tanstack/react-query';
 import { mergeSubmissions } from './api/mergeSubmissions';
@@ -10,8 +10,7 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import renderToastError from '../../../utils/renderToastError';
 import UserPreview from './components/UserPreview';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormGroup, FormInputLabel } from '../../../components/form';
 import type { UserWithRoles } from '../../../api/user/searchUsers';
 
 const mergeOptions: Record<ModeType, string> = {
@@ -28,7 +27,7 @@ export default function SubmissionMerge() {
 
     const searchUser = useUserSearch({
         ID: 'searchUser',
-        onUserSelect: (user) => {
+        onUser: (user) => {
             if (!sourceUser) setSourceUser(user);
             else if (!targetUser) setTargetUser(user);
         },

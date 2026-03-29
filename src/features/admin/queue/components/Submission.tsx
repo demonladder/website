@@ -15,9 +15,8 @@ import standardDeviation from '../../../../utils/standardDeviation';
 import { secondsToHumanReadable } from '../../../../utils/secondsToHumanReadable';
 import useSessionStorage from '../../../../hooks/useSessionStorage';
 import { NumberParam, useQueryParam } from 'use-query-params';
-import { SecondaryButton } from '../../../../components/ui/buttons/SecondaryButton';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { DangerButton, PrimaryButton, SecondaryButton } from '../../../../components/ui/buttons';
+import { useNow } from '../../../../hooks/useNow';
 
 interface Props {
     submission: QueueSubmission;
@@ -64,7 +63,7 @@ export default function Submission({ submission }: Props) {
         return Math.abs(submission.Rating - levelRating);
     }, [submission.Rating, levelRating]);
 
-    const standardDeviations = useMemo(() => {
+    const standardScore = useMemo(() => {
         if (difference === undefined) return;
         if (submission.Level.RatingCount < 5) return 0;
 
@@ -72,22 +71,22 @@ export default function Submission({ submission }: Props) {
     }, [difference, newSTDDev, submission.Level.RatingCount]);
 
     const outlierText = useMemo(() => {
-        if (standardDeviations === undefined) return;
+        if (standardScore === undefined) return;
         if (difference !== undefined && difference <= 2) return;
-        if (standardDeviations <= 1.5) return;
-        if (standardDeviations <= 2)
+        if (standardScore <= 1.5) return;
+        if (standardScore <= 2)
             return (
                 <>
                     <i className='bx bxs-error' /> Semi-outlier detected!
                 </>
             );
-        if (standardDeviations <= 3)
+        if (standardScore <= 3)
             return (
                 <>
                     <i className='bx bxs-error' /> Outlier detected!
                 </>
             );
-        if (standardDeviations <= 5)
+        if (standardScore <= 5)
             return (
                 <>
                     <i className='bx bxs-error' /> Outlier detected! (rating won't count)
@@ -98,7 +97,7 @@ export default function Submission({ submission }: Props) {
                 <i className='bx bxs-error' /> Possible troll detected!
             </>
         );
-    }, [difference, standardDeviations]);
+    }, [difference, standardScore]);
 
     function onProofClick() {
         if (!submission.Proof) return toast.error('No proof URL provided');
@@ -114,15 +113,16 @@ export default function Submission({ submission }: Props) {
     }
 
     const [queueLevelIDFilter, setQueueLevelIDFilter] = useQueryParam('levelID', NumberParam);
-    function onFilter(levelID: number) {
+    const onFilter = (levelID: number) => {
         if (queueLevelIDFilter === levelID) setQueueLevelIDFilter(undefined);
         else setQueueLevelIDFilter(levelID);
-    }
+    };
 
     const approveSubmission = useApproveClicked();
 
+    const now = useNow();
     const secondsAgo = Math.floor(
-        (Date.now() - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000,
+        (now - new Date(submission.DateChanged.replace(' +00:00', 'Z').replace(' ', 'T')).getTime()) / 1000,
     );
 
     return (
@@ -168,7 +168,7 @@ export default function Submission({ submission }: Props) {
                     </div>
                     <div className='mb-2'>
                         <p>
-                            <b>Would deviate by:</b> {standardDeviations?.toFixed(1) ?? '-'}σ
+                            <b>Standard score:</b> {standardScore?.toFixed(1) ?? '-'}σ
                         </p>
                         <p>
                             <b>Weight:</b> {weight ?? '-'}

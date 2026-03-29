@@ -1,5 +1,5 @@
 import DiscordProfilePicture from '../../../../components/shared/DiscordProfilePicture';
-import { DiscordLink } from '../../../../components/ui/buttons/DiscordLink';
+import { DiscordLink } from '../../../../components/ui/buttons';
 
 export default function DiscordSync() {
     return (

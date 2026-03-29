@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputDescription from '../../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../../components/form';
 import { TextInput } from '../../../../components/shared/input/Input';
 import Modal from '../../../../components/layout/Modal';
 import Select from '../../../../components/shared/input/Select';
-import { DangerButton } from '../../../../components/ui/buttons/DangerButton';
+import { DangerButton } from '../../../../components/ui/buttons';
 import PendingSubmission from '../../../../api/types/PendingSubmission';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import DenySubmission from '../../../../api/submissions/DenySubmission';

@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Level } from '../../../api/types/Level';
 import { useSubmission } from '../../../components/modals/useSubmission';
 import { NumberInput } from '../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import useSession from '../../../hooks/useSession';
 import type { SubmissionStatus } from '../../profile/api/getUserPendingSubmissions';
 import { clamp } from '../../../utils/clamp';
 import Select from '../../../components/input/select/Select';
 import { Link } from 'react-router';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
+import type { GetSingleSubmissionResponse } from '../../../api/submissions/GetSingleSubmission';
 
 const statusOptions: Record<SubmissionStatus, string> = {
     beaten: 'Completed',
@@ -25,27 +26,35 @@ interface Props {
 export function QuickSubmit({ level }: Props) {
     const session = useSession();
 
-    const [statusOptionsKey, setStatusOptionsKey] = useState<SubmissionStatus>('ptb');
-    const [tier, setTier] = useState<number>();
-    const [enjoyment, setEnjoyment] = useState<number>();
-    const [progress, setProgress] = useState(0);
-
     const query = useSubmission(level.ID, session.user?.ID, {
         enabled: session.user !== undefined,
     });
 
-    useEffect(() => {
-        if (query.data) {
-            setTier(query.data?.Rating ?? undefined);
-            setEnjoyment(query.data?.Enjoyment ?? undefined);
-            setProgress(query.data.Progress);
-            setStatusOptionsKey(query.data.status);
-        }
-    }, [query.data, query.data?.Enjoyment, query.data?.Rating]);
-
     if (!session.user) return;
 
-    function handleProgressChange(value: number) {
+    if (query.isPending) {
+        return (
+            <div className='round:rounded-lg bg-theme-700 border border-theme-outline p-2 my-2'>
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    return <QuickSubmitPresenter levelId={level.ID} submission={query.data} key={query.data?.ID} />;
+}
+
+interface QuickSubmitPresenterProps {
+    levelId: number;
+    submission?: GetSingleSubmissionResponse;
+}
+
+function QuickSubmitPresenter({ levelId, submission }: QuickSubmitPresenterProps) {
+    const [statusOptionsKey, setStatusOptionsKey] = useState<SubmissionStatus>(submission?.status ?? 'ptb');
+    const [tier, setTier] = useState(submission?.Rating ?? undefined);
+    const [enjoyment, setEnjoyment] = useState(submission?.Enjoyment ?? undefined);
+    const [progress, setProgress] = useState(submission?.Progress ?? 0);
+
+    const handleProgressChange = (value: number) => {
         const p = Math.min(Math.max(value, 0), 100);
         setProgress(p);
         if (p === 100) {
@@ -57,9 +66,9 @@ export function QuickSubmit({ level }: Props) {
         } else if (statusOptionsKey === 'beaten') {
             setStatusOptionsKey('beating');
         }
-    }
+    };
 
-    function handleStatusChange(status: SubmissionStatus) {
+    const handleStatusChange = (status: SubmissionStatus) => {
         setStatusOptionsKey(status);
         if (status === 'beaten') {
             setProgress(100);
@@ -70,15 +79,7 @@ export function QuickSubmit({ level }: Props) {
         } else {
             setProgress(clamp(progress, 1, 99));
         }
-    }
-
-    if (query.isPending) {
-        return (
-            <div className='round:rounded-lg bg-theme-700 border border-theme-outline p-2 my-2'>
-                <LoadingSpinner />
-            </div>
-        );
-    }
+    };
 
     return (
         <div className='round:rounded-lg bg-theme-700 border border-theme-outline p-2 my-2 flex justify-between flex-wrap'>
@@ -134,10 +135,10 @@ export function QuickSubmit({ level }: Props) {
                 )}
             </div>
             <div className='ms-auto'>
-                <Link to={`/submit/${level.ID}`} className='me-2 text-sm text-blue-400 underline-t'>
+                <Link to={`/submit/${levelId}`} className='me-2 text-sm link'>
                     advanced
                 </Link>
-                <PrimaryButton>{query.data ? 'Save' : 'Submit'}</PrimaryButton>
+                <PrimaryButton>{submission ? 'Save' : 'Submit'}</PrimaryButton>
             </div>
         </div>
     );

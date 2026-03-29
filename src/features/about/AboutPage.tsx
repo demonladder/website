@@ -143,7 +143,7 @@ export default function About() {
                 </h2>
                 <p className='mb-1'>
                     To rate a level, it is required that you are logged in. If you do not have an account, head over to{' '}
-                    <Link to='/signup' className='text-blue-500'>
+                    <Link to='/signup' className='link'>
                         sign-up
                     </Link>{' '}
                     to create an account.

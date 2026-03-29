@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { TextInput } from '../../../components/shared/input/Input';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import CheckBox from '../../../components/input/CheckBox';
 import { useQueryClient } from '@tanstack/react-query';
 import useRoles from '../../../hooks/api/useRoles';
@@ -11,17 +11,41 @@ import renderToastError from '../../../utils/renderToastError';
 import { rolesClient } from '../../../api';
 import useDeleteRoleModal from '../../../hooks/modals/useDeleteRoleModal';
 import Users from './components/Users';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormInputDescription, FormInputLabel } from '../../../components/form';
 import { Heading2, Heading3 } from '../../../components/headings';
 import Divider from '../../../components/divider/Divider';
+import Role from '../../../api/types/Role.ts';
+import LoadingSpinner from '../../../components/shared/LoadingSpinner.tsx';
 
-export default function EditRole() {
+export function EditRoleContainer() {
     const roleID = parseInt(useParams().roleID ?? '');
-    const [roleName, setRoleName] = useState('');
-    const [tempPermissions, setTempPermissions] = useState(0);
+    const navigate = useNavigate();
+
+    const { data, status } = useRoles();
+    const role = useMemo(() => {
+        return data?.find((role) => role.ID === roleID);
+    }, [data, roleID]);
+
+    if (Number.isNaN(roleID)) {
+        void navigate('/mod/roles');
+        toast.warn('Invalid role ID');
+        return;
+    }
+
+    if (status === 'pending') return <LoadingSpinner />;
+    if (status === 'error' || !role) return <p>An error occurred</p>;
+    return <EditRolePresenter key={role.ID} role={role} />;
+}
+
+interface EditRolePresenterProps {
+    role: Role;
+}
+
+function EditRolePresenter({ role }: EditRolePresenterProps) {
+    const [roleName, setRoleName] = useState(role.Name);
+    const [tempPermissions, setTempPermissions] = useState(role.PermissionBitField);
     const [isMutating, setIsMutating] = useState(false);
-    const [color, setColor] = useState('');
+    const [color, setColor] = useState(role.Color?.toString(16).padStart(6, '0') ?? '');
     const queryClient = useQueryClient();
 
     const navigate = useNavigate();
@@ -29,24 +53,11 @@ export default function EditRole() {
         onSuccess: () => void navigate('/mod/roles'),
     });
 
-    const { data } = useRoles();
-    const role = useMemo(() => {
-        return data?.find((role) => role.ID === roleID);
-    }, [data, roleID]);
-
-    useEffect(() => {
-        if (role) {
-            setRoleName(role.Name);
-            setTempPermissions(role.PermissionBitField);
-            setColor(role.Color?.toString(16).padStart(6, '0') ?? '');
-        }
-    }, [role]);
-
     const onSave = useCallback(() => {
         setIsMutating(true);
         void toast.promise(
             rolesClient
-                .update(roleID, {
+                .update(role.ID, {
                     color: color ? parseInt(color, 16) : null,
                     name: roleName,
                     permissions: tempPermissions,
@@ -59,20 +70,15 @@ export default function EditRole() {
                 error: renderToastError,
             },
         );
-    }, [roleID, color, roleName, tempPermissions, queryClient]);
-
-    if (Number.isNaN(roleID)) {
-        void navigate('/mod/roles');
-        return;
-    }
+    }, [role.ID, color, roleName, tempPermissions, queryClient]);
 
     return (
         <>
-            <Heading2>Edit Role - {role?.Name}</Heading2>
+            <Heading2>Edit Role - {role.Name}</Heading2>
             <section className='my-4'>
                 <FormInputLabel>Role name</FormInputLabel>
                 <TextInput id='roleName' value={roleName} onChange={(e) => setRoleName(e.target.value)} />
-                {(role?.PermissionBitField !== tempPermissions ||
+                {(role.PermissionBitField !== tempPermissions ||
                     role.Name !== roleName ||
                     (role.Color !== null && role.Color.toString(16).padStart(6, '0') !== color)) && (
                     <div className='fixed bottom-0 z-20 left-1/2 -translate-x-1/2 bg-theme-500 px-4 py-2 flex flex-col justify-center'>
@@ -119,10 +125,10 @@ export default function EditRole() {
                 </ul>
             </section>
             <Divider />
-            <Users roleID={roleID} />
+            <Users roleID={role.ID} />
             {role && (
                 <button onClick={() => openDeleteRoleModal(role)} className='mt-8 text-red-500 underline-t'>
-                    Delete role "{role?.Name}"
+                    Delete role "{role.Name}"
                 </button>
             )}
         </>

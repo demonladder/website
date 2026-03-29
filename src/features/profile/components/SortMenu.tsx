@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { RadioButton } from '../../../components/shared/input/Input';
 import { Sorts } from '../api/getUserSubmissions';
 import { useLocalStorage } from 'usehooks-ts';
-import Divider from '../../../components/divider/Divider';
 
 interface Props {
     set: (sort: { sort: Sorts; sortDirection: 'asc' | 'desc' }) => void;
@@ -51,7 +50,7 @@ export default function SortMenu({ set }: Props) {
     }, [mouseMove]);
 
     return (
-        <div className='relative h-full z-[11]'>
+        <div className='relative h-full z-11'>
             <button
                 className='bg-white text-black w-7 h-7 grid place-items-center'
                 onClick={() => setShow((prev) => !prev)}
@@ -111,7 +110,7 @@ export default function SortMenu({ set }: Props) {
                                 </label>
                             </div>
                         </div>
-                        <Divider />
+                        <div className='border-t border-white my-2' />
                         <div>
                             <b>Sort by</b>
                             <label htmlFor={Sorts.NAME} className='flex items-center gap-2 select-none'>

@@ -1,7 +1,6 @@
 import { useId, useState } from 'react';
-import FormGroup from '../../../../components/form/FormGroup';
-import FormInputLabel from '../../../../components/form/FormInputLabel';
-import { PrimaryButton } from '../../../../components/ui/buttons/PrimaryButton';
+import { FormGroup, FormInputLabel } from '../../../../components/form';
+import { PrimaryButton } from '../../../../components/ui/buttons';
 import TextArea from '../../../../components/input/TextArea';
 import { UserResponse } from '../../../../api/user/GetUser';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';

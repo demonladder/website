@@ -10,6 +10,7 @@ export interface GetListResponse extends Pick<List, 'ID' | 'Name' | 'Description
     Owner: Pick<User, 'ID' | 'Name'>;
     Levels: (Pick<ListLevel, 'LevelID' | 'Position'> & {
         Level: Pick<Level, 'Rating' | 'Enjoyment'> & {
+            completed: 0 | 1;
             Meta: Pick<LevelMeta, 'Name' | 'Difficulty' | 'Rarity'> & {
                 Publisher?: Pick<Publisher, 'name'>;
             };

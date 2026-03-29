@@ -14,7 +14,6 @@ import useDeleteSubmissionModal from '../../../hooks/modals/useDeleteSubmissionM
 import User from '../../../api/types/User';
 import { Heading2 } from '../../../components/headings';
 import { PermissionFlags } from '../../admin/roles/PermissionFlags';
-import useSubmitModal from '../../../hooks/modals/useSubmitModal';
 import useSession from '../../../hooks/useSession';
 import { copyText } from '../../../utils/copyText';
 import { useApp } from '../../../context/app/useApp';
@@ -118,7 +117,6 @@ export default function Submissions({ user }: Props) {
 function InlineList({ levels, user }: { levels: UserSubmission[]; user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
-    const openSubmitModal = useSubmitModal();
     const session = useSession();
 
     const setContext = useContextMenu();
@@ -154,7 +152,7 @@ function InlineList({ levels, user }: { levels: UserSubmission[]; user: User }) 
                     disabled: !submission.Proof,
                     icon: <i className='bx bx-link-external' />,
                 },
-                { text: 'Edit', userID: user.ID, onClick: () => openSubmitModal(submission.Level) },
+                { text: 'Edit', userID: user.ID, to: `/submit/${submission.Level.ID}` },
                 {
                     text: 'Edit (staff)',
                     to: `/mod/editSubmission/${submission.ID}`,
@@ -198,7 +196,6 @@ function InlineList({ levels, user }: { levels: UserSubmission[]; user: User }) 
 function GridList({ levels, user }: { levels: UserSubmission[]; user: User }) {
     const openAddListLevelModal = useAddListLevelModal();
     const openDeleteSubmissionModal = useDeleteSubmissionModal();
-    const openSubmitModal = useSubmitModal();
     const session = useSession();
 
     const setContext = useContextMenu();
@@ -234,7 +231,7 @@ function GridList({ levels, user }: { levels: UserSubmission[]; user: User }) {
                     disabled: !submission.Proof,
                     icon: <i className='bx bx-link-external' />,
                 },
-                { text: 'Edit', userID: user.ID, onClick: () => openSubmitModal(submission.Level) },
+                { text: 'Edit', userID: user.ID, to: `/submit/${submission.Level.ID}` },
                 {
                     text: 'Edit (staff)',
                     to: `/mod/editSubmission/${submission.ID}`,

@@ -99,7 +99,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                                                 <p>
                                                     {showPercentages
                                                         ? `${((d.Count / totalRatings) * 100).toFixed(1)}%`
-                                                        : d.Count}
+                                                        : d.Count.toLocaleString()}
                                                 </p>
                                             </td>
                                             <td className='flex items-center'>
@@ -141,7 +141,7 @@ export default function RatingGraph({ levelMeta, twoPlayer, setShowTwoPlayerStat
                                                 <p>
                                                     {showPercentages
                                                         ? `${((d.Count / totalEnjoyments) * 100).toFixed(1)}%`
-                                                        : d.Count}
+                                                        : d.Count.toLocaleString()}
                                                 </p>
                                             </td>
                                             <td className='flex items-center'>

@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import FormGroup from '../../../components/form/FormGroup';
-import FormInputDescription from '../../../components/form/FormInputDescription';
-import FormInputLabel from '../../../components/form/FormInputLabel';
+import { FormGroup, FormInputDescription, FormInputLabel } from '../../../components/form';
 import { NumberInput, TextInput } from '../../../components/shared/input/Input';
 import Select from '../../../components/shared/input/Select';
 import CheckBox from '../../../components/input/CheckBox';
-import { PrimaryButton } from '../../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../../components/ui/buttons';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';

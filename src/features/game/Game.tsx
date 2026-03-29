@@ -5,7 +5,7 @@ import GameObject from './core/GameObject';
 import GameState from './GameState';
 import createLevel2 from './levels/Level2';
 import { useEffect, useRef } from 'react';
-import { PrimaryButton } from '../../components/ui/buttons/PrimaryButton';
+import { PrimaryButton } from '../../components/ui/buttons';
 import Page from '../../components/layout/Page';
 
 export default function Game() {
@@ -117,6 +117,7 @@ export default function Game() {
         switch (p5.key) {
             case 'ArrowUp':
             case ' ': {
+                // eslint-disable-next-line react-hooks/immutability
                 keysPressed[' '] = true;
                 player.mouseChanged();
                 break;

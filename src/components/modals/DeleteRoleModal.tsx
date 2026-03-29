@@ -39,7 +39,7 @@ export default function DeleteRoleModal({ role, onClose: close, onSuccess }: Pro
 
     return (
         <Modal title='Delete Role' show={true} onClose={close}>
-            <div>
+            <div className='my-6'>
                 <p>Are you sure you want to delete the role "{role.Name}"?</p>
             </div>
             <div className='flex place-content-end gap-2'>
