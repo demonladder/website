@@ -4,5 +4,5 @@ export default interface Pack {
     Name: string;
     Description: string;
     IconName: string | null;
-    RoleID: string | null;
+    achievementId: string | null;
 }

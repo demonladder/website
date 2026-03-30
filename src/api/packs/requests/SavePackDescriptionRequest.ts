@@ -4,7 +4,7 @@ export default async function SavePackMetaRequest(
     packID: number,
     categoryID: number,
     description?: string,
-    roleID?: string,
+    achievementId?: string | null,
 ) {
-    await APIClient.patch(`/packs/${packID}`, { description, categoryID, roleID });
+    await APIClient.patch(`/packs/${packID}`, { description, categoryID, achievementId });
 }

@@ -18,7 +18,7 @@ interface Props {
 
 export default function Meta({ pack }: Props) {
     const [description, setDescription] = useState(pack.Description ?? '');
-    const [roleID, setRoleID] = useState(pack.RoleID ?? '');
+    const [achievementId, setAchievementId] = useState(pack.achievementId ?? '');
     const [categoryKey, setCategoryKey] = useState(pack.CategoryID ?? 1);
     const [isLoading, setIsLoading] = useState(false);
     const queryClient = useQueryClient();
@@ -32,7 +32,7 @@ export default function Meta({ pack }: Props) {
         if (isLoading) return;
         setIsLoading(true);
 
-        const request = SavePackMetaRequest(pack.ID, categoryKey, description || undefined, roleID)
+        const request = SavePackMetaRequest(pack.ID, categoryKey, description || undefined, achievementId)
             .then(() => {
                 void queryClient.invalidateQueries({ queryKey: ['packs'] });
                 void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
@@ -71,8 +71,8 @@ export default function Meta({ pack }: Props) {
                 />
             </FormGroup>
             <FormGroup>
-                <FormInputLabel>Role ID</FormInputLabel>
-                <TextInput value={roleID} onChange={(e) => setRoleID(e.target.value)} />
+                <FormInputLabel>Achievement ID</FormInputLabel>
+                <TextInput value={achievementId} onChange={(e) => setAchievementId(e.target.value)} />
                 <PrimaryButton onClick={save}>Save</PrimaryButton>
             </FormGroup>
         </>
