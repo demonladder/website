@@ -26,5 +26,17 @@ export const routes = {
                 path: 'edit-pack/:packId',
             },
         },
+        achievements: {
+            href: () => '/mod/achievements',
+            path: 'achievements',
+            withId: {
+                href: (achievementId: number) => `/mod/achievements/${achievementId}`,
+                path: 'achievements/:achievementId',
+            },
+        },
+        createAchievement: {
+            href: () => '/mod/achievements/create',
+            path: 'achievements/create',
+        },
     },
 } as const;

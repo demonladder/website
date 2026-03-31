@@ -78,6 +78,7 @@ function useLevelContextMenu(levelId: number, userId?: number) {
     const openAddToListModal = useAddListLevelModal();
     return useContextMenu([
         { text: 'Open', to: `/level/${levelId}` },
+        { text: 'Submit', to: `/submit/${levelId}`, requireSession: true },
         { text: 'Add to list', onClick: () => openAddToListModal(userId!, levelId), requireSession: true },
         { type: 'divider' },
         { text: 'Copy ID', onClick: () => copyText(levelId.toString()) },

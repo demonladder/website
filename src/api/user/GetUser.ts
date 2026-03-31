@@ -8,7 +8,6 @@ export interface UserResponse extends User {
     Hardest?: Pick<Level, 'Rating'> & {
         Meta: Pick<LevelMeta, 'Name' | 'Difficulty'>;
     };
-    CompletedPacks: { PackID: number; IconName: string }[];
     PendingSubmissionCount: number;
     SubmissionCount: number;
     TotalAttempts: number | null;

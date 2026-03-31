@@ -7,6 +7,8 @@ import { deleteNotification } from '../../features/notifications/api/deleteNotif
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
+import Markdown from 'react-markdown';
+import markdownComponents from '../../utils/markdownComponents';
 
 export default function NotificationButton() {
     const [showNotifications, setShowNotifications] = useState(false);
@@ -63,7 +65,11 @@ export default function NotificationButton() {
                                 <li key={notification.ID} className='py-2 hover:bg-theme-800'>
                                     <div className='px-4 flex justify-between items-center'>
                                         <div>
-                                            <p>{notification.Message}</p>
+                                            <div>
+                                                <Markdown components={markdownComponents}>
+                                                    {notification.Message}
+                                                </Markdown>
+                                            </div>
                                             <p className='text-sm text-theme-400'>
                                                 {secondsToHumanReadable(
                                                     Math.floor((Date.now() - notification.SentAt.getTime()) / 1000),

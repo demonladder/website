@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData /*, NavLink as RRNavLink*/ } from 'react-router';
+import { Outlet, useLoaderData /*, NavLink as RRNavLink*/ } from 'react-router';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import Submissions from './components/Submissions';
 import UserRoleIcon from '../../components/ui/UserRoleIcon';
@@ -24,6 +24,7 @@ import User from '../../api/types/User';
 import { Connections } from './components/Connections';
 import Markdown from 'react-markdown';
 import markdownComponents from '../../utils/markdownComponents';
+import { Achievements } from './components/Achievements';
 
 export default function Profile() {
     const loadedData = useLoaderData<User>();
@@ -101,14 +102,10 @@ export default function Profile() {
                         </Heading1>
                         <UserRoleIcon roles={userData.Roles} />
                     </div>
-                    <p>
-                        {userData.Pronouns && <span className='me-1'>{userData.Pronouns}</span>}
-                        {userData.CompletedPacks.map((p) => (
-                            <Link to={`/pack/${p.PackID}`} key={p.PackID}>
-                                <img src={`/packIcons/${p.IconName}`} className='inline-block me-1 w-6' />
-                            </Link>
-                        ))}
-                    </p>
+                    <div className='flex'>
+                        <p>{userData.Pronouns && <span className='me-1'>{userData.Pronouns}</span>}</p>
+                        <Achievements userId={userID} />
+                    </div>
                 </div>
             </div>
             <section className='flex max-sm:flex-col' onContextMenu={(e) => e.stopPropagation()}>

@@ -89,8 +89,11 @@ export default function AdminLayout() {
                             </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>Packs</p>
-                            <NavButton onClick={onNavigation} to='/mod/editPack'>
+                            <NavButton onClick={onNavigation} to={routes.staff.editPack.href()}>
                                 Packs
+                            </NavButton>
+                            <NavButton onClick={onNavigation} to={routes.staff.achievements.href()}>
+                                Achievements
                             </NavButton>
                             <Divider />
                             <p className='text-gray-400 text-sm ps-3'>References</p>

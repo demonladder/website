@@ -58,18 +58,6 @@ export default function EligibleUser({ userID, submissions, distinctApprovals }:
                             <Link to={`/profile/${userID}`} className='underline'>
                                 {user.data.Name}
                             </Link>
-                            {user.data.CompletedPacks.length > 0 && (
-                                <div>
-                                    {user.data.CompletedPacks.map((pack) => (
-                                        <Link to={`/pack/${pack.PackID}`} key={pack.PackID}>
-                                            <img
-                                                src={`/packIcons/${pack.IconName}`}
-                                                className='inline-block me-1 w-6'
-                                            />
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
                         </div>
                     </Heading4>
                     <div className='grid grid-cols-2 gap-2 mt-4'>
