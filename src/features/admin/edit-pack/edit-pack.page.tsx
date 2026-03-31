@@ -18,6 +18,7 @@ import Divider from '../../../components/divider/Divider';
 import { Link, useNavigate, useParams } from 'react-router';
 import { CaretBigLeft } from '@boxicons/react';
 import { routes } from '../../../routes/route-definitions';
+import { Heading3, Heading4 } from '../../../components/headings';
 
 function checkChangeEquality(change1: Change, change2: Change): boolean {
     return change1.LevelID === change2.LevelID && change1.PackID === change2.PackID && change1.Type === change2.Type;
@@ -158,9 +159,10 @@ function PackEditor({ packId }: { packId: number }) {
 
     const deleteMutation = useMutation({
         mutationFn: DeletePackRequest,
-        onSuccess: () => {
+        onSuccess: (_data, packId) => {
             void queryClient.invalidateQueries({ queryKey: ['packs'] });
             void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
+            setChangeList((prev) => prev.filter((c) => c.PackID !== packId));
             toast.success('Deleted pack');
         },
         onError: (error: Error) => void toast.error(renderToastError.render({ data: error })),
@@ -175,18 +177,19 @@ function PackEditor({ packId }: { packId: number }) {
             {data && (
                 <div>
                     <Meta pack={data} />
+                    <Divider />
                     <List packID={packId} addLevel={addLevel} removeLevel={removeLevel} />
                 </div>
             )}
             {changeList.length > 0 && (
-                <div>
+                <section>
                     <Divider />
-                    <h3 className='text-xl'>Changelog</h3>
+                    <Heading3 className='mb-2'>Changelog</Heading3>
                     {getIndividualPacks().map((pack) => (
                         <div className='mb-2' key={`packChange_${pack[0]?.PackID ?? 0}`}>
-                            <h4 className='text-lg'>
+                            <Heading4 className='mb-1'>
                                 {pack[0]?.PackName ?? (pack[0]?.PackID && `Pack ID: ${pack[0].PackID}`) ?? 0}
-                            </h4>
+                            </Heading4>
                             <ul className='grid grid-cols-3'>
                                 {pack.map((c, i) => (
                                     <ChangeItem change={c} remove={removeChange} key={`change_${c.PackID}_${i}`} />
@@ -194,15 +197,21 @@ function PackEditor({ packId }: { packId: number }) {
                             </ul>
                         </div>
                     ))}
-                    <PrimaryButton onClick={saveChanges} className='me-2'>
-                        Save
-                    </PrimaryButton>
-                    <DangerButton onClick={() => setChangeList([])}>Clear</DangerButton>
-                </div>
+                    <div className='mt-4'>
+                        <PrimaryButton onClick={saveChanges} className='me-2'>
+                            Save
+                        </PrimaryButton>
+                        <DangerButton onClick={() => setChangeList([])}>Clear</DangerButton>
+                    </div>
+                </section>
             )}
+            <Divider />
             <div>
-                <Divider />
-                <DangerButton onClick={() => deleteMutation.mutate(packId)} loading={deleteMutation.isPending}>
+                <DangerButton
+                    onClick={() => deleteMutation.mutate(packId)}
+                    loading={deleteMutation.isPending}
+                    className='float-right'
+                >
                     Delete pack
                 </DangerButton>
             </div>
@@ -213,9 +222,9 @@ function PackEditor({ packId }: { packId: number }) {
 function ChangeItem({ change, remove }: { change: Change; remove: (change: Change) => void }) {
     return (
         <li className='flex gap-1'>
-            <DangerButton onClick={() => remove(change)}>X</DangerButton>
+            <DangerButton onClick={() => remove(change)}>undo</DangerButton>
             <p>
-                {change.LevelName}, {change.Type} {change.EX && 'EX'}
+                {change.Type} {change.LevelName} {change.EX && 'EX'}
             </p>
         </li>
     );
