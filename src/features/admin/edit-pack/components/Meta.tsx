@@ -4,23 +4,24 @@ import { PrimaryButton } from '../../../../components/ui/buttons';
 import { TextInput } from '../../../../components/shared/input/Input';
 import TextArea from '../../../../components/input/TextArea';
 import renderToastError from '../../../../utils/renderToastError';
-import SavePackMetaRequest from '../../../../api/packs/requests/SavePackDescriptionRequest';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { savePackMetaRequest } from '../../../../api/packs/requests/SavePackDescriptionRequest';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPacks } from '../../../packs/api/getPacks';
 import LoadingSpinner from '../../../../components/shared/LoadingSpinner';
 import { FormGroup, FormInputLabel } from '../../../../components/form';
 import Select from '../../../../components/input/select/Select';
 import Pack from '../../../singlePack/types/Pack.ts';
+import type { AxiosError } from 'axios';
 
 interface Props {
     pack: Pack;
 }
 
 export default function Meta({ pack }: Props) {
+    const [name, setName] = useState(pack.Name);
     const [description, setDescription] = useState(pack.Description ?? '');
     const [achievementId, setAchievementId] = useState(pack.achievementId ?? '');
     const [categoryKey, setCategoryKey] = useState(pack.CategoryID ?? 1);
-    const [isLoading, setIsLoading] = useState(false);
     const queryClient = useQueryClient();
 
     const { data: packsData } = useQuery({
@@ -28,25 +29,17 @@ export default function Meta({ pack }: Props) {
         queryFn: getPacks,
     });
 
-    function save() {
-        if (isLoading) return;
-        setIsLoading(true);
-
-        const request = SavePackMetaRequest(pack.ID, categoryKey, description || undefined, achievementId)
-            .then(() => {
-                void queryClient.invalidateQueries({ queryKey: ['packs'] });
-                void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-
-        void toast.promise(request, {
-            pending: 'Saving...',
-            success: 'Saved',
-            error: renderToastError,
-        });
-    }
+    const saveMutation = useMutation({
+        mutationFn: () =>
+            savePackMetaRequest(pack.ID, name, categoryKey, description || undefined, achievementId || null),
+        onMutate: () => toast.loading('Saving...'),
+        onSuccess: (_data, _vars, toastId) => {
+            void queryClient.invalidateQueries({ queryKey: ['packs'] });
+            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
+            toast.update(toastId, { render: 'Saved', type: 'success', isLoading: false, autoClose: 5000 });
+        },
+        onError: (error: AxiosError, _vars, toastId) => renderToastError.error(toastId!, error),
+    });
 
     if (packsData === undefined) return <LoadingSpinner />;
 
@@ -57,6 +50,10 @@ export default function Meta({ pack }: Props) {
 
     return (
         <>
+            <FormGroup>
+                <FormInputLabel htmlFor='packName'>Name</FormInputLabel>
+                <TextInput id='packName' value={name} onChange={(e) => setName(e.target.value)} />
+            </FormGroup>
             <FormGroup>
                 <FormInputLabel htmlFor='packDescription'>Description</FormInputLabel>
                 <TextArea id='packDescription' value={description} onChange={(e) => setDescription(e.target.value)} />
@@ -73,8 +70,12 @@ export default function Meta({ pack }: Props) {
             <FormGroup>
                 <FormInputLabel>Achievement ID</FormInputLabel>
                 <TextInput value={achievementId} onChange={(e) => setAchievementId(e.target.value)} />
-                <PrimaryButton onClick={save}>Save</PrimaryButton>
             </FormGroup>
+            <div className='flex justify-end mt-4'>
+                <PrimaryButton onClick={() => saveMutation.mutate()} disabled={saveMutation.isPending}>
+                    Save
+                </PrimaryButton>
+            </div>
         </>
     );
 }

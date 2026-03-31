@@ -18,5 +18,13 @@ export const routes = {
                 path: 'submission-search',
             },
         },
+        editPack: {
+            href: () => '/mod/edit-pack',
+            path: 'edit-pack',
+            withId: {
+                href: (packId: number) => `/mod/edit-pack/${packId}`,
+                path: 'edit-pack/:packId',
+            },
+        },
     },
 } as const;

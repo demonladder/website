@@ -15,20 +15,67 @@ import usePack from '../../singlePack/hooks/usePack';
 import List from './components/List';
 import { GetPackLevelsResponse as PackLevel } from '../../singlePack/api/getPackLevels';
 import Divider from '../../../components/divider/Divider';
+import { Link, useNavigate, useParams } from 'react-router';
+import { CaretBigLeft } from '@boxicons/react';
+import { routes } from '../../../routes/route-definitions';
 
 function checkChangeEquality(change1: Change, change2: Change): boolean {
     return change1.LevelID === change2.LevelID && change1.PackID === change2.PackID && change1.Type === change2.Type;
 }
 
 export default function EditPack() {
-    const { activePack: packResult, searchQuery, SearchBox: PackSearchBox } = usePackSearch({ ID: 'editPacksSearch' });
+    const params = useParams();
+    const navigate = useNavigate();
+    const { searchQuery, SearchBox: PackSearchBox } = usePackSearch({
+        ID: 'editPacksSearch',
+        onPack: (pack) => {
+            if (pack) void navigate(routes.staff.editPack.withId.href(pack.ID));
+        },
+    });
+    const queryClient = useQueryClient();
+
+    const createPack = () => {
+        if (searchQuery.trim().length === 0) return toast.error("Name can't be empty");
+
+        const request = CreatePackRequest(searchQuery).then(() => {
+            void queryClient.invalidateQueries({ queryKey: ['packs'] });
+            void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
+        });
+
+        void toast.promise(request, {
+            pending: 'Creating...',
+            success: 'Created',
+            error: renderToastError,
+        });
+    };
+
+    if (params.packId === undefined) {
+        return (
+            <div>
+                <h3 className='mb-3 text-2xl'>Edit Pack</h3>
+                <div className='mb-4'>
+                    <FormInputLabel htmlFor='editPacksSearch'>Search</FormInputLabel>
+                    <div className='flex'>
+                        <div className='grow'>{PackSearchBox}</div>
+                        <PrimaryButton onClick={createPack}>Create</PrimaryButton>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    const packId = parseInt(params.packId);
+    if (isNaN(packId)) return <p>Invalid pack ID</p>;
+
+    return <PackEditor packId={packId} />;
+}
+
+function PackEditor({ packId }: { packId: number }) {
     const [changeList, setChangeList] = useSessionStorage<Change[]>('editPackChangeList', []);
     const [isLoading, setIsLoading] = useState(false);
 
     const queryClient = useQueryClient();
-    const { data } = usePack(packResult?.ID ?? 0, {
-        enabled: packResult !== undefined,
-    });
+    const { data } = usePack(packId);
 
     function getIndividualPacks() {
         const uniquePacks = changeList.reduce((acc: number[], cur) => {
@@ -43,11 +90,11 @@ export default function EditPack() {
     }
 
     function removeLevel(level: PackLevel) {
-        if (packResult === undefined) return;
+        if (data === undefined) return;
 
         const newChange: Change = {
-            PackID: packResult.ID,
-            PackName: packResult.Name,
+            PackID: data.ID,
+            PackName: data.Name,
             LevelID: level.LevelID,
             LevelName: level.Level.Meta.Name,
             Type: 'remove',
@@ -62,11 +109,11 @@ export default function EditPack() {
     }
 
     function addLevel(levelID: number, levelName: string, EX = false) {
-        if (packResult === undefined) return;
+        if (data === undefined) return;
 
         const newChange: Change = {
-            PackID: packResult.ID,
-            PackName: packResult.Name,
+            PackID: data.ID,
+            PackName: data.Name,
             LevelID: levelID,
             LevelName: levelName,
             Type: 'add',
@@ -89,7 +136,7 @@ export default function EditPack() {
     }
 
     function saveChanges() {
-        if (packResult === undefined) return;
+        if (data === undefined) return;
         if (isLoading) return;
 
         const request = SavePackChangesRequest(changeList)
@@ -109,29 +156,6 @@ export default function EditPack() {
         });
     }
 
-    function createPack() {
-        if (isLoading) return;
-
-        if (searchQuery.trim().length === 0) {
-            return toast.error("Name can't be empty");
-        }
-        const request = CreatePackRequest(searchQuery)
-            .then(() => {
-                setChangeList([]);
-                void queryClient.invalidateQueries({ queryKey: ['packs'] });
-                void queryClient.invalidateQueries({ queryKey: ['packSearch'] });
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-
-        void toast.promise(request, {
-            pending: 'Creating...',
-            success: 'Created',
-            error: renderToastError,
-        });
-    }
-
     const deleteMutation = useMutation({
         mutationFn: DeletePackRequest,
         onSuccess: () => {
@@ -142,23 +166,16 @@ export default function EditPack() {
         onError: (error: Error) => void toast.error(renderToastError.render({ data: error })),
     });
 
-    const hasContent = packResult !== undefined && data !== undefined;
     return (
         <div>
+            <Link to={routes.staff.editPack.href()} className='text-theme-400 flex items-center mb-2'>
+                <CaretBigLeft /> Search
+            </Link>
             <h3 className='mb-3 text-2xl'>Edit Pack</h3>
-            <div className='mb-4'>
-                <FormInputLabel htmlFor='editPacksSearch'>Search</FormInputLabel>
-                <div className='flex'>
-                    <div className='grow'>{PackSearchBox}</div>
-                    <PrimaryButton onClick={createPack} hidden={packResult !== undefined}>
-                        Create
-                    </PrimaryButton>
-                </div>
-            </div>
-            {hasContent && (
+            {data && (
                 <div>
-                    <Meta pack={packResult} />
-                    <List packID={packResult.ID} addLevel={addLevel} removeLevel={removeLevel} />
+                    <Meta pack={data} />
+                    <List packID={packId} addLevel={addLevel} removeLevel={removeLevel} />
                 </div>
             )}
             {changeList.length > 0 && (
@@ -183,17 +200,12 @@ export default function EditPack() {
                     <DangerButton onClick={() => setChangeList([])}>Clear</DangerButton>
                 </div>
             )}
-            {hasContent && (
-                <div>
-                    <Divider />
-                    <DangerButton
-                        onClick={() => deleteMutation.mutate(packResult.ID)}
-                        loading={deleteMutation.isPending}
-                    >
-                        Delete pack
-                    </DangerButton>
-                </div>
-            )}
+            <div>
+                <Divider />
+                <DangerButton onClick={() => deleteMutation.mutate(packId)} loading={deleteMutation.isPending}>
+                    Delete pack
+                </DangerButton>
+            </div>
         </div>
     );
 }

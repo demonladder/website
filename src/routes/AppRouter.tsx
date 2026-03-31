@@ -163,7 +163,8 @@ export const router = (queryClient: QueryClient) =>
                 <Route path='beta' element={<Beta />} />
                 <Route path='queue' element={<Queue />} />
                 <Route path='references' element={<EditReferences />} />
-                <Route path='editPack' element={<EditPack />} />
+                <Route path={routes.staff.editPack.path} element={<EditPack />} />
+                <Route path={routes.staff.editPack.withId.path} element={<EditPack />} />
                 <Route path='addSubmission' element={<AddSubmission />} />
                 <Route path='editSubmission/:submissionID' element={<EditSubmission />} />
                 <Route path='manageUser' element={<ManageUser />}>

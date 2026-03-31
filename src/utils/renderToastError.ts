@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
+import { toast, type Id } from 'react-toastify';
 import { secondsToHumanReadable } from './secondsToHumanReadable';
 
 export interface GDDLError {
@@ -9,7 +9,15 @@ export interface GDDLError {
 }
 
 const renderToastError = {
-    render: render,
+    render,
+    error: (toastId: Id, error: AxiosError) => {
+        toast.update(toastId, {
+            render: renderToastError.render({ data: error }),
+            type: 'error',
+            isLoading: false,
+            autoClose: 5000,
+        });
+    },
 };
 
 export default renderToastError;

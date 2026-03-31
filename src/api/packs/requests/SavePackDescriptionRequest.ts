@@ -1,10 +1,11 @@
 import APIClient from '../../APIClient';
 
-export default async function SavePackMetaRequest(
+export async function savePackMetaRequest(
     packID: number,
+    name: string,
     categoryID: number,
     description?: string,
     achievementId?: string | null,
 ) {
-    await APIClient.patch(`/packs/${packID}`, { description, categoryID, achievementId });
+    await APIClient.patch(`/packs/${packID}`, { name, description, categoryID, achievementId });
 }

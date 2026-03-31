@@ -6,17 +6,16 @@ import Pack from '../features/singlePack/types/Pack';
 
 interface Props {
     ID: string;
+    onPack: (pack: Pack | undefined) => void;
 }
 
 interface ListType extends Pack {
     label: string;
 }
 
-export default function usePackSearch({ ID }: Props) {
+export default function usePackSearch({ ID, onPack }: Props) {
     const [search, setSearch] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-
-    const [activePack, setActivePack] = useState<Pack>();
 
     const { data, status } = useQuery({
         queryKey: ['packSearch', searchQuery],
@@ -24,7 +23,6 @@ export default function usePackSearch({ ID }: Props) {
     });
 
     return {
-        activePack,
         searchQuery: search,
         SearchBox: (
             <SearchBox<ListType>
@@ -35,7 +33,7 @@ export default function usePackSearch({ ID }: Props) {
                 onDebouncedChange={setSearchQuery}
                 id={ID}
                 list={data?.map((d) => ({ ...d, label: d.Name })) || []}
-                onResult={setActivePack}
+                onResult={onPack}
                 status={status}
             />
         ),
