@@ -82,7 +82,6 @@ import { submitLoader } from '../features/submit/submit.loader';
 import SubmissionSearch from '../features/admin/submission-search/submission-search.page';
 import { Connections } from '../features/settings';
 import { Achievements } from '../features/admin/achievements/achievements.page.tsx';
-import { CreateAchievement } from '../features/admin/achievements/create-achievement.page.tsx';
 
 export const router = (queryClient: QueryClient) =>
     createBrowserRouter(
@@ -167,7 +166,6 @@ export const router = (queryClient: QueryClient) =>
                 <Route path='references' element={<EditReferences />} />
                 <Route path={routes.staff.editPack.path} element={<EditPack />} />
                 <Route path={routes.staff.editPack.withId.path} element={<EditPack />} />
-                <Route path={routes.staff.createAchievement.path} element={<CreateAchievement />} />
                 <Route path={routes.staff.achievements.path} element={<Achievements />} />
                 <Route path='addSubmission' element={<AddSubmission />} />
                 <Route path='editSubmission/:submissionID' element={<EditSubmission />} />

@@ -86,9 +86,9 @@ export default function MenuContextProvider({ children }: { children?: React.Rea
                 >
                     {
                         <ul className='p-1'>
-                            {filteredButtons?.map((b) =>
+                            {filteredButtons?.map((b, i) =>
                                 b.type === 'divider' ? (
-                                    <li key={b.ID} className='bg-theme-500 h-0.5 my-1' />
+                                    <li key={b.ID ?? i} className='bg-theme-500 h-0.5 my-1' />
                                 ) : (
                                     <li key={b.ID}>
                                         {b.to ? (

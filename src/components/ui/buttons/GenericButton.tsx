@@ -17,7 +17,7 @@ export function Generic({ loading = false, size = 'sm', children, className, ...
     const sizeClass = (() => {
         switch (size) {
             default:
-                return '';
+                return ' px-4';
             case 'md':
                 return ' px-4 py-2 text-lg';
             case 'lg':

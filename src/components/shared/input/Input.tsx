@@ -9,7 +9,7 @@ function Input({ invalid = false, ...props }: InputProps) {
         <input
             {...props}
             className={
-                'outline-none rounded-none caret-current border-b-2 border-current bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' +
+                'outline-none rounded-none caret-current border-b-2 border-current focus-visible:border-theme-primary transition-colors bg-theme-950/70 placeholder-current placeholder:opacity-50 ps-2 w-full h-7' +
                 (invalid ? ' border-red-600' : '')
             }
         />

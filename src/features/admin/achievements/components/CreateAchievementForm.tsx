@@ -1,24 +1,28 @@
 import { useState, type SubmitEvent } from 'react';
-import { FormGroup, FormInputLabel } from '../../../components/form';
-import { Heading1 } from '../../../components/headings';
-import { TextInput } from '../../../components/shared/input/Input';
-import { PrimaryButton } from '../../../components/ui/buttons';
-import { useMutation } from '@tanstack/react-query';
-import { createAchievement, type CreateAchievementRequest } from './api/createAchievement';
+import { FormGroup, FormInputLabel } from '../../../../components/form';
+import { Heading3 } from '../../../../components/headings';
+import { TextInput } from '../../../../components/shared/input/Input';
+import { PrimaryButton } from '../../../../components/ui/buttons';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createAchievement, type CreateAchievementRequest } from '../api/createAchievement';
 import { toast } from 'react-toastify';
 import type { AxiosError } from 'axios';
-import renderToastError from '../../../utils/renderToastError';
+import renderToastError from '../../../../utils/renderToastError';
+import { Achievement } from '../../../../api/types/Achievement';
+import Surface from '../../../../components/layout/Surface';
 
-export function CreateAchievement() {
+export function CreateAchievementForm() {
     const [name, setName] = useState('');
     const [discordRoleId, setDiscordRoleId] = useState('');
     const [iconSource, setIconSource] = useState('');
+    const queryClient = useQueryClient();
 
     const createMutation = useMutation({
         mutationFn: (request: CreateAchievementRequest) => createAchievement(request),
         onMutate: () => toast.loading('Creating...'),
-        onSuccess: (_data, _vars, toastId) => {
+        onSuccess: (data, _vars, toastId) => {
             toast.update(toastId, { render: 'Created', type: 'success', isLoading: false, autoClose: 5000 });
+            queryClient.setQueryData<Achievement[]>(['achievements'], (prev) => [...(prev ?? []), data]);
         },
         onError: (error: AxiosError, _vars, toastId) => renderToastError.error(toastId!, error),
     });
@@ -36,15 +40,19 @@ export function CreateAchievement() {
     };
 
     return (
-        <div>
-            <Heading1>Create Achievement</Heading1>
-            <form onSubmit={handleSubmit}>
+        <Surface variant='700' className='py-4 my-4 round:rounded-xl'>
+            <Heading3>Create new achievement</Heading3>
+            <form className='flex flex-wrap gap-4' onSubmit={handleSubmit}>
                 <FormGroup>
-                    <FormInputLabel htmlFor='achievementName'>Name</FormInputLabel>
+                    <FormInputLabel htmlFor='achievementName'>
+                        Name <span className='text-red-500'>*</span>
+                    </FormInputLabel>
                     <TextInput
                         id='achievementName'
                         placeholder='Achievement name'
                         value={name}
+                        required
+                        minLength={3}
                         onChange={(e) => setName(e.target.value)}
                     />
                 </FormGroup>
@@ -66,12 +74,12 @@ export function CreateAchievement() {
                         onChange={(e) => setIconSource(e.target.value)}
                     />
                 </FormGroup>
-                <div className='mt-4'>
+                <div className='mt-4 self-end'>
                     <PrimaryButton type='submit' className='float-right'>
                         Create
                     </PrimaryButton>
                 </div>
             </form>
-        </div>
+        </Surface>
     );
 }

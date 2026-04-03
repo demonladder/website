@@ -17,10 +17,10 @@ export default function Surface({ variant, size = 'md', className, ...props }: P
     classNames +=
         ' ' +
         {
-            sm: 'shadow-sm p-2 round:rounded',
-            md: 'shadow px-4 py-2 round:rounded-lg',
-            lg: 'shadow-lg px-6 py-4 round:rounded-xl',
-            xl: 'shadow-xl px-8 py-6 round:rounded-2xl',
+            sm: 'shadow-sm p-2 round:rounded-lg',
+            md: 'shadow px-4 py-2 round:rounded-xl',
+            lg: 'shadow-lg px-6 py-4 round:rounded-2xl',
+            xl: 'shadow-xl px-8 py-6 round:rounded-3xl',
         }[size];
 
     classNames += ' border border-theme-outline';

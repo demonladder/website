@@ -34,9 +34,5 @@ export const routes = {
                 path: 'achievements/:achievementId',
             },
         },
-        createAchievement: {
-            href: () => '/mod/achievements/create',
-            path: 'achievements/create',
-        },
     },
 } as const;
