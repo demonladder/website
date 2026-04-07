@@ -6,22 +6,22 @@ import { padDataSet } from './padDataSet';
 export interface GetStatsResponse {
     users: {
         now: number;
-        old: number;
+        old: number | null;
     };
     registeredUsers: number;
     activeUsers: number;
     totalLevels: {
         now: number;
-        old: number;
+        old: number | null;
     };
     totalRatedLevels: number;
     submissions: {
         now: number;
-        old: number;
+        old: number | null;
     };
     pendingSubmissions: {
         now: number;
-        old: number;
+        old: number | null;
     };
     recentSubmissions: number;
     oldestQueuedSubmission?: string;

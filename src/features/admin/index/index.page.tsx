@@ -17,19 +17,30 @@ import { Heading1 } from '../../../components/headings';
 import { truncateBigNumber } from '../../../utils/truncateBigNumber';
 import { useState } from 'react';
 import { Stats } from './components/Stats';
+import { Minus, TrendingDown, TrendingUp } from '@boxicons/react';
+import Surface from '../../../components/layout/Surface';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-function StatisticTracker({ value, oldValue, label }: { label: string; oldValue?: number; value?: number }) {
+function StatisticTracker({
+    value,
+    oldValue,
+    label,
+    moreIsBetter = true,
+}: {
+    label: string;
+    oldValue?: number | null;
+    value?: number;
+    moreIsBetter?: boolean;
+}) {
     const [changeDisplayMode, setChangeDisplayMode] = useState<'absolute' | 'percentage'>('absolute');
 
-    const absoluteChange = oldValue !== undefined && value !== undefined ? value - oldValue : undefined;
+    const absoluteChange = value !== undefined ? value - (oldValue ?? value) : undefined;
     const absoluteChangeText =
-        absoluteChange !== undefined ? `${absoluteChange >= 0 ? '+' : ''}${absoluteChange}` : undefined;
-    const percentageChange =
-        oldValue !== undefined && absoluteChange !== undefined && oldValue !== 0
-            ? (absoluteChange / oldValue) * 100
+        absoluteChange !== undefined
+            ? `${absoluteChange >= 0 ? '+' : ''}${absoluteChange.toLocaleString()}`
             : undefined;
+    const percentageChange = ((absoluteChange ?? 0) / (oldValue ?? 1)) * 100;
     const percentageChangeText =
         percentageChange !== undefined
             ? `${percentageChange >= 0 ? '+' : ''}${percentageChange.toFixed(1)}%`
@@ -37,32 +48,34 @@ function StatisticTracker({ value, oldValue, label }: { label: string; oldValue?
 
     const change = changeDisplayMode === 'absolute' ? absoluteChangeText : percentageChangeText;
 
+    const isPositiveChange = absoluteChange !== undefined ? absoluteChange > 0 : true;
+    const isNoChange = absoluteChange === 0;
+    const trendColor = isNoChange
+        ? ''
+        : isPositiveChange && moreIsBetter
+          ? 'text-green-500'
+          : !isPositiveChange && !moreIsBetter
+            ? 'text-green-500'
+            : 'text-red-500';
+
     return (
-        <div
+        <Surface
+            variant='800'
             onClick={() => setChangeDisplayMode(changeDisplayMode === 'absolute' ? 'percentage' : 'absolute')}
-            className='relative cursor-pointer p-4 bg-theme-800 round:rounded-2xl gap-4 border border-theme-600 overflow-hidden'
+            className='relative cursor-pointer'
         >
             <FloatingLoadingSpinner isLoading={value === undefined} />
             <p className='text-theme-400 text-sm mb-1'>{label}</p>
-            <div className='flex justify-between items-end'>
+            <div className={`flex justify-between items-end ${trendColor}`}>
                 <p className='text-2xl'>{value !== undefined ? truncateBigNumber(value) : '-'} </p>
                 {change !== undefined && (
-                    <p className='text-base'>
-                        <svg
-                            className='inline-block me-1'
-                            xmlns='http://www.w3.org/2000/svg'
-                            width='24'
-                            height='24'
-                            viewBox='0 0 24 24'
-                            style={{ fill: 'currentColor', transform: '', msFilter: '' }}
-                        >
-                            <path d='m10 10.414 4 4 5.707-5.707L22 11V5h-6l2.293 2.293L14 11.586l-4-4-7.707 7.707 1.414 1.414z'></path>
-                        </svg>
+                    <p className='flex items-center gap-1'>
+                        {isNoChange ? <Minus /> : isPositiveChange ? <TrendingUp /> : <TrendingDown />}
                         {change}
                     </p>
                 )}
             </div>
-        </div>
+        </Surface>
     );
 }
 
@@ -85,6 +98,7 @@ export default function ModIndex() {
                     value={stats?.pendingSubmissions.now}
                     oldValue={stats?.pendingSubmissions.old}
                     label='Pending submissions'
+                    moreIsBetter={false}
                 />
                 <StatisticTracker value={stats?.users.now} oldValue={stats?.users.old} label='Total Users' />
                 <StatisticTracker
