@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import renderToastError from '../../utils/renderToastError';
 import Markdown from 'react-markdown';
 import markdownComponents from '../../utils/markdownComponents';
+import { RefreshCw } from '@boxicons/react';
 
 export default function NotificationButton() {
     const [showNotifications, setShowNotifications] = useState(false);
@@ -56,7 +57,7 @@ export default function NotificationButton() {
                                 className='text-theme-text hover:text-theme-text/80 transition-colors'
                                 onClick={() => void notifications.refetch()}
                             >
-                                <i className='bx bx-refresh text-2xl' />
+                                <RefreshCw className={notifications.isPending ? 'spinner' : ''} />
                             </button>
                         </div>
                         {notifications.data?.length === 0 && <p className='p-4 text-theme-400'>No notifications</p>}

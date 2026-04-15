@@ -2,7 +2,7 @@ import { Achievement } from '../../../../api/types/Achievement';
 import { useNow } from '../../../../hooks/useNow';
 import { secondsToHumanReadable } from '../../../../utils/secondsToHumanReadable';
 import { useMemo } from 'react';
-import { DotsVerticalRounded } from '@boxicons/react';
+import { Copy, DotsVerticalRounded, Trash } from '@boxicons/react';
 import useContextMenu from '../../../../context/menu/useContextMenu';
 import { copyText } from '../../../../utils/copyText';
 import { useConfirmationModal } from '../../../../components/modals/confirmation/useConfirmationModal';
@@ -52,9 +52,9 @@ export function AchievementCard({ achievement }: Props) {
     });
 
     const onContextMenu = useContextMenu([
-        { text: 'Copy ID', onClick: () => copyText(achievement.id) },
+        { text: 'Copy ID', onClick: () => copyText(achievement.id), icon: <Copy size='sm' /> },
         { type: 'divider' },
-        { type: 'danger', text: 'Delete', onClick: () => confirmDelete() },
+        { type: 'danger', text: 'Delete', onClick: () => confirmDelete(), icon: <Trash size='sm' /> },
     ]);
 
     return (
@@ -71,9 +71,19 @@ export function AchievementCard({ achievement }: Props) {
                 </button>{' '}
             </div>
             <div className='flex gap-2 mt-2'>
-                <p className='text-theme-400 text-sm'>Created {secondsToHumanReadable((now - createdAt) / 1000)} ago</p>
+                <p
+                    className='text-theme-400 text-sm'
+                    title={`Created at ${new Date(achievement.createdAt).toLocaleString()}`}
+                >
+                    Created {secondsToHumanReadable((now - createdAt) / 1000)} ago
+                </p>
                 <p className='text-theme-400 text-sm'>-</p>
-                <p className='text-theme-400 text-sm'>updated {secondsToHumanReadable((now - updatedAt) / 1000)} ago</p>
+                <p
+                    className='text-theme-400 text-sm'
+                    title={`Updated at ${new Date(achievement.updatedAt).toLocaleString()}`}
+                >
+                    updated {secondsToHumanReadable((now - updatedAt) / 1000)} ago
+                </p>
             </div>
         </Surface>
     );
